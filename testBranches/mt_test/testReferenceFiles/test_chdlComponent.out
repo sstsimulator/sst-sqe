@@ -1,0 +1,13 @@
+8483 0 OUTPUT> Greetings from core 0 of 2
+11507 1 OUTPUT> Greetings from core 1 of 2
+16031 0 OUTPUT> 6
+16243 1 OUTPUT> 6
+24046 0 OUTPUT> 0
+Core 0 UNREGISTERING EXIT
+24310 1 OUTPUT> 0
+Core 1 UNREGISTERING EXIT
+CHDL 1 counter "counter_cycles": 24358
+CHDL 1 counter "counter_instructions": 2290
+CHDL 0 counter "counter_cycles": 24358
+CHDL 0 counter "counter_instructions": 3867
+Simulation is complete, simulated time: 24.3585 us

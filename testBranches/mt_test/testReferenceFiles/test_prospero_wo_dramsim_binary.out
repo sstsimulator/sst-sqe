@@ -1,0 +1,67 @@
+
+Prospero Component Statistics:
+------------------------------------------------------------------------
+- Completed at:                          1377872 ns
+- Cycles with ops issued:                133559 cycles
+- Cycles with no ops issued (LS full):   2621981 cycles
+------------------------------------------------------------------------
+- Reads issued:                          173834
+- Writes issued:                         78421
+- Split reads issued:                    59
+- Split writes issued:                   25
+- Bytes read:                            1269669
+- Bytes written:                         1142526
+------------------------------------------------------------------------
+- Bandwidth (read):                      921.471 MB/s
+- Bandwidth (written):                   829.196 MB/s
+- Bandwidth (combined):                  1.75067 GB/s
+- Avr. Read request size:                                7.30 bytes
+- Avr. Write request size:                              14.57 bytes
+- Avr. Request size:                                     9.56 bytes
+
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           252255
+     GetS:                                       173834
+     GetX:                                       78421
+     GetSEx:                                     0
+- Total misses:                                  211667
+     GetS, miss on arrival:                      18677
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      16924
+     GetX, miss after being blocked:             0
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    40588
+     GetS, hit on arrival:                       30115
+     GetS, hit after being blocked:              125042
+     GetX, hit on arrival:                       10473
+     GetX, hit after being blocked:              51024
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     16.090%
+- Miss ratio:                                    83.910%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   18677
+- GetX   I->M:                                   16924
+- GetX   S->M:                                   0
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PUTM sent due to [inv, evictions]:             [0, 0]
+- PUTE sent due to [inv, evictions]:             [0, 16934]
+- PUTX sent due to [inv, evictions]:             [0, 17643]
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    287856
+- Requests handled by MSHR (MSHR hits):          211667
+- NACKs sent (MSHR Full, BottomCC):              0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        202
+- Latency GetS   I->S                            203
+- Latency GetX   I->M                            203
+Simulation is complete, simulated time: 1.37787 ms

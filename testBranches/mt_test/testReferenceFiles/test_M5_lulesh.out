@@ -1,0 +1,12 @@
+WARNING: Building component "system" with no links assigned.
+M5:configFile `luleshM5.xml`
+default system
+default process
+M5:registering exit `m5.nid0.cpu0.workload`
+DRAMSimWrap clock 800000000 hz
+M5:registering exit
+Inserting stop event at cycle 1000000ns, 1000000000
+iteration = 1,  time = 1.000000e-07,  dthydro=1.000000e+20,  dtcourant=1.000000e+20
+iteration = 2,  time = 2.200000e-07,  dthydro=6.594945e-04,  dtcourant=2.830717e-05
+iteration = 3,  time = 3.640000e-07,  dthydro=2.998239e-04,  dtcourant=2.830777e-05
+Simulation is complete, simulated time: 1 ms

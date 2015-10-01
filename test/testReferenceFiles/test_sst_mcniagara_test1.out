@@ -1,0 +1,106 @@
+WARNING: Building component "McNiagara" with no links assigned.
+McNiagara: Constructor
+<<<<<<<<<<<<<Initializing CPU>>>>>>>>>>>>>>>>>>>>>>
+Input File:               'mcniagara/INPUT'
+Probability File:         'mcniagara/inst_prob.data'
+Performance Counter File: 'mcniagara/perf_cnt.data'
+Trace file:               ''
+Difference between Instrumentation and counters ::
+If you see "Fixing....", then you might have a problem in the collected data
+An attempt will be made to fix this, but if the result error is too big, then
+You should revisit this and check why Shade-collected numbers differ from performance-counters numbers
+Sanity Checks ..... 
+Total Instructions ==> Okay
+........
+Total Instructions ==> All Okay
+
+Random Number Generator SEED initialized to 100
+Latency ::
+ L1    =   3 cycles
+ L2    =  20 cycles
+ Mem   = 176 cycles
+ TLB   = 190 cycles
+
+Model Diagaram Probabilities ::
+ P1(Instr Not Retire Immed.)  = 0.427020 (42.70% of instructions)
+ P2(Instr Retires Immed.)     = 0.572980 (57.30% of instructions)
+ P3(Branch Instr)             = 0.058665 (5.87% of instructions)
+ P4(FP instr)                 = 0.038566 (3.86% of instructions)
+ P5(Fdiv/FSQRT Instr)         = 0.000444 (0.04% of instructions)
+ P6(All Other FGU Instr)      = 0.038122 (3.81% of instructions)
+ P7(SP. INT)                  = 0.003788 (0.38% of instructions)
+ P8(LOAD Instr)               = 0.326001 (32.60% of instructions)
+ P9(LOAD &  hit DTLB)         = 0.326001 (32.60% of instructions)
+ P10(LOAD & miss DTLB         = 0.000000 (0.00% of instructions)
+ P11(LOAD & hit L1)           = 0.316345 (31.63% of instructions)
+ P12(LOAD & hit L2)           = 0.007978 (0.80% of instructions)
+ P13(LOAD & hit MEM)          = 0.001679 (0.17% of instructions)
+
+Other Useful Probabilities used internally ::
+ P(Branch mispredict)                   =  0.892868 (89.29%)
+ P(inst in delay slot executed)         =  0.987968 (98.80%)
+ P(LD)                                  =  0.345207 (34.52%)
+ P(ST| no load)                         =  0.134340 (13.43%)
+ P(BR| no load/st)                      =  0.109864 (10.99%)
+ P(INT|no load/st/br)                   =  0.918943 (91.89%)
+ P(FP| no load/st/br/int)               =  1.000000 (100.00%)
+ P(LD in delay slot)                    =  0.013834 (1.38%)
+ P(ST| no load in delay slot)           =  0.003191 (0.32%)
+ P(INT|no load/st/br in delay slot)     =  0.999321 (99.93%)
+ P(FP| no load/st/br/int in delay slot) =  1.000000 (100.00%)
+
+Total Instructions simulated: 100000 (delay slot 5962)
+
+Mem Ops      =      40845 ( 40.84% of all tokens )
+Loads        =      32566 ( 32.57% of all tokens )
+Stores       =       8279 ( 8.28% of all tokens )
+Branches     =       5884 ( 5.88% of all tokens )
+FR producers =       3760 ( 3.76% of all tokens )
+GR producers =      49433 ( 49.43% of all tokens )
+
+MM total loads: 32566
+Loads from ST Buffer =      14799 (45.44% of loads   )
+Loads to L1  =      16809 (51.62% of loads, 16.81% of all tokens)
+Loads to L2  =        793 (2.44% of loads, 0.79% of all tokens)
+Loads to Mem =        165 (0.51% of loads, 0.17% of all tokens)
+DTLB miss    =          0 (0.00% of loads )
+ITLB miss    =          0 (0.00% of insns )
+I$ misses    =          1 (0.00% of tokens)
+
+Pipeline Flushes     =      23106 (23.11% of tokens  )
+ST Buffer Full Stalls=          0 (0.00% of stores  )
+
+CPI Components:
+      CPI-inh = 1.00000  (37.15% of CPI)
+      I Cache = 0.00019  (0.01% of CPI)
+     L1 Cache = 0.50427  (18.73% of CPI)
+     L2 Cache = 0.15860  (5.89% of CPI)
+       Memory = 0.29040  (10.79% of CPI)
+      Int Dep = 0.02884  (1.07% of CPI)
+  Int-Use Dep = 0.00000  (0.00% of CPI)
+  Int-DSU Dep = 0.00000  (0.00% of CPI)
+      FGU Dep = 0.07301  (2.71% of CPI)
+  Branch MisP = 0.33219  (12.34% of CPI)
+ Branch Stall = 0.00829  (0.31% of CPI)
+   Pipe Flush = 0.00000  (0.00% of CPI)
+     STB Full = 0.00000  (0.00% of CPI)
+Special Loads = 0.00006  (0.00% of CPI)
+       Ld STB = 0.29598  (11.00% of CPI)
+     TLB Miss = 0.00000  (0.00% of CPI)
+    ITLB Miss = 0.00000  (0.00% of CPI)
+        TOTAL = 2.69183  (100.00% of CPI)
+
+Compare To REAL MEASUREMENTS Below:
+LD  = 32.60
+ST  = 8.30
+BR  = 5.87
+FP  = 3.86
+GR  = 49.37
+
+Results Summary: 
+Total instructions executed = 100000
+
+Measured CPI  = 2.67758
+Predicted CPI = 2.69183
+Difference    = 0.53210%
+

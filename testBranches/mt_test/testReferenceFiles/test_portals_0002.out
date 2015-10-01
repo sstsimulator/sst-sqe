@@ -1,0 +1,170 @@
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+Protocol: eager
+  0:       1 bytes   3333 times -->     0.68 MBps in       1.41 usec
+  1:       2 bytes   1770 times -->     1.35 MBps in       1.41 usec
+  2:       3 bytes   1180 times -->     2.03 MBps in       1.41 usec
+  3:       4 bytes   1180 times -->     2.70 MBps in       1.41 usec
+  4:       6 bytes    708 times -->     4.05 MBps in       1.41 usec
+  5:       8 bytes    708 times -->     5.40 MBps in       1.41 usec
+  6:      12 bytes    393 times -->     8.10 MBps in       1.41 usec
+  7:      13 bytes    589 times -->     8.78 MBps in       1.41 usec
+  8:      16 bytes    393 times -->    10.80 MBps in       1.41 usec
+  9:      19 bytes    294 times -->    12.83 MBps in       1.41 usec
+ 10:      21 bytes    252 times -->    14.17 MBps in       1.41 usec
+ 11:      24 bytes    208 times -->    16.20 MBps in       1.41 usec
+ 12:      27 bytes    176 times -->    18.22 MBps in       1.41 usec
+ 13:      29 bytes    252 times -->    19.57 MBps in       1.41 usec
+ 14:      32 bytes    208 times -->    21.60 MBps in       1.41 usec
+ 15:      35 bytes    176 times -->    22.06 MBps in       1.51 usec
+ 16:      45 bytes    110 times -->    28.35 MBps in       1.51 usec
+ 17:      48 bytes    100 times -->    30.24 MBps in       1.51 usec
+ 18:      51 bytes     91 times -->    32.13 MBps in       1.51 usec
+ 19:      61 bytes    110 times -->    38.43 MBps in       1.51 usec
+ 20:      64 bytes    100 times -->    40.32 MBps in       1.51 usec
+ 21:      67 bytes     91 times -->    42.21 MBps in       1.51 usec
+ 22:      93 bytes     53 times -->    58.53 MBps in       1.52 usec
+ 23:      96 bytes     50 times -->    60.41 MBps in       1.52 usec
+ 24:      99 bytes     48 times -->    61.33 MBps in       1.54 usec
+ 25:     125 bytes     52 times -->    77.45 MBps in       1.54 usec
+ 26:     128 bytes     49 times -->    79.30 MBps in       1.54 usec
+ 27:     131 bytes     47 times -->    81.15 MBps in       1.54 usec
+ 28:     189 bytes     25 times -->   115.08 MBps in       1.57 usec
+ 29:     192 bytes     24 times -->   116.89 MBps in       1.57 usec
+ 30:     195 bytes     24 times -->   118.72 MBps in       1.57 usec
+ 31:     253 bytes     25 times -->   151.77 MBps in       1.59 usec
+ 32:     256 bytes     24 times -->   153.54 MBps in       1.59 usec
+ 33:     259 bytes     23 times -->   155.32 MBps in       1.59 usec
+ 34:     381 bytes     12 times -->   221.24 MBps in       1.64 usec
+ 35:     384 bytes     11 times -->   222.85 MBps in       1.64 usec
+ 36:     387 bytes     11 times -->   224.60 MBps in       1.64 usec
+ 37:     509 bytes     11 times -->   287.34 MBps in       1.69 usec
+ 38:     512 bytes     11 times -->   289.03 MBps in       1.69 usec
+ 39:     515 bytes     11 times -->   290.73 MBps in       1.69 usec
+ 40:     765 bytes      8 times -->   409.00 MBps in       1.78 usec
+ 41:     768 bytes      8 times -->   410.61 MBps in       1.78 usec
+ 42:     771 bytes      8 times -->   412.21 MBps in       1.78 usec
+ 43:    1021 bytes      8 times -->   519.45 MBps in       1.87 usec
+ 44:    1024 bytes      8 times -->   520.97 MBps in       1.87 usec
+ 45:    1027 bytes      8 times -->   522.50 MBps in       1.87 usec
+ 46:    1533 bytes      8 times -->   711.04 MBps in       2.06 usec
+ 47:    1536 bytes      8 times -->   712.43 MBps in       2.06 usec
+ 48:    1539 bytes      8 times -->   713.82 MBps in       2.06 usec
+ 49:    2045 bytes      8 times -->   871.53 MBps in       2.24 usec
+ 50:    2048 bytes      8 times -->   872.81 MBps in       2.24 usec
+ 51:    2051 bytes      8 times -->   752.30 MBps in       2.60 usec
+ 52:    3069 bytes      8 times -->   980.84 MBps in       2.98 usec
+ 53:    3072 bytes      8 times -->   981.80 MBps in       2.98 usec
+ 54:    3075 bytes      8 times -->   982.76 MBps in       2.98 usec
+ 55:    4093 bytes      8 times -->  1158.96 MBps in       3.37 usec
+ 56:    4096 bytes      8 times -->  1159.81 MBps in       3.37 usec
+ 57:    4099 bytes      8 times -->  1160.66 MBps in       3.37 usec
+ 58:    6141 bytes      8 times -->  1415.99 MBps in       4.14 usec
+ 59:    6144 bytes      8 times -->  1416.68 MBps in       4.14 usec
+ 60:    6147 bytes      8 times -->  1417.37 MBps in       4.14 usec
+ 61:    8189 bytes      8 times -->  1592.50 MBps in       4.90 usec
+ 62:    8192 bytes      8 times -->  1593.09 MBps in       4.90 usec
+ 63:    8195 bytes      8 times -->  1593.67 MBps in       4.90 usec
+ 64:   12285 bytes      8 times -->  1819.24 MBps in       6.44 usec
+ 65:   12288 bytes      8 times -->  1819.68 MBps in       6.44 usec
+ 66:   12291 bytes      8 times -->  1820.13 MBps in       6.44 usec
+ 67:   16381 bytes      8 times -->  1958.64 MBps in       7.98 usec
+ 68:   16384 bytes      8 times -->  1959.00 MBps in       7.98 usec
+ 69:   16387 bytes      8 times -->  1959.36 MBps in       7.98 usec
+ 70:   24573 bytes      8 times -->  2121.17 MBps in      11.05 usec
+ 71:   24576 bytes      8 times -->  2121.42 MBps in      11.05 usec
+ 72:   24579 bytes      8 times -->  2121.68 MBps in      11.05 usec
+ 73:   32765 bytes      8 times -->  2212.97 MBps in      14.12 usec
+ 74:   32768 bytes      8 times -->  2197.61 MBps in      14.22 usec
+ 75:   32771 bytes      8 times -->  2197.81 MBps in      14.22 usec
+ 76:   49149 bytes      8 times -->  2301.72 MBps in      20.36 usec
+ 77:   49152 bytes      8 times -->  2301.86 MBps in      20.36 usec
+ 78:   49155 bytes      8 times -->  2302.00 MBps in      20.36 usec
+ 79:   65533 bytes      8 times -->  2357.67 MBps in      26.51 usec
+ 80:   65536 bytes      8 times -->  2357.78 MBps in      26.51 usec
+ 81:   65539 bytes      8 times -->  2357.89 MBps in      26.51 usec
+ 82:   98301 bytes      8 times -->  2416.41 MBps in      38.80 usec
+ 83:   98304 bytes      8 times -->  2416.49 MBps in      38.80 usec
+ 84:   98307 bytes      8 times -->  2416.56 MBps in      38.80 usec
+ 85:  131069 bytes      8 times -->  2446.89 MBps in      51.08 usec
+ 86:  131072 bytes      8 times -->  2446.95 MBps in      51.08 usec
+ 87:  131075 bytes      8 times -->  2447.01 MBps in      51.08 usec
+ 88:  196605 bytes      8 times -->  2478.15 MBps in      75.66 usec
+ 89:  196608 bytes      8 times -->  2478.19 MBps in      75.66 usec
+ 90:  196611 bytes      8 times -->  2478.23 MBps in      75.66 usec
+ 91:  262141 bytes      8 times -->  2494.09 MBps in     100.24 usec
+ 92:  262144 bytes      8 times -->  2494.11 MBps in     100.24 usec
+ 93:  262147 bytes      8 times -->  2494.14 MBps in     100.24 usec
+ 94:  393213 bytes      8 times -->  2510.22 MBps in     149.39 usec
+ 95:  393216 bytes      8 times -->  2510.24 MBps in     149.39 usec
+ 96:  393219 bytes      8 times -->  2510.26 MBps in     149.39 usec
+ 97:  524285 bytes      8 times -->  2518.37 MBps in     198.54 usec
+ 98:  524288 bytes      8 times -->  2518.38 MBps in     198.54 usec
+ 99:  524291 bytes      8 times -->  2518.40 MBps in     198.54 usec
+100:  786429 bytes      8 times -->  2526.57 MBps in     296.84 usec
+101:  786432 bytes      8 times -->  2526.58 MBps in     296.84 usec
+102:  786435 bytes      8 times -->  2526.59 MBps in     296.84 usec
+103: 1048573 bytes      8 times -->  2530.69 MBps in     395.15 usec
+104: 1048576 bytes      8 times -->  2530.70 MBps in     395.15 usec
+105: 1048579 bytes      8 times -->  2530.70 MBps in     395.15 usec

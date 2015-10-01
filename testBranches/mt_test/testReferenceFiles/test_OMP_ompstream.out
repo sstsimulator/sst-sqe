@@ -1,0 +1,11 @@
+M5:registering exit
+Inserting stop event at cycle 100ms, 100000000000
+This system uses 8 bytes per array element.
+Array size = 256 (elements), Offset = 0 (elements)
+Each kernel will be executed 100 times.
+Number of Threads requested = 8
+Number of Threads counted = 8
+Stream Array Size = 256. Initializing Arrays...
+Arrays initialized.
+Your clock granularity/precision appears to be 1 microseconds.
+M5:exiting: curTick()=8061776000 cause=`target called exit()` code=0

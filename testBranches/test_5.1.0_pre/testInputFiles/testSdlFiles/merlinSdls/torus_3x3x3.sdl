@@ -1,0 +1,1546 @@
+<?xml version="1.0"?>
+
+<sdl version="2.0"/>
+
+<config>
+    run-mode=both
+</config>
+
+<param_include>
+  <rtr_params>
+    <debug> 0 </debug>
+    <num_ports> 22 </num_ports>
+    <link_bw> 1GB/s </link_bw>
+    <xbar_bw> 1GB/s </xbar_bw>
+    <flit_size> 16B </flit_size>
+    <input_buf_size> 1KB </input_buf_size>
+    <output_buf_size> 1KB </output_buf_size>
+    <topology> merlin.torus </topology>
+    <torus:shape> 3x3x3 </torus:shape>
+    <torus:width> 3x3x3 </torus:width>
+    <torus:local_ports> 4 </torus:local_ports>
+  </rtr_params>
+
+  <nic_params>
+    <num_peers> 108 </num_peers>
+    <num_vns> 2 </num_vns>
+    <link_bw> 1GB/s </link_bw>
+  </nic_params>
+
+</param_include>
+
+<sst>
+  <component name=rtr.0x0x0 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 0 </id>
+    </params>
+    <link name=link.0x0x0:1x0x0:0 port=port0 latency=10ns />
+    <link name=link.0x0x0:1x0x0:1 port=port1 latency=10ns />
+    <link name=link.0x0x0:1x0x0:2 port=port2 latency=10ns />
+    <link name=link.2x0x0:0x0x0:0 port=port3 latency=10ns />
+    <link name=link.2x0x0:0x0x0:1 port=port4 latency=10ns />
+    <link name=link.2x0x0:0x0x0:2 port=port5 latency=10ns />
+    <link name=link.0x0x0:0x1x0:0 port=port6 latency=10ns />
+    <link name=link.0x0x0:0x1x0:1 port=port7 latency=10ns />
+    <link name=link.0x0x0:0x1x0:2 port=port8 latency=10ns />
+    <link name=link.0x2x0:0x0x0:0 port=port9 latency=10ns />
+    <link name=link.0x2x0:0x0x0:1 port=port10 latency=10ns />
+    <link name=link.0x2x0:0x0x0:2 port=port11 latency=10ns />
+    <link name=link.0x0x0:0x0x1:0 port=port12 latency=10ns />
+    <link name=link.0x0x0:0x0x1:1 port=port13 latency=10ns />
+    <link name=link.0x0x0:0x0x1:2 port=port14 latency=10ns />
+    <link name=link.0x0x2:0x0x0:0 port=port15 latency=10ns />
+    <link name=link.0x0x2:0x0x0:1 port=port16 latency=10ns />
+    <link name=link.0x0x2:0x0x0:2 port=port17 latency=10ns />
+    <link name=nic.0:0 port=port18 latency=10ns />
+    <link name=nic.0:1 port=port19 latency=10ns />
+    <link name=nic.0:2 port=port20 latency=10ns />
+    <link name=nic.0:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.0x0x0-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 0 </id>
+    </params>
+    <link name=nic.0:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x0x0-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 1 </id>
+    </params>
+    <link name=nic.0:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x0x0-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 2 </id>
+    </params>
+    <link name=nic.0:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x0x0-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 3 </id>
+    </params>
+    <link name=nic.0:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.1x0x0 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 1 </id>
+    </params>
+    <link name=link.1x0x0:2x0x0:0 port=port0 latency=10ns />
+    <link name=link.1x0x0:2x0x0:1 port=port1 latency=10ns />
+    <link name=link.1x0x0:2x0x0:2 port=port2 latency=10ns />
+    <link name=link.0x0x0:1x0x0:0 port=port3 latency=10ns />
+    <link name=link.0x0x0:1x0x0:1 port=port4 latency=10ns />
+    <link name=link.0x0x0:1x0x0:2 port=port5 latency=10ns />
+    <link name=link.1x0x0:1x1x0:0 port=port6 latency=10ns />
+    <link name=link.1x0x0:1x1x0:1 port=port7 latency=10ns />
+    <link name=link.1x0x0:1x1x0:2 port=port8 latency=10ns />
+    <link name=link.1x2x0:1x0x0:0 port=port9 latency=10ns />
+    <link name=link.1x2x0:1x0x0:1 port=port10 latency=10ns />
+    <link name=link.1x2x0:1x0x0:2 port=port11 latency=10ns />
+    <link name=link.1x0x0:1x0x1:0 port=port12 latency=10ns />
+    <link name=link.1x0x0:1x0x1:1 port=port13 latency=10ns />
+    <link name=link.1x0x0:1x0x1:2 port=port14 latency=10ns />
+    <link name=link.1x0x2:1x0x0:0 port=port15 latency=10ns />
+    <link name=link.1x0x2:1x0x0:1 port=port16 latency=10ns />
+    <link name=link.1x0x2:1x0x0:2 port=port17 latency=10ns />
+    <link name=nic.1:0 port=port18 latency=10ns />
+    <link name=nic.1:1 port=port19 latency=10ns />
+    <link name=nic.1:2 port=port20 latency=10ns />
+    <link name=nic.1:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.1x0x0-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 4 </id>
+    </params>
+    <link name=nic.1:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x0x0-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 5 </id>
+    </params>
+    <link name=nic.1:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x0x0-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 6 </id>
+    </params>
+    <link name=nic.1:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x0x0-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 7 </id>
+    </params>
+    <link name=nic.1:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.2x0x0 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 2 </id>
+    </params>
+    <link name=link.2x0x0:0x0x0:0 port=port0 latency=10ns />
+    <link name=link.2x0x0:0x0x0:1 port=port1 latency=10ns />
+    <link name=link.2x0x0:0x0x0:2 port=port2 latency=10ns />
+    <link name=link.1x0x0:2x0x0:0 port=port3 latency=10ns />
+    <link name=link.1x0x0:2x0x0:1 port=port4 latency=10ns />
+    <link name=link.1x0x0:2x0x0:2 port=port5 latency=10ns />
+    <link name=link.2x0x0:2x1x0:0 port=port6 latency=10ns />
+    <link name=link.2x0x0:2x1x0:1 port=port7 latency=10ns />
+    <link name=link.2x0x0:2x1x0:2 port=port8 latency=10ns />
+    <link name=link.2x2x0:2x0x0:0 port=port9 latency=10ns />
+    <link name=link.2x2x0:2x0x0:1 port=port10 latency=10ns />
+    <link name=link.2x2x0:2x0x0:2 port=port11 latency=10ns />
+    <link name=link.2x0x0:2x0x1:0 port=port12 latency=10ns />
+    <link name=link.2x0x0:2x0x1:1 port=port13 latency=10ns />
+    <link name=link.2x0x0:2x0x1:2 port=port14 latency=10ns />
+    <link name=link.2x0x2:2x0x0:0 port=port15 latency=10ns />
+    <link name=link.2x0x2:2x0x0:1 port=port16 latency=10ns />
+    <link name=link.2x0x2:2x0x0:2 port=port17 latency=10ns />
+    <link name=nic.2:0 port=port18 latency=10ns />
+    <link name=nic.2:1 port=port19 latency=10ns />
+    <link name=nic.2:2 port=port20 latency=10ns />
+    <link name=nic.2:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.2x0x0-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 8 </id>
+    </params>
+    <link name=nic.2:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x0x0-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 9 </id>
+    </params>
+    <link name=nic.2:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x0x0-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 10 </id>
+    </params>
+    <link name=nic.2:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x0x0-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 11 </id>
+    </params>
+    <link name=nic.2:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.0x1x0 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 3 </id>
+    </params>
+    <link name=link.0x1x0:1x1x0:0 port=port0 latency=10ns />
+    <link name=link.0x1x0:1x1x0:1 port=port1 latency=10ns />
+    <link name=link.0x1x0:1x1x0:2 port=port2 latency=10ns />
+    <link name=link.2x1x0:0x1x0:0 port=port3 latency=10ns />
+    <link name=link.2x1x0:0x1x0:1 port=port4 latency=10ns />
+    <link name=link.2x1x0:0x1x0:2 port=port5 latency=10ns />
+    <link name=link.0x1x0:0x2x0:0 port=port6 latency=10ns />
+    <link name=link.0x1x0:0x2x0:1 port=port7 latency=10ns />
+    <link name=link.0x1x0:0x2x0:2 port=port8 latency=10ns />
+    <link name=link.0x0x0:0x1x0:0 port=port9 latency=10ns />
+    <link name=link.0x0x0:0x1x0:1 port=port10 latency=10ns />
+    <link name=link.0x0x0:0x1x0:2 port=port11 latency=10ns />
+    <link name=link.0x1x0:0x1x1:0 port=port12 latency=10ns />
+    <link name=link.0x1x0:0x1x1:1 port=port13 latency=10ns />
+    <link name=link.0x1x0:0x1x1:2 port=port14 latency=10ns />
+    <link name=link.0x1x2:0x1x0:0 port=port15 latency=10ns />
+    <link name=link.0x1x2:0x1x0:1 port=port16 latency=10ns />
+    <link name=link.0x1x2:0x1x0:2 port=port17 latency=10ns />
+    <link name=nic.3:0 port=port18 latency=10ns />
+    <link name=nic.3:1 port=port19 latency=10ns />
+    <link name=nic.3:2 port=port20 latency=10ns />
+    <link name=nic.3:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.0x1x0-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 12 </id>
+    </params>
+    <link name=nic.3:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x1x0-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 13 </id>
+    </params>
+    <link name=nic.3:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x1x0-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 14 </id>
+    </params>
+    <link name=nic.3:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x1x0-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 15 </id>
+    </params>
+    <link name=nic.3:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.1x1x0 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 4 </id>
+    </params>
+    <link name=link.1x1x0:2x1x0:0 port=port0 latency=10ns />
+    <link name=link.1x1x0:2x1x0:1 port=port1 latency=10ns />
+    <link name=link.1x1x0:2x1x0:2 port=port2 latency=10ns />
+    <link name=link.0x1x0:1x1x0:0 port=port3 latency=10ns />
+    <link name=link.0x1x0:1x1x0:1 port=port4 latency=10ns />
+    <link name=link.0x1x0:1x1x0:2 port=port5 latency=10ns />
+    <link name=link.1x1x0:1x2x0:0 port=port6 latency=10ns />
+    <link name=link.1x1x0:1x2x0:1 port=port7 latency=10ns />
+    <link name=link.1x1x0:1x2x0:2 port=port8 latency=10ns />
+    <link name=link.1x0x0:1x1x0:0 port=port9 latency=10ns />
+    <link name=link.1x0x0:1x1x0:1 port=port10 latency=10ns />
+    <link name=link.1x0x0:1x1x0:2 port=port11 latency=10ns />
+    <link name=link.1x1x0:1x1x1:0 port=port12 latency=10ns />
+    <link name=link.1x1x0:1x1x1:1 port=port13 latency=10ns />
+    <link name=link.1x1x0:1x1x1:2 port=port14 latency=10ns />
+    <link name=link.1x1x2:1x1x0:0 port=port15 latency=10ns />
+    <link name=link.1x1x2:1x1x0:1 port=port16 latency=10ns />
+    <link name=link.1x1x2:1x1x0:2 port=port17 latency=10ns />
+    <link name=nic.4:0 port=port18 latency=10ns />
+    <link name=nic.4:1 port=port19 latency=10ns />
+    <link name=nic.4:2 port=port20 latency=10ns />
+    <link name=nic.4:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.1x1x0-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 16 </id>
+    </params>
+    <link name=nic.4:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x1x0-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 17 </id>
+    </params>
+    <link name=nic.4:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x1x0-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 18 </id>
+    </params>
+    <link name=nic.4:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x1x0-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 19 </id>
+    </params>
+    <link name=nic.4:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.2x1x0 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 5 </id>
+    </params>
+    <link name=link.2x1x0:0x1x0:0 port=port0 latency=10ns />
+    <link name=link.2x1x0:0x1x0:1 port=port1 latency=10ns />
+    <link name=link.2x1x0:0x1x0:2 port=port2 latency=10ns />
+    <link name=link.1x1x0:2x1x0:0 port=port3 latency=10ns />
+    <link name=link.1x1x0:2x1x0:1 port=port4 latency=10ns />
+    <link name=link.1x1x0:2x1x0:2 port=port5 latency=10ns />
+    <link name=link.2x1x0:2x2x0:0 port=port6 latency=10ns />
+    <link name=link.2x1x0:2x2x0:1 port=port7 latency=10ns />
+    <link name=link.2x1x0:2x2x0:2 port=port8 latency=10ns />
+    <link name=link.2x0x0:2x1x0:0 port=port9 latency=10ns />
+    <link name=link.2x0x0:2x1x0:1 port=port10 latency=10ns />
+    <link name=link.2x0x0:2x1x0:2 port=port11 latency=10ns />
+    <link name=link.2x1x0:2x1x1:0 port=port12 latency=10ns />
+    <link name=link.2x1x0:2x1x1:1 port=port13 latency=10ns />
+    <link name=link.2x1x0:2x1x1:2 port=port14 latency=10ns />
+    <link name=link.2x1x2:2x1x0:0 port=port15 latency=10ns />
+    <link name=link.2x1x2:2x1x0:1 port=port16 latency=10ns />
+    <link name=link.2x1x2:2x1x0:2 port=port17 latency=10ns />
+    <link name=nic.5:0 port=port18 latency=10ns />
+    <link name=nic.5:1 port=port19 latency=10ns />
+    <link name=nic.5:2 port=port20 latency=10ns />
+    <link name=nic.5:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.2x1x0-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 20 </id>
+    </params>
+    <link name=nic.5:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x1x0-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 21 </id>
+    </params>
+    <link name=nic.5:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x1x0-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 22 </id>
+    </params>
+    <link name=nic.5:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x1x0-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 23 </id>
+    </params>
+    <link name=nic.5:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.0x2x0 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 6 </id>
+    </params>
+    <link name=link.0x2x0:1x2x0:0 port=port0 latency=10ns />
+    <link name=link.0x2x0:1x2x0:1 port=port1 latency=10ns />
+    <link name=link.0x2x0:1x2x0:2 port=port2 latency=10ns />
+    <link name=link.2x2x0:0x2x0:0 port=port3 latency=10ns />
+    <link name=link.2x2x0:0x2x0:1 port=port4 latency=10ns />
+    <link name=link.2x2x0:0x2x0:2 port=port5 latency=10ns />
+    <link name=link.0x2x0:0x0x0:0 port=port6 latency=10ns />
+    <link name=link.0x2x0:0x0x0:1 port=port7 latency=10ns />
+    <link name=link.0x2x0:0x0x0:2 port=port8 latency=10ns />
+    <link name=link.0x1x0:0x2x0:0 port=port9 latency=10ns />
+    <link name=link.0x1x0:0x2x0:1 port=port10 latency=10ns />
+    <link name=link.0x1x0:0x2x0:2 port=port11 latency=10ns />
+    <link name=link.0x2x0:0x2x1:0 port=port12 latency=10ns />
+    <link name=link.0x2x0:0x2x1:1 port=port13 latency=10ns />
+    <link name=link.0x2x0:0x2x1:2 port=port14 latency=10ns />
+    <link name=link.0x2x2:0x2x0:0 port=port15 latency=10ns />
+    <link name=link.0x2x2:0x2x0:1 port=port16 latency=10ns />
+    <link name=link.0x2x2:0x2x0:2 port=port17 latency=10ns />
+    <link name=nic.6:0 port=port18 latency=10ns />
+    <link name=nic.6:1 port=port19 latency=10ns />
+    <link name=nic.6:2 port=port20 latency=10ns />
+    <link name=nic.6:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.0x2x0-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 24 </id>
+    </params>
+    <link name=nic.6:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x2x0-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 25 </id>
+    </params>
+    <link name=nic.6:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x2x0-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 26 </id>
+    </params>
+    <link name=nic.6:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x2x0-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 27 </id>
+    </params>
+    <link name=nic.6:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.1x2x0 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 7 </id>
+    </params>
+    <link name=link.1x2x0:2x2x0:0 port=port0 latency=10ns />
+    <link name=link.1x2x0:2x2x0:1 port=port1 latency=10ns />
+    <link name=link.1x2x0:2x2x0:2 port=port2 latency=10ns />
+    <link name=link.0x2x0:1x2x0:0 port=port3 latency=10ns />
+    <link name=link.0x2x0:1x2x0:1 port=port4 latency=10ns />
+    <link name=link.0x2x0:1x2x0:2 port=port5 latency=10ns />
+    <link name=link.1x2x0:1x0x0:0 port=port6 latency=10ns />
+    <link name=link.1x2x0:1x0x0:1 port=port7 latency=10ns />
+    <link name=link.1x2x0:1x0x0:2 port=port8 latency=10ns />
+    <link name=link.1x1x0:1x2x0:0 port=port9 latency=10ns />
+    <link name=link.1x1x0:1x2x0:1 port=port10 latency=10ns />
+    <link name=link.1x1x0:1x2x0:2 port=port11 latency=10ns />
+    <link name=link.1x2x0:1x2x1:0 port=port12 latency=10ns />
+    <link name=link.1x2x0:1x2x1:1 port=port13 latency=10ns />
+    <link name=link.1x2x0:1x2x1:2 port=port14 latency=10ns />
+    <link name=link.1x2x2:1x2x0:0 port=port15 latency=10ns />
+    <link name=link.1x2x2:1x2x0:1 port=port16 latency=10ns />
+    <link name=link.1x2x2:1x2x0:2 port=port17 latency=10ns />
+    <link name=nic.7:0 port=port18 latency=10ns />
+    <link name=nic.7:1 port=port19 latency=10ns />
+    <link name=nic.7:2 port=port20 latency=10ns />
+    <link name=nic.7:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.1x2x0-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 28 </id>
+    </params>
+    <link name=nic.7:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x2x0-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 29 </id>
+    </params>
+    <link name=nic.7:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x2x0-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 30 </id>
+    </params>
+    <link name=nic.7:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x2x0-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 31 </id>
+    </params>
+    <link name=nic.7:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.2x2x0 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 8 </id>
+    </params>
+    <link name=link.2x2x0:0x2x0:0 port=port0 latency=10ns />
+    <link name=link.2x2x0:0x2x0:1 port=port1 latency=10ns />
+    <link name=link.2x2x0:0x2x0:2 port=port2 latency=10ns />
+    <link name=link.1x2x0:2x2x0:0 port=port3 latency=10ns />
+    <link name=link.1x2x0:2x2x0:1 port=port4 latency=10ns />
+    <link name=link.1x2x0:2x2x0:2 port=port5 latency=10ns />
+    <link name=link.2x2x0:2x0x0:0 port=port6 latency=10ns />
+    <link name=link.2x2x0:2x0x0:1 port=port7 latency=10ns />
+    <link name=link.2x2x0:2x0x0:2 port=port8 latency=10ns />
+    <link name=link.2x1x0:2x2x0:0 port=port9 latency=10ns />
+    <link name=link.2x1x0:2x2x0:1 port=port10 latency=10ns />
+    <link name=link.2x1x0:2x2x0:2 port=port11 latency=10ns />
+    <link name=link.2x2x0:2x2x1:0 port=port12 latency=10ns />
+    <link name=link.2x2x0:2x2x1:1 port=port13 latency=10ns />
+    <link name=link.2x2x0:2x2x1:2 port=port14 latency=10ns />
+    <link name=link.2x2x2:2x2x0:0 port=port15 latency=10ns />
+    <link name=link.2x2x2:2x2x0:1 port=port16 latency=10ns />
+    <link name=link.2x2x2:2x2x0:2 port=port17 latency=10ns />
+    <link name=nic.8:0 port=port18 latency=10ns />
+    <link name=nic.8:1 port=port19 latency=10ns />
+    <link name=nic.8:2 port=port20 latency=10ns />
+    <link name=nic.8:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.2x2x0-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 32 </id>
+    </params>
+    <link name=nic.8:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x2x0-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 33 </id>
+    </params>
+    <link name=nic.8:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x2x0-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 34 </id>
+    </params>
+    <link name=nic.8:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x2x0-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 35 </id>
+    </params>
+    <link name=nic.8:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.0x0x1 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 9 </id>
+    </params>
+    <link name=link.0x0x1:1x0x1:0 port=port0 latency=10ns />
+    <link name=link.0x0x1:1x0x1:1 port=port1 latency=10ns />
+    <link name=link.0x0x1:1x0x1:2 port=port2 latency=10ns />
+    <link name=link.2x0x1:0x0x1:0 port=port3 latency=10ns />
+    <link name=link.2x0x1:0x0x1:1 port=port4 latency=10ns />
+    <link name=link.2x0x1:0x0x1:2 port=port5 latency=10ns />
+    <link name=link.0x0x1:0x1x1:0 port=port6 latency=10ns />
+    <link name=link.0x0x1:0x1x1:1 port=port7 latency=10ns />
+    <link name=link.0x0x1:0x1x1:2 port=port8 latency=10ns />
+    <link name=link.0x2x1:0x0x1:0 port=port9 latency=10ns />
+    <link name=link.0x2x1:0x0x1:1 port=port10 latency=10ns />
+    <link name=link.0x2x1:0x0x1:2 port=port11 latency=10ns />
+    <link name=link.0x0x1:0x0x2:0 port=port12 latency=10ns />
+    <link name=link.0x0x1:0x0x2:1 port=port13 latency=10ns />
+    <link name=link.0x0x1:0x0x2:2 port=port14 latency=10ns />
+    <link name=link.0x0x0:0x0x1:0 port=port15 latency=10ns />
+    <link name=link.0x0x0:0x0x1:1 port=port16 latency=10ns />
+    <link name=link.0x0x0:0x0x1:2 port=port17 latency=10ns />
+    <link name=nic.9:0 port=port18 latency=10ns />
+    <link name=nic.9:1 port=port19 latency=10ns />
+    <link name=nic.9:2 port=port20 latency=10ns />
+    <link name=nic.9:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.0x0x1-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 36 </id>
+    </params>
+    <link name=nic.9:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x0x1-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 37 </id>
+    </params>
+    <link name=nic.9:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x0x1-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 38 </id>
+    </params>
+    <link name=nic.9:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x0x1-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 39 </id>
+    </params>
+    <link name=nic.9:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.1x0x1 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 10 </id>
+    </params>
+    <link name=link.1x0x1:2x0x1:0 port=port0 latency=10ns />
+    <link name=link.1x0x1:2x0x1:1 port=port1 latency=10ns />
+    <link name=link.1x0x1:2x0x1:2 port=port2 latency=10ns />
+    <link name=link.0x0x1:1x0x1:0 port=port3 latency=10ns />
+    <link name=link.0x0x1:1x0x1:1 port=port4 latency=10ns />
+    <link name=link.0x0x1:1x0x1:2 port=port5 latency=10ns />
+    <link name=link.1x0x1:1x1x1:0 port=port6 latency=10ns />
+    <link name=link.1x0x1:1x1x1:1 port=port7 latency=10ns />
+    <link name=link.1x0x1:1x1x1:2 port=port8 latency=10ns />
+    <link name=link.1x2x1:1x0x1:0 port=port9 latency=10ns />
+    <link name=link.1x2x1:1x0x1:1 port=port10 latency=10ns />
+    <link name=link.1x2x1:1x0x1:2 port=port11 latency=10ns />
+    <link name=link.1x0x1:1x0x2:0 port=port12 latency=10ns />
+    <link name=link.1x0x1:1x0x2:1 port=port13 latency=10ns />
+    <link name=link.1x0x1:1x0x2:2 port=port14 latency=10ns />
+    <link name=link.1x0x0:1x0x1:0 port=port15 latency=10ns />
+    <link name=link.1x0x0:1x0x1:1 port=port16 latency=10ns />
+    <link name=link.1x0x0:1x0x1:2 port=port17 latency=10ns />
+    <link name=nic.10:0 port=port18 latency=10ns />
+    <link name=nic.10:1 port=port19 latency=10ns />
+    <link name=nic.10:2 port=port20 latency=10ns />
+    <link name=nic.10:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.1x0x1-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 40 </id>
+    </params>
+    <link name=nic.10:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x0x1-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 41 </id>
+    </params>
+    <link name=nic.10:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x0x1-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 42 </id>
+    </params>
+    <link name=nic.10:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x0x1-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 43 </id>
+    </params>
+    <link name=nic.10:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.2x0x1 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 11 </id>
+    </params>
+    <link name=link.2x0x1:0x0x1:0 port=port0 latency=10ns />
+    <link name=link.2x0x1:0x0x1:1 port=port1 latency=10ns />
+    <link name=link.2x0x1:0x0x1:2 port=port2 latency=10ns />
+    <link name=link.1x0x1:2x0x1:0 port=port3 latency=10ns />
+    <link name=link.1x0x1:2x0x1:1 port=port4 latency=10ns />
+    <link name=link.1x0x1:2x0x1:2 port=port5 latency=10ns />
+    <link name=link.2x0x1:2x1x1:0 port=port6 latency=10ns />
+    <link name=link.2x0x1:2x1x1:1 port=port7 latency=10ns />
+    <link name=link.2x0x1:2x1x1:2 port=port8 latency=10ns />
+    <link name=link.2x2x1:2x0x1:0 port=port9 latency=10ns />
+    <link name=link.2x2x1:2x0x1:1 port=port10 latency=10ns />
+    <link name=link.2x2x1:2x0x1:2 port=port11 latency=10ns />
+    <link name=link.2x0x1:2x0x2:0 port=port12 latency=10ns />
+    <link name=link.2x0x1:2x0x2:1 port=port13 latency=10ns />
+    <link name=link.2x0x1:2x0x2:2 port=port14 latency=10ns />
+    <link name=link.2x0x0:2x0x1:0 port=port15 latency=10ns />
+    <link name=link.2x0x0:2x0x1:1 port=port16 latency=10ns />
+    <link name=link.2x0x0:2x0x1:2 port=port17 latency=10ns />
+    <link name=nic.11:0 port=port18 latency=10ns />
+    <link name=nic.11:1 port=port19 latency=10ns />
+    <link name=nic.11:2 port=port20 latency=10ns />
+    <link name=nic.11:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.2x0x1-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 44 </id>
+    </params>
+    <link name=nic.11:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x0x1-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 45 </id>
+    </params>
+    <link name=nic.11:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x0x1-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 46 </id>
+    </params>
+    <link name=nic.11:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x0x1-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 47 </id>
+    </params>
+    <link name=nic.11:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.0x1x1 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 12 </id>
+    </params>
+    <link name=link.0x1x1:1x1x1:0 port=port0 latency=10ns />
+    <link name=link.0x1x1:1x1x1:1 port=port1 latency=10ns />
+    <link name=link.0x1x1:1x1x1:2 port=port2 latency=10ns />
+    <link name=link.2x1x1:0x1x1:0 port=port3 latency=10ns />
+    <link name=link.2x1x1:0x1x1:1 port=port4 latency=10ns />
+    <link name=link.2x1x1:0x1x1:2 port=port5 latency=10ns />
+    <link name=link.0x1x1:0x2x1:0 port=port6 latency=10ns />
+    <link name=link.0x1x1:0x2x1:1 port=port7 latency=10ns />
+    <link name=link.0x1x1:0x2x1:2 port=port8 latency=10ns />
+    <link name=link.0x0x1:0x1x1:0 port=port9 latency=10ns />
+    <link name=link.0x0x1:0x1x1:1 port=port10 latency=10ns />
+    <link name=link.0x0x1:0x1x1:2 port=port11 latency=10ns />
+    <link name=link.0x1x1:0x1x2:0 port=port12 latency=10ns />
+    <link name=link.0x1x1:0x1x2:1 port=port13 latency=10ns />
+    <link name=link.0x1x1:0x1x2:2 port=port14 latency=10ns />
+    <link name=link.0x1x0:0x1x1:0 port=port15 latency=10ns />
+    <link name=link.0x1x0:0x1x1:1 port=port16 latency=10ns />
+    <link name=link.0x1x0:0x1x1:2 port=port17 latency=10ns />
+    <link name=nic.12:0 port=port18 latency=10ns />
+    <link name=nic.12:1 port=port19 latency=10ns />
+    <link name=nic.12:2 port=port20 latency=10ns />
+    <link name=nic.12:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.0x1x1-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 48 </id>
+    </params>
+    <link name=nic.12:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x1x1-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 49 </id>
+    </params>
+    <link name=nic.12:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x1x1-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 50 </id>
+    </params>
+    <link name=nic.12:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x1x1-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 51 </id>
+    </params>
+    <link name=nic.12:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.1x1x1 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 13 </id>
+    </params>
+    <link name=link.1x1x1:2x1x1:0 port=port0 latency=10ns />
+    <link name=link.1x1x1:2x1x1:1 port=port1 latency=10ns />
+    <link name=link.1x1x1:2x1x1:2 port=port2 latency=10ns />
+    <link name=link.0x1x1:1x1x1:0 port=port3 latency=10ns />
+    <link name=link.0x1x1:1x1x1:1 port=port4 latency=10ns />
+    <link name=link.0x1x1:1x1x1:2 port=port5 latency=10ns />
+    <link name=link.1x1x1:1x2x1:0 port=port6 latency=10ns />
+    <link name=link.1x1x1:1x2x1:1 port=port7 latency=10ns />
+    <link name=link.1x1x1:1x2x1:2 port=port8 latency=10ns />
+    <link name=link.1x0x1:1x1x1:0 port=port9 latency=10ns />
+    <link name=link.1x0x1:1x1x1:1 port=port10 latency=10ns />
+    <link name=link.1x0x1:1x1x1:2 port=port11 latency=10ns />
+    <link name=link.1x1x1:1x1x2:0 port=port12 latency=10ns />
+    <link name=link.1x1x1:1x1x2:1 port=port13 latency=10ns />
+    <link name=link.1x1x1:1x1x2:2 port=port14 latency=10ns />
+    <link name=link.1x1x0:1x1x1:0 port=port15 latency=10ns />
+    <link name=link.1x1x0:1x1x1:1 port=port16 latency=10ns />
+    <link name=link.1x1x0:1x1x1:2 port=port17 latency=10ns />
+    <link name=nic.13:0 port=port18 latency=10ns />
+    <link name=nic.13:1 port=port19 latency=10ns />
+    <link name=nic.13:2 port=port20 latency=10ns />
+    <link name=nic.13:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.1x1x1-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 52 </id>
+    </params>
+    <link name=nic.13:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x1x1-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 53 </id>
+    </params>
+    <link name=nic.13:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x1x1-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 54 </id>
+    </params>
+    <link name=nic.13:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x1x1-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 55 </id>
+    </params>
+    <link name=nic.13:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.2x1x1 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 14 </id>
+    </params>
+    <link name=link.2x1x1:0x1x1:0 port=port0 latency=10ns />
+    <link name=link.2x1x1:0x1x1:1 port=port1 latency=10ns />
+    <link name=link.2x1x1:0x1x1:2 port=port2 latency=10ns />
+    <link name=link.1x1x1:2x1x1:0 port=port3 latency=10ns />
+    <link name=link.1x1x1:2x1x1:1 port=port4 latency=10ns />
+    <link name=link.1x1x1:2x1x1:2 port=port5 latency=10ns />
+    <link name=link.2x1x1:2x2x1:0 port=port6 latency=10ns />
+    <link name=link.2x1x1:2x2x1:1 port=port7 latency=10ns />
+    <link name=link.2x1x1:2x2x1:2 port=port8 latency=10ns />
+    <link name=link.2x0x1:2x1x1:0 port=port9 latency=10ns />
+    <link name=link.2x0x1:2x1x1:1 port=port10 latency=10ns />
+    <link name=link.2x0x1:2x1x1:2 port=port11 latency=10ns />
+    <link name=link.2x1x1:2x1x2:0 port=port12 latency=10ns />
+    <link name=link.2x1x1:2x1x2:1 port=port13 latency=10ns />
+    <link name=link.2x1x1:2x1x2:2 port=port14 latency=10ns />
+    <link name=link.2x1x0:2x1x1:0 port=port15 latency=10ns />
+    <link name=link.2x1x0:2x1x1:1 port=port16 latency=10ns />
+    <link name=link.2x1x0:2x1x1:2 port=port17 latency=10ns />
+    <link name=nic.14:0 port=port18 latency=10ns />
+    <link name=nic.14:1 port=port19 latency=10ns />
+    <link name=nic.14:2 port=port20 latency=10ns />
+    <link name=nic.14:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.2x1x1-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 56 </id>
+    </params>
+    <link name=nic.14:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x1x1-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 57 </id>
+    </params>
+    <link name=nic.14:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x1x1-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 58 </id>
+    </params>
+    <link name=nic.14:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x1x1-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 59 </id>
+    </params>
+    <link name=nic.14:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.0x2x1 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 15 </id>
+    </params>
+    <link name=link.0x2x1:1x2x1:0 port=port0 latency=10ns />
+    <link name=link.0x2x1:1x2x1:1 port=port1 latency=10ns />
+    <link name=link.0x2x1:1x2x1:2 port=port2 latency=10ns />
+    <link name=link.2x2x1:0x2x1:0 port=port3 latency=10ns />
+    <link name=link.2x2x1:0x2x1:1 port=port4 latency=10ns />
+    <link name=link.2x2x1:0x2x1:2 port=port5 latency=10ns />
+    <link name=link.0x2x1:0x0x1:0 port=port6 latency=10ns />
+    <link name=link.0x2x1:0x0x1:1 port=port7 latency=10ns />
+    <link name=link.0x2x1:0x0x1:2 port=port8 latency=10ns />
+    <link name=link.0x1x1:0x2x1:0 port=port9 latency=10ns />
+    <link name=link.0x1x1:0x2x1:1 port=port10 latency=10ns />
+    <link name=link.0x1x1:0x2x1:2 port=port11 latency=10ns />
+    <link name=link.0x2x1:0x2x2:0 port=port12 latency=10ns />
+    <link name=link.0x2x1:0x2x2:1 port=port13 latency=10ns />
+    <link name=link.0x2x1:0x2x2:2 port=port14 latency=10ns />
+    <link name=link.0x2x0:0x2x1:0 port=port15 latency=10ns />
+    <link name=link.0x2x0:0x2x1:1 port=port16 latency=10ns />
+    <link name=link.0x2x0:0x2x1:2 port=port17 latency=10ns />
+    <link name=nic.15:0 port=port18 latency=10ns />
+    <link name=nic.15:1 port=port19 latency=10ns />
+    <link name=nic.15:2 port=port20 latency=10ns />
+    <link name=nic.15:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.0x2x1-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 60 </id>
+    </params>
+    <link name=nic.15:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x2x1-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 61 </id>
+    </params>
+    <link name=nic.15:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x2x1-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 62 </id>
+    </params>
+    <link name=nic.15:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x2x1-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 63 </id>
+    </params>
+    <link name=nic.15:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.1x2x1 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 16 </id>
+    </params>
+    <link name=link.1x2x1:2x2x1:0 port=port0 latency=10ns />
+    <link name=link.1x2x1:2x2x1:1 port=port1 latency=10ns />
+    <link name=link.1x2x1:2x2x1:2 port=port2 latency=10ns />
+    <link name=link.0x2x1:1x2x1:0 port=port3 latency=10ns />
+    <link name=link.0x2x1:1x2x1:1 port=port4 latency=10ns />
+    <link name=link.0x2x1:1x2x1:2 port=port5 latency=10ns />
+    <link name=link.1x2x1:1x0x1:0 port=port6 latency=10ns />
+    <link name=link.1x2x1:1x0x1:1 port=port7 latency=10ns />
+    <link name=link.1x2x1:1x0x1:2 port=port8 latency=10ns />
+    <link name=link.1x1x1:1x2x1:0 port=port9 latency=10ns />
+    <link name=link.1x1x1:1x2x1:1 port=port10 latency=10ns />
+    <link name=link.1x1x1:1x2x1:2 port=port11 latency=10ns />
+    <link name=link.1x2x1:1x2x2:0 port=port12 latency=10ns />
+    <link name=link.1x2x1:1x2x2:1 port=port13 latency=10ns />
+    <link name=link.1x2x1:1x2x2:2 port=port14 latency=10ns />
+    <link name=link.1x2x0:1x2x1:0 port=port15 latency=10ns />
+    <link name=link.1x2x0:1x2x1:1 port=port16 latency=10ns />
+    <link name=link.1x2x0:1x2x1:2 port=port17 latency=10ns />
+    <link name=nic.16:0 port=port18 latency=10ns />
+    <link name=nic.16:1 port=port19 latency=10ns />
+    <link name=nic.16:2 port=port20 latency=10ns />
+    <link name=nic.16:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.1x2x1-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 64 </id>
+    </params>
+    <link name=nic.16:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x2x1-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 65 </id>
+    </params>
+    <link name=nic.16:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x2x1-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 66 </id>
+    </params>
+    <link name=nic.16:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x2x1-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 67 </id>
+    </params>
+    <link name=nic.16:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.2x2x1 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 17 </id>
+    </params>
+    <link name=link.2x2x1:0x2x1:0 port=port0 latency=10ns />
+    <link name=link.2x2x1:0x2x1:1 port=port1 latency=10ns />
+    <link name=link.2x2x1:0x2x1:2 port=port2 latency=10ns />
+    <link name=link.1x2x1:2x2x1:0 port=port3 latency=10ns />
+    <link name=link.1x2x1:2x2x1:1 port=port4 latency=10ns />
+    <link name=link.1x2x1:2x2x1:2 port=port5 latency=10ns />
+    <link name=link.2x2x1:2x0x1:0 port=port6 latency=10ns />
+    <link name=link.2x2x1:2x0x1:1 port=port7 latency=10ns />
+    <link name=link.2x2x1:2x0x1:2 port=port8 latency=10ns />
+    <link name=link.2x1x1:2x2x1:0 port=port9 latency=10ns />
+    <link name=link.2x1x1:2x2x1:1 port=port10 latency=10ns />
+    <link name=link.2x1x1:2x2x1:2 port=port11 latency=10ns />
+    <link name=link.2x2x1:2x2x2:0 port=port12 latency=10ns />
+    <link name=link.2x2x1:2x2x2:1 port=port13 latency=10ns />
+    <link name=link.2x2x1:2x2x2:2 port=port14 latency=10ns />
+    <link name=link.2x2x0:2x2x1:0 port=port15 latency=10ns />
+    <link name=link.2x2x0:2x2x1:1 port=port16 latency=10ns />
+    <link name=link.2x2x0:2x2x1:2 port=port17 latency=10ns />
+    <link name=nic.17:0 port=port18 latency=10ns />
+    <link name=nic.17:1 port=port19 latency=10ns />
+    <link name=nic.17:2 port=port20 latency=10ns />
+    <link name=nic.17:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.2x2x1-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 68 </id>
+    </params>
+    <link name=nic.17:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x2x1-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 69 </id>
+    </params>
+    <link name=nic.17:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x2x1-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 70 </id>
+    </params>
+    <link name=nic.17:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x2x1-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 71 </id>
+    </params>
+    <link name=nic.17:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.0x0x2 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 18 </id>
+    </params>
+    <link name=link.0x0x2:1x0x2:0 port=port0 latency=10ns />
+    <link name=link.0x0x2:1x0x2:1 port=port1 latency=10ns />
+    <link name=link.0x0x2:1x0x2:2 port=port2 latency=10ns />
+    <link name=link.2x0x2:0x0x2:0 port=port3 latency=10ns />
+    <link name=link.2x0x2:0x0x2:1 port=port4 latency=10ns />
+    <link name=link.2x0x2:0x0x2:2 port=port5 latency=10ns />
+    <link name=link.0x0x2:0x1x2:0 port=port6 latency=10ns />
+    <link name=link.0x0x2:0x1x2:1 port=port7 latency=10ns />
+    <link name=link.0x0x2:0x1x2:2 port=port8 latency=10ns />
+    <link name=link.0x2x2:0x0x2:0 port=port9 latency=10ns />
+    <link name=link.0x2x2:0x0x2:1 port=port10 latency=10ns />
+    <link name=link.0x2x2:0x0x2:2 port=port11 latency=10ns />
+    <link name=link.0x0x2:0x0x0:0 port=port12 latency=10ns />
+    <link name=link.0x0x2:0x0x0:1 port=port13 latency=10ns />
+    <link name=link.0x0x2:0x0x0:2 port=port14 latency=10ns />
+    <link name=link.0x0x1:0x0x2:0 port=port15 latency=10ns />
+    <link name=link.0x0x1:0x0x2:1 port=port16 latency=10ns />
+    <link name=link.0x0x1:0x0x2:2 port=port17 latency=10ns />
+    <link name=nic.18:0 port=port18 latency=10ns />
+    <link name=nic.18:1 port=port19 latency=10ns />
+    <link name=nic.18:2 port=port20 latency=10ns />
+    <link name=nic.18:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.0x0x2-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 72 </id>
+    </params>
+    <link name=nic.18:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x0x2-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 73 </id>
+    </params>
+    <link name=nic.18:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x0x2-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 74 </id>
+    </params>
+    <link name=nic.18:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x0x2-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 75 </id>
+    </params>
+    <link name=nic.18:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.1x0x2 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 19 </id>
+    </params>
+    <link name=link.1x0x2:2x0x2:0 port=port0 latency=10ns />
+    <link name=link.1x0x2:2x0x2:1 port=port1 latency=10ns />
+    <link name=link.1x0x2:2x0x2:2 port=port2 latency=10ns />
+    <link name=link.0x0x2:1x0x2:0 port=port3 latency=10ns />
+    <link name=link.0x0x2:1x0x2:1 port=port4 latency=10ns />
+    <link name=link.0x0x2:1x0x2:2 port=port5 latency=10ns />
+    <link name=link.1x0x2:1x1x2:0 port=port6 latency=10ns />
+    <link name=link.1x0x2:1x1x2:1 port=port7 latency=10ns />
+    <link name=link.1x0x2:1x1x2:2 port=port8 latency=10ns />
+    <link name=link.1x2x2:1x0x2:0 port=port9 latency=10ns />
+    <link name=link.1x2x2:1x0x2:1 port=port10 latency=10ns />
+    <link name=link.1x2x2:1x0x2:2 port=port11 latency=10ns />
+    <link name=link.1x0x2:1x0x0:0 port=port12 latency=10ns />
+    <link name=link.1x0x2:1x0x0:1 port=port13 latency=10ns />
+    <link name=link.1x0x2:1x0x0:2 port=port14 latency=10ns />
+    <link name=link.1x0x1:1x0x2:0 port=port15 latency=10ns />
+    <link name=link.1x0x1:1x0x2:1 port=port16 latency=10ns />
+    <link name=link.1x0x1:1x0x2:2 port=port17 latency=10ns />
+    <link name=nic.19:0 port=port18 latency=10ns />
+    <link name=nic.19:1 port=port19 latency=10ns />
+    <link name=nic.19:2 port=port20 latency=10ns />
+    <link name=nic.19:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.1x0x2-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 76 </id>
+    </params>
+    <link name=nic.19:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x0x2-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 77 </id>
+    </params>
+    <link name=nic.19:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x0x2-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 78 </id>
+    </params>
+    <link name=nic.19:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x0x2-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 79 </id>
+    </params>
+    <link name=nic.19:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.2x0x2 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 20 </id>
+    </params>
+    <link name=link.2x0x2:0x0x2:0 port=port0 latency=10ns />
+    <link name=link.2x0x2:0x0x2:1 port=port1 latency=10ns />
+    <link name=link.2x0x2:0x0x2:2 port=port2 latency=10ns />
+    <link name=link.1x0x2:2x0x2:0 port=port3 latency=10ns />
+    <link name=link.1x0x2:2x0x2:1 port=port4 latency=10ns />
+    <link name=link.1x0x2:2x0x2:2 port=port5 latency=10ns />
+    <link name=link.2x0x2:2x1x2:0 port=port6 latency=10ns />
+    <link name=link.2x0x2:2x1x2:1 port=port7 latency=10ns />
+    <link name=link.2x0x2:2x1x2:2 port=port8 latency=10ns />
+    <link name=link.2x2x2:2x0x2:0 port=port9 latency=10ns />
+    <link name=link.2x2x2:2x0x2:1 port=port10 latency=10ns />
+    <link name=link.2x2x2:2x0x2:2 port=port11 latency=10ns />
+    <link name=link.2x0x2:2x0x0:0 port=port12 latency=10ns />
+    <link name=link.2x0x2:2x0x0:1 port=port13 latency=10ns />
+    <link name=link.2x0x2:2x0x0:2 port=port14 latency=10ns />
+    <link name=link.2x0x1:2x0x2:0 port=port15 latency=10ns />
+    <link name=link.2x0x1:2x0x2:1 port=port16 latency=10ns />
+    <link name=link.2x0x1:2x0x2:2 port=port17 latency=10ns />
+    <link name=nic.20:0 port=port18 latency=10ns />
+    <link name=nic.20:1 port=port19 latency=10ns />
+    <link name=nic.20:2 port=port20 latency=10ns />
+    <link name=nic.20:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.2x0x2-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 80 </id>
+    </params>
+    <link name=nic.20:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x0x2-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 81 </id>
+    </params>
+    <link name=nic.20:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x0x2-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 82 </id>
+    </params>
+    <link name=nic.20:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x0x2-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 83 </id>
+    </params>
+    <link name=nic.20:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.0x1x2 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 21 </id>
+    </params>
+    <link name=link.0x1x2:1x1x2:0 port=port0 latency=10ns />
+    <link name=link.0x1x2:1x1x2:1 port=port1 latency=10ns />
+    <link name=link.0x1x2:1x1x2:2 port=port2 latency=10ns />
+    <link name=link.2x1x2:0x1x2:0 port=port3 latency=10ns />
+    <link name=link.2x1x2:0x1x2:1 port=port4 latency=10ns />
+    <link name=link.2x1x2:0x1x2:2 port=port5 latency=10ns />
+    <link name=link.0x1x2:0x2x2:0 port=port6 latency=10ns />
+    <link name=link.0x1x2:0x2x2:1 port=port7 latency=10ns />
+    <link name=link.0x1x2:0x2x2:2 port=port8 latency=10ns />
+    <link name=link.0x0x2:0x1x2:0 port=port9 latency=10ns />
+    <link name=link.0x0x2:0x1x2:1 port=port10 latency=10ns />
+    <link name=link.0x0x2:0x1x2:2 port=port11 latency=10ns />
+    <link name=link.0x1x2:0x1x0:0 port=port12 latency=10ns />
+    <link name=link.0x1x2:0x1x0:1 port=port13 latency=10ns />
+    <link name=link.0x1x2:0x1x0:2 port=port14 latency=10ns />
+    <link name=link.0x1x1:0x1x2:0 port=port15 latency=10ns />
+    <link name=link.0x1x1:0x1x2:1 port=port16 latency=10ns />
+    <link name=link.0x1x1:0x1x2:2 port=port17 latency=10ns />
+    <link name=nic.21:0 port=port18 latency=10ns />
+    <link name=nic.21:1 port=port19 latency=10ns />
+    <link name=nic.21:2 port=port20 latency=10ns />
+    <link name=nic.21:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.0x1x2-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 84 </id>
+    </params>
+    <link name=nic.21:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x1x2-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 85 </id>
+    </params>
+    <link name=nic.21:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x1x2-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 86 </id>
+    </params>
+    <link name=nic.21:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x1x2-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 87 </id>
+    </params>
+    <link name=nic.21:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.1x1x2 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 22 </id>
+    </params>
+    <link name=link.1x1x2:2x1x2:0 port=port0 latency=10ns />
+    <link name=link.1x1x2:2x1x2:1 port=port1 latency=10ns />
+    <link name=link.1x1x2:2x1x2:2 port=port2 latency=10ns />
+    <link name=link.0x1x2:1x1x2:0 port=port3 latency=10ns />
+    <link name=link.0x1x2:1x1x2:1 port=port4 latency=10ns />
+    <link name=link.0x1x2:1x1x2:2 port=port5 latency=10ns />
+    <link name=link.1x1x2:1x2x2:0 port=port6 latency=10ns />
+    <link name=link.1x1x2:1x2x2:1 port=port7 latency=10ns />
+    <link name=link.1x1x2:1x2x2:2 port=port8 latency=10ns />
+    <link name=link.1x0x2:1x1x2:0 port=port9 latency=10ns />
+    <link name=link.1x0x2:1x1x2:1 port=port10 latency=10ns />
+    <link name=link.1x0x2:1x1x2:2 port=port11 latency=10ns />
+    <link name=link.1x1x2:1x1x0:0 port=port12 latency=10ns />
+    <link name=link.1x1x2:1x1x0:1 port=port13 latency=10ns />
+    <link name=link.1x1x2:1x1x0:2 port=port14 latency=10ns />
+    <link name=link.1x1x1:1x1x2:0 port=port15 latency=10ns />
+    <link name=link.1x1x1:1x1x2:1 port=port16 latency=10ns />
+    <link name=link.1x1x1:1x1x2:2 port=port17 latency=10ns />
+    <link name=nic.22:0 port=port18 latency=10ns />
+    <link name=nic.22:1 port=port19 latency=10ns />
+    <link name=nic.22:2 port=port20 latency=10ns />
+    <link name=nic.22:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.1x1x2-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 88 </id>
+    </params>
+    <link name=nic.22:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x1x2-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 89 </id>
+    </params>
+    <link name=nic.22:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x1x2-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 90 </id>
+    </params>
+    <link name=nic.22:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x1x2-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 91 </id>
+    </params>
+    <link name=nic.22:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.2x1x2 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 23 </id>
+    </params>
+    <link name=link.2x1x2:0x1x2:0 port=port0 latency=10ns />
+    <link name=link.2x1x2:0x1x2:1 port=port1 latency=10ns />
+    <link name=link.2x1x2:0x1x2:2 port=port2 latency=10ns />
+    <link name=link.1x1x2:2x1x2:0 port=port3 latency=10ns />
+    <link name=link.1x1x2:2x1x2:1 port=port4 latency=10ns />
+    <link name=link.1x1x2:2x1x2:2 port=port5 latency=10ns />
+    <link name=link.2x1x2:2x2x2:0 port=port6 latency=10ns />
+    <link name=link.2x1x2:2x2x2:1 port=port7 latency=10ns />
+    <link name=link.2x1x2:2x2x2:2 port=port8 latency=10ns />
+    <link name=link.2x0x2:2x1x2:0 port=port9 latency=10ns />
+    <link name=link.2x0x2:2x1x2:1 port=port10 latency=10ns />
+    <link name=link.2x0x2:2x1x2:2 port=port11 latency=10ns />
+    <link name=link.2x1x2:2x1x0:0 port=port12 latency=10ns />
+    <link name=link.2x1x2:2x1x0:1 port=port13 latency=10ns />
+    <link name=link.2x1x2:2x1x0:2 port=port14 latency=10ns />
+    <link name=link.2x1x1:2x1x2:0 port=port15 latency=10ns />
+    <link name=link.2x1x1:2x1x2:1 port=port16 latency=10ns />
+    <link name=link.2x1x1:2x1x2:2 port=port17 latency=10ns />
+    <link name=nic.23:0 port=port18 latency=10ns />
+    <link name=nic.23:1 port=port19 latency=10ns />
+    <link name=nic.23:2 port=port20 latency=10ns />
+    <link name=nic.23:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.2x1x2-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 92 </id>
+    </params>
+    <link name=nic.23:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x1x2-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 93 </id>
+    </params>
+    <link name=nic.23:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x1x2-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 94 </id>
+    </params>
+    <link name=nic.23:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x1x2-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 95 </id>
+    </params>
+    <link name=nic.23:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.0x2x2 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 24 </id>
+    </params>
+    <link name=link.0x2x2:1x2x2:0 port=port0 latency=10ns />
+    <link name=link.0x2x2:1x2x2:1 port=port1 latency=10ns />
+    <link name=link.0x2x2:1x2x2:2 port=port2 latency=10ns />
+    <link name=link.2x2x2:0x2x2:0 port=port3 latency=10ns />
+    <link name=link.2x2x2:0x2x2:1 port=port4 latency=10ns />
+    <link name=link.2x2x2:0x2x2:2 port=port5 latency=10ns />
+    <link name=link.0x2x2:0x0x2:0 port=port6 latency=10ns />
+    <link name=link.0x2x2:0x0x2:1 port=port7 latency=10ns />
+    <link name=link.0x2x2:0x0x2:2 port=port8 latency=10ns />
+    <link name=link.0x1x2:0x2x2:0 port=port9 latency=10ns />
+    <link name=link.0x1x2:0x2x2:1 port=port10 latency=10ns />
+    <link name=link.0x1x2:0x2x2:2 port=port11 latency=10ns />
+    <link name=link.0x2x2:0x2x0:0 port=port12 latency=10ns />
+    <link name=link.0x2x2:0x2x0:1 port=port13 latency=10ns />
+    <link name=link.0x2x2:0x2x0:2 port=port14 latency=10ns />
+    <link name=link.0x2x1:0x2x2:0 port=port15 latency=10ns />
+    <link name=link.0x2x1:0x2x2:1 port=port16 latency=10ns />
+    <link name=link.0x2x1:0x2x2:2 port=port17 latency=10ns />
+    <link name=nic.24:0 port=port18 latency=10ns />
+    <link name=nic.24:1 port=port19 latency=10ns />
+    <link name=nic.24:2 port=port20 latency=10ns />
+    <link name=nic.24:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.0x2x2-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 96 </id>
+    </params>
+    <link name=nic.24:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x2x2-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 97 </id>
+    </params>
+    <link name=nic.24:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x2x2-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 98 </id>
+    </params>
+    <link name=nic.24:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.0x2x2-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 99 </id>
+    </params>
+    <link name=nic.24:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.1x2x2 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 25 </id>
+    </params>
+    <link name=link.1x2x2:2x2x2:0 port=port0 latency=10ns />
+    <link name=link.1x2x2:2x2x2:1 port=port1 latency=10ns />
+    <link name=link.1x2x2:2x2x2:2 port=port2 latency=10ns />
+    <link name=link.0x2x2:1x2x2:0 port=port3 latency=10ns />
+    <link name=link.0x2x2:1x2x2:1 port=port4 latency=10ns />
+    <link name=link.0x2x2:1x2x2:2 port=port5 latency=10ns />
+    <link name=link.1x2x2:1x0x2:0 port=port6 latency=10ns />
+    <link name=link.1x2x2:1x0x2:1 port=port7 latency=10ns />
+    <link name=link.1x2x2:1x0x2:2 port=port8 latency=10ns />
+    <link name=link.1x1x2:1x2x2:0 port=port9 latency=10ns />
+    <link name=link.1x1x2:1x2x2:1 port=port10 latency=10ns />
+    <link name=link.1x1x2:1x2x2:2 port=port11 latency=10ns />
+    <link name=link.1x2x2:1x2x0:0 port=port12 latency=10ns />
+    <link name=link.1x2x2:1x2x0:1 port=port13 latency=10ns />
+    <link name=link.1x2x2:1x2x0:2 port=port14 latency=10ns />
+    <link name=link.1x2x1:1x2x2:0 port=port15 latency=10ns />
+    <link name=link.1x2x1:1x2x2:1 port=port16 latency=10ns />
+    <link name=link.1x2x1:1x2x2:2 port=port17 latency=10ns />
+    <link name=nic.25:0 port=port18 latency=10ns />
+    <link name=nic.25:1 port=port19 latency=10ns />
+    <link name=nic.25:2 port=port20 latency=10ns />
+    <link name=nic.25:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.1x2x2-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 100 </id>
+    </params>
+    <link name=nic.25:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x2x2-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 101 </id>
+    </params>
+    <link name=nic.25:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x2x2-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 102 </id>
+    </params>
+    <link name=nic.25:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.1x2x2-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 103 </id>
+    </params>
+    <link name=nic.25:3 port=rtr latency=10ns />
+  </component>
+
+  <component name=rtr.2x2x2 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 26 </id>
+    </params>
+    <link name=link.2x2x2:0x2x2:0 port=port0 latency=10ns />
+    <link name=link.2x2x2:0x2x2:1 port=port1 latency=10ns />
+    <link name=link.2x2x2:0x2x2:2 port=port2 latency=10ns />
+    <link name=link.1x2x2:2x2x2:0 port=port3 latency=10ns />
+    <link name=link.1x2x2:2x2x2:1 port=port4 latency=10ns />
+    <link name=link.1x2x2:2x2x2:2 port=port5 latency=10ns />
+    <link name=link.2x2x2:2x0x2:0 port=port6 latency=10ns />
+    <link name=link.2x2x2:2x0x2:1 port=port7 latency=10ns />
+    <link name=link.2x2x2:2x0x2:2 port=port8 latency=10ns />
+    <link name=link.2x1x2:2x2x2:0 port=port9 latency=10ns />
+    <link name=link.2x1x2:2x2x2:1 port=port10 latency=10ns />
+    <link name=link.2x1x2:2x2x2:2 port=port11 latency=10ns />
+    <link name=link.2x2x2:2x2x0:0 port=port12 latency=10ns />
+    <link name=link.2x2x2:2x2x0:1 port=port13 latency=10ns />
+    <link name=link.2x2x2:2x2x0:2 port=port14 latency=10ns />
+    <link name=link.2x2x1:2x2x2:0 port=port15 latency=10ns />
+    <link name=link.2x2x1:2x2x2:1 port=port16 latency=10ns />
+    <link name=link.2x2x1:2x2x2:2 port=port17 latency=10ns />
+    <link name=nic.26:0 port=port18 latency=10ns />
+    <link name=nic.26:1 port=port19 latency=10ns />
+    <link name=nic.26:2 port=port20 latency=10ns />
+    <link name=nic.26:3 port=port21 latency=10ns />
+  </component>
+
+  <component name=nic.2x2x2-0 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 104 </id>
+    </params>
+    <link name=nic.26:0 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x2x2-1 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 105 </id>
+    </params>
+    <link name=nic.26:1 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x2x2-2 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 106 </id>
+    </params>
+    <link name=nic.26:2 port=rtr latency=10ns />
+  </component>
+
+  <component name=nic.2x2x2-3 type=merlin.test_nic>
+    <params include=nic_params>
+      <id> 107 </id>
+    </params>
+    <link name=nic.26:3 port=rtr latency=10ns />
+  </component>
+
+
+</sst>

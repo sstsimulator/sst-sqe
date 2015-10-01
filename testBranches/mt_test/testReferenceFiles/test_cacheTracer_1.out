@@ -1,0 +1,2160 @@
+cpu0: 1000 Issued Read (0) for address 0x1bb8
+cpu0: Received Request with command 2 (response to 0, addr 0x1bb8) [Time: 117] [0 outstanding requests]
+cpu0: 999 Issued Read (1) for address 0x42bc
+cpu0: Received Request with command 2 (response to 1, addr 0x42bc) [Time: 117] [0 outstanding requests]
+cpu0: 998 Issued Write (2) for address 0xb5a8
+cpu0: Received Request with command 3 (response to 2, addr 0xb5a8) [Time: 117] [0 outstanding requests]
+cpu0: 997 Issued Read (3) for address 0xb064
+cpu0: 996 Issued Read (4) for address 0x5bf4
+cpu0: 995 Issued Read (5) for address 0x5ac4
+cpu0: 994 Issued Write (6) for address 0x87f8
+cpu0: Received Request with command 2 (response to 3, addr 0xb064) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 4, addr 0x5bf4) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 5, addr 0x5ac4) [Time: 117] [1 outstanding requests]
+cpu0: 993 Issued Read (7) for address 0x8d94
+cpu0: Received Request with command 3 (response to 6, addr 0x87f8) [Time: 117] [1 outstanding requests]
+cpu0: 992 Issued Read (8) for address 0xecbc
+cpu0: Received Request with command 2 (response to 7, addr 0x8d94) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 8, addr 0xecbc) [Time: 117] [0 outstanding requests]
+cpu0: 991 Issued Read (9) for address 0xc56c
+cpu0: 990 Issued Write (10) for address 0x3cb4
+cpu0: Received Request with command 2 (response to 9, addr 0xc56c) [Time: 117] [1 outstanding requests]
+cpu0: 989 Issued Read (11) for address 0xb828
+cpu0: 988 Issued Read (12) for address 0x4794
+cpu0: Received Request with command 3 (response to 10, addr 0x3cb4) [Time: 117] [2 outstanding requests]
+cpu0: 987 Issued Read (13) for address 0x55c0
+cpu0: 986 Issued Read (14) for address 0x2160
+cpu0: Received Request with command 2 (response to 11, addr 0xb828) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 12, addr 0x4794) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 13, addr 0x55c0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 14, addr 0x2160) [Time: 117] [0 outstanding requests]
+cpu0: 985 Issued Read (15) for address 0x7c18
+cpu0: 984 Issued Read (16) for address 0x1af4
+cpu0: 983 Issued Read (17) for address 0xe264
+cpu0: Received Request with command 2 (response to 15, addr 0x7c18) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 16, addr 0x1af4) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 17, addr 0xe264) [Time: 117] [0 outstanding requests]
+cpu0: 982 Issued Read (18) for address 0xf49c
+cpu0: 981 Issued Read (19) for address 0xe7c
+cpu0: 980 Issued Read (20) for address 0xc10c
+cpu0: Received Request with command 2 (response to 18, addr 0xf49c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 19, addr 0xe7c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 20, addr 0xc10c) [Time: 117] [0 outstanding requests]
+cpu0: 979 Issued Read (21) for address 0x2b40
+cpu0: 978 Issued Read (22) for address 0xf778
+cpu0: Received Request with command 2 (response to 21, addr 0x2b40) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 22, addr 0xf778) [Time: 117] [0 outstanding requests]
+cpu0: 977 Issued Read (23) for address 0x8b58
+cpu0: Received Request with command 2 (response to 23, addr 0x8b58) [Time: 117] [0 outstanding requests]
+cpu0: 976 Issued Read (24) for address 0x59e4
+cpu0: 975 Issued Write (25) for address 0x1bac
+cpu0: Received Request with command 2 (response to 24, addr 0x59e4) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 25, addr 0x1bac) [Time: 117] [0 outstanding requests]
+cpu0: 974 Issued Read (26) for address 0xcc60
+cpu0: Received Request with command 2 (response to 26, addr 0xcc60) [Time: 117] [0 outstanding requests]
+cpu0: 973 Issued Read (27) for address 0xdd54
+cpu0: Received Request with command 2 (response to 27, addr 0xdd54) [Time: 117] [0 outstanding requests]
+cpu0: 972 Issued Read (28) for address 0x6848
+cpu0: Received Request with command 2 (response to 28, addr 0x6848) [Time: 117] [0 outstanding requests]
+cpu0: 971 Issued Read (29) for address 0xa784
+cpu0: 970 Issued Read (30) for address 0x7098
+cpu0: Received Request with command 2 (response to 29, addr 0xa784) [Time: 117] [1 outstanding requests]
+cpu0: 969 Issued Read (31) for address 0x5934
+cpu0: Received Request with command 2 (response to 30, addr 0x7098) [Time: 117] [1 outstanding requests]
+cpu0: 968 Issued Read (32) for address 0xdfa8
+cpu0: Received Request with command 2 (response to 31, addr 0x5934) [Time: 117] [1 outstanding requests]
+cpu0: 967 Issued Read (33) for address 0x8f60
+cpu0: Received Request with command 2 (response to 32, addr 0xdfa8) [Time: 117] [1 outstanding requests]
+cpu0: 966 Issued Read (34) for address 0x9494
+cpu0: Received Request with command 2 (response to 33, addr 0x8f60) [Time: 117] [1 outstanding requests]
+cpu0: 965 Issued Read (35) for address 0x7944
+cpu0: 964 Issued Read (36) for address 0x532c
+cpu0: Received Request with command 2 (response to 34, addr 0x9494) [Time: 117] [2 outstanding requests]
+cpu0: 963 Issued Read (37) for address 0xd8
+cpu0: 962 Issued Read (38) for address 0xfb38
+cpu0: Received Request with command 2 (response to 35, addr 0x7944) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 36, addr 0x532c) [Time: 117] [2 outstanding requests]
+cpu0: 961 Issued Read (39) for address 0xf684
+cpu0: Received Request with command 2 (response to 37, addr 0xd8) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 38, addr 0xfb38) [Time: 117] [1 outstanding requests]
+cpu0: 960 Issued Read (40) for address 0x80c0
+cpu0: 959 Issued Write (41) for address 0xf878
+cpu0: Received Request with command 2 (response to 39, addr 0xf684) [Time: 117] [2 outstanding requests]
+cpu0: 958 Issued Read (42) for address 0xe3a8
+cpu0: Received Request with command 2 (response to 40, addr 0x80c0) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 41, addr 0xf878) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 42, addr 0xe3a8) [Time: 117] [0 outstanding requests]
+cpu0: 957 Issued Read (43) for address 0x1880
+cpu0: 956 Issued Read (44) for address 0x38c
+cpu0: 955 Issued Read (45) for address 0x516c
+cpu0: Received Request with command 2 (response to 43, addr 0x1880) [Time: 117] [2 outstanding requests]
+cpu0: 954 Issued Read (46) for address 0xd15c
+cpu0: Received Request with command 2 (response to 44, addr 0x38c) [Time: 117] [2 outstanding requests]
+cpu0: 953 Issued Read (47) for address 0x5508
+cpu0: Received Request with command 2 (response to 45, addr 0x516c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 46, addr 0xd15c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 47, addr 0x5508) [Time: 117] [0 outstanding requests]
+cpu0: 952 Issued Read (48) for address 0xe194
+cpu0: 951 Issued Read (49) for address 0x7ce8
+cpu0: 950 Issued Read (50) for address 0x92c8
+cpu0: 949 Issued Read (51) for address 0xef9c
+cpu0: Received Request with command 2 (response to 48, addr 0xe194) [Time: 117] [3 outstanding requests]
+cpu0: 948 Issued Read (52) for address 0x3020
+cpu0: Received Request with command 2 (response to 49, addr 0x7ce8) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 50, addr 0x92c8) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 51, addr 0xef9c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 52, addr 0x3020) [Time: 117] [0 outstanding requests]
+cpu0: 947 Issued Read (53) for address 0x73a8
+cpu0: 946 Issued Read (54) for address 0x598
+cpu0: Received Request with command 2 (response to 53, addr 0x73a8) [Time: 117] [1 outstanding requests]
+cpu0: 945 Issued Read (55) for address 0xc5b0
+cpu0: 944 Issued Read (56) for address 0x94c
+cpu0: Received Request with command 2 (response to 54, addr 0x598) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 55, addr 0xc5b0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 56, addr 0x94c) [Time: 117] [0 outstanding requests]
+cpu0: 943 Issued Write (57) for address 0xf288
+cpu0: 942 Issued Read (58) for address 0xdb08
+cpu0: Received Request with command 3 (response to 57, addr 0xf288) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 58, addr 0xdb08) [Time: 117] [0 outstanding requests]
+cpu0: 941 Issued Read (59) for address 0x314
+cpu0: Received Request with command 2 (response to 59, addr 0x314) [Time: 117] [0 outstanding requests]
+cpu0: 940 Issued Read (60) for address 0xad68
+cpu0: Received Request with command 2 (response to 60, addr 0xad68) [Time: 117] [0 outstanding requests]
+cpu0: 939 Issued Read (61) for address 0x4ee8
+cpu0: 938 Issued Write (62) for address 0xd8d8
+cpu0: 937 Issued Read (63) for address 0x244c
+cpu0: Received Request with command 2 (response to 61, addr 0x4ee8) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 62, addr 0xd8d8) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 63, addr 0x244c) [Time: 117] [0 outstanding requests]
+cpu0: 936 Issued Read (64) for address 0xe770
+cpu0: Received Request with command 2 (response to 64, addr 0xe770) [Time: 117] [0 outstanding requests]
+cpu0: 935 Issued Read (65) for address 0xf660
+cpu0: 934 Issued Read (66) for address 0x4a94
+cpu0: 933 Issued Read (67) for address 0x6790
+cpu0: Received Request with command 2 (response to 65, addr 0xf660) [Time: 117] [2 outstanding requests]
+cpu0: 932 Issued Read (68) for address 0xb780
+cpu0: Received Request with command 2 (response to 66, addr 0x4a94) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 67, addr 0x6790) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 68, addr 0xb780) [Time: 117] [0 outstanding requests]
+cpu0: 931 Issued Read (69) for address 0x8a04
+cpu0: 930 Issued Write (70) for address 0x6b50
+cpu0: Received Request with command 2 (response to 69, addr 0x8a04) [Time: 117] [1 outstanding requests]
+cpu0: 929 Issued Read (71) for address 0x6b40
+cpu0: 928 Issued Read (72) for address 0xe4f4
+cpu0: Received Request with command 3 (response to 70, addr 0x6b50) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 71, addr 0x6b40) [Time: 13] [1 outstanding requests]
+cpu0: 927 Issued Read (73) for address 0xba9c
+cpu0: Received Request with command 2 (response to 72, addr 0xe4f4) [Time: 117] [1 outstanding requests]
+cpu0: 926 Issued Read (74) for address 0x35dc
+cpu0: Received Request with command 2 (response to 73, addr 0xba9c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 74, addr 0x35dc) [Time: 117] [0 outstanding requests]
+cpu0: 925 Issued Read (75) for address 0x6fd0
+cpu0: 924 Issued Read (76) for address 0xbc10
+cpu0: Received Request with command 2 (response to 75, addr 0x6fd0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 76, addr 0xbc10) [Time: 117] [0 outstanding requests]
+cpu0: 923 Issued Read (77) for address 0xab0c
+cpu0: 922 Issued Write (78) for address 0xfb24
+cpu0: 921 Issued Read (79) for address 0xc358
+cpu0: Received Request with command 2 (response to 77, addr 0xab0c) [Time: 117] [2 outstanding requests]
+cpu0: 920 Issued Read (80) for address 0x6b1c
+cpu0: 919 Issued Read (81) for address 0x580c
+cpu0: Received Request with command 3 (response to 78, addr 0xfb24) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 79, addr 0xc358) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 80, addr 0x6b1c) [Time: 117] [1 outstanding requests]
+cpu0: 918 Issued Read (82) for address 0xa528
+cpu0: Received Request with command 2 (response to 81, addr 0x580c) [Time: 117] [1 outstanding requests]
+cpu0: 917 Issued Read (83) for address 0x660c
+cpu0: Received Request with command 2 (response to 82, addr 0xa528) [Time: 117] [1 outstanding requests]
+cpu0: 916 Issued Read (84) for address 0xb3c4
+cpu0: 915 Issued Write (85) for address 0xb64
+cpu0: 914 Issued Read (86) for address 0x104c
+cpu0: Received Request with command 2 (response to 83, addr 0x660c) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 84, addr 0xb3c4) [Time: 117] [2 outstanding requests]
+cpu0: 913 Issued Read (87) for address 0x3bac
+cpu0: Received Request with command 3 (response to 85, addr 0xb64) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 86, addr 0x104c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 87, addr 0x3bac) [Time: 117] [0 outstanding requests]
+cpu0: 912 Issued Read (88) for address 0x2e58
+cpu0: Received Request with command 2 (response to 88, addr 0x2e58) [Time: 117] [0 outstanding requests]
+cpu0: 911 Issued Read (89) for address 0x2c98
+cpu0: 910 Issued Read (90) for address 0x4fcc
+cpu0: Received Request with command 2 (response to 89, addr 0x2c98) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 90, addr 0x4fcc) [Time: 117] [0 outstanding requests]
+cpu0: 909 Issued Read (91) for address 0xe740
+cpu0: Received Request with command 2 (response to 91, addr 0xe740) [Time: 3] [0 outstanding requests]
+cpu0: 908 Issued Read (92) for address 0xa248
+cpu0: Received Request with command 2 (response to 92, addr 0xa248) [Time: 117] [0 outstanding requests]
+cpu0: 907 Issued Read (93) for address 0xc458
+cpu0: 906 Issued Read (94) for address 0xa920
+cpu0: 905 Issued Read (95) for address 0x84ec
+cpu0: 904 Issued Read (96) for address 0x9734
+cpu0: Received Request with command 2 (response to 93, addr 0xc458) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 94, addr 0xa920) [Time: 117] [2 outstanding requests]
+cpu0: 903 Issued Read (97) for address 0x7124
+cpu0: 902 Issued Read (98) for address 0x8070
+cpu0: Received Request with command 2 (response to 95, addr 0x84ec) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 96, addr 0x9734) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 97, addr 0x7124) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 98, addr 0x8070) [Time: 117] [0 outstanding requests]
+cpu0: 901 Issued Write (99) for address 0xb1d0
+cpu0: 900 Issued Read (100) for address 0xb80
+cpu0: Received Request with command 3 (response to 99, addr 0xb1d0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 100, addr 0xb80) [Time: 117] [0 outstanding requests]
+cpu0: 899 Issued Read (101) for address 0xa1f4
+cpu0: 898 Issued Read (102) for address 0x21c
+cpu0: 897 Issued Read (103) for address 0xb378
+cpu0: Received Request with command 2 (response to 101, addr 0xa1f4) [Time: 117] [2 outstanding requests]
+cpu0: 896 Issued Write (104) for address 0xe144
+cpu0: Received Request with command 2 (response to 102, addr 0x21c) [Time: 117] [2 outstanding requests]
+cpu0: 895 Issued Read (105) for address 0x4c68
+cpu0: Received Request with command 2 (response to 103, addr 0xb378) [Time: 117] [2 outstanding requests]
+cpu0: 894 Issued Read (106) for address 0x148c
+cpu0: Received Request with command 3 (response to 104, addr 0xe144) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 105, addr 0x4c68) [Time: 117] [1 outstanding requests]
+cpu0: 893 Issued Read (107) for address 0x8910
+cpu0: 892 Issued Read (108) for address 0xde9c
+cpu0: Received Request with command 2 (response to 106, addr 0x148c) [Time: 117] [2 outstanding requests]
+cpu0: 891 Issued Read (109) for address 0xbd8
+cpu0: 890 Issued Write (110) for address 0x81ac
+cpu0: Received Request with command 2 (response to 107, addr 0x8910) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 108, addr 0xde9c) [Time: 117] [2 outstanding requests]
+cpu0: 889 Issued Read (111) for address 0x43e0
+cpu0: Received Request with command 2 (response to 109, addr 0xbd8) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 110, addr 0x81ac) [Time: 117] [1 outstanding requests]
+cpu0: 888 Issued Read (112) for address 0x96d4
+cpu0: Received Request with command 2 (response to 111, addr 0x43e0) [Time: 117] [1 outstanding requests]
+cpu0: 887 Issued Read (113) for address 0x6bf0
+cpu0: 886 Issued Read (114) for address 0x822c
+cpu0: Received Request with command 2 (response to 112, addr 0x96d4) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 113, addr 0x6bf0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 114, addr 0x822c) [Time: 117] [0 outstanding requests]
+cpu0: 885 Issued Read (115) for address 0xb478
+cpu0: 884 Issued Read (116) for address 0x3c9c
+cpu0: 883 Issued Read (117) for address 0x71dc
+cpu0: Received Request with command 2 (response to 116, addr 0x3c9c) [Time: 14] [2 outstanding requests]
+cpu0: 882 Issued Read (118) for address 0xf174
+cpu0: Received Request with command 2 (response to 115, addr 0xb478) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 117, addr 0x71dc) [Time: 117] [1 outstanding requests]
+cpu0: 881 Issued Read (119) for address 0x117c
+cpu0: Received Request with command 2 (response to 118, addr 0xf174) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 119, addr 0x117c) [Time: 117] [0 outstanding requests]
+cpu0: 880 Issued Write (120) for address 0x6e94
+cpu0: 879 Issued Read (121) for address 0xbe08
+cpu0: 878 Issued Read (122) for address 0xda18
+cpu0: 877 Issued Read (123) for address 0xccec
+cpu0: Received Request with command 3 (response to 120, addr 0x6e94) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 121, addr 0xbe08) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 122, addr 0xda18) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 123, addr 0xccec) [Time: 117] [0 outstanding requests]
+cpu0: 876 Issued Write (124) for address 0x3030
+cpu0: 875 Issued Read (125) for address 0xdf34
+cpu0: 874 Issued Read (126) for address 0xad34
+cpu0: 873 Issued Read (127) for address 0xfb8c
+cpu0: Received Request with command 3 (response to 124, addr 0x3030) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 125, addr 0xdf34) [Time: 117] [2 outstanding requests]
+cpu0: 872 Issued Read (128) for address 0xa82c
+cpu0: Received Request with command 2 (response to 126, addr 0xad34) [Time: 117] [2 outstanding requests]
+cpu0: 871 Issued Read (129) for address 0xf850
+cpu0: Received Request with command 2 (response to 127, addr 0xfb8c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 129, addr 0xf850) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 128, addr 0xa82c) [Time: 117] [0 outstanding requests]
+cpu0: 870 Issued Read (130) for address 0x48c8
+cpu0: Received Request with command 2 (response to 130, addr 0x48c8) [Time: 117] [0 outstanding requests]
+cpu0: 869 Issued Read (131) for address 0xaa44
+cpu0: Received Request with command 2 (response to 131, addr 0xaa44) [Time: 117] [0 outstanding requests]
+cpu0: 868 Issued Read (132) for address 0xdd10
+cpu0: Received Request with command 2 (response to 132, addr 0xdd10) [Time: 117] [0 outstanding requests]
+cpu0: 867 Issued Read (133) for address 0xa078
+cpu0: 866 Issued Read (134) for address 0x8a84
+cpu0: 865 Issued Read (135) for address 0xee38
+cpu0: Received Request with command 2 (response to 133, addr 0xa078) [Time: 117] [2 outstanding requests]
+cpu0: 864 Issued Read (136) for address 0xbf54
+cpu0: 863 Issued Read (137) for address 0x394
+cpu0: Received Request with command 2 (response to 134, addr 0x8a84) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 135, addr 0xee38) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 137, addr 0x394) [Time: 14] [1 outstanding requests]
+cpu0: 862 Issued Read (138) for address 0x7540
+cpu0: 861 Issued Read (139) for address 0x64ec
+cpu0: 860 Issued Read (140) for address 0x2fbc
+cpu0: 859 Issued Read (141) for address 0x1710
+cpu0: Received Request with command 2 (response to 136, addr 0xbf54) [Time: 117] [4 outstanding requests]
+cpu0: Received Request with command 2 (response to 138, addr 0x7540) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 139, addr 0x64ec) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 140, addr 0x2fbc) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 141, addr 0x1710) [Time: 117] [0 outstanding requests]
+cpu0: 858 Issued Read (142) for address 0x2798
+cpu0: 857 Issued Read (143) for address 0x4258
+cpu0: 856 Issued Read (144) for address 0x34f8
+cpu0: Received Request with command 2 (response to 142, addr 0x2798) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 143, addr 0x4258) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 144, addr 0x34f8) [Time: 117] [0 outstanding requests]
+cpu0: 855 Issued Read (145) for address 0x2ed4
+cpu0: 854 Issued Read (146) for address 0xd88
+cpu0: 853 Issued Read (147) for address 0xa510
+cpu0: 852 Issued Read (148) for address 0x949c
+cpu0: Received Request with command 2 (response to 147, addr 0xa510) [Time: 14] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 148, addr 0x949c) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 145, addr 0x2ed4) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 146, addr 0xd88) [Time: 117] [0 outstanding requests]
+cpu0: 851 Issued Read (149) for address 0xeab0
+cpu0: Received Request with command 2 (response to 149, addr 0xeab0) [Time: 117] [0 outstanding requests]
+cpu0: 850 Issued Read (150) for address 0x82c4
+cpu0: 849 Issued Read (151) for address 0xc550
+cpu0: Received Request with command 2 (response to 151, addr 0xc550) [Time: 14] [1 outstanding requests]
+cpu0: 848 Issued Read (152) for address 0x27c
+cpu0: Received Request with command 2 (response to 150, addr 0x82c4) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 152, addr 0x27c) [Time: 117] [0 outstanding requests]
+cpu0: 847 Issued Write (153) for address 0x68c8
+cpu0: Received Request with command 3 (response to 153, addr 0x68c8) [Time: 117] [0 outstanding requests]
+cpu0: 846 Issued Read (154) for address 0x1540
+cpu0: Received Request with command 2 (response to 154, addr 0x1540) [Time: 117] [0 outstanding requests]
+cpu0: 845 Issued Read (155) for address 0xb590
+cpu0: Received Request with command 2 (response to 155, addr 0xb590) [Time: 14] [0 outstanding requests]
+cpu0: 844 Issued Read (156) for address 0xb358
+cpu0: Received Request with command 2 (response to 156, addr 0xb358) [Time: 3] [0 outstanding requests]
+cpu0: 843 Issued Read (157) for address 0xbb04
+cpu0: Received Request with command 2 (response to 157, addr 0xbb04) [Time: 117] [0 outstanding requests]
+cpu0: 842 Issued Write (158) for address 0xe3b0
+cpu0: 841 Issued Read (159) for address 0xf4c
+cpu0: 840 Issued Read (160) for address 0xebdc
+cpu0: 839 Issued Read (161) for address 0x40f8
+cpu0: 838 Issued Read (162) for address 0xb8e8
+cpu0: Received Request with command 3 (response to 158, addr 0xe3b0) [Time: 117] [4 outstanding requests]
+cpu0: Received Request with command 2 (response to 159, addr 0xf4c) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 160, addr 0xebdc) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 161, addr 0x40f8) [Time: 117] [1 outstanding requests]
+cpu0: 837 Issued Read (163) for address 0x93bc
+cpu0: Received Request with command 2 (response to 162, addr 0xb8e8) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 163, addr 0x93bc) [Time: 117] [0 outstanding requests]
+cpu0: 836 Issued Read (164) for address 0xddcc
+cpu0: 835 Issued Read (165) for address 0x7df0
+cpu0: Received Request with command 2 (response to 164, addr 0xddcc) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 165, addr 0x7df0) [Time: 117] [0 outstanding requests]
+cpu0: 834 Issued Read (166) for address 0xc230
+cpu0: 833 Issued Read (167) for address 0x379c
+cpu0: 832 Issued Read (168) for address 0xae84
+cpu0: 831 Issued Read (169) for address 0xd3f4
+cpu0: Received Request with command 2 (response to 166, addr 0xc230) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 167, addr 0x379c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 168, addr 0xae84) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 169, addr 0xd3f4) [Time: 117] [0 outstanding requests]
+cpu0: 830 Issued Read (170) for address 0xc8f4
+cpu0: 829 Issued Read (171) for address 0xd350
+cpu0: 828 Issued Read (172) for address 0x8f14
+cpu0: Received Request with command 2 (response to 170, addr 0xc8f4) [Time: 117] [2 outstanding requests]
+cpu0: 827 Issued Write (173) for address 0x8f80
+cpu0: 826 Issued Read (174) for address 0xf980
+cpu0: Received Request with command 2 (response to 171, addr 0xd350) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 172, addr 0x8f14) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 173, addr 0x8f80) [Time: 117] [1 outstanding requests]
+cpu0: 825 Issued Read (175) for address 0xf724
+cpu0: 824 Issued Read (176) for address 0x6998
+cpu0: Received Request with command 2 (response to 174, addr 0xf980) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 175, addr 0xf724) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 176, addr 0x6998) [Time: 117] [0 outstanding requests]
+cpu0: 823 Issued Write (177) for address 0x3dac
+cpu0: Received Request with command 3 (response to 177, addr 0x3dac) [Time: 117] [0 outstanding requests]
+cpu0: 822 Issued Read (178) for address 0xc4d4
+cpu0: 821 Issued Read (179) for address 0x14f8
+cpu0: 820 Issued Read (180) for address 0x489c
+cpu0: Received Request with command 2 (response to 178, addr 0xc4d4) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 179, addr 0x14f8) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 180, addr 0x489c) [Time: 117] [0 outstanding requests]
+cpu0: 819 Issued Read (181) for address 0xfd58
+cpu0: 818 Issued Read (182) for address 0x2cd4
+cpu0: 817 Issued Read (183) for address 0xcf48
+cpu0: 816 Issued Read (184) for address 0xd494
+cpu0: Received Request with command 2 (response to 181, addr 0xfd58) [Time: 117] [3 outstanding requests]
+cpu0: 815 Issued Read (185) for address 0xaecc
+cpu0: 814 Issued Read (186) for address 0xe40
+cpu0: Received Request with command 2 (response to 186, addr 0xe40) [Time: 14] [4 outstanding requests]
+cpu0: Received Request with command 2 (response to 182, addr 0x2cd4) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 183, addr 0xcf48) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 184, addr 0xd494) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 185, addr 0xaecc) [Time: 117] [0 outstanding requests]
+cpu0: 813 Issued Read (187) for address 0xae54
+cpu0: 812 Issued Read (188) for address 0x46d0
+cpu0: Received Request with command 2 (response to 187, addr 0xae54) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 188, addr 0x46d0) [Time: 117] [0 outstanding requests]
+cpu0: 811 Issued Read (189) for address 0x6818
+cpu0: 810 Issued Read (190) for address 0xc018
+cpu0: 809 Issued Read (191) for address 0xd500
+cpu0: Received Request with command 2 (response to 189, addr 0x6818) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 190, addr 0xc018) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 191, addr 0xd500) [Time: 117] [0 outstanding requests]
+cpu0: 808 Issued Read (192) for address 0xb250
+cpu0: 807 Issued Read (193) for address 0x1290
+cpu0: Received Request with command 2 (response to 192, addr 0xb250) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 193, addr 0x1290) [Time: 117] [0 outstanding requests]
+cpu0: 806 Issued Read (194) for address 0x4778
+cpu0: 805 Issued Read (195) for address 0x7b70
+cpu0: Received Request with command 2 (response to 194, addr 0x4778) [Time: 117] [1 outstanding requests]
+cpu0: 804 Issued Read (196) for address 0x4ad0
+cpu0: 803 Issued Read (197) for address 0xf58c
+cpu0: Received Request with command 2 (response to 195, addr 0x7b70) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 196, addr 0x4ad0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 197, addr 0xf58c) [Time: 117] [0 outstanding requests]
+cpu0: 802 Issued Read (198) for address 0x6e9c
+cpu0: Received Request with command 2 (response to 198, addr 0x6e9c) [Time: 14] [0 outstanding requests]
+cpu0: 801 Issued Read (199) for address 0x4a94
+cpu0: Received Request with command 2 (response to 199, addr 0x4a94) [Time: 14] [0 outstanding requests]
+cpu0: 800 Issued Read (200) for address 0x88e4
+cpu0: 799 Issued Read (201) for address 0x7038
+cpu0: Received Request with command 2 (response to 200, addr 0x88e4) [Time: 117] [1 outstanding requests]
+cpu0: 798 Issued Read (202) for address 0xf748
+cpu0: Received Request with command 2 (response to 202, addr 0xf748) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 201, addr 0x7038) [Time: 117] [0 outstanding requests]
+cpu0: 797 Issued Read (203) for address 0xffc0
+cpu0: Received Request with command 2 (response to 203, addr 0xffc0) [Time: 117] [0 outstanding requests]
+cpu0: 796 Issued Read (204) for address 0x1048
+cpu0: Received Request with command 2 (response to 204, addr 0x1048) [Time: 14] [0 outstanding requests]
+cpu0: 795 Issued Read (205) for address 0xb7cc
+cpu0: 794 Issued Read (206) for address 0x7b98
+cpu0: 793 Issued Read (207) for address 0x7598
+cpu0: 792 Issued Read (208) for address 0x318c
+cpu0: Received Request with command 2 (response to 205, addr 0xb7cc) [Time: 117] [3 outstanding requests]
+cpu0: 791 Issued Read (209) for address 0x50b0
+cpu0: Received Request with command 2 (response to 206, addr 0x7b98) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 207, addr 0x7598) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 208, addr 0x318c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 209, addr 0x50b0) [Time: 117] [0 outstanding requests]
+cpu0: 790 Issued Read (210) for address 0x4694
+cpu0: 789 Issued Read (211) for address 0xc418
+cpu0: Received Request with command 2 (response to 210, addr 0x4694) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 211, addr 0xc418) [Time: 117] [0 outstanding requests]
+cpu0: 788 Issued Read (212) for address 0xe758
+cpu0: Received Request with command 2 (response to 212, addr 0xe758) [Time: 14] [0 outstanding requests]
+cpu0: 787 Issued Write (213) for address 0xc6c
+cpu0: Received Request with command 3 (response to 213, addr 0xc6c) [Time: 117] [0 outstanding requests]
+cpu0: 786 Issued Read (214) for address 0x66ec
+cpu0: 785 Issued Read (215) for address 0xfd0
+cpu0: 784 Issued Read (216) for address 0xfb78
+cpu0: Received Request with command 2 (response to 214, addr 0x66ec) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 215, addr 0xfd0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 216, addr 0xfb78) [Time: 117] [0 outstanding requests]
+cpu0: 783 Issued Read (217) for address 0x5d38
+cpu0: 782 Issued Read (218) for address 0x20a4
+cpu0: Received Request with command 2 (response to 217, addr 0x5d38) [Time: 117] [1 outstanding requests]
+cpu0: 781 Issued Read (219) for address 0xd974
+cpu0: Received Request with command 2 (response to 218, addr 0x20a4) [Time: 117] [1 outstanding requests]
+cpu0: 780 Issued Read (220) for address 0xe50
+cpu0: Received Request with command 2 (response to 220, addr 0xe50) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 219, addr 0xd974) [Time: 117] [0 outstanding requests]
+cpu0: 779 Issued Read (221) for address 0x91bc
+cpu0: Received Request with command 2 (response to 221, addr 0x91bc) [Time: 117] [0 outstanding requests]
+cpu0: 778 Issued Read (222) for address 0x4820
+cpu0: Received Request with command 2 (response to 222, addr 0x4820) [Time: 117] [0 outstanding requests]
+cpu0: 777 Issued Read (223) for address 0xb55c
+cpu0: 776 Issued Read (224) for address 0x3f08
+cpu0: Received Request with command 2 (response to 223, addr 0xb55c) [Time: 117] [1 outstanding requests]
+cpu0: 775 Issued Read (225) for address 0x1d48
+cpu0: 774 Issued Read (226) for address 0x6cb8
+cpu0: Received Request with command 2 (response to 224, addr 0x3f08) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 225, addr 0x1d48) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 226, addr 0x6cb8) [Time: 117] [0 outstanding requests]
+cpu0: 773 Issued Read (227) for address 0x37ec
+cpu0: 772 Issued Read (228) for address 0xedf8
+cpu0: 771 Issued Read (229) for address 0xb0c0
+cpu0: Received Request with command 2 (response to 227, addr 0x37ec) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 228, addr 0xedf8) [Time: 117] [1 outstanding requests]
+cpu0: 770 Issued Read (230) for address 0xfb10
+cpu0: Received Request with command 2 (response to 230, addr 0xfb10) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 229, addr 0xb0c0) [Time: 117] [0 outstanding requests]
+cpu0: 769 Issued Read (231) for address 0x423c
+cpu0: 768 Issued Read (232) for address 0xe938
+cpu0: Received Request with command 2 (response to 231, addr 0x423c) [Time: 117] [1 outstanding requests]
+cpu0: 767 Issued Read (233) for address 0xcf78
+cpu0: Received Request with command 2 (response to 232, addr 0xe938) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 233, addr 0xcf78) [Time: 14] [0 outstanding requests]
+cpu0: 766 Issued Read (234) for address 0xa52c
+cpu0: Received Request with command 2 (response to 234, addr 0xa52c) [Time: 3] [0 outstanding requests]
+cpu0: 765 Issued Read (235) for address 0x419c
+cpu0: 764 Issued Read (236) for address 0xecbc
+cpu0: Received Request with command 2 (response to 236, addr 0xecbc) [Time: 14] [1 outstanding requests]
+cpu0: 763 Issued Read (237) for address 0x9a34
+cpu0: Received Request with command 2 (response to 235, addr 0x419c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 237, addr 0x9a34) [Time: 117] [0 outstanding requests]
+cpu0: 762 Issued Read (238) for address 0xf568
+cpu0: 761 Issued Read (239) for address 0x2554
+cpu0: Received Request with command 2 (response to 238, addr 0xf568) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 239, addr 0x2554) [Time: 117] [0 outstanding requests]
+cpu0: 760 Issued Read (240) for address 0x1830
+cpu0: Received Request with command 2 (response to 240, addr 0x1830) [Time: 117] [0 outstanding requests]
+cpu0: 759 Issued Read (241) for address 0x6fbc
+cpu0: Received Request with command 2 (response to 241, addr 0x6fbc) [Time: 117] [0 outstanding requests]
+cpu0: 758 Issued Read (242) for address 0x3a30
+cpu0: Received Request with command 2 (response to 242, addr 0x3a30) [Time: 117] [0 outstanding requests]
+cpu0: 757 Issued Read (243) for address 0xcc0c
+cpu0: 756 Issued Read (244) for address 0xcd0c
+cpu0: 755 Issued Read (245) for address 0x1078
+cpu0: Received Request with command 2 (response to 245, addr 0x1078) [Time: 3] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 243, addr 0xcc0c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 244, addr 0xcd0c) [Time: 117] [0 outstanding requests]
+cpu0: 754 Issued Write (246) for address 0xd4f4
+cpu0: Received Request with command 3 (response to 246, addr 0xd4f4) [Time: 117] [0 outstanding requests]
+cpu0: 753 Issued Read (247) for address 0x9034
+cpu0: 752 Issued Read (248) for address 0xb8b4
+cpu0: 751 Issued Read (249) for address 0x3508
+cpu0: Received Request with command 2 (response to 247, addr 0x9034) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 248, addr 0xb8b4) [Time: 117] [1 outstanding requests]
+cpu0: 750 Issued Read (250) for address 0xaf40
+cpu0: Received Request with command 2 (response to 249, addr 0x3508) [Time: 117] [1 outstanding requests]
+cpu0: 749 Issued Write (251) for address 0x57f4
+cpu0: 748 Issued Read (252) for address 0xc668
+cpu0: Received Request with command 2 (response to 250, addr 0xaf40) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 251, addr 0x57f4) [Time: 117] [1 outstanding requests]
+cpu0: 747 Issued Read (253) for address 0x8068
+cpu0: Received Request with command 2 (response to 253, addr 0x8068) [Time: 14] [1 outstanding requests]
+cpu0: 746 Issued Read (254) for address 0xeb6c
+cpu0: Received Request with command 2 (response to 252, addr 0xc668) [Time: 117] [1 outstanding requests]
+cpu0: 745 Issued Read (255) for address 0x7d58
+cpu0: 744 Issued Read (256) for address 0x30d0
+cpu0: Received Request with command 2 (response to 254, addr 0xeb6c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 255, addr 0x7d58) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 256, addr 0x30d0) [Time: 117] [0 outstanding requests]
+cpu0: 743 Issued Read (257) for address 0xee30
+cpu0: Received Request with command 2 (response to 257, addr 0xee30) [Time: 14] [0 outstanding requests]
+cpu0: 742 Issued Read (258) for address 0x7134
+cpu0: Received Request with command 2 (response to 258, addr 0x7134) [Time: 14] [0 outstanding requests]
+cpu0: 741 Issued Read (259) for address 0x715c
+cpu0: 740 Issued Read (260) for address 0x978
+cpu0: 739 Issued Read (261) for address 0xa8e8
+cpu0: Received Request with command 2 (response to 259, addr 0x715c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 260, addr 0x978) [Time: 14] [1 outstanding requests]
+cpu0: 738 Issued Read (262) for address 0xa554
+cpu0: Received Request with command 2 (response to 261, addr 0xa8e8) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 262, addr 0xa554) [Time: 117] [0 outstanding requests]
+cpu0: 737 Issued Read (263) for address 0x16e4
+cpu0: 736 Issued Read (264) for address 0xbee4
+cpu0: 735 Issued Read (265) for address 0xe818
+cpu0: 734 Issued Read (266) for address 0xe634
+cpu0: Received Request with command 2 (response to 263, addr 0x16e4) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 264, addr 0xbee4) [Time: 117] [2 outstanding requests]
+cpu0: 733 Issued Read (267) for address 0xfcbc
+cpu0: 732 Issued Read (268) for address 0xd614
+cpu0: Received Request with command 2 (response to 265, addr 0xe818) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 266, addr 0xe634) [Time: 117] [2 outstanding requests]
+cpu0: 731 Issued Read (269) for address 0xf9c
+cpu0: Received Request with command 2 (response to 267, addr 0xfcbc) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 268, addr 0xd614) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 269, addr 0xf9c) [Time: 117] [0 outstanding requests]
+cpu0: 730 Issued Read (270) for address 0x54
+cpu0: Received Request with command 2 (response to 270, addr 0x54) [Time: 117] [0 outstanding requests]
+cpu0: 729 Issued Read (271) for address 0xda2c
+cpu0: Received Request with command 2 (response to 271, addr 0xda2c) [Time: 14] [0 outstanding requests]
+cpu0: 728 Issued Read (272) for address 0xfffc
+cpu0: Received Request with command 2 (response to 272, addr 0xfffc) [Time: 14] [0 outstanding requests]
+cpu0: 727 Issued Read (273) for address 0x264c
+cpu0: 726 Issued Write (274) for address 0xbac
+cpu0: Received Request with command 2 (response to 273, addr 0x264c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 274, addr 0xbac) [Time: 117] [0 outstanding requests]
+cpu0: 725 Issued Read (275) for address 0xb9f0
+cpu0: 724 Issued Read (276) for address 0xa5a8
+cpu0: 723 Issued Read (277) for address 0x6ce4
+cpu0: Received Request with command 2 (response to 275, addr 0xb9f0) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 276, addr 0xa5a8) [Time: 117] [1 outstanding requests]
+cpu0: 722 Issued Read (278) for address 0x891c
+cpu0: Received Request with command 2 (response to 278, addr 0x891c) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 277, addr 0x6ce4) [Time: 117] [0 outstanding requests]
+cpu0: 721 Issued Read (279) for address 0x844c
+cpu0: 720 Issued Read (280) for address 0x68d8
+cpu0: Received Request with command 2 (response to 280, addr 0x68d8) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 279, addr 0x844c) [Time: 117] [0 outstanding requests]
+cpu0: 719 Issued Read (281) for address 0xe11c
+cpu0: 718 Issued Read (282) for address 0x6bac
+cpu0: Received Request with command 2 (response to 281, addr 0xe11c) [Time: 117] [1 outstanding requests]
+cpu0: 717 Issued Read (283) for address 0x568c
+cpu0: Received Request with command 2 (response to 282, addr 0x6bac) [Time: 117] [1 outstanding requests]
+cpu0: 716 Issued Write (284) for address 0x2670
+cpu0: Received Request with command 2 (response to 283, addr 0x568c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 284, addr 0x2670) [Time: 117] [0 outstanding requests]
+cpu0: 715 Issued Read (285) for address 0x172c
+cpu0: Received Request with command 2 (response to 285, addr 0x172c) [Time: 14] [0 outstanding requests]
+cpu0: 714 Issued Write (286) for address 0x470c
+cpu0: 713 Issued Read (287) for address 0x8c3c
+cpu0: Received Request with command 3 (response to 286, addr 0x470c) [Time: 117] [1 outstanding requests]
+cpu0: 712 Issued Write (288) for address 0x1e9c
+cpu0: 711 Issued Read (289) for address 0x85a8
+cpu0: Received Request with command 2 (response to 287, addr 0x8c3c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 288, addr 0x1e9c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 289, addr 0x85a8) [Time: 117] [0 outstanding requests]
+cpu0: 710 Issued Read (290) for address 0x91d4
+cpu0: 709 Issued Read (291) for address 0xf334
+cpu0: 708 Issued Read (292) for address 0xd2c8
+cpu0: Received Request with command 2 (response to 290, addr 0x91d4) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 291, addr 0xf334) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 292, addr 0xd2c8) [Time: 117] [0 outstanding requests]
+cpu0: 707 Issued Read (293) for address 0x87b0
+cpu0: 706 Issued Read (294) for address 0x8d5c
+cpu0: Received Request with command 2 (response to 293, addr 0x87b0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 294, addr 0x8d5c) [Time: 117] [0 outstanding requests]
+cpu0: 705 Issued Read (295) for address 0x36d4
+cpu0: 704 Issued Read (296) for address 0xd460
+cpu0: 703 Issued Write (297) for address 0xca30
+cpu0: 702 Issued Write (298) for address 0xe60
+cpu0: 701 Issued Read (299) for address 0xc3c0
+cpu0: Received Request with command 2 (response to 295, addr 0x36d4) [Time: 117] [4 outstanding requests]
+cpu0: Received Request with command 2 (response to 296, addr 0xd460) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 3 (response to 297, addr 0xca30) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 298, addr 0xe60) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 299, addr 0xc3c0) [Time: 117] [0 outstanding requests]
+cpu0: 700 Issued Read (300) for address 0x584c
+cpu0: 699 Issued Read (301) for address 0xd8f0
+cpu0: Received Request with command 2 (response to 301, addr 0xd8f0) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 300, addr 0x584c) [Time: 117] [0 outstanding requests]
+cpu0: 698 Issued Read (302) for address 0xb78c
+cpu0: Received Request with command 2 (response to 302, addr 0xb78c) [Time: 14] [0 outstanding requests]
+cpu0: 697 Issued Read (303) for address 0xcc70
+cpu0: Received Request with command 2 (response to 303, addr 0xcc70) [Time: 14] [0 outstanding requests]
+cpu0: 696 Issued Read (304) for address 0xd888
+cpu0: 695 Issued Read (305) for address 0x1f04
+cpu0: 694 Issued Read (306) for address 0x1d74
+cpu0: 693 Issued Read (307) for address 0xebe4
+cpu0: Received Request with command 2 (response to 306, addr 0x1d74) [Time: 14] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 307, addr 0xebe4) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 304, addr 0xd888) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 305, addr 0x1f04) [Time: 117] [0 outstanding requests]
+cpu0: 692 Issued Read (308) for address 0x7cbc
+cpu0: 691 Issued Read (309) for address 0x4618
+cpu0: Received Request with command 2 (response to 308, addr 0x7cbc) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 309, addr 0x4618) [Time: 117] [0 outstanding requests]
+cpu0: 690 Issued Read (310) for address 0x18f4
+cpu0: 689 Issued Write (311) for address 0x52c
+cpu0: 688 Issued Read (312) for address 0x6adc
+cpu0: Received Request with command 2 (response to 310, addr 0x18f4) [Time: 117] [2 outstanding requests]
+cpu0: 687 Issued Read (313) for address 0x9020
+cpu0: Received Request with command 2 (response to 313, addr 0x9020) [Time: 3] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 311, addr 0x52c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 312, addr 0x6adc) [Time: 117] [0 outstanding requests]
+cpu0: 686 Issued Read (314) for address 0xeb24
+cpu0: 685 Issued Write (315) for address 0x6928
+cpu0: Received Request with command 2 (response to 314, addr 0xeb24) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 315, addr 0x6928) [Time: 117] [0 outstanding requests]
+cpu0: 684 Issued Read (316) for address 0x31f0
+cpu0: Received Request with command 2 (response to 316, addr 0x31f0) [Time: 117] [0 outstanding requests]
+cpu0: 683 Issued Read (317) for address 0xc8a4
+cpu0: Received Request with command 2 (response to 317, addr 0xc8a4) [Time: 117] [0 outstanding requests]
+cpu0: 682 Issued Read (318) for address 0x8328
+cpu0: 681 Issued Read (319) for address 0xc920
+cpu0: 680 Issued Read (320) for address 0xaeb8
+cpu0: Received Request with command 2 (response to 320, addr 0xaeb8) [Time: 14] [2 outstanding requests]
+cpu0: 679 Issued Read (321) for address 0x38dc
+cpu0: Received Request with command 2 (response to 318, addr 0x8328) [Time: 117] [2 outstanding requests]
+cpu0: 678 Issued Write (322) for address 0xed8c
+cpu0: Received Request with command 2 (response to 319, addr 0xc920) [Time: 117] [2 outstanding requests]
+cpu0: 677 Issued Read (323) for address 0x4334
+cpu0: Received Request with command 2 (response to 321, addr 0x38dc) [Time: 117] [2 outstanding requests]
+cpu0: 676 Issued Write (324) for address 0xfc30
+cpu0: 675 Issued Write (325) for address 0x75c8
+cpu0: Received Request with command 3 (response to 322, addr 0xed8c) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 323, addr 0x4334) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 324, addr 0xfc30) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 325, addr 0x75c8) [Time: 117] [0 outstanding requests]
+cpu0: 674 Issued Read (326) for address 0x2df4
+cpu0: 673 Issued Read (327) for address 0xe840
+cpu0: 672 Issued Read (328) for address 0xf3c0
+cpu0: Received Request with command 2 (response to 326, addr 0x2df4) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 327, addr 0xe840) [Time: 117] [1 outstanding requests]
+cpu0: 671 Issued Read (329) for address 0xe980
+cpu0: Received Request with command 2 (response to 328, addr 0xf3c0) [Time: 117] [1 outstanding requests]
+cpu0: 670 Issued Read (330) for address 0x1374
+cpu0: Received Request with command 2 (response to 329, addr 0xe980) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 330, addr 0x1374) [Time: 117] [0 outstanding requests]
+cpu0: 669 Issued Read (331) for address 0x2214
+cpu0: 668 Issued Read (332) for address 0x15e8
+cpu0: Received Request with command 2 (response to 331, addr 0x2214) [Time: 117] [1 outstanding requests]
+cpu0: 667 Issued Read (333) for address 0xc6b8
+cpu0: Received Request with command 2 (response to 332, addr 0x15e8) [Time: 117] [1 outstanding requests]
+cpu0: 666 Issued Read (334) for address 0xa148
+cpu0: Received Request with command 2 (response to 333, addr 0xc6b8) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 334, addr 0xa148) [Time: 117] [0 outstanding requests]
+cpu0: 665 Issued Write (335) for address 0x3b2c
+cpu0: 664 Issued Read (336) for address 0x3d48
+cpu0: 663 Issued Read (337) for address 0xa19c
+cpu0: 662 Issued Read (338) for address 0xf5f0
+cpu0: Received Request with command 3 (response to 335, addr 0x3b2c) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 336, addr 0x3d48) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 337, addr 0xa19c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 338, addr 0xf5f0) [Time: 117] [0 outstanding requests]
+cpu0: 661 Issued Read (339) for address 0x6cf8
+cpu0: Received Request with command 2 (response to 339, addr 0x6cf8) [Time: 14] [0 outstanding requests]
+cpu0: 660 Issued Read (340) for address 0xe24c
+cpu0: Received Request with command 2 (response to 340, addr 0xe24c) [Time: 14] [0 outstanding requests]
+cpu0: 659 Issued Read (341) for address 0x730c
+cpu0: 658 Issued Read (342) for address 0x2704
+cpu0: Received Request with command 2 (response to 341, addr 0x730c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 342, addr 0x2704) [Time: 117] [0 outstanding requests]
+cpu0: 657 Issued Read (343) for address 0x4c1c
+cpu0: 656 Issued Write (344) for address 0x3c08
+cpu0: Received Request with command 2 (response to 343, addr 0x4c1c) [Time: 117] [1 outstanding requests]
+cpu0: 655 Issued Read (345) for address 0x184
+cpu0: 654 Issued Read (346) for address 0xd1e8
+cpu0: Received Request with command 3 (response to 344, addr 0x3c08) [Time: 117] [2 outstanding requests]
+cpu0: 653 Issued Read (347) for address 0x2678
+cpu0: Received Request with command 2 (response to 347, addr 0x2678) [Time: 3] [2 outstanding requests]
+cpu0: 652 Issued Read (348) for address 0xd1dc
+cpu0: 651 Issued Read (349) for address 0x1240
+cpu0: Received Request with command 2 (response to 345, addr 0x184) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 346, addr 0xd1e8) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 348, addr 0xd1dc) [Time: 40] [1 outstanding requests]
+cpu0: 650 Issued Read (350) for address 0x44
+cpu0: Received Request with command 2 (response to 350, addr 0x44) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 349, addr 0x1240) [Time: 117] [0 outstanding requests]
+cpu0: 649 Issued Read (351) for address 0x26d4
+cpu0: 648 Issued Read (352) for address 0xd45c
+cpu0: Received Request with command 2 (response to 352, addr 0xd45c) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 351, addr 0x26d4) [Time: 117] [0 outstanding requests]
+cpu0: 647 Issued Read (353) for address 0x5868
+cpu0: Received Request with command 2 (response to 353, addr 0x5868) [Time: 14] [0 outstanding requests]
+cpu0: 646 Issued Read (354) for address 0x6cf4
+cpu0: Received Request with command 2 (response to 354, addr 0x6cf4) [Time: 3] [0 outstanding requests]
+cpu0: 645 Issued Read (355) for address 0x9dc0
+cpu0: 644 Issued Read (356) for address 0xe268
+cpu0: Received Request with command 2 (response to 356, addr 0xe268) [Time: 3] [1 outstanding requests]
+cpu0: 643 Issued Read (357) for address 0x9b28
+cpu0: Received Request with command 2 (response to 355, addr 0x9dc0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 357, addr 0x9b28) [Time: 117] [0 outstanding requests]
+cpu0: 642 Issued Read (358) for address 0x10dc
+cpu0: 641 Issued Read (359) for address 0xa8
+cpu0: 640 Issued Read (360) for address 0x9884
+cpu0: Received Request with command 2 (response to 358, addr 0x10dc) [Time: 117] [2 outstanding requests]
+cpu0: 639 Issued Read (361) for address 0xb7e0
+cpu0: Received Request with command 2 (response to 359, addr 0xa8) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 360, addr 0x9884) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 361, addr 0xb7e0) [Time: 14] [0 outstanding requests]
+cpu0: 638 Issued Read (362) for address 0x8a3c
+cpu0: Received Request with command 2 (response to 362, addr 0x8a3c) [Time: 14] [0 outstanding requests]
+cpu0: 637 Issued Read (363) for address 0x5cf8
+cpu0: 636 Issued Read (364) for address 0xdf6c
+cpu0: 635 Issued Read (365) for address 0x9254
+cpu0: 634 Issued Read (366) for address 0xb000
+cpu0: Received Request with command 2 (response to 363, addr 0x5cf8) [Time: 117] [3 outstanding requests]
+cpu0: 633 Issued Read (367) for address 0x9ca4
+cpu0: Received Request with command 2 (response to 364, addr 0xdf6c) [Time: 117] [3 outstanding requests]
+cpu0: 632 Issued Read (368) for address 0x8e88
+cpu0: 631 Issued Read (369) for address 0xd6d4
+cpu0: Received Request with command 2 (response to 365, addr 0x9254) [Time: 117] [4 outstanding requests]
+cpu0: 630 Issued Read (370) for address 0x9d88
+cpu0: 629 Issued Read (371) for address 0x34fc
+cpu0: Received Request with command 2 (response to 371, addr 0x34fc) [Time: 14] [5 outstanding requests]
+cpu0: Received Request with command 2 (response to 366, addr 0xb000) [Time: 117] [4 outstanding requests]
+cpu0: Received Request with command 2 (response to 367, addr 0x9ca4) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 368, addr 0x8e88) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 369, addr 0xd6d4) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 370, addr 0x9d88) [Time: 117] [0 outstanding requests]
+cpu0: 628 Issued Read (372) for address 0x544c
+cpu0: Received Request with command 2 (response to 372, addr 0x544c) [Time: 117] [0 outstanding requests]
+cpu0: 627 Issued Read (373) for address 0x7bbc
+cpu0: Received Request with command 2 (response to 373, addr 0x7bbc) [Time: 14] [0 outstanding requests]
+cpu0: 626 Issued Read (374) for address 0x54f8
+cpu0: 625 Issued Read (375) for address 0x6940
+cpu0: 624 Issued Read (376) for address 0x2b9c
+cpu0: Received Request with command 2 (response to 374, addr 0x54f8) [Time: 117] [2 outstanding requests]
+cpu0: 623 Issued Read (377) for address 0xfe38
+cpu0: Received Request with command 2 (response to 375, addr 0x6940) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 376, addr 0x2b9c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 377, addr 0xfe38) [Time: 117] [0 outstanding requests]
+cpu0: 622 Issued Write (378) for address 0x818c
+cpu0: 621 Issued Read (379) for address 0xb320
+cpu0: Received Request with command 3 (response to 378, addr 0x818c) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 379, addr 0xb320) [Time: 117] [0 outstanding requests]
+cpu0: 620 Issued Read (380) for address 0x2e1c
+cpu0: 619 Issued Read (381) for address 0x8a84
+cpu0: Received Request with command 2 (response to 380, addr 0x2e1c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 381, addr 0x8a84) [Time: 14] [0 outstanding requests]
+cpu0: 618 Issued Read (382) for address 0xf78
+cpu0: Received Request with command 2 (response to 382, addr 0xf78) [Time: 14] [0 outstanding requests]
+cpu0: 617 Issued Read (383) for address 0x283c
+cpu0: 616 Issued Read (384) for address 0x7370
+cpu0: Received Request with command 2 (response to 383, addr 0x283c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 384, addr 0x7370) [Time: 117] [0 outstanding requests]
+cpu0: 615 Issued Read (385) for address 0xe08c
+cpu0: 614 Issued Read (386) for address 0xdbe0
+cpu0: Received Request with command 2 (response to 385, addr 0xe08c) [Time: 117] [1 outstanding requests]
+cpu0: 613 Issued Read (387) for address 0xe750
+cpu0: Received Request with command 2 (response to 387, addr 0xe750) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 386, addr 0xdbe0) [Time: 117] [0 outstanding requests]
+cpu0: 612 Issued Read (388) for address 0xf964
+cpu0: 611 Issued Read (389) for address 0x69a8
+cpu0: 610 Issued Read (390) for address 0x6098
+cpu0: Received Request with command 2 (response to 389, addr 0x69a8) [Time: 14] [2 outstanding requests]
+cpu0: 609 Issued Read (391) for address 0x58c4
+cpu0: Received Request with command 2 (response to 388, addr 0xf964) [Time: 117] [2 outstanding requests]
+cpu0: 608 Issued Read (392) for address 0xa6e8
+cpu0: Received Request with command 2 (response to 390, addr 0x6098) [Time: 117] [2 outstanding requests]
+cpu0: 607 Issued Read (393) for address 0x218
+cpu0: Received Request with command 2 (response to 393, addr 0x218) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 391, addr 0x58c4) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 392, addr 0xa6e8) [Time: 117] [0 outstanding requests]
+cpu0: 606 Issued Read (394) for address 0x8f78
+cpu0: Received Request with command 2 (response to 394, addr 0x8f78) [Time: 14] [0 outstanding requests]
+cpu0: 605 Issued Read (395) for address 0xda5c
+cpu0: 604 Issued Read (396) for address 0xcbf8
+cpu0: Received Request with command 2 (response to 395, addr 0xda5c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 396, addr 0xcbf8) [Time: 117] [0 outstanding requests]
+cpu0: 603 Issued Write (397) for address 0xc228
+cpu0: 602 Issued Read (398) for address 0x12f0
+cpu0: 601 Issued Write (399) for address 0x2630
+cpu0: Received Request with command 3 (response to 397, addr 0xc228) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 398, addr 0x12f0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 399, addr 0x2630) [Time: 117] [0 outstanding requests]
+cpu0: 600 Issued Read (400) for address 0x2d2c
+cpu0: 599 Issued Write (401) for address 0xd604
+cpu0: Received Request with command 2 (response to 400, addr 0x2d2c) [Time: 117] [1 outstanding requests]
+cpu0: 598 Issued Read (402) for address 0x8710
+cpu0: Received Request with command 3 (response to 401, addr 0xd604) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 402, addr 0x8710) [Time: 117] [0 outstanding requests]
+cpu0: 597 Issued Read (403) for address 0xf9c
+cpu0: Received Request with command 2 (response to 403, addr 0xf9c) [Time: 14] [0 outstanding requests]
+cpu0: 596 Issued Read (404) for address 0x5388
+cpu0: 595 Issued Read (405) for address 0xba30
+cpu0: Received Request with command 2 (response to 404, addr 0x5388) [Time: 117] [1 outstanding requests]
+cpu0: 594 Issued Read (406) for address 0x57b4
+cpu0: Received Request with command 2 (response to 405, addr 0xba30) [Time: 117] [1 outstanding requests]
+cpu0: 593 Issued Read (407) for address 0xfc1c
+cpu0: Received Request with command 2 (response to 407, addr 0xfc1c) [Time: 14] [1 outstanding requests]
+cpu0: 592 Issued Read (408) for address 0x4f20
+cpu0: Received Request with command 2 (response to 406, addr 0x57b4) [Time: 117] [1 outstanding requests]
+cpu0: 591 Issued Read (409) for address 0x6214
+cpu0: 590 Issued Read (410) for address 0xe998
+cpu0: Received Request with command 2 (response to 410, addr 0xe998) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 408, addr 0x4f20) [Time: 117] [1 outstanding requests]
+cpu0: 589 Issued Read (411) for address 0xa788
+cpu0: Received Request with command 2 (response to 411, addr 0xa788) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 409, addr 0x6214) [Time: 117] [0 outstanding requests]
+cpu0: 588 Issued Read (412) for address 0x7b00
+cpu0: 587 Issued Read (413) for address 0xf68
+cpu0: Received Request with command 2 (response to 413, addr 0xf68) [Time: 3] [1 outstanding requests]
+cpu0: 586 Issued Write (414) for address 0x5748
+cpu0: 585 Issued Read (415) for address 0x8b8
+cpu0: Received Request with command 2 (response to 412, addr 0x7b00) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 414, addr 0x5748) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 415, addr 0x8b8) [Time: 117] [0 outstanding requests]
+cpu0: 584 Issued Read (416) for address 0x4258
+cpu0: Received Request with command 2 (response to 416, addr 0x4258) [Time: 14] [0 outstanding requests]
+cpu0: 583 Issued Read (417) for address 0x1064
+cpu0: Received Request with command 2 (response to 417, addr 0x1064) [Time: 14] [0 outstanding requests]
+cpu0: 582 Issued Read (418) for address 0xdbc8
+cpu0: Received Request with command 2 (response to 418, addr 0xdbc8) [Time: 3] [0 outstanding requests]
+cpu0: 581 Issued Write (419) for address 0x4144
+cpu0: Received Request with command 3 (response to 419, addr 0x4144) [Time: 117] [0 outstanding requests]
+cpu0: 580 Issued Read (420) for address 0x436c
+cpu0: 579 Issued Read (421) for address 0x83d8
+cpu0: 578 Issued Read (422) for address 0x8b8
+cpu0: Received Request with command 2 (response to 420, addr 0x436c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 422, addr 0x8b8) [Time: 3] [1 outstanding requests]
+cpu0: 577 Issued Read (423) for address 0xdf58
+cpu0: Received Request with command 2 (response to 423, addr 0xdf58) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 421, addr 0x83d8) [Time: 117] [0 outstanding requests]
+cpu0: 576 Issued Read (424) for address 0x9afc
+cpu0: 575 Issued Write (425) for address 0x4680
+cpu0: Received Request with command 2 (response to 424, addr 0x9afc) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 425, addr 0x4680) [Time: 117] [0 outstanding requests]
+cpu0: 574 Issued Read (426) for address 0xdadc
+cpu0: Received Request with command 2 (response to 426, addr 0xdadc) [Time: 117] [0 outstanding requests]
+cpu0: 573 Issued Read (427) for address 0x8054
+cpu0: Received Request with command 2 (response to 427, addr 0x8054) [Time: 14] [0 outstanding requests]
+cpu0: 572 Issued Write (428) for address 0x38f8
+cpu0: 571 Issued Read (429) for address 0xd848
+cpu0: 570 Issued Read (430) for address 0xdab8
+cpu0: 569 Issued Read (431) for address 0x3594
+cpu0: Received Request with command 3 (response to 428, addr 0x38f8) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 429, addr 0xd848) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 430, addr 0xdab8) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 431, addr 0x3594) [Time: 117] [0 outstanding requests]
+cpu0: 568 Issued Read (432) for address 0x49ec
+cpu0: 567 Issued Read (433) for address 0x6f80
+cpu0: 566 Issued Read (434) for address 0xc814
+cpu0: Received Request with command 2 (response to 433, addr 0x6f80) [Time: 14] [2 outstanding requests]
+cpu0: 565 Issued Write (435) for address 0xcdc0
+cpu0: Received Request with command 2 (response to 432, addr 0x49ec) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 434, addr 0xc814) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 435, addr 0xcdc0) [Time: 117] [0 outstanding requests]
+cpu0: 564 Issued Write (436) for address 0xb828
+cpu0: Received Request with command 3 (response to 436, addr 0xb828) [Time: 117] [0 outstanding requests]
+cpu0: 563 Issued Read (437) for address 0x2dbc
+cpu0: 562 Issued Read (438) for address 0x658c
+cpu0: Received Request with command 2 (response to 437, addr 0x2dbc) [Time: 117] [1 outstanding requests]
+cpu0: 561 Issued Read (439) for address 0x5374
+cpu0: 560 Issued Read (440) for address 0x1a24
+cpu0: Received Request with command 2 (response to 438, addr 0x658c) [Time: 117] [2 outstanding requests]
+cpu0: 559 Issued Read (441) for address 0xdc3c
+cpu0: 558 Issued Write (442) for address 0xacc0
+cpu0: Received Request with command 2 (response to 439, addr 0x5374) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 440, addr 0x1a24) [Time: 117] [2 outstanding requests]
+cpu0: 557 Issued Read (443) for address 0x827c
+cpu0: Received Request with command 2 (response to 441, addr 0xdc3c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 442, addr 0xacc0) [Time: 117] [1 outstanding requests]
+cpu0: 556 Issued Read (444) for address 0xdfc8
+cpu0: Received Request with command 2 (response to 443, addr 0x827c) [Time: 117] [1 outstanding requests]
+cpu0: 555 Issued Read (445) for address 0xdbc4
+cpu0: Received Request with command 2 (response to 445, addr 0xdbc4) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 444, addr 0xdfc8) [Time: 117] [0 outstanding requests]
+cpu0: 554 Issued Read (446) for address 0xc49c
+cpu0: 553 Issued Read (447) for address 0x4dc
+cpu0: 552 Issued Read (448) for address 0x5e8c
+cpu0: Received Request with command 2 (response to 446, addr 0xc49c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 447, addr 0x4dc) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 448, addr 0x5e8c) [Time: 117] [0 outstanding requests]
+cpu0: 551 Issued Write (449) for address 0x9d88
+cpu0: Received Request with command 3 (response to 449, addr 0x9d88) [Time: 117] [0 outstanding requests]
+cpu0: 550 Issued Read (450) for address 0x2d60
+cpu0: Received Request with command 2 (response to 450, addr 0x2d60) [Time: 117] [0 outstanding requests]
+cpu0: 549 Issued Read (451) for address 0x818c
+cpu0: Received Request with command 2 (response to 451, addr 0x818c) [Time: 14] [0 outstanding requests]
+cpu0: 548 Issued Read (452) for address 0x8b4
+cpu0: Received Request with command 2 (response to 452, addr 0x8b4) [Time: 3] [0 outstanding requests]
+cpu0: 547 Issued Read (453) for address 0xb1c
+cpu0: 546 Issued Read (454) for address 0x61a8
+cpu0: Received Request with command 2 (response to 453, addr 0xb1c) [Time: 117] [1 outstanding requests]
+cpu0: 545 Issued Read (455) for address 0x7ff0
+cpu0: Received Request with command 2 (response to 454, addr 0x61a8) [Time: 117] [1 outstanding requests]
+cpu0: 544 Issued Write (456) for address 0x4014
+cpu0: Received Request with command 2 (response to 455, addr 0x7ff0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 456, addr 0x4014) [Time: 117] [0 outstanding requests]
+cpu0: 543 Issued Read (457) for address 0x3518
+cpu0: Received Request with command 2 (response to 457, addr 0x3518) [Time: 14] [0 outstanding requests]
+cpu0: 542 Issued Read (458) for address 0xf514
+cpu0: Received Request with command 2 (response to 458, addr 0xf514) [Time: 117] [0 outstanding requests]
+cpu0: 541 Issued Read (459) for address 0x14c4
+cpu0: Received Request with command 2 (response to 459, addr 0x14c4) [Time: 14] [0 outstanding requests]
+cpu0: 540 Issued Read (460) for address 0xa700
+cpu0: 539 Issued Read (461) for address 0xa960
+cpu0: 538 Issued Read (462) for address 0xacf0
+cpu0: Received Request with command 2 (response to 462, addr 0xacf0) [Time: 3] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 460, addr 0xa700) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 461, addr 0xa960) [Time: 117] [0 outstanding requests]
+cpu0: 537 Issued Read (463) for address 0x9a3c
+cpu0: Received Request with command 2 (response to 463, addr 0x9a3c) [Time: 14] [0 outstanding requests]
+cpu0: 536 Issued Read (464) for address 0x7384
+cpu0: Received Request with command 2 (response to 464, addr 0x7384) [Time: 14] [0 outstanding requests]
+cpu0: 535 Issued Write (465) for address 0x3acc
+cpu0: 534 Issued Read (466) for address 0xc12c
+cpu0: Received Request with command 2 (response to 466, addr 0xc12c) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 465, addr 0x3acc) [Time: 117] [0 outstanding requests]
+cpu0: 533 Issued Read (467) for address 0x1ab4
+cpu0: 532 Issued Read (468) for address 0x1a38
+cpu0: Received Request with command 2 (response to 468, addr 0x1a38) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 467, addr 0x1ab4) [Time: 117] [0 outstanding requests]
+cpu0: 531 Issued Read (469) for address 0xc374
+cpu0: 530 Issued Read (470) for address 0xf1d0
+cpu0: Received Request with command 2 (response to 469, addr 0xc374) [Time: 14] [1 outstanding requests]
+cpu0: 529 Issued Read (471) for address 0x8294
+cpu0: Received Request with command 2 (response to 470, addr 0xf1d0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 471, addr 0x8294) [Time: 117] [0 outstanding requests]
+cpu0: 528 Issued Read (472) for address 0x95f4
+cpu0: 527 Issued Read (473) for address 0x950
+cpu0: Received Request with command 2 (response to 473, addr 0x950) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 472, addr 0x95f4) [Time: 117] [0 outstanding requests]
+cpu0: 526 Issued Read (474) for address 0xfd08
+cpu0: 525 Issued Read (475) for address 0x42b4
+cpu0: Received Request with command 2 (response to 475, addr 0x42b4) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 474, addr 0xfd08) [Time: 117] [0 outstanding requests]
+cpu0: 524 Issued Read (476) for address 0x99cc
+cpu0: Received Request with command 2 (response to 476, addr 0x99cc) [Time: 117] [0 outstanding requests]
+cpu0: 523 Issued Write (477) for address 0x66ac
+cpu0: Received Request with command 3 (response to 477, addr 0x66ac) [Time: 117] [0 outstanding requests]
+cpu0: 522 Issued Read (478) for address 0x6d58
+cpu0: Received Request with command 2 (response to 478, addr 0x6d58) [Time: 117] [0 outstanding requests]
+cpu0: 521 Issued Read (479) for address 0xacc
+cpu0: 520 Issued Read (480) for address 0xde30
+cpu0: Received Request with command 2 (response to 479, addr 0xacc) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 480, addr 0xde30) [Time: 117] [0 outstanding requests]
+cpu0: 519 Issued Read (481) for address 0xafbc
+cpu0: 518 Issued Read (482) for address 0x5b18
+cpu0: Received Request with command 2 (response to 481, addr 0xafbc) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 482, addr 0x5b18) [Time: 117] [0 outstanding requests]
+cpu0: 517 Issued Read (483) for address 0x39fc
+cpu0: 516 Issued Read (484) for address 0x2b8c
+cpu0: Received Request with command 2 (response to 484, addr 0x2b8c) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 483, addr 0x39fc) [Time: 117] [0 outstanding requests]
+cpu0: 515 Issued Read (485) for address 0x94f8
+cpu0: 514 Issued Read (486) for address 0x4b4c
+cpu0: 513 Issued Read (487) for address 0x8bf8
+cpu0: Received Request with command 2 (response to 485, addr 0x94f8) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 486, addr 0x4b4c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 487, addr 0x8bf8) [Time: 117] [0 outstanding requests]
+cpu0: 512 Issued Read (488) for address 0xb990
+cpu0: Received Request with command 2 (response to 488, addr 0xb990) [Time: 117] [0 outstanding requests]
+cpu0: 511 Issued Read (489) for address 0x86e0
+cpu0: 510 Issued Read (490) for address 0x86a8
+cpu0: Received Request with command 2 (response to 489, addr 0x86e0) [Time: 117] [1 outstanding requests]
+cpu0: 509 Issued Read (491) for address 0xf89c
+cpu0: 508 Issued Read (492) for address 0x6554
+cpu0: Received Request with command 2 (response to 490, addr 0x86a8) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 491, addr 0xf89c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 492, addr 0x6554) [Time: 117] [0 outstanding requests]
+cpu0: 507 Issued Read (493) for address 0x1ca8
+cpu0: 506 Issued Read (494) for address 0xc514
+cpu0: Received Request with command 2 (response to 493, addr 0x1ca8) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 494, addr 0xc514) [Time: 117] [0 outstanding requests]
+cpu0: 505 Issued Read (495) for address 0x95d0
+cpu0: Received Request with command 2 (response to 495, addr 0x95d0) [Time: 3] [0 outstanding requests]
+cpu0: 504 Issued Read (496) for address 0xc6c0
+cpu0: Received Request with command 2 (response to 496, addr 0xc6c0) [Time: 117] [0 outstanding requests]
+cpu0: 503 Issued Write (497) for address 0xdf28
+cpu0: 502 Issued Read (498) for address 0xa8b8
+cpu0: 501 Issued Read (499) for address 0x6c88
+cpu0: Received Request with command 2 (response to 499, addr 0x6c88) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 497, addr 0xdf28) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 498, addr 0xa8b8) [Time: 117] [0 outstanding requests]
+cpu0: 500 Issued Read (500) for address 0x8254
+cpu0: 499 Issued Read (501) for address 0xbd60
+cpu0: Received Request with command 2 (response to 500, addr 0x8254) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 501, addr 0xbd60) [Time: 117] [0 outstanding requests]
+cpu0: 498 Issued Read (502) for address 0xbb50
+cpu0: 497 Issued Read (503) for address 0xd3b8
+cpu0: 496 Issued Read (504) for address 0x12a8
+cpu0: Received Request with command 2 (response to 504, addr 0x12a8) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 502, addr 0xbb50) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 503, addr 0xd3b8) [Time: 117] [0 outstanding requests]
+cpu0: 495 Issued Write (505) for address 0x82b4
+cpu0: 494 Issued Read (506) for address 0xafc4
+cpu0: 493 Issued Read (507) for address 0xfd20
+cpu0: Received Request with command 3 (response to 505, addr 0x82b4) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 507, addr 0xfd20) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 506, addr 0xafc4) [Time: 117] [0 outstanding requests]
+cpu0: 492 Issued Read (508) for address 0xba5c
+cpu0: 491 Issued Read (509) for address 0x37bc
+cpu0: Received Request with command 2 (response to 509, addr 0x37bc) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 508, addr 0xba5c) [Time: 117] [0 outstanding requests]
+cpu0: 490 Issued Read (510) for address 0x7970
+cpu0: Received Request with command 2 (response to 510, addr 0x7970) [Time: 14] [0 outstanding requests]
+cpu0: 489 Issued Read (511) for address 0xead4
+cpu0: Received Request with command 2 (response to 511, addr 0xead4) [Time: 117] [0 outstanding requests]
+cpu0: 488 Issued Read (512) for address 0x3f34
+cpu0: 487 Issued Read (513) for address 0x1518
+cpu0: Received Request with command 2 (response to 512, addr 0x3f34) [Time: 14] [1 outstanding requests]
+cpu0: 486 Issued Read (514) for address 0xa2ac
+cpu0: Received Request with command 2 (response to 513, addr 0x1518) [Time: 117] [1 outstanding requests]
+cpu0: 485 Issued Write (515) for address 0xf564
+cpu0: 484 Issued Read (516) for address 0x3c18
+cpu0: Received Request with command 2 (response to 514, addr 0xa2ac) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 516, addr 0x3c18) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 515, addr 0xf564) [Time: 117] [0 outstanding requests]
+cpu0: 483 Issued Read (517) for address 0xe910
+cpu0: Received Request with command 2 (response to 517, addr 0xe910) [Time: 14] [0 outstanding requests]
+cpu0: 482 Issued Read (518) for address 0x920c
+cpu0: 481 Issued Read (519) for address 0x2904
+cpu0: 480 Issued Read (520) for address 0xd5c8
+cpu0: 479 Issued Read (521) for address 0x7884
+cpu0: 478 Issued Read (522) for address 0xd37c
+cpu0: Received Request with command 2 (response to 518, addr 0x920c) [Time: 117] [4 outstanding requests]
+cpu0: Received Request with command 2 (response to 519, addr 0x2904) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 522, addr 0xd37c) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 520, addr 0xd5c8) [Time: 117] [1 outstanding requests]
+cpu0: 477 Issued Read (523) for address 0x37cc
+cpu0: Received Request with command 2 (response to 521, addr 0x7884) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 523, addr 0x37cc) [Time: 14] [0 outstanding requests]
+cpu0: 476 Issued Write (524) for address 0x8dd8
+cpu0: Received Request with command 3 (response to 524, addr 0x8dd8) [Time: 117] [0 outstanding requests]
+cpu0: 475 Issued Read (525) for address 0xfc38
+cpu0: Received Request with command 2 (response to 525, addr 0xfc38) [Time: 14] [0 outstanding requests]
+cpu0: 474 Issued Read (526) for address 0x298
+cpu0: 473 Issued Read (527) for address 0x10a8
+cpu0: 472 Issued Read (528) for address 0x3c18
+cpu0: Received Request with command 2 (response to 528, addr 0x3c18) [Time: 3] [2 outstanding requests]
+cpu0: 471 Issued Read (529) for address 0x3c28
+cpu0: 470 Issued Read (530) for address 0x7c94
+cpu0: Received Request with command 2 (response to 529, addr 0x3c28) [Time: 3] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 526, addr 0x298) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 530, addr 0x7c94) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 527, addr 0x10a8) [Time: 117] [0 outstanding requests]
+cpu0: 469 Issued Read (531) for address 0xd198
+cpu0: 468 Issued Read (532) for address 0xe630
+cpu0: Received Request with command 2 (response to 531, addr 0xd198) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 532, addr 0xe630) [Time: 14] [0 outstanding requests]
+cpu0: 467 Issued Read (533) for address 0x690c
+cpu0: Received Request with command 2 (response to 533, addr 0x690c) [Time: 14] [0 outstanding requests]
+cpu0: 466 Issued Read (534) for address 0x3c20
+cpu0: Received Request with command 2 (response to 534, addr 0x3c20) [Time: 3] [0 outstanding requests]
+cpu0: 465 Issued Read (535) for address 0x47f8
+cpu0: 464 Issued Read (536) for address 0xf4d4
+cpu0: Received Request with command 2 (response to 535, addr 0x47f8) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 536, addr 0xf4d4) [Time: 117] [0 outstanding requests]
+cpu0: 463 Issued Read (537) for address 0xa61c
+cpu0: Received Request with command 2 (response to 537, addr 0xa61c) [Time: 117] [0 outstanding requests]
+cpu0: 462 Issued Read (538) for address 0xbed8
+cpu0: Received Request with command 2 (response to 538, addr 0xbed8) [Time: 14] [0 outstanding requests]
+cpu0: 461 Issued Read (539) for address 0x30c
+cpu0: Received Request with command 2 (response to 539, addr 0x30c) [Time: 14] [0 outstanding requests]
+cpu0: 460 Issued Write (540) for address 0x75f0
+cpu0: 459 Issued Read (541) for address 0xd2a8
+cpu0: Received Request with command 3 (response to 540, addr 0x75f0) [Time: 14] [1 outstanding requests]
+cpu0: 458 Issued Read (542) for address 0x52a8
+cpu0: Received Request with command 2 (response to 541, addr 0xd2a8) [Time: 117] [1 outstanding requests]
+cpu0: 457 Issued Read (543) for address 0x57c8
+cpu0: Received Request with command 2 (response to 543, addr 0x57c8) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 542, addr 0x52a8) [Time: 117] [0 outstanding requests]
+cpu0: 456 Issued Read (544) for address 0x7d1c
+cpu0: 455 Issued Read (545) for address 0x3a8c
+cpu0: Received Request with command 2 (response to 544, addr 0x7d1c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 545, addr 0x3a8c) [Time: 117] [0 outstanding requests]
+cpu0: 454 Issued Read (546) for address 0xb6dc
+cpu0: Received Request with command 2 (response to 546, addr 0xb6dc) [Time: 117] [0 outstanding requests]
+cpu0: 453 Issued Read (547) for address 0x98d0
+cpu0: 452 Issued Read (548) for address 0xae68
+cpu0: Received Request with command 2 (response to 548, addr 0xae68) [Time: 14] [1 outstanding requests]
+cpu0: 451 Issued Read (549) for address 0xcadc
+cpu0: 450 Issued Write (550) for address 0x9eb0
+cpu0: Received Request with command 2 (response to 547, addr 0x98d0) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 549, addr 0xcadc) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 550, addr 0x9eb0) [Time: 117] [0 outstanding requests]
+cpu0: 449 Issued Read (551) for address 0xf25c
+cpu0: Received Request with command 2 (response to 551, addr 0xf25c) [Time: 117] [0 outstanding requests]
+cpu0: 448 Issued Read (552) for address 0x5b1c
+cpu0: Received Request with command 2 (response to 552, addr 0x5b1c) [Time: 3] [0 outstanding requests]
+cpu0: 447 Issued Read (553) for address 0x4278
+cpu0: Received Request with command 2 (response to 553, addr 0x4278) [Time: 14] [0 outstanding requests]
+cpu0: 446 Issued Read (554) for address 0x4ca8
+cpu0: 445 Issued Write (555) for address 0xa51c
+cpu0: Received Request with command 2 (response to 554, addr 0x4ca8) [Time: 117] [1 outstanding requests]
+cpu0: 444 Issued Read (556) for address 0xde84
+cpu0: Received Request with command 2 (response to 556, addr 0xde84) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 555, addr 0xa51c) [Time: 117] [0 outstanding requests]
+cpu0: 443 Issued Read (557) for address 0x9ee4
+cpu0: 442 Issued Read (558) for address 0xccfc
+cpu0: Received Request with command 2 (response to 558, addr 0xccfc) [Time: 14] [1 outstanding requests]
+cpu0: 441 Issued Read (559) for address 0xfc3c
+cpu0: Received Request with command 2 (response to 559, addr 0xfc3c) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 557, addr 0x9ee4) [Time: 117] [0 outstanding requests]
+cpu0: 440 Issued Read (560) for address 0xfb64
+cpu0: Received Request with command 2 (response to 560, addr 0xfb64) [Time: 14] [0 outstanding requests]
+cpu0: 439 Issued Read (561) for address 0x5f30
+cpu0: 438 Issued Read (562) for address 0x47e0
+cpu0: Received Request with command 2 (response to 562, addr 0x47e0) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 561, addr 0x5f30) [Time: 117] [0 outstanding requests]
+cpu0: 437 Issued Read (563) for address 0x7bb4
+cpu0: Received Request with command 2 (response to 563, addr 0x7bb4) [Time: 14] [0 outstanding requests]
+cpu0: 436 Issued Read (564) for address 0x8c0c
+cpu0: Received Request with command 2 (response to 564, addr 0x8c0c) [Time: 14] [0 outstanding requests]
+cpu0: 435 Issued Read (565) for address 0xb9cc
+cpu0: Received Request with command 2 (response to 565, addr 0xb9cc) [Time: 14] [0 outstanding requests]
+cpu0: 434 Issued Read (566) for address 0xfd30
+cpu0: Received Request with command 2 (response to 566, addr 0xfd30) [Time: 14] [0 outstanding requests]
+cpu0: 433 Issued Read (567) for address 0x9538
+cpu0: 432 Issued Read (568) for address 0x8990
+cpu0: Received Request with command 2 (response to 567, addr 0x9538) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 568, addr 0x8990) [Time: 117] [0 outstanding requests]
+cpu0: 431 Issued Read (569) for address 0xd29c
+cpu0: Received Request with command 2 (response to 569, addr 0xd29c) [Time: 14] [0 outstanding requests]
+cpu0: 430 Issued Read (570) for address 0x23b0
+cpu0: Received Request with command 2 (response to 570, addr 0x23b0) [Time: 117] [0 outstanding requests]
+cpu0: 429 Issued Read (571) for address 0x4e4c
+cpu0: Received Request with command 2 (response to 571, addr 0x4e4c) [Time: 117] [0 outstanding requests]
+cpu0: 428 Issued Read (572) for address 0x8864
+cpu0: 427 Issued Read (573) for address 0xffbc
+cpu0: Received Request with command 2 (response to 572, addr 0x8864) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 573, addr 0xffbc) [Time: 117] [0 outstanding requests]
+cpu0: 426 Issued Read (574) for address 0x9f0
+cpu0: 425 Issued Read (575) for address 0xdc50
+cpu0: 424 Issued Read (576) for address 0x75b4
+cpu0: Received Request with command 2 (response to 576, addr 0x75b4) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 574, addr 0x9f0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 575, addr 0xdc50) [Time: 117] [0 outstanding requests]
+cpu0: 423 Issued Read (577) for address 0x424c
+cpu0: Received Request with command 2 (response to 577, addr 0x424c) [Time: 3] [0 outstanding requests]
+cpu0: 422 Issued Read (578) for address 0x4260
+cpu0: Received Request with command 2 (response to 578, addr 0x4260) [Time: 3] [0 outstanding requests]
+cpu0: 421 Issued Read (579) for address 0xb7f8
+cpu0: Received Request with command 2 (response to 579, addr 0xb7f8) [Time: 14] [0 outstanding requests]
+cpu0: 420 Issued Read (580) for address 0x75e0
+cpu0: Received Request with command 2 (response to 580, addr 0x75e0) [Time: 3] [0 outstanding requests]
+cpu0: 419 Issued Read (581) for address 0x3358
+cpu0: 418 Issued Read (582) for address 0x50b4
+cpu0: 417 Issued Read (583) for address 0x534
+cpu0: 416 Issued Write (584) for address 0x726c
+cpu0: Received Request with command 2 (response to 582, addr 0x50b4) [Time: 14] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 583, addr 0x534) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 581, addr 0x3358) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 584, addr 0x726c) [Time: 117] [0 outstanding requests]
+cpu0: 415 Issued Read (585) for address 0x7ca8
+cpu0: Received Request with command 2 (response to 585, addr 0x7ca8) [Time: 3] [0 outstanding requests]
+cpu0: 414 Issued Read (586) for address 0xe03c
+cpu0: 413 Issued Read (587) for address 0xde64
+cpu0: Received Request with command 2 (response to 586, addr 0xe03c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 587, addr 0xde64) [Time: 117] [0 outstanding requests]
+cpu0: 412 Issued Read (588) for address 0x7b28
+cpu0: 411 Issued Read (589) for address 0xff2c
+cpu0: Received Request with command 2 (response to 588, addr 0x7b28) [Time: 14] [1 outstanding requests]
+cpu0: 410 Issued Read (590) for address 0x1a2c
+cpu0: Received Request with command 2 (response to 590, addr 0x1a2c) [Time: 14] [1 outstanding requests]
+cpu0: 409 Issued Read (591) for address 0x3524
+cpu0: 408 Issued Read (592) for address 0x5800
+cpu0: Received Request with command 2 (response to 591, addr 0x3524) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 592, addr 0x5800) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 589, addr 0xff2c) [Time: 117] [0 outstanding requests]
+cpu0: 407 Issued Read (593) for address 0x620c
+cpu0: Received Request with command 2 (response to 593, addr 0x620c) [Time: 14] [0 outstanding requests]
+cpu0: 406 Issued Read (594) for address 0xd3c8
+cpu0: Received Request with command 2 (response to 594, addr 0xd3c8) [Time: 14] [0 outstanding requests]
+cpu0: 405 Issued Read (595) for address 0x5e98
+cpu0: Received Request with command 2 (response to 595, addr 0x5e98) [Time: 14] [0 outstanding requests]
+cpu0: 404 Issued Read (596) for address 0x5cdc
+cpu0: Received Request with command 2 (response to 596, addr 0x5cdc) [Time: 14] [0 outstanding requests]
+cpu0: 403 Issued Read (597) for address 0x79e8
+cpu0: Received Request with command 2 (response to 597, addr 0x79e8) [Time: 117] [0 outstanding requests]
+cpu0: 402 Issued Read (598) for address 0xb908
+cpu0: 401 Issued Read (599) for address 0x6150
+cpu0: 400 Issued Read (600) for address 0xdb10
+cpu0: Received Request with command 2 (response to 600, addr 0xdb10) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 598, addr 0xb908) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 599, addr 0x6150) [Time: 117] [0 outstanding requests]
+cpu0: 399 Issued Read (601) for address 0xc290
+cpu0: Received Request with command 2 (response to 601, addr 0xc290) [Time: 117] [0 outstanding requests]
+cpu0: 398 Issued Read (602) for address 0x61f8
+cpu0: 397 Issued Read (603) for address 0x851c
+cpu0: 396 Issued Read (604) for address 0xd7a4
+cpu0: 395 Issued Write (605) for address 0xf4b4
+cpu0: Received Request with command 2 (response to 602, addr 0x61f8) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 603, addr 0x851c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 604, addr 0xd7a4) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 605, addr 0xf4b4) [Time: 117] [0 outstanding requests]
+cpu0: 394 Issued Read (606) for address 0xd18c
+cpu0: Received Request with command 2 (response to 606, addr 0xd18c) [Time: 3] [0 outstanding requests]
+cpu0: 393 Issued Read (607) for address 0xdc04
+cpu0: 392 Issued Read (608) for address 0xbefc
+cpu0: Received Request with command 2 (response to 608, addr 0xbefc) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 607, addr 0xdc04) [Time: 14] [0 outstanding requests]
+cpu0: 391 Issued Write (609) for address 0x63c8
+cpu0: 390 Issued Read (610) for address 0x7dd0
+cpu0: Received Request with command 2 (response to 610, addr 0x7dd0) [Time: 14] [1 outstanding requests]
+cpu0: 389 Issued Read (611) for address 0xef78
+cpu0: Received Request with command 3 (response to 609, addr 0x63c8) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 611, addr 0xef78) [Time: 117] [0 outstanding requests]
+cpu0: 388 Issued Read (612) for address 0xc884
+cpu0: Received Request with command 2 (response to 612, addr 0xc884) [Time: 14] [0 outstanding requests]
+cpu0: 387 Issued Read (613) for address 0xcfec
+cpu0: Received Request with command 2 (response to 613, addr 0xcfec) [Time: 117] [0 outstanding requests]
+cpu0: 386 Issued Read (614) for address 0x26c8
+cpu0: Received Request with command 2 (response to 614, addr 0x26c8) [Time: 14] [0 outstanding requests]
+cpu0: 385 Issued Read (615) for address 0x7868
+cpu0: 384 Issued Read (616) for address 0xc900
+cpu0: Received Request with command 2 (response to 616, addr 0xc900) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 615, addr 0x7868) [Time: 117] [0 outstanding requests]
+cpu0: 383 Issued Read (617) for address 0xa79c
+cpu0: 382 Issued Read (618) for address 0x82bc
+cpu0: Received Request with command 2 (response to 617, addr 0xa79c) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 618, addr 0x82bc) [Time: 14] [0 outstanding requests]
+cpu0: 381 Issued Read (619) for address 0x67dc
+cpu0: 380 Issued Write (620) for address 0x6b60
+cpu0: Received Request with command 2 (response to 619, addr 0x67dc) [Time: 117] [1 outstanding requests]
+cpu0: 379 Issued Read (621) for address 0x6f30
+cpu0: Received Request with command 3 (response to 620, addr 0x6b60) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 621, addr 0x6f30) [Time: 117] [0 outstanding requests]
+cpu0: 378 Issued Read (622) for address 0x14a8
+cpu0: Received Request with command 2 (response to 622, addr 0x14a8) [Time: 14] [0 outstanding requests]
+cpu0: 377 Issued Read (623) for address 0x9114
+cpu0: Received Request with command 2 (response to 623, addr 0x9114) [Time: 117] [0 outstanding requests]
+cpu0: 376 Issued Read (624) for address 0xb4e4
+cpu0: 375 Issued Read (625) for address 0x890
+cpu0: Received Request with command 2 (response to 625, addr 0x890) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 624, addr 0xb4e4) [Time: 117] [0 outstanding requests]
+cpu0: 374 Issued Read (626) for address 0x4768
+cpu0: Received Request with command 2 (response to 626, addr 0x4768) [Time: 14] [0 outstanding requests]
+cpu0: 373 Issued Read (627) for address 0x45e4
+cpu0: 372 Issued Read (628) for address 0x6b90
+cpu0: Received Request with command 2 (response to 628, addr 0x6b90) [Time: 14] [1 outstanding requests]
+cpu0: 371 Issued Read (629) for address 0x4e5c
+cpu0: Received Request with command 2 (response to 629, addr 0x4e5c) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 627, addr 0x45e4) [Time: 117] [0 outstanding requests]
+cpu0: 370 Issued Read (630) for address 0x5da0
+cpu0: 369 Issued Read (631) for address 0x2e78
+cpu0: Received Request with command 2 (response to 631, addr 0x2e78) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 630, addr 0x5da0) [Time: 117] [0 outstanding requests]
+cpu0: 368 Issued Read (632) for address 0xa474
+cpu0: Received Request with command 2 (response to 632, addr 0xa474) [Time: 117] [0 outstanding requests]
+cpu0: 367 Issued Read (633) for address 0x3d4c
+cpu0: Received Request with command 2 (response to 633, addr 0x3d4c) [Time: 14] [0 outstanding requests]
+cpu0: 366 Issued Read (634) for address 0xb44
+cpu0: Received Request with command 2 (response to 634, addr 0xb44) [Time: 14] [0 outstanding requests]
+cpu0: 365 Issued Write (635) for address 0x9754
+cpu0: 364 Issued Read (636) for address 0xb508
+cpu0: Received Request with command 3 (response to 635, addr 0x9754) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 636, addr 0xb508) [Time: 117] [0 outstanding requests]
+cpu0: 363 Issued Read (637) for address 0x67d8
+cpu0: Received Request with command 2 (response to 637, addr 0x67d8) [Time: 3] [0 outstanding requests]
+cpu0: 362 Issued Write (638) for address 0x7e34
+cpu0: Received Request with command 3 (response to 638, addr 0x7e34) [Time: 117] [0 outstanding requests]
+cpu0: 361 Issued Read (639) for address 0xd31c
+cpu0: Received Request with command 2 (response to 639, addr 0xd31c) [Time: 117] [0 outstanding requests]
+cpu0: 360 Issued Read (640) for address 0xe9a0
+cpu0: Received Request with command 2 (response to 640, addr 0xe9a0) [Time: 14] [0 outstanding requests]
+cpu0: 359 Issued Read (641) for address 0x238c
+cpu0: 358 Issued Read (642) for address 0x868c
+cpu0: Received Request with command 2 (response to 641, addr 0x238c) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 642, addr 0x868c) [Time: 14] [0 outstanding requests]
+cpu0: 357 Issued Read (643) for address 0x14e8
+cpu0: Received Request with command 2 (response to 643, addr 0x14e8) [Time: 14] [0 outstanding requests]
+cpu0: 356 Issued Read (644) for address 0xeff4
+cpu0: 355 Issued Write (645) for address 0xc328
+cpu0: Received Request with command 2 (response to 644, addr 0xeff4) [Time: 117] [1 outstanding requests]
+cpu0: 354 Issued Read (646) for address 0xe8b8
+cpu0: Received Request with command 3 (response to 645, addr 0xc328) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 646, addr 0xe8b8) [Time: 117] [0 outstanding requests]
+cpu0: 353 Issued Read (647) for address 0xd360
+cpu0: Received Request with command 2 (response to 647, addr 0xd360) [Time: 14] [0 outstanding requests]
+cpu0: 352 Issued Read (648) for address 0x6cd0
+cpu0: Received Request with command 2 (response to 648, addr 0x6cd0) [Time: 14] [0 outstanding requests]
+cpu0: 351 Issued Read (649) for address 0x63a4
+cpu0: 350 Issued Read (650) for address 0xe12c
+cpu0: Received Request with command 2 (response to 650, addr 0xe12c) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 649, addr 0x63a4) [Time: 117] [0 outstanding requests]
+cpu0: 349 Issued Read (651) for address 0x3b68
+cpu0: Received Request with command 2 (response to 651, addr 0x3b68) [Time: 117] [0 outstanding requests]
+cpu0: 348 Issued Read (652) for address 0xcee0
+cpu0: 347 Issued Read (653) for address 0xd238
+cpu0: Received Request with command 2 (response to 652, addr 0xcee0) [Time: 117] [1 outstanding requests]
+cpu0: 346 Issued Read (654) for address 0x1264
+cpu0: Received Request with command 2 (response to 654, addr 0x1264) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 653, addr 0xd238) [Time: 117] [0 outstanding requests]
+cpu0: 345 Issued Write (655) for address 0x8a84
+cpu0: 344 Issued Read (656) for address 0x60e0
+cpu0: 343 Issued Read (657) for address 0xafa8
+cpu0: Received Request with command 2 (response to 657, addr 0xafa8) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 655, addr 0x8a84) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 656, addr 0x60e0) [Time: 117] [0 outstanding requests]
+cpu0: 342 Issued Read (658) for address 0x8e10
+cpu0: 341 Issued Read (659) for address 0x7de4
+cpu0: Received Request with command 2 (response to 659, addr 0x7de4) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 658, addr 0x8e10) [Time: 117] [0 outstanding requests]
+cpu0: 340 Issued Read (660) for address 0x6b00
+cpu0: 339 Issued Read (661) for address 0x8ce4
+cpu0: Received Request with command 2 (response to 660, addr 0x6b00) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 661, addr 0x8ce4) [Time: 117] [0 outstanding requests]
+cpu0: 338 Issued Read (662) for address 0xd2a8
+cpu0: Received Request with command 2 (response to 662, addr 0xd2a8) [Time: 14] [0 outstanding requests]
+cpu0: 337 Issued Read (663) for address 0xc398
+cpu0: Received Request with command 2 (response to 663, addr 0xc398) [Time: 117] [0 outstanding requests]
+cpu0: 336 Issued Read (664) for address 0x73c
+cpu0: Received Request with command 2 (response to 664, addr 0x73c) [Time: 117] [0 outstanding requests]
+cpu0: 335 Issued Read (665) for address 0x26e4
+cpu0: Received Request with command 2 (response to 665, addr 0x26e4) [Time: 3] [0 outstanding requests]
+cpu0: 334 Issued Read (666) for address 0x1a3c
+cpu0: Received Request with command 2 (response to 666, addr 0x1a3c) [Time: 14] [0 outstanding requests]
+cpu0: 333 Issued Read (667) for address 0x71d4
+cpu0: Received Request with command 2 (response to 667, addr 0x71d4) [Time: 14] [0 outstanding requests]
+cpu0: 332 Issued Read (668) for address 0x9e60
+cpu0: 331 Issued Read (669) for address 0x97c8
+cpu0: 330 Issued Read (670) for address 0x2d98
+cpu0: 329 Issued Read (671) for address 0x793c
+cpu0: Received Request with command 2 (response to 670, addr 0x2d98) [Time: 14] [3 outstanding requests]
+cpu0: 328 Issued Read (672) for address 0x25a0
+cpu0: Received Request with command 2 (response to 668, addr 0x9e60) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 669, addr 0x97c8) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 671, addr 0x793c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 672, addr 0x25a0) [Time: 117] [0 outstanding requests]
+cpu0: 327 Issued Read (673) for address 0x9174
+cpu0: Received Request with command 2 (response to 673, addr 0x9174) [Time: 117] [0 outstanding requests]
+cpu0: 326 Issued Read (674) for address 0x98b8
+cpu0: Received Request with command 2 (response to 674, addr 0x98b8) [Time: 14] [0 outstanding requests]
+cpu0: 325 Issued Read (675) for address 0x1b60
+cpu0: 324 Issued Read (676) for address 0x8068
+cpu0: Received Request with command 2 (response to 675, addr 0x1b60) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 676, addr 0x8068) [Time: 14] [0 outstanding requests]
+cpu0: 323 Issued Read (677) for address 0xbae4
+cpu0: 322 Issued Read (678) for address 0x84b0
+cpu0: Received Request with command 2 (response to 677, addr 0xbae4) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 678, addr 0x84b0) [Time: 117] [0 outstanding requests]
+cpu0: 321 Issued Write (679) for address 0x7d8
+cpu0: Received Request with command 3 (response to 679, addr 0x7d8) [Time: 117] [0 outstanding requests]
+cpu0: 320 Issued Read (680) for address 0x178
+cpu0: Received Request with command 2 (response to 680, addr 0x178) [Time: 117] [0 outstanding requests]
+cpu0: 319 Issued Read (681) for address 0x8374
+cpu0: 318 Issued Read (682) for address 0xc740
+cpu0: 317 Issued Read (683) for address 0x1c28
+cpu0: Received Request with command 2 (response to 681, addr 0x8374) [Time: 117] [2 outstanding requests]
+cpu0: 316 Issued Read (684) for address 0xb098
+cpu0: Received Request with command 2 (response to 682, addr 0xc740) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 683, addr 0x1c28) [Time: 117] [1 outstanding requests]
+cpu0: 315 Issued Read (685) for address 0x9998
+cpu0: Received Request with command 2 (response to 684, addr 0xb098) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 685, addr 0x9998) [Time: 117] [0 outstanding requests]
+cpu0: 314 Issued Read (686) for address 0x411c
+cpu0: Received Request with command 2 (response to 686, addr 0x411c) [Time: 117] [0 outstanding requests]
+cpu0: 313 Issued Write (687) for address 0x5cd8
+cpu0: 312 Issued Read (688) for address 0x8f88
+cpu0: Received Request with command 2 (response to 688, addr 0x8f88) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 687, addr 0x5cd8) [Time: 117] [0 outstanding requests]
+cpu0: 311 Issued Read (689) for address 0x7f10
+cpu0: 310 Issued Read (690) for address 0x3388
+cpu0: 309 Issued Read (691) for address 0x51c
+cpu0: Received Request with command 2 (response to 691, addr 0x51c) [Time: 14] [2 outstanding requests]
+cpu0: 308 Issued Read (692) for address 0x2268
+cpu0: 307 Issued Read (693) for address 0xc4c4
+cpu0: Received Request with command 2 (response to 689, addr 0x7f10) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 693, addr 0xc4c4) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 690, addr 0x3388) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 692, addr 0x2268) [Time: 117] [0 outstanding requests]
+cpu0: 306 Issued Write (694) for address 0x5e98
+cpu0: Received Request with command 3 (response to 694, addr 0x5e98) [Time: 117] [0 outstanding requests]
+cpu0: 305 Issued Write (695) for address 0xbb00
+cpu0: Received Request with command 3 (response to 695, addr 0xbb00) [Time: 117] [0 outstanding requests]
+cpu0: 304 Issued Read (696) for address 0xa90c
+cpu0: Received Request with command 2 (response to 696, addr 0xa90c) [Time: 14] [0 outstanding requests]
+cpu0: 303 Issued Read (697) for address 0xf790
+cpu0: 302 Issued Write (698) for address 0xe5b0
+cpu0: 301 Issued Read (699) for address 0x4d38
+cpu0: Received Request with command 2 (response to 697, addr 0xf790) [Time: 117] [2 outstanding requests]
+cpu0: 300 Issued Read (700) for address 0xf4bc
+cpu0: 299 Issued Write (701) for address 0x2838
+cpu0: Received Request with command 3 (response to 698, addr 0xe5b0) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 700, addr 0xf4bc) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 699, addr 0x4d38) [Time: 117] [1 outstanding requests]
+cpu0: 298 Issued Write (702) for address 0x548c
+cpu0: 297 Issued Read (703) for address 0x5894
+cpu0: Received Request with command 3 (response to 701, addr 0x2838) [Time: 117] [2 outstanding requests]
+cpu0: 296 Issued Read (704) for address 0x287c
+cpu0: Received Request with command 3 (response to 702, addr 0x548c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 703, addr 0x5894) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 704, addr 0x287c) [Time: 117] [0 outstanding requests]
+cpu0: 295 Issued Read (705) for address 0xaf58
+cpu0: Received Request with command 2 (response to 705, addr 0xaf58) [Time: 14] [0 outstanding requests]
+cpu0: 294 Issued Read (706) for address 0xeee8
+cpu0: 293 Issued Read (707) for address 0xba10
+cpu0: Received Request with command 2 (response to 707, addr 0xba10) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 706, addr 0xeee8) [Time: 117] [0 outstanding requests]
+cpu0: 292 Issued Write (708) for address 0x77a0
+cpu0: Received Request with command 3 (response to 708, addr 0x77a0) [Time: 117] [0 outstanding requests]
+cpu0: 291 Issued Read (709) for address 0x8a90
+cpu0: Received Request with command 2 (response to 709, addr 0x8a90) [Time: 3] [0 outstanding requests]
+cpu0: 290 Issued Read (710) for address 0x2a4c
+cpu0: Received Request with command 2 (response to 710, addr 0x2a4c) [Time: 117] [0 outstanding requests]
+cpu0: 289 Issued Read (711) for address 0x79ac
+cpu0: Received Request with command 2 (response to 711, addr 0x79ac) [Time: 117] [0 outstanding requests]
+cpu0: 288 Issued Read (712) for address 0x11ec
+cpu0: Received Request with command 2 (response to 712, addr 0x11ec) [Time: 117] [0 outstanding requests]
+cpu0: 287 Issued Read (713) for address 0x3470
+cpu0: 286 Issued Write (714) for address 0xbf8
+cpu0: 285 Issued Read (715) for address 0x81d0
+cpu0: 284 Issued Read (716) for address 0xddd0
+cpu0: 283 Issued Read (717) for address 0x908c
+cpu0: Received Request with command 2 (response to 716, addr 0xddd0) [Time: 14] [4 outstanding requests]
+cpu0: 282 Issued Read (718) for address 0x1cf0
+cpu0: 281 Issued Read (719) for address 0xd11c
+cpu0: Received Request with command 2 (response to 713, addr 0x3470) [Time: 117] [5 outstanding requests]
+cpu0: Received Request with command 3 (response to 714, addr 0xbf8) [Time: 117] [4 outstanding requests]
+cpu0: Received Request with command 2 (response to 715, addr 0x81d0) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 717, addr 0x908c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 718, addr 0x1cf0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 719, addr 0xd11c) [Time: 117] [0 outstanding requests]
+cpu0: 280 Issued Read (720) for address 0x6510
+cpu0: 279 Issued Read (721) for address 0xd064
+cpu0: 278 Issued Read (722) for address 0x2a94
+cpu0: Received Request with command 2 (response to 720, addr 0x6510) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 721, addr 0xd064) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 722, addr 0x2a94) [Time: 117] [0 outstanding requests]
+cpu0: 277 Issued Read (723) for address 0x4984
+cpu0: 276 Issued Read (724) for address 0xffb0
+cpu0: Received Request with command 2 (response to 724, addr 0xffb0) [Time: 14] [1 outstanding requests]
+cpu0: 275 Issued Read (725) for address 0x9720
+cpu0: Received Request with command 2 (response to 725, addr 0x9720) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 723, addr 0x4984) [Time: 117] [0 outstanding requests]
+cpu0: 274 Issued Read (726) for address 0x3990
+cpu0: 273 Issued Read (727) for address 0xe5b8
+cpu0: 272 Issued Write (728) for address 0x515c
+cpu0: Received Request with command 2 (response to 727, addr 0xe5b8) [Time: 3] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 726, addr 0x3990) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 728, addr 0x515c) [Time: 117] [0 outstanding requests]
+cpu0: 271 Issued Read (729) for address 0x3644
+cpu0: 270 Issued Read (730) for address 0x942c
+cpu0: 269 Issued Read (731) for address 0x8060
+cpu0: Received Request with command 2 (response to 729, addr 0x3644) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 731, addr 0x8060) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 730, addr 0x942c) [Time: 117] [0 outstanding requests]
+cpu0: 268 Issued Read (732) for address 0xbc18
+cpu0: Received Request with command 2 (response to 732, addr 0xbc18) [Time: 14] [0 outstanding requests]
+cpu0: 267 Issued Read (733) for address 0x166c
+cpu0: 266 Issued Read (734) for address 0x4ea8
+cpu0: 265 Issued Read (735) for address 0xc928
+cpu0: Received Request with command 2 (response to 735, addr 0xc928) [Time: 14] [2 outstanding requests]
+cpu0: 264 Issued Read (736) for address 0xca9c
+cpu0: Received Request with command 2 (response to 733, addr 0x166c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 734, addr 0x4ea8) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 736, addr 0xca9c) [Time: 117] [0 outstanding requests]
+cpu0: 263 Issued Read (737) for address 0xe688
+cpu0: 262 Issued Read (738) for address 0x2224
+cpu0: Received Request with command 2 (response to 738, addr 0x2224) [Time: 14] [1 outstanding requests]
+cpu0: 261 Issued Read (739) for address 0xf6b0
+cpu0: Received Request with command 2 (response to 739, addr 0xf6b0) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 737, addr 0xe688) [Time: 117] [0 outstanding requests]
+cpu0: 260 Issued Read (740) for address 0x6708
+cpu0: Received Request with command 2 (response to 740, addr 0x6708) [Time: 117] [0 outstanding requests]
+cpu0: 259 Issued Read (741) for address 0xf668
+cpu0: Received Request with command 2 (response to 741, addr 0xf668) [Time: 14] [0 outstanding requests]
+cpu0: 258 Issued Read (742) for address 0x6608
+cpu0: Received Request with command 2 (response to 742, addr 0x6608) [Time: 14] [0 outstanding requests]
+cpu0: 257 Issued Read (743) for address 0x7fc4
+cpu0: Received Request with command 2 (response to 743, addr 0x7fc4) [Time: 14] [0 outstanding requests]
+cpu0: 256 Issued Read (744) for address 0xe928
+cpu0: Received Request with command 2 (response to 744, addr 0xe928) [Time: 14] [0 outstanding requests]
+cpu0: 255 Issued Read (745) for address 0x5668
+cpu0: 254 Issued Read (746) for address 0xe438
+cpu0: Received Request with command 2 (response to 745, addr 0x5668) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 746, addr 0xe438) [Time: 117] [0 outstanding requests]
+cpu0: 253 Issued Write (747) for address 0xc1d4
+cpu0: Received Request with command 3 (response to 747, addr 0xc1d4) [Time: 117] [0 outstanding requests]
+cpu0: 252 Issued Read (748) for address 0x1ed4
+cpu0: 251 Issued Read (749) for address 0x4198
+cpu0: Received Request with command 2 (response to 749, addr 0x4198) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 748, addr 0x1ed4) [Time: 117] [0 outstanding requests]
+cpu0: 250 Issued Read (750) for address 0x3638
+cpu0: 249 Issued Read (751) for address 0x994
+cpu0: 248 Issued Read (752) for address 0x9d84
+cpu0: 247 Issued Read (753) for address 0x404
+cpu0: 246 Issued Read (754) for address 0x368
+cpu0: Received Request with command 2 (response to 752, addr 0x9d84) [Time: 14] [4 outstanding requests]
+cpu0: Received Request with command 2 (response to 750, addr 0x3638) [Time: 117] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 751, addr 0x994) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 753, addr 0x404) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 754, addr 0x368) [Time: 117] [0 outstanding requests]
+cpu0: 245 Issued Read (755) for address 0x4464
+cpu0: 244 Issued Read (756) for address 0x74c4
+cpu0: 243 Issued Read (757) for address 0x2d20
+cpu0: Received Request with command 2 (response to 755, addr 0x4464) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 757, addr 0x2d20) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 756, addr 0x74c4) [Time: 117] [0 outstanding requests]
+cpu0: 242 Issued Read (758) for address 0x186c
+cpu0: 241 Issued Write (759) for address 0x7320
+cpu0: Received Request with command 2 (response to 758, addr 0x186c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 759, addr 0x7320) [Time: 117] [0 outstanding requests]
+cpu0: 240 Issued Read (760) for address 0x61b8
+cpu0: Received Request with command 2 (response to 760, addr 0x61b8) [Time: 14] [0 outstanding requests]
+cpu0: 239 Issued Read (761) for address 0x184c
+cpu0: Received Request with command 2 (response to 761, addr 0x184c) [Time: 3] [0 outstanding requests]
+cpu0: 238 Issued Read (762) for address 0xe204
+cpu0: 237 Issued Read (763) for address 0xf07c
+cpu0: 236 Issued Read (764) for address 0x3590
+cpu0: Received Request with command 2 (response to 764, addr 0x3590) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 762, addr 0xe204) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 763, addr 0xf07c) [Time: 117] [0 outstanding requests]
+cpu0: 235 Issued Read (765) for address 0x83f8
+cpu0: Received Request with command 2 (response to 765, addr 0x83f8) [Time: 14] [0 outstanding requests]
+cpu0: 234 Issued Read (766) for address 0x2b28
+cpu0: 233 Issued Read (767) for address 0x177c
+cpu0: Received Request with command 2 (response to 766, addr 0x2b28) [Time: 117] [1 outstanding requests]
+cpu0: 232 Issued Read (768) for address 0x416c
+cpu0: Received Request with command 2 (response to 767, addr 0x177c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 768, addr 0x416c) [Time: 14] [0 outstanding requests]
+cpu0: 231 Issued Read (769) for address 0x5a38
+cpu0: 230 Issued Write (770) for address 0xbf30
+cpu0: Received Request with command 2 (response to 769, addr 0x5a38) [Time: 117] [1 outstanding requests]
+cpu0: 229 Issued Read (771) for address 0xe568
+cpu0: 228 Issued Read (772) for address 0xd74
+cpu0: Received Request with command 3 (response to 770, addr 0xbf30) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 771, addr 0xe568) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 772, addr 0xd74) [Time: 117] [0 outstanding requests]
+cpu0: 227 Issued Read (773) for address 0xfbb0
+cpu0: 226 Issued Read (774) for address 0x6d00
+cpu0: Received Request with command 2 (response to 773, addr 0xfbb0) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 774, addr 0x6d00) [Time: 117] [0 outstanding requests]
+cpu0: 225 Issued Read (775) for address 0xee00
+cpu0: Received Request with command 2 (response to 775, addr 0xee00) [Time: 14] [0 outstanding requests]
+cpu0: 224 Issued Write (776) for address 0xa92c
+cpu0: 223 Issued Read (777) for address 0x3fd0
+cpu0: 222 Issued Read (778) for address 0x1994
+cpu0: Received Request with command 3 (response to 776, addr 0xa92c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 777, addr 0x3fd0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 778, addr 0x1994) [Time: 117] [0 outstanding requests]
+cpu0: 221 Issued Write (779) for address 0x65b0
+cpu0: 220 Issued Read (780) for address 0xcbc
+cpu0: Received Request with command 3 (response to 779, addr 0x65b0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 780, addr 0xcbc) [Time: 117] [0 outstanding requests]
+cpu0: 219 Issued Read (781) for address 0xb490
+cpu0: 218 Issued Read (782) for address 0x7b94
+cpu0: Received Request with command 2 (response to 782, addr 0x7b94) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 781, addr 0xb490) [Time: 117] [0 outstanding requests]
+cpu0: 217 Issued Read (783) for address 0x969c
+cpu0: 216 Issued Read (784) for address 0x6330
+cpu0: Received Request with command 2 (response to 783, addr 0x969c) [Time: 117] [1 outstanding requests]
+cpu0: 215 Issued Read (785) for address 0x20e8
+cpu0: Received Request with command 2 (response to 784, addr 0x6330) [Time: 117] [1 outstanding requests]
+cpu0: 214 Issued Read (786) for address 0xf19c
+cpu0: Received Request with command 2 (response to 785, addr 0x20e8) [Time: 117] [1 outstanding requests]
+cpu0: 213 Issued Write (787) for address 0x69e0
+cpu0: Received Request with command 2 (response to 786, addr 0xf19c) [Time: 117] [1 outstanding requests]
+cpu0: 212 Issued Read (788) for address 0xa828
+cpu0: Received Request with command 2 (response to 788, addr 0xa828) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 787, addr 0x69e0) [Time: 117] [0 outstanding requests]
+cpu0: 211 Issued Read (789) for address 0x1094
+cpu0: Received Request with command 2 (response to 789, addr 0x1094) [Time: 14] [0 outstanding requests]
+cpu0: 210 Issued Read (790) for address 0xf70
+cpu0: Received Request with command 2 (response to 790, addr 0xf70) [Time: 14] [0 outstanding requests]
+cpu0: 209 Issued Read (791) for address 0xeb94
+cpu0: Received Request with command 2 (response to 791, addr 0xeb94) [Time: 117] [0 outstanding requests]
+cpu0: 208 Issued Read (792) for address 0x2f08
+cpu0: Received Request with command 2 (response to 792, addr 0x2f08) [Time: 117] [0 outstanding requests]
+cpu0: 207 Issued Read (793) for address 0xc2dc
+cpu0: 206 Issued Read (794) for address 0xec90
+cpu0: 205 Issued Read (795) for address 0x3e40
+cpu0: Received Request with command 2 (response to 794, addr 0xec90) [Time: 14] [2 outstanding requests]
+cpu0: 204 Issued Read (796) for address 0x42d0
+cpu0: Received Request with command 2 (response to 793, addr 0xc2dc) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 795, addr 0x3e40) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 796, addr 0x42d0) [Time: 117] [0 outstanding requests]
+cpu0: 203 Issued Read (797) for address 0x178
+cpu0: Received Request with command 2 (response to 797, addr 0x178) [Time: 14] [0 outstanding requests]
+cpu0: 202 Issued Read (798) for address 0x1580
+cpu0: 201 Issued Read (799) for address 0x4744
+cpu0: Received Request with command 2 (response to 799, addr 0x4744) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 798, addr 0x1580) [Time: 117] [0 outstanding requests]
+cpu0: 200 Issued Read (800) for address 0x7ae0
+cpu0: Received Request with command 2 (response to 800, addr 0x7ae0) [Time: 117] [0 outstanding requests]
+cpu0: 199 Issued Read (801) for address 0x8e4
+cpu0: Received Request with command 2 (response to 801, addr 0x8e4) [Time: 117] [0 outstanding requests]
+cpu0: 198 Issued Read (802) for address 0xd4e0
+cpu0: Received Request with command 2 (response to 802, addr 0xd4e0) [Time: 14] [0 outstanding requests]
+cpu0: 197 Issued Read (803) for address 0xd704
+cpu0: Received Request with command 2 (response to 803, addr 0xd704) [Time: 117] [0 outstanding requests]
+cpu0: 196 Issued Read (804) for address 0x7c04
+cpu0: Received Request with command 2 (response to 804, addr 0x7c04) [Time: 14] [0 outstanding requests]
+cpu0: 195 Issued Read (805) for address 0x2efc
+cpu0: Received Request with command 2 (response to 805, addr 0x2efc) [Time: 14] [0 outstanding requests]
+cpu0: 194 Issued Read (806) for address 0x3d54
+cpu0: Received Request with command 2 (response to 806, addr 0x3d54) [Time: 14] [0 outstanding requests]
+cpu0: 193 Issued Read (807) for address 0xf4a0
+cpu0: Received Request with command 2 (response to 807, addr 0xf4a0) [Time: 14] [0 outstanding requests]
+cpu0: 192 Issued Write (808) for address 0x8338
+cpu0: 191 Issued Read (809) for address 0x4550
+cpu0: 190 Issued Read (810) for address 0x3a8c
+cpu0: Received Request with command 3 (response to 808, addr 0x8338) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 810, addr 0x3a8c) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 809, addr 0x4550) [Time: 117] [0 outstanding requests]
+cpu0: 189 Issued Read (811) for address 0xad50
+cpu0: Received Request with command 2 (response to 811, addr 0xad50) [Time: 14] [0 outstanding requests]
+cpu0: 188 Issued Read (812) for address 0x26b4
+cpu0: 187 Issued Read (813) for address 0xb54c
+cpu0: Received Request with command 2 (response to 813, addr 0xb54c) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 812, addr 0x26b4) [Time: 117] [0 outstanding requests]
+cpu0: 186 Issued Read (814) for address 0x9fdc
+cpu0: 185 Issued Read (815) for address 0xc6f0
+cpu0: Received Request with command 2 (response to 815, addr 0xc6f0) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 814, addr 0x9fdc) [Time: 117] [0 outstanding requests]
+cpu0: 184 Issued Read (816) for address 0x37b4
+cpu0: Received Request with command 2 (response to 816, addr 0x37b4) [Time: 14] [0 outstanding requests]
+cpu0: 183 Issued Read (817) for address 0xa538
+cpu0: Received Request with command 2 (response to 817, addr 0xa538) [Time: 14] [0 outstanding requests]
+cpu0: 182 Issued Read (818) for address 0x3704
+cpu0: 181 Issued Read (819) for address 0xd128
+cpu0: Received Request with command 2 (response to 819, addr 0xd128) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 818, addr 0x3704) [Time: 117] [0 outstanding requests]
+cpu0: 180 Issued Read (820) for address 0x167c
+cpu0: Received Request with command 2 (response to 820, addr 0x167c) [Time: 3] [0 outstanding requests]
+cpu0: 179 Issued Write (821) for address 0xc24c
+cpu0: Received Request with command 3 (response to 821, addr 0xc24c) [Time: 117] [0 outstanding requests]
+cpu0: 178 Issued Read (822) for address 0xf3ec
+cpu0: Received Request with command 2 (response to 822, addr 0xf3ec) [Time: 14] [0 outstanding requests]
+cpu0: 177 Issued Read (823) for address 0x2cb0
+cpu0: Received Request with command 2 (response to 823, addr 0x2cb0) [Time: 14] [0 outstanding requests]
+cpu0: 176 Issued Read (824) for address 0xb8bc
+cpu0: Received Request with command 2 (response to 824, addr 0xb8bc) [Time: 14] [0 outstanding requests]
+cpu0: 175 Issued Read (825) for address 0x19ac
+cpu0: Received Request with command 2 (response to 825, addr 0x19ac) [Time: 3] [0 outstanding requests]
+cpu0: 174 Issued Read (826) for address 0xbe84
+cpu0: Received Request with command 2 (response to 826, addr 0xbe84) [Time: 117] [0 outstanding requests]
+cpu0: 173 Issued Read (827) for address 0x698c
+cpu0: Received Request with command 2 (response to 827, addr 0x698c) [Time: 14] [0 outstanding requests]
+cpu0: 172 Issued Read (828) for address 0x45ac
+cpu0: 171 Issued Read (829) for address 0x4210
+cpu0: Received Request with command 2 (response to 829, addr 0x4210) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 828, addr 0x45ac) [Time: 117] [0 outstanding requests]
+cpu0: 170 Issued Read (830) for address 0xe6f0
+cpu0: Received Request with command 2 (response to 830, addr 0xe6f0) [Time: 117] [0 outstanding requests]
+cpu0: 169 Issued Read (831) for address 0xde44
+cpu0: Received Request with command 2 (response to 831, addr 0xde44) [Time: 14] [0 outstanding requests]
+cpu0: 168 Issued Read (832) for address 0x7b60
+cpu0: Received Request with command 2 (response to 832, addr 0x7b60) [Time: 14] [0 outstanding requests]
+cpu0: 167 Issued Read (833) for address 0xcb24
+cpu0: Received Request with command 2 (response to 833, addr 0xcb24) [Time: 117] [0 outstanding requests]
+cpu0: 166 Issued Read (834) for address 0xf800
+cpu0: Received Request with command 2 (response to 834, addr 0xf800) [Time: 117] [0 outstanding requests]
+cpu0: 165 Issued Read (835) for address 0x3cf4
+cpu0: 164 Issued Read (836) for address 0xce8
+cpu0: Received Request with command 2 (response to 835, addr 0x3cf4) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 836, addr 0xce8) [Time: 117] [0 outstanding requests]
+cpu0: 163 Issued Read (837) for address 0x74a4
+cpu0: Received Request with command 2 (response to 837, addr 0x74a4) [Time: 117] [0 outstanding requests]
+cpu0: 162 Issued Read (838) for address 0x1d88
+cpu0: 161 Issued Read (839) for address 0xcc38
+cpu0: Received Request with command 2 (response to 839, addr 0xcc38) [Time: 14] [1 outstanding requests]
+cpu0: 160 Issued Read (840) for address 0x97a4
+cpu0: 159 Issued Read (841) for address 0xee8
+cpu0: Received Request with command 2 (response to 838, addr 0x1d88) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 840, addr 0x97a4) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 841, addr 0xee8) [Time: 117] [0 outstanding requests]
+cpu0: 158 Issued Read (842) for address 0xbd9c
+cpu0: 157 Issued Read (843) for address 0x8a88
+cpu0: Received Request with command 2 (response to 843, addr 0x8a88) [Time: 14] [1 outstanding requests]
+cpu0: 156 Issued Read (844) for address 0xa184
+cpu0: Received Request with command 2 (response to 844, addr 0xa184) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 842, addr 0xbd9c) [Time: 117] [0 outstanding requests]
+cpu0: 155 Issued Read (845) for address 0xe920
+cpu0: 154 Issued Read (846) for address 0x9c68
+cpu0: Received Request with command 2 (response to 845, addr 0xe920) [Time: 14] [1 outstanding requests]
+cpu0: 153 Issued Read (847) for address 0xaf38
+cpu0: Received Request with command 2 (response to 846, addr 0x9c68) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 847, addr 0xaf38) [Time: 117] [0 outstanding requests]
+cpu0: 152 Issued Read (848) for address 0x3efc
+cpu0: Received Request with command 2 (response to 848, addr 0x3efc) [Time: 117] [0 outstanding requests]
+cpu0: 151 Issued Read (849) for address 0x26f4
+cpu0: Received Request with command 2 (response to 849, addr 0x26f4) [Time: 14] [0 outstanding requests]
+cpu0: 150 Issued Read (850) for address 0x3bcc
+cpu0: 149 Issued Read (851) for address 0xcf58
+cpu0: Received Request with command 2 (response to 851, addr 0xcf58) [Time: 14] [1 outstanding requests]
+cpu0: 148 Issued Read (852) for address 0x8564
+cpu0: Received Request with command 2 (response to 850, addr 0x3bcc) [Time: 117] [1 outstanding requests]
+cpu0: 147 Issued Read (853) for address 0x2b94
+cpu0: Received Request with command 2 (response to 853, addr 0x2b94) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 852, addr 0x8564) [Time: 117] [0 outstanding requests]
+cpu0: 146 Issued Read (854) for address 0x284c
+cpu0: Received Request with command 2 (response to 854, addr 0x284c) [Time: 14] [0 outstanding requests]
+cpu0: 145 Issued Read (855) for address 0x9df0
+cpu0: Received Request with command 2 (response to 855, addr 0x9df0) [Time: 14] [0 outstanding requests]
+cpu0: 144 Issued Read (856) for address 0x138
+cpu0: 143 Issued Read (857) for address 0xe518
+cpu0: 142 Issued Read (858) for address 0xd7c4
+cpu0: Received Request with command 2 (response to 856, addr 0x138) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 857, addr 0xe518) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 858, addr 0xd7c4) [Time: 117] [0 outstanding requests]
+cpu0: 141 Issued Write (859) for address 0x8cb0
+cpu0: 140 Issued Read (860) for address 0x71fc
+cpu0: Received Request with command 2 (response to 860, addr 0x71fc) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 859, addr 0x8cb0) [Time: 117] [0 outstanding requests]
+cpu0: 139 Issued Read (861) for address 0x2c88
+cpu0: Received Request with command 2 (response to 861, addr 0x2c88) [Time: 3] [0 outstanding requests]
+cpu0: 138 Issued Read (862) for address 0xab00
+cpu0: 137 Issued Read (863) for address 0x7a90
+cpu0: Received Request with command 2 (response to 862, addr 0xab00) [Time: 14] [1 outstanding requests]
+cpu0: 136 Issued Read (864) for address 0x11a8
+cpu0: Received Request with command 2 (response to 863, addr 0x7a90) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 864, addr 0x11a8) [Time: 117] [0 outstanding requests]
+cpu0: 135 Issued Read (865) for address 0x7f70
+cpu0: 134 Issued Read (866) for address 0x8050
+cpu0: Received Request with command 2 (response to 866, addr 0x8050) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 865, addr 0x7f70) [Time: 117] [0 outstanding requests]
+cpu0: 133 Issued Read (867) for address 0x9604
+cpu0: 132 Issued Write (868) for address 0x50f4
+cpu0: 131 Issued Read (869) for address 0xe620
+cpu0: Received Request with command 2 (response to 869, addr 0xe620) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 867, addr 0x9604) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 868, addr 0x50f4) [Time: 117] [0 outstanding requests]
+cpu0: 130 Issued Read (870) for address 0xb840
+cpu0: 129 Issued Read (871) for address 0x44c
+cpu0: 128 Issued Read (872) for address 0x9594
+cpu0: Received Request with command 2 (response to 870, addr 0xb840) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 871, addr 0x44c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 872, addr 0x9594) [Time: 117] [0 outstanding requests]
+cpu0: 127 Issued Write (873) for address 0x375c
+cpu0: 126 Issued Read (874) for address 0x9c14
+cpu0: 125 Issued Read (875) for address 0x34
+cpu0: Received Request with command 3 (response to 873, addr 0x375c) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 874, addr 0x9c14) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 875, addr 0x34) [Time: 117] [0 outstanding requests]
+cpu0: 124 Issued Read (876) for address 0xbec0
+cpu0: Received Request with command 2 (response to 876, addr 0xbec0) [Time: 14] [0 outstanding requests]
+cpu0: 123 Issued Read (877) for address 0xd0e0
+cpu0: 122 Issued Write (878) for address 0x1f34
+cpu0: Received Request with command 2 (response to 877, addr 0xd0e0) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 878, addr 0x1f34) [Time: 117] [0 outstanding requests]
+cpu0: 121 Issued Read (879) for address 0xad80
+cpu0: Received Request with command 2 (response to 879, addr 0xad80) [Time: 117] [0 outstanding requests]
+cpu0: 120 Issued Read (880) for address 0xc90
+cpu0: 119 Issued Read (881) for address 0x990
+cpu0: Received Request with command 2 (response to 880, addr 0xc90) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 881, addr 0x990) [Time: 14] [0 outstanding requests]
+cpu0: 118 Issued Write (882) for address 0x78cc
+cpu0: 117 Issued Read (883) for address 0xd4f0
+cpu0: Received Request with command 2 (response to 883, addr 0xd4f0) [Time: 14] [1 outstanding requests]
+cpu0: 116 Issued Read (884) for address 0x7c84
+cpu0: Received Request with command 2 (response to 884, addr 0x7c84) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 882, addr 0x78cc) [Time: 117] [0 outstanding requests]
+cpu0: 115 Issued Read (885) for address 0xa370
+cpu0: 114 Issued Read (886) for address 0xee38
+cpu0: Received Request with command 2 (response to 886, addr 0xee38) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 885, addr 0xa370) [Time: 117] [0 outstanding requests]
+cpu0: 113 Issued Read (887) for address 0x273c
+cpu0: 112 Issued Read (888) for address 0x4dc
+cpu0: Received Request with command 2 (response to 887, addr 0x273c) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 888, addr 0x4dc) [Time: 14] [0 outstanding requests]
+cpu0: 111 Issued Read (889) for address 0x8864
+cpu0: Received Request with command 2 (response to 889, addr 0x8864) [Time: 14] [0 outstanding requests]
+cpu0: 110 Issued Read (890) for address 0x7bd4
+cpu0: 109 Issued Read (891) for address 0x8c80
+cpu0: Received Request with command 2 (response to 891, addr 0x8c80) [Time: 3] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 890, addr 0x7bd4) [Time: 117] [0 outstanding requests]
+cpu0: 108 Issued Read (892) for address 0x6cd4
+cpu0: Received Request with command 2 (response to 892, addr 0x6cd4) [Time: 14] [0 outstanding requests]
+cpu0: 107 Issued Read (893) for address 0x8700
+cpu0: Received Request with command 2 (response to 893, addr 0x8700) [Time: 14] [0 outstanding requests]
+cpu0: 106 Issued Read (894) for address 0xc7c0
+cpu0: Received Request with command 2 (response to 894, addr 0xc7c0) [Time: 117] [0 outstanding requests]
+cpu0: 105 Issued Read (895) for address 0x3c70
+cpu0: 104 Issued Read (896) for address 0x3c64
+cpu0: 103 Issued Read (897) for address 0x547c
+cpu0: Received Request with command 2 (response to 895, addr 0x3c70) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 896, addr 0x3c64) [Time: 12] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 897, addr 0x547c) [Time: 14] [0 outstanding requests]
+cpu0: 102 Issued Read (898) for address 0x7b44
+cpu0: Received Request with command 2 (response to 898, addr 0x7b44) [Time: 14] [0 outstanding requests]
+cpu0: 101 Issued Read (899) for address 0x6ab4
+cpu0: Received Request with command 2 (response to 899, addr 0x6ab4) [Time: 117] [0 outstanding requests]
+cpu0: 100 Issued Read (900) for address 0x1f04
+cpu0: Received Request with command 2 (response to 900, addr 0x1f04) [Time: 3] [0 outstanding requests]
+cpu0: 99 Issued Read (901) for address 0x79e0
+cpu0: Received Request with command 2 (response to 901, addr 0x79e0) [Time: 14] [0 outstanding requests]
+cpu0: 98 Issued Read (902) for address 0x9dd8
+cpu0: Received Request with command 2 (response to 902, addr 0x9dd8) [Time: 3] [0 outstanding requests]
+cpu0: 97 Issued Read (903) for address 0x8a8
+cpu0: Received Request with command 2 (response to 903, addr 0x8a8) [Time: 14] [0 outstanding requests]
+cpu0: 96 Issued Read (904) for address 0x3cc
+cpu0: 95 Issued Read (905) for address 0x3388
+cpu0: 94 Issued Read (906) for address 0xea8
+cpu0: Received Request with command 2 (response to 905, addr 0x3388) [Time: 14] [2 outstanding requests]
+cpu0: 93 Issued Read (907) for address 0x90ec
+cpu0: Received Request with command 2 (response to 904, addr 0x3cc) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 906, addr 0xea8) [Time: 117] [1 outstanding requests]
+cpu0: 92 Issued Read (908) for address 0x55f4
+cpu0: Received Request with command 2 (response to 908, addr 0x55f4) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 907, addr 0x90ec) [Time: 117] [0 outstanding requests]
+cpu0: 91 Issued Read (909) for address 0x7038
+cpu0: Received Request with command 2 (response to 909, addr 0x7038) [Time: 14] [0 outstanding requests]
+cpu0: 90 Issued Read (910) for address 0x4988
+cpu0: Received Request with command 2 (response to 910, addr 0x4988) [Time: 14] [0 outstanding requests]
+cpu0: 89 Issued Read (911) for address 0x39b8
+cpu0: Received Request with command 2 (response to 911, addr 0x39b8) [Time: 14] [0 outstanding requests]
+cpu0: 88 Issued Read (912) for address 0xd4
+cpu0: Received Request with command 2 (response to 912, addr 0xd4) [Time: 14] [0 outstanding requests]
+cpu0: 87 Issued Read (913) for address 0x74e0
+cpu0: Received Request with command 2 (response to 913, addr 0x74e0) [Time: 14] [0 outstanding requests]
+cpu0: 86 Issued Read (914) for address 0xa364
+cpu0: Received Request with command 2 (response to 914, addr 0xa364) [Time: 3] [0 outstanding requests]
+cpu0: 85 Issued Read (915) for address 0x9454
+cpu0: Received Request with command 2 (response to 915, addr 0x9454) [Time: 117] [0 outstanding requests]
+cpu0: 84 Issued Read (916) for address 0xd120
+cpu0: Received Request with command 2 (response to 916, addr 0xd120) [Time: 3] [0 outstanding requests]
+cpu0: 83 Issued Read (917) for address 0x1b20
+cpu0: 82 Issued Read (918) for address 0x3948
+cpu0: Received Request with command 2 (response to 917, addr 0x1b20) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 918, addr 0x3948) [Time: 117] [0 outstanding requests]
+cpu0: 81 Issued Read (919) for address 0xac14
+cpu0: 80 Issued Read (920) for address 0xb758
+cpu0: Received Request with command 2 (response to 919, addr 0xac14) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 920, addr 0xb758) [Time: 117] [0 outstanding requests]
+cpu0: 79 Issued Read (921) for address 0xaf24
+cpu0: Received Request with command 2 (response to 921, addr 0xaf24) [Time: 14] [0 outstanding requests]
+cpu0: 78 Issued Read (922) for address 0x3d74
+cpu0: Received Request with command 2 (response to 922, addr 0x3d74) [Time: 14] [0 outstanding requests]
+cpu0: 77 Issued Read (923) for address 0x5f90
+cpu0: 76 Issued Read (924) for address 0x5198
+cpu0: 75 Issued Read (925) for address 0x92ac
+cpu0: Received Request with command 2 (response to 923, addr 0x5f90) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 924, addr 0x5198) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 925, addr 0x92ac) [Time: 117] [0 outstanding requests]
+cpu0: 74 Issued Read (926) for address 0xcbf8
+cpu0: Received Request with command 2 (response to 926, addr 0xcbf8) [Time: 14] [0 outstanding requests]
+cpu0: 73 Issued Read (927) for address 0x976c
+cpu0: Received Request with command 2 (response to 927, addr 0x976c) [Time: 14] [0 outstanding requests]
+cpu0: 72 Issued Read (928) for address 0x4c2c
+cpu0: Received Request with command 2 (response to 928, addr 0x4c2c) [Time: 14] [0 outstanding requests]
+cpu0: 71 Issued Read (929) for address 0x3414
+cpu0: Received Request with command 2 (response to 929, addr 0x3414) [Time: 117] [0 outstanding requests]
+cpu0: 70 Issued Read (930) for address 0xa740
+cpu0: 69 Issued Read (931) for address 0xc704
+cpu0: Received Request with command 2 (response to 930, addr 0xa740) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 931, addr 0xc704) [Time: 117] [0 outstanding requests]
+cpu0: 68 Issued Read (932) for address 0x20ec
+cpu0: Received Request with command 2 (response to 932, addr 0x20ec) [Time: 14] [0 outstanding requests]
+cpu0: 67 Issued Write (933) for address 0xb728
+cpu0: 66 Issued Read (934) for address 0xcb98
+cpu0: 65 Issued Read (935) for address 0xdc24
+cpu0: Received Request with command 2 (response to 935, addr 0xdc24) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 3 (response to 933, addr 0xb728) [Time: 117] [1 outstanding requests]
+cpu0: 64 Issued Write (936) for address 0x3858
+cpu0: Received Request with command 2 (response to 934, addr 0xcb98) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 936, addr 0x3858) [Time: 117] [0 outstanding requests]
+cpu0: 63 Issued Read (937) for address 0xae60
+cpu0: Received Request with command 2 (response to 937, addr 0xae60) [Time: 14] [0 outstanding requests]
+cpu0: 62 Issued Read (938) for address 0xe1d8
+cpu0: Received Request with command 2 (response to 938, addr 0xe1d8) [Time: 117] [0 outstanding requests]
+cpu0: 61 Issued Read (939) for address 0x4ab8
+cpu0: Received Request with command 2 (response to 939, addr 0x4ab8) [Time: 14] [0 outstanding requests]
+cpu0: 60 Issued Read (940) for address 0x7d0
+cpu0: Received Request with command 2 (response to 940, addr 0x7d0) [Time: 14] [0 outstanding requests]
+cpu0: 59 Issued Read (941) for address 0x28f4
+cpu0: 58 Issued Read (942) for address 0xb6ac
+cpu0: 57 Issued Read (943) for address 0x540
+cpu0: Received Request with command 2 (response to 941, addr 0x28f4) [Time: 117] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 942, addr 0xb6ac) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 943, addr 0x540) [Time: 117] [0 outstanding requests]
+cpu0: 56 Issued Read (944) for address 0x2990
+cpu0: 55 Issued Read (945) for address 0xbd50
+cpu0: Received Request with command 2 (response to 945, addr 0xbd50) [Time: 14] [1 outstanding requests]
+cpu0: 54 Issued Read (946) for address 0x2544
+cpu0: Received Request with command 2 (response to 946, addr 0x2544) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 944, addr 0x2990) [Time: 117] [0 outstanding requests]
+cpu0: 53 Issued Read (947) for address 0xb898
+cpu0: Received Request with command 2 (response to 947, addr 0xb898) [Time: 14] [0 outstanding requests]
+cpu0: 52 Issued Read (948) for address 0x8c60
+cpu0: 51 Issued Read (949) for address 0x7508
+cpu0: 50 Issued Read (950) for address 0xf69c
+cpu0: 49 Issued Read (951) for address 0x4004
+cpu0: Received Request with command 2 (response to 950, addr 0xf69c) [Time: 14] [3 outstanding requests]
+cpu0: Received Request with command 2 (response to 951, addr 0x4004) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 948, addr 0x8c60) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 949, addr 0x7508) [Time: 117] [0 outstanding requests]
+cpu0: 48 Issued Read (952) for address 0x8294
+cpu0: Received Request with command 2 (response to 952, addr 0x8294) [Time: 14] [0 outstanding requests]
+cpu0: 47 Issued Read (953) for address 0xb74
+cpu0: Received Request with command 2 (response to 953, addr 0xb74) [Time: 14] [0 outstanding requests]
+cpu0: 46 Issued Read (954) for address 0x475c
+cpu0: Received Request with command 2 (response to 954, addr 0x475c) [Time: 14] [0 outstanding requests]
+cpu0: 45 Issued Write (955) for address 0x378c
+cpu0: Received Request with command 3 (response to 955, addr 0x378c) [Time: 117] [0 outstanding requests]
+cpu0: 44 Issued Read (956) for address 0x678c
+cpu0: Received Request with command 2 (response to 956, addr 0x678c) [Time: 14] [0 outstanding requests]
+cpu0: 43 Issued Read (957) for address 0xc828
+cpu0: Received Request with command 2 (response to 957, addr 0xc828) [Time: 14] [0 outstanding requests]
+cpu0: 42 Issued Read (958) for address 0xa110
+cpu0: Received Request with command 2 (response to 958, addr 0xa110) [Time: 117] [0 outstanding requests]
+cpu0: 41 Issued Read (959) for address 0xc374
+cpu0: Received Request with command 2 (response to 959, addr 0xc374) [Time: 14] [0 outstanding requests]
+cpu0: 40 Issued Read (960) for address 0x45e0
+cpu0: Received Request with command 2 (response to 960, addr 0x45e0) [Time: 14] [0 outstanding requests]
+cpu0: 39 Issued Write (961) for address 0xcadc
+cpu0: 38 Issued Read (962) for address 0xe15c
+cpu0: Received Request with command 2 (response to 962, addr 0xe15c) [Time: 14] [1 outstanding requests]
+cpu0: 37 Issued Read (963) for address 0xdcf4
+cpu0: Received Request with command 3 (response to 961, addr 0xcadc) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 963, addr 0xdcf4) [Time: 117] [0 outstanding requests]
+cpu0: 36 Issued Read (964) for address 0x596c
+cpu0: 35 Issued Read (965) for address 0xb1fc
+cpu0: Received Request with command 2 (response to 965, addr 0xb1fc) [Time: 14] [1 outstanding requests]
+cpu0: 34 Issued Read (966) for address 0x3358
+cpu0: Received Request with command 2 (response to 966, addr 0x3358) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 964, addr 0x596c) [Time: 117] [0 outstanding requests]
+cpu0: 33 Issued Read (967) for address 0x2180
+cpu0: 32 Issued Read (968) for address 0xc4e0
+cpu0: Received Request with command 2 (response to 968, addr 0xc4e0) [Time: 14] [1 outstanding requests]
+cpu0: 31 Issued Read (969) for address 0x87b0
+cpu0: 30 Issued Read (970) for address 0x51c4
+cpu0: Received Request with command 2 (response to 969, addr 0x87b0) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 967, addr 0x2180) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 970, addr 0x51c4) [Time: 117] [0 outstanding requests]
+cpu0: 29 Issued Read (971) for address 0x98f8
+cpu0: Received Request with command 2 (response to 971, addr 0x98f8) [Time: 14] [0 outstanding requests]
+cpu0: 28 Issued Read (972) for address 0xc294
+cpu0: Received Request with command 2 (response to 972, addr 0xc294) [Time: 14] [0 outstanding requests]
+cpu0: 27 Issued Read (973) for address 0x32fc
+cpu0: Received Request with command 2 (response to 973, addr 0x32fc) [Time: 117] [0 outstanding requests]
+cpu0: 26 Issued Read (974) for address 0xd168
+cpu0: 25 Issued Read (975) for address 0xcdcc
+cpu0: Received Request with command 2 (response to 974, addr 0xd168) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 975, addr 0xcdcc) [Time: 14] [0 outstanding requests]
+cpu0: 24 Issued Read (976) for address 0xdb80
+cpu0: 23 Issued Read (977) for address 0xac4
+cpu0: 22 Issued Read (978) for address 0xc9d0
+cpu0: Received Request with command 2 (response to 977, addr 0xac4) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 976, addr 0xdb80) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 978, addr 0xc9d0) [Time: 117] [0 outstanding requests]
+cpu0: 21 Issued Read (979) for address 0xd5b0
+cpu0: 20 Issued Read (980) for address 0x6eb8
+cpu0: Received Request with command 2 (response to 980, addr 0x6eb8) [Time: 14] [1 outstanding requests]
+cpu0: 19 Issued Read (981) for address 0xd768
+cpu0: Received Request with command 2 (response to 979, addr 0xd5b0) [Time: 117] [1 outstanding requests]
+cpu0: 18 Issued Read (982) for address 0x3238
+cpu0: Received Request with command 2 (response to 981, addr 0xd768) [Time: 117] [1 outstanding requests]
+cpu0: 17 Issued Read (983) for address 0x6bd8
+cpu0: Received Request with command 2 (response to 983, addr 0x6bd8) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 982, addr 0x3238) [Time: 117] [0 outstanding requests]
+cpu0: 16 Issued Read (984) for address 0x8784
+cpu0: Received Request with command 2 (response to 984, addr 0x8784) [Time: 3] [0 outstanding requests]
+cpu0: 15 Issued Read (985) for address 0xe514
+cpu0: 14 Issued Read (986) for address 0xd90c
+cpu0: Received Request with command 2 (response to 985, addr 0xe514) [Time: 3] [1 outstanding requests]
+cpu0: 13 Issued Read (987) for address 0x7950
+cpu0: Received Request with command 2 (response to 987, addr 0x7950) [Time: 14] [1 outstanding requests]
+cpu0: 12 Issued Read (988) for address 0xe9f0
+cpu0: 11 Issued Read (989) for address 0xc68c
+cpu0: Received Request with command 2 (response to 989, addr 0xc68c) [Time: 14] [2 outstanding requests]
+cpu0: Received Request with command 2 (response to 986, addr 0xd90c) [Time: 117] [1 outstanding requests]
+cpu0: Received Request with command 2 (response to 988, addr 0xe9f0) [Time: 117] [0 outstanding requests]
+cpu0: 10 Issued Read (990) for address 0x79e4
+cpu0: Received Request with command 2 (response to 990, addr 0x79e4) [Time: 14] [0 outstanding requests]
+cpu0: 9 Issued Read (991) for address 0xcf78
+cpu0: Received Request with command 2 (response to 991, addr 0xcf78) [Time: 14] [0 outstanding requests]
+cpu0: 8 Issued Write (992) for address 0x11cc
+cpu0: 7 Issued Read (993) for address 0xb754
+cpu0: Received Request with command 2 (response to 993, addr 0xb754) [Time: 14] [1 outstanding requests]
+cpu0: Received Request with command 3 (response to 992, addr 0x11cc) [Time: 117] [0 outstanding requests]
+cpu0: 6 Issued Read (994) for address 0x1ec4
+cpu0: Received Request with command 2 (response to 994, addr 0x1ec4) [Time: 14] [0 outstanding requests]
+cpu0: 5 Issued Read (995) for address 0x7844
+cpu0: Received Request with command 2 (response to 995, addr 0x7844) [Time: 14] [0 outstanding requests]
+cpu0: 4 Issued Read (996) for address 0x6c78
+cpu0: Received Request with command 2 (response to 996, addr 0x6c78) [Time: 117] [0 outstanding requests]
+cpu0: 3 Issued Read (997) for address 0xa7c0
+cpu0: Received Request with command 2 (response to 997, addr 0xa7c0) [Time: 117] [0 outstanding requests]
+cpu0: 2 Issued Read (998) for address 0xc308
+cpu0: Received Request with command 2 (response to 998, addr 0xc308) [Time: 14] [0 outstanding requests]
+cpu0: 1 Issued Read (999) for address 0xf820
+cpu0: Received Request with command 2 (response to 999, addr 0xf820) [Time: 14] [0 outstanding requests]
+TrivialCPU: Test Completed Successfuly
+FINAL STATS:
+-----------------------------------------------------------------
+- Events at NorthBus                 : 1000
+- Events at SouthBus                 : 1000
+- Total Events                       : 2000
+-----------------------------------------------------------------
+
+Address Histogram:
+-----------------------------------------------------------------
+Address_Range: Count
+- [0-4095]: 73
+- [4096-8191]: 61
+- [8192-12287]: 57
+- [12288-16383]: 67
+- [16384-20479]: 60
+- [20480-24575]: 48
+- [24576-28671]: 64
+- [28672-32767]: 67
+- [32768-36863]: 70
+- [36864-40959]: 54
+- [40960-45055]: 57
+- [45056-49151]: 61
+- [49152-53247]: 67
+- [53248-57343]: 76
+- [57344-61439]: 61
+- [61440-65535]: 57
+-----------------------------------------------------------------
+- Total_Events_Address: 1000
+-----------------------------------------------------------------
+
+Access Latency Distribution (ns):
+-----------------------------------------------------------------
+Min-Latency(ns): 3  Max-Latency(ns): 117  #Bins: 10
+-----------------------------------------------------------------
+Latency Range(ns): Count
+- [0-11]: 50
+- [12-23]: 269
+- [24-35]: 0
+- [36-47]: 1
+- [48-59]: 0
+- [60-71]: 0
+- [72-83]: 0
+- [84-95]: 0
+- [96-107]: 0
+- [108-119]: 680
+-----------------------------------------------------------------
+- Total_Events_Latency: 1000
+-----------------------------------------------------------------
+
+TrivialCPU cpu0 Finished after 1000 issued reads, 1000 returned (102965 clocks)
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  82485
+  [2, 4]  19340
+  [4, 6]  1108
+  [6, 8]  32
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           1000
+     GetS:                                       907
+     GetX:                                       93
+     GetSEx:                                     0
+- Total misses:                                  947
+     GetS, miss on arrival:                      854
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      93
+     GetX, miss after being blocked:             0
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    53
+     GetS, hit on arrival:                       50
+     GetS, hit after being blocked:              3
+     GetX, hit on arrival:                       0
+     GetX, hit after being blocked:              0
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     5.300%
+- Miss ratio:                                    94.700%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   854
+- GetX   I->M:                                   88
+- GetX   S->M:                                   5
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PUTM sent due to [inv, evictions]:             [0, 792]
+- PUTE sent due to [inv, evictions]:             [0, 86]
+- PUTX sent due to [inv, evictions]:             [0, 0]
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    1947
+- Requests handled by MSHR (MSHR hits):          950
+- NACKs sent (MSHR Full, BottomCC):              0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        173
+- Latency GetS   I->S                            168
+- Latency GetX   I->M                            224
+- Latency GetX   S->M                            232
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: l2cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           947
+     GetS:                                       854
+     GetX:                                       93
+     GetSEx:                                     0
+- Total misses:                                  680
+     GetS, miss on arrival:                      590
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      90
+     GetX, miss after being blocked:             0
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    267
+     GetS, hit on arrival:                       264
+     GetS, hit after being blocked:              0
+     GetX, hit on arrival:                       3
+     GetX, hit after being blocked:              0
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     28.194%
+- Miss ratio:                                    71.806%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   590
+- GetS   M(present at another cache):            0
+- GetX   I->M:                                   57
+- GetX   S->M:                                   33
+- GetX   M(present at another cache):            0
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+- GetSEx M(present at another cache):            0
+------------ Replacements and evictions -------------------
+- PutS received:                                 792
+- PutM received:                                 86
+- PutX received:                                 0
+- PUTM sent due to [inv, evictions]:             [0, 0]
+- PUTE sent due to [inv, evictions]:             [0, 0]
+- PUTX sent due to [inv, evictions]:             [0, 0]
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    2505
+- Requests handled by MSHR (MSHR hits):          680
+- NACKs sent (MSHR Full, BottomCC):              0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        222
+- Latency GetS   I->S                            222
+- Latency GetX   I->M                            222
+- Latency GetX   S->M                            222
+- NACKs sent (MSHR Full, TopCC):                  0
+- InvalidateX sent                                0
+- Invalidates sent (non-eviction):                0
+- Invalidates sent due to evictions:              0
+- Instances where eviction caused invalidation:   0
+Simulation is complete, simulated time: 102.965 us

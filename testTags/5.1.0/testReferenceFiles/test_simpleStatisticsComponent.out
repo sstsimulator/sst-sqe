@@ -1,0 +1,8 @@
+WARNING: Building component "simpleStatisticsTest0" with no links assigned.
+Using Marsaglia Random Number Generator with seeds m_z = 1053, m_w = 1447
+REGISTER CLOCK #1 at 1 ns
+Inserting stop event at cycle 200ns, 200000
+@ 60
+*** STATISTIC TESTING: DISABLE stat1_U32 OUTPUT FOR 15ns PERIOD
+
+Simulation is complete, simulated time: 100 ns

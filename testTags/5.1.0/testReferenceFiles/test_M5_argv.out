@@ -1,0 +1,17 @@
+WARNING: Building component "system" with no links assigned.
+M5:configFile `argvM5.xml`
+default system
+default process
+M5:registering exit `m5.nid0.cpu0.workload`
+M5:registering exit
+Inserting stop event at cycle 100000s, 100000000000000000
+Process has 5 command line parameters
+ [    0] is: [argv.x]
+ [    1] is: [10000000000000]
+ [    2] is: [-fargument]
+ [    3] is: [-4]
+ [    4] is: [teststr]
+Complete.
+M5:exiting: curTick()=37127000 cause=`target called exit()` code=10
+ 
+Simulation is complete, simulated time: 37.127 us

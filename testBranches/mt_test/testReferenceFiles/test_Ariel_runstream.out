@@ -1,0 +1,61 @@
+Allocating arrays of size 2000 elements.
+Done allocating arrays.
+Perfoming the fast_c compute loop...
+Sum of arrays is: 6999500.000000
+Freeing arrays...
+Done.
+CORE ID: 0 PROCESSED AN EXIT EVENT
+
+Ariel Memory Management Statistics:
+---------------------------------------------------------------------
+Page Table Sizes:
+- Map entries at level 0         256
+Page Table Coverages:
+- Bytes at level 0              1048576
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           762118
+     GetS:                                       558796
+     GetX:                                       203322
+     GetSEx:                                     0
+- Total misses:                                  17894
+     GetS, miss on arrival:                      14673
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      3004
+     GetX, miss after being blocked:             217
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    744224
+     GetS, hit on arrival:                       499432
+     GetS, hit after being blocked:              44691
+     GetX, hit on arrival:                       190179
+     GetX, hit after being blocked:              9922
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     97.652%
+- Miss ratio:                                    2.348%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   14673
+- GetX   I->M:                                   2839
+- GetX   S->M:                                   382
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PUTM sent due to [inv, evictions]:             [0, 13660]
+- PUTE sent due to [inv, evictions]:             [0, 2828]
+- PUTX sent due to [inv, evictions]:             [0, 0]
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    780012
+- Requests handled by MSHR (MSHR hits):          72724
+- NACKs sent (MSHR Full, BottomCC):              0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        203
+- Latency GetS   I->S                            203
+- Latency GetX   I->M                            203
+- Latency GetX   S->M                            313
+Simulation is complete, simulated time: 3.86409 ms

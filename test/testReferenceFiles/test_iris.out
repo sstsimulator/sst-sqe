@@ -1,0 +1,532 @@
+WARNING:  Attempling to connect to undocumented port: rtr, in component 0.nic of type iris.trig_nic.  The most likely outcome is a segfault.
+WARNING:  Attempling to connect to undocumented port: rtr, in component 1.nic of type iris.trig_nic.  The most likely outcome is a segfault.
+WARNING:  Attempling to connect to undocumented port: rtr, in component 2.nic of type iris.trig_nic.  The most likely outcome is a segfault.
+WARNING:  Attempling to connect to undocumented port: rtr, in component 3.nic of type iris.trig_nic.  The most likely outcome is a segfault.
+WARNING:  Attempling to connect to undocumented port: rtr, in component 4.nic of type iris.trig_nic.  The most likely outcome is a segfault.
+WARNING:  Attempling to connect to undocumented port: rtr, in component 5.nic of type iris.trig_nic.  The most likely outcome is a segfault.
+WARNING:  Attempling to connect to undocumented port: rtr, in component 6.nic of type iris.trig_nic.  The most likely outcome is a segfault.
+WARNING:  Attempling to connect to undocumented port: rtr, in component 7.nic of type iris.trig_nic.  The most likely outcome is a segfault.
+WARNING:  Attempling to connect to undocumented port: rtr, in component 8.nic of type iris.trig_nic.  The most likely outcome is a segfault.
+WARNING:  Attempling to connect to undocumented port: rtr, in component 9.nic of type iris.trig_nic.  The most likely outcome is a segfault.
+Maximum bad port names reached, no more checks will be made.
+Max time: 8436 ns
+Min time: 4664 ns
+Avg time: 7478 ns
+Total num: 64
+
+Node 46 Rtr 
+SimpleRouter[46] stat_pkts: 10
+SimpleRouter[46] stat_flits_in: 80
+SimpleRouter[46] stat_flits_out: 80
+SimpleRouter[46] stat_avg_pkt_lat: 8
+SimpleRouter[46] stat_var_pkt_lat: 0
+SimpleRouter[46] stat_last_flit_cycle: 8764 
+
+Node 3 Rtr 
+SimpleRouter[3] stat_pkts: 13
+SimpleRouter[3] stat_flits_in: 104
+SimpleRouter[3] stat_flits_out: 104
+SimpleRouter[3] stat_avg_pkt_lat: 8
+SimpleRouter[3] stat_var_pkt_lat: 0
+SimpleRouter[3] stat_last_flit_cycle: 6432 
+
+Node 59 Rtr 
+SimpleRouter[59] stat_pkts: 7
+SimpleRouter[59] stat_flits_in: 56
+SimpleRouter[59] stat_flits_out: 56
+SimpleRouter[59] stat_avg_pkt_lat: 8
+SimpleRouter[59] stat_var_pkt_lat: 0
+SimpleRouter[59] stat_last_flit_cycle: 8704 
+
+Node 36 Rtr 
+SimpleRouter[36] stat_pkts: 27
+SimpleRouter[36] stat_flits_in: 216
+SimpleRouter[36] stat_flits_out: 216
+SimpleRouter[36] stat_avg_pkt_lat: 8
+SimpleRouter[36] stat_var_pkt_lat: 0
+SimpleRouter[36] stat_last_flit_cycle: 8848 
+
+Node 50 Rtr 
+SimpleRouter[50] stat_pkts: 18
+SimpleRouter[50] stat_flits_in: 144
+SimpleRouter[50] stat_flits_out: 144
+SimpleRouter[50] stat_avg_pkt_lat: 8
+SimpleRouter[50] stat_var_pkt_lat: 0
+SimpleRouter[50] stat_last_flit_cycle: 7626 
+
+Node 51 Rtr 
+SimpleRouter[51] stat_pkts: 13
+SimpleRouter[51] stat_flits_in: 104
+SimpleRouter[51] stat_flits_out: 104
+SimpleRouter[51] stat_avg_pkt_lat: 8
+SimpleRouter[51] stat_var_pkt_lat: 0
+SimpleRouter[51] stat_last_flit_cycle: 7606 
+
+Node 39 Rtr 
+SimpleRouter[39] stat_pkts: 5
+SimpleRouter[39] stat_flits_in: 40
+SimpleRouter[39] stat_flits_out: 40
+SimpleRouter[39] stat_avg_pkt_lat: 8
+SimpleRouter[39] stat_var_pkt_lat: 0
+SimpleRouter[39] stat_last_flit_cycle: 8788 
+
+Node 26 Rtr 
+SimpleRouter[26] stat_pkts: 12
+SimpleRouter[26] stat_flits_in: 96
+SimpleRouter[26] stat_flits_out: 96
+SimpleRouter[26] stat_avg_pkt_lat: 8
+SimpleRouter[26] stat_var_pkt_lat: 0
+SimpleRouter[26] stat_last_flit_cycle: 8708 
+
+Node 23 Rtr 
+SimpleRouter[23] stat_pkts: 5
+SimpleRouter[23] stat_flits_in: 40
+SimpleRouter[23] stat_flits_out: 40
+SimpleRouter[23] stat_avg_pkt_lat: 8
+SimpleRouter[23] stat_var_pkt_lat: 0
+SimpleRouter[23] stat_last_flit_cycle: 8780 
+
+Node 14 Rtr 
+SimpleRouter[14] stat_pkts: 10
+SimpleRouter[14] stat_flits_in: 80
+SimpleRouter[14] stat_flits_out: 80
+SimpleRouter[14] stat_avg_pkt_lat: 8
+SimpleRouter[14] stat_var_pkt_lat: 0
+SimpleRouter[14] stat_last_flit_cycle: 7598 
+
+Node 1 Rtr 
+SimpleRouter[1] stat_pkts: 23
+SimpleRouter[1] stat_flits_in: 184
+SimpleRouter[1] stat_flits_out: 184
+SimpleRouter[1] stat_avg_pkt_lat: 8
+SimpleRouter[1] stat_var_pkt_lat: 0
+SimpleRouter[1] stat_last_flit_cycle: 6472 
+
+Node 53 Rtr 
+SimpleRouter[53] stat_pkts: 15
+SimpleRouter[53] stat_flits_in: 120
+SimpleRouter[53] stat_flits_out: 120
+SimpleRouter[53] stat_avg_pkt_lat: 8
+SimpleRouter[53] stat_var_pkt_lat: 0
+SimpleRouter[53] stat_last_flit_cycle: 8836 
+
+Node 28 Rtr 
+SimpleRouter[28] stat_pkts: 24
+SimpleRouter[28] stat_flits_in: 192
+SimpleRouter[28] stat_flits_out: 192
+SimpleRouter[28] stat_avg_pkt_lat: 8
+SimpleRouter[28] stat_var_pkt_lat: 0
+SimpleRouter[28] stat_last_flit_cycle: 8796 
+
+Node 27 Rtr 
+SimpleRouter[27] stat_pkts: 7
+SimpleRouter[27] stat_flits_in: 56
+SimpleRouter[27] stat_flits_out: 56
+SimpleRouter[27] stat_avg_pkt_lat: 8
+SimpleRouter[27] stat_var_pkt_lat: 0
+SimpleRouter[27] stat_last_flit_cycle: 8688 
+
+Node 22 Rtr 
+SimpleRouter[22] stat_pkts: 10
+SimpleRouter[22] stat_flits_in: 80
+SimpleRouter[22] stat_flits_out: 80
+SimpleRouter[22] stat_avg_pkt_lat: 8
+SimpleRouter[22] stat_var_pkt_lat: 0
+SimpleRouter[22] stat_last_flit_cycle: 8800 
+
+Node 56 Rtr 
+SimpleRouter[56] stat_pkts: 26
+SimpleRouter[56] stat_flits_in: 208
+SimpleRouter[56] stat_flits_out: 208
+SimpleRouter[56] stat_avg_pkt_lat: 8
+SimpleRouter[56] stat_var_pkt_lat: 0
+SimpleRouter[56] stat_last_flit_cycle: 8764 
+
+Node 45 Rtr 
+SimpleRouter[45] stat_pkts: 15
+SimpleRouter[45] stat_flits_in: 120
+SimpleRouter[45] stat_flits_out: 120
+SimpleRouter[45] stat_avg_pkt_lat: 8
+SimpleRouter[45] stat_var_pkt_lat: 0
+SimpleRouter[45] stat_last_flit_cycle: 8784 
+
+Node 5 Rtr 
+SimpleRouter[5] stat_pkts: 15
+SimpleRouter[5] stat_flits_in: 120
+SimpleRouter[5] stat_flits_out: 120
+SimpleRouter[5] stat_avg_pkt_lat: 8
+SimpleRouter[5] stat_var_pkt_lat: 0
+SimpleRouter[5] stat_last_flit_cycle: 7662 
+
+Node 7 Rtr 
+SimpleRouter[7] stat_pkts: 5
+SimpleRouter[7] stat_flits_in: 40
+SimpleRouter[7] stat_flits_out: 40
+SimpleRouter[7] stat_avg_pkt_lat: 8
+SimpleRouter[7] stat_var_pkt_lat: 0
+SimpleRouter[7] stat_last_flit_cycle: 7622 
+
+Node 60 Rtr 
+SimpleRouter[60] stat_pkts: 24
+SimpleRouter[60] stat_flits_in: 192
+SimpleRouter[60] stat_flits_out: 192
+SimpleRouter[60] stat_avg_pkt_lat: 8
+SimpleRouter[60] stat_var_pkt_lat: 0
+SimpleRouter[60] stat_last_flit_cycle: 8812 
+Overall Max time: 8436 ns
+Overall Min time: 8436 ns
+Overall Avg time: 8436 ns
+Overall Total num: 1
+
+Node 55 Rtr 
+SimpleRouter[55] stat_pkts: 5
+SimpleRouter[55] stat_flits_in: 40
+SimpleRouter[55] stat_flits_out: 40
+SimpleRouter[55] stat_avg_pkt_lat: 8
+SimpleRouter[55] stat_var_pkt_lat: 0
+SimpleRouter[55] stat_last_flit_cycle: 8796 
+
+Node 29 Rtr 
+SimpleRouter[29] stat_pkts: 15
+SimpleRouter[29] stat_flits_in: 120
+SimpleRouter[29] stat_flits_out: 120
+SimpleRouter[29] stat_avg_pkt_lat: 8
+SimpleRouter[29] stat_var_pkt_lat: 0
+SimpleRouter[29] stat_last_flit_cycle: 8776 
+
+Node 30 Rtr 
+SimpleRouter[30] stat_pkts: 10
+SimpleRouter[30] stat_flits_in: 80
+SimpleRouter[30] stat_flits_out: 80
+SimpleRouter[30] stat_avg_pkt_lat: 8
+SimpleRouter[30] stat_var_pkt_lat: 0
+SimpleRouter[30] stat_last_flit_cycle: 8756 
+
+Node 17 Rtr 
+SimpleRouter[17] stat_pkts: 23
+SimpleRouter[17] stat_flits_in: 184
+SimpleRouter[17] stat_flits_out: 184
+SimpleRouter[17] stat_avg_pkt_lat: 8
+SimpleRouter[17] stat_var_pkt_lat: 0
+SimpleRouter[17] stat_last_flit_cycle: 7630 
+
+Node 63 Rtr 
+SimpleRouter[63] stat_pkts: 5
+SimpleRouter[63] stat_flits_in: 40
+SimpleRouter[63] stat_flits_out: 40
+SimpleRouter[63] stat_avg_pkt_lat: 8
+SimpleRouter[63] stat_var_pkt_lat: 0
+SimpleRouter[63] stat_last_flit_cycle: 8752 
+
+Node 33 Rtr 
+SimpleRouter[33] stat_pkts: 23
+SimpleRouter[33] stat_flits_in: 184
+SimpleRouter[33] stat_flits_out: 184
+SimpleRouter[33] stat_avg_pkt_lat: 8
+SimpleRouter[33] stat_var_pkt_lat: 0
+SimpleRouter[33] stat_last_flit_cycle: 7638 
+
+Node 9 Rtr 
+SimpleRouter[9] stat_pkts: 17
+SimpleRouter[9] stat_flits_in: 136
+SimpleRouter[9] stat_flits_out: 136
+SimpleRouter[9] stat_avg_pkt_lat: 8
+SimpleRouter[9] stat_var_pkt_lat: 0
+SimpleRouter[9] stat_last_flit_cycle: 7570 
+
+Node 47 Rtr 
+SimpleRouter[47] stat_pkts: 5
+SimpleRouter[47] stat_flits_in: 40
+SimpleRouter[47] stat_flits_out: 40
+SimpleRouter[47] stat_avg_pkt_lat: 8
+SimpleRouter[47] stat_var_pkt_lat: 0
+SimpleRouter[47] stat_last_flit_cycle: 8744 
+
+Node 48 Rtr 
+SimpleRouter[48] stat_pkts: 39
+SimpleRouter[48] stat_flits_in: 312
+SimpleRouter[48] stat_flits_out: 312
+SimpleRouter[48] stat_avg_pkt_lat: 8.10256
+SimpleRouter[48] stat_var_pkt_lat: 0.410256
+SimpleRouter[48] stat_last_flit_cycle: 7670 
+
+Node 31 Rtr 
+SimpleRouter[31] stat_pkts: 5
+SimpleRouter[31] stat_flits_in: 40
+SimpleRouter[31] stat_flits_out: 40
+SimpleRouter[31] stat_avg_pkt_lat: 8
+SimpleRouter[31] stat_var_pkt_lat: 0
+SimpleRouter[31] stat_last_flit_cycle: 8736 
+
+Node 35 Rtr 
+SimpleRouter[35] stat_pkts: 13
+SimpleRouter[35] stat_flits_in: 104
+SimpleRouter[35] stat_flits_out: 104
+SimpleRouter[35] stat_avg_pkt_lat: 8
+SimpleRouter[35] stat_var_pkt_lat: 0
+SimpleRouter[35] stat_last_flit_cycle: 7598 
+
+Node 32 Rtr 
+SimpleRouter[32] stat_pkts: 44
+SimpleRouter[32] stat_flits_in: 352
+SimpleRouter[32] stat_flits_out: 352
+SimpleRouter[32] stat_avg_pkt_lat: 8.09091
+SimpleRouter[32] stat_var_pkt_lat: 0.363636
+SimpleRouter[32] stat_last_flit_cycle: 7662 
+
+Node 4 Rtr 
+SimpleRouter[4] stat_pkts: 27
+SimpleRouter[4] stat_flits_in: 216
+SimpleRouter[4] stat_flits_out: 216
+SimpleRouter[4] stat_avg_pkt_lat: 8
+SimpleRouter[4] stat_var_pkt_lat: 0
+SimpleRouter[4] stat_last_flit_cycle: 7682 
+
+Node 37 Rtr 
+SimpleRouter[37] stat_pkts: 15
+SimpleRouter[37] stat_flits_in: 120
+SimpleRouter[37] stat_flits_out: 120
+SimpleRouter[37] stat_avg_pkt_lat: 8
+SimpleRouter[37] stat_var_pkt_lat: 0
+SimpleRouter[37] stat_last_flit_cycle: 8828 
+
+Node 43 Rtr 
+SimpleRouter[43] stat_pkts: 7
+SimpleRouter[43] stat_flits_in: 56
+SimpleRouter[43] stat_flits_out: 56
+SimpleRouter[43] stat_avg_pkt_lat: 8
+SimpleRouter[43] stat_var_pkt_lat: 0
+SimpleRouter[43] stat_last_flit_cycle: 8696 
+
+Node 2 Rtr 
+SimpleRouter[2] stat_pkts: 18
+SimpleRouter[2] stat_flits_in: 144
+SimpleRouter[2] stat_flits_out: 144
+SimpleRouter[2] stat_avg_pkt_lat: 8
+SimpleRouter[2] stat_var_pkt_lat: 0
+SimpleRouter[2] stat_last_flit_cycle: 6452 
+
+Node 20 Rtr 
+SimpleRouter[20] stat_pkts: 27
+SimpleRouter[20] stat_flits_in: 216
+SimpleRouter[20] stat_flits_out: 216
+SimpleRouter[20] stat_avg_pkt_lat: 8
+SimpleRouter[20] stat_var_pkt_lat: 0
+SimpleRouter[20] stat_last_flit_cycle: 8840 
+
+Node 38 Rtr 
+SimpleRouter[38] stat_pkts: 10
+SimpleRouter[38] stat_flits_in: 80
+SimpleRouter[38] stat_flits_out: 80
+SimpleRouter[38] stat_avg_pkt_lat: 8
+SimpleRouter[38] stat_var_pkt_lat: 0
+SimpleRouter[38] stat_last_flit_cycle: 8808 
+
+Node 10 Rtr 
+SimpleRouter[10] stat_pkts: 12
+SimpleRouter[10] stat_flits_in: 96
+SimpleRouter[10] stat_flits_out: 96
+SimpleRouter[10] stat_avg_pkt_lat: 8
+SimpleRouter[10] stat_var_pkt_lat: 0
+SimpleRouter[10] stat_last_flit_cycle: 7550 
+
+Node 13 Rtr 
+SimpleRouter[13] stat_pkts: 15
+SimpleRouter[13] stat_flits_in: 120
+SimpleRouter[13] stat_flits_out: 120
+SimpleRouter[13] stat_avg_pkt_lat: 8
+SimpleRouter[13] stat_var_pkt_lat: 0
+SimpleRouter[13] stat_last_flit_cycle: 7618 
+
+Node 21 Rtr 
+SimpleRouter[21] stat_pkts: 15
+SimpleRouter[21] stat_flits_in: 120
+SimpleRouter[21] stat_flits_out: 120
+SimpleRouter[21] stat_avg_pkt_lat: 8
+SimpleRouter[21] stat_var_pkt_lat: 0
+SimpleRouter[21] stat_last_flit_cycle: 8820 
+
+Node 24 Rtr 
+SimpleRouter[24] stat_pkts: 36
+SimpleRouter[24] stat_flits_in: 288
+SimpleRouter[24] stat_flits_out: 288
+SimpleRouter[24] stat_avg_pkt_lat: 8
+SimpleRouter[24] stat_var_pkt_lat: 0
+SimpleRouter[24] stat_last_flit_cycle: 8748 
+
+Node 49 Rtr 
+SimpleRouter[49] stat_pkts: 23
+SimpleRouter[49] stat_flits_in: 184
+SimpleRouter[49] stat_flits_out: 184
+SimpleRouter[49] stat_avg_pkt_lat: 8
+SimpleRouter[49] stat_var_pkt_lat: 0
+SimpleRouter[49] stat_last_flit_cycle: 7646 
+
+Node 8 Rtr 
+SimpleRouter[8] stat_pkts: 41
+SimpleRouter[8] stat_flits_in: 328
+SimpleRouter[8] stat_flits_out: 328
+SimpleRouter[8] stat_avg_pkt_lat: 8
+SimpleRouter[8] stat_var_pkt_lat: 0
+SimpleRouter[8] stat_last_flit_cycle: 7590 
+
+Node 6 Rtr 
+SimpleRouter[6] stat_pkts: 10
+SimpleRouter[6] stat_flits_in: 80
+SimpleRouter[6] stat_flits_out: 80
+SimpleRouter[6] stat_avg_pkt_lat: 8
+SimpleRouter[6] stat_var_pkt_lat: 0
+SimpleRouter[6] stat_last_flit_cycle: 7642 
+
+Node 34 Rtr 
+SimpleRouter[34] stat_pkts: 18
+SimpleRouter[34] stat_flits_in: 144
+SimpleRouter[34] stat_flits_out: 144
+SimpleRouter[34] stat_avg_pkt_lat: 8
+SimpleRouter[34] stat_var_pkt_lat: 0
+SimpleRouter[34] stat_last_flit_cycle: 7618 
+
+Node 41 Rtr 
+SimpleRouter[41] stat_pkts: 17
+SimpleRouter[41] stat_flits_in: 136
+SimpleRouter[41] stat_flits_out: 136
+SimpleRouter[41] stat_avg_pkt_lat: 8
+SimpleRouter[41] stat_var_pkt_lat: 0
+SimpleRouter[41] stat_last_flit_cycle: 8736 
+
+Node 62 Rtr 
+SimpleRouter[62] stat_pkts: 10
+SimpleRouter[62] stat_flits_in: 80
+SimpleRouter[62] stat_flits_out: 80
+SimpleRouter[62] stat_avg_pkt_lat: 8
+SimpleRouter[62] stat_var_pkt_lat: 0
+SimpleRouter[62] stat_last_flit_cycle: 8772 
+
+Node 0 Rtr 
+SimpleRouter[0] stat_pkts: 52
+SimpleRouter[0] stat_flits_in: 416
+SimpleRouter[0] stat_flits_out: 416
+SimpleRouter[0] stat_avg_pkt_lat: 8.07692
+SimpleRouter[0] stat_var_pkt_lat: 0.307692
+SimpleRouter[0] stat_last_flit_cycle: 6496 
+
+Node 18 Rtr 
+SimpleRouter[18] stat_pkts: 18
+SimpleRouter[18] stat_flits_in: 144
+SimpleRouter[18] stat_flits_out: 144
+SimpleRouter[18] stat_avg_pkt_lat: 8
+SimpleRouter[18] stat_var_pkt_lat: 0
+SimpleRouter[18] stat_last_flit_cycle: 7610 
+
+Node 12 Rtr 
+SimpleRouter[12] stat_pkts: 24
+SimpleRouter[12] stat_flits_in: 192
+SimpleRouter[12] stat_flits_out: 192
+SimpleRouter[12] stat_avg_pkt_lat: 8
+SimpleRouter[12] stat_var_pkt_lat: 0
+SimpleRouter[12] stat_last_flit_cycle: 7638 
+
+Node 42 Rtr 
+SimpleRouter[42] stat_pkts: 12
+SimpleRouter[42] stat_flits_in: 96
+SimpleRouter[42] stat_flits_out: 96
+SimpleRouter[42] stat_avg_pkt_lat: 8
+SimpleRouter[42] stat_var_pkt_lat: 0
+SimpleRouter[42] stat_last_flit_cycle: 8716 
+
+Node 57 Rtr 
+SimpleRouter[57] stat_pkts: 17
+SimpleRouter[57] stat_flits_in: 136
+SimpleRouter[57] stat_flits_out: 136
+SimpleRouter[57] stat_avg_pkt_lat: 8
+SimpleRouter[57] stat_var_pkt_lat: 0
+SimpleRouter[57] stat_last_flit_cycle: 8744 
+
+Node 54 Rtr 
+SimpleRouter[54] stat_pkts: 10
+SimpleRouter[54] stat_flits_in: 80
+SimpleRouter[54] stat_flits_out: 80
+SimpleRouter[54] stat_avg_pkt_lat: 8
+SimpleRouter[54] stat_var_pkt_lat: 0
+SimpleRouter[54] stat_last_flit_cycle: 8816 
+
+Node 52 Rtr 
+SimpleRouter[52] stat_pkts: 27
+SimpleRouter[52] stat_flits_in: 216
+SimpleRouter[52] stat_flits_out: 216
+SimpleRouter[52] stat_avg_pkt_lat: 8
+SimpleRouter[52] stat_var_pkt_lat: 0
+SimpleRouter[52] stat_last_flit_cycle: 8856 
+
+Node 19 Rtr 
+SimpleRouter[19] stat_pkts: 13
+SimpleRouter[19] stat_flits_in: 104
+SimpleRouter[19] stat_flits_out: 104
+SimpleRouter[19] stat_avg_pkt_lat: 8
+SimpleRouter[19] stat_var_pkt_lat: 0
+SimpleRouter[19] stat_last_flit_cycle: 7590 
+
+Node 40 Rtr 
+SimpleRouter[40] stat_pkts: 31
+SimpleRouter[40] stat_flits_in: 248
+SimpleRouter[40] stat_flits_out: 248
+SimpleRouter[40] stat_avg_pkt_lat: 8
+SimpleRouter[40] stat_var_pkt_lat: 0
+SimpleRouter[40] stat_last_flit_cycle: 8756 
+
+Node 15 Rtr 
+SimpleRouter[15] stat_pkts: 5
+SimpleRouter[15] stat_flits_in: 40
+SimpleRouter[15] stat_flits_out: 40
+SimpleRouter[15] stat_avg_pkt_lat: 8
+SimpleRouter[15] stat_var_pkt_lat: 0
+SimpleRouter[15] stat_last_flit_cycle: 7578 
+
+Node 44 Rtr 
+SimpleRouter[44] stat_pkts: 24
+SimpleRouter[44] stat_flits_in: 192
+SimpleRouter[44] stat_flits_out: 192
+SimpleRouter[44] stat_avg_pkt_lat: 8
+SimpleRouter[44] stat_var_pkt_lat: 0
+SimpleRouter[44] stat_last_flit_cycle: 8804 
+
+Node 25 Rtr 
+SimpleRouter[25] stat_pkts: 17
+SimpleRouter[25] stat_flits_in: 136
+SimpleRouter[25] stat_flits_out: 136
+SimpleRouter[25] stat_avg_pkt_lat: 8
+SimpleRouter[25] stat_var_pkt_lat: 0
+SimpleRouter[25] stat_last_flit_cycle: 8728 
+
+Node 11 Rtr 
+SimpleRouter[11] stat_pkts: 7
+SimpleRouter[11] stat_flits_in: 56
+SimpleRouter[11] stat_flits_out: 56
+SimpleRouter[11] stat_avg_pkt_lat: 8
+SimpleRouter[11] stat_var_pkt_lat: 0
+SimpleRouter[11] stat_last_flit_cycle: 7530 
+
+Node 16 Rtr 
+SimpleRouter[16] stat_pkts: 49
+SimpleRouter[16] stat_flits_in: 392
+SimpleRouter[16] stat_flits_out: 392
+SimpleRouter[16] stat_avg_pkt_lat: 8.08163
+SimpleRouter[16] stat_var_pkt_lat: 0.326531
+SimpleRouter[16] stat_last_flit_cycle: 7654 
+
+Node 58 Rtr 
+SimpleRouter[58] stat_pkts: 12
+SimpleRouter[58] stat_flits_in: 96
+SimpleRouter[58] stat_flits_out: 96
+SimpleRouter[58] stat_avg_pkt_lat: 8
+SimpleRouter[58] stat_var_pkt_lat: 0
+SimpleRouter[58] stat_last_flit_cycle: 8724 
+
+Node 61 Rtr 
+SimpleRouter[61] stat_pkts: 15
+SimpleRouter[61] stat_flits_in: 120
+SimpleRouter[61] stat_flits_out: 120
+SimpleRouter[61] stat_avg_pkt_lat: 8
+SimpleRouter[61] stat_var_pkt_lat: 0
+SimpleRouter[61] stat_last_flit_cycle: 8792 
+Simulation is complete, simulated time: 9.01 us

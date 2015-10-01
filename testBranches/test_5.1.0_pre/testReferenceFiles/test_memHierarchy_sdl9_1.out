@@ -1,0 +1,172 @@
+Inserting stop event at cycle 200000ns, 200000000
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: l3cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           1918
+     GetS:                                       1730
+     GetX:                                       188
+     GetSEx:                                     0
+- Total misses:                                  1892
+     GetS, miss on arrival:                      1704
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      188
+     GetX, miss after being blocked:             0
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    26
+     GetS, hit on arrival:                       26
+     GetS, hit after being blocked:              0
+     GetX, hit on arrival:                       0
+     GetX, hit after being blocked:              0
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     1.356%
+- Miss ratio:                                    98.644%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   1704
+- GetS   M(present at another cache):            0
+- GetX   I->M:                                   182
+- GetX   S->M:                                   6
+- GetX   M(present at another cache):            0
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+- GetSEx M(present at another cache):            0
+------------ Replacements and evictions -------------------
+- PutS received:                                 1276
+- PutM received:                                 126
+- PutX received:                                 0
+- PUTM sent due to [inv, evictions]:             [0, 776]
+- PUTE sent due to [inv, evictions]:             [0, 86]
+- PUTX sent due to [inv, evictions]:             [0, 0]
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    5212
+- Requests handled by MSHR (MSHR hits):          1888
+- NACKs sent (MSHR Full, BottomCC):              0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        342
+- Latency GetS   I->S                            341
+- Latency GetX   I->M                            342
+- Latency GetX   S->M                            342
+- NACKs sent (MSHR Full, TopCC):                  0
+- InvalidateX sent                                0
+- Invalidates sent (non-eviction):                0
+- Invalidates sent due to evictions:              0
+- Instances where eviction caused invalidation:   0
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           1965
+     GetS:                                       1776
+     GetX:                                       189
+     GetSEx:                                     0
+- Total misses:                                  1961
+     GetS, miss on arrival:                      1772
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      189
+     GetX, miss after being blocked:             0
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    4
+     GetS, hit on arrival:                       4
+     GetS, hit after being blocked:              0
+     GetX, hit on arrival:                       0
+     GetX, hit after being blocked:              0
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     0.204%
+- Miss ratio:                                    99.796%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   1772
+- GetX   I->M:                                   188
+- GetX   S->M:                                   1
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PUTM sent due to [inv, evictions]:             [0, 1711]
+- PUTE sent due to [inv, evictions]:             [0, 185]
+- PUTX sent due to [inv, evictions]:             [0, 0]
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    3926
+- Requests handled by MSHR (MSHR hits):          1957
+- NACKs sent (MSHR Full, BottomCC):              0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        471
+- Latency GetS   I->S                            468
+- Latency GetX   I->M                            481
+- Latency GetX   S->M                            484
+TrivialCPU cpu Finished after 1967 issued reads, 1963 returned (199999 clocks)
+	2 Noncacheable Reads
+	0 Noncacheable Writes
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  64453
+  [2, 4]  93491
+  [4, 6]  37052
+  [6, 8]  4524
+  [8, 10]  479
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: l2cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           1961
+     GetS:                                       1772
+     GetX:                                       189
+     GetSEx:                                     0
+- Total misses:                                  1918
+     GetS, miss on arrival:                      1730
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      188
+     GetX, miss after being blocked:             0
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    43
+     GetS, hit on arrival:                       42
+     GetS, hit after being blocked:              0
+     GetX, hit on arrival:                       1
+     GetX, hit after being blocked:              0
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     2.193%
+- Miss ratio:                                    97.807%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   1730
+- GetS   M(present at another cache):            0
+- GetX   I->M:                                   184
+- GetX   S->M:                                   4
+- GetX   M(present at another cache):            0
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+- GetSEx M(present at another cache):            0
+------------ Replacements and evictions -------------------
+- PutS received:                                 1711
+- PutM received:                                 185
+- PutX received:                                 0
+- PUTM sent due to [inv, evictions]:             [0, 1276]
+- PUTE sent due to [inv, evictions]:             [0, 126]
+- PUTX sent due to [inv, evictions]:             [0, 0]
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    5775
+- Requests handled by MSHR (MSHR hits):          1914
+- NACKs sent (MSHR Full, BottomCC):              0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        430
+- Latency GetS   I->S                            428
+- Latency GetX   I->M                            434
+- Latency GetX   S->M                            434
+- NACKs sent (MSHR Full, TopCC):                  0
+- InvalidateX sent                                0
+- Invalidates sent (non-eviction):                0
+- Invalidates sent due to evictions:              0
+- Instances where eviction caused invalidation:   0
+ 
+Simulation is complete, simulated time: 200 us

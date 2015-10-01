@@ -1,0 +1,55 @@
+Inserting stop event at cycle 200000ns, 200000000
+TrivialCPU: Test Completed Successfuly
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           1000
+     GetS:                                       907
+     GetX:                                       93
+     GetSEx:                                     0
+- Total misses:                                  565
+     GetS, miss on arrival:                      478
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      87
+     GetX, miss after being blocked:             0
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    435
+     GetS, hit on arrival:                       425
+     GetS, hit after being blocked:              4
+     GetX, hit on arrival:                       6
+     GetX, hit after being blocked:              0
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     43.500%
+- Miss ratio:                                    56.500%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   478
+- GetX   I->M:                                   42
+- GetX   S->M:                                   45
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PUTM sent due to [inv, evictions]:             [0, 376]
+- PUTE sent due to [inv, evictions]:             [0, 80]
+- PUTX sent due to [inv, evictions]:             [0, 0]
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    1565
+- Requests handled by MSHR (MSHR hits):          569
+- NACKs sent (MSHR Full, BottomCC):              0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        77
+- Latency GetS   I->S                            78
+- Latency GetX   I->M                            78
+- Latency GetX   S->M                            69
+TrivialCPU cpu Finished after 1000 issued reads, 1000 returned (102989 clocks)
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  100566
+  [2, 4]  2419
+  [4, 6]  4
+ 
+Simulation is complete, simulated time: 102.989 us

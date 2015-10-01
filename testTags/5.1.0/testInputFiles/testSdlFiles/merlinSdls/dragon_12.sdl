@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+
+<sdl version="2.0"/>
+
+<config>
+    run-mode=both
+</config>
+
+<param_include>
+  <rtr_params>
+    <debug> 1 </debug>
+    <num_ports> 4 </num_ports>
+    <link_bw> 1GB/s </link_bw>
+    <xbar_bw> 1GB/s </xbar_bw>
+    <flit_size> 16B </flit_size>
+    <input_buf_size> 1KB </input_buf_size>
+    <output_buf_size> 1KB </output_buf_size>
+    <topology> merlin.dragonfly </topology>
+    <dragonfly:hosts_per_router> 2 </dragonfly:hosts_per_router>
+    <dragonfly:routers_per_group> 2 </dragonfly:routers_per_group>
+    <dragonfly:intergroup_per_router> 1 </dragonfly:intergroup_per_router>
+    <dragonfly:num_groups> 3 </dragonfly:num_groups>
+    <dragonfly:algorithm> valiant </dragonfly:algorithm>
+  </rtr_params>
+
+  <nic_params>
+    <topology> merlin.dragonfly </topology>
+    <num_peers> 12 </num_peers>
+    <num_vns> 3 </num_vns>
+    <link_bw> 1GB/s </link_bw>
+  </nic_params>
+
+</param_include>
+
+<sst>
+
+  <!-- GROUP 0 -->
+  <!-- GROUP 0, ROUTER 0 -->
+  <component name=rtr:G0R0 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 0 </id>
+    </params>
+    <link name=link:g0r0h0 port=port0 latency=10ns />
+    <link name=link:g0r0h1 port=port1 latency=10ns />
+    <link name=link:g0r0r1 port=port2 latency=10ns />
+    <link name=link:g0g1:0 port=port3 latency=10ns />
+  </component>
+
+  <!-- GROUP 0, ROUTER 0, HOST 0 -->
+  <component name=nic:G0R0H0 type=merlin.test_nic>
+    <params include=nic_params>
+      <!-- node number 0 -->
+      <id> 0 </id>
+    </params>
+    <link name=link:g0r0h0 port=rtr latency=10ns />
+  </component>
+  <!-- GROUP 0, ROUTER 0, HOST 1 -->
+  <component name=nic:G0R0H1 type=merlin.test_nic>
+    <params include=nic_params>
+      <!-- node number 1 -->
+      <id> 1 </id>
+    </params>
+    <link name=link:g0r0h1 port=rtr latency=10ns />
+  </component>
+
+  <!-- GROUP 0, ROUTER 1 -->
+  <component name=rtr:G0R1 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 1 </id>
+    </params>
+    <link name=link:g0r1h0 port=port0 latency=10ns />
+    <link name=link:g0r1h1 port=port1 latency=10ns />
+    <link name=link:g0r0r1 port=port2 latency=10ns />
+    <link name=link:g0g2:0 port=port3 latency=10ns />
+  </component>
+
+  <!-- GROUP 0, ROUTER 1, HOST 0 -->
+  <component name=nic:G0R1H0 type=merlin.test_nic>
+    <params include=nic_params>
+      <!-- node number 2 -->
+      <id> 2 </id>
+    </params>
+    <link name=link:g0r1h0 port=rtr latency=10ns />
+  </component>
+  <!-- GROUP 0, ROUTER 1, HOST 1 -->
+  <component name=nic:G0R1H1 type=merlin.test_nic>
+    <params include=nic_params>
+      <!-- node number 3 -->
+      <id> 3 </id>
+    </params>
+    <link name=link:g0r1h1 port=rtr latency=10ns />
+  </component>
+
+
+  <!-- GROUP 1 -->
+  <!-- GROUP 1, ROUTER 0 -->
+  <component name=rtr:G1R0 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 2 </id>
+    </params>
+    <link name=link:g1r0h0 port=port0 latency=10ns />
+    <link name=link:g1r0h1 port=port1 latency=10ns />
+    <link name=link:g1r0r1 port=port2 latency=10ns />
+    <link name=link:g0g1:0 port=port3 latency=10ns />
+  </component>
+
+  <!-- GROUP 1, ROUTER 0, HOST 0 -->
+  <component name=nic:G1R0H0 type=merlin.test_nic>
+    <params include=nic_params>
+      <!-- node number 4 -->
+      <id> 4 </id>
+    </params>
+    <link name=link:g1r0h0 port=rtr latency=10ns />
+  </component>
+  <!-- GROUP 1, ROUTER 0, HOST 1 -->
+  <component name=nic:G1R0H1 type=merlin.test_nic>
+    <params include=nic_params>
+      <!-- node number 5 -->
+      <id> 5 </id>
+    </params>
+    <link name=link:g1r0h1 port=rtr latency=10ns />
+  </component>
+
+  <!-- GROUP 1, ROUTER 1 -->
+  <component name=rtr:G1R1 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 3 </id>
+    </params>
+    <link name=link:g1r1h0 port=port0 latency=10ns />
+    <link name=link:g1r1h1 port=port1 latency=10ns />
+    <link name=link:g1r0r1 port=port2 latency=10ns />
+    <link name=link:g1g2:0 port=port3 latency=10ns />
+  </component>
+
+  <!-- GROUP 1, ROUTER 1, HOST 0 -->
+  <component name=nic:G1R1H0 type=merlin.test_nic>
+    <params include=nic_params>
+      <!-- node number 6 -->
+      <id> 6 </id>
+    </params>
+    <link name=link:g1r1h0 port=rtr latency=10ns />
+  </component>
+  <!-- GROUP 1, ROUTER 1, HOST 1 -->
+  <component name=nic:G1R1H1 type=merlin.test_nic>
+    <params include=nic_params>
+      <!-- node number 7 -->
+      <id> 7 </id>
+    </params>
+    <link name=link:g1r1h1 port=rtr latency=10ns />
+  </component>
+
+
+  <!-- GROUP 2 -->
+  <!-- GROUP 2, ROUTER 0 -->
+  <component name=rtr:G2R0 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 4 </id>
+    </params>
+    <link name=link:g2r0h0 port=port0 latency=10ns />
+    <link name=link:g2r0h1 port=port1 latency=10ns />
+    <link name=link:g2r0r1 port=port2 latency=10ns />
+    <link name=link:g0g2:0 port=port3 latency=10ns />
+  </component>
+
+  <!-- GROUP 2, ROUTER 0, HOST 0 -->
+  <component name=nic:G2R0H0 type=merlin.test_nic>
+    <params include=nic_params>
+      <!-- node number 8 -->
+      <id> 8 </id>
+    </params>
+    <link name=link:g2r0h0 port=rtr latency=10ns />
+  </component>
+  <!-- GROUP 2, ROUTER 0, HOST 1 -->
+  <component name=nic:G2R0H1 type=merlin.test_nic>
+    <params include=nic_params>
+      <!-- node number 9 -->
+      <id> 9 </id>
+    </params>
+    <link name=link:g2r0h1 port=rtr latency=10ns />
+  </component>
+
+  <!-- GROUP 2, ROUTER 1 -->
+  <component name=rtr:G2R1 type=merlin.hr_router>
+    <params include=rtr_params>
+      <id> 5 </id>
+    </params>
+    <link name=link:g2r1h0 port=port0 latency=10ns />
+    <link name=link:g2r1h1 port=port1 latency=10ns />
+    <link name=link:g2r0r1 port=port2 latency=10ns />
+    <link name=link:g1g2:0 port=port3 latency=10ns />
+  </component>
+
+  <!-- GROUP 2, ROUTER 1, HOST 0 -->
+  <component name=nic:G2R1H0 type=merlin.test_nic>
+    <params include=nic_params>
+      <!-- node number 10 -->
+      <id> 10 </id>
+    </params>
+    <link name=link:g2r1h0 port=rtr latency=10ns />
+  </component>
+  <!-- GROUP 2, ROUTER 1, HOST 1 -->
+  <component name=nic:G2R1H1 type=merlin.test_nic>
+    <params include=nic_params>
+      <!-- node number 11 -->
+      <id> 11 </id>
+    </params>
+    <link name=link:g2r1h1 port=rtr latency=10ns />
+  </component>
+
+
+
+</sst>

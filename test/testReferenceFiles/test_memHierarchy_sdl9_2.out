@@ -1,0 +1,1134 @@
+TrivialCPU: Test Completed Successfuly
+TrivialCPU: Test Completed Successfuly
+TrivialCPU: Test Completed Successfuly
+TrivialCPU: Test Completed Successfuly
+TrivialCPU: Test Completed Successfuly
+TrivialCPU: Test Completed Successfuly
+TrivialCPU: Test Completed Successfuly
+TrivialCPU: Test Completed Successfuly
+ c0.l1cache.CacheHits : Accumulator : Sum.u64 = 723; SumSQ.u64 = 723; Count.u64 = 723; 
+ c0.l1cache.GetSHit_Arrival : Accumulator : Sum.u64 = 707; SumSQ.u64 = 707; Count.u64 = 707; 
+ c0.l1cache.GetXHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetSExHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetSHit_Blocked : Accumulator : Sum.u64 = 15; SumSQ.u64 = 15; Count.u64 = 15; 
+ c0.l1cache.GetXHit_Blocked : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c0.l1cache.GetSExHit_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.CacheMisses : Accumulator : Sum.u64 = 218; SumSQ.u64 = 218; Count.u64 = 218; 
+ c0.l1cache.GetSMiss_Arrival : Accumulator : Sum.u64 = 131; SumSQ.u64 = 131; Count.u64 = 131; 
+ c0.l1cache.GetXMiss_Arrival : Accumulator : Sum.u64 = 86; SumSQ.u64 = 86; Count.u64 = 86; 
+ c0.l1cache.GetSExMiss_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetSMiss_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetXMiss_Blocked : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c0.l1cache.GetSExMiss_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetS_recv : Accumulator : Sum.u64 = 853; SumSQ.u64 = 853; Count.u64 = 853; 
+ c0.l1cache.GetX_recv : Accumulator : Sum.u64 = 88; SumSQ.u64 = 88; Count.u64 = 88; 
+ c0.l1cache.GetSEx_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetSResp_recv : Accumulator : Sum.u64 = 131; SumSQ.u64 = 131; Count.u64 = 131; 
+ c0.l1cache.GetXResp_recv : Accumulator : Sum.u64 = 87; SumSQ.u64 = 87; Count.u64 = 87; 
+ c0.l1cache.PutS_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.PutM_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.PutE_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.FetchInv_recv : Accumulator : Sum.u64 = 86; SumSQ.u64 = 86; Count.u64 = 86; 
+ c0.l1cache.FetchInvX_recv : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c0.l1cache.Inv_recv : Accumulator : Sum.u64 = 74; SumSQ.u64 = 74; Count.u64 = 74; 
+ c0.l1cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetSMiss_IS : Accumulator : Sum.u64 = 131; SumSQ.u64 = 131; Count.u64 = 131; 
+ c0.l1cache.GetXMiss_IM : Accumulator : Sum.u64 = 15; SumSQ.u64 = 15; Count.u64 = 15; 
+ c0.l1cache.GetXMiss_SM : Accumulator : Sum.u64 = 72; SumSQ.u64 = 72; Count.u64 = 72; 
+ c0.l1cache.GetSExMiss_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetSExMiss_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetS_I : Accumulator : Sum.u64 = 131; SumSQ.u64 = 131; Count.u64 = 131; 
+ c0.l1cache.stateEvent_GetS_S : Accumulator : Sum.u64 = 718; SumSQ.u64 = 718; Count.u64 = 718; 
+ c0.l1cache.stateEvent_GetS_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetS_M : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c0.l1cache.stateEvent_GetX_I : Accumulator : Sum.u64 = 15; SumSQ.u64 = 15; Count.u64 = 15; 
+ c0.l1cache.stateEvent_GetX_S : Accumulator : Sum.u64 = 72; SumSQ.u64 = 72; Count.u64 = 72; 
+ c0.l1cache.stateEvent_GetX_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetX_M : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c0.l1cache.stateEvent_GetSEx_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSEx_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSEx_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSEx_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSResp_IS : Accumulator : Sum.u64 = 131; SumSQ.u64 = 131; Count.u64 = 131; 
+ c0.l1cache.stateEvent_GetSResp_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSResp_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetXResp_IM : Accumulator : Sum.u64 = 86; SumSQ.u64 = 86; Count.u64 = 86; 
+ c0.l1cache.stateEvent_GetXResp_SM : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c0.l1cache.stateEvent_GetXResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_SMD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_S : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
+ c0.l1cache.stateEvent_Inv_SM : Accumulator : Sum.u64 = 71; SumSQ.u64 = 71; Count.u64 = 71; 
+ c0.l1cache.stateEvent_Inv_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_M : Accumulator : Sum.u64 = 86; SumSQ.u64 = 86; Count.u64 = 86; 
+ c0.l1cache.stateEvent_FetchInv_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_M : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c0.l1cache.stateEvent_FetchInvX_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_SMD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchXResp_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchXResp_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchXResp_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckPut_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 127783; SumSQ.u64 = 281657603; Count.u64 = 131; 
+ c0.l1cache.latency_GetS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.latency_GetX_IM : Accumulator : Sum.u64 = 19399; SumSQ.u64 = 45171611; Count.u64 = 15; 
+ c0.l1cache.latency_GetX_SM : Accumulator : Sum.u64 = 93162; SumSQ.u64 = 146833326; Count.u64 = 72; 
+ c0.l1cache.latency_GetX_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.latency_GetSEx_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.latency_GetSEx_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.latency_GetSEx_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.CacheHits : Accumulator : Sum.u64 = 198; SumSQ.u64 = 198; Count.u64 = 198; 
+ n0.l2cache.GetSHit_Arrival : Accumulator : Sum.u64 = 12; SumSQ.u64 = 12; Count.u64 = 12; 
+ n0.l2cache.GetXHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.GetSExHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.GetSHit_Blocked : Accumulator : Sum.u64 = 186; SumSQ.u64 = 186; Count.u64 = 186; 
+ n0.l2cache.GetXHit_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.GetSExHit_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.CacheMisses : Accumulator : Sum.u64 = 599; SumSQ.u64 = 599; Count.u64 = 599; 
+ n0.l2cache.GetSMiss_Arrival : Accumulator : Sum.u64 = 128; SumSQ.u64 = 128; Count.u64 = 128; 
+ n0.l2cache.GetXMiss_Arrival : Accumulator : Sum.u64 = 87; SumSQ.u64 = 87; Count.u64 = 87; 
+ n0.l2cache.GetSExMiss_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.GetSMiss_Blocked : Accumulator : Sum.u64 = 130; SumSQ.u64 = 130; Count.u64 = 130; 
+ n0.l2cache.GetXMiss_Blocked : Accumulator : Sum.u64 = 254; SumSQ.u64 = 254; Count.u64 = 254; 
+ n0.l2cache.GetSExMiss_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.GetS_recv : Accumulator : Sum.u64 = 456; SumSQ.u64 = 456; Count.u64 = 456; 
+ n0.l2cache.GetX_recv : Accumulator : Sum.u64 = 341; SumSQ.u64 = 341; Count.u64 = 341; 
+ n0.l2cache.GetSEx_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.GetSResp_recv : Accumulator : Sum.u64 = 65; SumSQ.u64 = 65; Count.u64 = 65; 
+ n0.l2cache.GetXResp_recv : Accumulator : Sum.u64 = 160; SumSQ.u64 = 160; Count.u64 = 160; 
+ n0.l2cache.PutS_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.PutM_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.PutE_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.FetchInv_recv : Accumulator : Sum.u64 = 90; SumSQ.u64 = 90; Count.u64 = 90; 
+ n0.l2cache.FetchInvX_recv : Accumulator : Sum.u64 = 67; SumSQ.u64 = 67; Count.u64 = 67; 
+ n0.l2cache.Inv_recv : Accumulator : Sum.u64 = 74; SumSQ.u64 = 74; Count.u64 = 74; 
+ n0.l2cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.GetSMiss_IS : Accumulator : Sum.u64 = 65; SumSQ.u64 = 65; Count.u64 = 65; 
+ n0.l2cache.GetXMiss_IM : Accumulator : Sum.u64 = 87; SumSQ.u64 = 87; Count.u64 = 87; 
+ n0.l2cache.GetXMiss_SM : Accumulator : Sum.u64 = 73; SumSQ.u64 = 73; Count.u64 = 73; 
+ n0.l2cache.GetSExMiss_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.GetSExMiss_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.evict_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_GetS_I : Accumulator : Sum.u64 = 65; SumSQ.u64 = 65; Count.u64 = 65; 
+ n0.l2cache.stateEvent_GetS_S : Accumulator : Sum.u64 = 198; SumSQ.u64 = 198; Count.u64 = 198; 
+ n0.l2cache.stateEvent_GetS_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_GetS_M : Accumulator : Sum.u64 = 193; SumSQ.u64 = 193; Count.u64 = 193; 
+ n0.l2cache.stateEvent_GetX_I : Accumulator : Sum.u64 = 87; SumSQ.u64 = 87; Count.u64 = 87; 
+ n0.l2cache.stateEvent_GetX_S : Accumulator : Sum.u64 = 73; SumSQ.u64 = 73; Count.u64 = 73; 
+ n0.l2cache.stateEvent_GetX_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_GetX_M : Accumulator : Sum.u64 = 181; SumSQ.u64 = 181; Count.u64 = 181; 
+ n0.l2cache.stateEvent_GetSEx_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_GetSEx_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_GetSEx_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_GetSEx_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_GetSResp_IS : Accumulator : Sum.u64 = 65; SumSQ.u64 = 65; Count.u64 = 65; 
+ n0.l2cache.stateEvent_GetSResp_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_GetSResp_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_GetSResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_GetXResp_IM : Accumulator : Sum.u64 = 159; SumSQ.u64 = 159; Count.u64 = 159; 
+ n0.l2cache.stateEvent_GetXResp_SM : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ n0.l2cache.stateEvent_GetXResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_SMD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutS_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutE_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutE_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutE_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutE_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutE_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutE_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutE_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutE_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutE_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutM_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutM_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutM_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutM_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutM_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutM_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutM_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutM_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_PutM_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Inv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Inv_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Inv_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Inv_S : Accumulator : Sum.u64 = 2; SumSQ.u64 = 2; Count.u64 = 2; 
+ n0.l2cache.stateEvent_Inv_SM : Accumulator : Sum.u64 = 72; SumSQ.u64 = 72; Count.u64 = 72; 
+ n0.l2cache.stateEvent_Inv_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Inv_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Inv_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Inv_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_M : Accumulator : Sum.u64 = 90; SumSQ.u64 = 90; Count.u64 = 90; 
+ n0.l2cache.stateEvent_FetchInv_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_MInv : Accumulator : Sum.u64 = 90; SumSQ.u64 = 90; Count.u64 = 90; 
+ n0.l2cache.stateEvent_FetchInv_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInv_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInvX_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInvX_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInvX_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInvX_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInvX_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInvX_M : Accumulator : Sum.u64 = 67; SumSQ.u64 = 67; Count.u64 = 67; 
+ n0.l2cache.stateEvent_FetchInvX_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInvX_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInvX_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInvX_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInvX_MInv : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
+ n0.l2cache.stateEvent_FetchInvX_MInvX : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ n0.l2cache.stateEvent_FetchInvX_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchInvX_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Fetch_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Fetch_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Fetch_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Fetch_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Fetch_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Fetch_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Fetch_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_Fetch_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchResp_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchResp_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchResp_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchResp_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchResp_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchResp_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchResp_MInv : Accumulator : Sum.u64 = 270; SumSQ.u64 = 270; Count.u64 = 270; 
+ n0.l2cache.stateEvent_FetchResp_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchResp_SMD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchResp_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchResp_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchXResp_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchXResp_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_FetchXResp_MInvX : Accumulator : Sum.u64 = 68; SumSQ.u64 = 68; Count.u64 = 68; 
+ n0.l2cache.stateEvent_AckInv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_AckInv_SInv : Accumulator : Sum.u64 = 6; SumSQ.u64 = 6; Count.u64 = 6; 
+ n0.l2cache.stateEvent_AckInv_SMInv : Accumulator : Sum.u64 = 286; SumSQ.u64 = 286; Count.u64 = 286; 
+ n0.l2cache.stateEvent_AckInv_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_AckInv_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_AckInv_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_AckInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.stateEvent_AckInv_MInv : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
+ n0.l2cache.stateEvent_AckPut_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.latency_GetS_IS : Accumulator : Sum.u64 = 115411; SumSQ.u64 = 281437733; Count.u64 = 65; 
+ n0.l2cache.latency_GetS_M : Accumulator : Sum.u64 = 20079; SumSQ.u64 = 2107007; Count.u64 = 193; 
+ n0.l2cache.latency_GetX_IM : Accumulator : Sum.u64 = 166498; SumSQ.u64 = 363059458; Count.u64 = 87; 
+ n0.l2cache.latency_GetX_SM : Accumulator : Sum.u64 = 88311; SumSQ.u64 = 132512565; Count.u64 = 73; 
+ n0.l2cache.latency_GetX_M : Accumulator : Sum.u64 = 274015; SumSQ.u64 = 543665655; Count.u64 = 181; 
+ n0.l2cache.latency_GetSEx_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.latency_GetSEx_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.latency_GetSEx_M : Accumulator : Sum.u64 = 20079; SumSQ.u64 = 2107007; Count.u64 = 193; 
+TrivialCPU cpu0 Finished after 1000 issued reads, 1000 returned (104428 clocks)
+	54 Noncacheable Reads
+	5 Noncacheable Writes
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  64079
+  [2, 4]  27048
+  [4, 6]  5580
+  [6, 8]  3509
+  [8, 10]  2579
+  [10, 12]  1633
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: n0.l2cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           797
+     GetS:                                       456
+     GetX:                                       341
+     GetSEx:                                     0
+- Total misses:                                  599
+     GetS, miss on arrival:                      128
+     GetS, miss after being blocked:             130
+     GetX, miss on arrival:                      87
+     GetX, miss after being blocked:             254
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    198
+     GetS, hit on arrival:                       12
+     GetS, hit after being blocked:              186
+     GetX, hit on arrival:                       0
+     GetX, hit after being blocked:              0
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     24.843%
+- Miss ratio:                                    75.157%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   65
+- GetS   M(present at another cache):            193
+- GetX   I->M:                                   87
+- GetX   S->M:                                   73
+- GetX   M(present at another cache):            181
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+- GetSEx M(present at another cache):            0
+------------ Replacements and evictions -------------------
+- PutS received:                                 0
+- PutM received:                                 0
+- PutS sent due to eviction:                     0
+- PutE sent due to eviction:                     0
+- PutM sent due to eviction:                     0
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    2358
+- Requests handled by MSHR (MSHR hits):          736
+- NACKs sent (MSHR Full, Down):                  0
+- NACKs sent (MSHR Full, Up):                    0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        1025
+- Latency GetS   I->S:                           1776
+- Latency GetS   M:                              105
+- Latency GetX   I->M:                           1914
+- Latency GetX   S->M:                           1210
+- Latency GetX   M:                              1514
+------------ State and event stats ---------------------------
+GetS, I:        65
+GetS, S:        198
+GetS, M:        193
+GetX, I:        87
+GetX, S:        73
+GetX, M:        181
+GetSResp, IS:        65
+GetXResp, IM:        159
+GetXResp, SM:        1
+Inv, S:        2
+Inv, SM:        72
+FetchInv, M:        90
+FetchInv, M_Inv:        90
+FetchInvX, M:        67
+FetchInvX, M_Inv:        3
+FetchInvX, M_InvX:        1
+FetchResp, M_Inv:        270
+FetchXResp, M_InvX:        68
+AckInv, M_Inv:        3
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: c0.l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           941
+     GetS:                                       853
+     GetX:                                       88
+     GetSEx:                                     0
+- Total misses:                                  218
+     GetS, miss on arrival:                      131
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      86
+     GetX, miss after being blocked:             1
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    723
+     GetS, hit on arrival:                       707
+     GetS, hit after being blocked:              15
+     GetX, hit on arrival:                       0
+     GetX, hit after being blocked:              1
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     76.833%
+- Miss ratio:                                    23.167%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   131
+- GetX   I->M:                                   15
+- GetX   S->M:                                   72
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PutS sent due to eviction:                     0
+- PutE sent due to eviction:                     0
+- PutM sent due to eviction:                     0
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    1438
+- Requests handled by MSHR (MSHR hits):          88
+- NACKs sent (MSHR Full, Down):                  0
+- NACKs sent (MSHR Full, Up):                    0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        1004
+- Latency GetS   I->S:                           976
+- Latency GetX   I->M:                           1294
+- Latency GetX   S->M:                           1294
+------------ State and event stats ---------------------------
+GetS, I:        131
+GetS, S:        718
+GetS, M:        4
+GetX, I:        15
+GetX, S:        72
+GetX, M:        1
+GetSResp, IS:        131
+GetXResp, IM:        86
+GetXResp, SM:        1
+Inv, S:        3
+Inv, SM:        71
+FetchInv, M:        86
+FetchInvX, M:        1
+TrivialCPU cpu1 Finished after 1000 issued reads, 1000 returned (104474 clocks)
+	54 Noncacheable Reads
+	5 Noncacheable Writes
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  61986
+  [2, 4]  28088
+  [4, 6]  6404
+  [6, 8]  3484
+  [8, 10]  2790
+  [10, 12]  1722
+TrivialCPU cpu3 Finished after 1000 issued reads, 1000 returned (104773 clocks)
+	54 Noncacheable Reads
+	5 Noncacheable Writes
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  52376
+  [2, 4]  34644
+  [4, 6]  9209
+  [6, 8]  3323
+  [8, 10]  3243
+  [10, 12]  1978
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: l3cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           512
+     GetS:                                       185
+     GetX:                                       327
+     GetSEx:                                     0
+- Total misses:                                  461
+     GetS, miss on arrival:                      133
+     GetS, miss after being blocked:             1
+     GetX, miss on arrival:                      247
+     GetX, miss after being blocked:             80
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    51
+     GetS, hit on arrival:                       1
+     GetS, hit after being blocked:              50
+     GetX, hit on arrival:                       0
+     GetX, hit after being blocked:              0
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     9.961%
+- Miss ratio:                                    90.039%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   55
+- GetS   M(present at another cache):            79
+- GetX   I->M:                                   5
+- GetX   S->M:                                   43
+- GetX   M(present at another cache):            279
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+- GetSEx M(present at another cache):            0
+------------ Replacements and evictions -------------------
+- PutS received:                                 0
+- PutM received:                                 0
+- PutS sent due to eviction:                     0
+- PutE sent due to eviction:                     0
+- PutM sent due to eviction:                     0
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    1959
+- Requests handled by MSHR (MSHR hits):          131
+- NACKs sent (MSHR Full, Down):                  0
+- NACKs sent (MSHR Full, Up):                    0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        1697
+- Latency GetS   I->S:                           2058
+- Latency GetS   M:                              218
+- Latency GetX   I->M:                           1925
+- Latency GetX   S->M:                           1239
+- Latency GetX   M:                              541
+------------ State and event stats ---------------------------
+GetS, I:        55
+GetS, S:        51
+GetS, M:        79
+GetX, I:        5
+GetX, S:        43
+GetX, M:        279
+GetSResp, IS:        55
+GetXResp, IM:        5
+GetXResp, SM:        43
+FetchResp, M_Inv:        245
+FetchXResp, M_InvX:        79
+AckInv, M_Inv:        34
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: c1.l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           941
+     GetS:                                       853
+     GetX:                                       88
+     GetSEx:                                     0
+- Total misses:                                  218
+     GetS, miss on arrival:                      131
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      86
+     GetX, miss after being blocked:             1
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    723
+     GetS, hit on arrival:                       706
+     GetS, hit after being blocked:              16
+     GetX, hit on arrival:                       0
+     GetX, hit after being blocked:              1
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     76.833%
+- Miss ratio:                                    23.167%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   131
+- GetX   I->M:                                   14
+- GetX   S->M:                                   73
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PutS sent due to eviction:                     0
+- PutE sent due to eviction:                     0
+- PutM sent due to eviction:                     0
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    1438
+- Requests handled by MSHR (MSHR hits):          91
+- NACKs sent (MSHR Full, Down):                  0
+- NACKs sent (MSHR Full, Up):                    0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        1103
+- Latency GetS   I->S:                           971
+- Latency GetX   I->M:                           1383
+- Latency GetX   S->M:                           1392
+------------ State and event stats ---------------------------
+GetS, I:        131
+GetS, S:        717
+GetS, M:        5
+GetX, I:        14
+GetX, S:        73
+GetX, M:        1
+GetSResp, IS:        131
+GetXResp, IM:        87
+Inv, S:        1
+Inv, SM:        73
+FetchInv, M:        87
+TrivialCPU cpu2 Finished after 1000 issued reads, 1000 returned (104727 clocks)
+	54 Noncacheable Reads
+	5 Noncacheable Writes
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  54275
+  [2, 4]  33603
+  [4, 6]  8573
+  [6, 8]  3146
+  [8, 10]  3257
+  [10, 12]  1873
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: c2.l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           941
+     GetS:                                       853
+     GetX:                                       88
+     GetSEx:                                     0
+- Total misses:                                  217
+     GetS, miss on arrival:                      130
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      86
+     GetX, miss after being blocked:             1
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    724
+     GetS, hit on arrival:                       705
+     GetS, hit after being blocked:              18
+     GetX, hit on arrival:                       0
+     GetX, hit after being blocked:              1
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     76.939%
+- Miss ratio:                                    23.061%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   130
+- GetX   I->M:                                   15
+- GetX   S->M:                                   72
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PutS sent due to eviction:                     0
+- PutE sent due to eviction:                     0
+- PutM sent due to eviction:                     0
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    1436
+- Requests handled by MSHR (MSHR hits):          92
+- NACKs sent (MSHR Full, Down):                  0
+- NACKs sent (MSHR Full, Up):                    0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        1290
+- Latency GetS   I->S:                           969
+- Latency GetX   I->M:                           1695
+- Latency GetX   S->M:                           1889
+------------ State and event stats ---------------------------
+GetS, I:        130
+GetS, S:        716
+GetS, M:        7
+GetX, I:        15
+GetX, S:        72
+GetX, M:        1
+GetSResp, IS:        130
+GetXResp, IM:        87
+Inv, S:        1
+Inv, SM:        72
+FetchInv, M:        87
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: c4.l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           941
+     GetS:                                       853
+     GetX:                                       88
+     GetSEx:                                     0
+- Total misses:                                  217
+     GetS, miss on arrival:                      130
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      85
+     GetX, miss after being blocked:             2
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    724
+     GetS, hit on arrival:                       706
+     GetS, hit after being blocked:              17
+     GetX, hit on arrival:                       0
+     GetX, hit after being blocked:              1
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     76.939%
+- Miss ratio:                                    23.061%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   130
+- GetX   I->M:                                   15
+- GetX   S->M:                                   72
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PutS sent due to eviction:                     0
+- PutE sent due to eviction:                     0
+- PutM sent due to eviction:                     0
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    1366
+- Requests handled by MSHR (MSHR hits):          22
+- NACKs sent (MSHR Full, Down):                  0
+- NACKs sent (MSHR Full, Up):                    0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        1077
+- Latency GetS   I->S:                           1087
+- Latency GetX   I->M:                           1249
+- Latency GetX   S->M:                           1053
+------------ State and event stats ---------------------------
+GetS, I:        130
+GetS, S:        718
+GetS, M:        5
+GetX, I:        15
+GetX, S:        72
+GetX, M:        1
+GetSResp, IS:        130
+GetXResp, IM:        17
+GetXResp, SM:        70
+Inv, S:        1
+Inv, SM:        2
+FetchInv, M:        87
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: c3.l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           941
+     GetS:                                       853
+     GetX:                                       88
+     GetSEx:                                     0
+- Total misses:                                  144
+     GetS, miss on arrival:                      64
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      80
+     GetX, miss after being blocked:             0
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    797
+     GetS, hit on arrival:                       773
+     GetS, hit after being blocked:              16
+     GetX, hit on arrival:                       7
+     GetX, hit after being blocked:              1
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     84.697%
+- Miss ratio:                                    15.303%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   64
+- GetX   I->M:                                   9
+- GetX   S->M:                                   71
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PutS sent due to eviction:                     0
+- PutE sent due to eviction:                     0
+- PutM sent due to eviction:                     0
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    1354
+- Requests handled by MSHR (MSHR hits):          88
+- NACKs sent (MSHR Full, Down):                  0
+- NACKs sent (MSHR Full, Up):                    0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        1857
+- Latency GetS   I->S:                           1707
+- Latency GetX   I->M:                           2664
+- Latency GetX   S->M:                           1989
+------------ State and event stats ---------------------------
+GetS, I:        64
+GetS, S:        716
+GetS, M:        73
+GetX, I:        9
+GetX, S:        71
+GetX, M:        8
+GetSResp, IS:        64
+GetXResp, IM:        80
+Inv, S:        3
+Inv, SM:        71
+FetchInv, M:        10
+FetchInvX, M:        67
+TrivialCPU cpu5 Finished after 1000 issued reads, 1000 returned (104702 clocks)
+	54 Noncacheable Reads
+	5 Noncacheable Writes
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  61601
+  [2, 4]  27139
+  [4, 6]  7609
+  [6, 8]  3128
+  [8, 10]  3500
+  [10, 12]  1725
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: n1.l2cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           857
+     GetS:                                       509
+     GetX:                                       348
+     GetSEx:                                     0
+- Total misses:                                  494
+     GetS, miss on arrival:                      127
+     GetS, miss after being blocked:             19
+     GetX, miss on arrival:                      86
+     GetX, miss after being blocked:             262
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    363
+     GetS, hit on arrival:                       16
+     GetS, hit after being blocked:              347
+     GetX, hit on arrival:                       0
+     GetX, hit after being blocked:              0
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     42.357%
+- Miss ratio:                                    57.643%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   120
+- GetS   M(present at another cache):            26
+- GetX   I->M:                                   93
+- GetX   S->M:                                   74
+- GetX   M(present at another cache):            181
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+- GetSEx M(present at another cache):            0
+------------ Replacements and evictions -------------------
+- PutS received:                                 0
+- PutM received:                                 0
+- PutS sent due to eviction:                     0
+- PutE sent due to eviction:                     0
+- PutM sent due to eviction:                     0
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    2355
+- Requests handled by MSHR (MSHR hits):          787
+- NACKs sent (MSHR Full, Down):                  0
+- NACKs sent (MSHR Full, Up):                    0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        895
+- Latency GetS   I->S:                           1148
+- Latency GetS   M:                              136
+- Latency GetX   I->M:                           1551
+- Latency GetX   S->M:                           977
+- Latency GetX   M:                              1306
+------------ State and event stats ---------------------------
+GetS, I:        120
+GetS, S:        363
+GetS, M:        26
+GetX, I:        93
+GetX, S:        74
+GetX, M:        181
+GetSResp, IS:        120
+GetXResp, IM:        94
+GetXResp, SM:        73
+Inv, S:        1
+FetchInv, M:        155
+FetchInv, M_Inv:        155
+FetchInvX, M:        12
+FetchInvX, M_Inv:        2
+FetchInvX, M_InvX:        1
+FetchResp, M_Inv:        336
+FetchXResp, M_InvX:        12
+TrivialCPU cpu4 Finished after 1000 issued reads, 1000 returned (104279 clocks)
+	54 Noncacheable Reads
+	5 Noncacheable Writes
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  66253
+  [2, 4]  24424
+  [4, 6]  5659
+  [6, 8]  3562
+  [8, 10]  2640
+  [10, 12]  1741
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: c5.l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           941
+     GetS:                                       853
+     GetX:                                       88
+     GetSEx:                                     0
+- Total misses:                                  216
+     GetS, miss on arrival:                      129
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      86
+     GetX, miss after being blocked:             1
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    725
+     GetS, hit on arrival:                       707
+     GetS, hit after being blocked:              17
+     GetX, hit on arrival:                       0
+     GetX, hit after being blocked:              1
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     77.046%
+- Miss ratio:                                    22.954%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   129
+- GetX   I->M:                                   16
+- GetX   S->M:                                   71
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PutS sent due to eviction:                     0
+- PutE sent due to eviction:                     0
+- PutM sent due to eviction:                     0
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    1435
+- Requests handled by MSHR (MSHR hits):          90
+- NACKs sent (MSHR Full, Down):                  0
+- NACKs sent (MSHR Full, Up):                    0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        1085
+- Latency GetS   I->S:                           1087
+- Latency GetX   I->M:                           1493
+- Latency GetX   S->M:                           1095
+------------ State and event stats ---------------------------
+GetS, I:        129
+GetS, S:        719
+GetS, M:        5
+GetX, I:        16
+GetX, S:        71
+GetX, M:        1
+GetSResp, IS:        129
+GetXResp, IM:        87
+Inv, S:        2
+Inv, SM:        71
+FetchInv, M:        86
+FetchInvX, M:        1
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: c6.l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           941
+     GetS:                                       853
+     GetX:                                       88
+     GetSEx:                                     0
+- Total misses:                                  217
+     GetS, miss on arrival:                      130
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      85
+     GetX, miss after being blocked:             2
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    724
+     GetS, hit on arrival:                       706
+     GetS, hit after being blocked:              17
+     GetX, hit on arrival:                       0
+     GetX, hit after being blocked:              1
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     76.939%
+- Miss ratio:                                    23.061%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   130
+- GetX   I->M:                                   15
+- GetX   S->M:                                   72
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PutS sent due to eviction:                     0
+- PutE sent due to eviction:                     0
+- PutM sent due to eviction:                     0
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    1436
+- Requests handled by MSHR (MSHR hits):          92
+- NACKs sent (MSHR Full, Down):                  0
+- NACKs sent (MSHR Full, Up):                    0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        1259
+- Latency GetS   I->S:                           1071
+- Latency GetX   I->M:                           1646
+- Latency GetX   S->M:                           1643
+------------ State and event stats ---------------------------
+GetS, I:        130
+GetS, S:        717
+GetS, M:        6
+GetX, I:        15
+GetX, S:        72
+GetX, M:        1
+GetSResp, IS:        130
+GetXResp, IM:        87
+Inv, S:        1
+Inv, SM:        72
+FetchInv, M:        87
+TrivialCPU cpu6 Finished after 1000 issued reads, 1000 returned (104702 clocks)
+	54 Noncacheable Reads
+	5 Noncacheable Writes
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  53471
+  [2, 4]  33029
+  [4, 6]  9333
+  [6, 8]  3126
+  [8, 10]  3659
+  [10, 12]  2084
+TrivialCPU cpu7 Finished after 1000 issued reads, 1000 returned (104762 clocks)
+	54 Noncacheable Reads
+	5 Noncacheable Writes
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  50923
+  [2, 4]  33746
+  [4, 6]  10874
+  [6, 8]  3804
+  [8, 10]  2899
+  [10, 12]  2516
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: c7.l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           941
+     GetS:                                       852
+     GetX:                                       89
+     GetSEx:                                     0
+- Total misses:                                  207
+     GetS, miss on arrival:                      120
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      84
+     GetX, miss after being blocked:             3
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    734
+     GetS, hit on arrival:                       713
+     GetS, hit after being blocked:              19
+     GetX, hit on arrival:                       1
+     GetX, hit after being blocked:              1
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     78.002%
+- Miss ratio:                                    21.998%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   120
+- GetX   I->M:                                   13
+- GetX   S->M:                                   74
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PutS sent due to eviction:                     0
+- PutE sent due to eviction:                     0
+- PutM sent due to eviction:                     0
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    1426
+- Requests handled by MSHR (MSHR hits):          96
+- NACKs sent (MSHR Full, Down):                  0
+- NACKs sent (MSHR Full, Up):                    0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        1327
+- Latency GetS   I->S:                           1095
+- Latency GetX   I->M:                           1827
+- Latency GetX   S->M:                           1745
+------------ State and event stats ---------------------------
+GetS, I:        120
+GetS, S:        716
+GetS, M:        16
+GetX, I:        13
+GetX, S:        74
+GetX, M:        2
+GetSResp, IS:        120
+GetXResp, IM:        86
+GetXResp, SM:        1
+Inv, SM:        73
+FetchInv, M:        76
+FetchInvX, M:        11
+Simulation is complete, simulated time: 104.773 us

@@ -1,0 +1,77 @@
+
+------------------------------------------------------------------------
+--- Cache Stats
+--- Name: l1cache
+--- Overall Statistics
+------------------------------------------------------------------------
+- Total data requests:                           252258
+     GetS:                                       173835
+     GetX:                                       78423
+     GetSEx:                                     0
+- Total misses:                                  35617
+     GetS, miss on arrival:                      18691
+     GetS, miss after being blocked:             0
+     GetX, miss on arrival:                      16926
+     GetX, miss after being blocked:             0
+     GetSEx, miss on arrival:                    0
+     GetSEx, miss after being blocked:           0
+- Total hits:                                    216641
+     GetS, hit on arrival:                       31079
+     GetS, hit after being blocked:              124065
+     GetX, hit on arrival:                       10382
+     GetX, hit after being blocked:              51115
+     GetSEx, hit on arrival:                     0
+     GetSEx, hit after being blocked:            0
+- Hit ratio:                                     85.881%
+- Miss ratio:                                    14.119%
+------------ Coherence transitions for misses -------------
+- GetS   I->S:                                   18691
+- GetX   I->M:                                   16926
+- GetX   S->M:                                   0
+- GetSEx I->M:                                   0
+- GetSEx S->M:                                   0
+------------ Replacements and evictions -------------------
+- PutS sent due to eviction:                     0
+- PutE sent due to eviction:                     17652
+- PutM sent due to eviction:                     16941
+------------ Other stats ----------------------------------
+- Inv stalled because LOCK held:                 0
+- Requests received (incl coherence traffic):    287875
+- Requests handled by MSHR (MSHR hits):          175180
+- NACKs sent (MSHR Full, Down):                  0
+- NACKs sent (MSHR Full, Up):                    0
+------------ Latency stats --------------------------------
+- Avg Miss Latency (cyc):                        98
+- Latency GetS   I->S:                           77
+- Latency GetX   I->M:                           121
+------------ State and event stats ---------------------------
+GetS, I:        18691
+GetS, E:        135373
+GetS, M:        19771
+GetX, I:        16926
+GetX, E:        77
+GetX, M:        61420
+GetSResp, IS:        18691
+GetXResp, IM:        16926
+
+Prospero Component Statistics:
+------------------------------------------------------------------------
+- Completed at:                          685588 ns
+- Cycles with ops issued:                149092 cycles
+- Cycles with no ops issued (LS full):   1222041 cycles
+------------------------------------------------------------------------
+- Reads issued:                          173835
+- Writes issued:                         78423
+- Split reads issued:                    60
+- Split writes issued:                   27
+- Bytes read:                            1269669
+- Bytes written:                         1142526
+------------------------------------------------------------------------
+- Bandwidth (read):                      1.85194 GB/s
+- Bandwidth (written):                   1.66649 GB/s
+- Bandwidth (combined):                  3.51843 GB/s
+- Avr. Read request size:                                7.30 bytes
+- Avr. Write request size:                              14.57 bytes
+- Avr. Request size:                                     9.56 bytes
+
+Simulation is complete, simulated time: 685.588 us

@@ -1,0 +1,320 @@
+constructing macro_processor 0 with address nodeid(id: 0)
+debug string: <debug> app | <debug> launch | <debug> mpicheck
+constructing macro_processor 1 with address nodeid(id: 1)
+constructing macro_processor 2 with address nodeid(id: 2)
+constructing macro_processor 3 with address nodeid(id: 3)
+constructing macro_processor 4 with address nodeid(id: 4)
+constructing macro_processor 5 with address nodeid(id: 5)
+constructing macro_processor 6 with address nodeid(id: 6)
+constructing macro_processor 7 with address nodeid(id: 7)
+constructing macro_processor 8 with address nodeid(id: 8)
+constructing macro_processor 9 with address nodeid(id: 9)
+network size: 10
+instantlaunch: starting...
+app mpi_testall is going to launch 8 at timestamp(1.2 secs)
+instantlaunch: launches scheduled
+instantlaunch: starting...
+app mpi_testall is going to launch 8 at timestamp(1.2 secs)
+instantlaunch: launches scheduled
+instantlaunch: starting...
+app mpi_testall is going to launch 8 at timestamp(1.2 secs)
+instantlaunch: launches scheduled
+instantlaunch: starting...
+app mpi_testall is going to launch 8 at timestamp(1.2 secs)
+instantlaunch: launches scheduled
+instantlaunch: starting...
+app mpi_testall is going to launch 8 at timestamp(1.2 secs)
+instantlaunch: launches scheduled
+instantlaunch: starting...
+app mpi_testall is going to launch 8 at timestamp(1.2 secs)
+instantlaunch: launches scheduled
+instantlaunch: starting...
+app mpi_testall is going to launch 8 at timestamp(1.2 secs)
+instantlaunch: launches scheduled
+instantlaunch: starting...
+app mpi_testall is going to launch 8 at timestamp(1.2 secs)
+instantlaunch: launches scheduled
+instantlaunch: starting...
+app mpi_testall is going to launch 8 at timestamp(1.2 secs)
+instantlaunch: launches scheduled
+instantlaunch: starting...
+app mpi_testall is going to launch 8 at timestamp(1.2 secs)
+instantlaunch: launches scheduled
+instantlaunch: initializing allocation for starting at timestamp(1.2 secs)
+instantlaunch: requesting allocation for 8 tasks 
+instantlaunch: allocator returned 8 nodes 
+taskid: taskid(0)
+adding task taskid(0) to node nodeid(id: 0) for app 1
+taskid: taskid(1)
+adding task taskid(1) to node nodeid(id: 1) for app 1
+taskid: taskid(2)
+adding task taskid(2) to node nodeid(id: 2) for app 1
+taskid: taskid(3)
+adding task taskid(3) to node nodeid(id: 3) for app 1
+taskid: taskid(4)
+adding task taskid(4) to node nodeid(id: 4) for app 1
+taskid: taskid(5)
+adding task taskid(5) to node nodeid(id: 5) for app 1
+taskid: taskid(6)
+adding task taskid(6) to node nodeid(id: 6) for app 1
+taskid: taskid(7)
+adding task taskid(7) to node nodeid(id: 7) for app 1
+instantlaunch(nodeid(id: 0)): considering launching a task...launch taskid(0) for app 1 as intranode rank 0 with core affinity -1
+instantlaunch(nodeid(id: 1)): considering launching a task...launch taskid(1) for app 1 as intranode rank 0 with core affinity -1
+instantlaunch(nodeid(id: 2)): considering launching a task...launch taskid(2) for app 1 as intranode rank 0 with core affinity -1
+instantlaunch(nodeid(id: 3)): considering launching a task...launch taskid(3) for app 1 as intranode rank 0 with core affinity -1
+instantlaunch(nodeid(id: 4)): considering launching a task...launch taskid(4) for app 1 as intranode rank 0 with core affinity -1
+instantlaunch(nodeid(id: 5)): considering launching a task...launch taskid(5) for app 1 as intranode rank 0 with core affinity -1
+instantlaunch(nodeid(id: 6)): considering launching a task...launch taskid(6) for app 1 as intranode rank 0 with core affinity -1
+instantlaunch(nodeid(id: 7)): considering launching a task...launch taskid(7) for app 1 as intranode rank 0 with core affinity -1
+instantlaunch(nodeid(id: 8)): considering launching a task...nah, don't feel like it 
+instantlaunch(nodeid(id: 9)): considering launching a task...nah, don't feel like it 
+testall[7]-- Testing payload send/recv 
+testall[0]-- Testing payload send/recv 
+testall[1]-- Testing payload send/recv 
+testall[2]-- Testing payload send/recv 
+testall[3]-- Testing payload send/recv 
+testall[4]-- Testing payload send/recv 
+testall[5]-- Testing payload send/recv 
+testall[6]-- Testing payload send/recv 
+testall[7] -- Testing payload broadcast 
+testall[1]---- This should come FIRST -- 
+testall[3] -- Testing payload broadcast 
+testall[5] -- Testing payload broadcast 
+testall[6] -- Testing payload broadcast 
+testall[0] -- Testing nonblocking recv/wait 
+testall[2] -- Testing payload broadcast 
+testall[4] -- Testing payload broadcast 
+testall[0]---- This should come SECOND -- 
+
+
+testall[0] -- Testing payload broadcast 
+testall[1]---- This should come THIRD -- 
+testall[1] -- Testing payload broadcast 
+testall[0] -- Testing vector payload broadcast 
+testall[0] -- Testing buffer pointer payload broadcast 
+testall[0] -- Testing reduce  
+testall[1] -- Testing vector payload broadcast 
+testall[4] -- Testing vector payload broadcast 
+testall[2] -- Testing vector payload broadcast 
+testall[1] -- Testing buffer pointer payload broadcast 
+testall[1] -- Testing reduce  
+testall[2] -- Testing buffer pointer payload broadcast 
+testall[4] -- Testing buffer pointer payload broadcast 
+testall[2] -- Testing reduce  
+testall[4] -- Testing reduce  
+testall[5] -- Testing vector payload broadcast 
+testall[3] -- Testing vector payload broadcast 
+testall[6] -- Testing vector payload broadcast 
+testall[5] -- Testing buffer pointer payload broadcast 
+testall[3] -- Testing buffer pointer payload broadcast 
+testall[5] -- Testing reduce  
+testall[3] -- Testing reduce  
+testall[6] -- Testing buffer pointer payload broadcast 
+testall[6] -- Testing reduce  
+testall[7] -- Testing vector payload broadcast 
+testall[7] -- Testing buffer pointer payload broadcast 
+testall[7] -- Testing reduce  
+testall[7] -- Testing barrier  
+testall[3] -- Testing barrier  
+testall[5] -- Testing barrier  
+testall[1] -- Testing barrier  
+testall[6] -- Testing barrier  
+testall[2] -- Testing barrier  
+testall[4] -- Testing barrier  
+testall[0] -- Testing barrier  
+testall[0] -- Through barrier  
+testall[0] -- Testing allreduce  
+testall[4] -- Through barrier  
+testall[4] -- Testing allreduce  
+testall[2] -- Through barrier  
+testall[2] -- Testing allreduce  
+testall[1] -- Through barrier  
+testall[1] -- Testing allreduce  
+testall[6] -- Through barrier  
+testall[6] -- Testing allreduce  
+testall[5] -- Through barrier  
+testall[5] -- Testing allreduce  
+testall[3] -- Through barrier  
+testall[3] -- Testing allreduce  
+testall[7] -- Through barrier  
+testall[7] -- Testing allreduce  
+testall[0] -- Testing scatter  
+testall[4] -- Testing scatter  
+testall[2] -- Testing scatter  
+testall[1] -- Testing scatter  
+testall[6] -- Testing scatter  
+testall[5] -- Testing scatter  
+testall[3] -- Testing scatter  
+testall[7] -- Testing scatter  
+testall[0] -- Testing scatterv  
+testall[1] -- Testing scatterv  
+testall[2] -- Testing scatterv  
+testall[1] -- Testing gather  
+testall[3] -- Testing scatterv  
+testall[2] -- Testing gather  
+testall[1] -- Testing gatherv  
+testall[4] -- Testing scatterv  
+testall[3] -- Testing gather  
+testall[1] -- Testing scan  
+testall[5] -- Testing scatterv  
+testall[4] -- Testing gather  
+testall[3] -- Testing gatherv  
+testall[6] -- Testing scatterv  
+testall[5] -- Testing gather  
+testall[3] -- Testing scan  
+testall[7] -- Testing scatterv  
+testall[6] -- Testing gather  
+testall[0] -- Testing gather  
+testall[5] -- Testing gatherv  
+testall[7] -- Testing gather  
+testall[2] -- Testing gatherv  
+testall[5] -- Testing scan  
+testall[7] -- Testing gatherv  
+testall[2] -- Testing scan  
+testall[7] -- Testing scan  
+testall[6] -- Testing gatherv  
+testall[6] -- Testing scan  
+testall[4] -- Testing gatherv  
+testall[4] -- Testing scan  
+testall[0] -- Testing gatherv  
+testall[0] -- Testing scan  
+testall[0] -- Through scan  
+testall[0] -- Testing comm create 
+testall[4] -- Through scan  
+testall[4] -- Testing comm create 
+testall[1] -- Through scan  
+testall[1] -- Testing comm create 
+testall[2] -- Through scan  
+testall[2] -- Testing comm create 
+testall[5] -- Through scan  
+testall[5] -- Testing comm create 
+testall[6] -- Through scan  
+testall[6] -- Testing comm create 
+testall[3] -- Through scan  
+testall[3] -- Testing comm create 
+testall[7] -- Through scan  
+testall[7] -- Testing comm create 
+testall[1] -- Testing cart comms 
+testall[0] -- Testing comm dup 
+testall[2] -- Testing comm dup 
+testall[3] -- Testing cart comms 
+testall[5] -- Testing cart comms 
+testall[4] -- Testing comm dup 
+testall[6] -- Testing comm dup 
+testall[7] -- Testing cart comms 
+testall[2] -- Testing comm split 
+testall[0] -- Testing comm split 
+testall[6] -- Testing comm split 
+testall[4] -- Testing comm split 
+testall[0] -- Testing cart comms 
+testall[6] -- Testing cart comms 
+testall[4] -- Testing cart comms 
+testall[2] -- Testing cart comms 
+testall[7] -- my coords are (1,3)
+testall[7] -- shift: source = 3, dest = -1
+testall[7] -- Testing wait any 
+testall[1] -- my coords are (1,0)
+testall[1] -- shift: source = -1, dest = 5
+testall[1] -- Testing wait any 
+testall[3] -- my coords are (1,1)
+testall[3] -- shift: source = -1, dest = 7
+testall[3] -- Testing wait any 
+testall[5] -- my coords are (1,2)
+testall[5] -- shift: source = 1, dest = -1
+testall[5] -- Testing wait any 
+testall[6] -- my coords are (0,3)
+testall[6] -- shift: source = 2, dest = -1
+testall[6] -- Testing wait any 
+testall[0] -- my coords are (0,0)
+testall[0] -- shift: source = -1, dest = 4
+testall[0] -- Testing wait any 
+testall[2] -- my coords are (0,1)
+testall[2] -- shift: source = -1, dest = 6
+testall[2] -- Testing wait any 
+testall[4] -- my coords are (0,2)
+testall[4] -- shift: source = 0, dest = -1
+testall[4] -- Testing wait any 
+testall[0] -- Testing wait some 
+testall[4] -- Testing wait some 
+testall[2] -- Testing wait some 
+testall[1] -- Testing wait some 
+testall[6] -- Testing wait some 
+testall[5] -- Testing wait some 
+testall[3] -- Testing wait some 
+testall[7] -- Testing wait some 
+testall[0] -- Testing allgather  
+testall[4] -- Testing allgather  
+testall[2] -- Testing allgather  
+testall[1] -- Testing allgather  
+testall[6] -- Testing allgather  
+testall[5] -- Testing allgather  
+testall[3] -- Testing allgather  
+testall[7] -- Testing allgather  
+testall[7] -- Testing allgatherv  
+testall[3] -- Testing allgatherv  
+testall[1] -- Testing allgatherv  
+testall[0] -- Testing allgatherv  
+testall[5] -- Testing allgatherv  
+testall[4] -- Testing allgatherv  
+testall[2] -- Testing allgatherv  
+testall[6] -- Testing allgatherv  
+testall[6] -- Testing alltoall  
+testall[2] -- Testing alltoall  
+testall[0] -- Testing alltoall  
+testall[7] -- Testing alltoall  
+testall[4] -- Testing alltoall  
+testall[3] -- Testing alltoall  
+testall[1] -- Testing alltoall  
+testall[5] -- Testing alltoall  
+testall[6] -- Testing probe 
+testall[2] -- Testing probe 
+testall[0] -- Testing probe 
+testall[7] -- Testing probe 
+testall[4] -- Testing probe 
+testall[3] -- Testing probe 
+testall[1] -- Testing probe 
+testall[5] -- Testing probe 
+testall[0] -- Testing persistent actions 
+testall[0] -- Persistent: Haven't started them yet 
+testall[0] -- Persistent: OK, I started them 
+testall[0] -- Persistent: I'm through 
+testall[4] -- Testing persistent actions 
+testall[4] -- Persistent: Haven't started them yet 
+testall[4] -- Persistent: OK, I started them 
+testall[4] -- Persistent: I'm through 
+testall[2] -- Testing persistent actions 
+testall[2] -- Persistent: Haven't started them yet 
+testall[2] -- Persistent: OK, I started them 
+testall[2] -- Persistent: I'm through 
+testall[1] -- Testing persistent actions 
+testall[1] -- Persistent: Haven't started them yet 
+testall[1] -- Persistent: OK, I started them 
+testall[6] -- Testing persistent actions 
+testall[6] -- Persistent: Haven't started them yet 
+testall[6] -- Persistent: OK, I started them 
+testall[5] -- Testing persistent actions 
+testall[5] -- Persistent: Haven't started them yet 
+testall[5] -- Persistent: OK, I started them 
+testall[5] -- Persistent: I'm through 
+testall[3] -- Testing persistent actions 
+testall[3] -- Persistent: Haven't started them yet 
+testall[3] -- Persistent: OK, I started them 
+testall[3] -- Persistent: I'm through 
+testall[7] -- Testing persistent actions 
+testall[7] -- Persistent: Haven't started them yet 
+testall[7] -- Persistent: OK, I started them 
+testall[7] -- Persistent: I'm through 
+testall[6] -- Persistent: I'm through 
+testall[1] -- Persistent: I'm through 
+- Finished testing! test successful 
+----- MPI API ----------
+App: mpi_testall
+ID: softwareid(appid(1), taskid(0),threadid(0))
+At sim time: 5.20346
+App runtime: 4.00346
+Rank 0 is passed the barrier in finalize,
+which means the simulation can probably be
+killed, if it's not already dead.
+------------------------ 
+*** Event queue empty, exiting simulation... ***

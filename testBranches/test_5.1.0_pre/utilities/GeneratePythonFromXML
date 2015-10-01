@@ -1,0 +1,104 @@
+pushd test/testSuites
+
+if [ $? != 0 ] ; then
+    echo "   ################################################################################ "
+    echo "   cd failed
+    echo "  Must be issue with Directory structure or pwd"
+    echo "    PWD is `pwd`"
+    echo "   ################################################################################ "
+    exit 
+fi
+
+echo "            Modifying test Suites to write python files from xml and then test using the python files"
+
+for fn in  testSuite_Ariel.sh  testSuite_cassini_prefetch.sh  testSuite_check_maxrss.sh  testSuite_hybridsim.sh  testSuite_iris.sh  testSuite_M5.sh  testSuite_macro.sh  testSuite_memHierarchy_bin.sh  testSuite_memHierarchy_sdl.sh  testSuite_merlin.sh testSuite_messageGenerator.sh testSuite_openMP.sh  testSuite_patterns.sh  testSuite_portals.sh  testSuite_prospero.sh  testSuite_qsimComponent.sh  testSuite_scheduler.sh  testSuite_simpleComponent.sh  testSuite_simpleRNG.sh   testSuite_SiriusZodiacTrace.sh  testSuite_sst_mcniagara.sh testSuite_sst_mcopteron.sh  testSuite_VaultSim.sh testSuite_diropenMP.sh testSuite_dirSweep.sh testSuite_embernightly.sh testSuite_simpleClocker.sh testSuite_simpleDistrib.sh testSuite_stream.sh testSuite_Sweep_openMP.sh testSuite_zoltan.sh testSuite_noncacheable_openMP.sh 
+do 
+
+if [[ ${SST_ONE_XML2PYTHON:+isSet} == isSet ]]
+then 
+    SUITE=${SST_ONE_XML2PYTHON}
+    if [[ $fn == *${SUITE}* ]] ; then
+        echo Doing $fn
+    else
+        continue
+    fi
+fi
+
+
+svn revert $fn
+
+                                    echo "do a grep for XML -- $fn"
+                                    grep xml $fn
+                         #  Remember insert goes BEFORE!
+sed -i'.sd' '/sut.*sutArgs/i \
+if [ `echo $sutArgs | wc -w` != 1 ] ; then \
+echo "########################################################" \
+echo "#" \
+echo "#   SUTARGS = $sutArgs " \
+echo "#" \
+echo "########################################################" \
+fi \
+2Breplaced --run-mode init > ${outFile}0 2>$errFilex \
+if [ $? != 0 ] ; then \
+     fail "Write of Python file from original input failed" \
+     echo "      -------- stderr follows ----- "  \
+     cat $errFilex \
+     echo " " \
+     wc ${outFile}0 \
+     wc $pyFile \
+     echo " - - - - - - - -   Abandoning  $testDataFileBase " \
+     echo " " \
+     return 1 \
+fi \
+ls -l $pyFile \
+wc $pyFile \
+cksum $pyFile \
+echo "Done with step 1 building pyFile" \
+echo " Check original output vs. Python output " \
+echo "               Run original " \
+holdArgs=$sutArgs \
+$sut $holdArgs > ${outFile}orig 2>&1 \
+echo "               Run from generated Python " \
+$sut $pyFile > ${outFile}python 2>&1 \
+diff ${outFile}orig ${outFile}python  > $errdiff \
+if [ $? == 0 ] ; then \
+   echo "    ---- Output from Python matches Original ----" \
+else \
+   echo "  -----------------   Output from Python input is Different! ---------" \
+   wc ${outFile}orig ${outFile}python \
+   wc $errdiff \
+   cat $errdiff | sed 50q \
+   fail "  -----------------   Output from Python input is Different! ---------" \
+fi \
+cksum  ${outFile}orig ${outFile}python \
+echo " Build Python from Python" \
+${sut} --output-config $pyFile2 ${pyFile} --run-mode init > ${outFile}1 2>&1 \
+if [ $? != 0 ] ; then \
+     fail "Write of Python file from Python failed" \
+     cat ${outFile}1 \
+     wc $pyFile2 \
+     return 1 \
+fi \
+ls -l $pyFile2 \
+wc $pyFile2 \
+echo "Done with building pyFile2 from pyFile" \
+ ' $fn
+
+sed -i'.se' '/sut.*sutArgs/s/.sutArgs./pyFile2/' $fn
+
+sed -i'.sf' 's/2Breplaced/${sut} --output-config $pyFile ${sutArgs}/' $fn
+ 
+sed -i'.sg' '/outFile=/i \
+pyFile="${SST_TEST_INPUTS}/${testDataFileBase}.py" \
+pyFile2="${SST_TEST_INPUTS}/${testDataFileBase}P.py" \
+errdiff="${SST_TEST_OUTPUTS}/${testDataFileBase}.errdiff" \
+errFilex="${SST_TEST_OUTPUTS}/${testDataFileBase}.errx" \
+ ' $fn
+
+sed -i'.sh' 's/export SST_TEST_ONE_TEST_TIMEOUT=/export SST_TEST_ONE_TEST_TIMEOUT=1/' $fn
+rm ${fn}.??
+## grep Done.with -B 6 -A 6 $fn
+done
+
+popd
+

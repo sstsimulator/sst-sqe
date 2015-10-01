@@ -1,0 +1,13 @@
+WARNING: Building component "system" with no links assigned.
+M5:configFile `piM5.xml`
+default system
+default process
+M5:registering exit `m5.nid0.cpu0.workload`
+M5:registering exit
+Inserting stop event at cycle 100000s, 100000000000000000
+Main has: 2 arguments
+Argument[    0] is: pi.x
+Argument[    1] is: 100000
+Estimate of Pi is: 3.141602653489720342605551195447
+M5:exiting: curTick()=290383000 cause=`target called exit()` code=52
+Simulation is complete, simulated time: 290.383 us

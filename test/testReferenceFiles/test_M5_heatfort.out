@@ -1,0 +1,18 @@
+WARNING: Building component "system" with no links assigned.
+M5:configFile `heatfortM5.xml`
+default system
+default process
+M5:registering exit `m5.nid0.cpu0.workload`
+M5:registering exit
+Inserting stop event at cycle 100000s, 100000000000000000
+ For Reynolds Number =   1.00000000E+01
+ Heat Transfer Coefficient is   9.71653519E+01  w/m**2/K
+ For Reynolds Number =   1.00000000E+02
+ Heat Transfer Coefficient is   9.71653519E+01  w/m**2/K
+ For Reynolds Number =   1.00000000E+03
+ Heat Transfer Coefficient is   1.40339294E+02  w/m**2/K
+ For Reynolds Number =   1.00000000E+04
+ Heat Transfer Coefficient is   8.85481079E+02  w/m**2/K
+M5:exiting: curTick()=98255000 cause=`target called exit()` code=0
+ 
+Simulation is complete, simulated time: 98.255 us
