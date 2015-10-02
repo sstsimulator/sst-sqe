@@ -1,0 +1,24 @@
+diff -urB omnetpp-4.1-orig/configure.user omnetpp-4.1/configure.user
+--- omnetpp-4.1-orig/configure.user	2010-06-11 10:57:29.000000000 -0600
++++ omnetpp-4.1/configure.user	2012-12-14 11:02:19.243233706 -0700
+@@ -50,7 +50,7 @@
+ #
+ # Set to "yes" to enable the parallel distributed simulation feature.
+ #
+-WITH_PARSIM=yes
++WITH_PARSIM=no
+ 
+ #
+ # Set to no if you want to create static OMNeT++ libraries. Can be overriden
+diff -urB omnetpp-4.1-orig/include/csimulation.h omnetpp-4.1/include/csimulation.h
+--- omnetpp-4.1-orig/include/csimulation.h	2010-06-11 10:57:35.000000000 -0600
++++ omnetpp-4.1/include/csimulation.h	2012-12-14 11:09:23.609899221 -0700
+@@ -467,7 +467,7 @@
+      * the current event to its scheduling event. Used internally by
+      * cSimpleModule::scheduleAt() and various other cSimpleModule methods.
+      */
+-    void insertMsg(cMessage *msg);
++    virtual void insertMsg(cMessage *msg);
+ 
+     /**
+      * Sets the component (module or channel) in context. Used internally.
