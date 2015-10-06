@@ -183,10 +183,6 @@ Ariel_template() {
     echo "Ariel ${Ariel_case}: Wall Clock Time  $elapsedSeconds seconds"
 }
 
-#  This is ugly bailing wire because the input files are in two diffently locations
-ln -sf $SST_ROOT/examples/ivb-ariel.py $SST_ROOT/sst/elements/ariel/frontend/simple/examples/stream/ariel_ivb.py
-ln -sf $SST_ROOT/examples/snb-ariel.py $SST_ROOT/sst/elements/ariel/frontend/simple/examples/stream/ariel_snb.py
-#            ------
 ls -l ${SST_ROOT}/sst/elements/ariel/frontend/simple/examples/stream
 
 test_Ariel_runstream() {
