@@ -25,8 +25,8 @@ echo ' '
 pwd
 ls -la
 echo ' '
-echo "     git clone --recursive https://github.com/sstsimulator/sst . "
-git clone --recursive https://github.com/sstsimulator/sst .
+echo "     git clone --recursive -b devel https://github.com/sstsimulator/sst . "
+git clone --recursive -b devel https://github.com/sstsimulator/sst .
 retVal=$?
 if [ $retVal != 0 ] ; then
    echo "\"git clone --recursive\" FAILED.  retVal = $retVal"
