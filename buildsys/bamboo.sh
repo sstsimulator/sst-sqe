@@ -19,9 +19,13 @@
 # Root of directory checked out, where this script should be found
 export SST_ROOT=`pwd`
 
+echo "#############################################################"
+echo "  Version Oct 7 1231 "
+echo ' '
 pwd
 ls -la
 echo ' '
+echo "     git clone --recursive https://github.com/sstsimulator/sst . "
 git clone --recursive https://github.com/sstsimulator/sst .
 retVal=$?
 if [ $retVal != 0 ] ; then
