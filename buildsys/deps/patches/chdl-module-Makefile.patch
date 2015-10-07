@@ -1,0 +1,21 @@
+--- a/Makefile	2015-06-08 14:20:22.824427386 -0600
++++ b/Makefile	2015-06-08 14:17:27.717412751 -0600
+@@ -4,16 +4,16 @@
+ PREFIX ?= /usr/local
+ CHDL_INCLUDE ?= $(PREFIX)/include/chdl
+ CHDL_LIB ?= $(PREFIX)/lib
++CXXFLAGS += -I$(PREFIX)/include 
+ 
+ libchdl-module.so: load_netlist.cpp loader.cpp loader.h
+-	$(CXX) -o $@ $(CXXFLAGS) $(LDFLAGS) load_netlist.cpp loader.cpp $(LDLIBS)
++	$(CXX) -o $@ $(CXXFLAGS) $(LDFLAGS) load_netlist.cpp loader.cpp 
+ 
+ install: libchdl-module.so
+ 	mkdir -p $(CHDL_INCLUDE)
+ 	mkdir -p $(CHDL_LIB)
+ 	cp loader.h $(CHDL_INCLUDE)
+ 	cp libchdl-module.so $(CHDL_LIB)
+-	ldconfig
+ 
+ clean:
+ 	rm -f *.so *.o

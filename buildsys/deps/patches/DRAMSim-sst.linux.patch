@@ -1,0 +1,31 @@
+diff -Naur DRAMSim-sst-original/Makefile DRAMSim-sst/Makefile
+--- DRAMSim-sst-original/Makefile	2010-08-18 20:38:11.000000000 +0000
++++ DRAMSim-sst/Makefile	2011-12-05 20:19:46.000000000 +0000
+@@ -1,17 +1,6 @@
+-#CXXFLAGS= -g -O0 -DDEBUG_BUILD 
+-CXXFLAGS= -O3 -DNO_OUTPUT -DNO_STORAGE -Wall
+ 
+ 
+-ifdef DEBUG
+-ifeq (${DEBUG}, 0)
+-#CXXFLAGS= -O3 -DNO_STORAGE -DNO_OUTPUT
+-endif
+-endif
+-ifdef PROFILE
+-CXXFLAGS = -pg
+-endif 
+-
+-CXXFLAGS= -g -O3 -DNO_STORAGE -DNO_OUTPUT
++CXXFLAGS= -g -O3 -DNO_STORAGE -DNO_OUTPUT -fPIC
+ 
+ MBOB_EXE=MBOBSim
+ EXE_NAME=DRAMSim
+@@ -36,7 +25,7 @@
+ 	libtool -static -o $@ $^
+ 
+ ${LIB_NAME}: ${POBJ}
+-	g++ -g -dynamic -o $@ $^
++	g++ -g -shared -o $@ $^
+ 	@echo "Built $@ successfully"
+ 
+ #${LIB_NAME}: ${POBJ}

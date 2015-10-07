@@ -1,0 +1,19 @@
+*** ParMetis-3.1.1-orig/ParMETISLib/stdheaders.h	2008-09-16 15:39:19.000000000 -0600
+--- ParMetis-3.1.1/ParMETISLib/stdheaders.h	2012-01-30 17:22:09.000000000 -0700
+***************
+*** 14,20 ****
+  
+  #include <stdio.h>
+  #include <stdlib.h>
+! #include <malloc.h>
+  #include <string.h>
+  #include <ctype.h>
+  #include <math.h>
+--- 14,20 ----
+  
+  #include <stdio.h>
+  #include <stdlib.h>
+! #include <sys/malloc.h>
+  #include <string.h>
+  #include <ctype.h>
+  #include <math.h>

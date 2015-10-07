@@ -1,0 +1,11 @@
+--- SConscript	2012-05-24 15:14:23.904769027 -0600
++++ SConscript.fixed	2012-05-29 12:44:05.984850988 -0600
+@@ -933,7 +933,7 @@
+         ccflags['debug'] = '-gstabs+'
+     else:
+         ccflags['debug'] = '-ggdb3'
+-    ccflags['opt'] = '-g -O3'
++    ccflags['opt'] = '-O3'
+     ccflags['fast'] = '-O3'
+     ccflags['prof'] = '-O3 -g -pg'
+ elif env['SUNCC']:
