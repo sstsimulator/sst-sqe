@@ -27,6 +27,15 @@ ls -la
 echo ' '
 cd mkdir -p sst
 
+echo "     git clone -b devel https://github.com/sstsimulator/sst . "
+git clone --recursive -b devel https://github.com/sstsimulator/sst .
+retVal=$?
+if [ $retVal != 0 ] ; then
+   echo "\"git clone --recursive\" FAILED.  retVal = $retVal"
+   exit
+fi
+
+
 echo "     git clone -b devel https://github.com/sstsimulator/sst-core core "
 git clone -b devel https://github.com/sstsimulator/sst-core core
 retVal=$?
