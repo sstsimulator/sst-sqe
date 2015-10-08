@@ -25,7 +25,6 @@ echo ' '
 pwd
 ls -la
 echo ' '
-cd mkdir -p sst
 
 echo "     git clone -b devel https://github.com/sstsimulator/sst . "
 git clone --recursive -b devel https://github.com/sstsimulator/sst .
@@ -34,7 +33,15 @@ if [ $retVal != 0 ] ; then
    echo "\"git clone --recursive\" FAILED.  retVal = $retVal"
    exit
 fi
+echo " "
+echo " the sst Repo has been cloned.    core and elements to go"
+ls
 
+
+mkdir -p sst
+cd sst
+pwd
+ls -l
 
 echo "     git clone -b devel https://github.com/sstsimulator/sst-core core "
 git clone -b devel https://github.com/sstsimulator/sst-core core
