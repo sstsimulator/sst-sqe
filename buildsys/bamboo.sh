@@ -39,7 +39,7 @@ ls
 
 
 mkdir -p sst
-cd sst
+pushd sst
 pwd
 ls -l
 
@@ -60,6 +60,7 @@ if [ $retVal != 0 ] ; then
 fi
 
 ls -l
+popd
 mv ../sqe/buildsys/deps .
 mv ../sqe/test .
 
