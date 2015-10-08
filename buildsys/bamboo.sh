@@ -20,17 +20,17 @@
 export SST_ROOT=`pwd`
 
 echo "#############################################################"
-echo "  Version Oct 8 1338 "
+echo "  Version Oct 8 1621 "
 echo ' '
 pwd
 ls -la
 echo ' '
 
-echo "     git clone -b devel https://github.com/sstsimulator/sst . "
-git clone --recursive -b devel https://github.com/sstsimulator/sst .
+echo "     git clone  https://github.com/sstsimulator/sst . "
+git clone  https://github.com/sstsimulator/sst .
 retVal=$?
 if [ $retVal != 0 ] ; then
-   echo "\"git clone --recursive\" FAILED.  retVal = $retVal"
+   echo "\"git clone \" FAILED.  retVal = $retVal"
    exit
 fi
 echo " "
