@@ -20,49 +20,55 @@
 export SST_ROOT=`pwd`
 
 echo "#############################################################"
-echo "  Version Oct 8 1621 "
+echo "  Version Oct 13 1338 hours "
+
 echo ' '
 pwd
 ls -la
 echo ' '
 
-echo "     git clone  https://github.com/sstsimulator/sst . "
-git clone -b devel https://github.com/sstsimulator/sst .
-retVal=$?
-if [ $retVal != 0 ] ; then
-   echo "\"git clone \" FAILED.  retVal = $retVal"
-   exit
+##  Check out other repositories except second time on Make Dist test
+if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
+    echo "PWD = `pwd`"
+
+   echo "     git clone  https://github.com/sstsimulator/sst . "
+   git clone -b devel https://github.com/sstsimulator/sst .
+   retVal=$?
+   if [ $retVal != 0 ] ; then
+      echo "\"git clone \" FAILED.  retVal = $retVal"
+      exit
+   fi
+   echo " "
+   echo " the sst Repo has been cloned.    core and elements to go"
+   ls
+
+
+   mkdir -p sst
+   pushd sst
+   pwd
+   ls -l
+
+   echo "     git clone -b devel https://github.com/sstsimulator/sst-core core "
+   git clone -b devel https://github.com/sstsimulator/sst-core core
+   retVal=$?
+   if [ $retVal != 0 ] ; then
+      echo "\"git of sst-core \" FAILED.  retVal = $retVal"
+      exit
+   fi
+
+   echo "     git clone -b devel https://github.com/sstsimulator/sst-elements elements "
+   git clone -b devel https://github.com/sstsimulator/sst-elements elements
+   retVal=$?
+   if [ $retVal != 0 ] ; then
+      echo "\"git of sst-elements \" FAILED.  retVal = $retVal"
+      exit
+   fi
+
+   ls -l
+   popd
+   mv ../sqe/buildsys/deps .
+   mv ../sqe/test .
 fi
-echo " "
-echo " the sst Repo has been cloned.    core and elements to go"
-ls
-
-
-mkdir -p sst
-pushd sst
-pwd
-ls -l
-
-echo "     git clone -b devel https://github.com/sstsimulator/sst-core core "
-git clone -b devel https://github.com/sstsimulator/sst-core core
-retVal=$?
-if [ $retVal != 0 ] ; then
-   echo "\"git of sst-core \" FAILED.  retVal = $retVal"
-   exit
-fi
-
-echo "     git clone -b devel https://github.com/sstsimulator/sst-elements elements "
-git clone -b devel https://github.com/sstsimulator/sst-elements elements
-retVal=$?
-if [ $retVal != 0 ] ; then
-   echo "\"git of sst-elements \" FAILED.  retVal = $retVal"
-   exit
-fi
-
-ls -l
-popd
-mv ../sqe/buildsys/deps .
-mv ../sqe/test .
 
 #	This assumes a directory strucure
 #                     SST_BASE   (was $HOME)
@@ -300,13 +306,11 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
         ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-        ${SST_TEST_SUITES}/testSuite_iris.sh
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
         ${SST_TEST_SUITES}/testSuite_merlin.sh
         ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
         ${SST_TEST_SUITES}/testSuite_miranda.sh
-        ${SST_TEST_SUITES}/testSuite_portals.sh
         ${SST_TEST_SUITES}/testSuite_prospero.sh
         ${SST_TEST_SUITES}/testSuite_qsimComponent.sh
         ${SST_TEST_SUITES}/testSuite_scheduler.sh
@@ -381,14 +385,12 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_sst_mcniagara.sh
 
 
-    ${SST_TEST_SUITES}/testSuite_portals.sh
     ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
     ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
     ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
     ${SST_TEST_SUITES}/testSuite_miranda.sh
     ${SST_TEST_SUITES}/testSuite_BadPort.sh
 
-    ${SST_TEST_SUITES}/testSuite_iris.sh
 
     # if [[ $BOOST_HOME == *boost*1.50* ]]
     # then
