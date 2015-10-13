@@ -306,13 +306,11 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
         ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-        ${SST_TEST_SUITES}/testSuite_iris.sh
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
         ${SST_TEST_SUITES}/testSuite_merlin.sh
         ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
         ${SST_TEST_SUITES}/testSuite_miranda.sh
-        ${SST_TEST_SUITES}/testSuite_portals.sh
         ${SST_TEST_SUITES}/testSuite_prospero.sh
         ${SST_TEST_SUITES}/testSuite_qsimComponent.sh
         ${SST_TEST_SUITES}/testSuite_scheduler.sh
@@ -387,14 +385,12 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_sst_mcniagara.sh
 
 
-    ${SST_TEST_SUITES}/testSuite_portals.sh
     ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
     ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
     ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
     ${SST_TEST_SUITES}/testSuite_miranda.sh
     ${SST_TEST_SUITES}/testSuite_BadPort.sh
 
-    ${SST_TEST_SUITES}/testSuite_iris.sh
 
     # if [[ $BOOST_HOME == *boost*1.50* ]]
     # then
