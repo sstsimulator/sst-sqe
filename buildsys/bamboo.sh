@@ -27,7 +27,7 @@ ls -la
 echo ' '
 
 echo "     git clone  https://github.com/sstsimulator/sst . "
-git clone  https://github.com/sstsimulator/sst .
+git clone -b devel https://github.com/sstsimulator/sst .
 retVal=$?
 if [ $retVal != 0 ] ; then
    echo "\"git clone \" FAILED.  retVal = $retVal"
