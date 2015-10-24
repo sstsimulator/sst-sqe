@@ -66,8 +66,8 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
    ls -l
    popd
-   mv ../sqe/buildsys/deps .
-   mv ../sqe/test .
+   ln -s ../sqe/buildsys/deps .
+   ln -s ../sqe/test .
 fi
 
 #	This assumes a directory strucure
