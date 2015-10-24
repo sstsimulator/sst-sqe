@@ -1,5 +1,4 @@
-macro
-dir.*Sweep
-Sweep_openMP
-
-
+macro              # is no longer built as part of SST
+dir.*Sweep         #  These tests require gem5
+Sweep_openMP       #  This test requires gem5
+ENDofLIST          #  Put new entries before this line!

@@ -203,18 +203,25 @@ echo " #####################################################"
     if [[ ${SST_DEPS_INSTALL_CHDL:+isSet} == isSet ]] ; then
         ${SST_TEST_SUITES}/testSuite_chdlComponent.sh
     fi
-       
 
-    if [ $1 == "sstmainline_config_all" ] ; then 
+      if [ $1 == "sstmainline_config_all" ] ; then 
 
          pushd ${SST_ROOT}/test/testSuites
          echo \$SST_TEST_SUITES = $SST_TEST_SUITES
+         echo "     Content of file, SuitesToOmitFromAll"
+         cat SuitesToOmitFromAll
+         echo ' '
+         ## strip any comment off
+         cat SuitesToOmitFromAll | awk  '{print $1}' > __omitlist__        
+         echo "      Suites to explictly OMIT from the \"all\" project:"
+         ls testSuite_* | grep  -f __omitlist__
+         echo ' '
+         #   Build the Suite list for the "All" project
+         ls testSuite_* | grep -v -f __omitlist__ > Suite.list
          echo "all() {" > files.for.all
-         
-         ls testSuite_* | grep -v -e macro -e dir.*Sweep -e Sweep_openMP > Suite.list
          sed  s\%^%\${SST_TEST_SUITES}/% Suite.list >> files.for.all
          echo "}" >> files.for.all
-         . files.for.all
+         . files.for.all               # Source the subroutine including list
          popd
          all
          return
