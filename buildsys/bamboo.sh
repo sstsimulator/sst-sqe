@@ -20,12 +20,15 @@
 export SST_ROOT=`pwd`
 
 echo "#############################################################"
-echo "  Version Oct 13 1338 hours "
+echo "  Version Oct 24 1455 hours "
 
 echo ' '
 pwd
 ls -la
 echo ' '
+pushd ../sqe
+git branch
+popd
 
 ##  Check out other repositories except second time on Make Dist test
 if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
