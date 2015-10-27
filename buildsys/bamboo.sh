@@ -20,12 +20,15 @@
 export SST_ROOT=`pwd`
 
 echo "#############################################################"
-echo "  Version Oct 13 1338 hours "
+echo "  Version Oct 24 1455 hours "
 
 echo ' '
 pwd
 ls -la
 echo ' '
+pushd ../sqe
+git branch
+popd
 
 ##  Check out other repositories except second time on Make Dist test
 if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
@@ -66,8 +69,8 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
    ls -l
    popd
-   mv ../sqe/buildsys/deps .
-   mv ../sqe/test .
+   ln -s ../sqe/buildsys/deps .
+   ln -s ../sqe/test .
 fi
 
 #	This assumes a directory strucure
@@ -203,18 +206,25 @@ echo " #####################################################"
     if [[ ${SST_DEPS_INSTALL_CHDL:+isSet} == isSet ]] ; then
         ${SST_TEST_SUITES}/testSuite_chdlComponent.sh
     fi
-       
 
-    if [ $1 == "sstmainline_config_all" ] ; then 
+      if [ $1 == "sstmainline_config_all" ] ; then 
 
          pushd ${SST_ROOT}/test/testSuites
          echo \$SST_TEST_SUITES = $SST_TEST_SUITES
+         echo "     Content of file, SuitesToOmitFromAll"
+         cat SuitesToOmitFromAll
+         echo ' '
+         ## strip any comment off
+         cat SuitesToOmitFromAll | awk  '{print $1}' > __omitlist__        
+         echo "      Suites to explictly OMIT from the \"all\" project:"
+         ls testSuite_* | grep  -f __omitlist__
+         echo ' '
+         #   Build the Suite list for the "All" project
+         ls testSuite_* | grep -v -f __omitlist__ > Suite.list
          echo "all() {" > files.for.all
-         
-         ls testSuite_* | grep -v -e macro -e dir.*Sweep -e Sweep_openMP > Suite.list
          sed  s\%^%\${SST_TEST_SUITES}/% Suite.list >> files.for.all
          echo "}" >> files.for.all
-         . files.for.all
+         . files.for.all               # Source the subroutine including list
          popd
          all
          return
@@ -632,9 +642,9 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${mpi_environment}"
-            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.8 -c default"
+            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.8 -c default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-libphx=$LIBPHX_HOME/src --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL $miscEnv"
+            configStr="$baseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-libphx=$LIBPHX_HOME/src --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL $miscEnv"
             ;;
         sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_diropenmpI|sstmainline_config_dirnoncacheable|sstmainline_config_dir3cache) 
             #-----------------------------------------------------------------
