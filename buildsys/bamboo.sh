@@ -2147,7 +2147,7 @@ setUPforMakeDisttest() {
      else
         cp -r $SST_ROOT/deps trunk          ## the deps scripts
      fi
-     if [ ! -e trunk/deps/bin/bin ] ; then
+     if [ ! -e trunk/deps/bin ] ; then
          echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
          echo SST_ROOT = $SST_ROOT
          ls $SST_ROOT/deps
