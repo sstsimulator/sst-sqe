@@ -2144,6 +2144,7 @@ setUPforMakeDisttest() {
      if [ -e trunk/deps ] ; then
         cp -r $SST_ROOT/deps/bin trunk/deps       ## the deps scripts
         cp -r $SST_ROOT/deps/include trunk/deps          ## the deps scripts
+        cp -r $SST_ROOT/deps/patches trunk/deps          ## the deps scripts
      else
         cp -r $SST_ROOT/deps trunk          ## the deps scripts
      fi
