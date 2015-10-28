@@ -65,7 +65,7 @@ fi
 
 echo ' '
 echo "   Started at `date`"
-echo "   Be Patient.  This test runs 11 minutes on sst-test"
+echo "   Be Patient.  This test runs over 4 minutes on sst-test"
 echo "   IGNORE the word \"FATAL\" in output messages"
 
 test_scheduler_DetailedNetwork() {
@@ -115,9 +115,14 @@ cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.py .
 #cp $TEST_INPUTS/testSdlFiles/${TEST_NAME}.py .
-   
-# run sst
+if [ ! -z $SST_MULTI_THREAD_COUNT ] ; then
+   echo "Setting Multi thread count to $SST_MULTI_THREAD_COUNT"
+   sed -i'.x' '/init_cmd  = "sst/s/sst/sst -n '"$SST_MULTI_THREAD_COUNT"/ run_DetailedNetworkSim.py
+fi    
+grep 'sst ' run_DetailedNetworkSim.py
 
+# run sst
+ 
 ./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py > /dev/null
 retVal=$?
 if [ $retVal -ne 0 ] ; then
