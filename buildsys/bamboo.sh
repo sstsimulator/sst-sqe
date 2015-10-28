@@ -2142,6 +2142,13 @@ setUPforMakeDisttest() {
      echo "Move in items not in the trunk, that are need for the bamboo build and test"
      cp  $SST_ROOT/../sqe/buildsys/bamboo.sh trunk
      cp -r $SST_ROOT/deps trunk          ## the deps scripts
+if [ ! -e trunk/deps/bin ] ; then
+    echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
+    echo $SST_ROOT
+    ls $SST_ROOT/deps
+    echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
+    exit
+fi
      cd trunk
      echo "                   List the directories in sst/elements"
      ls sst/elements
