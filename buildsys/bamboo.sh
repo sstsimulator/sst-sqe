@@ -69,8 +69,8 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
    ls -l
    popd
-   ln -s ../sqe/buildsys/deps .
-   ln -s ../sqe/test .
+   ln -s `pwd`/../sqe/buildsys/deps .
+   ln -s `pwd`/../sqe/test .
 fi
 
 #	This assumes a directory strucure
