@@ -64,6 +64,7 @@ test_BadPort() {
     L_TESTFILE+=(${testDataFileBase})
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
+    #  BadPort.py was created as a copy of merlin_dragon_12 with one character changed.
     sutArgs="${SST_TEST_INPUTS}/BadPort.py"
     rm -f ${outFile}
 
