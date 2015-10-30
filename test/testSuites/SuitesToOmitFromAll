@@ -4,8 +4,10 @@ Sweep_openMP       #  This test requires gem5
 M5                 #  These test require gem5
 dirnoncache        #  uses the M5 test binaries
 iris               #  not converted to accommodate the MT merge
-memHierarcy_bin    #  uses the M5 test binaries
+memHierarchy_bin   #  uses the M5 test binaries
 test_omp           #  uses the M5 test binaries
 portals_test       #  not converted since merge
 stream             #  uses the M5 test binaries
+diropenMP          #  uses M5 binaries
+noncacheable       #  uses M5 binaries
 ENDofLIST          #  Put new entries before this line!
