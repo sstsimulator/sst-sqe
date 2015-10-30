@@ -401,65 +401,49 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_miranda.sh
     ${SST_TEST_SUITES}/testSuite_BadPort.sh
 
-
-    # if [[ $BOOST_HOME == *boost*1.50* ]]
-    # then
-    #     ${SST_TEST_SUITES}/testSuite_macro.sh
-    # else
-    #     echo -e "No SST Macro test:    Only test with Boost 1.50"
-    # fi
-
-    echo SST MACRO: $SST_DEPS_INSTALL_SSTMACRO
-    if [[ ${SST_DEPS_INSTALL_SSTMACRO:+isSet} = isSet ]]
-    then
-        ${SST_TEST_SUITES}/testSuite_macro.sh
-    fi
-
     # Add other test suites here, i.e.
     # ${SST_TEST_SUITES}/testSuite_moe.sh
     # ${SST_TEST_SUITES}/testSuite_larry.sh
     # ${SST_TEST_SUITES}/testSuite_curly.sh
     # ${SST_TEST_SUITES}/testSuite_shemp.sh
     # etc.
+
     ${SST_TEST_SUITES}/testSuite_merlin.sh
     ${SST_TEST_SUITES}/testSuite_embernightly.sh
- ###     This is temporary to supress embernightly failures
- ###     if [[ ${BUILD_TAG} != *mainline* ]] ; then
- ###         ${SST_TEST_SUITES}/testSuite_embernightly.sh
- ###     fi
+ 
     ${SST_TEST_SUITES}/testSuite_simpleDistribComponent.sh
     ${SST_TEST_SUITES}/testSuite_SweepEmber.sh
 
-    if [ $1 != "sstmainline_config_gcc_4_8_1" -a $1 != "sstmainline_config_no_mpi" ] && [[ $1 != *no_gem5* ]] 
-    then
-        # Don't run gem5 dependent test suites in these configurations
-        # because gem5 is not enabled in them.
-        ${SST_TEST_SUITES}/testSuite_M5.sh
-        ${SST_TEST_SUITES}/testSuite_memHierarchy_bin.sh
-
-        # These also fail in gem5 with CentOS 6.6 (libgomp-4.4.7-11 vs libgomp-4.4.7-4)  
-        #         Also fail on current (Jan 21, 2015) TOSS VM
-#################################  February 3rd
-#   remove the TOSS and CentOS 6.6 exclusion
-#        Tests have been converted to use prebuilt binaries.
-#
-#        CentOS_version=`cat /etc/centos-release`
-#        echo " CentOS Version is ${CentOS_version}"
-#        if [ "${CentOS_version}" == "CentOS release 6.6 (Final)" ] ; then
-#           echo " This is CentOS 6.6,  omit running OpenMP tests.  Gem-5 is \"defunct\""
-#        elif [ "${SST_TEST_HOST_OS_DISTRIB}" == "toss" ] ; then
-#           echo " This is TOSS,  omit running OpenMP tests.  Gem-5 is \"defunct\""
-#        else
-           ${SST_TEST_SUITES}/testSuite_openMP.sh
-           ${SST_TEST_SUITES}/testSuite_diropenMP.sh
-           ${SST_TEST_SUITES}/testSuite_stream.sh
-           ${SST_TEST_SUITES}/testSuite_noncacheable_openMP.sh
-#        fi
-    fi
+#gem5    if [ $1 != "sstmainline_config_gcc_4_8_1" -a $1 != "sstmainline_config_no_mpi" ] && [[ $1 != *no_gem5* ]] 
+#gem5    then
+#gem5        # Don't run gem5 dependent test suites in these configurations
+#gem5        # because gem5 is not enabled in them.
+#gem5        ${SST_TEST_SUITES}/testSuite_M5.sh
+#gem5        ${SST_TEST_SUITES}/testSuite_memHierarchy_bin.sh
+#gem5
+#gem5        # These also fail in gem5 with CentOS 6.6 (libgomp-4.4.7-11 vs libgomp-4.4.7-4)  
+#gem5        #         Also fail on current (Jan 21, 2015) TOSS VM
+#gem5#################################  February 3rd
+#gem5#   remove the TOSS and CentOS 6.6 exclusion
+#gem5#        Tests have been converted to use prebuilt binaries.
+#gem5#
+#gem5#        CentOS_version=`cat /etc/centos-release`
+#gem5#        echo " CentOS Version is ${CentOS_version}"
+#gem5#        if [ "${CentOS_version}" == "CentOS release 6.6 (Final)" ] ; then
+#gem5#           echo " This is CentOS 6.6,  omit running OpenMP tests.  Gem-5 is \"defunct\""
+#gem5#        elif [ "${SST_TEST_HOST_OS_DISTRIB}" == "toss" ] ; then
+#gem5#           echo " This is TOSS,  omit running OpenMP tests.  Gem-5 is \"defunct\""
+#gem5#        else
+#gem5           ${SST_TEST_SUITES}/testSuite_openMP.sh
+#gem5           ${SST_TEST_SUITES}/testSuite_diropenMP.sh
+#gem5           ${SST_TEST_SUITES}/testSuite_stream.sh
+#gem5           ${SST_TEST_SUITES}/testSuite_noncacheable_openMP.sh
+#gem5#        fi
+#gem5    fi
 
     if [ $1 != "sstmainline_config_no_mpi" ] ; then
         #  patterns requires MPI in order to build
-        ${SST_TEST_SUITES}/testSuite_patterns.sh
+###        ${SST_TEST_SUITES}/testSuite_patterns.sh
         #  Zoltan test requires MPI to execute.
         #  sstmainline_config_no_gem5 deliberately omits Zoltan, so must skip test.
         if [ $1 != "sstmainline_config_linux_with_ariel" ] ; then
@@ -469,10 +453,6 @@ echo " #####################################################"
     fi
     ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
     ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
-#
-#      Temporarily disabling the Prospero test  -- see issue #328
-#    echo ' ' ; echo " Prospero test disabled -- see Issue #328" ; echo ' '
-    echo ' ' ; echo " Prospero test Re-enabled -- November 5th" ; echo ' '
       
     HOST=`uname -n | awk -F. '{print $1}'`
 
