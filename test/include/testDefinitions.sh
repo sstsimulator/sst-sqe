@@ -227,37 +227,21 @@ fi
 # This is the wrong place for this.
 #   Better in bamboo.sh than here.
 #     I tried to put it in testSubroutines,
-#        but testSubrouines in loaded only in Suites.
+#        but testSubroutines is loaded only in Suites.
 #           testDefinitions is loaded in bamboo.sh
 #
-#     Trying this for now.  (Aug 17, 2015)
-#     I believe this is total the wrong logic for this testing.
-#     I got here because I had trouble using sed sort of this way and
-#         patching in an environment variable.
-#     Logic needs significant refinement.
+#     Revised  October 30, 2015
 ######################################
 multithread_patch_Suites() {
 echo "multithread_patch_Suites: ########### Patch the test Suites"
 if [ $SST_MULTI_THREAD_COUNT == 0 ] ; then
      echo " There is no -n count "
-elif [ $SST_MULTI_THREAD_COUNT == 2 ] ; then
-      sed -i.x '/sut.*sutArgs/s/sut./sut} -n 2 /' test/testSuites/testSuite_*
-      sed -i.x '/print..sst.*model/s/sst./sst -n 2 /' test/testInputFiles/EmberSweepGenerator.py
-elif [ $SST_MULTI_THREAD_COUNT == 4 ] ; then
-      sed -i.x '/sut.*sutArgs/s/sut./sut} -n 4 /' test/testSuites/testSuite_*
-      sed -i.x '/print..sst.*model/s/sst./sst -n 4 /' test/testInputFiles/EmberSweepGenerator.py
-elif [ $SST_MULTI_THREAD_COUNT == 8 ] ; then
-      sed -i.x '/sut.*sutArgs/s/sut./sut} -n 8 /' test/testSuites/testSuite_*
-      sed -i.x '/print..sst.*model/s/sst./sst -n 8 /' test/testInputFiles/EmberSweepGenerator.py
-elif [ $SST_MULTI_THREAD_COUNT == 5 ] ; then
-      sed -i.x '/sut.*sutArgs/s/sut./sut} -n 5 /' test/testSuites/testSuite_*
-      sed -i.x '/print..sst.*model/s/sst./sst -n 5 /' test/testInputFiles/EmberSweepGenerator.py
-else 
-     echo " SST_MULTI_THREAD_COUNT value $SST_MULTI_THREAD_COUNT is not supported by current patch routine"
-     exit
+else
+      sed -i.x '/sut.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*
+      sed -i.x '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py
 fi
 
-if [ $SST_MULTI_THREAD_COUNT -gt 0 ] ; then
+if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
 ## sed -i.x '/sut.*sutArgs/s/sut./sut} /' test/testSuites/testSuite_*
 sed -i.y '/Invoke shunit2/i \
 export SST_TEST_ONE_TEST_TIMEOUT=200 \
