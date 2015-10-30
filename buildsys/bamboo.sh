@@ -20,7 +20,7 @@
 export SST_ROOT=`pwd`
 
 echo "#############################################################"
-echo "  Version Oct 24 1455 hours "
+echo "  Version Oct 28 1400 hours "
 
 echo ' '
 pwd
@@ -69,8 +69,8 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
    ls -l
    popd
-   ln -s ../sqe/buildsys/deps .
-   ln -s ../sqe/test .
+   ln -s `pwd`/../sqe/buildsys/deps .
+   ln -s `pwd`/../sqe/test .
 fi
 
 #	This assumes a directory strucure
@@ -2141,7 +2141,20 @@ setUPforMakeDisttest() {
      mv $Package trunk
      echo "Move in items not in the trunk, that are need for the bamboo build and test"
      cp  $SST_ROOT/../sqe/buildsys/bamboo.sh trunk
-     cp -r $SST_ROOT/deps trunk          ## the deps scripts
+     if [ -e trunk/deps ] ; then
+        cp -r $SST_ROOT/deps/bin trunk/deps       ## the deps scripts
+        cp -r $SST_ROOT/deps/include trunk/deps          ## the deps scripts
+        cp -r $SST_ROOT/deps/patches trunk/deps          ## the deps scripts
+     else
+        cp -r $SST_ROOT/deps trunk          ## the deps scripts
+     fi
+     if [ ! -e trunk/deps/bin ] ; then
+         echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
+         echo SST_ROOT = $SST_ROOT
+         ls $SST_ROOT/deps
+         echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
+         exit
+     fi
      cd trunk
      echo "                   List the directories in sst/elements"
      ls sst/elements
