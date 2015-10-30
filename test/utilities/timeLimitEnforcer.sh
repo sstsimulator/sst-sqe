@@ -15,6 +15,7 @@ MY_PID=$$
 
 echo ' ' ; echo "            TIME LIMIT     $CASE "
 echo test has exceed alloted time of $SST_TEST_ONE_TEST_TIMEOUT seconds.
+date
 echo ' '
 
 SSTX_PID=`ps -ef | grep 'sst ' | grep $PPID | awk '{ print $2 }'`
@@ -42,7 +43,7 @@ if [ $? == 1 ] ; then
 else
 
     kill $SSTX_PID
-
+#                     Believe I remember that this always return zero
     if [ $? == 1 ] ; then
         echo " Kill of $SST_PIDX for TIME OUT   FAILED"
         echo "     I am $MY_PID,   my parent was $PPID" 
@@ -51,4 +52,9 @@ else
         kill -9 $SSTX_PID
     fi
 fi
-
+ps -f -p $SSTX_PID | grep $SSTX_PID
+if [ $? == 0 ] ; then
+    echo " It's still there!  ($SSTX_PID)"
+    echo " Try a \"kill -9\" "
+    kill -9 $SSTX_PID
+fi
