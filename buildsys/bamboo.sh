@@ -202,11 +202,6 @@ echo " #####################################################"
     # DO NOT pass args to the test suite, it confuses
     # shunit. Use an environment variable instead.
 
-    # New CHDL test
-    if [[ ${SST_DEPS_INSTALL_CHDL:+isSet} == isSet ]] ; then
-        ${SST_TEST_SUITES}/testSuite_chdlComponent.sh
-    fi
-
       if [ $1 == "sstmainline_config_all" ] ; then 
 
          pushd ${SST_ROOT}/test/testSuites
@@ -228,6 +223,11 @@ echo " #####################################################"
          popd
          all
          return
+    fi
+    
+    # New CHDL test
+    if [[ ${SST_DEPS_INSTALL_CHDL:+isSet} == isSet ]] ; then
+        ${SST_TEST_SUITES}/testSuite_chdlComponent.sh
     fi
 
     if [ $1 == "sstmainline_config_no_gem5" ] ; then
