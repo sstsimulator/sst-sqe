@@ -58,6 +58,10 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
       echo "\"git of sst-core \" FAILED.  retVal = $retVal"
       exit
    fi
+   pushd core
+   git log -n 1 | grep commit
+   popd
+
 
    echo "     git clone -b devel https://github.com/sstsimulator/sst-elements elements "
    git clone -b devel https://github.com/sstsimulator/sst-elements elements
@@ -66,7 +70,9 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
       echo "\"git of sst-elements \" FAILED.  retVal = $retVal"
       exit
    fi
-
+   pushd elements
+   git log -n 1 | grep commit
+   popd
    ls -l
    popd
    ln -s `pwd`/../sqe/buildsys/deps .
