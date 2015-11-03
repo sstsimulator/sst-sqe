@@ -379,12 +379,12 @@ echo " #####################################################"
     #
     #   Only run if configured for ariel
     #
-    if [[ $1 == sstmainline_config_linux_with_ariel* ]]
-    then
-         ${SST_TEST_SUITES}/testSuite_Ariel.sh
-    else
-         ${SST_TEST_SUITES}/testSuite_scheduler.sh
-    fi
+#    if [[ $1 == sstmainline_config_linux_with_ariel* ]]
+#    then
+#         ${SST_TEST_SUITES}/testSuite_Ariel.sh
+#    else
+#         ${SST_TEST_SUITES}/testSuite_scheduler.sh
+#    fi
 
     #  
     #    Only if macsim was requested
@@ -393,6 +393,7 @@ echo " #####################################################"
          ${SST_TEST_SUITES}/testSuite_macsim.sh
     fi
 
+    ${SST_TEST_SUITES}/testSuite_Ariel.sh
     ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
