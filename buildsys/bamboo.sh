@@ -218,7 +218,7 @@ echo " #####################################################"
          ## strip any comment off
          cat SuitesToOmitFromAll | awk  '{print $1}' > __omitlist__        
          echo "      Suites to explictly OMIT from the \"all\" project:"
-         ls testSuite_* | grep  -f __omitlist__
+         ls testSuite_*sh | grep  -f __omitlist__
          echo ' '
          #   Build the Suite list for the "All" project
          ls testSuite_* | grep -v -f __omitlist__ > Suite.list
