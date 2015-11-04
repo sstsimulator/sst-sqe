@@ -221,7 +221,7 @@ echo " #####################################################"
          ls testSuite_*sh | grep  -f __omitlist__
          echo ' '
          #   Build the Suite list for the "All" project
-         ls testSuite_* | grep -v -f __omitlist__ > Suite.list
+         ls testSuite_*sh | grep -v -f __omitlist__ > Suite.list
          echo "all() {" > files.for.all
          sed  s\%^%\${SST_TEST_SUITES}/% Suite.list >> files.for.all
          echo "}" >> files.for.all
