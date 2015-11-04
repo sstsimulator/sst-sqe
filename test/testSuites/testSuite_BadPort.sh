@@ -71,7 +71,8 @@ test_BadPort() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs} > $outFile 2>$errFile
+        # Because we expect a segfault, turn of stdout buffering so we get the full output
+        stdbuf -o0 -e0 ${sut} ${sutArgs} > $outFile 2>$errFile
         retval=$?
 
         if [ $retval != 0 ]
