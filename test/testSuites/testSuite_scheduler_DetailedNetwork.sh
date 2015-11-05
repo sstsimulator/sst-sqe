@@ -98,7 +98,7 @@ cd $TEST_FOLDER
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.sim .
 cp $SST_SRC/sst/elements/scheduler/simulations/*.phase .
 
-cp $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py .
+# cp $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py .
 # The path to other python files (ember defaults, network defaults etc.) included by emberLoad.py.
 
 ##-John
@@ -108,7 +108,8 @@ emberpath="$SST_SRC/sst/elements/ember/test"
 ##-John
 
 # Insert the ember path in emberLoad.py.  
-sed -i "s|PATH|$emberpath|g" emberLoad.py
+#sed -i "s|PATH|$emberpath|g" emberLoad.py
+sed "s|PATH|$emberpath|g" $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py > emberload.py
 
 cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
