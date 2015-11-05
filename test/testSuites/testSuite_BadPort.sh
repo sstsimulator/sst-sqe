@@ -79,7 +79,7 @@ test_BadPort() {
         then
             echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$retval" ; echo ' '
             if [ $retval == 139 ] ; then
-                echo "     SEG FAULT "
+                echo "     SEG FAULT    This is the expected output from this test!" ; echo  ' '
                 grep 'undocumented port' $outFile
                 if [ $? != 0 ] ; then
                     echo "     The Error File:"
@@ -92,6 +92,12 @@ test_BadPort() {
                     echo "     Detected missing or mis-matched Port"
                     #   Issue #289 has been fixed
                 fi  
+                echo ' '
+            else
+                echo "Error detected, but not SEG FAULT"
+                fail "Is test faulty?"
+                echo ' '
+                return
             fi
         else
             fail "Test is FLAWED.   Bad Input must be detected"
