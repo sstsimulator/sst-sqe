@@ -109,7 +109,7 @@ emberpath="$SST_SRC/sst/elements/ember/test"
 
 # Insert the ember path in emberLoad.py.  
 #sed -i "s|PATH|$emberpath|g" emberLoad.py
-sed "s|PATH|$emberpath|g" $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py > emberload.py
+sed "s|PATH|$emberpath|g" $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py > emberLoad.py
 
 cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
