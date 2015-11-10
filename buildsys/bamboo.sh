@@ -2148,10 +2148,16 @@ darwinSetBoostMPI() {
                 ;;
 
 ################################################################################
+            10.11) # El Capitan
+                   ldModulesYosemiteClang clang-700.1.76    #  Xcode 7.1
+                   ;;
+################################################################################
 
-            *) # unknown
-                echo "bamboo.sh: Unknown Mac OS version."
-                ;;
+                *) # unknown
+                    echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
+                    echo ' '
+                    exit
+                    ;;
         esac
 
         echo "bamboo.sh: BOOST_HOME=${BOOST_HOME}"
