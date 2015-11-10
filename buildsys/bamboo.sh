@@ -1190,10 +1190,77 @@ fi
    fi
 }
 
+
+#-------------------------------------------------------------------------
+# Function: ldModulesYosemiteClang
+# Description:
+#   Purpose: Performs selection and loading of Boost and MPI and 
+#            other compiler specific modules for MacOS Yosemite
+#   Parameter:   name of Clang compiler such as (clang-700.1.76)
+
+ldModulesYosemiteClang() {
+    ClangVersion=$1            #   example "clang-700.0.72"
+                        # Use Boost and MPI built with CLANG from Xcode 6.3
+                        ModuleEx unload mpi
+                        ModuleEx unload boost
+
+                        # Load other modules for $ClangVersion
+                        # GNU Linear Programming Kit (GLPK)
+                        echo "bamboo.sh: Load GLPK"
+                        ModuleEx load glpk/glpk-4.54_$ClangVersion
+                        # # System C
+                        # echo "bamboo.sh: Load System C"
+                        # ModuleEx load systemc/systemc-2.3.0_$ClangVersion
+                        # METIS 5.1.0
+                        echo "bamboo.sh: Load METIS 5.1.0"
+                        ModuleEx load metis/metis-5.1.0_$ClangVersion
+                        # Other misc
+#                        echo "bamboo.sh: Load libphx"
+#                        ModuleEx load libphx/libphx-2014-MAY-08_$ClangVersion
+
+                        # load MPI
+                        case $2 in
+                            ompi_default|openmpi-1.8)
+                                echo "OpenMPI 1.8 (openmpi-1.8) selected"
+                                ModuleEx add mpi/openmpi-1.8_$ClangVersion
+                                ;;
+                            *)
+                                echo "Default MPI option, loading mpi/openmpi-1.8"
+                                ModuleEx load mpi/openmpi-1.8_$ClangVersion 2>catch.err
+                                if [ -s catch.err ] 
+                                then
+                                    cat catch.err
+                                    exit 0
+                                fi
+                                ;;
+                        esac
+                                            
+                        # load corresponding Boost
+                        case $3 in
+                            boost_default|boost-1.56)
+                                echo "Boost 1.56 selected"
+                                ModuleEx add boost/boost-1.56.0-nompi_$ClangVersion
+                                ;;
+                            *)
+                                echo "bamboo.sh: \"Default\" Boost selected"
+                                echo "Third argument was $3"
+                                echo "Loading boost/Boost 1.56"
+                                ModuleEx load boost/boost-1.56.0-nompi_$ClangVersion 2>catch.err
+                                if [ -s catch.err ] 
+                                then
+                                    cat catch.err
+                                    exit 0
+                                fi
+                                ;;
+                        esac
+                        export CC=`which clang`
+                        export CXX=`which clang++`
+                        ModuleEx list
+}
 #-------------------------------------------------------------------------
 # Function: darwinSetBoostMPI
 # Description:
-#   Purpose: Performs selection and loading of Bost and MPI modules
+#   Purpose: Performs selection and loading of Boost and MPI modules
 #            for MacOS
 #   Input:
 #   Output:
@@ -2065,14 +2132,16 @@ darwinSetBoostMPI() {
                         ModuleEx list
                         ;;
 
-
+                    clang-700.1.76)
+                        ldModulesYosemiteClang clang-700.1.76    #  Xcode 7.1
+                        ;;
                     *)
                         # unknown compiler, use default
                         echo "bamboo.sh: Unknown compiler selection. Assuming clang."
                         ModuleEx unload boost
                         ModuleEx unload mpi
-                        ModuleEx add mpi/openmpi-1.8_clang-600.0.57
-                        ModuleEx add boost/boost-1.56.0-nompi_600.0.57
+                        ModuleEx add mpi/openmpi-1.8_$compiler
+                        ModuleEx add boost/boost-1.56.0-nompi_$compiler
                         ModuleEx list
                         ;;  
                 esac
