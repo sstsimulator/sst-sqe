@@ -116,7 +116,7 @@ cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.py .
 #cp $TEST_INPUTS/testSdlFiles/${TEST_NAME}.py .
-if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_THREAD_COUNT -gt 0 ] ; then
    echo "Setting Multi thread count to $SST_MULTI_THREAD_COUNT"
    sed -i'.x' '/init_cmd  = "sst/s/sst/sst -n '"$SST_MULTI_THREAD_COUNT"/ run_DetailedNetworkSim.py
 fi    
