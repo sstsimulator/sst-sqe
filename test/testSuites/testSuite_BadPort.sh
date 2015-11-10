@@ -43,7 +43,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #     test_BadPort
 # Purpose:
 #     Verify that issue #289 is fixed.
-#     Verify that a mispelled port name does not seg fault
+#     Verify that a mispelled port name issues a message before seg fault
 # Inputs:
 #     
 # Outputs:
@@ -71,7 +71,7 @@ test_BadPort() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        # Because we expect a segfault, turn of stdout buffering so we get the full output
+        # Because we expect a segfault, turn off stdout buffering so we get the full output
         stdbuf -o0 -e0 ${sut} ${sutArgs} > $outFile 2>$errFile
         retval=$?
 
@@ -95,6 +95,10 @@ test_BadPort() {
                 echo ' '
             else
                 echo "Error detected, but not SEG FAULT"
+                echo "     The Error File:"
+                cat $errFile | c++filt       
+                echo "         Output File"
+                cat $outFile
                 fail "Is test faulty?"
                 echo ' '
                 return
