@@ -355,6 +355,7 @@ echo " #####################################################"
             ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
             popd
         fi 
+        ${SST_TEST_SUITES}/testSuite_BadPort.sh
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
         ${SST_TEST_SUITES}/testSuite_hybridsim.sh
