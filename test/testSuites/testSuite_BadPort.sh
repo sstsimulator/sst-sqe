@@ -82,7 +82,7 @@ test_BadPort() {
         if [ $retval != 0 ]
         then
             echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$retval" ; echo ' '
-            if [ $retval == 139 ] || [ $retval == 11 } ; then
+            if [ $retval == 139 ] || [ $retval == 11 ] ; then
                 echo "     SEG FAULT    This is the expected output from this test!" ; echo  ' '
                 grep 'undocumented port' $outFile
                 if [ $? != 0 ] ; then
