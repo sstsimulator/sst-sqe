@@ -72,13 +72,17 @@ test_BadPort() {
     then
         # Run SUT
         # Because we expect a segfault, turn off stdout buffering so we get the full output
-        script -a $outFile ${sut} ${sutArgs}  #### this is MacOS version 
+        if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then
+             stdbuf -o0 -e0 ${sut} ${sutArgs} > $outFile 2>$errFile
+        else
+             script -a $outFile ${sut} ${sutArgs}  #### this is MacOS version 
+        fi
         retval=$?
 
         if [ $retval != 0 ]
         then
             echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$retval" ; echo ' '
-            if [ $retval == 139 ] ; then
+            if [ $retval == 139 ] || [ $retval == 11 } ; then
                 echo "     SEG FAULT    This is the expected output from this test!" ; echo  ' '
                 grep 'undocumented port' $outFile
                 if [ $? != 0 ] ; then
