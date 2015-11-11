@@ -72,7 +72,7 @@ test_BadPort() {
     then
         # Run SUT
         # Because we expect a segfault, turn off stdout buffering so we get the full output
-        script -q ${sut} ${sutArgs} | $outFile 2>$errFile
+        script -a $outFile ${sut} ${sutArgs}  #### this is MacOS version 
         retval=$?
 
         if [ $retval != 0 ]
