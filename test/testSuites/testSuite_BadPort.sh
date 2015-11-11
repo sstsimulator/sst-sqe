@@ -72,7 +72,7 @@ test_BadPort() {
     then
         # Run SUT
         # Because we expect a segfault, turn off stdout buffering so we get the full output
-        stdbuf -o0 -e0 ${sut} ${sutArgs} > $outFile 2>$errFile
+        script -q ${sut} ${sutArgs} | $outFile 2>$errFile
         retval=$?
 
         if [ $retval != 0 ]
