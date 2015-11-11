@@ -908,8 +908,10 @@ getconfig() {
             # sstmainline_config_memH_wo_openMP
             #     This option used for configuring SST with memHierarchy, but with out open MP
             #     with Intel PIN, and Ariel 
+            #     (Might as well skip building patterns and scheduler)
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
+            touch sst/elements/patterns/.ignore sst/elements/scheduler/.ignore
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -m none -o none -h none -s none -q 0.2.1 -M none -N default"
             setConvenienceVars "$depsStr"
