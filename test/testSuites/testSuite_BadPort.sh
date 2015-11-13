@@ -75,7 +75,7 @@ test_BadPort() {
         if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then
              stdbuf -o0 -e0 ${sut} ${sutArgs} > $outFile 2>$errFile
         else
-             script -a $outFile ${sut} ${sutArgs}  #### this is MacOS version 
+             script -a $outFile ${sut} ${sutArgs} 2>$errFile   #### this is MacOS version 
         fi
         retval=$?
 
@@ -108,6 +108,11 @@ test_BadPort() {
                 return
             fi
         else
+            echo "Test is FLAWED.   Bad Input must be detected"
+                echo "     The Error File:"
+                cat $errFile | c++filt       
+                echo "         Output File"
+                cat $outFile
             fail "Test is FLAWED.   Bad Input must be detected"
         fi
 
