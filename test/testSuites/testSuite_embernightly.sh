@@ -62,7 +62,7 @@ test_embernightly() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="emberLoad.py"
+    sutArgs="${SST_ROOT}/sst/elements/ember/test/emberLoad.py"
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -127,7 +127,7 @@ test_ember_params() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs=emberLoad.py
+    sutArgs="${SST_ROOT}/sst/elements/ember/test/emberLoad.py"
     rm -f ${outFile}
 
     if [ -f ${sut} ] && [ -x ${sut} ]
