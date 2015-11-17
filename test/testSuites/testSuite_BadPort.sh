@@ -43,7 +43,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #     test_BadPort
 # Purpose:
 #     Verify that issue #289 is fixed.
-#     Verify that a mispelled port name does not seg fault
+#     Verify that a mispelled port name issues a message before seg fault
 # Inputs:
 #     
 # Outputs:
@@ -71,15 +71,19 @@ test_BadPort() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        # Because we expect a segfault, turn of stdout buffering so we get the full output
-        stdbuf -o0 -e0 ${sut} ${sutArgs} > $outFile 2>$errFile
+        # Because we expect a segfault, turn off stdout buffering so we get the full output
+        if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then
+             stdbuf -o0 -e0 ${sut} ${sutArgs} > $outFile 2>$errFile
+        else
+             script -a $outFile ${sut} ${sutArgs}  #### this is MacOS version 
+        fi
         retval=$?
 
         if [ $retval != 0 ]
         then
             echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$retval" ; echo ' '
-            if [ $retval == 139 ] ; then
-                echo "     SEG FAULT "
+            if [ $retval == 139 ] || [ $retval == 11 ] ; then
+                echo "     SEG FAULT    This is the expected output from this test!" ; echo  ' '
                 grep 'undocumented port' $outFile
                 if [ $? != 0 ] ; then
                     echo "     The Error File:"
@@ -92,6 +96,16 @@ test_BadPort() {
                     echo "     Detected missing or mis-matched Port"
                     #   Issue #289 has been fixed
                 fi  
+                echo ' '
+            else
+                echo "Error detected, but not SEG FAULT"
+                echo "     The Error File:"
+                cat $errFile | c++filt       
+                echo "         Output File"
+                cat $outFile
+                fail "Is test faulty?"
+                echo ' '
+                return
             fi
         else
             fail "Test is FLAWED.   Bad Input must be detected"

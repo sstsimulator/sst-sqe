@@ -26,6 +26,13 @@ L_SUITENAME="scheduler_DetailedNetwork_suite" # Name of this test suite; will be
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+           echo '           SKIP '
+           preFail " Scheduler tests do not work with threading" "skip"
+       fi
+    fi     
+
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long
@@ -98,7 +105,7 @@ cd $TEST_FOLDER
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.sim .
 cp $SST_SRC/sst/elements/scheduler/simulations/*.phase .
 
-cp $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py .
+# cp $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py .
 # The path to other python files (ember defaults, network defaults etc.) included by emberLoad.py.
 
 ##-John
@@ -108,14 +115,15 @@ emberpath="$SST_SRC/sst/elements/ember/test"
 ##-John
 
 # Insert the ember path in emberLoad.py.  
-sed -i "s|PATH|$emberpath|g" emberLoad.py
+#sed -i "s|PATH|$emberpath|g" emberLoad.py
+sed "s|PATH|$emberpath|g" $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py > emberLoad.py
 
 cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.py .
 #cp $TEST_INPUTS/testSdlFiles/${TEST_NAME}.py .
-if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_THREAD_COUNT -gt 0 ] ; then
    echo "Setting Multi thread count to $SST_MULTI_THREAD_COUNT"
    sed -i'.x' '/init_cmd  = "sst/s/sst/sst -n '"$SST_MULTI_THREAD_COUNT"/ run_DetailedNetworkSim.py
 fi    
