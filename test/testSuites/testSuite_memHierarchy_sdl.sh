@@ -65,7 +65,7 @@ Tol=$2    ##  curTick tolerance
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
     pyFileName=`echo ${memH_case}.py | sed s/_/-/`
-    sutArgs=$memH_sdl_dir/$pyFileName
+    sutArgs=${SST_ROOT}/sst/elements/memHierarchy/tests/$pyFileName
     echo $sutArgs
     grep backend $sutArgs | grep dramsim > /dev/null
     usingDramSim=$?
