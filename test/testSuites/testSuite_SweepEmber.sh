@@ -32,6 +32,7 @@
 
 # 1) The SUT (software under test) must have built successfully.
 # 2) A test success reference file is available.
+#  There is no sutArgs= statement.  SST is python wrapped.
 
 TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 # Load test definitions
