@@ -323,4 +323,6 @@ echo ' '
 cat $$_tmp
 echo ' '
 echo "   Summary of diff vs. Reference file"
+touch ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
 cat ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
+echo ' '
