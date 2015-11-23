@@ -108,12 +108,20 @@ test_BadPort() {
                 return
             fi
         else
-            echo "Test is FLAWED.   Bad Input must be detected"
+            grep 'undocumented port' $outFile
+            if [ $? == 0 ] ; then
+                echo " Test should have passed."
+                if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+                    echo " MacOS \"script\" sometimes misses  seg fault"
+                fi
+            else
+                echo "Test is FLAWED.   Bad Input must be detected"
                 echo "     The Error File:"
                 cat $errFile | c++filt       
                 echo "         Output File"
                 cat $outFile
-            fail "Test is FLAWED.   Bad Input must be detected"
+                fail "Test is FLAWED.   Bad Input must be detected"
+            fi
         fi
 
     else
