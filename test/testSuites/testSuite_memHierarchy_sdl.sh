@@ -99,6 +99,7 @@ Tol=$2    ##  curTick tolerance
          popd
          return
     fi
+    RemoveComponentWarning
 #                   --- It completed normally ---
     notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
     if [ $notAlignedCt != 0 ] ; then
