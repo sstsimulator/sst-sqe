@@ -237,12 +237,11 @@ echo "multithread_patch_Suites: ########### Patch the test Suites"
 if [ $SST_MULTI_THREAD_COUNT == 0 ] ; then
      echo " There is no -n count "
 else
-      sed -i.x '/sut.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*
+      sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*
       sed -i.x '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py
 fi
 
 if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
-## sed -i.x '/sut.*sutArgs/s/sut./sut} /' test/testSuites/testSuite_*
 sed -i.y '/Invoke shunit2/i \
 export SST_TEST_ONE_TEST_TIMEOUT=200 \
  ' test/testSuites/testSuite_*
