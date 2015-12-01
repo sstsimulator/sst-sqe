@@ -72,7 +72,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-    sutArgs="--model-options \"--shape=${Sirius_case}\" allreduce.py" 
+    sutArgs="--model-options \"--shape=${Sirius_case}\" ${SST_ROOT}/sst/elements/zodiac/test/allreduce/allreduce.py" 
 
 echo Need sutArgs
 echo $sutArgs

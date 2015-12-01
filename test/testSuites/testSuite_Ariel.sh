@@ -91,7 +91,7 @@ Ariel_template() {
 
     sutArgs="${SST_ROOT}/sst/elements/ariel/frontend/simple/examples/stream/${Ariel_case}.py"
     echo $sutArgs
-    if [[ ${USE_GEM5:+isSet} == isSet ]] ; then
+    if [[ ${USE_OPENMP_BINARY:+isSet} == isSet ]] ; then
         export OMP_EXE=$SST_ROOT/test/testSuites/testopenMP/ompmybarrier/ompmybarrier
         echo $OMP_EXE
         ls -l $OMP_EXE
@@ -186,39 +186,39 @@ Ariel_template() {
 ls -l ${SST_ROOT}/sst/elements/ariel/frontend/simple/examples/stream
 
 test_Ariel_runstream() {
-    USE_GEM5=""
+    USE_OPENMP_BINARY=""
     USE_MEMH=""
     Ariel_template runstream
 }
     
 
 test_Ariel_testSt() {
-    USE_GEM5=""
+    USE_OPENMP_BINARY=""
     USE_MEMH=""
     Ariel_template runstreamSt
 }
 
 
 test_Ariel_testNB() {
-    USE_GEM5=""
+    USE_OPENMP_BINARY=""
     USE_MEMH=""
     Ariel_template runstreamNB
 }
 
 test_Ariel_memH_test() {
-    USE_GEM5=""
+    USE_OPENMP_BINARY=""
     USE_MEMH="yes"
     Ariel_template memHstream
 }
 
 test_Ariel_test_ivb() {
-    USE_GEM5="yes"
+    USE_OPENMP_BINARY="yes"
     USE_MEMH=""
     Ariel_template ariel_ivb
 }
 
 test_Ariel_test_snb() {
-    USE_GEM5="yes"
+    USE_OPENMP_BINARY="yes"
     USE_MEMH=""
     Ariel_template ariel_snb
 }

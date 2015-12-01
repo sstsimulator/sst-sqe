@@ -10,6 +10,7 @@
 
 # 1) The SUT (software under test) must have built successfully.
 # 2) A test success reference file is available.
+#  There is no sutArgs= statement.  SST is python wrapped.
 
 TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 # Load test definitions
@@ -25,6 +26,13 @@ L_SUITENAME="scheduler_DetailedNetwork_suite" # Name of this test suite; will be
                                         # please.
 
 L_TESTFILE=()  # Empty list, used to hold test file names
+
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+           echo '           SKIP '
+           preFail " Scheduler tests do not work with threading" "skip"
+       fi
+    fi     
 
 #===============================================================================
 # Test functions
