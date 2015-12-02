@@ -34,8 +34,8 @@ popd
 if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
-   echo "     git clone  https://github.com/sstsimulator/sst . "
-   git clone -b devel https://github.com/sstsimulator/sst .
+   echo "     git clone  https://github.com/allevin/sst . "
+   git clone -b devel https://github.com/allevin/sst .
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone \" FAILED.  retVal = $retVal"
@@ -51,8 +51,8 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    pwd
    ls -l
 
-   echo "     git clone -b devel https://github.com/sstsimulator/sst-core core "
-   git clone -b devel https://github.com/sstsimulator/sst-core core
+   echo "     git clone -b devel https://github.com/allevin/sst-core core "
+   git clone -b devel https://github.com/allevin/sst-core core
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git of sst-core \" FAILED.  retVal = $retVal"
@@ -63,8 +63,8 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    popd
 
 
-   echo "     git clone -b devel https://github.com/sstsimulator/sst-elements elements "
-   git clone -b devel https://github.com/sstsimulator/sst-elements elements
+   echo "     git clone -b devel https://github.com/allevin/sst-elements elements "
+   git clone -b devel https://github.com/allevin/sst-elements elements
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git of sst-elements \" FAILED.  retVal = $retVal"
