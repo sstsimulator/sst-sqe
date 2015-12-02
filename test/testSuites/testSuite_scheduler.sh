@@ -372,7 +372,7 @@ test_scheduler_0005() {
     #      Intel compiler requires unique Reference file
     $CXX --version > check-comp 2>&1
     if [ $? != 0 ] ; then
-        echo "  No compiler specification found"
+        echo "  Not a special case, no compiler specification found"
     else
         grep Intel check-comp > /dev/null
         if [ $? == 0 ] ; then
