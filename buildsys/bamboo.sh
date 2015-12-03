@@ -16,6 +16,9 @@
 #=========================================================================
 # Definitions
 #=========================================================================
+
+# Junk CHANGE HERE FOR JENKINS TESTING
+
 # Root of directory checked out, where this script should be found
 export SST_ROOT=`pwd`
 
