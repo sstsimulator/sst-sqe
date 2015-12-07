@@ -99,7 +99,6 @@ Tol=$2    ##  curTick tolerance
          popd
          return
     fi
-    RemoveComponentWarning
 #                   --- It completed normally ---
     notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
     if [ $notAlignedCt != 0 ] ; then
@@ -117,6 +116,7 @@ Tol=$2    ##  curTick tolerance
     fi
 
     grep -v ^cpu.*: $tmpFile > $outFile
+    RemoveComponentWarning
     diff -b $referenceFile $outFile > _raw_diff
     if [ $? == 0 ] ; then
         fileSize=`wc -l $outFile | awk '{print $1}'`
