@@ -86,6 +86,7 @@ CP_case=$1
         return
     fi
 
+     RemoveComponentWarning
      grep "simulated.time" $outFile ; echo ' '
      wc  $outFile $referenceFile
      diff -b $referenceFile $outFile > _raw_diff
