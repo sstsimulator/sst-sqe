@@ -115,6 +115,9 @@ Ariel_template() {
         then
              echo ' '; echo WARNING: sst did not finish normally, RetVal= $ret ; echo ' '
              fail "WARNING: sst did not finish normally, RetVal= $ret"
+             echo ' ' ; echo " Check Shared Memory Segments"
+             ipcs -t
+             echo ' '
              return
         fi
 
