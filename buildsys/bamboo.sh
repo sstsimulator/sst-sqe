@@ -356,6 +356,7 @@ echo " #####################################################"
             popd
         fi 
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
+        ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
         ${SST_TEST_SUITES}/testSuite_hybridsim.sh
