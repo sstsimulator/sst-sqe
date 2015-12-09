@@ -58,6 +58,38 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
         preFail "ERROR: examples/stream: make failure"
     fi
+
+#     Subroutine to clean up shared memory ipc
+#          This could be in subroutine library - for now only Ariel
+removeFreeIPCs() {
+    #   Find and kill orphanned running binaries
+    ps -f > _running_bin
+    while read -u 3 uid pid ppid p4 p5 p6 p7 cmd
+    do
+##        echo "          DEBUG ONLY $uid $pid $ppid $cmd"
+        if [ $uid == $USER ] && [ ${ppid} == 1 ] ; then
+           echo "Going to kill: $cmd"
+           kill -9 $pid
+        fi
+    done 3<_running_bin
+  
+    #  Find and remove no longer attached shared memory segments  
+    ipcs > _ipc_list
+         echo "         DEBUG ONLY `wc _ipc_list`"
+    while read -u 3 key shmid own perm size n_att rest
+    do
+         if [[ $key == "" ]] ; then
+             continue
+         fi
+##         echo "         DEBUG ONLY $shmid, $own, $n_att"
+       if [ $own == $USER ] && [ $n_att == 0 ] ; then
+          echo " Removing an idle Shared Mem allocation"
+          ipcrm -m $shmid
+       fi
+    done 3<_ipc_list
+    rm _ipc_list  _running_bin
+}
+
 #-------------------------------------------------------------------------------
 # Test:
 #     test_Ariel
@@ -115,6 +147,7 @@ Ariel_template() {
         then
              echo ' '; echo WARNING: sst did not finish normally, RetVal= $ret ; echo ' '
              fail "WARNING: sst did not finish normally, RetVal= $ret"
+             removeFreeIPCs
              return
         fi
 
@@ -179,6 +212,7 @@ Ariel_template() {
     echo "     `grep 'Simulation is complete' $outFile`"
     echo "Ref: `grep 'Simulation is complete' $referenceFile`"
     echo " "
+    removeFreeIPCs           # probably unneeded
     elapsedSeconds=$(($endSeconds -$startSeconds))
     echo "Ariel ${Ariel_case}: Wall Clock Time  $elapsedSeconds seconds"
 }
@@ -230,6 +264,7 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 cd $OPWD
 
 export SST_TEST_ONE_TEST_TIMEOUT=60
+export SST_TEST_ONE_TEST_TIMEOUT=2
 
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
