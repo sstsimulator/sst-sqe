@@ -75,7 +75,7 @@ removeFreeIPCs() {
   
     #  Find and remove no longer attached shared memory segments  
     ipcs > _ipc_list
-         echo "         DEBUG ONLY `wc _ipc_list`"
+##         echo "         DEBUG ONLY `wc _ipc_list`"
     while read -u 3 key shmid own perm size n_att rest
     do
          if [[ $key == "" ]] ; then
@@ -264,7 +264,6 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 cd $OPWD
 
 export SST_TEST_ONE_TEST_TIMEOUT=60
-export SST_TEST_ONE_TEST_TIMEOUT=2
 
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
