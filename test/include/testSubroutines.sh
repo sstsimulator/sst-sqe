@@ -46,6 +46,10 @@ oneTimeTearDown() {
     elapsedSeconds=$(($endSeconds -$scriptStartSeconds))
     echo "TESTSUITE $WHICH_TEST: Total Suite Wall Clock Time  $elapsedSeconds seconds"
 
+    if [[ $hostInfo == *sst-test* ]] ; then
+       echo "$BAMBOO_PROJECT $JENKINS_PROJECT $elapsedSeconds seconds" >> ~/jpvandy/WhichTest/$WHICH_TEST
+    fi
+
 }
 
 #-------------------------------------------------------------------------------
