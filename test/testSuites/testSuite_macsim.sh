@@ -136,7 +136,8 @@ macsim_case=$1
         matchFail=0
         for ref in $fileList
         do
-            diff  ./references/vectoradd/${macsim_case}/$ref ./results/$ref 
+            wc  ./references/vectoradd/${macsim_case}/$ref ./results/$ref 
+            diff  ./references/vectoradd/${macsim_case}/$ref ./results/$ref > /dev/null
             if [ $? != 0 ] ; then
                echo "   ---  Reviewing  ${macsim_case}   $ref"
                grep -v EXE_TIME ./references/vectoradd/${macsim_case}/$ref > _r
