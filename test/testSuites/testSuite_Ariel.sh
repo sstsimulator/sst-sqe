@@ -32,6 +32,32 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   as the function name begins with "test...".
 #===============================================================================
 
+#=====================================================
+#  A bit of code to clear out old Ariel Shmem files from /tmp
+
+    ls -l /tmp | grep $USER | grep ariel_shmem > __rmlist
+    wc __rmlist
+    today=`date +%j`
+    echo "today is $today"
+    
+    while read -u 3 r1 r2 r3 r4 r5 mo da r8 name
+    do
+    
+      c_day=`date +%j -d "$mo $da"`
+      echo $mo $da is $c_day
+      c_day_plus_2=$(($c_day+2))
+    ##  echo $c_day_plus_2
+    
+      if [ $today -gt $c_day_plus_2 ] ; then
+         echo "Remove /tmp/$name"
+         rm /tmp/$name
+      fi
+    
+    done 3<__rmlist
+    rm __rmlist
+#=====================================================
+
+    
     echo "INTEL_PIN_DIRECTORY = $INTEL_PIN_DIRECTORY"
     if [ ! -d "$INTEL_PIN_DIRECTORY" ] ; then
         echo "Ariel tests requires PIN DIRECTORY"
