@@ -102,12 +102,21 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    fi
    pushd elements
    git log -n 1 | grep commit
+   
+##########################DEBUG DEBUG - REMOVE ME FOR FINAL CODE ##############
+echo "DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG"
+cat ./simpleElementExample/simpleClockerComponent.cc
+cat ./simpleElementExample/simpleComponent.cc
+echo "DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG"
+##########################DEBUG DEBUG - REMOVE ME FOR FINAL CODE ##############
+   
    popd
    ls -l
    popd
    ln -s `pwd`/../sqe/buildsys/deps .
    ln -s `pwd`/../sqe/test .
 fi
+
 
 #	This assumes a directory strucure
 #                     SST_BASE   (was $HOME)
