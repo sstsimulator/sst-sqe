@@ -39,11 +39,13 @@ if [[ ${SST_TOPSSTBRANCH:+isSet} != isSet ]] ; then
 fi
 
 echo "#############################################################"
+echo "===== BAMBOO.SH STARTED =====
 echo "  GitHub Main Repository = $SST_GITHUB_REPO"
 echo "  GitHub SQE Repository and Branch = $SST_GITHUB_REPO/sst-sqe $SST_SQEBRANCH"
 echo "  GitHub CORE Repository and Branch = $SST_GITHUB_REPO/sst-core $SST_COREBRANCH"
 echo "  GitHub ELEMENTS Repository and Branch = $SST_GITHUB_REPO/sst-elements $SST_ELEMENTSBRANCH"
 echo "  GitHub Top SST Repository and Branch = $SST_GITHUB_REPO/sst $SST_TOPSSTBRANCH"
+echo "#############################################################"
 
 
 # Root of directory checked out, where this script should be found
@@ -93,7 +95,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    popd
 
 
-   echo "     git $SST_ELEMENTSBRANCH -b devel $SST_GITHUB_REPO/sst-elements elements "
+   echo "     git clone -b $SST_ELEMENTSBRANCH $SST_GITHUB_REPO/sst-elements elements "
    git clone -b $SST_ELEMENTSBRANCH $SST_GITHUB_REPO/sst-elements elements
    retVal=$?
    if [ $retVal != 0 ] ; then
@@ -105,7 +107,9 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    
 ##########################DEBUG DEBUG - REMOVE ME FOR FINAL CODE ##############
 echo "DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG"
+echo "=== CAT simpleClockerComponent.cc ==="
 cat ./simpleElementExample/simpleClockerComponent.cc
+echo "=== CAT simpleComponent.cc ==="
 cat ./simpleElementExample/simpleComponent.cc
 echo "DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG"
 ##########################DEBUG DEBUG - REMOVE ME FOR FINAL CODE ##############
