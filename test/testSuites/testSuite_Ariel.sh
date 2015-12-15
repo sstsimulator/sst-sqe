@@ -44,9 +44,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     do
     
       c_day=`date +%j -d "$mo $da"`
-      echo $mo $da is $c_day
       c_day_plus_2=$(($c_day+2))
-    ##  echo $c_day_plus_2
     
       if [ $today -gt $c_day_plus_2 ] ; then
          echo "Remove /tmp/$name"
