@@ -17,7 +17,34 @@
 # Definitions
 #=========================================================================
 
-# Junk CHANGE HERE FOR JENKINS TESTING
+# CHANGES HERE FOR JENKINS TESTING                                                                                             
+if [[ ${SST_GITHUB_MAINREPO:+isSet} != isSet ]] ; then
+    SST_GITHUB_REPO=https://github.com/sstsimulator
+fi
+                        
+if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
+    SST_SQEBRANCH=devel
+fi
+                        
+if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
+    SST_COREBRANCH=devel
+fi
+                        
+if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
+    SST_ELEMENTSBRANCH=devel
+fi
+
+if [[ ${SST_TOPSSTBRANCH:+isSet} != isSet ]] ; then
+    SST_TOPSSTBRANCH=devel
+fi
+
+echo "#############################################################"
+echo "  GitHub Main Repository = $SST_GITHUB_REPO"
+echo "  GitHub SQE Repository and Branch = $SST_GITHUB_REPO/sst-sqe $SST_SQEBRANCH"
+echo "  GitHub CORE Repository and Branch = $SST_GITHUB_REPO/sst-core $SST_COREBRANCH"
+echo "  GitHub ELEMENTS Repository and Branch = $SST_GITHUB_REPO/sst-elements $SST_ELEMENTSBRANCH"
+echo "  GitHub Top SST Repository and Branch = $SST_GITHUB_REPO/sst $SST_TOPSSTBRANCH"
+
 
 # Root of directory checked out, where this script should be found
 export SST_ROOT=`pwd`
@@ -37,8 +64,8 @@ popd
 if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
-   echo "     git clone  https://github.com/allevin/sst . "
-   git clone -b devel https://github.com/allevin/sst .
+   echo "     git clone -b $SST_TOPSSTBRANCH  $SST_GITHUB_REPO/sst . "
+   git clone -b $SST_TOPSSTBRANCH $SST_GITHUB_REPO/sst .
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone \" FAILED.  retVal = $retVal"
@@ -54,8 +81,8 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    pwd
    ls -l
 
-   echo "     git clone -b devel https://github.com/allevin/sst-core core "
-   git clone -b devel https://github.com/allevin/sst-core core
+   echo "     git clone -b $SST_COREBRANCH $SST_GITHUB_REPO/sst-core core "
+   git clone -b $SST_COREBRANCH $SST_GITHUB_REPO/sst-core core
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git of sst-core \" FAILED.  retVal = $retVal"
@@ -66,8 +93,8 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    popd
 
 
-   echo "     git clone -b devel https://github.com/allevin/sst-elements elements "
-   git clone -b devel https://github.com/allevin/sst-elements elements
+   echo "     git $SST_ELEMENTSBRANCH -b devel $SST_GITHUB_REPO/sst-elements elements "
+   git clone -b $SST_ELEMENTSBRANCH $SST_GITHUB_REPO/sst-elements elements
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git of sst-elements \" FAILED.  retVal = $retVal"
