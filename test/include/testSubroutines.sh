@@ -46,8 +46,11 @@ oneTimeTearDown() {
     elapsedSeconds=$(($endSeconds -$scriptStartSeconds))
     echo "TESTSUITE $WHICH_TEST: Total Suite Wall Clock Time  $elapsedSeconds seconds"
 
-    if [[ $hostInfo == *sst-test* ]] ; then
-       echo "$BAMBOO_PROJECT $JENKINS_PROJECT $elapsedSeconds seconds" >> ~/jpvandy/WhichTest/$WHICH_TEST
+    HOST=`uname -n`
+    if [[ $HOST == *sst-test* ]] ; then
+       WHICH_FILE=`echo $WHICH_TEST | awk -F'.' '{print $1}'`
+echo "DEBIG PM:U: $WHICH_FILE"
+       echo "$BAMBOO_PROJECT $JENKINS_PROJECT $elapsedSeconds seconds" >> ~jpvandy/WhichTest/$WHICH_FILE
     fi
 
 }
