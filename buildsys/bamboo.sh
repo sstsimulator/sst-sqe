@@ -39,7 +39,7 @@ if [[ ${SST_TOPSSTBRANCH:+isSet} != isSet ]] ; then
 fi
 
 echo "#############################################################"
-echo "===== BAMBOO.SH STARTED =====
+echo "===== BAMBOO.SH STARTED ====="
 echo "  GitHub Main Repository = $SST_GITHUB_REPO"
 echo "  GitHub SQE Repository and Branch = $SST_GITHUB_REPO/sst-sqe $SST_SQEBRANCH"
 echo "  GitHub CORE Repository and Branch = $SST_GITHUB_REPO/sst-core $SST_COREBRANCH"
