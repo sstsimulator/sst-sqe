@@ -18,7 +18,7 @@
 #=========================================================================
 
 # CHANGES HERE FOR JENKINS TESTING                                                                                             
-if [[ ${SST_GITHUB_MAINREPO:+isSet} != isSet ]] ; then
+if [[ ${SST_GITHUB_REPO:+isSet} != isSet ]] ; then
     SST_GITHUB_REPO=https://github.com/sstsimulator
 fi
                         
