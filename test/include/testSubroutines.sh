@@ -39,7 +39,6 @@ oneTimeSetUp() {
 #-------------------------------------------------------------------------------
 oneTimeTearDown() {
 
-echo "DEBUG ONLY        ########################################### in oneTimeTearDown"
 
     ### Summary Data on the Testsuite
     WHICH_TEST=`echo $0 | awk -F/ '{ print $NF}'`
@@ -50,23 +49,13 @@ echo "DEBUG ONLY        ########################################### in oneTimeTe
     HOST=`uname -n`
     if [[ $HOST == *sst-test* ]] ; then
        today=`date +%j`
-echo "DEBUG ONLY:  $LINENO"
        WHICH_FILE=`echo $WHICH_TEST | awk -F'.' '{print $1}'`
-echo "DEBUG ONLY: $WHICH_FILE"
-echo "DEBUG ONLY: Total is  $__shunit_testsTotal "
-echo "DEBUG ONLY: Fail  is  $__shunit_testsFailed  "
        RESULT="$__shunit_testsTotal"
-echo "DEBUG ONLY: Result is  $RESULT"
        if [[ "$__shunit_testsFailed" -gt 0 ]] ; then
-echo "DEBUG ONLY:  $LINENO"
           RESULT="$RESULT / $__shunit_testsFailed Fail"
-echo "DEBUG ONLY: Result is  $RESULT"
-echo "DEBUG ONLY:  $LINENO"
        fi
        B_PROJ=`echo $BAMBOO_PROJECT | sed s/sstmainline_config_//`
        J_PROJ=`echo $JENKINS_PROJECT | sed s/SST__//`
-echo "DEBUG ONLY: env $BAMBOO_PROJECT"
-echo "DEBUG ONLY: reduced $B_PROJ"
 
        echo "$today $B_PROJ $J_PROJ $BUILD_NUMBER $elapsedSeconds s $RESULT" >> ~jpvandy/WhichTest/$WHICH_FILE
     fi
