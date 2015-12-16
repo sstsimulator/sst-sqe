@@ -6,12 +6,21 @@
 if [[ ${SST_TEST_ONE_TEST_TIMEOUT:+isSet} != isSet ]] ; then
     SST_TEST_ONE_TEST_TIMEOUT=1800         # 30 minutes 1800 seconds
 fi
+    SST_TEST_ONE_TEST_TIMEOUT=3
+    echo ' ' ; echo "    TIME LIMIT Jammed to 3 Seconds" ; echo ' '
+
 CASE=$2
 
 sleep $SST_TEST_ONE_TEST_TIMEOUT 
 
 MY_PID=$$
-## echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
+TIME_FLAG=/tmp/TimeFlag_${1}_${MY_PID}
+echo $SST_TEST_ONE_TEST_TIMEOUT >> $TIME_FLAG
+chmod 777 $TIME_FLAG
+echo "         Create                #################################### $TIME_FLAG"
+echo " Let's cat it : `cat $TIME_FLAG` "
+
+ echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
 
 echo ' ' ; echo "            TIME LIMIT     $CASE "
 echo test has exceed alloted time of $SST_TEST_ONE_TEST_TIMEOUT seconds.

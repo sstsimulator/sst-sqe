@@ -92,7 +92,17 @@ test_portals_0001() {
     then
         # Run SUT and capture its output
         (${sut} ${sutArgs} > ${outFile} 2>$errFile)
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+echo "                                             TIME_FLAG is $TIME_FLAG" 
+ls $TIME_FLAG 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              cat $errFile
@@ -178,7 +188,17 @@ NORUNtest_portals_0002() {
         echo  "test outFile: ${outFile}"
 # <DEBUG end>
         (/usr/local/bin/mpirun ${sut} ${sutArgs} 2> ${outFile})
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+echo "                                             TIME_FLAG is $TIME_FLAG" 
+ls $TIME_FLAG 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
@@ -243,7 +263,17 @@ test_portals_0003() {
     then
         # Run SUT and capture its output
         (${sut} ${sutArgs} > ${outFile} 2>$errFile)
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+echo "                                             TIME_FLAG is $TIME_FLAG" 
+ls $TIME_FLAG 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              cat $errFile
@@ -323,7 +353,17 @@ test_portals_0004() {
     then
         # Run SUT and capture its output
         (${sut} ${sutArgs} > ${outFile} 2>$errFile)
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+echo "                                             TIME_FLAG is $TIME_FLAG" 
+ls $TIME_FLAG 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              cat $errFile
