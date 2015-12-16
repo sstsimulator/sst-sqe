@@ -49,6 +49,7 @@ echo "DEBUG ONLY        ########################################### in oneTimeTe
 
     HOST=`uname -n`
     if [[ $HOST == *sst-test* ]] ; then
+       today=`date +%j`
 echo "DEBUG ONLY:  $LINENO"
        WHICH_FILE=`echo $WHICH_TEST | awk -F'.' '{print $1}'`
 echo "DEBUG ONLY: $WHICH_FILE"
@@ -67,7 +68,7 @@ echo "DEBUG ONLY:  $LINENO"
 echo "DEBUG ONLY: env $BAMBOO_PROJECT"
 echo "DEBUG ONLY: reduced $B_PROJ"
 
-       echo "$B_PROJ $J_PROJ $elapsedSeconds s $RESULT" >> ~jpvandy/WhichTest/$WHICH_FILE
+       echo "$today $B_PROJ $J_PROJ $BUILD_NUMBER $elapsedSeconds s $RESULT" >> ~jpvandy/WhichTest/$WHICH_FILE
     fi
 
 }
