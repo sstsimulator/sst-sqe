@@ -171,6 +171,13 @@ Ariel_template() {
         # Run SUT
         ${sut} ${sutArgs} > $outFile
         ret=$?
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Suite: Time Limit detected at `cat $TIME_FLAG` seconds, RT=$ret" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds, RT=$ret" 
+             rm $TIME_FLAG 
+             return 
+        fi 
         if [ $ret != 0 ]
         then
              echo ' '; echo WARNING: sst did not finish normally, RetVal= $ret ; echo ' '
