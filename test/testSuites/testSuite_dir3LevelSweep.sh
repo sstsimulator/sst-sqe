@@ -366,7 +366,15 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
     if [ -f $OMP_case/$OMP_case.x ]
     then
         (${sut} ${sutArgs} --model-options "--L1cachesz=\"$s1\" --L2cachesz=\"$s2\" --L3cachesz=\"$s3\" --L1assoc=$a1 --L1Replacp=$r1 --L2Replacp=$r2 --L3Replacp=$r3 --L2assoc=$a2 --L3assoc=$a3 --L2MSHR=$ml2 L2MSHR=$ml2 --MSIMESI=$c"> ${outFile})
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo "Suite: Time Limit detected at `cat $TIME_FLAG` seconds, RT=$RetVal" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds, RT=$RetVal" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: No. $INDEX_RUNNING sst did not finish normally ; echo ' '
              wc $outFile
