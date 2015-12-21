@@ -50,9 +50,16 @@ oneTimeTearDown() {
     if [[ $HOST == *sst-test* ]] ; then
        today=`date +%j`
        WHICH_FILE=`echo $WHICH_TEST | awk -F'.' '{print $1}'`
+       ls -l $WHICH_FILE
        if [ ! -e $WHICH_FILE ] ; then
+           echo "Does not exist"
            touch $WHICH_FILE
+           ls -l $WHICH_FILE
            chmod 777 $WHICH_FILE
+           ls -l $WHICH_FILE
+       else
+           echo "already exists"
+           ls -l $WHICH_FILE
        fi   
        RESULT="$__shunit_testsTotal"
        if [[ "$__shunit_testsFailed" -gt 0 ]] ; then
