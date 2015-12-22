@@ -88,13 +88,13 @@ NUMRANKS=$1
     then
         # Run SUT
         mpirun -np ${NUMRANKS} ${sut} --verbose --partitioner zoltan --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
-        retval=$?
-        if [ $retval != 0 ]
+        RetVal=$?
+        if [ $RetVal != 0 ]
         then
-             echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$retval" ; echo ' '
+             echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$RetVal" ; echo ' '
              ls -l ${sut}
         #     sed 10q $outFile
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              echo "And the Error File  (first 10 lines):"
              cat $errFile | c++filt       
 #     sed 10q $errFile

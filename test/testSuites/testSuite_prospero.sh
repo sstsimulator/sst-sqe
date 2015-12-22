@@ -84,6 +84,10 @@ else
 fi   
 echo " ---------------  Three files are expected: "
 cksum *.trace
+if [ $? != 0 ] ; then
+   echo "No trace files found"
+   preFail
+fi
 echo ' '
 
 ln -sf ${SST_ROOT}/sst/elements/memHierarchy/tests/DDR3_micron_32M_8B_x4_sg125.ini
@@ -150,7 +154,7 @@ template_prospero() {
              echo ' '; echo ERROR: sst did not finish normally ; echo ' '
              ls -l ${sut}
              wc $outFile
-             fail "ERROR: sst did not finish normally"
+             fail "ERROR: sst did not finish normally, RetVal=$RetVal"
              RemoveComponentWarning
              return
         fi
