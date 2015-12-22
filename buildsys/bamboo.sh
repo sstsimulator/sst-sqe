@@ -159,6 +159,9 @@ dotests() {
     #  If it is Intel, Need a GCC library also
     #    Going to load the gcc-4.8.1 module for now
  
+   export JENKINS_PROJECT=`echo $WORKSPACE | awk -F'/' '{print $6}'`
+   export BAMBOO_PROJECT=$1
+
 echo " #####################################################"
    echo "parameter \$2 is $2  "
 echo " #####################################################"

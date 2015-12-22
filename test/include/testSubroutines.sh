@@ -46,6 +46,25 @@ oneTimeTearDown() {
     elapsedSeconds=$(($endSeconds -$scriptStartSeconds))
     echo "TESTSUITE $WHICH_TEST: Total Suite Wall Clock Time  $elapsedSeconds seconds"
 
+    HOST=`uname -n`
+    if [[ $HOST == *sst-test* ]] ; then
+       today=`date +%j`
+       WHICH_FILE=`echo $WHICH_TEST | awk -F'.' '{print $1}'`
+       WHICH_FILE_PATH=~jpvandy/WhichTest/$WHICH_FILE
+       if [ ! -e $WHICH_FILE_PATH ] ; then
+           touch $WHICH_FILE_PATH
+           chmod 777 $WHICH_FILE_PATH
+       fi   
+       RESULT="$__shunit_testsTotal"
+       if [[ "$__shunit_testsFailed" -gt 0 ]] ; then
+          RESULT="$RESULT / $__shunit_testsFailed Fail"
+       fi
+       B_PROJ=`echo $BAMBOO_PROJECT | sed s/sstmainline_config_//`
+       J_PROJ=`echo $JENKINS_PROJECT | sed s/SST__//`
+
+       echo "$today $B_PROJ $J_PROJ $BUILD_NUMBER $elapsedSeconds s $RESULT" >> ~jpvandy/WhichTest/$WHICH_FILE
+    fi
+
 }
 
 #-------------------------------------------------------------------------------
