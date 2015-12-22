@@ -69,7 +69,17 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
     if [ -f $OMP_case/$OMP_case.x ]
     then
         (${sut} ${sutArgs} > ${outFile})
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+echo "                                             TIME_FLAG is $TIME_FLAG" 
+ls $TIME_FLAG 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
@@ -79,7 +89,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally  Uncache $OMP_case"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal  Uncache $OMP_case"
              return
         fi
 

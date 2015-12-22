@@ -170,11 +170,11 @@ Ariel_template() {
     then
         # Run SUT
         ${sut} ${sutArgs} > $outFile
-        ret=$?
-        if [ $ret != 0 ]
+        RetVal=$?
+        if [ $RetVal != 0 ]
         then
-             echo ' '; echo WARNING: sst did not finish normally, RetVal= $ret ; echo ' '
-             fail "WARNING: sst did not finish normally, RetVal= $ret"
+             echo ' '; echo WARNING: sst did not finish normally, RetVal= $RetVal ; echo ' '
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              removeFreeIPCs
              return
         fi
