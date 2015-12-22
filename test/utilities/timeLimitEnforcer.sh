@@ -6,13 +6,13 @@
 if [[ ${SST_TEST_ONE_TEST_TIMEOUT:+isSet} != isSet ]] ; then
     SST_TEST_ONE_TEST_TIMEOUT=1800         # 30 minutes 1800 seconds
 fi
-    SST_TEST_ONE_TEST_TIMEOUT=3
-    echo ' ' ; echo "    TIME LIMIT Jammed to 3 Seconds" ; echo ' '
 
 CASE=$2
 
 sleep $SST_TEST_ONE_TEST_TIMEOUT 
 
+echo ' ' ; echo "TL Enforcer:            TIME LIMIT     $CASE "
+echo "TL Enforcer: test has exceed alloted time of $SST_TEST_ONE_TEST_TIMEOUT seconds."
 MY_PID=$$
 TIME_FLAG=/tmp/TimeFlag_${1}_${MY_PID}
 echo $SST_TEST_ONE_TEST_TIMEOUT >> $TIME_FLAG
@@ -21,8 +21,6 @@ echo "         Create Time Limit Flag file, $TIME_FLAG"
 
 echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
 
-echo ' ' ; echo "TL Enforcer:            TIME LIMIT     $CASE "
-echo "TL Enforcer: test has exceed alloted time of $SST_TEST_ONE_TEST_TIMEOUT seconds."
 date
 echo ' '
 
