@@ -84,6 +84,10 @@ else
 fi   
 echo " ---------------  Three files are expected: "
 cksum *.trace
+if [ $? != 0 ] ; then
+   echo "No trace files found"
+   preFail
+fi
 echo ' '
 
 ln -sf ${SST_ROOT}/sst/elements/memHierarchy/tests/DDR3_micron_32M_8B_x4_sg125.ini
