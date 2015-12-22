@@ -103,7 +103,7 @@ ls $TIME_FLAG
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
          tail -n +2 ${SST_TEST_OUTPUTS}/test_scheduler_0001.sim.alloc >> ${outFile};
@@ -179,7 +179,7 @@ ls $TIME_FLAG
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
          echo "===JOB LOG===" >> ${outFile};
@@ -280,7 +280,7 @@ ls $TIME_FLAG
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
         echo "" > ${outFile}
@@ -355,7 +355,7 @@ ls $TIME_FLAG
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
         echo "" > ${outFile}
@@ -454,7 +454,7 @@ ls $TIME_FLAG
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
         echo "" > ${outFile}

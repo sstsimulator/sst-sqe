@@ -108,7 +108,7 @@ ls $TIME_FLAG
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              RemoveComponentWarning
              return
         fi
@@ -238,7 +238,7 @@ ls $TIME_FLAG
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
         sed -i'.3sed' -e'/ nan /d' $outFile

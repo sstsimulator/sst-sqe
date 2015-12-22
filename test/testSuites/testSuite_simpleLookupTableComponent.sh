@@ -86,7 +86,7 @@ ls $TIME_FLAG
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              wc $referenceFile $outFile
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
         wc $referenceFile $outFile

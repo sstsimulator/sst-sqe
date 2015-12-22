@@ -98,7 +98,7 @@ ls $TIME_FLAG
     then
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
-         fail "WARNING: sst did not finish normally"
+         fail "WARNING: sst did not finish normally, RetVal=$RetVal"
          if [ -s ${errFile} ] ; then
              notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
              echo ' ' ; echo "* * * *  $notAlignedCt Not Aligned messages from $memH_case   * * * *" ; echo ' '

@@ -366,7 +366,7 @@ ls $TIME_FLAG
              echo '            . . . '
              tail -15 $outFile
              FAIL_COUNT=$(($FAIL_COUNT+1))
-             fail "WARNING: No. $INDEX_RUNNING sst did not finish normally"
+             fail "WARNING: No. $INDEX_RUNNING sst did not finish normally, RetVal=$RetVal"
              barrier_checks
              endSeconds=`date +%s`
              echo " "

@@ -95,7 +95,7 @@ ls $TIME_FLAG
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
              sed 10q $outFile
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              RemoveComponentWarning
              return
         fi

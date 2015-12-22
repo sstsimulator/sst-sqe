@@ -108,7 +108,7 @@ ls $TIME_FLAG
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              sed 5q $outFile
              echo ' '
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
 

@@ -150,7 +150,7 @@ template_prospero() {
              echo ' '; echo ERROR: sst did not finish normally ; echo ' '
              ls -l ${sut}
              wc $outFile
-             fail "ERROR: sst did not finish normally"
+             fail "ERROR: sst did not finish normally, RetVal=$RetVal"
              RemoveComponentWarning
              return
         fi

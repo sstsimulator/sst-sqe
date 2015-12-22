@@ -92,7 +92,7 @@ ls $TIME_FLAG
         if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
-             fail  "WARNING: sst did not finish normally"
+             fail  "WARNING: sst did not finish normally, RetVal=$RetVal"
              echo The Error File   first 10 and last 10 lines:
              sed 10q $errFile
              echo "       - - -"

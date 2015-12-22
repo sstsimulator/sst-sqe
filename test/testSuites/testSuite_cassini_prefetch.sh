@@ -85,7 +85,7 @@ ls $TIME_FLAG
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              wc  $outFile $referenceFile
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
     else

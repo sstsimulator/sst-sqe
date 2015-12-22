@@ -82,7 +82,7 @@ ls $TIME_FLAG
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              wc $referenceFile $outFile
              echo "   Tail of outFile"
              tail -10 $outFile
@@ -159,7 +159,7 @@ ls $TIME_FLAG
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
              sed 10q $outFile
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              echo "And the Error File  (first 10 lines):"
              sed 10q $errFile
              echo "       - - -    (and the last 10 line)"

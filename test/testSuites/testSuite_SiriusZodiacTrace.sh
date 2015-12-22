@@ -94,7 +94,7 @@ ls $TIME_FLAG
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
          wc ${tmpFile} ${referenceFile}
-         fail " WARNING: sst did not finish normally" 
+         fail " WARNING: sst did not finish normally, RetVal=$RetVal" 
          grep -v Warning:..Param $errFile
          return
     fi

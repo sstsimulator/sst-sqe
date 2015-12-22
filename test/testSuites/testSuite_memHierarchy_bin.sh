@@ -99,7 +99,7 @@ ls $TIME_FLAG
         sed 10q $outFile
         echo "           . . ."
         tail -10 $outFile
-        fail "WARNING: sst did not finish normally   $memH_case"
+        fail "WARNING: sst did not finish normally, RetVal=$RetVal   $memH_case"
         return
     fi
 

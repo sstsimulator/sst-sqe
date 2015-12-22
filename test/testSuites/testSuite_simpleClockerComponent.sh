@@ -111,7 +111,7 @@ ls $TIME_FLAG
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
          sed 10q $outFile
-         fail "sst did not finish normally"
+         fail "sst did not finish normally, RetVal=$RetVal"
          return 1
     else
         echo "                Scale factor is $FAC"    

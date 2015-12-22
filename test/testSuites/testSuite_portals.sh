@@ -107,7 +107,7 @@ ls $TIME_FLAG
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              cat $errFile
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              RemoveComponentWarning
              return
         fi
@@ -202,7 +202,7 @@ ls $TIME_FLAG
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              RemoveComponentWarning
              return
         fi
@@ -278,7 +278,7 @@ ls $TIME_FLAG
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              cat $errFile
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally" 
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal" 
              RemoveComponentWarning
              return
         fi
@@ -368,7 +368,7 @@ ls $TIME_FLAG
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              cat $errFile
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
         cat $errFile | grep -v 'Warning:.*undoc'
@@ -445,7 +445,7 @@ test_portals4_sm() {
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              cat $errFile
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
         cat $errFile | grep -v 'Warning:.*undoc'

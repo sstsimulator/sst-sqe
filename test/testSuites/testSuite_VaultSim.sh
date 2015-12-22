@@ -75,7 +75,7 @@ ls $TIME_FLAG
     then
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
-         fail "sst did not finish normally"
+         fail "sst did not finish normally, RetVal=$RetVal"
          return
     fi
 

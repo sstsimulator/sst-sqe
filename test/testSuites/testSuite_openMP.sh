@@ -89,7 +89,7 @@ ls $TIME_FLAG
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally   $OMP_case"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal   $OMP_case"
              return
         fi
 
