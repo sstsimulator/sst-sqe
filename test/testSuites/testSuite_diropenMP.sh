@@ -88,6 +88,8 @@ if [ -s "$referenceFile" ] && [ "$(tail -c1 "$referenceFile"; echo x)" != $'\nx'
     echo >> $referenceFile
 fi
 
+wc $referenceFile
+wc $outFile
 matchFail=0
 matchct=0
 while read -u 3 line 
@@ -134,7 +136,7 @@ done 3< $referenceFile
 
 echo "                $matchct lines matched  for $OMP_case" ; echo ' '
         if [ $matchFail != 0 ] ; then
-           fail " $MatchFail lines of Reference file not matched exactly"
+           fail " $matchFail lines of Reference file not matched exactly"
         fi
 
         endSeconds=`date +%s`
