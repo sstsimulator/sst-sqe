@@ -50,9 +50,10 @@ oneTimeTearDown() {
     if [[ $HOST == *sst-test* ]] ; then
        today=`date +%j`
        WHICH_FILE=`echo $WHICH_TEST | awk -F'.' '{print $1}'`
-       if [ ! -e $WHICH_FILE ] ; then
-           touch $WHICH_FILE
-           chmod 777 $WHICH_FILE
+       WHICH_FILE_PATH=~jpvandy/WhichTest/$WHICH_FILE
+       if [ ! -e $WHICH_FILE_PATH ] ; then
+           touch $WHICH_FILE_PATH
+           chmod 777 $WHICH_FILE_PATH
        fi   
        RESULT="$__shunit_testsTotal"
        if [[ "$__shunit_testsFailed" -gt 0 ]] ; then
