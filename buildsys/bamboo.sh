@@ -328,7 +328,7 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_noncacheable_openMP.sh
         ${SST_TEST_SUITES}/testSuite_openMP.sh
         ${SST_TEST_SUITES}/testSuite_Sweep_openMP.sh
-        ${SST_TEST_SUITES}/testSuite_dirSweep3.sh
+        ${SST_TEST_SUITES}/testSuite_dir3LevelSweep.sh
         return
     fi
 

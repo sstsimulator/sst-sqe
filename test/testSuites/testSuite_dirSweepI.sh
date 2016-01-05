@@ -378,8 +378,6 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
         (${sut} ${sutArgs} --model-options "--L1cachesz=\"$s1\" --L2cachesz=\"$s2\" --L1assoc=$a1 --Replacp=$r --L2assoc=$a2 --L2MSHR=$ml2 --MSIMESI=$c --Pref1=$pf --Pref2=$pf" > ${outFile})
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-echo "                                             TIME_FLAG is $TIME_FLAG" 
-ls $TIME_FLAG 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
