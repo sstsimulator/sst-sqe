@@ -104,6 +104,7 @@ fi
 wc $referenceFile $outFile
 matchFail=0
 matchct=0
+#                       Read Reference File
 while read -u 3 line 
 do
    ## check for curTick   
@@ -136,13 +137,14 @@ do
            fail "Suite vs. Reference File error"
        fi
     
-       outct=`grep -c "$line" $outFile`
+       outct=`grep -cw "$line" $outFile`
        if [ $outct == $ct ] ; then
            matchct=$(($matchct+1))
        else
            echo ' '
            echo No match for reference file line: 
            echo "-----> $line"
+           echo " Count from Reference is $ct, count for outFile is $outct"
            matchFail=$(($matchFail+1))
            substr=${line:0:6}
            echo "Look for Partial Match:"

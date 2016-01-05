@@ -1,2 +1,11 @@
 OpenMP Dynamic Test Case
 Dynamic vector sum is: 523776.000000
+CORE ID: 0 PROCESSED AN EXIT EVENT
+
+Ariel Memory Management Statistics:
+---------------------------------------------------------------------
+Page Table Sizes:
+- Map entries at level 0         49
+Page Table Coverages:
+- Bytes at level 0              200704
+Simulation is complete, simulated time: 343.911 us

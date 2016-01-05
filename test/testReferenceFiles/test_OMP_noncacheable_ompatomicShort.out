@@ -14,4 +14,3 @@ Hello from thread 6
 Hello from thread 0
 Hello from thread 7
 Waiting for threads to finish........
-M5:exiting: curTick()=204700000 cause=`target called exit()` code=0

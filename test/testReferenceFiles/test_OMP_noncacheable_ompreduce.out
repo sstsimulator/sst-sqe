@@ -1,2 +1,11 @@
 Performing an OpenMP reduction...
 Value of reduction is: 523776.000000
+CORE ID: 0 PROCESSED AN EXIT EVENT
+
+Ariel Memory Management Statistics:
+---------------------------------------------------------------------
+Page Table Sizes:
+- Map entries at level 0         48
+Page Table Coverages:
+- Bytes at level 0              196608
+Simulation is complete, simulated time: 272.804 us
