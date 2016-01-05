@@ -44,7 +44,7 @@ LONGER_COUNT=0
 SHORTER_COUNT=0
 FAIL_COUNT=0
 Secs=`date +%s`
-JND=`expr $Secs % 8`
+JND=`expr $Secs % 7`
 if [[ ${SST_SWEEP_OPENMP:+isSet} == isSet ]]
 then 
     selectBin="omp"${SST_SWEEP_OPENMP}
@@ -56,7 +56,7 @@ else
     OMPLIST[4]="ompreduce"
     OMPLIST[5]="omptriangle"
     OMPLIST[6]="ompbarrier"
-    OMPLIST[7]="ompfort"
+##    OMPLIST[7]="ompfort"
 
     echo $Secs  $JND
     selectBin=${OMPLIST[$JND]}

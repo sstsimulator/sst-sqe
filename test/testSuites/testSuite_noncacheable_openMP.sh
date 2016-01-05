@@ -239,20 +239,20 @@ OMP_Template ompdynamic 9000
 
 }
 
-#
-#     _noncacheable_ompfort
-#
-test_noncacheable_ompfort() {    
-OMP_Template ompfort 11000
-
-}
-#
-#     _noncacheable_ompFIXEDfort
-#
-test_noncacheable_ompFIXEDfort() {    
-OMP_Template ompFIXEDfort 11000
-
-}
+## #
+## ## #     _noncacheable_ompfort
+## #
+## test_noncacheable_ompfort() {    
+## OMP_Template ompfort 11000
+## 
+## }
+## #
+## #     _noncacheable_ompFIXEDfort
+## #
+## test_noncacheable_ompFIXEDfort() {    
+## OMP_Template ompFIXEDfort 11000
+## 
+## }
 
 
 #

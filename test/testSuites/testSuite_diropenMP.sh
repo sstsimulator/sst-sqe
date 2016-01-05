@@ -225,18 +225,18 @@ OMP_Template ompcritical 9000
 test_dirompdynamic() {    
 OMP_Template ompdynamic 9000
 
-export SST_TEST_ONE_TEST_TIMEOUT=300
-echo "setting time limit to $SST_TEST_ONE_TEST_TIMEOUT for the OMP fort test that follows"
+## export SST_TEST_ONE_TEST_TIMEOUT=300
+## echo "setting time limit to $SST_TEST_ONE_TEST_TIMEOUT for the OMP fort test that follows"
 
 }
 
-#
-#     _ompfort
-#
-test_dirompfort() {    
-OMP_Template ompfort 11000
-
-}
+## #
+## #     _ompfort
+## #
+## test_dirompfort() {    
+## OMP_Template ompfort 11000
+## 
+## }
 
 
 #
