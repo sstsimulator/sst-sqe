@@ -139,7 +139,7 @@ fi
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
 echo ' ' ; wc ${outFile} ${referenceFile}
 echo ' ' ; echo "   ----------   list the Running tasks BEFORE)"
 cat ps.before

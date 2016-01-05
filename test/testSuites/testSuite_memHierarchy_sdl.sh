@@ -84,11 +84,21 @@ Tol=$2    ##  curTick tolerance
     fi
 
     ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
-    if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+echo "                                             TIME_FLAG is $TIME_FLAG" 
+ls $TIME_FLAG 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
     then
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
-         fail "WARNING: sst did not finish normally"
+         fail "WARNING: sst did not finish normally, RetVal=$RetVal"
          if [ -s ${errFile} ] ; then
              notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
              echo ' ' ; echo "* * * *  $notAlignedCt Not Aligned messages from $memH_case   * * * *" ; echo ' '

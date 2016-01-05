@@ -197,11 +197,11 @@ PARTITIONER=$2
              tail -25 $outFile
              popd
              if [ ! -s $partFile ] ; then
-                 fail "WARNING: sst partition did not finish normally"
+                 fail "WARNING: sst partition did not finish normally, RetVal=$RetVal"
                  return
              fi
              echo ' ' ; echo "could exit here, but analyse even if partitioned run fails"
-             fail "WARNING: sst did not finish normally, RETVAL=$retval" 
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal, RETVAL=$retval" 
 #             return
         else
              wc $errFile $outFile $partFile
