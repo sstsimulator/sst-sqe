@@ -104,6 +104,10 @@ matchFail=0
 matchct=0
 while read -u 3 line 
 do
+   if [[ $line == *'Simulation is complete'* ]] ; then
+       echo "Reference: $line"
+       continue
+   fi
    ## check for curTick   
    if [[ $line == *curTick* ]] ; then
                      lref=`cat ${referenceFile} | grep curTick |awk -F= '{print $2}' |awk '{print $1}'`
