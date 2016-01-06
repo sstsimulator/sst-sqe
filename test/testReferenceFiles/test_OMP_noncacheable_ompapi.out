@@ -5,9 +5,6 @@ There are now 8 threads active (should equal OMP_NUM_THREADS since in parallel r
 CORE ID: 0 PROCESSED AN EXIT EVENT
 
 Ariel Memory Management Statistics:
----------------------------------------------------------------------
 Page Table Sizes:
-- Map entries at level 0         47
 Page Table Coverages:
-- Bytes at level 0              192512
 Simulation is complete, simulated time: 287.104 us

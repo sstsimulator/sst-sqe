@@ -129,9 +129,6 @@ Performing iteration 15
 CORE ID: 0 PROCESSED AN EXIT EVENT
 
 Ariel Memory Management Statistics:
----------------------------------------------------------------------
 Page Table Sizes:
-- Map entries at level 0         52
 Page Table Coverages:
-- Bytes at level 0              212992
 Simulation is complete, simulated time: 517.711 us
