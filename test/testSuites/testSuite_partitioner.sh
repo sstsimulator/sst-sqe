@@ -290,12 +290,20 @@ echo "DEBUG: numrank $numranks, was $was"
             echo ' '
             echo "              Per Cent from Partition File "
             ind=0
+            _TOTAL=0
             while [ $ind -lt $numranks ] 
             do 
                checkAndPrint ${RANKP[$ind]}  rank${ind} $numComp
+               _TOTAL=$((${RANKP[$ind]}+${_TOTAL}))
                 ((ind++))
             done
-
+            if [ ${_TOTAL} == 0 ] ; then
+                fail " Something is really wrong!"
+                echo " Either the SST Partition option has muliti-thread Issues -or- "
+                echo " The test Suite is asking totally wrong questions."
+                echo ' '
+                return
+            fi
             # display difference between stdout and partition file, only if not the same"
 ##             ind=0
 ## echo "  numranks = ${numranks}"
