@@ -65,7 +65,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #        Omitting the forced fail in case the above test rejects valid mpiruns
     fi
 
-    rm -rf away.hold
+    away_hold=$SST_ROOT/away.hold
+    rm -rf $away_hold
 
         #                         Subroutine for checking
         #     $1     - number on the rank
@@ -97,7 +98,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #     inputs - partition file
 #     Outputs 
 #              distResultFile - (source to populate array RANKP
-#              file away.hold - debug log of processing
+#              file $away_hold - debug log of processing
 #              return value - number of ranks found
 #
 create_distResultFile() {
@@ -113,20 +114,20 @@ create_distResultFile() {
              continue
           fi
         
-          echo "/<$word/>"     >> away.hold
+          echo "/<$word/>"     >> $away_hold
           if [ $word == "Rank:" ] ; then
-              echo NICs in previous rank $rankis : $IICCT     >> away.hold
+              echo "NICs in previous rank $rankis : $IICCT"     >> $away_hold
               if [ $rankis -gt -1 ] ; then
                   echo  RANKP[${rankis}]=$IICCT >> $distResultFile
               fi
               if [[ $rnk == *.* ]] ; then
                   rankis=`echo $rnk | awk -F. '{print $1}'`
                   threadis=`echo $rnk | awk -F. '{print $2}'`
-                  echo Rank is $rankis, Thread is $threadis       >> away.hold
+                  echo Rank is $rankis, Thread is $threadis       >> $away_hold
               else 
                   rankis=$rnk
               fi
-              echo Found Rank : $word $rest rank is $rankis       >> away.hold
+              echo Found Rank : $word $rest rank is $rankis       >> $away_hold
               IICCT=0
           else
               ((IICCT++))
@@ -136,10 +137,10 @@ create_distResultFile() {
  
         echo  RANKP[${rankis}]=$IICCT >> $distResultFile
         echo  numComp=$NICCT >> $distResultFile
-        echo previous rank $rankis : $IICCT       >> away.hold
+        echo previous rank $rankis : $IICCT       >> $away_hold
         ((rankis++))
         #   return number of ranks
-        echo "value is ${rankis}"  >> away.hold
+        echo "value is ${rankis}"  >> $away_hold
         echo $rankis 
 }
 #      end of Subroutine create_distResultFile()
@@ -270,9 +271,10 @@ PARTITIONER=$2
             #    Get info from Partition file, creating the file $distResultFile
 
 echo "          next is call to create_distResultFile"
+was=$numranks
         numranks=`create_distResultFile`
 echo "  ===============   we have returned "
-
+echo "DEBUG: numrank $numranks, was $was"
 ##   we now have two definitions of numranks
   wc $distResultFile
 
@@ -288,12 +290,20 @@ echo "  ===============   we have returned "
             echo ' '
             echo "              Per Cent from Partition File "
             ind=0
+            _TOTAL=0
             while [ $ind -lt $numranks ] 
             do 
                checkAndPrint ${RANKP[$ind]}  rank${ind} $numComp
+               _TOTAL=$((${RANKP[$ind]}+${_TOTAL}))
                 ((ind++))
             done
-
+            if [ ${_TOTAL} == 0 ] ; then
+                fail " Something is really wrong!"
+                echo " Either the SST Partition option has muliti-thread Issues -or- "
+                echo " The test Suite is asking totally wrong questions."
+                echo ' '
+                return
+            fi
             # display difference between stdout and partition file, only if not the same"
 ##             ind=0
 ## echo "  numranks = ${numranks}"
