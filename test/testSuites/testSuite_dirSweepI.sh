@@ -94,8 +94,8 @@ else
        BINLIST=${SST_SWEEP_OPENMP}
        nBINS=1
    else
-       BINLIST="atomic api critical dynamic reduce triangle barrier fort"
-       nBINS=8
+       BINLIST="atomic api critical dynamic reduce triangle barrier"
+       nBINS=7
    fi
 fi
 echo Number of binaries = $nBINS $BINLIST

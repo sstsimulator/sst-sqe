@@ -10,4 +10,3 @@ Inserting stop event at cycle 100ms, 100000000000
  Hello from thread 4 
  Hello from thread 6 
 Updates: 64, Sum is: 1024.000000
-M5:exiting: curTick()=65964500 cause=`target called exit()` code=33
