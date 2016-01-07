@@ -1,6 +1,3 @@
-M5:configFile `openmp-M5.xml`
-M5:registering exit
-Inserting stop event at cycle 100ms, 100000000000
  Hello from thread 0 
  Hello from thread 2 
  Hello from thread 3 
