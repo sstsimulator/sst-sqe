@@ -73,8 +73,6 @@ echo " ******************* ready to start"
         (${sut} ${sutArgs} > ${outFile})
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-echo "                                             TIME_FLAG is $TIME_FLAG" 
-ls $TIME_FLAG 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -106,8 +104,13 @@ fi
 wc $referenceFile $outFile
 matchFail=0
 matchct=0
+#                       Read Reference File
 while read -u 3 line 
 do
+   if [[ $line == *'Simulation is complete'* ]] ; then
+       echo "Reference: $line"
+       continue
+   fi
    ## check for curTick   
    if [[ $line == *curTick* ]] ; then
                      lref=`cat ${referenceFile} | grep curTick |awk -F= '{print $2}' |awk '{print $1}'`
@@ -131,22 +134,23 @@ do
          #  Do nothing
          echo
     else
-       ct=`grep -c "$line" $referenceFile`
+       ct=`grep -cw -e "$line" $referenceFile`
        if [ $ct == 0 ] ; then
            echo OPPS   subtle mismatch
     echo NOW DO WHAT ???
            fail "Suite vs. Reference File error"
        fi
     
-       outct=`grep -c "$line" $outFile`
+       outct=`grep -cw -e "$line" $outFile`
        if [ $outct == $ct ] ; then
            matchct=$(($matchct+1))
        else
            echo ' '
            echo No match for reference file line: 
            echo "-----> $line"
+           echo " Count from Reference is $ct, count for outFile is $outct"
            matchFail=$(($matchFail+1))
-           substr=${line:0:6}
+           substr=${line:1:8}
            echo "Look for Partial Match:"
            echo "-----> `grep "${substr}" $outFile`"
            echo ' '
@@ -243,20 +247,20 @@ OMP_Template ompdynamic 9000
 
 }
 
-#
-#     _noncacheable_ompfort
-#
-test_noncacheable_ompfort() {    
-OMP_Template ompfort 11000
-
-}
-#
-#     _noncacheable_ompFIXEDfort
-#
-test_noncacheable_ompFIXEDfort() {    
-OMP_Template ompFIXEDfort 11000
-
-}
+## #
+## #     _noncacheable_ompfort
+## #
+## test_noncacheable_ompfort() {    
+## OMP_Template ompfort 11000
+## 
+## }
+## #
+## #     _noncacheable_ompFIXEDfort
+## #
+## test_noncacheable_ompFIXEDfort() {    
+## OMP_Template ompFIXEDfort 11000
+## 
+## }
 
 
 #

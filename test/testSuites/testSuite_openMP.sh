@@ -71,8 +71,6 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
         (${sut} ${sutArgs} > ${outFile})
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-echo "                                             TIME_FLAG is $TIME_FLAG" 
-ls $TIME_FLAG 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -289,20 +287,20 @@ OMP_Template ompdynamic 9000
 
 }
 
-#
-#     _ompfort
-#
-test_ompfort() {    
-OMP_Template ompfort 11000
-
-}
-#
-#     _ompFIXEDfort
-#
-test_ompFIXEDfort() {    
-OMP_Template ompFIXEDfort 11000
-
-}
+## #
+## #     _ompfort
+## #
+## test_ompfort() {    
+## OMP_Template ompfort 11000
+## 
+## }
+## #
+## #     _ompFIXEDfort
+## #
+## test_ompFIXEDfort() {    
+## OMP_Template ompFIXEDfort 11000
+## 
+## }
 
 
 #
