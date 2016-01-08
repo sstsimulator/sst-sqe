@@ -198,10 +198,13 @@ PARTITIONER=$2
              tail -25 $outFile
              popd
              if [ ! -s $partFile ] ; then
+                 echo ' ' ; echo '*****************************************************'
                  fail "WARNING: sst partition did not finish normally, RetVal=$RetVal"
+                 echo ' ' ; echo "           Partition File does not exist "
+                 echo ' ' ; echo '*****************************************************'
                  return
              fi
-             echo ' ' ; echo "could exit here, but analyse even if partitioned run fails"
+             echo ' ' ; echo "could exit here, but analyze even if partitioned run fails"
              fail "WARNING: sst did not finish normally, RetVal=$RetVal, RETVAL=$retval" 
 #             return
         else
@@ -265,7 +268,9 @@ PARTITIONER=$2
                 ((ind++))
             done
         else
+            echo ' ' ; echo '*****************************************************'
             echo " Did not find Partition Distribution Information in stdout"
+            echo ' ' ; echo '*****************************************************'
         fi
 
             #    Get info from Partition file, creating the file $distResultFile
@@ -298,34 +303,15 @@ echo "DEBUG: numrank $numranks, was $was"
                 ((ind++))
             done
             if [ ${_TOTAL} == 0 ] ; then
+                echo ' ' ; echo '*****************************************************'
                 fail " Something is really wrong!"
                 echo " Either the SST Partition option has muliti-thread Issues -or- "
                 echo " The test Suite is asking totally wrong questions."
+                echo ' ' ; echo '*****************************************************'
                 echo ' '
                 return
             fi
-            # display difference between stdout and partition file, only if not the same"
-##             ind=0
-## echo "  numranks = ${numranks}"
-##             while [ $ind -lt $numranks ] 
-##             do
-##                 if [ ${RANKP[$ind]} == ${rank[$ind]} ] ; then
-##                 ((ind++))
-##                     continue
-##                 fi
-## echo "Ranks are NOT the same for $ind  ${RANKP[$ind]} ${rank[$ind]}"
-##                 jnd=0
-##                 echo "         Partition       Output"
-##                 echo "rank        File          FILE"
-##                 while [ $jnd -lt $numranks ] 
-##                 do
-##                     echo " $jnd           ${RANKP[$jnd]}             ${rank[$jnd]}"
-##                     ((jnd++))
-##                 done
-##                 break
-##             done
 
- #  We can do the same EASILY for the Partition file.
     else
         # Problem encountered: can't find or can't run SUT (doesn't
         # really do anything in Phase I)
