@@ -117,8 +117,9 @@ create_distResultFile() {
           echo "/<$word/>"     >> $away_hold
           if [ $word == "Rank:" ] ; then
               echo "NICs in previous rank $rankis : $IICCT"     >> $away_hold
-              if [ $rankis -gt -1 ] ; then
+              if [ $rankis -gt -1 ] && [ $IICCT -gt 0 ] ; then
                   echo  RANKP[${rankis}]=$IICCT >> $distResultFile
+                  ((NICCT++))
               fi
               if [[ $rnk == *.* ]] ; then
                   rankis=`echo $rnk | awk -F. '{print $1}'`
@@ -126,16 +127,18 @@ create_distResultFile() {
                   echo Rank is $rankis, Thread is $threadis       >> $away_hold
               else 
                   rankis=$rnk
+                  ((NICCT++))
               fi
               echo Found Rank : $word $rest rank is $rankis       >> $away_hold
               IICCT=0
           else
               ((IICCT++))
-              ((NICCT++))
           fi
         done 3<$partFile
  
-        echo  RANKP[${rankis}]=$IICCT >> $distResultFile
+        if [ $IICCT -gt 0 ] ; then
+            echo  RANKP[${rankis}]=$IICCT >> $distResultFile
+        fi
         echo  numComp=$NICCT >> $distResultFile
         echo previous rank $rankis : $IICCT       >> $away_hold
         ((rankis++))
@@ -172,7 +175,7 @@ PARTITIONER=$2
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        mpirun -np ${NUMRANKS} ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
+        mpirun -np ${NUMRANKS} ${sut} -n 2  --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         retval=$?
         touch $partFile
         if [ $retval != 0 ]
@@ -276,8 +279,10 @@ PARTITIONER=$2
             #    Get info from Partition file, creating the file $distResultFile
 
 echo "          next is call to create_distResultFile"
+
 was=$numranks
         numranks=`create_distResultFile`
+
 echo "  ===============   we have returned "
 echo "DEBUG: numrank $numranks, was $was"
 ##   we now have two definitions of numranks
@@ -328,17 +333,17 @@ echo "DEBUG: numrank $numranks, was $was"
 }
 #             End of Template
 
-test_roundrobin_2()
+xtest_roundrobin_2()
 {
    partitioner_template 2 "roundrobin" 
 }
 
-test_roundrobin_4()
+xtest_roundrobin_4()
 {
    partitioner_template 4 roundrobin 
 }
 
-test_roundrobin_8()
+xtest_roundrobin_8()
 {
    partitioner_template 8 roundrobin
 }
@@ -349,7 +354,7 @@ test_roundrobin_8()
 #   The other partitioner tests should not be limited
 #      to only when Zoltan is Installed.
 #################################################
-test_zoltan_2()
+xtest_zoltan_2()
 {
    if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ; then
        skip_this_test
@@ -359,7 +364,7 @@ test_zoltan_2()
    partitioner_template 2 zoltan   
 }
 
-test_zoltan_4()
+xtest_zoltan_4()
 {
    if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ; then
        skip_this_test
@@ -369,7 +374,7 @@ test_zoltan_4()
    partitioner_template 4 zoltan  
 }
 
-test_zoltan_8()
+xtest_zoltan_8()
 {
    if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ; then
        skip_this_test
@@ -379,17 +384,17 @@ test_zoltan_8()
    partitioner_template 8 zoltan 
 }
 
-test_linear_2()
+xtest_linear_2()
 {
    partitioner_template 2 linear   
 }
 
-test_linear_4()
+xtest_linear_4()
 {
    partitioner_template 4 linear  
 }
 
-test_linear_8()
+xtest_linear_8()
 {
    partitioner_template 8 linear 
 }
@@ -404,22 +409,22 @@ test_simple_4()
    partitioner_template 4 simple  
 }
 
-test_simple_8()
+xtest_simple_8()
 {
    partitioner_template 8 simple 
 }
 
-test_single_2()
+xtest_single_2()
 {
    partitioner_template 2 single   
 }
 
-test_single_4()
+xtest_single_4()
 {
    partitioner_template 4 single  
 }
 
-test_single_8()
+xtest_single_8()
 {
    partitioner_template 8 single 
 }
