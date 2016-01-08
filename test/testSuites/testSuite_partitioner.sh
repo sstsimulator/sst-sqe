@@ -175,7 +175,7 @@ PARTITIONER=$2
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        mpirun -np ${NUMRANKS} ${sut} -n 2  --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
+        mpirun -np ${NUMRANKS} ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         retval=$?
         touch $partFile
         if [ $retval != 0 ]
