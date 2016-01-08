@@ -119,7 +119,7 @@ create_distResultFile() {
               echo "NICs in previous rank $rankis : $IICCT"     >> $away_hold
               if [ $rankis -gt -1 ] && [ $IICCT -gt 0 ] ; then
                   echo  RANKP[${rankis}]=$IICCT >> $distResultFile
-                  ((NICCT++))
+                  NICCT=$(($NICCT+$IICCT))
               fi
               if [[ $rnk == *.* ]] ; then
                   rankis=`echo $rnk | awk -F. '{print $1}'`
@@ -127,7 +127,6 @@ create_distResultFile() {
                   echo Rank is $rankis, Thread is $threadis       >> $away_hold
               else 
                   rankis=$rnk
-                  ((NICCT++))
               fi
               echo Found Rank : $word $rest rank is $rankis       >> $away_hold
               IICCT=0
@@ -139,6 +138,7 @@ create_distResultFile() {
         if [ $IICCT -gt 0 ] ; then
             echo  RANKP[${rankis}]=$IICCT >> $distResultFile
         fi
+        NICCT=$(($NICCT+$IICCT))
         echo  numComp=$NICCT >> $distResultFile
         echo previous rank $rankis : $IICCT       >> $away_hold
         ((rankis++))
