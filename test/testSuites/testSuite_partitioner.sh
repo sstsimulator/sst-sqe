@@ -333,17 +333,17 @@ echo "DEBUG: numrank $numranks, was $was"
 }
 #             End of Template
 
-xtest_roundrobin_2()
+test_roundrobin_2()
 {
    partitioner_template 2 "roundrobin" 
 }
 
-xtest_roundrobin_4()
+test_roundrobin_4()
 {
    partitioner_template 4 roundrobin 
 }
 
-xtest_roundrobin_8()
+test_roundrobin_8()
 {
    partitioner_template 8 roundrobin
 }
@@ -354,7 +354,7 @@ xtest_roundrobin_8()
 #   The other partitioner tests should not be limited
 #      to only when Zoltan is Installed.
 #################################################
-xtest_zoltan_2()
+test_zoltan_2()
 {
    if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ; then
        skip_this_test
@@ -364,7 +364,7 @@ xtest_zoltan_2()
    partitioner_template 2 zoltan   
 }
 
-xtest_zoltan_4()
+test_zoltan_4()
 {
    if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ; then
        skip_this_test
@@ -374,7 +374,7 @@ xtest_zoltan_4()
    partitioner_template 4 zoltan  
 }
 
-xtest_zoltan_8()
+test_zoltan_8()
 {
    if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ; then
        skip_this_test
@@ -384,17 +384,17 @@ xtest_zoltan_8()
    partitioner_template 8 zoltan 
 }
 
-xtest_linear_2()
+test_linear_2()
 {
    partitioner_template 2 linear   
 }
 
-xtest_linear_4()
+test_linear_4()
 {
    partitioner_template 4 linear  
 }
 
-xtest_linear_8()
+test_linear_8()
 {
    partitioner_template 8 linear 
 }
@@ -409,22 +409,22 @@ test_simple_4()
    partitioner_template 4 simple  
 }
 
-xtest_simple_8()
+test_simple_8()
 {
    partitioner_template 8 simple 
 }
 
-xtest_single_2()
+test_single_2()
 {
    partitioner_template 2 single   
 }
 
-xtest_single_4()
+test_single_4()
 {
    partitioner_template 4 single  
 }
 
-xtest_single_8()
+test_single_8()
 {
    partitioner_template 8 single 
 }
