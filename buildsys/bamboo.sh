@@ -366,7 +366,7 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_hybridsim.sh
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
+#        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
         ${SST_TEST_SUITES}/testSuite_merlin.sh
         ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
         ${SST_TEST_SUITES}/testSuite_miranda.sh
@@ -400,7 +400,7 @@ echo " #####################################################"
         fi 
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
+#        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
         ${SST_TEST_SUITES}/testSuite_hybridsim.sh
         ${SST_TEST_SUITES}/testSuite_miranda.sh
         ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
@@ -441,7 +441,7 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-    ${SST_TEST_SUITES}/testSuite_memHSieve.sh
+#    ${SST_TEST_SUITES}/testSuite_memHSieve.sh
     ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
     ${SST_TEST_SUITES}/testSuite_sst_mcniagara.sh
 
