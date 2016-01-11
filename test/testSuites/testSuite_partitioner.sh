@@ -272,7 +272,7 @@ PARTITIONER=$2
             done
         else
             echo ' ' ; echo '*****************************************************'
-            echo " Did not find Partition Distribution Information in stdout"
+            echo " Did not find Partition Distribution Information in stdout $PARTITIONER $NUMRANKS"
             echo ' ' ; echo '*****************************************************'
         fi
 
