@@ -103,7 +103,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #
 create_distResultFile() {
 
-        rankis=-1
+        index=-1
         IICCT=0
         NICCT=0
         rm -f $distResultFile
@@ -116,17 +116,21 @@ create_distResultFile() {
         
           echo "/<$word/>"     >> $away_hold
           if [ $word == "Rank:" ] ; then
-              echo "NICs in previous rank $rankis : $IICCT"     >> $away_hold
-              if [ $rankis -gt -1 ] && [ $IICCT -gt 0 ] ; then
-                  echo  RANKP[${rankis}]=$IICCT >> $distResultFile
+              echo "NICs in previous index $index : $IICCT"     >> $away_hold
+              if [ $index -gt -1 ]  ; then
+                  echo  RANKP[${index}]=$IICCT >> $distResultFile
                   NICCT=$(($NICCT+$IICCT))
               fi
               if [[ $rnk == *.* ]] ; then
+                  ((index++))
                   rankis=`echo $rnk | awk -F. '{print $1}'`
                   threadis=`echo $rnk | awk -F. '{print $2}'`
+                  echo  RANKID[${index}]=$rnk >> $distResultFile
                   echo Rank is $rankis, Thread is $threadis       >> $away_hold
               else 
+                  ((index++))
                   rankis=$rnk
+                  echo  RANKID[${index}]=$rnk >> $distResultFile
               fi
               echo Found Rank : $word $rest rank is $rankis       >> $away_hold
               IICCT=0
@@ -135,16 +139,14 @@ create_distResultFile() {
           fi
         done 3<$partFile
  
-        if [ $IICCT -gt 0 ] ; then
-            echo  RANKP[${rankis}]=$IICCT >> $distResultFile
-        fi
+        echo  RANKP[${index}]=$IICCT >> $distResultFile
         NICCT=$(($NICCT+$IICCT))
         echo  numComp=$NICCT >> $distResultFile
         echo previous rank $rankis : $IICCT       >> $away_hold
-        ((rankis++))
+        ((index++))
         #   return number of ranks
-        echo "value is ${rankis}"  >> $away_hold
-        echo $rankis 
+        echo "value is ${index}"  >> $away_hold
+        echo $index 
 }
 #      end of Subroutine create_distResultFile()
 
@@ -267,7 +269,7 @@ PARTITIONER=$2
             ind=0
             while [ $ind -lt $numranks ] 
             do 
-               checkAndPrint ${rank[$ind]}  rank${ind} $numComp
+               checkAndPrint ${rank[$ind]} rank${ind} $numComp
                 ((ind++))
             done
         else
@@ -278,15 +280,14 @@ PARTITIONER=$2
 
             #    Get info from Partition file, creating the file $distResultFile
 
-echo "          next is call to create_distResultFile"
+        echo "          next is call to create_distResultFile"
 
 was=$numranks
         numranks=`create_distResultFile`
 
-echo "  ===============   we have returned "
 echo "DEBUG: numrank $numranks, was $was"
 ##   we now have two definitions of numranks
-  wc $distResultFile
+        wc $distResultFile
 
             #         Source $distResultFile (with the RANK array)
             . $distResultFile 2>std.err
@@ -302,8 +303,8 @@ echo "DEBUG: numrank $numranks, was $was"
             ind=0
             _TOTAL=0
             while [ $ind -lt $numranks ] 
-            do 
-               checkAndPrint ${RANKP[$ind]}  rank${ind} $numComp
+            do
+               checkAndPrint ${RANKP[$ind]} "${RANKID[${ind}]}" $numComp
                _TOTAL=$((${RANKP[$ind]}+${_TOTAL}))
                 ((ind++))
             done
