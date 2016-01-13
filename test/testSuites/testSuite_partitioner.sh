@@ -76,7 +76,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
         checkAndPrint() {
            pc=`checkPerCent $3 $(($1+$3))`
-echo "\$pc is $pc"
            totalPC=$(($totalPC+$pc))
            pc10=$(($DesiredPC/10))
            Pl10=$(($DesiredPC+$pc10)) ; M10=$(($DesiredPC-$pc10))
@@ -178,7 +177,7 @@ PARTITIONER=$2
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        mpirun -np ${NUMRANKS} ${sut} --verbose --run-mode init --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
+        mpirun -np ${NUMRANKS} ${sut} -n 4  --verbose --run-mode init --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         retval=$?
         touch $partFile
         if [ $retval != 0 ]
@@ -274,12 +273,9 @@ PARTITIONER=$2
                checkAndPrint ${rank[$ind]} rank${ind} $numComp
                 ((ind++))
             done
-echo totalPC is $totalPC
             errPC=$(($totalPC-10000))
-echo errPC is $errPC
-#           if [ $errPC -lt -3 ] || [  $errPC -gt 3 ] ; then
-            if [ $errPC -lt -1 ] || [  $errPC -gt 1 ] ; then
-                echo  "PerCent sum is unreasonable "
+            if [ $errPC -lt -$numranks ] || [  $errPC -gt $numranks ] ; then
+                echo  "PerCent sum is unreasonable:  totalPC (x100) is $totalPC"
             fi
         else
             echo ' ' ; echo '*****************************************************'
@@ -318,12 +314,10 @@ echo "DEBUG: numrank $numranks, was $was"
                _TOTAL=$((${RANKP[$ind]}+${_TOTAL}))
                 ((ind++))
             done
-echo totalPC is $totalPC
             errPC=$(($totalPC-10000))
-echo errPC is $errPC
-#           if [ $errPC -lt -3 ] || [  $errPC -gt 3 ] ; then
-            if [ $errPC -lt -1 ] || [  $errPC -gt 1 ] ; then
+            if [ $errPC -lt -$numranks ] || [  $errPC -gt $numranks ] ; then
                 echo  "PerCent sum is unreasonable "
+                echo  "PerCent sum is unreasonable:  totalPC (x100) is $totalPC"
             fi
             if [ ${_TOTAL} == 0 ] ; then
                 echo ' ' ; echo '*****************************************************'
