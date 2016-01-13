@@ -177,7 +177,7 @@ PARTITIONER=$2
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        mpirun -np ${NUMRANKS} ${sut} -n 4  --verbose --run-mode init --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
+        mpirun -np ${NUMRANKS} ${sut} --verbose --run-mode init --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         retval=$?
         touch $partFile
         if [ $retval != 0 ]
@@ -275,7 +275,8 @@ PARTITIONER=$2
             done
             errPC=$(($totalPC-10000))
             if [ $errPC -lt -$numranks ] || [  $errPC -gt $numranks ] ; then
-                echo  "PerCent sum is unreasonable:  totalPC (x100) is $totalPC"
+                echo  "PerCent sum is unreasonable:  totalPC is `pc100 $totalPC`"
+                fail  "PerCent sum is unreasonable:  totalPC is `pc100 $totalPC`"
             fi
         else
             echo ' ' ; echo '*****************************************************'
@@ -316,8 +317,8 @@ echo "DEBUG: numrank $numranks, was $was"
             done
             errPC=$(($totalPC-10000))
             if [ $errPC -lt -$numranks ] || [  $errPC -gt $numranks ] ; then
-                echo  "PerCent sum is unreasonable "
-                echo  "PerCent sum is unreasonable:  totalPC (x100) is $totalPC"
+                echo  "PerCent sum is unreasonable:  totalPC is `pc100 $totalPC`"
+                fail  "PerCent sum is unreasonable:  totalPC is `pc100 $totalPC`"
             fi
             if [ ${_TOTAL} == 0 ] ; then
                 echo ' ' ; echo '*****************************************************'
