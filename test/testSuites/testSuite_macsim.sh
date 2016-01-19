@@ -31,6 +31,14 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+           echo '           SKIP '
+           preFail " MacSim tests do not work with threading (#74)" "skip"
+       fi
+    fi     
+
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long

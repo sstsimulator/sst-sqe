@@ -24,6 +24,13 @@ L_SUITENAME="SST_sst_mcniagara" # Name of this test suite; will be used to
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+           echo '           SKIP '
+           preFail "McNiagara tests do not work with threading (#77)" "skip"
+       fi
+    fi     
+
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long

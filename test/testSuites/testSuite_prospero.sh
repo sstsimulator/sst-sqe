@@ -34,6 +34,10 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 L_TESTFILE=()  # Empty list, used to hold test file names
 
 if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
+   #   Disabled per Issue #73  January 18, 2016
+   echo "Prospero pin test is disabled per issue #73"
+   skip_this_test
+   #    ###
    # ==================  Create program "array"
    
    # ----------------- compile the sstmemtrace library
