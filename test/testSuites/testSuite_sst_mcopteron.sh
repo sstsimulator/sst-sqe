@@ -94,7 +94,7 @@ test_sst_mcopteron_test1() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} -n 2  ${sutArgs} > $outFile 
+        ${sut}  ${sutArgs} > $outFile 
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
 echo "                                             TIME_FLAG is $TIME_FLAG" 
@@ -224,7 +224,7 @@ xxtest_sst_mcopteron_test2() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} -n 2  ${sutArgs} > $outFile 
+        ${sut}  ${sutArgs} > $outFile 
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
 echo "                                             TIME_FLAG is $TIME_FLAG" 
