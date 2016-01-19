@@ -76,6 +76,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
         checkAndPrint() {
            pc=`checkPerCent $3 $(($1+$3))`
+           totalPC=$(($totalPC+$pc))
            pc10=$(($DesiredPC/10))
            Pl10=$(($DesiredPC+$pc10)) ; M10=$(($DesiredPC-$pc10))
            pc50=$(($DesiredPC/2))
@@ -83,10 +84,9 @@ L_TESTFILE=()  # Empty list, used to hold test file names
            if [ $pc -gt $M10 ]  && [ $pc -lt $Pl10 ] ; then
                echo "$2  ${1}   `pc100 $pc`   (Good) "
            elif [ $pc -gt $M50 ]  && [ $pc -lt $Pl50 ] ; then
-               echo "$2  ${1}   `pc100 $pc`   (Working but lousy) "
+               echo "$2  ${1}   `pc100 $pc`   (Working but not even) "
            else
-               echo "$2  $1   `pc100 $pc`   BAD    "
-#              fail " $2  $1   `pc100 $pc`   BAD allocation PerCentage "
+               echo "$2  $1   `pc100 $pc`    "
            fi
         }
         #                     --- end of Subroutine
@@ -177,7 +177,7 @@ PARTITIONER=$2
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        mpirun -np ${NUMRANKS} ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
+        mpirun -np ${NUMRANKS} ${sut} --verbose --run-mode init --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         retval=$?
         touch $partFile
         if [ $retval != 0 ]
@@ -265,13 +265,19 @@ PARTITIONER=$2
             #    Evaluate the Partition  (this is based on Output File)
             DesiredPC=$((10000/$numranks))    ##  x 100
             echo ' '
-            echo "              Per Cent from Verbose output" 
+            echo "              Per Cent from Verbose output $PARTITIONER $NUMRANKS" 
             ind=0
+            totalPC=0
             while [ $ind -lt $numranks ] 
             do 
                checkAndPrint ${rank[$ind]} rank${ind} $numComp
                 ((ind++))
             done
+            errPC=$(($totalPC-10000))
+            if [ $errPC -lt -$numranks ] || [  $errPC -gt $numranks ] ; then
+                echo  "PerCent sum is unreasonable:  totalPC is `pc100 $totalPC`"
+                fail  "PerCent sum is unreasonable:  totalPC is `pc100 $totalPC`"
+            fi
         else
             echo ' ' ; echo '*****************************************************'
             echo " Did not find Partition Distribution Information in stdout $PARTITIONER $NUMRANKS"
@@ -299,15 +305,21 @@ echo "DEBUG: numrank $numranks, was $was"
             fi
             DesiredPC=$((10000/$numranks))    ##  x 100
             echo ' '
-            echo "              Per Cent from Partition File "
+            echo "              Per Cent from Partition File $PARTITIONER $NUMRANKS"
             ind=0
             _TOTAL=0
+            totalPC=0
             while [ $ind -lt $numranks ] 
             do
                checkAndPrint ${RANKP[$ind]} "${RANKID[${ind}]}" $numComp
                _TOTAL=$((${RANKP[$ind]}+${_TOTAL}))
                 ((ind++))
             done
+            errPC=$(($totalPC-10000))
+            if [ $errPC -lt -$numranks ] || [  $errPC -gt $numranks ] ; then
+                echo  "PerCent sum is unreasonable:  totalPC is `pc100 $totalPC`"
+                fail  "PerCent sum is unreasonable:  totalPC is `pc100 $totalPC`"
+            fi
             if [ ${_TOTAL} == 0 ] ; then
                 echo ' ' ; echo '*****************************************************'
                 fail " Something is really wrong!"
