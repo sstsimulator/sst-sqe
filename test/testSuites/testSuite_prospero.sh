@@ -35,8 +35,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
    #   Disabled per Issue #73  January 18, 2016
-   echo "Prospero pin test is disabled per issue #73"
-   skip_this_test
+   preFail "Prospero pin test is disabled per issue #73" "skip"
    #    ###
    # ==================  Create program "array"
    
