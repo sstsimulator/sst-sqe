@@ -66,8 +66,6 @@ test_macro_0001() {
         (${sut} ${sutArgs})  > ${tmpFile}
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-echo "                                             TIME_FLAG is $TIME_FLAG" 
-ls $TIME_FLAG 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
