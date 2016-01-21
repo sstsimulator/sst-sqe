@@ -94,8 +94,6 @@ test_portals_0001() {
         (${sut} ${sutArgs} > ${outFile} 2>$errFile)
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-echo "                                             TIME_FLAG is $TIME_FLAG" 
-ls $TIME_FLAG 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -190,8 +188,6 @@ NORUNtest_portals_0002() {
         (/usr/local/bin/mpirun ${sut} ${sutArgs} 2> ${outFile})
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-echo "                                             TIME_FLAG is $TIME_FLAG" 
-ls $TIME_FLAG 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -265,8 +261,6 @@ test_portals_0003() {
         (${sut} ${sutArgs} > ${outFile} 2>$errFile)
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-echo "                                             TIME_FLAG is $TIME_FLAG" 
-ls $TIME_FLAG 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -355,8 +349,6 @@ test_portals_0004() {
         (${sut} ${sutArgs} > ${outFile} 2>$errFile)
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-echo "                                             TIME_FLAG is $TIME_FLAG" 
-ls $TIME_FLAG 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 

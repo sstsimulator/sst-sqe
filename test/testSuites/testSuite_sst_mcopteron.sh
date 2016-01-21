@@ -24,6 +24,13 @@ L_SUITENAME="SST_sst_mcopteron" # Name of this test suite; will be used to
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+           echo '           SKIP '
+           preFail "McOpteron tests do not work with threading (#76)" "skip"
+       fi
+    fi     
+
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long
@@ -87,11 +94,9 @@ test_sst_mcopteron_test1() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs} > $outFile 
+        ${sut}  ${sutArgs} > $outFile 
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-echo "                                             TIME_FLAG is $TIME_FLAG" 
-ls $TIME_FLAG 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -217,11 +222,9 @@ xxtest_sst_mcopteron_test2() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs} > $outFile 
+        ${sut}  ${sutArgs} > $outFile 
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-echo "                                             TIME_FLAG is $TIME_FLAG" 
-ls $TIME_FLAG 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
