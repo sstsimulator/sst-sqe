@@ -71,8 +71,6 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
         (${sut} ${sutArgs} > ${outFile})
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-echo "                                             TIME_FLAG is $TIME_FLAG" 
-ls $TIME_FLAG 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -106,6 +104,10 @@ matchFail=0
 matchct=0
 while read -u 3 line 
 do
+   if [[ $line == *'Simulation is complete'* ]] ; then
+       echo "Reference: $line"
+       continue
+   fi
    ## check for curTick   
    if [[ $line == *curTick* ]] ; then
                      lref=`cat ${referenceFile} | grep curTick |awk -F= '{print $2}' |awk '{print $1}'`
@@ -241,20 +243,20 @@ OMP_Template ompdynamic 9000
 
 }
 
-#
-#     _noncacheable_ompfort
-#
-test_noncacheable_ompfort() {    
-OMP_Template ompfort 11000
-
-}
-#
-#     _noncacheable_ompFIXEDfort
-#
-test_noncacheable_ompFIXEDfort() {    
-OMP_Template ompFIXEDfort 11000
-
-}
+## #
+## ## #     _noncacheable_ompfort
+## #
+## test_noncacheable_ompfort() {    
+## OMP_Template ompfort 11000
+## 
+## }
+## #
+## #     _noncacheable_ompFIXEDfort
+## #
+## test_noncacheable_ompFIXEDfort() {    
+## OMP_Template ompFIXEDfort 11000
+## 
+## }
 
 
 #

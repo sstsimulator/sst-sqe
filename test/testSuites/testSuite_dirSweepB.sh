@@ -44,7 +44,7 @@ LONGER_COUNT=0
 SHORTER_COUNT=0
 FAIL_COUNT=0
 Secs=`date +%s`
-JND=`expr $Secs % 8`
+JND=`expr $Secs % 7`
 if [[ ${SST_SWEEP_OPENMP:+isSet} == isSet ]]
 then 
     selectBin="omp"${SST_SWEEP_OPENMP}
@@ -56,7 +56,7 @@ else
     OMPLIST[4]="ompreduce"
     OMPLIST[5]="omptriangle"
     OMPLIST[6]="ompbarrier"
-    OMPLIST[7]="ompfort"
+##    OMPLIST[7]="ompfort"
 
     echo $Secs  $JND
     selectBin=${OMPLIST[$JND]}
@@ -94,8 +94,8 @@ else
        BINLIST=${SST_SWEEP_OPENMP}
        nBINS=1
    else
-       BINLIST="atomic api critical dynamic reduce triangle barrier fort"
-       nBINS=8
+       BINLIST="atomic api critical dynamic reduce triangle barrier"
+       nBINS=7
    fi
 fi
 echo Number of binaries = $nBINS $BINLIST
@@ -373,8 +373,6 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
         (${sut} ${sutArgs} --model-options "--L1cachesz=\"$s1\" --L2cachesz=\"$s2\" --L1assoc=$a1 --Replacp=$r --L2assoc=$a2 --L2MSHR=$ml2 --MSIMESI=$c --Pref1=$pf --Pref2=$pf" > ${outFile})
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-echo "                                             TIME_FLAG is $TIME_FLAG" 
-ls $TIME_FLAG 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
