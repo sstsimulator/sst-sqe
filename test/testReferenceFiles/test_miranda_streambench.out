@@ -1,3 +1,5 @@
+l1cache, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
+NO statistics will be printed otherwise!
  cpu.read_reqs : Accumulator : Sum.u64 = 20000; SumSQ.u64 = 20000; Count.u64 = 20000; 
  cpu.write_reqs : Accumulator : Sum.u64 = 10000; SumSQ.u64 = 10000; Count.u64 = 10000; 
  cpu.split_read_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -16,6 +18,8 @@
  l1cache.prefetches_issued : Accumulator : Sum.u64 = 7194; SumSQ.u64 = 7194; Count.u64 = 7194; 
  l1cache.prefetches_canceled_by_page_boundary : Accumulator : Sum.u64 = 117; SumSQ.u64 = 117; Count.u64 = 117; 
  l1cache.prefetches_canceled_by_history : Accumulator : Sum.u64 = 391; SumSQ.u64 = 391; Count.u64 = 391; 
+ l1cache.TotalEventsReceived : Accumulator : Sum.u64 = 44694; SumSQ.u64 = 44694; Count.u64 = 44694; 
+ l1cache.TotalEventsReplayed : Accumulator : Sum.u64 = 12186; SumSQ.u64 = 12186; Count.u64 = 12186; 
  l1cache.CacheHits : Accumulator : Sum.u64 = 29691; SumSQ.u64 = 29691; Count.u64 = 29691; 
  l1cache.GetSHit_Arrival : Accumulator : Sum.u64 = 12111; SumSQ.u64 = 12111; Count.u64 = 12111; 
  l1cache.GetXHit_Arrival : Accumulator : Sum.u64 = 5394; SumSQ.u64 = 5394; Count.u64 = 5394; 
@@ -42,11 +46,6 @@
  l1cache.FetchInvX_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.Inv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.GetSMiss_IS : Accumulator : Sum.u64 = 7457; SumSQ.u64 = 7457; Count.u64 = 7457; 
- l1cache.GetXMiss_IM : Accumulator : Sum.u64 = 46; SumSQ.u64 = 46; Count.u64 = 46; 
- l1cache.GetXMiss_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.GetSExMiss_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.GetSExMiss_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_E : Accumulator : Sum.u64 = 4670; SumSQ.u64 = 4670; Count.u64 = 4670; 
@@ -193,58 +192,23 @@
  l1cache.latency_GetSEx_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.latency_GetSEx_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.latency_GetSEx_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
-
-------------------------------------------------------------------------
---- Cache Stats
---- Name: l1cache
---- Overall Statistics
-------------------------------------------------------------------------
-- Total data requests:                           37194
-     GetS:                                       27194
-     GetX:                                       10000
-     GetSEx:                                     0
-- Total misses:                                  7503
-     GetS, miss on arrival:                      7457
-     GetS, miss after being blocked:             0
-     GetX, miss on arrival:                      46
-     GetX, miss after being blocked:             0
-     GetSEx, miss on arrival:                    0
-     GetSEx, miss after being blocked:           0
-- Total hits:                                    29691
-     GetS, hit on arrival:                       12111
-     GetS, hit after being blocked:              7626
-     GetX, hit on arrival:                       5394
-     GetX, hit after being blocked:              4560
-     GetSEx, hit on arrival:                     0
-     GetSEx, hit after being blocked:            0
-- Hit ratio:                                     79.827%
-- Miss ratio:                                    20.173%
------------- Coherence transitions for misses -------------
-- GetS   I->S:                                   7457
-- GetX   I->M:                                   46
-- GetX   S->M:                                   0
-- GetSEx I->M:                                   0
-- GetSEx S->M:                                   0
------------- Replacements and evictions -------------------
-- PutS sent due to eviction:                     0
-- PutE sent due to eviction:                     4670
-- PutM sent due to eviction:                     2321
------------- Other stats ----------------------------------
-- Inv stalled because LOCK held:                 0
-- Requests received (incl coherence traffic):    44694
-- Requests handled by MSHR (MSHR hits):          12186
-- NACKs sent (MSHR Full, Down):                  0
-- NACKs sent (MSHR Full, Up):                    0
------------- Latency stats --------------------------------
-- Avg Miss Latency (cyc):                        243
-- Latency GetS   I->S:                           243
-- Latency GetX   I->M:                           244
------------- State and event stats ---------------------------
-GetS, I:        7457
-GetS, E:        19737
-GetX, I:        46
-GetX, E:        2454
-GetX, M:        7500
-GetSResp, IS:        7454
-GetXResp, IM:        46
+ l1cache.eventSent_GetS : Accumulator : Sum.u64 = 7457; SumSQ.u64 = 7457; Count.u64 = 7457; 
+ l1cache.eventSent_GetX : Accumulator : Sum.u64 = 46; SumSQ.u64 = 46; Count.u64 = 46; 
+ l1cache.eventSent_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.eventSent_GetSResp : Accumulator : Sum.u64 = 20000; SumSQ.u64 = 20000; Count.u64 = 20000; 
+ l1cache.eventSent_GetXResp : Accumulator : Sum.u64 = 10000; SumSQ.u64 = 10000; Count.u64 = 10000; 
+ l1cache.eventSent_PutS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.eventSent_PutE : Accumulator : Sum.u64 = 4670; SumSQ.u64 = 4670; Count.u64 = 4670; 
+ l1cache.eventSent_PutM : Accumulator : Sum.u64 = 2321; SumSQ.u64 = 2321; Count.u64 = 2321; 
+ l1cache.eventSent_Inv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.eventSent_Fetch : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.eventSent_FetchInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.eventSent_FetchInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.eventSent_FetchResp : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.eventSent_FetchXResp : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.eventSent_AckInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.eventSent_AckPut : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.eventSent_NACK_up : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.eventSent_NACK_down : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.EventStalledForLockedCacheline : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
 Simulation is complete, simulated time: 261.986 us
