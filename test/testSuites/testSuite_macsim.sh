@@ -37,7 +37,13 @@ L_TESTFILE=()  # Empty list, used to hold test file names
            echo '           SKIP '
            preFail " MacSim tests do not work with threading (#74)" "skip"
        fi
-    fi     
+    fi 
+    
+    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+           echo '           SKIP '
+           preFail " MacSim tests do not work on MacOS (#43)" "skip"
+    fi
+
 
 #===============================================================================
 # Test functions
