@@ -1,5 +1,5 @@
 # !/bin/bash
-# sstDep_zoltan_3.8.3.sh
+# sstDep_zoltan_3.83.sh
 
 # Description: 
 
@@ -12,7 +12,7 @@ PARENT_DIR="$( cd -P "$( dirname "$0" )"/.. && pwd )"
 # Environment variable unique to Zoltan
 export SST_BUILD_ZOLTAN=1
 # Environment variable uniquely identifying this script
-export SST_BUILD_ZOLTAN_3_8_3=1
+export SST_BUILD_ZOLTAN_3.83=1
 #===============================================================================
 # Zoltan
 #===============================================================================
@@ -30,14 +30,14 @@ export SST_BUILD_ZOLTAN_3_8_3=1
 # Caveats:
 #     Zoltan requires ParMetis to be built and installed first
 #-------------------------------------------------------------------------------
-export SST_DEPS_SRC_STAGED_ZOLTAN=${SST_DEPS_SRC_STAGING}/Zoltan_v3.8.3
+export SST_DEPS_SRC_STAGED_ZOLTAN=${SST_DEPS_SRC_STAGING}/Zoltan_v3.83
 sstDepsStage_zoltan ()
 {
-    sstDepsAnnounce -h $FUNCNAME -m "Staging Zoltan 3.8.3"
+    sstDepsAnnounce -h $FUNCNAME -m "Staging Zoltan 3.83"
 
     # Extract tarfile. Once unpacked, files should be available in
     # $SST_DEPS_SRC_STAGED_ZOLTAN
-    tar xfz ${SST_DEPS_SRC_PRISTINE}/zoltan_distrib_v3.8.3.tar.gz -C ${SST_DEPS_SRC_STAGING} 2> errFile
+    tar xfz ${SST_DEPS_SRC_PRISTINE}/zoltan_distrib_v3.83.tar.gz -C ${SST_DEPS_SRC_STAGING} 2> errFile
     retval=$?
     touch errFile
     if [ -s errFile ] ; then
@@ -50,7 +50,7 @@ sstDepsStage_zoltan ()
     if [ $retval -ne 0 ]
     then
         # bail out on error
-        echo "ERROR: sstDep_zoltan_3.8.3.sh: Zoltan untar failure"
+        echo "ERROR: sstDep_zoltan_3.83.sh: Zoltan untar failure"
         return $retval
     fi
 
@@ -75,7 +75,7 @@ sstDepsStage_zoltan ()
 export SST_DEPS_INSTALL_ZOLTAN=${SST_DEPS_INSTALL_DEPS}/packages/Zoltan
 sstDepsDeploy_zoltan ()
 {
-    sstDepsAnnounce -h $FUNCNAME -m "Deploying Zoltan 3.8.3"
+    sstDepsAnnounce -h $FUNCNAME -m "Deploying Zoltan 3.83"
 
     mkdir ${SST_DEPS_SRC_STAGED_ZOLTAN}/build
     pushd ${SST_DEPS_SRC_STAGED_ZOLTAN}/build
@@ -92,7 +92,7 @@ sstDepsDeploy_zoltan ()
     if [ $retval -ne 0 ]
     then
         # bail out on error
-        echo "ERROR: sstDep_zoltan_3.8.3.sh: zoltan configure failure"
+        echo "ERROR: sstDep_zoltan_3.83.sh: zoltan configure failure"
         return $retval
     fi
 
@@ -101,7 +101,7 @@ sstDepsDeploy_zoltan ()
     if [ $retval -ne 0 ]
     then
         # bail out on error
-        echo "ERROR: sstDep_zoltan_3.8.3.sh: Zoltan make everything failure"
+        echo "ERROR: sstDep_zoltan_3.83.sh: Zoltan make everything failure"
         cat Zoltan-make-everything-stdout
         return $retval
     fi
@@ -111,7 +111,7 @@ sstDepsDeploy_zoltan ()
     if [ $retval -ne 0 ]
     then
         # bail out on error
-        echo "ERROR: sstDep_zoltan_3.8.3.sh: Zoltan make install failure"
+        echo "ERROR: sstDep_zoltan_3.83.sh: Zoltan make install failure"
         return $retval
     fi
 
@@ -137,6 +137,6 @@ sstDepsDeploy_zoltan ()
 sstDepsQuery_zoltan ()
 {
     # provide version and installation location info
-    echo "export SST_DEPS_VERSION_ZOLTAN=\"3.8.3\""
+    echo "export SST_DEPS_VERSION_ZOLTAN=\"3.83\""
     echo "export SST_DEPS_INSTALL_ZOLTAN=\"${SST_DEPS_INSTALL_ZOLTAN}\""
 }
