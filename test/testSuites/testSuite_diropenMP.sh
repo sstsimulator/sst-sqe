@@ -70,7 +70,15 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
     if [ -f $OMP_case/$OMP_case.x ]
     then
         (${sut} ${sutArgs} > ${outFile})
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
@@ -80,7 +88,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally   $OMP_case"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal   $OMP_case"
              return
         fi
 
@@ -88,6 +96,8 @@ if [ -s "$referenceFile" ] && [ "$(tail -c1 "$referenceFile"; echo x)" != $'\nx'
     echo >> $referenceFile
 fi
 
+wc $referenceFile
+wc $outFile
 matchFail=0
 matchct=0
 while read -u 3 line 
@@ -134,7 +144,7 @@ done 3< $referenceFile
 
 echo "                $matchct lines matched  for $OMP_case" ; echo ' '
         if [ $matchFail != 0 ] ; then
-           fail " $MatchFail lines of Reference file not matched exactly"
+           fail " $matchFail lines of Reference file not matched exactly"
         fi
 
         endSeconds=`date +%s`
@@ -215,18 +225,18 @@ OMP_Template ompcritical 9000
 test_dirompdynamic() {    
 OMP_Template ompdynamic 9000
 
-export SST_TEST_ONE_TEST_TIMEOUT=300
-echo "setting time limit to $SST_TEST_ONE_TEST_TIMEOUT for the OMP fort test that follows"
+## export SST_TEST_ONE_TEST_TIMEOUT=300
+## echo "setting time limit to $SST_TEST_ONE_TEST_TIMEOUT for the OMP fort test that follows"
 
 }
 
-#
-#     _ompfort
-#
-test_dirompfort() {    
-OMP_Template ompfort 11000
-
-}
+## #
+## #     _ompfort
+## #
+## test_dirompfort() {    
+## OMP_Template ompfort 11000
+## 
+## }
 
 
 #

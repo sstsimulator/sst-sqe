@@ -69,7 +69,15 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
     if [ -f $OMP_case/$OMP_case.x ]
     then
         (${sut} ${sutArgs} > ${outFile})
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
@@ -79,7 +87,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally  Uncache $OMP_case"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal  Uncache $OMP_case"
              return
         fi
 
@@ -96,6 +104,10 @@ matchFail=0
 matchct=0
 while read -u 3 line 
 do
+   if [[ $line == *'Simulation is complete'* ]] ; then
+       echo "Reference: $line"
+       continue
+   fi
    ## check for curTick   
    if [[ $line == *curTick* ]] ; then
                      lref=`cat ${referenceFile} | grep curTick |awk -F= '{print $2}' |awk '{print $1}'`
@@ -231,20 +243,20 @@ OMP_Template ompdynamic 9000
 
 }
 
-#
-#     _noncacheable_ompfort
-#
-test_noncacheable_ompfort() {    
-OMP_Template ompfort 11000
-
-}
-#
-#     _noncacheable_ompFIXEDfort
-#
-test_noncacheable_ompFIXEDfort() {    
-OMP_Template ompFIXEDfort 11000
-
-}
+## #
+## ## #     _noncacheable_ompfort
+## #
+## test_noncacheable_ompfort() {    
+## OMP_Template ompfort 11000
+## 
+## }
+## #
+## #     _noncacheable_ompFIXEDfort
+## #
+## test_noncacheable_ompFIXEDfort() {    
+## OMP_Template ompFIXEDfort 11000
+## 
+## }
 
 
 #

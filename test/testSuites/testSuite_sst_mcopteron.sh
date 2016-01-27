@@ -24,6 +24,13 @@ L_SUITENAME="SST_sst_mcopteron" # Name of this test suite; will be used to
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+           echo '           SKIP '
+           preFail "McOpteron tests do not work with threading (#76)" "skip"
+       fi
+    fi     
+
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long
@@ -87,8 +94,16 @@ test_sst_mcopteron_test1() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs} > $outFile 
-        if [ $? != 0 ]
+        ${sut}  ${sutArgs} > $outFile 
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
@@ -98,7 +113,7 @@ test_sst_mcopteron_test1() {
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              RemoveComponentWarning
              return
         fi
@@ -207,8 +222,16 @@ xxtest_sst_mcopteron_test2() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs} > $outFile 
-        if [ $? != 0 ]
+        ${sut}  ${sutArgs} > $outFile 
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
@@ -218,7 +241,7 @@ xxtest_sst_mcopteron_test2() {
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
         sed -i'.3sed' -e'/ nan /d' $outFile

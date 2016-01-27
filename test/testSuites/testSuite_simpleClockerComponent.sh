@@ -96,12 +96,20 @@ Clocker_template() {
     rm -f ${outFile}
     # Run SUT
     (${sut} --verbose  ${sutArgs} > $outFile)
-    if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
     then
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
          sed 10q $outFile
-         fail "sst did not finish normally"
+         fail "sst did not finish normally, RetVal=$RetVal"
          return 1
     else
         echo "                Scale factor is $FAC"    

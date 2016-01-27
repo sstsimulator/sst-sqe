@@ -79,12 +79,20 @@ echo $sutArgs
 echo "------------------------------"
 
     (${sut} ${sutArgs} > ${tmpFile}) 2>${errFile}
-    if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
     then
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
          wc ${tmpFile} ${referenceFile}
-         fail " WARNING: sst did not finish normally" 
+         fail " WARNING: sst did not finish normally, RetVal=$RetVal" 
          grep -v Warning:..Param $errFile
          return
     fi

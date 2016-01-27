@@ -50,7 +50,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #     Match of output csv file against reference file
 # Caveats:
 #     The csvput files must match the reference file *exactly*,
-#     requiring that the command lines for creating both the cvsput
+#     requiring that the command lines for creating both the csvput
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
 test_memHSieve() {
@@ -73,21 +73,35 @@ test_memHSieve() {
     then
         # Run SUT
         (${sut} ${sutArgs} > $outFile)
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              wc $referenceFile $csvFile
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              popd
              return
         fi
+        # Ignore the time field in the answer, which has strange multi thread behavor
+        sed 's/Histogram,....../Histogram,/' $referenceFile > Tgold
+        sed 's/Histogram,....../Histogram,/' $csvFile > Tcsv 
         wc $referenceFile $csvFile
-        diff -b $referenceFile $csvFile
+        diff -b Tgold Tcsv
         if [ $? != 0 ]
         then  
              fail " Reference does not Match Output"
         fi
+        rm Tgold Tcsv
+        echo ' '
+        grep 'Simulation is complete' $outFile ; echo ' '
     else
         # Problem encountered: can't find or can't run SUT (doesn't
         # really do anything in Phase I)

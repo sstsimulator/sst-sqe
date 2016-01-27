@@ -34,6 +34,9 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 L_TESTFILE=()  # Empty list, used to hold test file names
 
 if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
+   #   Disabled per Issue #73  January 18, 2016
+   preFail "Prospero pin test is disabled per issue #73" "skip"
+   #    ###
    # ==================  Create program "array"
    
    # ----------------- compile the sstmemtrace library
@@ -84,6 +87,10 @@ else
 fi   
 echo " ---------------  Three files are expected: "
 cksum *.trace
+if [ $? != 0 ] ; then
+   echo "No trace files found"
+   preFail
+fi
 echo ' '
 
 ln -sf ${SST_ROOT}/sst/elements/memHierarchy/tests/DDR3_micron_32M_8B_x4_sg125.ini
@@ -150,7 +157,7 @@ template_prospero() {
              echo ' '; echo ERROR: sst did not finish normally ; echo ' '
              ls -l ${sut}
              wc $outFile
-             fail "ERROR: sst did not finish normally"
+             fail "ERROR: sst did not finish normally, RetVal=$RetVal"
              RemoveComponentWarning
              return
         fi

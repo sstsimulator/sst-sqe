@@ -97,13 +97,13 @@ sstDepsDeploy_chdl_module ()
 
     pushd ${SST_DEPS_SRC_STAGED_CHDL_MODULE}
 
-    sstDepsAnnounce -h $FUNCNAME -m "Patching CHDL-module dev Makefile"
+#    sstDepsAnnounce -h $FUNCNAME -m "Patching CHDL-module dev Makefile"
 #######  Patch the Make file
 
-    patch -p1 -i ${SST_DEPS_PATCHFILES}/chdl-module-Makefile.patch
+#    patch -p1 -i ${SST_DEPS_PATCHFILES}/chdl-module-Makefile.patch
 
 #      Remove the ldconfig
-    sed -i'.0sed' -e'/ldconfig/d' Makefile
+#    sed -i'.0sed' -e'/ldconfig/d' Makefile
     ls -la
 
     # Build and install chdl-module

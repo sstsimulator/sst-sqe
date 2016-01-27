@@ -31,6 +31,20 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+           echo '           SKIP '
+           preFail " MacSim tests do not work with threading (#74)" "skip"
+       fi
+    fi 
+    
+    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+           echo '           SKIP '
+           preFail " MacSim tests do not work on MacOS (#43)" "skip"
+    fi
+
+
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long
@@ -122,11 +136,19 @@ macsim_case=$1
     then
         # Run SUT
         (${sut} ${sutArgs} > $outFile)
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
         pushd ./references/vectoradd/${macsim_case}
@@ -136,7 +158,8 @@ macsim_case=$1
         matchFail=0
         for ref in $fileList
         do
-            diff  ./references/vectoradd/${macsim_case}/$ref ./results/$ref 
+            wc  ./references/vectoradd/${macsim_case}/$ref ./results/$ref 
+            diff  ./references/vectoradd/${macsim_case}/$ref ./results/$ref > /dev/null
             if [ $? != 0 ] ; then
                echo "   ---  Reviewing  ${macsim_case}   $ref"
                grep -v EXE_TIME ./references/vectoradd/${macsim_case}/$ref > _r
