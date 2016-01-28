@@ -1150,6 +1150,11 @@ linuxSetBoostMPI() {
            ModuleEx unload mpi # unload any default to avoid conflict error
            ModuleEx load mpi/${desiredMPI}
            ;;
+       openmpi-1.6.5)
+           echo "OpenMPI (openmpi-1.6.5) selected"
+           ModuleEx unload mpi # unload any default to avoid conflict error
+           ModuleEx load mpi/${desiredMPI}
+           ;;
        openmpi-1.8)
            echo "OpenMPI (openmpi-1.8) selected"
            ModuleEx unload mpi # unload any default to avoid conflict error
@@ -1243,7 +1248,8 @@ linuxSetBoostMPI() {
    then
        # GNU Linear Programming Kit (GLPK)
        echo "bamboo.sh: Load GLPK"
-       ModuleEx load glpk/glpk-4.54
+       # Load available GLPK, whatever version it is
+       ModuleEx load glpk
        # System C
 #       echo "bamboo.sh: Load System C"
 #       ModuleEx load systemc/systemc-2.3.0
