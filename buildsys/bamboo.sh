@@ -92,8 +92,8 @@ popd
 if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
-   echo "     git clone -b $SST_TOPSSTBRANCH  $SST_GITHUB_REPO/sst . "
-   git clone -b $SST_TOPSSTBRANCH $SST_GITHUB_REPO/sst .
+   echo "     git clone -b $SST_TOPSSTBRANCH  $SST_GITHUB_REPO/$SST_REPO_TOP_SST . "
+   git clone -b $SST_TOPSSTBRANCH $SST_GITHUB_REPO/$SST_REPO_TOP_SST .
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone \" FAILED.  retVal = $retVal"
@@ -109,11 +109,11 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    pwd
    ls -l
 
-   echo "     git clone -b $SST_COREBRANCH $SST_GITHUB_REPO/sst-core core "
-   git clone -b $SST_COREBRANCH $SST_GITHUB_REPO/sst-core core
+   echo "     git clone -b $SST_COREBRANCH $SST_GITHUB_REPO/$SST_REPO_SST_CORE core "
+   git clone -b $SST_COREBRANCH $SST_GITHUB_REPO/$SST_REPO_SST_CORE core
    retVal=$?
    if [ $retVal != 0 ] ; then
-      echo "\"git of sst-core \" FAILED.  retVal = $retVal"
+      echo "\"git of $SST_REPO_SST_CORE \" FAILED.  retVal = $retVal"
       exit
    fi
    pushd core
@@ -121,11 +121,11 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    popd
 
 
-   echo "     git clone -b $SST_ELEMENTSBRANCH $SST_GITHUB_REPO/sst-elements elements "
-   git clone -b $SST_ELEMENTSBRANCH $SST_GITHUB_REPO/sst-elements elements
+   echo "     git clone -b $SST_ELEMENTSBRANCH $SST_GITHUB_REPO/$SST_REPO_SST_ELEMENTS elements "
+   git clone -b $SST_ELEMENTSBRANCH $SST_GITHUB_REPO/$SST_REPO_SST_ELEMENTS elements
    retVal=$?
    if [ $retVal != 0 ] ; then
-      echo "\"git of sst-elements \" FAILED.  retVal = $retVal"
+      echo "\"git of $SST_REPO_SST_ELEMENTS \" FAILED.  retVal = $retVal"
       exit
    fi
    pushd elements
