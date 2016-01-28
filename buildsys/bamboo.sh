@@ -17,11 +17,37 @@
 # Definitions
 #=========================================================================
 
-# CHANGES HERE FOR JENKINS TESTING                                                                                             
+# CHANGES HERE FOR JENKINS TESTING USING AUTOTESTER
+# Which Organization or Users Account to Access (default is sstsimulator)
 if [[ ${SST_GITHUB_REPO:+isSet} != isSet ]] ; then
     SST_GITHUB_REPO=https://github.com/sstsimulator
 fi
-                        
+
+###
+
+# Which Repository to use for SQE (default is sst-sqe)
+if [[ ${SST_REPO_SST_SQE:+isSet} != isSet ]] ; then
+    SST_REPO_SST_SQE=sst-sqe
+fi
+
+# Which Repository to use for CORE (default is sst-core)
+if [[ ${SST_REPO_SST_CORE:+isSet} != isSet ]] ; then
+    SST_REPO_SST_CORE=sst-core
+fi
+
+# Which Repository to use for ELEMENTS (default is sst-elements)
+if [[ ${SST_REPO_SST_ELEMENTS:+isSet} != isSet ]] ; then
+    SST_REPO_SST_ELEMENTS=sst-elements
+fi
+
+# Which Repository to use for SQE (default is sst)
+if [[ ${SST_REPO_TOP_SST:+isSet} != isSet ]] ; then
+    SST_REPO_TOP_SST=sst
+fi
+
+###
+
+# Which branches to use for each repo 
 if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
     SST_SQEBRANCH=devel
 fi
@@ -41,10 +67,10 @@ fi
 echo "#############################################################"
 echo "===== BAMBOO.SH STARTED ====="
 echo "  GitHub Main Repository = $SST_GITHUB_REPO"
-echo "  GitHub SQE Repository and Branch = $SST_GITHUB_REPO/sst-sqe $SST_SQEBRANCH"
-echo "  GitHub CORE Repository and Branch = $SST_GITHUB_REPO/sst-core $SST_COREBRANCH"
-echo "  GitHub ELEMENTS Repository and Branch = $SST_GITHUB_REPO/sst-elements $SST_ELEMENTSBRANCH"
-echo "  GitHub Top SST Repository and Branch = $SST_GITHUB_REPO/sst $SST_TOPSSTBRANCH"
+echo "  GitHub SQE Repository and Branch = $SST_GITHUB_REPO/$SST_REPO_SST_SQE $SST_SQEBRANCH"
+echo "  GitHub CORE Repository and Branch = $SST_GITHUB_REPO/$SST_REPO_SST_CORE $SST_COREBRANCH"
+echo "  GitHub ELEMENTS Repository and Branch = $SST_GITHUB_REPO/$SST_REPO_SST_ELEMENTS $SST_ELEMENTSBRANCH"
+echo "  GitHub Top SST Repository and Branch = $SST_GITHUB_REPO/$SST_REPO_TOP_SST $SST_TOPSSTBRANCH"
 echo "#############################################################"
 
 
