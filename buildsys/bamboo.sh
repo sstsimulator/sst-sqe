@@ -1091,6 +1091,11 @@ linuxSetBoostMPI() {
            ModuleEx unload mpi # unload any default to avoid conflict error
            ModuleEx load mpi/${desiredMPI}
            ;;
+        openmpi-1.10)
+           echo "OpenMPI (openmpi-1.10) selected"
+           ModuleEx unload mpi # unload any default to avoid conflict error
+           ModuleEx load mpi/${desiredMPI}
+           ;;
        none)
            echo "MPI requested as \"none\".    No MPI loaded"
            ModuleEx unload mpi # unload any default 
