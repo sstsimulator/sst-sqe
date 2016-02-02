@@ -965,7 +965,7 @@ getconfig() {
          sched_DN_only)
             export | egrep SST_DEPS_
             miscEnv="${mpi_environment}"
-            depsStr="-k none -d non -p none -g none -m none -i none -o none -h none -s none -q none -M none -N default -z none -c none"
+            depsStr="-k none -d non -p none -g none -m none -i none -o none -h none -s none -q none -M none -N none -z none -c none"
             setConvenienceVars "$depsStr"
             configStr="$baseoptions  $miscEnv"
               
