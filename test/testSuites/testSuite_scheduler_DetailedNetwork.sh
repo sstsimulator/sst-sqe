@@ -119,7 +119,10 @@ emberpath="$SST_SRC/sst/elements/ember/test"
 #sed -i "s|PATH|$emberpath|g" emberLoad.py
 sed "s|PATH|$emberpath|g" $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py > emberLoad.py
 
-cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
+##  John 2016
+## cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
+cp $SST_TEST_ROOT/test/testInputFiles/run_DetailedNetworkSim.py .
+##  John 2016
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.py .
