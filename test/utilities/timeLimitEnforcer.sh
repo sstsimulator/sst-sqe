@@ -24,9 +24,9 @@ echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
 date
 echo ' '
 
-SSTX_PID=`ps -ef | grep 'sst ' | grep $PPID | awk '{ print $2 }'`
+KILL_PID=`ps -ef | grep 'sst ' | grep $PPID | awk '{ print $2 }'`
 
-if [ -z $SSTX_PID ] ; then
+if [ -z $KILL_PID ] ; then
     echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
     echo "No corresponding child named \"sst\" "
     ps -f | grep $PPID
@@ -38,29 +38,34 @@ if [ -z $SSTX_PID ] ; then
         echo "No corresponding child named \"python\" "
         echo ' '
     fi
-    SSTX_PID=`ps -ef | grep 'sst ' | grep $PY_PID | awk '{ print $2 }'`
+    KILL_PID=$PY_PID
 fi
-ps -f -p $SSTX_PID | grep $SSTX_PID
 
+ps -f -p $KILL_PID | grep $KILL_PID
 if [ $? == 1 ] ; then
-    echo " Can not find SST to terminate,  pid = $SSTX_PID "
+    echo " Can not find process to terminate,  pid = $KILL_PID "
     echo "     I am $MY_PID,   my parent was $PPID" 
     ps -f U $USER
+    echo ' '
+    echo "kill my parents"
+    kill -9 $1
+    kill -9 $PPID
+    exit
 else
 
-    kill $SSTX_PID
+    kill $KILL_PID
 #                     Believe I remember that this always return zero
     if [ $? == 1 ] ; then
-        echo " Kill of $SST_PIDX for TIME OUT   FAILED"
+        echo " Kill of $KILL_PID for TIME OUT   FAILED"
         echo "     I am $MY_PID,   my parent was $PPID" 
         ps -f U $USER
         echo " Try a \"kill -9\"  "
-        kill -9 $SSTX_PID
+        kill -9 $KILL_PID
     fi
 fi
-ps -f -p $SSTX_PID | grep $SSTX_PID
+ps -f -p $KILL_PID | grep $KILL_PID
 if [ $? == 0 ] ; then
-    echo " It's still there!  ($SSTX_PID)"
+    echo " It's still there!  ($KILL_PID)"
     echo " Try a \"kill -9\" "
-    kill -9 $SSTX_PID
+    kill -9 $KILL_PID
 fi
