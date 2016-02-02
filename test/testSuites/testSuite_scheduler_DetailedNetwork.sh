@@ -136,7 +136,7 @@ grep 'sst ' run_DetailedNetworkSim.py
 # run sst
  
 ## ./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py > /dev/null
-./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py > local.output
+./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py | sed 900q
 retVal=$?
 if [ $retVal -ne 0 ] ; then
 #    FAIL and BAIL
@@ -186,6 +186,6 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
-export SST_TEST_ONE_TEST_TIMEOUT=3000
+export SST_TEST_ONE_TEST_TIMEOUT=800
 
 (. ${SHUNIT2_SRC}/shunit2)
