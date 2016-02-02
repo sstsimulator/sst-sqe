@@ -20,14 +20,15 @@
 export SST_ROOT=`pwd`
 
 echo "#############################################################"
-echo "  Version Oct 28 1400 hours "
-
+echo "  Version February 2 1100 hours "
 echo ' '
 pwd
 ls -la
 echo ' '
 pushd ../sqe
+echo "               SQE branch"
 git branch
+echo ' '
 popd
 
 ##  Check out other repositories except second time on Make Dist test
