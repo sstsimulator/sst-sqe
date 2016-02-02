@@ -121,7 +121,7 @@ sed "s|PATH|$emberpath|g" $SST_SRC/sst/elements/scheduler/simulations/emberLoad.
 
 ##  John 2016
 ## cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
-cp $SST_TEST_ROOT/test/testInputFiles/run_DetailedNetworkSim.py .
+cp $SST_TEST_ROOT/testInputFiles/run_DetailedNetworkSim.py .
 ##  John 2016
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
@@ -135,7 +135,8 @@ grep 'sst ' run_DetailedNetworkSim.py
 
 # run sst
  
-./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py > /dev/null
+## ./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py > /dev/null
+./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py > local.output
 retVal=$?
 if [ $retVal -ne 0 ] ; then
 #    FAIL and BAIL
