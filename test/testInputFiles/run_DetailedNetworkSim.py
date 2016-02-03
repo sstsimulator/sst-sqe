@@ -15,7 +15,7 @@ import numpy as np
 
 # Function to run linux commands
 def run(cmd):
-    #print(cmd)
+    print(cmd)
     os.system(cmd)
 
 def clear_files(options):
