@@ -17,37 +17,35 @@
 # Definitions
 #=========================================================================
 
-# CHANGES HERE FOR JENKINS TESTING USING AUTOTESTER
-# Which Organization or Users Account to Access (default is sstsimulator)
-if [[ ${SST_GITHUB_REPO:+isSet} != isSet ]] ; then
-    SST_GITHUB_REPO=https://github.com/sstsimulator
+# Check Environement variables that control what Repo and branch we are planning
+# to use.  Most of the time the defaults are used, but by setting the Environment
+# variables, we can control what (and from where) files are pulled.
+# This feature is critical for the autotesters as files may come from a different 
+# branch and/or fork
+
+# Which Repository to use for SQE (default is https://github.com/sstsimulator/sst-sqe)
+if [[ ${SST_SQEREPO:+isSet} != isSet ]] ; then
+    SST_SQEREPO=https://github.com/sstsimulator/sst-sqe
+fi
+
+# Which Repository to use for CORE (default is https://github.com/sstsimulator/sst-core)
+if [[ ${SST_COREREPO:+isSet} != isSet ]] ; then
+    SST_COREREPO=https://github.com/sstsimulator/sst-core
+fi
+
+# Which Repository to use for ELEMENTS (default is https://github.com/sstsimulator/sst-elements)
+if [[ ${SST_ELEMENTSREPO:+isSet} != isSet ]] ; then
+    SST_ELEMENTSREPO=https://github.com/sstsimulator/sst-elements
+fi
+
+# Which Repository to use for SQE (default is https://github.com/sstsimulator/sst)
+if [[ ${SST_TOPSSTREPO:+isSet} != isSet ]] ; then
+    SST_TOPSSTREPO=https://github.com/sstsimulator/sst
 fi
 
 ###
 
-# Which Repository to use for SQE (default is sst-sqe)
-if [[ ${SST_REPO_SST_SQE:+isSet} != isSet ]] ; then
-    SST_REPO_SST_SQE=sst-sqe
-fi
-
-# Which Repository to use for CORE (default is sst-core)
-if [[ ${SST_REPO_SST_CORE:+isSet} != isSet ]] ; then
-    SST_REPO_SST_CORE=sst-core
-fi
-
-# Which Repository to use for ELEMENTS (default is sst-elements)
-if [[ ${SST_REPO_SST_ELEMENTS:+isSet} != isSet ]] ; then
-    SST_REPO_SST_ELEMENTS=sst-elements
-fi
-
-# Which Repository to use for SQE (default is sst)
-if [[ ${SST_REPO_TOP_SST:+isSet} != isSet ]] ; then
-    SST_REPO_TOP_SST=sst
-fi
-
-###
-
-# Which branches to use for each repo 
+# Which branches to use for each repo (default is devel)
 if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
     SST_SQEBRANCH=devel
 fi
@@ -66,11 +64,10 @@ fi
 
 echo "#############################################################"
 echo "===== BAMBOO.SH STARTED ====="
-echo "  GitHub Main Repository = $SST_GITHUB_REPO"
-echo "  GitHub SQE Repository and Branch = $SST_GITHUB_REPO/$SST_REPO_SST_SQE $SST_SQEBRANCH"
-echo "  GitHub CORE Repository and Branch = $SST_GITHUB_REPO/$SST_REPO_SST_CORE $SST_COREBRANCH"
-echo "  GitHub ELEMENTS Repository and Branch = $SST_GITHUB_REPO/$SST_REPO_SST_ELEMENTS $SST_ELEMENTSBRANCH"
-echo "  GitHub Top SST Repository and Branch = $SST_GITHUB_REPO/$SST_REPO_TOP_SST $SST_TOPSSTBRANCH"
+echo "  GitHub SQE Repository and Branch = $SST_SQEREPO $SST_SQEBRANCH"
+echo "  GitHub CORE Repository and Branch = $SST_COREREPO $SST_COREBRANCH"
+echo "  GitHub ELEMENTS Repository and Branch = $SST_ELEMENTSREPO $SST_ELEMENTSBRANCH"
+echo "  GitHub Top SST Repository and Branch = $SST_TOPSSTREPO $SST_TOPSSTBRANCH"
 echo "#############################################################"
 
 
@@ -92,15 +89,15 @@ popd
 if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
-   echo "     git clone -b $SST_TOPSSTBRANCH  $SST_GITHUB_REPO/$SST_REPO_TOP_SST . "
-   git clone -b $SST_TOPSSTBRANCH $SST_GITHUB_REPO/$SST_REPO_TOP_SST .
+   echo "     git clone -b $SST_TOPSSTBRANCH  $SST_TOPSSTREPO . "
+   git clone -b $SST_TOPSSTBRANCH $SST_TOPSSTREPO .
    retVal=$?
    if [ $retVal != 0 ] ; then
-      echo "\"git clone \" FAILED.  retVal = $retVal"
+      echo "\"git clone of $SST_TOPSSTREPO \" FAILED.  retVal = $retVal"
       exit
    fi
    echo " "
-   echo " the sst Repo has been cloned.    core and elements to go"
+   echo " the sst Repo has been cloned. Core and Elements to go"
    ls
 
 
@@ -109,11 +106,11 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    pwd
    ls -l
 
-   echo "     git clone -b $SST_COREBRANCH $SST_GITHUB_REPO/$SST_REPO_SST_CORE core "
-   git clone -b $SST_COREBRANCH $SST_GITHUB_REPO/$SST_REPO_SST_CORE core
+   echo "     git clone -b $SST_COREBRANCH $SST_COREREPO core "
+   git clone -b $SST_COREBRANCH $SST_COREREPO core
    retVal=$?
    if [ $retVal != 0 ] ; then
-      echo "\"git of $SST_REPO_SST_CORE \" FAILED.  retVal = $retVal"
+      echo "\"git clone of $SST_COREREPO \" FAILED.  retVal = $retVal"
       exit
    fi
    pushd core
@@ -121,24 +118,15 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    popd
 
 
-   echo "     git clone -b $SST_ELEMENTSBRANCH $SST_GITHUB_REPO/$SST_REPO_SST_ELEMENTS elements "
-   git clone -b $SST_ELEMENTSBRANCH $SST_GITHUB_REPO/$SST_REPO_SST_ELEMENTS elements
+   echo "     git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO elements "
+   git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO elements
    retVal=$?
    if [ $retVal != 0 ] ; then
-      echo "\"git of $SST_REPO_SST_ELEMENTS \" FAILED.  retVal = $retVal"
+      echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
       exit
    fi
    pushd elements
    git log -n 1 | grep commit
-   
-##########################DEBUG DEBUG - REMOVE ME FOR FINAL CODE ##############
-echo "DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG"
-echo "=== CAT simpleClockerComponent.cc ==="
-cat ./simpleElementExample/simpleClockerComponent.cc
-echo "=== CAT simpleComponent.cc ==="
-cat ./simpleElementExample/simpleComponent.cc
-echo "DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG"
-##########################DEBUG DEBUG - REMOVE ME FOR FINAL CODE ##############
    
    popd
    ls -l
