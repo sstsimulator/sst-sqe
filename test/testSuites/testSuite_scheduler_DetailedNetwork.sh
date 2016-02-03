@@ -136,7 +136,7 @@ grep 'sst ' run_DetailedNetworkSim.py
 # run sst
  
 ## ./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py > /dev/null
-./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py | sed 900q
+stdbuf -o0 -e0 ./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py | sed 900q
 retVal=$?
 if [ $retVal -ne 0 ] ; then
 #    FAIL and BAIL
