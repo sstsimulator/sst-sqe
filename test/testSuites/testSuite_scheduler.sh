@@ -449,17 +449,25 @@ test_scheduler_0005() {
         fi
         echo "" > ${outFile}
 
-         tail -n +2 ${SST_TEST_OUTPUTS}/test_scheduler_Atlas.sim.alloc >> ${outFile};
-         tail -n +2 ${SST_TEST_OUTPUTS}/test_scheduler_Atlas.sim.time >> ${outFile};
+        tail -n +2 ${SST_TEST_OUTPUTS}/test_scheduler_Atlas.sim.alloc >> ${outFile};
+        tail -n +2 ${SST_TEST_OUTPUTS}/test_scheduler_Atlas.sim.time >> ${outFile};
 
-         diff -b ${outFile} ${referenceFile} > /dev/null
-         if [ $? -ne 0 ]
-         then
-             wc ${outFile} ${referenceFile};
-             echo word count of diff is:
-             diff ${outFile} ${referenceFile} | wc
-             diff ${outFile} ${referenceFile}    ###   TEMP ?
-             fail "Output does NOT match Reference"
+
+        diff -b ${referenceFile} ${outFile} > /dev/null;
+        if [ $? -ne 0 ]
+        then
+             ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
+             new=`wc ${outFile}       | awk '{print $1, $2}'`;
+             if [ "$ref" == "$new" ];
+             then
+                 echo "outFile word/line count matches Reference"
+             else
+                 echo "Scheduler test-5  Fails"
+                 tail $outFile
+                 fail "outFile word/line count does NOT matches Reference"
+             fi
+         else
+             echo ReferenceFile is an exact match of outFile
          fi
     fi
 }

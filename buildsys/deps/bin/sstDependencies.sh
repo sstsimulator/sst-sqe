@@ -1165,7 +1165,7 @@ sstDepsDoDependencies ()
 #   -k DiskSim version (default|static|none)
 #   -d DRAMSim version (default|stabledevel|2.2|r4b00b22|none)
 #   -p ParMETIS version (default|3.1.1|none)
-#   -z Zoltan version (default|3.2|3.8|none)
+#   -z Zoltan version (default|3.2|3.83.8.3|none)
 #   -b Boost version (default|1.50|1.49|1.43|none)
 #   -g gem5 version (default|4.0|stabledevel|gcc-4.6.4|none)
 #   -m McPAT version (default|beta|none)
@@ -1272,6 +1272,10 @@ do
                 default|3.8) # build default Zoltan
                     echo "# (default) 3.8: will build Zoltan 3.8"
                     . ${SST_DEPS_BIN}/sstDep_zoltan_3.8.sh
+                    ;;
+                3.83) # build Zoltan 3.83
+                    echo "#  will build Zoltan 3.83"
+                    . ${SST_DEPS_BIN}/sstDep_zoltan_3.83.sh
                     ;;
                 3.2) # build default Zoltan
                     echo "#  will build Zoltan 3.2"
