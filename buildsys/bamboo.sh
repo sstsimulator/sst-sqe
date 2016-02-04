@@ -16,6 +16,61 @@
 #=========================================================================
 # Definitions
 #=========================================================================
+
+# Check Environement variables that control what Repo and branch we are planning
+# to use.  Most of the time the defaults are used, but by setting the Environment
+# variables, we can control what (and from where) files are pulled.
+# This feature is critical for the autotesters as files may come from a different 
+# branch and/or fork
+
+# Which Repository to use for SQE (default is https://github.com/sstsimulator/sst-sqe)
+if [[ ${SST_SQEREPO:+isSet} != isSet ]] ; then
+    SST_SQEREPO=https://github.com/sstsimulator/sst-sqe
+fi
+
+# Which Repository to use for CORE (default is https://github.com/sstsimulator/sst-core)
+if [[ ${SST_COREREPO:+isSet} != isSet ]] ; then
+    SST_COREREPO=https://github.com/sstsimulator/sst-core
+fi
+
+# Which Repository to use for ELEMENTS (default is https://github.com/sstsimulator/sst-elements)
+if [[ ${SST_ELEMENTSREPO:+isSet} != isSet ]] ; then
+    SST_ELEMENTSREPO=https://github.com/sstsimulator/sst-elements
+fi
+
+# Which Repository to use for SQE (default is https://github.com/sstsimulator/sst)
+if [[ ${SST_TOPSSTREPO:+isSet} != isSet ]] ; then
+    SST_TOPSSTREPO=https://github.com/sstsimulator/sst
+fi
+
+###
+
+# Which branches to use for each repo (default is devel)
+if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
+    SST_SQEBRANCH=devel
+fi
+                        
+if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
+    SST_COREBRANCH=devel
+fi
+                        
+if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
+    SST_ELEMENTSBRANCH=devel
+fi
+
+if [[ ${SST_TOPSSTBRANCH:+isSet} != isSet ]] ; then
+    SST_TOPSSTBRANCH=devel
+fi
+
+echo "#############################################################"
+echo "===== BAMBOO.SH STARTED ====="
+echo "  GitHub SQE Repository and Branch = $SST_SQEREPO $SST_SQEBRANCH"
+echo "  GitHub CORE Repository and Branch = $SST_COREREPO $SST_COREBRANCH"
+echo "  GitHub ELEMENTS Repository and Branch = $SST_ELEMENTSREPO $SST_ELEMENTSBRANCH"
+echo "  GitHub Top SST Repository and Branch = $SST_TOPSSTREPO $SST_TOPSSTBRANCH"
+echo "#############################################################"
+
+
 # Root of directory checked out, where this script should be found
 export SST_ROOT=`pwd`
 
@@ -35,15 +90,15 @@ popd
 if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
-   echo "     git clone  https://github.com/sstsimulator/sst . "
-   git clone -b devel https://github.com/sstsimulator/sst .
+   echo "     git clone -b $SST_TOPSSTBRANCH  $SST_TOPSSTREPO . "
+   git clone -b $SST_TOPSSTBRANCH $SST_TOPSSTREPO .
    retVal=$?
    if [ $retVal != 0 ] ; then
-      echo "\"git clone \" FAILED.  retVal = $retVal"
+      echo "\"git clone of $SST_TOPSSTREPO \" FAILED.  retVal = $retVal"
       exit
    fi
    echo " "
-   echo " the sst Repo has been cloned.    core and elements to go"
+   echo " the sst Repo has been cloned. Core and Elements to go"
    ls
 
 
@@ -52,11 +107,11 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    pwd
    ls -l
 
-   echo "     git clone -b devel https://github.com/sstsimulator/sst-core core "
-   git clone -b devel https://github.com/sstsimulator/sst-core core
+   echo "     git clone -b $SST_COREBRANCH $SST_COREREPO core "
+   git clone -b $SST_COREBRANCH $SST_COREREPO core
    retVal=$?
    if [ $retVal != 0 ] ; then
-      echo "\"git of sst-core \" FAILED.  retVal = $retVal"
+      echo "\"git clone of $SST_COREREPO \" FAILED.  retVal = $retVal"
       exit
    fi
    pushd core
@@ -64,21 +119,23 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    popd
 
 
-   echo "     git clone -b devel https://github.com/sstsimulator/sst-elements elements "
-   git clone -b devel https://github.com/sstsimulator/sst-elements elements
+   echo "     git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO elements "
+   git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO elements
    retVal=$?
    if [ $retVal != 0 ] ; then
-      echo "\"git of sst-elements \" FAILED.  retVal = $retVal"
+      echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
       exit
    fi
    pushd elements
    git log -n 1 | grep commit
+   
    popd
    ls -l
    popd
    ln -s `pwd`/../sqe/buildsys/deps .
    ln -s `pwd`/../sqe/test .
 fi
+
 
 #	This assumes a directory strucure
 #                     SST_BASE   (was $HOME)
