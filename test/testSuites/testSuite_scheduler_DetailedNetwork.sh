@@ -103,6 +103,24 @@ rm -f $outFile
 
 cd $TEST_FOLDER
 
+####***********************************************************
+rm ${TEST_NAME}.py
+rm ${TEST_NAME}.sim
+rm ${TEST_NAME}.sim.snapshot.xml
+rm "$TEST_NAME.sim.alloc"
+rm "$TEST_NAME.sim.time"
+rm *.phase
+rm emberLoad.py
+rm run_DetailedNetworkSim.py
+rm snapshotParser_sched.py
+rm snapshotParser_ember.py
+rm $TEST_NAME.tmp
+rm ember.out
+rm loadfile
+rm emberCompleted.txt
+rm emberRunning.txt
+####***********************************************************
+
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.sim .
 cp $SST_SRC/sst/elements/scheduler/simulations/*.phase .
 
@@ -164,6 +182,7 @@ else
 fi
     
 # remove all files
+exit
 
 rm ${TEST_NAME}.py
 rm ${TEST_NAME}.sim

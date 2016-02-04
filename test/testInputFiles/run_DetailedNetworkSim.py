@@ -29,7 +29,7 @@ def clear_files(options):
 def delete_logs():
 
     cmd = "rm motif*.log"
-    run(cmd)
+    #run(cmd)
 
 def run_sim (options):
 
@@ -41,6 +41,8 @@ def run_sim (options):
     # Parse scheduler snapshot->run ember->Parse ember output->run scheduler->...
     while( is_not_empty(options.xmlFile) ):
         ember_cmd = "./%s --xml %s > %s" %(options.sched_parser, options.xmlFile, options.emberOutFile)
+        sys.stderr.write("This is in the outer loop. (top) \n")
+        sys.stderr.write(" -----  " + str(options.xmlFile) + "\n")
         run(ember_cmd)
 
         sched_cmd = "./%s --xml %s --emberOut %s --schedPy %s --ember_completed %s --ember_running %s " %(options.ember_parser, options.xmlFile, options.emberOutFile, options.schedPythonFile, options.emberCompletedFile, options.emberRunningFile)
@@ -100,7 +102,7 @@ def main():
     parser.add_option("--emberOut",  action='store', dest="emberOutFile", help="Name of the ember output file.")
     parser.add_option("--schedPy",  action='store', dest="schedPythonFile", help="Name of the python file that holds the scheduler parameters.")
     (options, args) = parser.parse_args()
-
+    sys.stderr.write("This is the MAIN\n")  ##  This point is only encounter once!
 
     options = grep_set_fileNames(options)
     clear_files(options)
