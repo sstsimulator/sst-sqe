@@ -140,9 +140,10 @@ sed "s|PATH|$emberpath|g" $SST_SRC/sst/elements/scheduler/simulations/emberLoad.
 ##  John 2016
 ## cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
 cp $SST_TEST_ROOT/testInputFiles/run_DetailedNetworkSim.py .
+## cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
+cp $SST_TEST_ROOT/testInputFiles/snapshotParser_ember.py .
 ##  John 2016
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
-cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.py .
 #cp $TEST_INPUTS/testSdlFiles/${TEST_NAME}.py .
 if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_THREAD_COUNT -gt 0 ] ; then
