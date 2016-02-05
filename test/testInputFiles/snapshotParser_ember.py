@@ -239,6 +239,8 @@ def run_scheduler (options):
 
 def main():
 
+    sys.stderr.write(" Entered the ember parser\n") 
+    os.system("/home/jpvandy/qd")
     parser = OptionParser(usage="usage: %prog [options]")
     parser.add_option("--xml",  action='store', dest="xmlFile", help="Name of the xml file that holds the current scheduler snapshot.") 
     parser.add_option("--emberOut",  action='store', dest="emberOutFile", help="Name of the ember output file.")
@@ -250,7 +252,12 @@ def main():
     InfoPair = parse_emberOut(options)
     TimeObject, JobObjects = parse_xml (options)
     generate_scheduler_inputs (InfoPair, TimeObject, JobObjects, options)
+
+    sys.stderr.write(" call run_scheduler\n") 
+    os.system("/home/jpvandy/qd")
     run_scheduler (options)
+    sys.stderr.write(" After run_scheduler\n") 
+    os.system("/home/jpvandy/qd")
 
 if __name__ == '__main__':
     main()
