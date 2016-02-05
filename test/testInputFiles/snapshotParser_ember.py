@@ -209,6 +209,7 @@ def generate_scheduler_inputs (InfoPair, TimeObject, JobObjects, options):
                johnsF = 1
             if johnsF == 1 :
               sys.stderr.write("            %d  ct = %d\n" % (Job.jobNum, emberMotifNum))
+              os.system("/home/jpvandy/qd")
                 
             # Check if there are no lines in the motifLog
             if (emberMotifNum == -1):

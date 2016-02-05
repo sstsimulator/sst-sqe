@@ -29,7 +29,7 @@ def clear_files(options):
 def delete_logs():
 
     cmd = "rm motif*.log"
-    #run(cmd)
+    run(cmd)
 
 def run_sim (options):
 
@@ -48,7 +48,7 @@ def run_sim (options):
         sched_cmd = "./%s --xml %s --emberOut %s --schedPy %s --ember_completed %s --ember_running %s " %(options.ember_parser, options.xmlFile, options.emberOutFile, options.schedPythonFile, options.emberCompletedFile, options.emberRunningFile)
         run(sched_cmd)
 
-    delete_logs()
+    #delete_logs()
 
 def is_not_empty(fileName):
 
@@ -98,6 +98,7 @@ def grep_set_fileNames(options):
 
 def main():
 
+    #os.system("/home/jpvandy/qd")
     parser = OptionParser(usage="usage: %prog [options]")
     parser.add_option("--emberOut",  action='store', dest="emberOutFile", help="Name of the ember output file.")
     parser.add_option("--schedPy",  action='store', dest="schedPythonFile", help="Name of the python file that holds the scheduler parameters.")
@@ -106,6 +107,7 @@ def main():
 
     options = grep_set_fileNames(options)
     clear_files(options)
+    delete_logs()
     #set_path_emberLoad(options)
     run_sim(options)
     
