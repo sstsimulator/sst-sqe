@@ -208,7 +208,7 @@ def generate_scheduler_inputs (InfoPair, TimeObject, JobObjects, options):
             if Job.jobNum == 3 :
                 johnsF = 1
             if johnsF == 1 :
-	        sys.stderr.write("              ct = %d\n" % emberMotifNum)
+	        sys.stderr.write("            %d  ct = %d\n" % (Job.jobNum, emberMotifNum))
                 
             # Check if there are no lines in the motifLog
             if (emberMotifNum == -1):

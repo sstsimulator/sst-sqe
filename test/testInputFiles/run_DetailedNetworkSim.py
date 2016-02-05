@@ -41,7 +41,7 @@ def run_sim (options):
     # Parse scheduler snapshot->run ember->Parse ember output->run scheduler->...
     while( is_not_empty(options.xmlFile) ):
         ember_cmd = "./%s --xml %s > %s" %(options.sched_parser, options.xmlFile, options.emberOutFile)
-        sys.stderr.write("This is in the outer loop. (top) \n")
+        sys.stderr.write("\nThis is in the outer loop. (top) \n")
         sys.stderr.write(" -----  " + str(options.xmlFile) + "\n")
         run(ember_cmd)
 

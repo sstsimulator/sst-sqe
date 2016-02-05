@@ -183,23 +183,23 @@ else
 fi
     
 # remove all files
-exit
+## exit
 
-rm ${TEST_NAME}.py
-rm ${TEST_NAME}.sim
-rm ${TEST_NAME}.sim.snapshot.xml
-rm "$TEST_NAME.sim.alloc"
-rm "$TEST_NAME.sim.time"
-rm *.phase
-rm emberLoad.py
-rm run_DetailedNetworkSim.py
-rm snapshotParser_sched.py
-rm snapshotParser_ember.py
-rm $TEST_NAME.tmp
-rm ember.out
-rm loadfile
-rm emberCompleted.txt
-rm emberRunning.txt
+## rm ${TEST_NAME}.py
+## rm ${TEST_NAME}.sim
+## rm ${TEST_NAME}.sim.snapshot.xml
+## rm "$TEST_NAME.sim.alloc"
+## rm "$TEST_NAME.sim.time"
+## rm *.phase
+## rm emberLoad.py
+## rm run_DetailedNetworkSim.py
+## rm snapshotParser_sched.py
+## rm snapshotParser_ember.py
+## rm $TEST_NAME.tmp
+## rm ember.out
+## rm loadfile
+## rm emberCompleted.txt
+## rm emberRunning.txt
 }
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
