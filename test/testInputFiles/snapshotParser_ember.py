@@ -199,16 +199,16 @@ def generate_scheduler_inputs (InfoPair, TimeObject, JobObjects, options):
             emberMotifNum = -1
 
             for l in mFile:
-	        #sys.stderr.write(" %d  l= %s\n" % (Job.jobNum), (l))
-	        #sys.stderr.write(" %d" % (Job.jobNum))
-                sys.stderr.write(str(Job.jobNum))
-	        sys.stderr.write(l)
-                emberMotifNum += 1
+               #sys.stderr.write(" %d  l= %s\n" % (Job.jobNum), (l))
+               #sys.stderr.write(" %d" % (Job.jobNum))
+               sys.stderr.write(str(Job.jobNum))
+               sys.stderr.write(l)
+               emberMotifNum += 1
             #if Job.jobNum == 3 and emberMotifNum == 13 :
             if Job.jobNum == 3 :
-                johnsF = 1
+               johnsF = 1
             if johnsF == 1 :
-	        sys.stderr.write("            %d  ct = %d\n" % (Job.jobNum, emberMotifNum))
+              sys.stderr.write("            %d  ct = %d\n" % (Job.jobNum, emberMotifNum))
                 
             # Check if there are no lines in the motifLog
             if (emberMotifNum == -1):
