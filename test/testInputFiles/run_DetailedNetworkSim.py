@@ -43,7 +43,12 @@ def run_sim (options):
         ember_cmd = "./%s --xml %s > %s" %(options.sched_parser, options.xmlFile, options.emberOutFile)
         sys.stderr.write("\nThis is in the outer loop. (top) \n")
         sys.stderr.write(" -----  " + str(options.xmlFile) + "\n")
+
+        os.system("/home/jpvandy/qd")
+
         run(ember_cmd)
+
+        os.system("/home/jpvandy/qd")
 
         sched_cmd = "./%s --xml %s --emberOut %s --schedPy %s --ember_completed %s --ember_running %s " %(options.ember_parser, options.xmlFile, options.emberOutFile, options.schedPythonFile, options.emberCompletedFile, options.emberRunningFile)
         run(sched_cmd)
