@@ -254,13 +254,22 @@ def run_ember (execcommand):
 
 def main():
 
+    sys.stderr.write(" -----  Enter Parser Sched \n")
+    os.system("/home/jpvandy/qd")
+
     parser = OptionParser(usage="usage: %prog [options]")
     parser.add_option("--xml",  action='store', dest="xmlFile", help="Name of the xml file that holds the current scheduler snapshot.") 
     (options, args) = parser.parse_args()
     
     TimeObject, JobObjects = parse_xml (options = options)
     execcommand = generate_ember_files (TimeObject, JobObjects)
+    sys.stderr.write(" -----  Call run ember \n")
+    os.system("/home/jpvandy/qd")
+
     run_ember (execcommand)
+
+    sys.stderr.write(" -----  done Parser Sched \n")
+    os.system("/home/jpvandy/qd")
 
 if __name__ == '__main__':
     main()
