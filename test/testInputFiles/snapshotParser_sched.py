@@ -44,7 +44,11 @@ class Job:
 # Function to run linux commands
 def run(cmd):
     #print(cmd)
+    sys.stderr.write(cmd + "\n")
+    os.system("/home/jpvandy/qd")
     os.system(cmd)
+    os.system("/home/jpvandy/qd")
+    sys.stderr.write(" run finished \n \n")
 
 # Parser for the xml file that holds the snapshot from the scheduler
 def parse_xml (options):
