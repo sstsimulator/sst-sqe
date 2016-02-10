@@ -103,6 +103,24 @@ rm -f $outFile
 
 cd $TEST_FOLDER
 
+####***********************************************************
+rm ${TEST_NAME}.py
+rm ${TEST_NAME}.sim
+rm ${TEST_NAME}.sim.snapshot.xml
+rm "$TEST_NAME.sim.alloc"
+rm "$TEST_NAME.sim.time"
+rm *.phase
+rm emberLoad.py
+rm run_DetailedNetworkSim.py
+rm snapshotParser_sched.py
+rm snapshotParser_ember.py
+rm $TEST_NAME.tmp
+rm ember.out
+rm loadfile
+rm emberCompleted.txt
+rm emberRunning.txt
+####***********************************************************
+
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.sim .
 cp $SST_SRC/sst/elements/scheduler/simulations/*.phase .
 
@@ -119,9 +137,14 @@ emberpath="$SST_SRC/sst/elements/ember/test"
 #sed -i "s|PATH|$emberpath|g" emberLoad.py
 sed "s|PATH|$emberpath|g" $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py > emberLoad.py
 
-cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
-cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
-cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
+##  John 2016
+## cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
+cp $SST_TEST_ROOT/testInputFiles/run_DetailedNetworkSim.py .
+## cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
+cp $SST_TEST_ROOT/testInputFiles/snapshotParser_ember.py .
+## cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
+cp $SST_TEST_ROOT/testInputFiles/snapshotParser_sched.py .
+##  John 2016
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.py .
 #cp $TEST_INPUTS/testSdlFiles/${TEST_NAME}.py .
 if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_THREAD_COUNT -gt 0 ] ; then
@@ -132,7 +155,8 @@ grep 'sst ' run_DetailedNetworkSim.py
 
 # run sst
  
-./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py > /dev/null
+## ./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py > /dev/null
+stdbuf -o0 -e0 ./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py | sed 900q
 retVal=$?
 if [ $retVal -ne 0 ] ; then
 #    FAIL and BAIL
@@ -160,28 +184,29 @@ else
 fi
     
 # remove all files
+## exit
 
-rm ${TEST_NAME}.py
-rm ${TEST_NAME}.sim
-rm ${TEST_NAME}.sim.snapshot.xml
-rm "$TEST_NAME.sim.alloc"
-rm "$TEST_NAME.sim.time"
-rm *.phase
-rm emberLoad.py
-rm run_DetailedNetworkSim.py
-rm snapshotParser_sched.py
-rm snapshotParser_ember.py
-rm $TEST_NAME.tmp
-rm ember.out
-rm loadfile
-rm emberCompleted.txt
-rm emberRunning.txt
+## rm ${TEST_NAME}.py
+## rm ${TEST_NAME}.sim
+## rm ${TEST_NAME}.sim.snapshot.xml
+## rm "$TEST_NAME.sim.alloc"
+## rm "$TEST_NAME.sim.time"
+## rm *.phase
+## rm emberLoad.py
+## rm run_DetailedNetworkSim.py
+## rm snapshotParser_sched.py
+## rm snapshotParser_ember.py
+## rm $TEST_NAME.tmp
+## rm ember.out
+## rm loadfile
+## rm emberCompleted.txt
+## rm emberRunning.txt
 }
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
-export SST_TEST_ONE_TEST_TIMEOUT=3000
+export SST_TEST_ONE_TEST_TIMEOUT=800
 
 (. ${SHUNIT2_SRC}/shunit2)
