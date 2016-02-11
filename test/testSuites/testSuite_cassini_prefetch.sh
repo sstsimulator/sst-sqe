@@ -108,12 +108,12 @@ CP_case=$1
         else
            echo "Output does not match Reference File"
            cat _raw_diff
-           echo " Reference File "
-           cat $referenceFile
-           echo "       ------  "
-           echo "   Output File "
-           cat $outFile
-           echo "       ------  "
+#           echo " Reference File "
+#           cat $referenceFile
+#           echo "       ------  "
+#           echo "   Output File "
+#           cat $outFile
+#           echo "       ------  "
            fail "Output does not match Reference File"
            rm _raw_diff
         fi
