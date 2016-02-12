@@ -46,7 +46,7 @@ NO statistics will be printed otherwise!
  l1cache.FetchInvX_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.Inv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 33754368; SumSQ.u64 = 480276058; Count.u64 = 2517922; 
+ l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 33754362; SumSQ.u64 = 480276040; Count.u64 = 2517920; 
  l1cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_E : Accumulator : Sum.u64 = 2482; SumSQ.u64 = 2482; Count.u64 = 2482; 

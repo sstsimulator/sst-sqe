@@ -33,6 +33,14 @@ net = { 'topo' : 'fattree',
 
 networks.append(net);
 
+net = { 'topo' : 'dragonfly2',
+        'args' : [  
+                    ['--shape',   ['8:8:4:8']]
+                 ]
+      }
+
+networks.append(net);
+
 test = { 'motif' : 'AllPingPong',
          'args'  : [ 
                         [ 'iterations'  , ['1','10']],
