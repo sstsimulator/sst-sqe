@@ -88,13 +88,13 @@ test_check_maxrss() {
         WANTEDLINE=`echo $LINE2TEST | sed s/'.*SST Core/SST Core'/`
 echo LINE2TEST  $LINE2TEST
 echo WANTEDLINE= $WANTEDLINE
-##      newVal=`grep Max.Resident.Set $outFile | awk '{print $7}'`
-        newVal=`echo $WANTEDLINE | awk '{print $7}'`
+##      newVal=`grep Max.Resident.Set $outFile | awk '{print $5}'`
+        newVal=`echo $WANTEDLINE | awk '{print $5}'`
 #     Bailing wire to support enhanced format of verbose
 #         For bash to do simple compare original KB units were convenient.
 #            Convert MB to KB.
-#       MB=`grep Max.Resident.Set $outFile | awk '{print $8}'`
-        MB=`echo $WANTEDLINE | awk '{print $8}'`
+#       MB=`grep Max.Resident.Set $outFile | awk '{print $6}'`
+        MB=`echo $WANTEDLINE | awk '{print $6}'`
         if [ $MB == "MB" ] ; then
            newVal="$(echo "$newVal*1000" | bc)"
            newVal=`echo $newVal | awk -F. '{print $1}'`
