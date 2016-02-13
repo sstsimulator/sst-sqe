@@ -62,7 +62,7 @@ oneTimeTearDown() {
        B_PROJ=`echo $BAMBOO_PROJECT | sed s/sstmainline_config_//`
        J_PROJ=`echo $JENKINS_PROJECT | sed s/SST__//`
 
-       echo "$today $B_PROJ $J_PROJ $BUILD_NUMBER $elapsedSeconds s $RESULT" >> ~jpvandy/WhichTest/$WHICH_FILE
+       echo "$today $elapsedSeconds s $B_PROJ $J_PROJ $BUILD_NUMBER $RESULT" >> ~jpvandy/WhichTest/$WHICH_FILE
     fi
 
 }
