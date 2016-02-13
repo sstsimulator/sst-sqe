@@ -85,6 +85,13 @@ test_macsim() {
          echo ' '; echo WARNING: Could not cd to location for MacSim  ; echo ' '
          return
     fi
+    ################### Jam the reference files from SQE into the elements directory.
+    ##   The ones already in the elements directory come from the MacSim release tar.
+    ##   The ones in SQE have been updated for changes in memH
+    
+    cp $SST_TEST_REFERENCE/macsim_sdl1/* ${SST_ROOT}/sst/elements/macsimComponent/sst-unit-test/references/vectoradd/sdl1
+    cp $SST_TEST_REFERENCE/macsim_sdl2/* ${SST_ROOT}/sst/elements/macsimComponent/sst-unit-test/references/vectoradd/sdl2
+
 
     # Define Software Under Test (SUT) 
     sut="${SST_TEST_INSTALL_BIN}/sst"
