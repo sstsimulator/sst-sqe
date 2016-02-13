@@ -1,0 +1,572 @@
+####################################################################################################
+Interval
+####################################################################################################
+Cumulative:         Cycles:                  20000     Instructions:                  1200
+DISPATCHED_INST                                              2208                          2208
+
+DISPATCH_WAIT                                              164986                       74.7219
+
+NUM_NO_FETCH_CYCLES                                             0                             0
+
+AVG_CORE_IDLE_CYCLE                                         13612                         13612
+
+NUM_SAMPLES_CORE_0                                           1481                          1481
+
+NUM_ACTIVE_BLOCKS_CORE_0                                     1480                      0.999325
+
+NUM_ACTIVE_THREADS_CORE_0                                   11840                        7.9946
+
+NUM_SCHED_IDLE_CYCLE_CORE_0                                     0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_0                                     643                           643
+
+CORE_DISPATCHED_INST_CORE_0                                   184                           184
+
+CORE_DISPATCH_WAIT_CORE_0                                   10690                       58.0978
+
+CORE_CYCLES_CORE_0                                              0                             0
+
+CORE_SCHED_THREADS_CORE_0                                       0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_0                                 0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_0                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_0                                    0                             0
+
+CORE_FETCH_DELTA_CORE_0                                         0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_0                                   0                             0
+
+CORE_RETIRE_DELTA_CORE_0                                        0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_0                            210                       17.1849%
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_0                       1012                       82.8151%
+SCHED_FAILED_NO_PORTS_CORE_0                                    0                             0%
+                                                             1222                           100%
+
+NUM_SAMPLES_CORE_1                                           1647                          1647
+
+NUM_ACTIVE_BLOCKS_CORE_1                                     1646                      0.999393
+
+NUM_ACTIVE_THREADS_CORE_1                                   13168                       7.99514
+
+NUM_SCHED_IDLE_CYCLE_CORE_1                                     0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_1                                     722                           722
+
+CORE_DISPATCHED_INST_CORE_1                                   184                           184
+
+CORE_DISPATCH_WAIT_CORE_1                                   10562                       57.4022
+
+CORE_CYCLES_CORE_1                                              0                             0
+
+CORE_SCHED_THREADS_CORE_1                                       0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_1                                 0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_1                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_1                                    0                             0
+
+CORE_FETCH_DELTA_CORE_1                                         0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_1                                   0                             0
+
+CORE_RETIRE_DELTA_CORE_1                                        0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_1                            210                       19.5349%
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_1                        865                       80.4651%
+SCHED_FAILED_NO_PORTS_CORE_1                                    0                             0%
+                                                             1075                           100%
+
+NUM_SAMPLES_CORE_2                                           1813                          1813
+
+NUM_ACTIVE_BLOCKS_CORE_2                                     1812                      0.999448
+
+NUM_ACTIVE_THREADS_CORE_2                                   14496                       7.99559
+
+NUM_SCHED_IDLE_CYCLE_CORE_2                                     0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_2                                     809                           809
+
+CORE_DISPATCHED_INST_CORE_2                                   184                           184
+
+CORE_DISPATCH_WAIT_CORE_2                                   12330                       67.0109
+
+CORE_CYCLES_CORE_2                                              0                             0
+
+CORE_SCHED_THREADS_CORE_2                                       0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_2                                 0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_2                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_2                                    0                             0
+
+CORE_FETCH_DELTA_CORE_2                                         0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_2                                   0                             0
+
+CORE_RETIRE_DELTA_CORE_2                                        0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_2                            210                       19.4444%
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_2                        870                       80.5556%
+SCHED_FAILED_NO_PORTS_CORE_2                                    0                             0%
+                                                             1080                           100%
+
+NUM_SAMPLES_CORE_3                                           1979                          1979
+
+NUM_ACTIVE_BLOCKS_CORE_3                                     1978                      0.999495
+
+NUM_ACTIVE_THREADS_CORE_3                                   15824                       7.99596
+
+NUM_SCHED_IDLE_CYCLE_CORE_3                                     0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_3                                     892                           892
+
+CORE_DISPATCHED_INST_CORE_3                                   184                           184
+
+CORE_DISPATCH_WAIT_CORE_3                                   13290                       72.2283
+
+CORE_CYCLES_CORE_3                                              0                             0
+
+CORE_SCHED_THREADS_CORE_3                                       0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_3                                 0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_3                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_3                                    0                             0
+
+CORE_FETCH_DELTA_CORE_3                                         0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_3                                   0                             0
+
+CORE_RETIRE_DELTA_CORE_3                                        0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_3                            210                       17.0732%
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_3                       1020                       82.9268%
+SCHED_FAILED_NO_PORTS_CORE_3                                    0                             0%
+                                                             1230                           100%
+
+NUM_SAMPLES_CORE_4                                           2145                          2145
+
+NUM_ACTIVE_BLOCKS_CORE_4                                     2144                      0.999534
+
+NUM_ACTIVE_THREADS_CORE_4                                   17152                       7.99627
+
+NUM_SCHED_IDLE_CYCLE_CORE_4                                     0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_4                                     957                           957
+
+CORE_DISPATCHED_INST_CORE_4                                   184                           184
+
+CORE_DISPATCH_WAIT_CORE_4                                   13146                       71.4457
+
+CORE_CYCLES_CORE_4                                              0                             0
+
+CORE_SCHED_THREADS_CORE_4                                       0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_4                                 0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_4                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_4                                    0                             0
+
+CORE_FETCH_DELTA_CORE_4                                         0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_4                                   0                             0
+
+CORE_RETIRE_DELTA_CORE_4                                        0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_4                            206                       16.8852%
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_4                       1014                       83.1148%
+SCHED_FAILED_NO_PORTS_CORE_4                                    0                             0%
+                                                             1220                           100%
+
+NUM_SAMPLES_CORE_5                                           2311                          2311
+
+NUM_ACTIVE_BLOCKS_CORE_5                                     2310                      0.999567
+
+NUM_ACTIVE_THREADS_CORE_5                                   18480                       7.99654
+
+NUM_SCHED_IDLE_CYCLE_CORE_5                                     0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_5                                    1040                          1040
+
+CORE_DISPATCHED_INST_CORE_5                                   184                           184
+
+CORE_DISPATCH_WAIT_CORE_5                                   13146                       71.4457
+
+CORE_CYCLES_CORE_5                                              0                             0
+
+CORE_SCHED_THREADS_CORE_5                                       0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_5                                 0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_5                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_5                                    0                             0
+
+CORE_FETCH_DELTA_CORE_5                                         0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_5                                   0                             0
+
+CORE_RETIRE_DELTA_CORE_5                                        0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_5                            206                       16.8852%
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_5                       1014                       83.1148%
+SCHED_FAILED_NO_PORTS_CORE_5                                    0                             0%
+                                                             1220                           100%
+
+NUM_SAMPLES_CORE_6                                           2643                          2643
+
+NUM_ACTIVE_BLOCKS_CORE_6                                     2642                      0.999622
+
+NUM_ACTIVE_THREADS_CORE_6                                   21136                       7.99697
+
+NUM_SCHED_IDLE_CYCLE_CORE_6                                     0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_6                                    1206                          1206
+
+CORE_DISPATCHED_INST_CORE_6                                   184                           184
+
+CORE_DISPATCH_WAIT_CORE_6                                   13226                       71.8804
+
+CORE_CYCLES_CORE_6                                              0                             0
+
+CORE_SCHED_THREADS_CORE_6                                       0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_6                                 0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_6                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_6                                    0                             0
+
+CORE_FETCH_DELTA_CORE_6                                         0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_6                                   0                             0
+
+CORE_RETIRE_DELTA_CORE_6                                        0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_6                            206                       16.7752%
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_6                       1022                       83.2248%
+SCHED_FAILED_NO_PORTS_CORE_6                                    0                             0%
+                                                             1228                           100%
+
+NUM_SAMPLES_CORE_7                                           2809                          2809
+
+NUM_ACTIVE_BLOCKS_CORE_7                                     2808                      0.999644
+
+NUM_ACTIVE_THREADS_CORE_7                                   22464                       7.99715
+
+NUM_SCHED_IDLE_CYCLE_CORE_7                                     0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_7                                    1289                          1289
+
+CORE_DISPATCHED_INST_CORE_7                                   184                           184
+
+CORE_DISPATCH_WAIT_CORE_7                                   13226                       71.8804
+
+CORE_CYCLES_CORE_7                                              0                             0
+
+CORE_SCHED_THREADS_CORE_7                                       0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_7                                 0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_7                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_7                                    0                             0
+
+CORE_FETCH_DELTA_CORE_7                                         0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_7                                   0                             0
+
+CORE_RETIRE_DELTA_CORE_7                                        0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_7                            206                       16.7752%
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_7                       1022                       83.2248%
+SCHED_FAILED_NO_PORTS_CORE_7                                    0                             0%
+                                                             1228                           100%
+
+NUM_SAMPLES_CORE_8                                           2975                          2975
+
+NUM_ACTIVE_BLOCKS_CORE_8                                     2974                      0.999664
+
+NUM_ACTIVE_THREADS_CORE_8                                   23792                       7.99731
+
+NUM_SCHED_IDLE_CYCLE_CORE_8                                     0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_8                                    1390                          1390
+
+CORE_DISPATCHED_INST_CORE_8                                   184                           184
+
+CORE_DISPATCH_WAIT_CORE_8                                   13330                       72.4457
+
+CORE_CYCLES_CORE_8                                              0                             0
+
+CORE_SCHED_THREADS_CORE_8                                       0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_8                                 0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_8                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_8                                    0                             0
+
+CORE_FETCH_DELTA_CORE_8                                         0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_8                                   0                             0
+
+CORE_RETIRE_DELTA_CORE_8                                        0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_8                            210                       17.0732%
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_8                       1020                       82.9268%
+SCHED_FAILED_NO_PORTS_CORE_8                                    0                             0%
+                                                             1230                           100%
+
+NUM_SAMPLES_CORE_9                                           3473                          3473
+
+NUM_ACTIVE_BLOCKS_CORE_9                                     3472                      0.999712
+
+NUM_ACTIVE_THREADS_CORE_9                                   21800                       6.27699
+
+NUM_SCHED_IDLE_CYCLE_CORE_9                                     0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_9                                    1635                          1635
+
+CORE_DISPATCHED_INST_CORE_9                                   184                           184
+
+CORE_DISPATCH_WAIT_CORE_9                                   25816                       140.304
+
+CORE_CYCLES_CORE_9                                              0                             0
+
+CORE_SCHED_THREADS_CORE_9                                       0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_9                                 0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_9                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_9                                    0                             0
+
+CORE_FETCH_DELTA_CORE_9                                         0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_9                                   0                             0
+
+CORE_RETIRE_DELTA_CORE_9                                        0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_9                            210                       9.40018%
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_9                       2024                       90.5998%
+SCHED_FAILED_NO_PORTS_CORE_9                                    0                             0%
+                                                             2234                           100%
+
+NUM_SAMPLES_CORE_10                                          3141                          3141
+
+NUM_ACTIVE_BLOCKS_CORE_10                                    3140                      0.999682
+
+NUM_ACTIVE_THREADS_CORE_10                                  25120                       7.99745
+
+NUM_SCHED_IDLE_CYCLE_CORE_10                                    0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_10                                   1473                          1473
+
+CORE_DISPATCHED_INST_CORE_10                                  184                           184
+
+CORE_DISPATCH_WAIT_CORE_10                                  12934                       70.2935
+
+CORE_CYCLES_CORE_10                                             0                             0
+
+CORE_SCHED_THREADS_CORE_10                                      0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_10                                0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_10                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_10                                   0                             0
+
+CORE_FETCH_DELTA_CORE_10                                        0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_10                                  0                             0
+
+CORE_RETIRE_DELTA_CORE_10                                       0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_10                           210                       19.6629%
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_10                       858                       80.3371%
+SCHED_FAILED_NO_PORTS_CORE_10                                   0                             0%
+                                                             1068                           100%
+
+NUM_SAMPLES_CORE_11                                          3307                          3307
+
+NUM_ACTIVE_BLOCKS_CORE_11                                    3306                      0.999698
+
+NUM_ACTIVE_THREADS_CORE_11                                  26448                       7.99758
+
+NUM_SCHED_IDLE_CYCLE_CORE_11                                    0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_11                                   1556                          1556
+
+CORE_DISPATCHED_INST_CORE_11                                  184                           184
+
+CORE_DISPATCH_WAIT_CORE_11                                  13290                       72.2283
+
+CORE_CYCLES_CORE_11                                             0                             0
+
+CORE_SCHED_THREADS_CORE_11                                      0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_11                                0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_11                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_11                                   0                             0
+
+CORE_FETCH_DELTA_CORE_11                                        0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_11                                  0                             0
+
+CORE_RETIRE_DELTA_CORE_11                                       0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_11                           210                       17.0732%
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_11                      1020                       82.9268%
+SCHED_FAILED_NO_PORTS_CORE_11                                   0                             0%
+                                                             1230                           100%
+
+NUM_SAMPLES_CORE_12                                             0                             0
+
+NUM_ACTIVE_BLOCKS_CORE_12                                       0                           NaN
+
+NUM_ACTIVE_THREADS_CORE_12                                      0                           NaN
+
+NUM_SCHED_IDLE_CYCLE_CORE_12                                    0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_12                                      0                             0
+
+CORE_DISPATCHED_INST_CORE_12                                    0                             0
+
+CORE_DISPATCH_WAIT_CORE_12                                      0                           NaN
+
+CORE_CYCLES_CORE_12                                             0                             0
+
+CORE_SCHED_THREADS_CORE_12                                      0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_12                                0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_12                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_12                                   0                             0
+
+CORE_FETCH_DELTA_CORE_12                                        0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_12                                  0                             0
+
+CORE_RETIRE_DELTA_CORE_12                                       0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_12                             0                          NaN 
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_12                         0                          NaN 
+SCHED_FAILED_NO_PORTS_CORE_12                                   0                          NaN 
+                                                                0                           100%
+
+NUM_SAMPLES_CORE_13                                             0                             0
+
+NUM_ACTIVE_BLOCKS_CORE_13                                       0                           NaN
+
+NUM_ACTIVE_THREADS_CORE_13                                      0                           NaN
+
+NUM_SCHED_IDLE_CYCLE_CORE_13                                    0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_13                                      0                             0
+
+CORE_DISPATCHED_INST_CORE_13                                    0                             0
+
+CORE_DISPATCH_WAIT_CORE_13                                      0                           NaN
+
+CORE_CYCLES_CORE_13                                             0                             0
+
+CORE_SCHED_THREADS_CORE_13                                      0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_13                                0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_13                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_13                                   0                             0
+
+CORE_FETCH_DELTA_CORE_13                                        0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_13                                  0                             0
+
+CORE_RETIRE_DELTA_CORE_13                                       0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_13                             0                          NaN 
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_13                         0                          NaN 
+SCHED_FAILED_NO_PORTS_CORE_13                                   0                          NaN 
+                                                                0                           100%
+
+NUM_SAMPLES_CORE_14                                             0                             0
+
+NUM_ACTIVE_BLOCKS_CORE_14                                       0                           NaN
+
+NUM_ACTIVE_THREADS_CORE_14                                      0                           NaN
+
+NUM_SCHED_IDLE_CYCLE_CORE_14                                    0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_14                                      0                             0
+
+CORE_DISPATCHED_INST_CORE_14                                    0                             0
+
+CORE_DISPATCH_WAIT_CORE_14                                      0                           NaN
+
+CORE_CYCLES_CORE_14                                             0                             0
+
+CORE_SCHED_THREADS_CORE_14                                      0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_14                                0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_14                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_14                                   0                             0
+
+CORE_FETCH_DELTA_CORE_14                                        0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_14                                  0                             0
+
+CORE_RETIRE_DELTA_CORE_14                                       0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_14                             0                          NaN 
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_14                         0                          NaN 
+SCHED_FAILED_NO_PORTS_CORE_14                                   0                          NaN 
+                                                                0                           100%
+
+NUM_SAMPLES_CORE_15                                             0                             0
+
+NUM_ACTIVE_BLOCKS_CORE_15                                       0                           NaN
+
+NUM_ACTIVE_THREADS_CORE_15                                      0                           NaN
+
+NUM_SCHED_IDLE_CYCLE_CORE_15                                    0                             0
+
+NUM_NO_SCHED_CYCLE_CORE_15                                      0                             0
+
+CORE_DISPATCHED_INST_CORE_15                                    0                             0
+
+CORE_DISPATCH_WAIT_CORE_15                                      0                           NaN
+
+CORE_CYCLES_CORE_15                                             0                             0
+
+CORE_SCHED_THREADS_CORE_15                                      0                           NaN
+
+CORE_NUM_NO_FETCH_CYCLES_CORE_15                                0                             0
+
+CORE_NUM_NO_FETCH_CYCLES_WITH_READY_THREADS_CORE_15                   0                             0
+
+CORE_NUM_FETCH_CYCLES_CORE_15                                   0                             0
+
+CORE_FETCH_DELTA_CORE_15                                        0                           NaN
+
+CORE_NUM_RETIRE_CYCLES_CORE_15                                  0                             0
+
+CORE_RETIRE_DELTA_CORE_15                                       0                           NaN
+
+SCHED_FAILED_REASON_SUCCESS_CORE_15                             0                          NaN 
+SCHED_FAILED_OPERANDS_NOT_READY_CORE_15                         0                          NaN 
+SCHED_FAILED_NO_PORTS_CORE_15                                   0                          NaN 
+                                                                0                           100%
+

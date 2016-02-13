@@ -123,7 +123,17 @@ macsim_case=$1
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
     sutArgs="${SST_ROOT}/sst/elements/macsimComponent/sst-unit-test/${macsim_case}.py"
-    cd ${SST_ROOT}/sst/elements/macsimComponent/sst-unit-test
+    MACSIM_OUTPUTS=${SST_TEST_OUTPUTS}/macsim_${macsim_case}
+    mkdir -p ${MACSIM_OUTPUTS}
+    cd $MACSIM_OUTPUTS
+    ## cd ${SST_ROOT}/sst/elements/macsimComponent/sst-unit-test
+
+    ln -s ${SST_ROOT}/sst/elements/macsimComponent/sst-unit-test/traces
+    ln -s ${SST_ROOT}/sst/elements/macsimComponent/sst-unit-test/params.in
+    ln -s ${SST_ROOT}/sst/elements/macsimComponent/sst-unit-test/trace_file_list
+
+ls 
+ls -l
 
     echo "   Examine sutArgs"
     echo ${sutArgs}
@@ -151,19 +161,25 @@ macsim_case=$1
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
-        pushd ./references/vectoradd/${macsim_case}
+        MACSIM_REFERENCE=$SST_TEST_REFERENCE/macsim_${macsim_case}
+        ## MACSIM_REFERENCE=${SST_ROOT}/sst/elements/macsimComponent/sst-unit-test/references/vectoradd/${macsim_case}
+        ## pushd ./references/vectoradd/${macsim_case}
+        pushd ${MACSIM_REFERENCE}
         fileList=`ls *`
         popd
 
         matchFail=0
         for ref in $fileList
         do
-            wc  ./references/vectoradd/${macsim_case}/$ref ./results/$ref 
-            diff  ./references/vectoradd/${macsim_case}/$ref ./results/$ref > /dev/null
+            wc   ${MACSIM_REFERENCE}/$ref ${MACSIM_OUTPUTS}/results/$ref 
+            diff ${MACSIM_REFERENCE}/$ref ${MACSIM_OUTPUTS}/results/$ref > /dev/null
+            ## diff  ./references/vectoradd/${macsim_case}/$ref ./results/$ref > /dev/null
             if [ $? != 0 ] ; then
                echo "   ---  Reviewing  ${macsim_case}   $ref"
-               grep -v EXE_TIME ./references/vectoradd/${macsim_case}/$ref > _r
-               grep -v EXE_TIME ./results/$ref > _o
+               grep -v EXE_TIME ${MACSIM_REFERENCE}/$ref > _r
+               grep -v EXE_TIME  ${MACSIM_OUTPUTS}/results/$ref > _o
+               ## grep -v EXE_TIME ./references/vectoradd/${macsim_case}/$ref > _r
+               ## grep -v EXE_TIME ./results/$ref > _o
                diff _r _o
                if [ $? == 0 ] ; then
                   echo "Pass"
