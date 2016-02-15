@@ -307,7 +307,7 @@ rm -f $SST_TEST_SUITES/testopenMP/__testlist
 I=1
 while [ $I -lt $SWEEP_WIDTH ]
 do
-   echo "test_dirSweep() { echo This is Dummy subroutine ; }" >> $SST_TEST_SUITES/testopenMP/__testlist
+   echo "test_dir3LSweep() { echo This is Dummy subroutine ; }" >> $SST_TEST_SUITES/testopenMP/__testlist
    I=$(( $I + 1 ))
 done
 
@@ -495,7 +495,7 @@ cd $TEST_SUITE_ROOT/testopenMP
 #     dirSweep
 #
 cat >> $SST_TEST_SUITES/testopenMP/__testlist << ..EOF..
-test_dirSweep() {    
+test_dir3LSweep() {    
 Dir_Template $selectBin 9000
 }
 ..EOF..
