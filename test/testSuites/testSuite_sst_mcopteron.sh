@@ -58,8 +58,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #       Download the tar file of traces, trace.txt,
 #                 and untar it into the sst/elements tree
 #
-     echo " wget https:https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-mcopteron-traces.tar.gz --no-check-certificate"
-     wget https:https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-mcopteron-traces.tar.gz
+     echo " wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-mcopteron-traces.tar.gz --no-check-certificate"
+     wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-mcopteron-traces.tar.gz
      if [ $? != 0 ] ; then
         echo "wget failed"
         preFail "wget failed"
