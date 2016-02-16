@@ -97,6 +97,16 @@ miranda_case=$1
             if [ $? == 0 ] ; then
                echo " Sorted match with Reference File"
                rm raw_diff
+            elif [ "lineWordCt" == "$2" ] ; then
+               ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
+               new=`wc ${outFile}       | awk '{print $1, $2}'`;
+               if [ "$ref" == "$new" ]
+               then 
+                   echo "    Output passed  LineWordCt match"
+               else
+                   echo "    Output Flunked  lineWordCt Count match"
+                   fail "Output Flunked  lineWordCt Count match"
+               fi
             else
                echo "Output does not match Reference File"
                fail "Output does not match Reference File"
@@ -142,7 +152,7 @@ miranda_Template stencil3dbench
 }
 
 test_miranda_streambench() {
-miranda_Template streambench
+miranda_Template streambench "lineWordCt"
 
 }
 
