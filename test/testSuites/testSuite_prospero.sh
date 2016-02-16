@@ -75,8 +75,8 @@ if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
 else
    #  Download the trace files from sst-simulator.org
        cd ${SST_ROOT}/sst/elements/prospero/tests/array
-       echo "wget sst-simulator.org/downloads/Prospero-trace-files.tar.gz --no-check-certificate"
-       wget sst-simulator.org/downloads/Prospero-trace-files.tar.gz --no-check-certificate
+       echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz --no-check-certificate"
+       wget "https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz" 
        if [ $? != 0 ] ; then
           echo "wget failed"
           preFail

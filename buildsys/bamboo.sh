@@ -48,6 +48,13 @@ fi
 # Which branches to use for each repo (default is devel)
 if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
     SST_SQEBRANCH=devel
+    SST_SQEBRANCH="detached"
+else
+    echo ' ' ;  echo ' ' ; echo ' ' ; echo ' ' 
+    echo " Attempting to set SQE branch is no op"
+    echo " SQE branch is selected by configure in Jenkins"
+    echo "  Ignoring SST_SQEBRANCH =  ${SST_SQEBRANCH}"
+    echo ' ' ;  echo ' ' ; echo ' ' ; echo ' ' 
 fi
                         
 if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
