@@ -43,8 +43,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 #       Download the tar file of traces   and untar it into the sst/elements tree
 #
-     echo "wget https:https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz --no-check-certificate"
-     wget "https:https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz --no-check-certificate"
+     echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz --no-check-certificate"
+     wget "https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz"
      if [ $? != 0 ] ; then
         echo "wget failed"
         preFail "wget failed"
