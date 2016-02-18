@@ -58,6 +58,7 @@ else
     OMPLIST[6]="ompbarrier"
 ##    OMPLIST[7]="ompfort"
 
+    echo '              ' ; echo "selectBin is being Jammed to ompdynamic" ; echo ' '
     selectBin="ompdynamic"
 fi
 
