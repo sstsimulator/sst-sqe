@@ -190,15 +190,17 @@ echo "\$lout is $lout ############################################"
     echo "mcopteron test1: Wall Clock Time  $elapsedSeconds seconds"
 }
 
+
+test_sst_mcopteron_test2() {
+
 ##
 ##    Don't run this test on MacOS
 ##
-if [ -n "${SST_TEST_HOST_OS_DISTRIB_MACOS}" ]
+if [ 1 == "${SST_TEST_HOST_OS_DISTRIB_MACOS}" ]
 then
-   sed -i'.xsed' -e s/^test_sst_mcopteron_test2/xxtest_sst_mcopteron_test2/ test/testSuites/testSuite_sst_mcopteron.sh
+   echo " This test is not deterministic on MacOS, SKIPPING"
+   skip_this_test
 fi
-
-xxtest_sst_mcopteron_test2() {
 
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
