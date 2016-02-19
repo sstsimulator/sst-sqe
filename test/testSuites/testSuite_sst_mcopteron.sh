@@ -200,6 +200,7 @@ if [ 1 == "${SST_TEST_HOST_OS_DISTRIB_MACOS}" ]
 then
    echo " This test is not deterministic on MacOS, SKIPPING"
    skip_this_test
+   return
 fi
 
     # Define a common basename for test output and reference
