@@ -190,8 +190,16 @@ echo "\$lout is $lout ############################################"
     echo "mcopteron test1: Wall Clock Time  $elapsedSeconds seconds"
 }
 
-
 test_sst_mcopteron_test2() {
+     echo ' '
+     echo "Test 2  universally disabled February 22, 2016"
+     echo ' '
+     skip_this_test
+     return
+}  
+
+##   Test 2  universally disabled February 22, 2016
+xxtest_sst_mcopteron_test2() {
 
 ##
 ##    Don't run this test on MacOS
