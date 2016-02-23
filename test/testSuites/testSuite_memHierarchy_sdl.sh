@@ -83,7 +83,7 @@ Tol=$2    ##  curTick tolerance
       return
     fi
 
-    ${sut} -n 4  ${sutArgs} > ${tmpFile}  2>${errFile}
+    ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
