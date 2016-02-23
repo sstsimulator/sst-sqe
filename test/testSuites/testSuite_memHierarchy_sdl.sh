@@ -143,8 +143,9 @@ Tol=$2    ##  curTick tolerance
            if [ $usingDramSim == 0 ] ; then    ## usingDramSim is TRUE
               echo "            wc the diff"
               diff ${outFile} ${referenceFile} | wc; echo ' '
-              ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
-              new=`wc ${outFile}       | awk '{print $1, $2}'`;
+              echo " Remove the histogram"
+              ref=`grep -v '\[.*\]' ${referenceFile} | wc | awk '{print $1, $2}'`; 
+              new=`grep -v '\[.*\]' ${outFile}       | wc | awk '{print $1, $2}'`;
               if [ "$ref" == "$new" ];
               then
                   echo " Word / Line count of matches (using DRAMSim)"
