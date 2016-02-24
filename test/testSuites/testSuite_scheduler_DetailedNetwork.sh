@@ -29,8 +29,10 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
        if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
-           echo '           SKIP '
-           preFail " Scheduler tests do not work with threading" "skip"
+           echo ' '
+           echo "    This test has been modified to use single thread "
+           echo " on scheduler part, Multi Thread option on Ember"
+           echo ' '
        fi
     fi     
 
@@ -122,13 +124,14 @@ sed "s|PATH|$emberpath|g" $SST_SRC/sst/elements/scheduler/simulations/emberLoad.
 ## cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
 cp $SST_ROOT/test/testInputFiles/run_DetailedNetworkSim.py .
 cp $SST_ROOT/test/testInputFiles/snapshotParser_ember.py .
-cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
+cp $SST_ROOT/test/testInputFiles/snapshotParser_sched.py .
+## cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
 ## cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.py .
 #cp $TEST_INPUTS/testSdlFiles/${TEST_NAME}.py .
 if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_THREAD_COUNT -gt 0 ] ; then
    echo "Setting Multi thread count to $SST_MULTI_THREAD_COUNT"
-   sed -i'.x' '/init_cmd  = "sst/s/sst/sst -n '"$SST_MULTI_THREAD_COUNT"/ run_DetailedNetworkSim.py
+   sed -i'.x' '/execcommand = "sst/s/sst/sst -n '"$SST_MULTI_THREAD_COUNT"/ snapshotParser_sched.py
 fi    
 grep 'sst ' run_DetailedNetworkSim.py
 
