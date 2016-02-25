@@ -1072,6 +1072,8 @@ linuxSetBoostMPI() {
    # For some reason, .bashrc is not being run prior to
    # this script. Kludge initialization of modules.
 
+echo ' '
+echo " This is linuxSetBoostMPI"
    if [ $SST_TEST_HOST_OS_DISTRIB_VERSION != "16.04" ] ; then
 echo " TEMP DEBUG   this is not U 16.04"
        if [ -f /etc/profile.modules ]
