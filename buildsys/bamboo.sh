@@ -1080,7 +1080,7 @@ echo " TEMP DEBUG   this is not U 16.04"
            echo "bamboo.sh: loaded /etc/profile.modules. Available modules"
            ModuleEx avail
        fi
-i  else
+   else
 echo " TEMP DEBUG   This is U 16.04"
        if [ -x /etc/profile.d/modules.sh ] 
        then 
