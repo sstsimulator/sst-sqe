@@ -1084,7 +1084,9 @@ i  else
 echo " TEMP DEBUG   This is U 16.04"
        if [ -x /etc/profile.d/modules.sh ] 
        then 
-       source /etc/profile.d/modules.sh  
+           source /etc/profile.d/modules.sh 
+           echo " bamboo.sh:  Available modules"
+           ModuleEx avail
        fi
    fi
 
