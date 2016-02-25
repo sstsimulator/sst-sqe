@@ -1086,11 +1086,15 @@ echo " TEMP DEBUG   this is not U 16.04"
 echo " TEMP DEBUG   This is U 16.04"
 ls -l /etc/profile.d/modules.sh
 ls -l /etc/profile.d
-       if [ -x /etc/profile.d/modules.sh ] 
+       if [ -r /etc/profile.d/modules.sh ] 
        then 
            source /etc/profile.d/modules.sh 
            echo " bamboo.sh:  Available modules"
            ModuleEx avail
+           if [ $? -ne 0 ] ; then
+               echo " ModuleEx Failed"
+               exit 1
+           fi    
        fi
    fi
 
