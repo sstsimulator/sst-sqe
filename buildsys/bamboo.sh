@@ -1084,6 +1084,8 @@ echo " TEMP DEBUG   this is not U 16.04"
        fi
    else
 echo " TEMP DEBUG   This is U 16.04"
+ls -l /etc/profile.d/modules.sh
+ls -l /etc/profile.d
        if [ -x /etc/profile.d/modules.sh ] 
        then 
            source /etc/profile.d/modules.sh 
