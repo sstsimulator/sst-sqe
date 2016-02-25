@@ -108,7 +108,6 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    echo " the sst Repo has been cloned. Core and Elements to go"
    ls
 
-
    mkdir -p sst
    pushd sst
    pwd
@@ -134,6 +133,17 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
       exit
    fi
    pushd elements
+
+   if [[ ${SST_ELEMENTS_RESET:+isSet} == isSet ]] ; then
+       echo "     Desired element SHA1 is ${SST_ELEMENTS_RESET}"
+       git reset --hard ${SST_ELEMENTS_RESET}
+       retVal=$?
+       if [ $retVal != 0 ] ; then
+          echo "\"git reset --hard ${SST_ELEMENTS_RESET} \" FAILED.  retVal = $retVal"
+          exit
+       fi
+   fi
+
    git log -n 1 | grep commit
    
    popd
@@ -1062,13 +1072,25 @@ linuxSetBoostMPI() {
 
    # For some reason, .bashrc is not being run prior to
    # this script. Kludge initialization of modules.
-   if [ -f /etc/profile.modules ]
-   then
-       . /etc/profile.modules
-       echo "bamboo.sh: loaded /etc/profile.modules. Available modules"
-       ModuleEx avail
-   fi
 
+   if [ $SST_TEST_HOST_OS_DISTRIB_VERSION != "16.04" ] ; then
+       if [ -f /etc/profile.modules ] ; then
+           . /etc/profile.modules
+           echo "bamboo.sh: loaded /etc/profile.modules. Available modules"
+           ModuleEx avail
+       fi
+   else
+       ls -l /etc/profile.d/modules.sh
+       if [ -r /etc/profile.d/modules.sh ] ; then 
+           source /etc/profile.d/modules.sh 
+           echo " bamboo.sh:  Available modules"
+           ModuleEx avail
+           if [ $? -ne 0 ] ; then
+               echo " ModuleEx Failed"
+               exit 1
+           fi    
+       fi
+   fi
 
    # build MPI and Boost selectors
    if [[ "$2" =~ openmpi.* ]]
