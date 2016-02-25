@@ -1071,13 +1071,25 @@ linuxSetBoostMPI() {
 
    # For some reason, .bashrc is not being run prior to
    # this script. Kludge initialization of modules.
-   if [ -f /etc/profile.modules ]
-   then
-       . /etc/profile.modules
-       echo "bamboo.sh: loaded /etc/profile.modules. Available modules"
-       ModuleEx avail
-   fi
 
+   if [ $SST_TEST_HOST_OS_DISTRIB_VERSION != "16.04" ] ; then
+       if [ -f /etc/profile.modules ] ; then
+           . /etc/profile.modules
+           echo "bamboo.sh: loaded /etc/profile.modules. Available modules"
+           ModuleEx avail
+       fi
+   else
+       ls -l /etc/profile.d/modules.sh
+       if [ -r /etc/profile.d/modules.sh ] ; then 
+           source /etc/profile.d/modules.sh 
+           echo " bamboo.sh:  Available modules"
+           ModuleEx avail
+           if [ $? -ne 0 ] ; then
+               echo " ModuleEx Failed"
+               exit 1
+           fi    
+       fi
+   fi
 
    # build MPI and Boost selectors
    if [[ "$2" =~ openmpi.* ]]
