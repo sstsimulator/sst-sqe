@@ -71,7 +71,7 @@ miranda_case=$1
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        (${sut} -n 2  ${sutArgs} > $outFile)
+        (${sut} ${sutArgs} > $outFile)
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
