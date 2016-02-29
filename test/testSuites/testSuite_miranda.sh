@@ -188,8 +188,9 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 # "test"  will be automatically executed.
 
 #         Located here this timeout will override the multithread value
-export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL_TL
+
 export SST_TEST_MIRANDA_NORMAL_TL=200
 export SST_TEST_MIRANDA_RANGET_TL=1500
-
+export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL_TL
+ 
 (. ${SHUNIT2_SRC}/shunit2)
