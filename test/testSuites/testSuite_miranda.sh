@@ -138,12 +138,26 @@ miranda_Template singlestream
 test_miranda_revsinglestream() {
 miranda_Template revsinglestream
 
-}
+##     set time limit for randomgen()
+    export SST_TEST_ONE_TEST_TIMEOUT=1500
+}    
 
 
 test_miranda_randomgen() {
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] && \
+          [[ `uname -n` != sst-test* ]] ; then
+             skip_this_test
+             echo " skipping randomgen on multi-thread"   
+##  Reset the Time Limit for reamainer of tests
+             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL
+             return
+       fi
+    fi
 miranda_Template randomgen
 
+##  Reset the Time Limit for reamainer of tests
+             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL
 }
 
 test_miranda_stencil3dbench() {
@@ -173,7 +187,10 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 
-+#         Located here this timeout will override the multithread value
-+export SST_TEST_ONE_TEST_TIMEOUT=750
+#         Located here this timeout will override the multithread value
 
+export SST_TEST_MIRANDA_NORMAL_TL=200
+export SST_TEST_MIRANDA_RANGET_TL=1500
+export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL_TL
+ 
 (. ${SHUNIT2_SRC}/shunit2)
