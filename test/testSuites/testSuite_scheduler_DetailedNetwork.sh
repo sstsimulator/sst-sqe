@@ -121,12 +121,14 @@ emberpath="$SST_SRC/sst/elements/ember/test"
 #sed -i "s|PATH|$emberpath|g" emberLoad.py
 sed "s|PATH|$emberpath|g" $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py > emberLoad.py
 
-## cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
-cp $SST_ROOT/test/testInputFiles/run_DetailedNetworkSim.py .
-cp $SST_ROOT/test/testInputFiles/snapshotParser_ember.py .
-cp $SST_ROOT/test/testInputFiles/snapshotParser_sched.py .
-## cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
-## cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
+cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
+cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
+cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
+#      These were used to test and develop the infinite loop fix
+## cp $SST_ROOT/test/testInputFiles/run_DetailedNetworkSim.py .
+## cp $SST_ROOT/test/testInputFiles/snapshotParser_ember.py .
+## cp $SST_ROOT/test/testInputFiles/snapshotParser_sched.py .
+
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.py .
 #cp $TEST_INPUTS/testSdlFiles/${TEST_NAME}.py .
 if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_THREAD_COUNT -gt 0 ] ; then
@@ -134,6 +136,7 @@ if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_THREAD_COUNT 
    sed -i'.x' '/execcommand = "sst/s/sst/sst -n '"$SST_MULTI_THREAD_COUNT"/ snapshotParser_sched.py
 fi    
 grep 'sst ' run_DetailedNetworkSim.py
+grep 'sst ' snapshotParser_sched.py
 
 # run sst
  

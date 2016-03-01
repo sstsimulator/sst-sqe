@@ -432,7 +432,6 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
         ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
         ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
-        ${SST_TEST_SUITES}/testSuite_sst_mcniagara.sh
         ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
         ${SST_TEST_SUITES}/testSuite_VaultSim.sh
         return
@@ -496,7 +495,6 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
     ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
-    ${SST_TEST_SUITES}/testSuite_sst_mcniagara.sh
 
 
     ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
