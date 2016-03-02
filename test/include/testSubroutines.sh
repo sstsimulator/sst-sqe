@@ -25,7 +25,8 @@ oneTimeSetUp() {
         mkdir -p ${SST_TEST_OUTPUTS}
     fi
     scriptStartSeconds=`date +%s`
-
+    DUbefore=`du -ks /tmp 2>/dev/null | awk '{print $1}'`
+echo "QD debug before is $DUbefore"
 }
 
 #-------------------------------------------------------------------------------
@@ -64,7 +65,9 @@ oneTimeTearDown() {
 
        echo "$today $elapsedSeconds s $B_PROJ $J_PROJ $BUILD_NUMBER $RESULT" >> ~jpvandy/WhichTest/$WHICH_FILE
     fi
-
+    DUafter=`du -ks /tmp 2>/dev/null | awk '{print $1}'`
+echo "QD debug after is $DUafter"
+    echo " /tmp $DUafter  -- Left behind is $(( $DUafter - $DUbefore )) "
 }
 
 #-------------------------------------------------------------------------------
