@@ -43,9 +43,9 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     while read -u 3 r1 r2 r3 r4 r5 mo da r8 name
     do
     
-      c_day=$(( `date +%j -d "$mo $da"` ))
+      c_day=$(( 10#`date +%j -d "$mo $da"` ))
       c_day_plus_2=$(($c_day+2))
-    
+        echo " DEBUG:   mo=$mo da=$da c_day=$c_day  c_day_plus2 =$c_day_plus_2"
       if [ $today -gt $c_day_plus_2 ] ; then
          echo "Remove /tmp/$name"
          rm /tmp/$name
