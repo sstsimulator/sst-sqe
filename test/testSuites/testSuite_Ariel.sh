@@ -37,13 +37,13 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
     ls -l /tmp | grep $USER | grep ariel_shmem > __rmlist
     wc __rmlist
-    today=`date +%j`
+    today=$(( 10#`date +%j` ))
     echo "today is $today"
     
     while read -u 3 r1 r2 r3 r4 r5 mo da r8 name
     do
     
-      c_day=`date +%j -d "$mo $da"`
+      c_day=$(( `date +%j -d "$mo $da"` ))
       c_day_plus_2=$(($c_day+2))
     
       if [ $today -gt $c_day_plus_2 ] ; then
