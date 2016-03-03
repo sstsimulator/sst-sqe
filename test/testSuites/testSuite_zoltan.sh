@@ -188,7 +188,7 @@ checkAndPrint() {
 
     endSeconds=`date +%s`
     elapsedSeconds=$(($endSeconds -$startSeconds))
-    echo "Ariel ${NUMRANKS}: Wall Clock Time  $elapsedSeconds seconds"
+    echo " Zoltan ${NUMRANKS}: Wall Clock Time  $elapsedSeconds seconds"
 }
 
 test_zoltan_2()
