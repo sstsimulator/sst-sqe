@@ -297,4 +297,16 @@ RemoveComponentWarning() {
       sed -i.x '/WARNING: No components are/d' $outFile
       rm -f ${outFile}.x
    fi
+   
+   grep 'Event queue empty' $outFile > /dev/null
+   if [ $? == 0 ] ; then
+      echo "##############################################"
+      echo "#"
+      echo "#   ${testDataFileBase}: Removing lines "
+      grep 'Event queue empty' $outFile | awk '{ print "#     " $0}'
+      echo "#"
+      echo "##############################################"
+      sed -i.x '/Event queue empty/d' $outFile
+      rm -f ${outFile}.x
+   fi
 }

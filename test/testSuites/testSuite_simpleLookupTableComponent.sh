@@ -87,6 +87,7 @@ test_simpleLookupTableComponent() {
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
+        RemoveComponentWarning
         wc $referenceFile $outFile
         diff -b $referenceFile $outFile > _raw_diff
         if [ $? != 0 ]

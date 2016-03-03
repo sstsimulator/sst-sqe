@@ -92,11 +92,12 @@ Tol=$2    ##  curTick tolerance
                if [ "$ref" == "$new" ];
                then
                    echo "outFile word/line count matches Reference"
+                   diff ${referenceFile} ${outFile}
                else
                    echo "$simpleDistrib_case test Fails"
-                   tail $outFile
                    fail "outFile word/line count does NOT matches Reference"
                fi
+               echo ' '
                echo "     `grep 'Simulation is complete' $outFile`"
                echo "Ref: `grep 'Simulation is complete' $referenceFile`"
                echo " "
