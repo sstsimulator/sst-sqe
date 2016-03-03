@@ -97,6 +97,9 @@ Tol=$2    ##  curTick tolerance
                    tail $outFile
                    fail "outFile word/line count does NOT matches Reference"
                fi
+               echo "     `grep 'Simulation is complete' $outFile`"
+               echo "Ref: `grep 'Simulation is complete' $referenceFile`"
+               echo " "
         else
                 echo ReferenceFile is an exact match of outFile
         fi

@@ -100,6 +100,9 @@ test_simpleLookupTableComponent() {
            else
               fail " Reference does not Match Output"
            fi
+           echo "     `grep 'Simulation is complete' $outFile`"
+           echo "Ref: `grep 'Simulation is complete' $referenceFile`"
+           echo " "
         else
            echo "Exact match with Reference File"
         fi
