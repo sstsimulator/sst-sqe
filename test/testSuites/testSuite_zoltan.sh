@@ -174,8 +174,9 @@ checkAndPrint() {
                 ((ind++))
             done
         else
-            echo " Did not find Partition Distribution Information"
-            fail " Did not find Partition Distribution Information"
+            echo " Did not find Partition Distribution Information in outFile"
+            fail " Did not find Partition Distribution Information in outFile"
+            grep -e found -e in.partition.graph -A 2 -B 1 $outFile 
             return
         fi
     else
