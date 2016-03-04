@@ -87,6 +87,7 @@ test_simpleLookupTableComponent() {
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
+        RemoveComponentWarning
         wc $referenceFile $outFile
         diff -b $referenceFile $outFile > _raw_diff
         if [ $? != 0 ]
@@ -100,6 +101,9 @@ test_simpleLookupTableComponent() {
            else
               fail " Reference does not Match Output"
            fi
+           echo "     `grep 'Simulation is complete' $outFile`"
+           echo "Ref: `grep 'Simulation is complete' $referenceFile`"
+           echo " "
         else
            echo "Exact match with Reference File"
         fi
