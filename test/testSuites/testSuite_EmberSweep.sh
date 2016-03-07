@@ -179,7 +179,7 @@ SE_fini() {
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} != isSet ]] ; then
         cp  ${SST_TEST_INPUTS}/EmberSweepGenerator.py .
     else
-        sed '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py > EmberSweepGenerator.py
+        sed '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" ${SST_TEST_INPUTS}/EmberSweepGenerator.py > EmberSweepGenerator.py
         chmod +x EmberSweepGenerator.py
     fi
     ./EmberSweepGenerator.py > bashIN
