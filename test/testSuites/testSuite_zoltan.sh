@@ -71,6 +71,7 @@ NUMRANKS=$1
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
     
+    startSeconds=`date +%s`
     testDataFileBase="test_zoltan${NUMRANKS}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
@@ -173,8 +174,10 @@ checkAndPrint() {
                 ((ind++))
             done
         else
-            echo " Did not find Partition Distribution Information"
-            fail " Did not find Partition Distribution Information"
+            echo " Did not find Partition Distribution Information in outFile"
+            fail " Did not find Partition Distribution Information in outFile"
+            echo " Looking for \"found <nnn> in partition graph\""
+            grep -e found -e in.partition.graph -A 2 -B 1 $outFile 
             return
         fi
     else
@@ -184,6 +187,10 @@ checkAndPrint() {
         fail "Problem with SUT: ${sut}"
     fi
     popd
+
+    endSeconds=`date +%s`
+    elapsedSeconds=$(($endSeconds -$startSeconds))
+    echo " Zoltan ${NUMRANKS}: Wall Clock Time  $elapsedSeconds seconds"
 }
 
 test_zoltan_2()
@@ -204,5 +211,7 @@ test_zoltan_8()
 # "test"  will be automatically executed.
 
 export SST_TEST_ONE_TEST_TIMEOUT=30         # 1/2 minute is plenty  (30 seconds)
-
+if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_THREAD_COUNT -gt 0 ] ; then
+    export SST_TEST_ONE_TEST_TIMEOUT=900         # 15 minute for multithread
+fi
 (. ${SHUNIT2_SRC}/shunit2)

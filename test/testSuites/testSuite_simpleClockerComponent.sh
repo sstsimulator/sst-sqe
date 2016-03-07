@@ -113,7 +113,7 @@ Clocker_template() {
          return 1
     else
         echo "                Scale factor is $FAC"    
-        Ttime=`grep 'Total time' $outFile | awk '{print $5}'`
+        Ttime=`grep 'Total time' $outFile | awk '{print $3}'`
         Ttime="$(echo "scale=4; $Ttime/$FAC" |bc)"
 ##        intTtime=`intFrom2places $Ttime`
         intTtime=`intFromnplaces $Ttime`

@@ -132,7 +132,13 @@ sstDepsDeploy_qsim ()
 
     # Apply patch for file open problem
     echo "INFO: (${FUNCNAME})  Patching qsim-0.2.1/mgzd.h..."
+
     patch -i ${SST_DEPS_PATCHFILES}/qsim-0.2.1-fileOpenCheck.patch
+
+    if [ $? -ne 0 ] ; then
+       echo ' ' ; echo "  PATCH FAILED"
+       return 1
+    fi
     
     ./getqemu.sh
     pushd qemu-0.12.3
