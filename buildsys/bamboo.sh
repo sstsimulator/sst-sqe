@@ -450,7 +450,9 @@ echo " #####################################################"
             popd
         fi 
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
+        export SST_MULTI_THREAD_COUNT=2
         ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
+        export SST_MULTI_THREAD_COUNT=1
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
         ${SST_TEST_SUITES}/testSuite_hybridsim.sh
