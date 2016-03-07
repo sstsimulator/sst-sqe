@@ -238,7 +238,7 @@ if [ $SST_MULTI_THREAD_COUNT == 0 ] ; then
      echo " There is no -n count "
 else
       sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*
-      sed -i.x '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py
+##    sed -i.x '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py
 fi
 
 if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
