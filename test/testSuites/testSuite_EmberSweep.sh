@@ -180,6 +180,7 @@ SE_fini() {
         cp  ${SST_TEST_INPUTS}/EmberSweepGenerator.py .
     else
         sed '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py > EmberSweepGenerator.py
+        chmod +x EmberSweepGenerator.py
     fi
     ./EmberSweepGenerator.py > bashIN
     #./Tester.py > bashIN
