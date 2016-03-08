@@ -13,6 +13,10 @@
 # and test trees, from the githup repository prior to invocation of this
 # script. Plow through the build, exiting if something goes wrong.
 
+echo ' '
+pwd
+df .
+echo ' '
 #=========================================================================
 # Definitions
 #=========================================================================
