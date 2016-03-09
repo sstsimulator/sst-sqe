@@ -58,14 +58,22 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-    sutArgs=${VSim_case}.py
+    sutArgs=${SST_ROOT}/sst/elements/VaultSimC/tests/${VSim_case}.py
 
     (${sut} ${sutArgs} > ${outFile})
-    if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
     then
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
-         fail "sst did not finish normally"
+         fail "sst did not finish normally, RetVal=$RetVal"
          return
     fi
 

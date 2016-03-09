@@ -24,6 +24,13 @@ L_SUITENAME="SST_sst_mcniagara" # Name of this test suite; will be used to
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+           echo '           SKIP '
+           preFail "McNiagara tests do not work with threading (#77)" "skip"
+       fi
+    fi     
+
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long
@@ -66,7 +73,15 @@ test_sst_mcniagara_test1() {
     then
         # Run SUT
         ${sut} ${sutArgs} > $outFile  
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
@@ -76,7 +91,7 @@ test_sst_mcniagara_test1() {
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
 
@@ -130,7 +145,15 @@ test_sst_mcniagara_test2() {
     then
         # Run SUT
         ${sut} ${sutArgs} > $outFile  
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
@@ -140,7 +163,7 @@ test_sst_mcniagara_test2() {
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
 

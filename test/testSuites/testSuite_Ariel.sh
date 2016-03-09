@@ -32,6 +32,30 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   as the function name begins with "test...".
 #===============================================================================
 
+#=====================================================
+#  A bit of code to clear out old Ariel Shmem files from /tmp
+
+    ls -l /tmp | grep $USER | grep ariel_shmem > __rmlist
+    wc __rmlist
+    today=$(( 10#`date +%j` ))
+    echo "today is $today"
+    
+    while read -u 3 r1 r2 r3 r4 r5 mo da r8 name
+    do
+    
+      c_day=$(( 10#`date +%j -d "$mo $da"` ))
+      c_day_plus_2=$(($c_day+2))
+ 
+      if [ $today -gt $c_day_plus_2 ] ; then
+         echo "Remove /tmp/$name"
+         rm /tmp/$name
+      fi
+    
+    done 3<__rmlist
+    rm __rmlist
+#=====================================================
+
+    
     echo "INTEL_PIN_DIRECTORY = $INTEL_PIN_DIRECTORY"
     if [ ! -d "$INTEL_PIN_DIRECTORY" ] ; then
         echo "Ariel tests requires PIN DIRECTORY"
@@ -58,6 +82,42 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
         preFail "ERROR: examples/stream: make failure"
     fi
+
+#     Subroutine to clean up shared memory ipc
+#          This could be in subroutine library - for now only Ariel
+removeFreeIPCs() {
+    #   Find and kill orphanned running binaries
+    ps -f > _running_bin
+    while read -u 3 uid pid ppid p4 p5 p6 p7 cmd
+    do
+##        echo "          DEBUG ONLY $uid $pid $ppid $cmd"
+        if [ $uid == $USER ] && [ ${ppid} == 1 ] ; then
+           if [[ $cmd == *stream/stream* ]] || [[ $cmd == *ompmybarrier* ]] ; then
+               echo "Going to kill: $cmd"
+               kill -9 $pid
+           else
+               echo " Omitting kill of $uid $ppid $cmd"
+           fi
+        fi
+    done 3<_running_bin
+  
+    #  Find and remove no longer attached shared memory segments  
+    ipcs > _ipc_list
+##         echo "         DEBUG ONLY `wc _ipc_list`"
+    while read -u 3 key shmid own perm size n_att rest
+    do
+         if [[ $key == "" ]] ; then
+             continue
+         fi
+##         echo "         DEBUG ONLY $shmid, $own, $n_att"
+       if [ $own == $USER ] && [ $n_att == 0 ] ; then
+          echo " Removing an idle Shared Mem allocation"
+          ipcrm -m $shmid
+       fi
+    done 3<_ipc_list
+    rm _ipc_list  _running_bin
+}
+
 #-------------------------------------------------------------------------------
 # Test:
 #     test_Ariel
@@ -91,7 +151,7 @@ Ariel_template() {
 
     sutArgs="${SST_ROOT}/sst/elements/ariel/frontend/simple/examples/stream/${Ariel_case}.py"
     echo $sutArgs
-    if [[ ${USE_GEM5:+isSet} == isSet ]] ; then
+    if [[ ${USE_OPENMP_BINARY:+isSet} == isSet ]] ; then
         export OMP_EXE=$SST_ROOT/test/testSuites/testopenMP/ompmybarrier/ompmybarrier
         echo $OMP_EXE
         ls -l $OMP_EXE
@@ -110,11 +170,12 @@ Ariel_template() {
     then
         # Run SUT
         ${sut} ${sutArgs} > $outFile
-        ret=$?
-        if [ $ret != 0 ]
+        RetVal=$?
+        if [ $RetVal != 0 ]
         then
-             echo ' '; echo WARNING: sst did not finish normally, RetVal= $ret ; echo ' '
-             fail "WARNING: sst did not finish normally, RetVal= $ret"
+             echo ' '; echo WARNING: sst did not finish normally, RetVal= $RetVal ; echo ' '
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
+             removeFreeIPCs
              return
         fi
 
@@ -179,6 +240,7 @@ Ariel_template() {
     echo "     `grep 'Simulation is complete' $outFile`"
     echo "Ref: `grep 'Simulation is complete' $referenceFile`"
     echo " "
+    removeFreeIPCs           # probably unneeded
     elapsedSeconds=$(($endSeconds -$startSeconds))
     echo "Ariel ${Ariel_case}: Wall Clock Time  $elapsedSeconds seconds"
 }
@@ -186,39 +248,39 @@ Ariel_template() {
 ls -l ${SST_ROOT}/sst/elements/ariel/frontend/simple/examples/stream
 
 test_Ariel_runstream() {
-    USE_GEM5=""
+    USE_OPENMP_BINARY=""
     USE_MEMH=""
     Ariel_template runstream
 }
     
 
 test_Ariel_testSt() {
-    USE_GEM5=""
+    USE_OPENMP_BINARY=""
     USE_MEMH=""
     Ariel_template runstreamSt
 }
 
 
 test_Ariel_testNB() {
-    USE_GEM5=""
+    USE_OPENMP_BINARY=""
     USE_MEMH=""
     Ariel_template runstreamNB
 }
 
 test_Ariel_memH_test() {
-    USE_GEM5=""
+    USE_OPENMP_BINARY=""
     USE_MEMH="yes"
     Ariel_template memHstream
 }
 
 test_Ariel_test_ivb() {
-    USE_GEM5="yes"
+    USE_OPENMP_BINARY="yes"
     USE_MEMH=""
     Ariel_template ariel_ivb
 }
 
 test_Ariel_test_snb() {
-    USE_GEM5="yes"
+    USE_OPENMP_BINARY="yes"
     USE_MEMH=""
     Ariel_template ariel_snb
 }

@@ -10,6 +10,7 @@
 
 # 1) The SUT (software under test) must have built successfully.
 # 2) A test success reference file is available.
+#  There is no sutArgs= statement.  SST is python wrapped.
 
 TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 # Load test definitions
@@ -25,6 +26,15 @@ L_SUITENAME="scheduler_DetailedNetwork_suite" # Name of this test suite; will be
                                         # please.
 
 L_TESTFILE=()  # Empty list, used to hold test file names
+
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+           echo ' '
+           echo "    This test has been modified to use single thread "
+           echo " on scheduler part, Multi Thread option on Ember"
+           echo ' '
+       fi
+    fi     
 
 #===============================================================================
 # Test functions
@@ -65,7 +75,7 @@ fi
 
 echo ' '
 echo "   Started at `date`"
-echo "   Be Patient.  This test runs 11 minutes on sst-test"
+echo "   Be Patient.  This test runs over 4 minutes on sst-test"
 echo "   IGNORE the word \"FATAL\" in output messages"
 
 test_scheduler_DetailedNetwork() {
@@ -98,7 +108,7 @@ cd $TEST_FOLDER
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.sim .
 cp $SST_SRC/sst/elements/scheduler/simulations/*.phase .
 
-cp $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py .
+# cp $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py .
 # The path to other python files (ember defaults, network defaults etc.) included by emberLoad.py.
 
 ##-John
@@ -108,16 +118,28 @@ emberpath="$SST_SRC/sst/elements/ember/test"
 ##-John
 
 # Insert the ember path in emberLoad.py.  
-sed -i "s|PATH|$emberpath|g" emberLoad.py
+#sed -i "s|PATH|$emberpath|g" emberLoad.py
+sed "s|PATH|$emberpath|g" $SST_SRC/sst/elements/scheduler/simulations/emberLoad.py > emberLoad.py
 
 cp $SST_SRC/sst/elements/scheduler/simulations/run_DetailedNetworkSim.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_sched.py .
 cp $SST_SRC/sst/elements/scheduler/simulations/snapshotParser_ember.py .
+#      These were used to test and develop the infinite loop fix
+## cp $SST_ROOT/test/testInputFiles/run_DetailedNetworkSim.py .
+## cp $SST_ROOT/test/testInputFiles/snapshotParser_ember.py .
+## cp $SST_ROOT/test/testInputFiles/snapshotParser_sched.py .
+
 cp $SST_SRC/sst/elements/scheduler/simulations/${TEST_NAME}.py .
 #cp $TEST_INPUTS/testSdlFiles/${TEST_NAME}.py .
-   
-# run sst
+if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_THREAD_COUNT -gt 0 ] ; then
+   echo "Setting Multi thread count to $SST_MULTI_THREAD_COUNT"
+   sed -i'.x' '/execcommand = "sst/s/sst/sst -n '"$SST_MULTI_THREAD_COUNT"/ snapshotParser_sched.py
+fi    
+grep 'sst ' run_DetailedNetworkSim.py
+grep 'sst ' snapshotParser_sched.py
 
+# run sst
+ 
 ./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py > /dev/null
 retVal=$?
 if [ $retVal -ne 0 ] ; then

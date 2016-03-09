@@ -67,11 +67,19 @@ Tol=$2    ##  curTick tolerance
 
         echo " Running from `pwd`"
         ${sut} ${sutArgs} > ${tmpFile}
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
         mv ${tmpFile} ${outFile}
@@ -175,5 +183,7 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
+#         Located here this timeout will override the multithread value
+export SST_TEST_ONE_TEST_TIMEOUT=750
 (. ${SHUNIT2_SRC}/shunit2)
 

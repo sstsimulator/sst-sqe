@@ -65,7 +65,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #        Omitting the forced fail in case the above test rejects valid mpiruns
     fi
 
-    rm -rf away.hold
+    away_hold=$SST_ROOT/away.hold
+    rm -rf $away_hold
 
         #                         Subroutine for checking
         #     $1     - number on the rank
@@ -75,6 +76,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
         checkAndPrint() {
            pc=`checkPerCent $3 $(($1+$3))`
+           totalPC=$(($totalPC+$pc))
            pc10=$(($DesiredPC/10))
            Pl10=$(($DesiredPC+$pc10)) ; M10=$(($DesiredPC-$pc10))
            pc50=$(($DesiredPC/2))
@@ -82,10 +84,9 @@ L_TESTFILE=()  # Empty list, used to hold test file names
            if [ $pc -gt $M10 ]  && [ $pc -lt $Pl10 ] ; then
                echo "$2  ${1}   `pc100 $pc`   (Good) "
            elif [ $pc -gt $M50 ]  && [ $pc -lt $Pl50 ] ; then
-               echo "$2  ${1}   `pc100 $pc`   (Working but lousy) "
+               echo "$2  ${1}   `pc100 $pc`   (Working but not even) "
            else
-               echo "$2  $1   `pc100 $pc`   BAD    "
-#              fail " $2  $1   `pc100 $pc`   BAD allocation PerCentage "
+               echo "$2  $1   `pc100 $pc`    "
            fi
         }
         #                     --- end of Subroutine
@@ -97,12 +98,12 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #     inputs - partition file
 #     Outputs 
 #              distResultFile - (source to populate array RANKP
-#              file away.hold - debug log of processing
+#              file $away_hold - debug log of processing
 #              return value - number of ranks found
 #
 create_distResultFile() {
 
-        rankis=-1
+        index=-1
         IICCT=0
         NICCT=0
         rm -f $distResultFile
@@ -113,34 +114,39 @@ create_distResultFile() {
              continue
           fi
         
-          echo "/<$word/>"     >> away.hold
+          echo "/<$word/>"     >> $away_hold
           if [ $word == "Rank:" ] ; then
-              echo NICs in previous rank $rankis : $IICCT     >> away.hold
-              if [ $rankis -gt -1 ] ; then
-                  echo  RANKP[${rankis}]=$IICCT >> $distResultFile
+              echo "NICs in previous index $index : $IICCT"     >> $away_hold
+              if [ $index -gt -1 ]  ; then
+                  echo  RANKP[${index}]=$IICCT >> $distResultFile
+                  NICCT=$(($NICCT+$IICCT))
               fi
               if [[ $rnk == *.* ]] ; then
+                  ((index++))
                   rankis=`echo $rnk | awk -F. '{print $1}'`
                   threadis=`echo $rnk | awk -F. '{print $2}'`
-                  echo Rank is $rankis, Thread is $threadis       >> away.hold
+                  echo  RANKID[${index}]=$rnk >> $distResultFile
+                  echo Rank is $rankis, Thread is $threadis       >> $away_hold
               else 
+                  ((index++))
                   rankis=$rnk
+                  echo  RANKID[${index}]=$rnk >> $distResultFile
               fi
-              echo Found Rank : $word $rest rank is $rankis       >> away.hold
+              echo Found Rank : $word $rest rank is $rankis       >> $away_hold
               IICCT=0
           else
               ((IICCT++))
-              ((NICCT++))
           fi
         done 3<$partFile
  
-        echo  RANKP[${rankis}]=$IICCT >> $distResultFile
+        echo  RANKP[${index}]=$IICCT >> $distResultFile
+        NICCT=$(($NICCT+$IICCT))
         echo  numComp=$NICCT >> $distResultFile
-        echo previous rank $rankis : $IICCT       >> away.hold
-        ((rankis++))
+        echo previous rank $rankis : $IICCT       >> $away_hold
+        ((index++))
         #   return number of ranks
-        echo "value is ${rankis}"  >> away.hold
-        echo $rankis 
+        echo "value is ${index}"  >> $away_hold
+        echo $index 
 }
 #      end of Subroutine create_distResultFile()
 
@@ -165,13 +171,13 @@ PARTITIONER=$2
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs=emberLoad.py
+    sutArgs=${SST_ROOT}/sst/elements/ember/test/emberLoad.py
     rm -f ${outFile}
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        mpirun -np ${NUMRANKS} ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
+        mpirun -np ${NUMRANKS} ${sut} --verbose --run-mode init --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         retval=$?
         touch $partFile
         if [ $retval != 0 ]
@@ -197,11 +203,14 @@ PARTITIONER=$2
              tail -25 $outFile
              popd
              if [ ! -s $partFile ] ; then
-                 fail "WARNING: sst partition did not finish normally"
+                 echo ' ' ; echo '*****************************************************'
+                 fail "WARNING: sst partition did not finish normally, RetVal=$RetVal"
+                 echo ' ' ; echo "           Partition File does not exist "
+                 echo ' ' ; echo '*****************************************************'
                  return
              fi
-             echo ' ' ; echo "could exit here, but analyse even if partitioned run fails"
-             fail "WARNING: sst did not finish normally, RETVAL=$retval" 
+             echo ' ' ; echo "could exit here, but analyze even if partitioned run fails"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal, RETVAL=$retval" 
 #             return
         else
              wc $errFile $outFile $partFile
@@ -256,25 +265,35 @@ PARTITIONER=$2
             #    Evaluate the Partition  (this is based on Output File)
             DesiredPC=$((10000/$numranks))    ##  x 100
             echo ' '
-            echo "              Per Cent from Verbose output" 
+            echo "              Per Cent from Verbose output $PARTITIONER $NUMRANKS" 
             ind=0
+            totalPC=0
             while [ $ind -lt $numranks ] 
             do 
-               checkAndPrint ${rank[$ind]}  rank${ind} $numComp
+               checkAndPrint ${rank[$ind]} rank${ind} $numComp
                 ((ind++))
             done
+            errPC=$(($totalPC-10000))
+            if [ $errPC -lt -$numranks ] || [  $errPC -gt $numranks ] ; then
+                echo  "PerCent sum is unreasonable:  totalPC is `pc100 $totalPC`"
+                fail  "PerCent sum is unreasonable:  totalPC is `pc100 $totalPC`"
+            fi
         else
-            echo " Did not find Partition Distribution Information in stdout"
+            echo ' ' ; echo '*****************************************************'
+            echo " Did not find Partition Distribution Information in stdout $PARTITIONER $NUMRANKS"
+            echo ' ' ; echo '*****************************************************'
         fi
 
             #    Get info from Partition file, creating the file $distResultFile
 
-echo "          next is call to create_distResultFile"
-        numranks=`create_distResultFile`
-echo "  ===============   we have returned "
+        echo "          next is call to create_distResultFile"
 
+was=$numranks
+        numranks=`create_distResultFile`
+
+echo "DEBUG: numrank $numranks, was $was"
 ##   we now have two definitions of numranks
-  wc $distResultFile
+        wc $distResultFile
 
             #         Source $distResultFile (with the RANK array)
             . $distResultFile 2>std.err
@@ -286,36 +305,31 @@ echo "  ===============   we have returned "
             fi
             DesiredPC=$((10000/$numranks))    ##  x 100
             echo ' '
-            echo "              Per Cent from Partition File "
+            echo "              Per Cent from Partition File $PARTITIONER $NUMRANKS"
             ind=0
+            _TOTAL=0
+            totalPC=0
             while [ $ind -lt $numranks ] 
-            do 
-               checkAndPrint ${RANKP[$ind]}  rank${ind} $numComp
+            do
+               checkAndPrint ${RANKP[$ind]} "${RANKID[${ind}]}" $numComp
+               _TOTAL=$((${RANKP[$ind]}+${_TOTAL}))
                 ((ind++))
             done
+            errPC=$(($totalPC-10000))
+            if [ $errPC -lt -$numranks ] || [  $errPC -gt $numranks ] ; then
+                echo  "PerCent sum is unreasonable:  totalPC is `pc100 $totalPC`"
+                fail  "PerCent sum is unreasonable:  totalPC is `pc100 $totalPC`"
+            fi
+            if [ ${_TOTAL} == 0 ] ; then
+                echo ' ' ; echo '*****************************************************'
+                fail " Something is really wrong!"
+                echo " Either the SST Partition option has muliti-thread Issues -or- "
+                echo " The test Suite is asking totally wrong questions."
+                echo ' ' ; echo '*****************************************************'
+                echo ' '
+                return
+            fi
 
-            # display difference between stdout and partition file, only if not the same"
-##             ind=0
-## echo "  numranks = ${numranks}"
-##             while [ $ind -lt $numranks ] 
-##             do
-##                 if [ ${RANKP[$ind]} == ${rank[$ind]} ] ; then
-##                 ((ind++))
-##                     continue
-##                 fi
-## echo "Ranks are NOT the same for $ind  ${RANKP[$ind]} ${rank[$ind]}"
-##                 jnd=0
-##                 echo "         Partition       Output"
-##                 echo "rank        File          FILE"
-##                 while [ $jnd -lt $numranks ] 
-##                 do
-##                     echo " $jnd           ${RANKP[$jnd]}             ${rank[$jnd]}"
-##                     ((jnd++))
-##                 done
-##                 break
-##             done
-
- #  We can do the same EASILY for the Partition file.
     else
         # Problem encountered: can't find or can't run SUT (doesn't
         # really do anything in Phase I)

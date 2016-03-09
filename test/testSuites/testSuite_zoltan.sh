@@ -71,6 +71,7 @@ NUMRANKS=$1
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
     
+    startSeconds=`date +%s`
     testDataFileBase="test_zoltan${NUMRANKS}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
@@ -81,20 +82,20 @@ NUMRANKS=$1
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs=emberLoad.py
+    sutArgs=${SST_ROOT}/sst/elements/ember/test/emberLoad.py
     rm -f ${outFile}
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
         mpirun -np ${NUMRANKS} ${sut} --verbose --partitioner zoltan --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
-        retval=$?
-        if [ $retval != 0 ]
+        RetVal=$?
+        if [ $RetVal != 0 ]
         then
-             echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$retval" ; echo ' '
+             echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$RetVal" ; echo ' '
              ls -l ${sut}
         #     sed 10q $outFile
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              echo "And the Error File  (first 10 lines):"
              cat $errFile | c++filt       
 #     sed 10q $errFile
@@ -173,8 +174,10 @@ checkAndPrint() {
                 ((ind++))
             done
         else
-            echo " Did not find Partition Distribution Information"
-            fail " Did not find Partition Distribution Information"
+            echo " Did not find Partition Distribution Information in outFile"
+            fail " Did not find Partition Distribution Information in outFile"
+            echo " Looking for \"found <nnn> in partition graph\""
+            grep -e found -e in.partition.graph -A 2 -B 1 $outFile 
             return
         fi
     else
@@ -184,6 +187,10 @@ checkAndPrint() {
         fail "Problem with SUT: ${sut}"
     fi
     popd
+
+    endSeconds=`date +%s`
+    elapsedSeconds=$(($endSeconds -$startSeconds))
+    echo " Zoltan ${NUMRANKS}: Wall Clock Time  $elapsedSeconds seconds"
 }
 
 test_zoltan_2()
@@ -204,5 +211,7 @@ test_zoltan_8()
 # "test"  will be automatically executed.
 
 export SST_TEST_ONE_TEST_TIMEOUT=30         # 1/2 minute is plenty  (30 seconds)
-
+if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_THREAD_COUNT -gt 0 ] ; then
+    export SST_TEST_ONE_TEST_TIMEOUT=900         # 15 minute for multithread
+fi
 (. ${SHUNIT2_SRC}/shunit2)

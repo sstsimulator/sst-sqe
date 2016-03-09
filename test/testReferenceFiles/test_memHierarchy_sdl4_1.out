@@ -1,190 +1,601 @@
-
-------------------------------------------------------------------------
---- Cache Stats
---- Name: l2cache
---- Overall Statistics
-------------------------------------------------------------------------
-- Total data requests:                           80
-     GetS:                                       70
-     GetX:                                       10
-     GetSEx:                                     0
-- Total misses:                                  47
-     GetS, miss on arrival:                      37
-     GetS, miss after being blocked:             0
-     GetX, miss on arrival:                      5
-     GetX, miss after being blocked:             5
-     GetSEx, miss on arrival:                    0
-     GetSEx, miss after being blocked:           0
-- Total hits:                                    33
-     GetS, hit on arrival:                       0
-     GetS, hit after being blocked:              33
-     GetX, hit on arrival:                       0
-     GetX, hit after being blocked:              0
-     GetSEx, hit on arrival:                     0
-     GetSEx, hit after being blocked:            0
-- Hit ratio:                                     41.250%
-- Miss ratio:                                    58.750%
------------- Coherence transitions for misses -------------
-- GetS   I->S:                                   34
-- GetS   M(present at another cache):            3
-- GetX   I->M:                                   3
-- GetX   S->M:                                   2
-- GetX   M(present at another cache):            5
-- GetSEx I->M:                                   0
-- GetSEx S->M:                                   0
-- GetSEx M(present at another cache):            0
------------- Replacements and evictions -------------------
-- PutS received:                                 0
-- PutM received:                                 0
-- PutS sent due to eviction:                     0
-- PutE sent due to eviction:                     0
-- PutM sent due to eviction:                     0
------------- Other stats ----------------------------------
-- Inv stalled because LOCK held:                 0
-- Requests received (incl coherence traffic):    129
-- Requests handled by MSHR (MSHR hits):          38
-- NACKs sent (MSHR Full, Down):                  0
-- NACKs sent (MSHR Full, Up):                    0
------------- Latency stats --------------------------------
-- Avg Miss Latency (cyc):                        262
-- Latency GetS   I->S:                           254
-- Latency GetS   M:                              70
-- Latency GetX   I->M:                           262
-- Latency GetX   S->M:                           262
-- Latency GetX   M:                              316
------------- State and event stats ---------------------------
-GetS, I:        34
-GetS, S:        33
-GetS, M:        3
-GetX, I:        3
-GetX, S:        2
-GetX, M:        5
-GetSResp, IS:        33
-GetXResp, IM:        3
-GetXResp, SM:        2
-FetchResp, M_Inv:        5
-FetchXResp, M_InvX:        3
-
-------------------------------------------------------------------------
---- Cache Stats
---- Name: c1.l1cache
---- Overall Statistics
-------------------------------------------------------------------------
-- Total data requests:                           53
-     GetS:                                       48
-     GetX:                                       5
-     GetSEx:                                     0
-- Total misses:                                  39
-     GetS, miss on arrival:                      34
-     GetS, miss after being blocked:             0
-     GetX, miss on arrival:                      5
-     GetX, miss after being blocked:             0
-     GetSEx, miss on arrival:                    0
-     GetSEx, miss after being blocked:           0
-- Total hits:                                    14
-     GetS, hit on arrival:                       13
-     GetS, hit after being blocked:              1
-     GetX, hit on arrival:                       0
-     GetX, hit after being blocked:              0
-     GetSEx, hit on arrival:                     0
-     GetSEx, hit after being blocked:            0
-- Hit ratio:                                     26.415%
-- Miss ratio:                                    73.585%
------------- Coherence transitions for misses -------------
-- GetS   I->S:                                   34
-- GetX   I->M:                                   3
-- GetX   S->M:                                   2
-- GetSEx I->M:                                   0
-- GetSEx S->M:                                   0
------------- Replacements and evictions -------------------
-- PutS sent due to eviction:                     0
-- PutE sent due to eviction:                     0
-- PutM sent due to eviction:                     0
------------- Other stats ----------------------------------
-- Inv stalled because LOCK held:                 0
-- Requests received (incl coherence traffic):    96
-- Requests handled by MSHR (MSHR hits):          3
-- NACKs sent (MSHR Full, Down):                  0
-- NACKs sent (MSHR Full, Up):                    0
------------- Latency stats --------------------------------
-- Avg Miss Latency (cyc):                        320
-- Latency GetS   I->S:                           307
-- Latency GetX   I->M:                           371
-- Latency GetX   S->M:                           371
------------- State and event stats ---------------------------
-GetS, I:        34
-GetS, S:        11
-GetS, M:        3
-GetX, I:        3
-GetX, S:        2
-GetSResp, IS:        33
-GetXResp, IM:        5
-Inv, SM:        2
-FetchInvX, M:        3
-TrivialCPU cpu1 Finished after 53 issued reads, 52 returned (4999 clocks)
+ c0.l1cache.TotalEventsReceived : Accumulator : Sum.u64 = 90; SumSQ.u64 = 90; Count.u64 = 90; 
+ c0.l1cache.TotalEventsReplayed : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c0.l1cache.CacheHits : Accumulator : Sum.u64 = 13; SumSQ.u64 = 13; Count.u64 = 13; 
+ c0.l1cache.GetSHit_Arrival : Accumulator : Sum.u64 = 12; SumSQ.u64 = 12; Count.u64 = 12; 
+ c0.l1cache.GetXHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetSExHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetSHit_Blocked : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c0.l1cache.GetXHit_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetSExHit_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.CacheMisses : Accumulator : Sum.u64 = 37; SumSQ.u64 = 37; Count.u64 = 37; 
+ c0.l1cache.GetSMiss_Arrival : Accumulator : Sum.u64 = 33; SumSQ.u64 = 33; Count.u64 = 33; 
+ c0.l1cache.GetXMiss_Arrival : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c0.l1cache.GetSExMiss_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetSMiss_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetXMiss_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetSExMiss_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetS_recv : Accumulator : Sum.u64 = 46; SumSQ.u64 = 46; Count.u64 = 46; 
+ c0.l1cache.GetX_recv : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c0.l1cache.GetSEx_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.GetSResp_recv : Accumulator : Sum.u64 = 32; SumSQ.u64 = 32; Count.u64 = 32; 
+ c0.l1cache.GetXResp_recv : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c0.l1cache.PutS_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.PutM_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.PutE_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.FetchInv_recv : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c0.l1cache.FetchInvX_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.Inv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 11515; SumSQ.u64 = 24133; Count.u64 = 9872; 
+ c0.l1cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.evict_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetS_I : Accumulator : Sum.u64 = 33; SumSQ.u64 = 33; Count.u64 = 33; 
+ c0.l1cache.stateEvent_GetS_S : Accumulator : Sum.u64 = 13; SumSQ.u64 = 13; Count.u64 = 13; 
+ c0.l1cache.stateEvent_GetS_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetX_I : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c0.l1cache.stateEvent_GetX_S : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
+ c0.l1cache.stateEvent_GetX_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetX_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSEx_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSEx_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSEx_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSEx_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSResp_IS : Accumulator : Sum.u64 = 32; SumSQ.u64 = 32; Count.u64 = 32; 
+ c0.l1cache.stateEvent_GetSResp_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSResp_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetSResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_GetXResp_IM : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c0.l1cache.stateEvent_GetXResp_SM : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
+ c0.l1cache.stateEvent_GetXResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_SMD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutS_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutE_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_PutM_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Inv_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_M : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c0.l1cache.stateEvent_FetchInv_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInv_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchInvX_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_Fetch_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_SMD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchResp_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchXResp_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchXResp_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_FetchXResp_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.stateEvent_AckPut_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 9888; SumSQ.u64 = 3091104; Count.u64 = 32; 
+ c0.l1cache.latency_GetS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.latency_GetX_IM : Accumulator : Sum.u64 = 315; SumSQ.u64 = 99225; Count.u64 = 1; 
+ c0.l1cache.latency_GetX_SM : Accumulator : Sum.u64 = 945; SumSQ.u64 = 297675; Count.u64 = 3; 
+ c0.l1cache.latency_GetX_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.latency_GetSEx_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.latency_GetSEx_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.latency_GetSEx_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_GetS : Accumulator : Sum.u64 = 33; SumSQ.u64 = 33; Count.u64 = 33; 
+ c0.l1cache.eventSent_GetX : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c0.l1cache.eventSent_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_GetSResp : Accumulator : Sum.u64 = 45; SumSQ.u64 = 45; Count.u64 = 45; 
+ c0.l1cache.eventSent_GetXResp : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c0.l1cache.eventSent_PutS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_PutE : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_Inv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_Fetch : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_FetchInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_FetchInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_FetchResp : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c0.l1cache.eventSent_FetchXResp : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_AckInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_AckPut : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_NACK_up : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.eventSent_NACK_down : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c0.l1cache.EventStalledForLockedCacheline : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.TotalEventsReceived : Accumulator : Sum.u64 = 89; SumSQ.u64 = 89; Count.u64 = 89; 
+ c1.l1cache.TotalEventsReplayed : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c1.l1cache.CacheHits : Accumulator : Sum.u64 = 14; SumSQ.u64 = 14; Count.u64 = 14; 
+ c1.l1cache.GetSHit_Arrival : Accumulator : Sum.u64 = 13; SumSQ.u64 = 13; Count.u64 = 13; 
+ c1.l1cache.GetXHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.GetSExHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.GetSHit_Blocked : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c1.l1cache.GetXHit_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.GetSExHit_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.CacheMisses : Accumulator : Sum.u64 = 36; SumSQ.u64 = 36; Count.u64 = 36; 
+ c1.l1cache.GetSMiss_Arrival : Accumulator : Sum.u64 = 32; SumSQ.u64 = 32; Count.u64 = 32; 
+ c1.l1cache.GetXMiss_Arrival : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c1.l1cache.GetSExMiss_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.GetSMiss_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.GetXMiss_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.GetSExMiss_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.GetS_recv : Accumulator : Sum.u64 = 46; SumSQ.u64 = 46; Count.u64 = 46; 
+ c1.l1cache.GetX_recv : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c1.l1cache.GetSEx_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.GetSResp_recv : Accumulator : Sum.u64 = 31; SumSQ.u64 = 31; Count.u64 = 31; 
+ c1.l1cache.GetXResp_recv : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c1.l1cache.PutS_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.PutM_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.PutE_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.FetchInv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.FetchInvX_recv : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c1.l1cache.Inv_recv : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
+ c1.l1cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 11793; SumSQ.u64 = 24785; Count.u64 = 9877; 
+ c1.l1cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.evict_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_GetS_I : Accumulator : Sum.u64 = 32; SumSQ.u64 = 32; Count.u64 = 32; 
+ c1.l1cache.stateEvent_GetS_S : Accumulator : Sum.u64 = 13; SumSQ.u64 = 13; Count.u64 = 13; 
+ c1.l1cache.stateEvent_GetS_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_GetS_M : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c1.l1cache.stateEvent_GetX_I : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c1.l1cache.stateEvent_GetX_S : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
+ c1.l1cache.stateEvent_GetX_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_GetX_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_GetSEx_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_GetSEx_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_GetSEx_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_GetSEx_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_GetSResp_IS : Accumulator : Sum.u64 = 31; SumSQ.u64 = 31; Count.u64 = 31; 
+ c1.l1cache.stateEvent_GetSResp_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_GetSResp_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_GetSResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_GetXResp_IM : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c1.l1cache.stateEvent_GetXResp_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_GetXResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_SMD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutS_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutE_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutE_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutE_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutE_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutE_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutE_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutE_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutE_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutE_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutM_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutM_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutM_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutM_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutM_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutM_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutM_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutM_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_PutM_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Inv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Inv_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Inv_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Inv_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Inv_SM : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
+ c1.l1cache.stateEvent_Inv_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Inv_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Inv_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Inv_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInv_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_M : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c1.l1cache.stateEvent_FetchInvX_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchInvX_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Fetch_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Fetch_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Fetch_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Fetch_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Fetch_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Fetch_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Fetch_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_Fetch_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchResp_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchResp_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchResp_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchResp_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchResp_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchResp_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchResp_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchResp_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchResp_SMD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchResp_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchResp_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchXResp_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchXResp_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_FetchXResp_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_AckInv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_AckInv_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_AckInv_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_AckInv_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_AckInv_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_AckInv_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_AckInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_AckInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.stateEvent_AckPut_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 9920; SumSQ.u64 = 3174400; Count.u64 = 31; 
+ c1.l1cache.latency_GetS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.latency_GetX_IM : Accumulator : Sum.u64 = 374; SumSQ.u64 = 139876; Count.u64 = 1; 
+ c1.l1cache.latency_GetX_SM : Accumulator : Sum.u64 = 1122; SumSQ.u64 = 419628; Count.u64 = 3; 
+ c1.l1cache.latency_GetX_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.latency_GetSEx_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.latency_GetSEx_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.latency_GetSEx_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.eventSent_GetS : Accumulator : Sum.u64 = 32; SumSQ.u64 = 32; Count.u64 = 32; 
+ c1.l1cache.eventSent_GetX : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c1.l1cache.eventSent_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.eventSent_GetSResp : Accumulator : Sum.u64 = 45; SumSQ.u64 = 45; Count.u64 = 45; 
+ c1.l1cache.eventSent_GetXResp : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ c1.l1cache.eventSent_PutS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.eventSent_PutE : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.eventSent_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.eventSent_Inv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.eventSent_Fetch : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.eventSent_FetchInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.eventSent_FetchInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.eventSent_FetchResp : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.eventSent_FetchXResp : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ c1.l1cache.eventSent_AckInv : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
+ c1.l1cache.eventSent_AckPut : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.eventSent_NACK_up : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.eventSent_NACK_down : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ c1.l1cache.EventStalledForLockedCacheline : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.TotalEventsReceived : Accumulator : Sum.u64 = 116; SumSQ.u64 = 116; Count.u64 = 116; 
+ l2cache.TotalEventsReplayed : Accumulator : Sum.u64 = 35; SumSQ.u64 = 35; Count.u64 = 35; 
+ l2cache.CacheHits : Accumulator : Sum.u64 = 31; SumSQ.u64 = 31; Count.u64 = 31; 
+ l2cache.GetSHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.GetXHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.GetSExHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.GetSHit_Blocked : Accumulator : Sum.u64 = 31; SumSQ.u64 = 31; Count.u64 = 31; 
+ l2cache.GetXHit_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.GetSExHit_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.CacheMisses : Accumulator : Sum.u64 = 41; SumSQ.u64 = 41; Count.u64 = 41; 
+ l2cache.GetSMiss_Arrival : Accumulator : Sum.u64 = 33; SumSQ.u64 = 33; Count.u64 = 33; 
+ l2cache.GetXMiss_Arrival : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ l2cache.GetSExMiss_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.GetSMiss_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.GetXMiss_Blocked : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ l2cache.GetSExMiss_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.GetS_recv : Accumulator : Sum.u64 = 65; SumSQ.u64 = 65; Count.u64 = 65; 
+ l2cache.GetX_recv : Accumulator : Sum.u64 = 8; SumSQ.u64 = 8; Count.u64 = 8; 
+ l2cache.GetSEx_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.GetSResp_recv : Accumulator : Sum.u64 = 31; SumSQ.u64 = 31; Count.u64 = 31; 
+ l2cache.GetXResp_recv : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ l2cache.PutS_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.PutM_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.PutE_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.FetchInv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.FetchInvX_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.Inv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.MSHR_occupancy : Accumulator : Sum.u64 = 18657; SumSQ.u64 = 70249; Count.u64 = 9854; 
+ l2cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.evict_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_GetS_I : Accumulator : Sum.u64 = 32; SumSQ.u64 = 32; Count.u64 = 32; 
+ l2cache.stateEvent_GetS_S : Accumulator : Sum.u64 = 31; SumSQ.u64 = 31; Count.u64 = 31; 
+ l2cache.stateEvent_GetS_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_GetS_M : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ l2cache.stateEvent_GetX_I : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ l2cache.stateEvent_GetX_S : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
+ l2cache.stateEvent_GetX_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_GetX_M : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ l2cache.stateEvent_GetSEx_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_GetSEx_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_GetSEx_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_GetSEx_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_GetSResp_IS : Accumulator : Sum.u64 = 31; SumSQ.u64 = 31; Count.u64 = 31; 
+ l2cache.stateEvent_GetSResp_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_GetSResp_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_GetSResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_GetXResp_IM : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ l2cache.stateEvent_GetXResp_SM : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
+ l2cache.stateEvent_GetXResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_SMD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutS_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutE_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutE_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutE_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutE_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutE_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutE_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutE_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutE_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutE_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutM_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutM_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutM_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutM_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutM_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutM_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutM_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutM_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_PutM_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Inv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Inv_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Inv_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Inv_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Inv_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Inv_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Inv_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Inv_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Inv_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInv_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_MInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchInvX_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Fetch_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Fetch_IS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Fetch_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Fetch_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Fetch_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Fetch_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Fetch_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_Fetch_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchResp_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchResp_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchResp_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchResp_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchResp_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchResp_SMInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchResp_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchResp_MInv : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ l2cache.stateEvent_FetchResp_SD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchResp_SMD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchResp_ED : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchResp_MD : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchXResp_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchXResp_EInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_FetchXResp_MInvX : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
+ l2cache.stateEvent_AckInv_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_AckInv_SInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_AckInv_SMInv : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
+ l2cache.stateEvent_AckInv_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_AckInv_EI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_AckInv_MI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_AckInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_AckInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.stateEvent_AckPut_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.latency_GetS_IS : Accumulator : Sum.u64 = 8091; SumSQ.u64 = 2111751; Count.u64 = 31; 
+ l2cache.latency_GetS_M : Accumulator : Sum.u64 = 69; SumSQ.u64 = 4761; Count.u64 = 1; 
+ l2cache.latency_GetX_IM : Accumulator : Sum.u64 = 261; SumSQ.u64 = 68121; Count.u64 = 1; 
+ l2cache.latency_GetX_SM : Accumulator : Sum.u64 = 783; SumSQ.u64 = 204363; Count.u64 = 3; 
+ l2cache.latency_GetX_M : Accumulator : Sum.u64 = 1276; SumSQ.u64 = 407044; Count.u64 = 4; 
+ l2cache.latency_GetSEx_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.latency_GetSEx_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.latency_GetSEx_M : Accumulator : Sum.u64 = 69; SumSQ.u64 = 4761; Count.u64 = 1; 
+ l2cache.eventSent_GetS : Accumulator : Sum.u64 = 32; SumSQ.u64 = 32; Count.u64 = 32; 
+ l2cache.eventSent_GetX : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ l2cache.eventSent_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_GetSResp : Accumulator : Sum.u64 = 63; SumSQ.u64 = 63; Count.u64 = 63; 
+ l2cache.eventSent_GetXResp : Accumulator : Sum.u64 = 8; SumSQ.u64 = 8; Count.u64 = 8; 
+ l2cache.eventSent_PutS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_PutE : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_Inv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_Fetch : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_FetchInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_FetchInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_FetchResp : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_FetchXResp : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_AckInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_AckPut : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_NACK_up : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.eventSent_NACK_down : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l2cache.EventStalledForLockedCacheline : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ memory.requests_received_GetS : Accumulator : Sum.u64 = 32; SumSQ.u64 = 32; Count.u64 = 32; 
+ memory.requests_received_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ memory.requests_received_GetX : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
+ memory.requests_received_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ memory.outstanding_requests : Accumulator : Sum.u64 = 3617; SumSQ.u64 = 6279; Count.u64 = 4999; 
+ memory.cycles_with_issue : Accumulator : Sum.u64 = 36; SumSQ.u64 = 36; Count.u64 = 36; 
+ memory.cycles_attempted_issue_but_rejected : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ memory.total_cycles : Accumulator : Sum.u64 = 4999; SumSQ.u64 = 4999; Count.u64 = 4999; 
+TrivialCPU cpu1 Finished after 50 issued reads, 49 returned (4999 clocks)
 Number of Pending Requests per Cycle (Binned by 2 Requests)
-  [0, 2]  3305
-  [2, 4]  1487
-  [4, 6]  207
-
-------------------------------------------------------------------------
---- Cache Stats
---- Name: c0.l1cache
---- Overall Statistics
-------------------------------------------------------------------------
-- Total data requests:                           53
-     GetS:                                       48
-     GetX:                                       5
-     GetSEx:                                     0
-- Total misses:                                  42
-     GetS, miss on arrival:                      37
-     GetS, miss after being blocked:             0
-     GetX, miss on arrival:                      5
-     GetX, miss after being blocked:             0
-     GetSEx, miss on arrival:                    0
-     GetSEx, miss after being blocked:           0
-- Total hits:                                    11
-     GetS, hit on arrival:                       11
-     GetS, hit after being blocked:              0
-     GetX, hit on arrival:                       0
-     GetX, hit after being blocked:              0
-     GetSEx, hit on arrival:                     0
-     GetSEx, hit after being blocked:            0
-- Hit ratio:                                     20.755%
-- Miss ratio:                                    79.245%
------------- Coherence transitions for misses -------------
-- GetS   I->S:                                   37
-- GetX   I->M:                                   3
-- GetX   S->M:                                   2
-- GetSEx I->M:                                   0
-- GetSEx S->M:                                   0
------------- Replacements and evictions -------------------
-- PutS sent due to eviction:                     0
-- PutE sent due to eviction:                     0
-- PutM sent due to eviction:                     0
------------- Other stats ----------------------------------
-- Inv stalled because LOCK held:                 0
-- Requests received (incl coherence traffic):    99
-- Requests handled by MSHR (MSHR hits):          0
-- NACKs sent (MSHR Full, Down):                  0
-- NACKs sent (MSHR Full, Up):                    0
------------- Latency stats --------------------------------
-- Avg Miss Latency (cyc):                        301
-- Latency GetS   I->S:                           291
-- Latency GetX   I->M:                           316
-- Latency GetX   S->M:                           316
------------- State and event stats ---------------------------
-GetS, I:        37
-GetS, S:        11
-GetX, I:        3
-GetX, S:        2
-GetSResp, IS:        36
-GetXResp, IM:        3
-GetXResp, SM:        2
-FetchInv, M:        5
-TrivialCPU cpu0 Finished after 53 issued reads, 52 returned (4999 clocks)
+  [0, 2]  3404
+  [2, 4]  1474
+  [4, 6]  121
+TrivialCPU cpu0 Finished after 50 issued reads, 49 returned (4999 clocks)
 Number of Pending Requests per Cycle (Binned by 2 Requests)
-  [0, 2]  3281
-  [2, 4]  1467
-  [4, 6]  251
+  [0, 2]  3432
+  [2, 4]  1452
+  [4, 6]  115
 Simulation is complete, simulated time: 5 us

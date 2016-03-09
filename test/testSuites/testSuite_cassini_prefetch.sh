@@ -71,11 +71,19 @@ CP_case=$1
     then
         # Run SUT
         ${sut} ${sutArgs}  > $outFile
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              wc  $outFile $referenceFile
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
     else
@@ -86,6 +94,7 @@ CP_case=$1
         return
     fi
 
+     RemoveComponentWarning
      grep "simulated.time" $outFile ; echo ' '
      wc  $outFile $referenceFile
      diff -b $referenceFile $outFile > _raw_diff
@@ -99,12 +108,12 @@ CP_case=$1
         else
            echo "Output does not match Reference File"
            cat _raw_diff
-           echo " Reference File "
-           cat $referenceFile
-           echo "       ------  "
-           echo "   Output File "
-           cat $outFile
-           echo "       ------  "
+#           echo " Reference File "
+#           cat $referenceFile
+#           echo "       ------  "
+#           echo "   Output File "
+#           cat $outFile
+#           echo "       ------  "
            fail "Output does not match Reference File"
            rm _raw_diff
         fi

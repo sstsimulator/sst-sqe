@@ -43,8 +43,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 #       Download the tar file of traces   and untar it into the sst/elements tree
 #
-     echo "wget sst-simulator.org/downloads/sst-Sirius-Allreduce-traces.tar.gz --no-check-certificate"
-     wget sst-simulator.org/downloads/sst-Sirius-Allreduce-traces.tar.gz --no-check-certificate
+     echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz --no-check-certificate"
+     wget "https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz"
      if [ $? != 0 ] ; then
         echo "wget failed"
         preFail "wget failed"
@@ -72,19 +72,27 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-    sutArgs="--model-options \"--shape=${Sirius_case}\" allreduce.py" 
+    sutArgs="--model-options \"--shape=${Sirius_case}\" ${SST_ROOT}/sst/elements/zodiac/test/allreduce/allreduce.py" 
 
 echo Need sutArgs
 echo $sutArgs
 echo "------------------------------"
 
     (${sut} ${sutArgs} > ${tmpFile}) 2>${errFile}
-    if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
     then
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
          wc ${tmpFile} ${referenceFile}
-         fail " WARNING: sst did not finish normally" 
+         fail " WARNING: sst did not finish normally, RetVal=$RetVal" 
          grep -v Warning:..Param $errFile
          return
     fi

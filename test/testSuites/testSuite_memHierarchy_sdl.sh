@@ -65,7 +65,7 @@ Tol=$2    ##  curTick tolerance
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
     pyFileName=`echo ${memH_case}.py | sed s/_/-/`
-    sutArgs=$memH_sdl_dir/$pyFileName
+    sutArgs=${SST_ROOT}/sst/elements/memHierarchy/tests/$pyFileName
     echo $sutArgs
     grep backend $sutArgs | grep dramsim > /dev/null
     usingDramSim=$?
@@ -84,11 +84,19 @@ Tol=$2    ##  curTick tolerance
     fi
 
     ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
-    if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
     then
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
-         fail "WARNING: sst did not finish normally"
+         fail "WARNING: sst did not finish normally, RetVal=$RetVal"
          if [ -s ${errFile} ] ; then
              notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
              echo ' ' ; echo "* * * *  $notAlignedCt Not Aligned messages from $memH_case   * * * *" ; echo ' '
@@ -116,40 +124,51 @@ Tol=$2    ##  curTick tolerance
     fi
 
     grep -v ^cpu.*: $tmpFile > $outFile
-    diff $referenceFile $outFile
+    RemoveComponentWarning
+    diff -b $referenceFile $outFile > _raw_diff
     if [ $? == 0 ] ; then
         fileSize=`wc -l $outFile | awk '{print $1}'`
         echo "            Exact Match of reduced Output  -- $fileSize lines"
+        rm _raw_diff
     else
-        echo "`diff $referenceFile $outFile | wc` $memH_case" >> ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
-#                             --- Special case with-DramSim --- 
-        if [ $usingDramSim == 0 ] ; then    ## usingDramSim is TRUE
-           echo "            wc the diff"
-           diff ${outFile} ${referenceFile} | wc; echo ' '
-           ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
-           new=`wc ${outFile}       | awk '{print $1, $2}'`;
-           if [ "$ref" == "$new" ];
-           then
-               echo " Word / Line count of matches (using DRAMSim)"
-
-               FAIL_LIST="$FAIL_LIST $memH_case"
-
-               DRAMSIM_EXACT_MATCH_FAIL_COUNT=$(($DRAMSIM_EXACT_MATCH_FAIL_COUNT+1 ))
-               echo " COUNT $DRAMSIM_EXACT_MATCH_FAIL_COUNT"
-               echo " [${FAIL_LIST}]"
-
-           else 
-               echo " FAILURE:    Line / Word count do not agree "
-               FAIL_LIST="$FAIL_LIST $memH_case"
-               DRAMSIM_EXACT_MATCH_FAIL_COUNT=$(($DRAMSIM_EXACT_MATCH_FAIL_COUNT+1 ))
-               if [ -s $errFile ]; then
-                   echo  "STDERR is:    ------------------"
-                   cat $errFile | grep -v 'not aligned to the request size'
-                   echo  "END of STDERR --------------------"
-               fi
-               fail " FAILURE:    Line / Word count do not agree (using DRAMSIM)"
-           fi          
-        fi              ##    --- end of code for Dramsim case ----
+        wc $referenceFile $outFile
+        wc _raw_diff
+        compare_sorted $referenceFile $outFile
+        if [ $? == 0 ] ; then
+           echo " Sorted match with Reference File"
+           rm _raw_diff
+        else
+           echo "`diff $referenceFile $outFile | wc` $memH_case" >> ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
+   #                             --- Special case with-DramSim --- 
+           if [ $usingDramSim == 0 ] ; then    ## usingDramSim is TRUE
+              echo "            wc the diff"
+              diff ${outFile} ${referenceFile} | wc; echo ' '
+              echo " Remove the histogram"
+              ref=`grep -v '\[.*\]' ${referenceFile} | wc | awk '{print $1, $2}'`; 
+              new=`grep -v '\[.*\]' ${outFile}       | wc | awk '{print $1, $2}'`;
+              if [ "$ref" == "$new" ];
+              then
+                  echo " Word / Line count of matches (using DRAMSim)"
+   
+                  FAIL_LIST="$FAIL_LIST $memH_case"
+   
+                  DRAMSIM_EXACT_MATCH_FAIL_COUNT=$(($DRAMSIM_EXACT_MATCH_FAIL_COUNT+1 ))
+                  echo " COUNT $DRAMSIM_EXACT_MATCH_FAIL_COUNT"
+                  echo " [${FAIL_LIST}]"
+   
+              else 
+                  echo " FAILURE:    Line / Word count do not agree "
+                  FAIL_LIST="$FAIL_LIST $memH_case"
+                  DRAMSIM_EXACT_MATCH_FAIL_COUNT=$(($DRAMSIM_EXACT_MATCH_FAIL_COUNT+1 ))
+                  if [ -s $errFile ]; then
+                      echo  "STDERR is:    ------------------"
+                      cat $errFile | grep -v 'not aligned to the request size'
+                      echo  "END of STDERR --------------------"
+                  fi
+                  fail " FAILURE:    Line / Word count do not agree (using DRAMSIM)"
+              fi          
+           fi              ##    --- end of code for Dramsim case ----
+        fi
     fi
     grep "Simulation is complete, simulated time:" $tmpFile
     if [ $? != 0 ] ; then 
@@ -314,4 +333,6 @@ echo ' '
 cat $$_tmp
 echo ' '
 echo "   Summary of diff vs. Reference file"
+touch ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
 cat ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
+echo ' '

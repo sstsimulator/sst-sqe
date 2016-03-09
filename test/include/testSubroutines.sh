@@ -25,7 +25,8 @@ oneTimeSetUp() {
         mkdir -p ${SST_TEST_OUTPUTS}
     fi
     scriptStartSeconds=`date +%s`
-
+    DUbefore=`du -ks /tmp 2>/dev/null | awk '{print $1}'`
+echo "QD debug before is $DUbefore"
 }
 
 #-------------------------------------------------------------------------------
@@ -46,6 +47,27 @@ oneTimeTearDown() {
     elapsedSeconds=$(($endSeconds -$scriptStartSeconds))
     echo "TESTSUITE $WHICH_TEST: Total Suite Wall Clock Time  $elapsedSeconds seconds"
 
+    HOST=`uname -n`
+    if [[ $HOST == *sst-test* ]] ; then
+       today=`date +%j`
+       WHICH_FILE=`echo $WHICH_TEST | awk -F'.' '{print $1}'`
+       WHICH_FILE_PATH=~jpvandy/WhichTest/$WHICH_FILE
+       if [ ! -e $WHICH_FILE_PATH ] ; then
+           touch $WHICH_FILE_PATH
+           chmod 777 $WHICH_FILE_PATH
+       fi   
+       RESULT="$__shunit_testsTotal"
+       if [[ "$__shunit_testsFailed" -gt 0 ]] ; then
+          RESULT="$RESULT / $__shunit_testsFailed Fail"
+       fi
+       B_PROJ=`echo $BAMBOO_PROJECT | sed s/sstmainline_config_//`
+       J_PROJ=`echo $JENKINS_PROJECT | sed s/SST__//`
+
+       echo "$today $elapsedSeconds s $B_PROJ $J_PROJ $BUILD_NUMBER $RESULT" >> ~jpvandy/WhichTest/$WHICH_FILE
+    fi
+    DUafter=`du -ks /tmp 2>/dev/null | awk '{print $1}'`
+echo "QD debug after is $DUafter"
+    echo " /tmp $DUafter  -- Left behind is $(( $DUafter - $DUbefore )) "
 }
 
 #-------------------------------------------------------------------------------
@@ -273,6 +295,18 @@ RemoveComponentWarning() {
       echo "#"
       echo "##############################################"
       sed -i.x '/WARNING: No components are/d' $outFile
+      rm -f ${outFile}.x
+   fi
+   
+   grep 'Event queue empty' $outFile > /dev/null
+   if [ $? == 0 ] ; then
+      echo "##############################################"
+      echo "#"
+      echo "#   ${testDataFileBase}: Removing lines "
+      grep 'Event queue empty' $outFile | awk '{ print "#     " $0}'
+      echo "#"
+      echo "##############################################"
+      sed -i.x '/Event queue empty/d' $outFile
       rm -f ${outFile}.x
    fi
 }

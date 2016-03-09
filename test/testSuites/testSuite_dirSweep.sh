@@ -44,7 +44,7 @@ LONGER_COUNT=0
 SHORTER_COUNT=0
 FAIL_COUNT=0
 Secs=`date +%s`
-JND=`expr $Secs % 8`
+JND=`expr $Secs % 7`
 if [[ ${SST_SWEEP_OPENMP:+isSet} == isSet ]]
 then 
     selectBin="omp"${SST_SWEEP_OPENMP}
@@ -56,7 +56,7 @@ else
     OMPLIST[4]="ompreduce"
     OMPLIST[5]="omptriangle"
     OMPLIST[6]="ompbarrier"
-    OMPLIST[7]="ompfort"
+#    OMPLIST[7]="ompfort"
 
     echo $Secs  $JND
     selectBin=${OMPLIST[$JND]}
@@ -348,7 +348,15 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
     if [ -f $OMP_case/$OMP_case.x ]
     then
         (${sut} ${sutArgs} --model-options "--L1cachesz=\"$s1\" --L2cachesz=\"$s2\" --L1assoc=$a1 --Replacp=$r --L2assoc=$a2 --L2MSHR=$ml2 --MSIMESI=$c --Pref2=$pf"> ${outFile})
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: No. $INDEX_RUNNING sst did not finish normally ; echo ' '
              wc $outFile
@@ -356,7 +364,7 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
              echo '            . . . '
              tail -15 $outFile
              FAIL_COUNT=$(($FAIL_COUNT+1))
-             fail "WARNING: No. $INDEX_RUNNING sst did not finish normally"
+             fail "WARNING: No. $INDEX_RUNNING sst did not finish normally, RetVal=$RetVal"
              barrier_checks
              endSeconds=`date +%s`
              echo " "

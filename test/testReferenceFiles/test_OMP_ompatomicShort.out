@@ -13,6 +13,3 @@ Creating thread 7
 Hello from thread 6
 Hello from thread 0
 Hello from thread 7
-Waiting for threads to finish........
-End result:  8000, 0.  Expected Result:  8000, 0.   PASS
-M5:exiting: curTick()=204700000 cause=`target called exit()` code=0

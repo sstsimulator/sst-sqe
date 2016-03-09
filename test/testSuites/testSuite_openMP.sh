@@ -69,7 +69,15 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
     if [ -f $OMP_case/$OMP_case.x ]
     then
         (${sut} ${sutArgs} > ${outFile})
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
@@ -79,7 +87,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally   $OMP_case"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal   $OMP_case"
              return
         fi
 
@@ -279,20 +287,20 @@ OMP_Template ompdynamic 9000
 
 }
 
-#
-#     _ompfort
-#
-test_ompfort() {    
-OMP_Template ompfort 11000
-
-}
-#
-#     _ompFIXEDfort
-#
-test_ompFIXEDfort() {    
-OMP_Template ompFIXEDfort 11000
-
-}
+## #
+## #     _ompfort
+## #
+## test_ompfort() {    
+## OMP_Template ompfort 11000
+## 
+## }
+## #
+## #     _ompFIXEDfort
+## #
+## test_ompFIXEDfort() {    
+## OMP_Template ompFIXEDfort 11000
+## 
+## }
 
 
 #

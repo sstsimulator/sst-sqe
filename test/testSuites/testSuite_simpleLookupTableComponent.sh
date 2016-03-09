@@ -71,14 +71,23 @@ test_simpleLookupTableComponent() {
     then
         # Run SUT
         (${sut} ${sutArgs} > $outFile)
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              wc $referenceFile $outFile
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
+        RemoveComponentWarning
         wc $referenceFile $outFile
         diff -b $referenceFile $outFile > _raw_diff
         if [ $? != 0 ]
@@ -92,6 +101,9 @@ test_simpleLookupTableComponent() {
            else
               fail " Reference does not Match Output"
            fi
+           echo "     `grep 'Simulation is complete' $outFile`"
+           echo "Ref: `grep 'Simulation is complete' $referenceFile`"
+           echo " "
         else
            echo "Exact match with Reference File"
         fi

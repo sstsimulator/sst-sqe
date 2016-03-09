@@ -72,11 +72,19 @@ miranda_case=$1
     then
         # Run SUT
         (${sut} ${sutArgs} > $outFile)
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              RemoveComponentWarning
              return
         fi
@@ -89,6 +97,16 @@ miranda_case=$1
             if [ $? == 0 ] ; then
                echo " Sorted match with Reference File"
                rm raw_diff
+            elif [ "lineWordCt" == "$2" ] ; then
+               ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
+               new=`wc ${outFile}       | awk '{print $1, $2}'`;
+               if [ "$ref" == "$new" ]
+               then 
+                   echo "    Output passed  LineWordCt match"
+               else
+                   echo "    Output Flunked  lineWordCt Count match"
+                   fail "Output Flunked  lineWordCt Count match"
+               fi
             else
                echo "Output does not match Reference File"
                fail "Output does not match Reference File"
@@ -120,12 +138,26 @@ miranda_Template singlestream
 test_miranda_revsinglestream() {
 miranda_Template revsinglestream
 
-}
+##     set time limit for randomgen()
+    export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_RANGET_TL
+}    
 
 
 test_miranda_randomgen() {
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] && \
+          [[ `uname -n` != sst-test* ]] ; then
+             skip_this_test
+             echo " skipping randomgen on multi-thread"   
+##  Reset the Time Limit for reamainer of tests
+             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL
+             return
+       fi
+    fi
 miranda_Template randomgen
 
+##  Reset the Time Limit for reamainer of tests
+             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL
 }
 
 test_miranda_stencil3dbench() {
@@ -134,7 +166,7 @@ miranda_Template stencil3dbench
 }
 
 test_miranda_streambench() {
-miranda_Template streambench
+miranda_Template streambench "lineWordCt"
 
 }
 
@@ -154,4 +186,11 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
  
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
+
+#         Located here this timeout will override the multithread value
+
+export SST_TEST_MIRANDA_NORMAL_TL=200
+export SST_TEST_MIRANDA_RANGET_TL=3500
+export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL_TL
+ 
 (. ${SHUNIT2_SRC}/shunit2)

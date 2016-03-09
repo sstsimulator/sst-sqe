@@ -1,0 +1,14 @@
+macro              #  is no longer built as part of SST
+dir.*Sweep         #  These tests require gem5
+Sweep_openMP       #  This test requires gem5
+M5                 #  These test require gem5
+dirnoncache        #  uses the M5 test binaries
+iris               #  not converted to accommodate the MT merge
+memHierarchy_bin   #  uses the M5 test binaries
+test_omp           #  uses the M5 test binaries
+portals            #  not converted since merge
+stream             #  uses the M5 test binaries
+diropenMP          #  uses M5 binaries
+noncacheable       #  uses M5 binaries
+openMP             #  uses M5 binaries
+ENDofLIST          #  Put new entries before this line!

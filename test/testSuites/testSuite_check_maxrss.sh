@@ -67,18 +67,34 @@ test_check_maxrss() {
     then
         # Run SUT
         ${sut} --verbose ${sutArgs} > $outFile
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
 
-        newVal=`grep Max.Resident.Set $outFile | awk '{print $7}'`
+# New Bailing Wire October 2015
+#    Output format different with multiple threads
+        LINE2TEST=`grep Max.Resident.Set $outFile`
+        WANTEDLINE=`echo $LINE2TEST | sed s/'.*SST Core/SST Core'/`
+echo LINE2TEST  $LINE2TEST
+echo WANTEDLINE= $WANTEDLINE
+##      newVal=`grep Max.Resident.Set $outFile | awk '{print $5}'`
+        newVal=`echo $WANTEDLINE | awk '{print $5}'`
 #     Bailing wire to support enhanced format of verbose
 #         For bash to do simple compare original KB units were convenient.
 #            Convert MB to KB.
-        MB=`grep Max.Resident.Set $outFile | awk '{print $8}'`
+#       MB=`grep Max.Resident.Set $outFile | awk '{print $6}'`
+        MB=`echo $WANTEDLINE | awk '{print $6}'`
         if [ $MB == "MB" ] ; then
            newVal="$(echo "$newVal*1000" | bc)"
            newVal=`echo $newVal | awk -F. '{print $1}'`

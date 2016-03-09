@@ -24,6 +24,13 @@ L_SUITENAME="SST_sst_mcopteron" # Name of this test suite; will be used to
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+           echo '           SKIP '
+           preFail "McOpteron tests do not work with threading (#76)" "skip"
+       fi
+    fi     
+
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long
@@ -51,8 +58,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #       Download the tar file of traces, trace.txt,
 #                 and untar it into the sst/elements tree
 #
-     echo " wget sst-simulator.org/downloads/sst-mcopteron-traces.tar.gz --no-check-certificate"
-     wget sst-simulator.org/downloads/sst-mcopteron-traces.tar.gz --no-check-certificate
+     echo " wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-mcopteron-traces.tar.gz --no-check-certificate"
+     wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-mcopteron-traces.tar.gz
      if [ $? != 0 ] ; then
         echo "wget failed"
         preFail "wget failed"
@@ -87,8 +94,16 @@ test_sst_mcopteron_test1() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs} > $outFile 
-        if [ $? != 0 ]
+        ${sut}  ${sutArgs} > $outFile 
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
@@ -98,7 +113,7 @@ test_sst_mcopteron_test1() {
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              RemoveComponentWarning
              return
         fi
@@ -175,15 +190,26 @@ echo "\$lout is $lout ############################################"
     echo "mcopteron test1: Wall Clock Time  $elapsedSeconds seconds"
 }
 
+test_sst_mcopteron_test2() {
+     echo ' '
+     echo "Test 2  universally disabled February 22, 2016"
+     echo ' '
+     skip_this_test
+     return
+}  
+
+##   Test 2  universally disabled February 22, 2016
+xxtest_sst_mcopteron_test2() {
+
 ##
 ##    Don't run this test on MacOS
 ##
-if [ -n "${SST_TEST_HOST_OS_DISTRIB_MACOS}" ]
+if [ 1 == "${SST_TEST_HOST_OS_DISTRIB_MACOS}" ]
 then
-   sed -i'.xsed' -e s/^test_sst_mcopteron_test2/xxtest_sst_mcopteron_test2/ test/testSuites/testSuite_sst_mcopteron.sh
+   echo " This test is not deterministic on MacOS, SKIPPING"
+   skip_this_test
+   return
 fi
-
-xxtest_sst_mcopteron_test2() {
 
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
@@ -207,8 +233,16 @@ xxtest_sst_mcopteron_test2() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs} > $outFile 
-        if [ $? != 0 ]
+        ${sut}  ${sutArgs} > $outFile 
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
@@ -218,7 +252,7 @@ xxtest_sst_mcopteron_test2() {
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
         sed -i'.3sed' -e'/ nan /d' $outFile

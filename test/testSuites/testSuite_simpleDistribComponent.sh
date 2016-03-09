@@ -64,11 +64,19 @@ Tol=$2    ##  curTick tolerance
         fi
 
         ${sut} ${sutArgs} > ${outFile}
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
-             fail "WARNING: sst did not finish normally"
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              RemoveComponentWarning
              return
         fi
@@ -84,11 +92,15 @@ Tol=$2    ##  curTick tolerance
                if [ "$ref" == "$new" ];
                then
                    echo "outFile word/line count matches Reference"
+                   diff ${referenceFile} ${outFile}
                else
                    echo "$simpleDistrib_case test Fails"
-                   tail $outFile
                    fail "outFile word/line count does NOT matches Reference"
                fi
+               echo ' '
+               echo "     `grep 'Simulation is complete' $outFile`"
+               echo "Ref: `grep 'Simulation is complete' $referenceFile`"
+               echo " "
         else
                 echo ReferenceFile is an exact match of outFile
         fi

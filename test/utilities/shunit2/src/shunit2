@@ -997,8 +997,9 @@ _shunit_execSuite()
     fi
   done
 
+  export __shunit_testsFailed
   # Update the Total Number of tests
-  __shunit_testsTotal=`expr ${__shunit_testsFailed} + ${__shunit_testsPassed} + ${__shunit_testsSkipped}`
+  export __shunit_testsTotal=`expr ${__shunit_testsFailed} + ${__shunit_testsPassed} + ${__shunit_testsSkipped}`
   
 #  unset _shunit_test_
   unset _shunit_case_

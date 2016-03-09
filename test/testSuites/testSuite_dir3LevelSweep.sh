@@ -44,7 +44,7 @@ LONGER_COUNT=0
 SHORTER_COUNT=0
 FAIL_COUNT=0
 Secs=`date +%s`
-JND=`expr $Secs % 8`
+JND=`expr $Secs % 7`
 if [[ ${SST_SWEEP_OPENMP:+isSet} == isSet ]]
 then 
     selectBin="omp"${SST_SWEEP_OPENMP}
@@ -56,8 +56,9 @@ else
     OMPLIST[4]="ompreduce"
     OMPLIST[5]="omptriangle"
     OMPLIST[6]="ompbarrier"
-    OMPLIST[7]="ompfort"
+##    OMPLIST[7]="ompfort"
 
+    echo '              ' ; echo "selectBin is being Jammed to ompdynamic" ; echo ' '
     selectBin="ompdynamic"
 fi
 
@@ -307,7 +308,7 @@ rm -f $SST_TEST_SUITES/testopenMP/__testlist
 I=1
 while [ $I -lt $SWEEP_WIDTH ]
 do
-   echo "test_dirSweep() { echo This is Dummy subroutine ; }" >> $SST_TEST_SUITES/testopenMP/__testlist
+   echo "test_dir3LSweep() { echo This is Dummy subroutine ; }" >> $SST_TEST_SUITES/testopenMP/__testlist
    I=$(( $I + 1 ))
 done
 
@@ -366,7 +367,15 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
     if [ -f $OMP_case/$OMP_case.x ]
     then
         (${sut} ${sutArgs} --model-options "--L1cachesz=\"$s1\" --L2cachesz=\"$s2\" --L3cachesz=\"$s3\" --L1assoc=$a1 --L1Replacp=$r1 --L2Replacp=$r2 --L3Replacp=$r3 --L2assoc=$a2 --L3assoc=$a3 --L2MSHR=$ml2 L2MSHR=$ml2 --MSIMESI=$c"> ${outFile})
-        if [ $? != 0 ]
+        RetVal=$? 
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: No. $INDEX_RUNNING sst did not finish normally ; echo ' '
              wc $outFile
@@ -374,7 +383,7 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
              echo '            . . . '
              tail -15 $outFile
              FAIL_COUNT=$(($FAIL_COUNT+1))
-             fail "WARNING: No. $INDEX_RUNNING sst did not finish normally"
+             fail "WARNING: No. $INDEX_RUNNING sst did not finish normally, RetVal=$RetVal"
              barrier_checks
              endSeconds=`date +%s`
              echo " "
@@ -487,7 +496,7 @@ cd $TEST_SUITE_ROOT/testopenMP
 #     dirSweep
 #
 cat >> $SST_TEST_SUITES/testopenMP/__testlist << ..EOF..
-test_dirSweep() {    
+test_dir3LSweep() {    
 Dir_Template $selectBin 9000
 }
 ..EOF..
