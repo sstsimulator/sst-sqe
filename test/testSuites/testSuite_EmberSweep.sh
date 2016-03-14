@@ -176,8 +176,13 @@ SE_fini() {
 }
 #    Generate the bash input script
 
-     cp  ${SST_TEST_INPUTS}/EmberSweepGenerator.py .
-     ./EmberSweepGenerator.py > bashIN
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} != isSet ]] ; then
+        cp  ${SST_TEST_INPUTS}/EmberSweepGenerator.py .
+    else
+        sed '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" ${SST_TEST_INPUTS}/EmberSweepGenerator.py > EmberSweepGenerator.py
+        chmod +x EmberSweepGenerator.py
+    fi
+    ./EmberSweepGenerator.py > bashIN
     #./Tester.py > bashIN
 
     #     This is the code to run just a few test from the sweep
