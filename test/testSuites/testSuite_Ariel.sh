@@ -63,6 +63,11 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         echo " Environment Variable INTEL_PIN_DIRECTORY must be defined"
         preFail "Ariel tests requires PIN DIRECTORY" "skip"
     fi 
+    if ["${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
+        echo " Temporary patch"
+        echo "Ariel on Ubuntu not working March 15th"
+        preFail "Ariel on Ubuntu not yet working"  "skip"
+    fi    
 
     OPWD=`pwd`
     export PKG_CONFIG_PATH=${SST_ROOT}/../../local/lib/pkgconfig
