@@ -235,9 +235,22 @@ fi
 multithread_patch_Suites() {
 echo "multithread_patch_Suites: ########### Patch the test Suites"
 if [ $SST_MULTI_THREAD_COUNT == 0 ] ; then
-     echo " There is no -n count "
+     echo " There is no -n count, Set to 1 "
+     export SST_MULTI_THREAD_COUNT=1
 else
-      sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_THREAD_COUNT}"' ${sut/' test/testSuites/testSuite_*
+     pushd test/testSuites
+     for fn in `ls testSuite_*`
+     do
+         grep '/sut}.*sutArgs' $fn | grep mpirun 
+         if [ $? == 0 ] ; then
+             echo "Do not change $fn"
+             continue
+         fi
+         sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_THREAD_COUNT}"' ${sut/' $fn
+     done
+     popd
+
+##      sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_THREAD_COUNT}"' ${sut/' test/testSuites/testSuite_*
 ##    sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*
 ##    sed -i.x '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py
 fi
