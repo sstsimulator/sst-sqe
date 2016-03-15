@@ -241,7 +241,7 @@ else
      pushd test/testSuites
      for fn in `ls testSuite_*`
      do
-         grep '/sut}.*sutArgs' $fn | grep mpirun 
+         grep 'sut}.*sutArgs' $fn | grep mpirun 
          if [ $? == 0 ] ; then
              echo "Do not change $fn"
              continue
