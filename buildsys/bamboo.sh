@@ -549,8 +549,6 @@ echo " #####################################################"
 #gem5    fi
 
     if [ $1 != "sstmainline_config_no_mpi" ] ; then
-        #  patterns requires MPI in order to build
-###        ${SST_TEST_SUITES}/testSuite_patterns.sh
         #  Zoltan test requires MPI to execute.
         #  sstmainline_config_no_gem5 deliberately omits Zoltan, so must skip test.
         if [ $1 != "sstmainline_config_linux_with_ariel" ] ; then
@@ -838,8 +836,6 @@ getconfig() {
             depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default"
             setConvenienceVars "$depsStr"
             configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $miscEnv --disable-mpi"
-                      #The following is wrong way to do it, but patterns shouldn't need MPI to build!
-            touch $SST_ROOT/sst/elements/patterns/.ignore
             ;;
 
         sstmainline_config_gem5_gcc_4_6_4) 
@@ -899,8 +895,6 @@ getconfig() {
             depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default"
             setConvenienceVars "$depsStr"
             configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --enable-static --disable-shared $miscEnv --disable-mpi"
-                      #The following is wrong way to do it, but patterns shouldn't need MPI to build!
-            touch $SST_ROOT/sst/elements/patterns/.ignore
             ;;
 
         sstmainline_config_clang_core_only) 
@@ -1005,10 +999,10 @@ getconfig() {
             # sstmainline_config_memH_wo_openMP
             #     This option used for configuring SST with memHierarchy, but with out open MP
             #     with Intel PIN, and Ariel 
-            #     (Might as well skip building patterns and scheduler)
+            #     (Might as well skip building scheduler)
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
-            touch sst/elements/patterns/.ignore sst/elements/scheduler/.ignore
+            touch sst/elements/scheduler/.ignore
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -m none -o none -h none -s none -q 0.2.1 -M none -N default"
             setConvenienceVars "$depsStr"
@@ -2620,7 +2614,7 @@ else
 
             # if Intel PIN module is available, load 2.14 version
             #           ModuleEx puts the avail output on Stdout (where it belongs.)
-            ModuleEx avail | egrep -q "pin/pin"
+            ModuleEx avail | egrep -q "pin/pin-2.14-71313-gcc"
             if [ $? == 0 ] 
             then
             # if `pin module is available, use 2.14.
