@@ -452,7 +452,8 @@ echo " #####################################################"
             ln -s ${SST_TEST_SUITES}/testSuite_Ariel.sh testSuite_Ariel_extra.sh
             ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
             popd
-        fi 
+        fi
+        ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
