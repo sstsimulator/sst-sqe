@@ -131,6 +131,13 @@ miranda_case=$1
 }
 
 test_miranda_singlestream() {
+
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_THREAD_COUNT} -gt 1 ] ; then
+       echo " Uses an event that does not implement serialization    OMIT"    
+       skip_this_test
+       return
+    fi
+
 miranda_Template singlestream
 
 }
@@ -139,11 +146,19 @@ test_miranda_revsinglestream() {
 miranda_Template revsinglestream
 
 ##     set time limit for randomgen()
+
     export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_RANGET_TL
 }    
 
 
 test_miranda_randomgen() {
+
+   if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_THREAD_COUNT} -gt 1 ] ; then
+       echo " Uses an event that does not implement serialization    OMIT"    
+       skip_this_test
+       return
+   fi
+
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
        if [ $SST_MULTI_THREAD_COUNT -gt 1 ] && \
           [[ `uname -n` != sst-test* ]] ; then
