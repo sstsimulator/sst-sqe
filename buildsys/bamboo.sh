@@ -1317,6 +1317,7 @@ fi
 
 ldModulesYosemiteClang() {
     ClangVersion=$1            #   example "clang-700.0.72"
+                        ModuleEx avail
                         # Use Boost and MPI built with CLANG from Xcode 6.3
                         ModuleEx unload mpi
                         ModuleEx unload boost
@@ -2011,6 +2012,7 @@ darwinSetBoostMPI() {
                 ;;
 ################################################################################
             10.10) # Yosemite
+                ModuleEx avail
                 # Depending on specified compiler, load Boost and MPI
                 case $compiler in
                     clang-600.0.57)
@@ -2614,24 +2616,28 @@ else
 
             # if Intel PIN module is available, load 2.14 version
             #           ModuleEx puts the avail output on Stdout (where it belongs.)
-            ModuleEx avail | egrep -q "pin/pin-2.14-71313-gcc"
+            ModuleEx avail | egrep -q "pin/pin-2.14-71313"
             if [ $? == 0 ] 
             then
             # if `pin module is available, use 2.14.
+                if [ $kernel != "Darwin" ] ; then
 
-##                export SST_DEPS_INSTALL_INTEL_PIN=/home/jpvandy/pin-2.14-71313-gcc.4.4.7-linux 
-##                export INTEL_PIN_DIRECTORY=/home/jpvandy/pin-2.14-71313-gcc.4.4.7-linux 
-                echo "using Intel PIN environment module  pin-2.14-71313-gcc.4.4.7-linux"
-                #    Compiler is $4
-                if [[ "$4" != gcc-5* ]] ; then
+                   echo "using Intel PIN environment module  pin-2.14-71313-gcc.4.4.7-linux"
+                    #    Compiler is $4
+                   if [[ "$4" != gcc-5* ]] ; then
+                       echo "Loading Intel PIN environment module"
+                       ModuleEx load pin/pin-2.14-71313-gcc.4.4.7-linux
+                   else 
+                      echo " ################################################################"
+                      echo " #"
+                      echo " #  pin-2.14-71313-gcc.4.4.7-linux is incompatible with gcc-5.x"
+                      echo " #"
+                      echo " ################################################################"
+                   fi
+                else        ##    MacOS   (Darwin)
+                   echo "using Intel PIN environment module  pin-2.14-71313-gcc.4.4.7-linux"
                    echo "Loading Intel PIN environment module"
-                   ModuleEx load pin/pin-2.14-71313-gcc.4.4.7-linux
-                else 
-                   echo " ################################################################"
-                   echo " #"
-                   echo " #  pin-2.14-71313-gcc.4.4.7-linux is incompatible with gcc-5.x"
-                   echo " #"
-                   echo " ################################################################"
+                   ModuleEx load pin/pin-2.14-71313-clang.5.1-mac
                 fi
             else
                 echo "Intel PIN environment module not found on this host."
