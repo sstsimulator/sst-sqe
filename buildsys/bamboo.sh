@@ -453,6 +453,7 @@ echo " #####################################################"
             ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
             popd
         fi
+        ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
         ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
