@@ -465,6 +465,33 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_Ariel.sh
         return
     fi
+    
+     #
+     #   Suites that used by the devel AutoTester 
+     #   These tests should be quick to minimize waits for approving pull requests
+     #
+
+    if [ $1 == "sstmainline_config_develautotester" ]
+    then
+        if [[ $SST_ROOT == *Ariel* ]] ; then
+            pushd ${SST_TEST_SUITES}
+            ln -s ${SST_TEST_SUITES}/testSuite_Ariel.sh testSuite_Ariel_extra.sh
+            ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
+            popd
+        fi
+        ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
+        ${SST_TEST_SUITES}/testSuite_embernightly.sh
+        ${SST_TEST_SUITES}/testSuite_BadPort.sh
+        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
+        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
+        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
+        ${SST_TEST_SUITES}/testSuite_miranda.sh
+        ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
+        ${SST_TEST_SUITES}/testSuite_prospero.sh
+        ${SST_TEST_SUITES}/testSuite_Ariel.sh
+        return
+    fi
+    
 
     if [ $kernel != "Darwin" ]
     then
@@ -1010,7 +1037,25 @@ getconfig() {
             setConvenienceVars "$depsStr"
             configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $miscEnv"
             ;;
-
+        sstmainline_config_develautotester)
+            #-----------------------------------------------------------------
+            # sstmainline_config_develautotester
+            #     This option used for configuring SST with memHierarchy, but with out open MP
+            #     with Intel PIN, and Ariel 
+            #     (Might as well skip building scheduler)
+            #     THIS IS THE CONFIGURATION USED FOR THE DEVEL AUTOTESTER, THE
+            #     BUILD AND TESTS SHOULD BE AS QUICK AS POSSIBLE, WE ARE WILLING
+            #     TO SACRIFICE SOME COVERAGE TO GET A GENERAL WARM FUZZY ON THE 
+            #     PULL REQUESTS TO DEVEL BRANCH BEING NOT CATASTROPIC FAILURES
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            touch sst/elements/scheduler/.ignore
+            miscEnv="${mpi_environment}"
+            depsStr="-k none -d 2.2.2 -p none -z none -m none -o none -h none -s none -q 0.2.1 -M none -N default"
+            setConvenienceVars "$depsStr"
+            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $miscEnv"
+            ;;
+            
         # ====================================================================
         # ====                                                            ====
         # ====  Experimental/exploratory build configurations start here  ====
@@ -2598,7 +2643,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_config_linux_with_ariel|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_no_gem5_intel_gcc_4_8_1|sstmainline_config_no_gem5_intel_gcc_4_8_1_with_c|sstmainline_config_fast_intel_build_no_gem5|sstmainline_config_no_mpi|sstmainline_config_gcc_4_8_1|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_macosx_static|sstmainline_config_macosx_static_no_gem5|sstmainline_config_static_macro_devel|sstmainline_sstmacro_xconfig|sstmainline_config_test_output_config|sstmainline_config_xml2python_static|sstmainline_config_memH_only|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_VaultSim|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_gem5_gcc_4_6_4|sstmainline_config_fast|sstmainline_config_fast_static|sstmainline_config_memH_wo_openMP)
+        default|sstmainline_config|sstmainline_config_linux_with_ariel|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_no_gem5_intel_gcc_4_8_1|sstmainline_config_no_gem5_intel_gcc_4_8_1_with_c|sstmainline_config_fast_intel_build_no_gem5|sstmainline_config_no_mpi|sstmainline_config_gcc_4_8_1|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_macosx_static|sstmainline_config_macosx_static_no_gem5|sstmainline_config_static_macro_devel|sstmainline_sstmacro_xconfig|sstmainline_config_test_output_config|sstmainline_config_xml2python_static|sstmainline_config_memH_only|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_VaultSim|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_gem5_gcc_4_6_4|sstmainline_config_fast|sstmainline_config_fast_static|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester)
             #   Save Parameters $2, $3 and $4 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
