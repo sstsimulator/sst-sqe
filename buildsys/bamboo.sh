@@ -804,6 +804,7 @@ getconfig() {
             #     under those compilers.
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
+            touch sst/elements/ariel/.ignore
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83 -c default"
             setConvenienceVars "$depsStr"
