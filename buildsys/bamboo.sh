@@ -803,6 +803,8 @@ getconfig() {
             #     so this option removes gem5 in order to evaluate the rest of the build
             #     under those compilers.
             #-----------------------------------------------------------------
+            touch sst/elements/ariel/.ignore
+            ls -a sst/elements/ariel
             export | egrep SST_DEPS_
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83 -c default"
