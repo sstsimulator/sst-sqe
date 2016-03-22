@@ -31,6 +31,30 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+ls -d /tmp/openmpi-sessions-$USER@sst-test_0/* | wc
+#=====================================================
+#  A bit of code to clear out old openmpi files from /tmp
+
+    ls -ld /tmp/openmpi-sessions*/* |grep $USER > __rmlist
+    wc __rmlist
+    today=$(( 10#`date +%j` ))
+    echo "today is $today"
+    
+    while read -u 3 r1 r2 r3 r4 r5 mo da r8 name
+    do
+    
+      c_day=$(( 10#`date +%j -d "$mo $da"` ))
+      c_day_plus_2=$(($c_day+2))
+      if [ $today -gt $c_day_plus_2 ] ; then
+         echo "Remove $name"
+         rm -rf $name
+      fi
+    
+    done 3<__rmlist
+    rm __rmlist
+#=====================================================
+ls -d /tmp/openmpi-sessions-$USER@sst-test_0/* | wc
+
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long
