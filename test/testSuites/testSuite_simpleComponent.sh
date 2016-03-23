@@ -97,14 +97,8 @@ test_simpleComponent() {
               rm _raw_diff
               return
            else
-       lnct=`wc -n $outFile | awk '{print $1}'`
-       echo " DEBUG  LINE count is $lnct"
-       if [ $lnct -lt 20 ] ; then
-          echo " Temp Patch  PASS "
-       else 
               fail " Reference does not Match Output"
               diff -b $referenceFile $outFile 
-       fi
            fi
         else
            echo "Exact match with Reference File"
