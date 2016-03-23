@@ -47,6 +47,8 @@ Tol=$2    ##  curTick tolerance
     startSeconds=`date +%s`
     testDataFileBase="test_merlin_$merlin_case"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
+    newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
     # Add basename to list for XML processing later
@@ -89,8 +91,16 @@ Tol=$2    ##  curTick tolerance
         diff ${referenceFile} ${outFile} > /dev/null;
         if [ $? -ne 0 ]
         then
-               ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
-               new=`wc ${outFile}       | awk '{print $1, $2}'`;
+##  Follows some bailing wire to allow serialization branch to work
+##          with same reference files
+     sed s/' (.*)'// $referenceFile > $newRef
+     ref=`wc ${newRef} | awk '{print $1, $2}'`; 
+     ##        ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
+     sed s/' (.*)'// $outFile > $newOut
+     new=`wc ${newOut} | awk '{print $1, $2}'`; 
+     ##          new=`wc ${outFile}       | awk '{print $1, $2}'`;
+        echo DEBUG  $ref  $new
+        wc $newOut       
                if [ "$ref" == "$new" ];
                then
                    echo "outFile word/line count matches Reference"
@@ -181,6 +191,8 @@ export SST_TEST_ONE_TEST_TIMEOUT=3000         #  3000 seconds
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
+export SST_TEST_ONE_TEST_TIMEOUT=200 
+ 
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 #         Located here this timeout will override the multithread value
