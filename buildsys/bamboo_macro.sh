@@ -2186,7 +2186,7 @@ dobuild() {
     echo "--------------------modules status--------------------"
 
     ### BUILDING THE SST-CORE
-    if [ $SST_SELECTED_CORE_CONFIG == "NOBUILD" ]
+    if [ $SST_SELECTED_CORE_CONFIG == "NOBUILD" ] ; then
         echo "============== SST CORE - NO BUILD REQUIRED ==============="
     else
         echo "==================== Building SST CORE ===================="
@@ -2264,7 +2264,7 @@ dobuild() {
 
     
     ### BUILDING THE SST-MACRO
-    if [ $SST_SELECTED_MACRO_CONFIG == "NOBUILD" ]
+    if [ $SST_SELECTED_MACRO_CONFIG == "NOBUILD" ] ; then
         echo "============== SST MACRO - NO BUILD REQUIRED ==============="
     else
         echo "==================== Building SST MACRO ===================="
