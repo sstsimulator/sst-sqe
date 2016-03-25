@@ -2187,7 +2187,7 @@ dobuild() {
     echo " "
     
     ### BUILDING THE SST-CORE
-    if [ $SST_SELECTED_CORE_CONFIG == "NOBUILD" ]
+    if [[ $SST_SELECTED_CORE_CONFIG == "NOBUILD" ]]
     then
         echo "============== SST CORE - NO BUILD REQUIRED ==============="
     else
@@ -2244,18 +2244,6 @@ dobuild() {
             # Mac OS X
             echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
         fi
-        echo "----------------"
-        echo "sst-core exectuable linkage information"
-    
-        if [ $kernel == "Darwin" ]
-        then
-            # Mac OS X 
-            echo "$ otool -L ./sst/core/sstsim.x"
-            otool -L ./sst/core/sstsim.x
-        else
-            echo "$ ldd ./sst/core/sstsim.x"
-            ldd ./sst/core/sstsim.x
-        fi
         echo "SST-CORE BUILD INFO============================================================"
     
         # install SST
@@ -2270,7 +2258,7 @@ dobuild() {
 
     
     ### BUILDING THE SST-MACRO
-    if [ $SST_SELECTED_MACRO_CONFIG == "NOBUILD" ]
+    if [[ $SST_SELECTED_MACRO_CONFIG == "NOBUILD" ]]
     then
         echo "============== SST MACRO - NO BUILD REQUIRED ==============="
     else
