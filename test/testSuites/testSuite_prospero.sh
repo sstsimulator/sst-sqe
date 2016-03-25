@@ -79,7 +79,7 @@ else
        wget "https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz" 
        if [ $? != 0 ] ; then
           echo "wget failed"
-          preFail
+          preFail "wget failed"
        fi
 
        tar -xzf Prospero-trace-files.tar.gz
@@ -89,7 +89,7 @@ echo " ---------------  Three files are expected: "
 cksum *.trace
 if [ $? != 0 ] ; then
    echo "No trace files found"
-   preFail
+   preFail "No trace files found"
 fi
 echo ' '
 
