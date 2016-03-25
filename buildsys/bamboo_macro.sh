@@ -2184,12 +2184,18 @@ dobuild() {
     ModuleEx avail
     ModuleEx list
     echo "--------------------modules status--------------------"
-
+    echo " "
+    
     ### BUILDING THE SST-CORE
-    if [ $SST_SELECTED_CORE_CONFIG == "NOBUILD" ] ; then
+    if [ $SST_SELECTED_CORE_CONFIG == "NOBUILD" ]
+    then
         echo "============== SST CORE - NO BUILD REQUIRED ==============="
     else
         echo "==================== Building SST CORE ===================="
+        echo `pwd`
+        pushd sst-core
+        echo `pwd`
+        ls -l
         # autogen to create ./configure
         echo "bamboo_macro.sh: running \"autogen.sh\"..."
         ./autogen.sh
@@ -2259,15 +2265,20 @@ dobuild() {
         then
             return $retval
         fi
-        
+        popd
     fi
 
     
     ### BUILDING THE SST-MACRO
-    if [ $SST_SELECTED_MACRO_CONFIG == "NOBUILD" ] ; then
+    if [ $SST_SELECTED_MACRO_CONFIG == "NOBUILD" ]
+    then
         echo "============== SST MACRO - NO BUILD REQUIRED ==============="
     else
         echo "==================== Building SST MACRO ===================="
+        echo `pwd`
+        pushd sst-macro
+        echo `pwd`
+        ls -l
         # bootstrap to create ./configure
         echo "bamboo_macro.sh: running \"bootstrap.sh\"..."
         ./bootstrap.sh
@@ -2318,7 +2329,7 @@ dobuild() {
         then
             return $retval
         fi
-        
+        popd
     fi
 }
 
