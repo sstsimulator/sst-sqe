@@ -94,7 +94,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
 ## Cloning sst-core into <path>/devel/trunk     
    echo "     git clone -b $SST_COREBRANCH $SST_COREREPO sst-core "
-   git clone -b $SST_COREBRANCH $SST_COREREPO core
+   git clone -b $SST_COREBRANCH $SST_COREREPO sst-core
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone of $SST_COREREPO \" FAILED.  retVal = $retVal"
@@ -126,10 +126,14 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    popd
 
 # Link the deps and test directories to the trunk   
+   echo " Creating Symbolic Links to the sqe directories (deps & test)"
+   ls -l
    ln -s `pwd`/../sqe/buildsys/deps .
    ln -s `pwd`/../sqe/test .
    ls -l
 fi
+
+echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE - NOW SETTING ENV RUNTIME VARS ########"
 
 
 #	This assumes a directory strucure
@@ -159,7 +163,12 @@ export SST_CORE_INSTALL=${SST_INSTALL}/sst-core
 export SST_CORE_INSTALL_BIN=${SST_CORE_INSTALL}/bin
 
 # Location where SST MACRO files are installed
-export SST_CORE_INSTALL=${SST_INSTALL}/sst-macro
+export SST_MACRO_INSTALL=${SST_INSTALL}/sst-macro
+
+# Location where SST files are installed
+export SST_INSTALL=${SST_CORE_INSTALL}
+# Location where SST build files are installed
+export SST_INSTALL_BIN=${SST_CORE_INSTALL_BIN}
 
 
 # Location where SST dependencies are installed. This only specifies
