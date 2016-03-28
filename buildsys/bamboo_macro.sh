@@ -2297,7 +2297,7 @@ dobuild() {
         
         echo "bamboo_macro.sh: making SST-MACRO"
         # build SST-MACRO
-        make -j4 all
+        make all
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2311,7 +2311,7 @@ dobuild() {
         echo "SST-MACRO BUILD INFO============================================================"
     
         # install SST
-        make -j4 install
+        make install
         retval=$?
         if [ $retval -ne 0 ]
         then
