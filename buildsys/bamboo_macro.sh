@@ -111,13 +111,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
 ## Cloning sst-macro into <path>/devel/trunk     
 #   echo "     git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
-#   git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
-
-   # Temp workaround on sst-macro bug of cloning directly to devel
-   echo "     WORKAROUND - CLONE sst-macro with master branch then switch to devel below"
-   echo "     git clone $SST_MACROREPO sst-macro "
-   git clone $SST_MACROREPO sst-macro
-   
+   git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone of $SST_MACROREPO \" FAILED.  retVal = $retVal"
@@ -127,11 +121,6 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    echo " The sst-macro Repo has been cloned."
    ls -l
    pushd sst-macro
-   
-   # Temp workaround on sst-macro bug of cloning directly to devel
-   echo " WORKAROUND - checkout the $SST_MACROBRANCH branch"
-   git checkout $SST_MACROBRANCH
-
    git log -n 1 | grep commit
    ls -l
    popd
