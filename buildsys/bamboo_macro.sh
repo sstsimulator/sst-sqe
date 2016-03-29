@@ -1067,7 +1067,7 @@ ldModulesYosemiteClang() {
                         
                         # PTH 2.0.7
                         echo "bamboo_macro.sh: Load PTH 2.0.7"
-                        ModuleEx module load pth/pth-2.0.7
+                        ModuleEx load pth/pth-2.0.7
                         
                         # Other misc
 #                        echo "bamboo_macro.sh: Load libphx"
