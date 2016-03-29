@@ -71,7 +71,7 @@ test_macro_make_check() {
 	
     pushd ${macrodir}
 
-    if [ -f ${sut} ] && [ -x ${sut} ]
+    if [ -f ${sut} ]
     then
         # Run SUT
         (make ${sutArgs} > $outFile)
@@ -132,7 +132,7 @@ test_macro_make_installcheck() {
 	
     pushd ${macrodir}
     
-    if [ -f ${sut} ] && [ -x ${sut} ]
+    if [ -f ${sut} ]
     then
         # Run SUT
         (make ${sutArgs} > $outFile)
