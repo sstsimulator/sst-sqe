@@ -66,7 +66,7 @@ test_macro_make_check() {
     # NOTE: sst-macro Tests are run from the source directory, 
     #       NOT from the install directory
     macrodir=${SST_ROOT}/sst-macro
-    sut="make"
+    sut="Makefile"
     sutArgs="check"
 	
     pushd ${macrodir}
@@ -74,7 +74,7 @@ test_macro_make_check() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        (${sut} ${sutArgs} > $outFile)
+        (make ${sutArgs} > $outFile)
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
@@ -127,7 +127,7 @@ test_macro_make_installcheck() {
     # NOTE: sst-macro Tests are run from the source directory, 
     #       NOT from the install directory
     macrodir=${SST_ROOT}/sst-macro
-    sut="make"
+    sut="Makefile"
     sutArgs="installcheck"
 	
     pushd ${macrodir}
@@ -135,7 +135,7 @@ test_macro_make_installcheck() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        (${sut} ${sutArgs} > $outFile)
+        (make ${sutArgs} > $outFile)
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
