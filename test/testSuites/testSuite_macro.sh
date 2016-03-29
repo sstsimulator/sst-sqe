@@ -65,9 +65,12 @@ test_macro_make_check() {
     # Define Software Under Test (SUT) and its runtime arguments
     # NOTE: sst-macro Tests are run from the source directory, 
     #       NOT from the install directory
-    sut="${SST_ROOT}/make"
+    macrodir=${SST_ROOT}/sst-macro
+    sut="make"
     sutArgs="check"
 	
+    pushd ${macrodir}
+
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
@@ -92,6 +95,7 @@ test_macro_make_check() {
         ls -l ${sut}
         fail "Problem with SUT: ${sut}"
     fi
+    popd
 }
 
 #-------------------------------------------------------------------------------
@@ -122,9 +126,12 @@ test_macro_make_installcheck() {
     # Define Software Under Test (SUT) and its runtime arguments
     # NOTE: sst-macro Tests are run from the source directory, 
     #       NOT from the install directory
-    sut="${SST_ROOT}/make"
+    macrodir=${SST_ROOT}/sst-macro
+    sut="make"
     sutArgs="installcheck"
 	
+    pushd ${macrodir}
+    
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
@@ -149,6 +156,7 @@ test_macro_make_installcheck() {
         ls -l ${sut}
         fail "Problem with SUT: ${sut}"
     fi
+    popd
 }
 
 
