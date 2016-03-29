@@ -727,7 +727,7 @@ getconfig() {
             depsStr="-k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$baseoptions"
-            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_INSTALL_DIR --disable-regex --with-sst-core=$SST_CORE_INSTALL"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_HOME --disable-regex --with-sst-core=$SST_CORE_INSTALL"
             ;;
    
         sst-macro_nosstcore_mac) 
@@ -741,7 +741,7 @@ getconfig() {
             depsStr="-k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
             coreConfigStr="NOBUILD"
-            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_INSTALL_DIR --disable-regex"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_HOME --disable-regex"
             ;;
    
         sst-macro_withsstcore_linux) 
