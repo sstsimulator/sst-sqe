@@ -110,8 +110,14 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
 
 ## Cloning sst-macro into <path>/devel/trunk     
-   echo "     git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
-   git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
+#   echo "     git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
+#   git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
+
+   # Temp workaround on sst-macro bug of cloning directly to devel
+   echo "     WORKAROUND - CLONE sst-macro with master branch then switch to devel below"
+   echo "     git clone $SST_MACROREPO sst-macro "
+   git clone $SST_MACROREPO sst-macro
+   
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone of $SST_MACROREPO \" FAILED.  retVal = $retVal"
@@ -121,6 +127,11 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    echo " The sst-macro Repo has been cloned."
    ls -l
    pushd sst-macro
+   
+   # Temp workaround on sst-macro bug of cloning directly to devel
+   echo " WORKAROUND - checkout the $SST_MACROBRANCH branch"
+   git checkout $SST_MACROBRANCH
+
    git log -n 1 | grep commit
    ls -l
    popd
@@ -716,7 +727,7 @@ getconfig() {
             depsStr="-k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$baseoptions"
-            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=/opt/local --disable-regex --with-sst-core=$SST_CORE_INSTALL"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_INSTALL_DIR --disable-regex --with-sst-core=$SST_CORE_INSTALL"
             ;;
    
         sst-macro_nosstcore_mac) 
@@ -730,7 +741,7 @@ getconfig() {
             depsStr="-k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
             coreConfigStr="NOBUILD"
-            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=/opt/local --disable-regex"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_INSTALL_DIR --disable-regex"
             ;;
    
         sst-macro_withsstcore_linux) 
@@ -1053,6 +1064,11 @@ ldModulesYosemiteClang() {
                         # METIS 5.1.0
                         echo "bamboo_macro.sh: Load METIS 5.1.0"
                         ModuleEx load metis/metis-5.1.0_$ClangVersion
+                        
+                        # PTH 2.0.7
+                        echo "bamboo_macro.sh: Load PTH 2.0.7"
+                        ModuleEx module load pth/pth-2.0.7
+                        
                         # Other misc
 #                        echo "bamboo_macro.sh: Load libphx"
 #                        ModuleEx load libphx/libphx-2014-MAY-08_$ClangVersion
@@ -2262,22 +2278,35 @@ dobuild() {
     then
         echo "============== SST MACRO - NO BUILD REQUIRED ==============="
     else
-        echo "==================== Building SST MACRO ===================="
+        echo "==================== Starting Build OF SST MACRO ===================="
         echo `pwd`
         pushd sst-macro
         echo `pwd`
         ls -l
         # bootstrap to create ./configure
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
         echo "bamboo_macro.sh: running \"bootstrap.sh\"..."
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         ./bootstrap.sh
         retval=$?
         if [ $retval -ne 0 ]
         then
             return $retval
         fi
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo       SST-MACRO bootstrap complete without error
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
         echo "bamboo_macro.sh: running \"configure\"..."
         echo "bamboo_macro.sh: config args = $SST_SELECTED_MACRO_CONFIG"
-    
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         ./configure $SST_SELECTED_MACRO_CONFIG
         retval=$?
         if [ $retval -ne 0 ]
@@ -2295,21 +2324,29 @@ dobuild() {
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
-        echo "bamboo_macro.sh: making SST-MACRO"
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo_macro.sh: running make on SST-MACRO"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         # build SST-MACRO
-        make all
+        make
         retval=$?
         if [ $retval -ne 0 ]
         then
             return $retval
         fi
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo       SST-MACRO make complete without error
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
-        # print build and linkage information for warm fuzzy
-        echo "SST-MACRO BUILD INFO============================================================"
-        echo "Built SST-MACRO with configure string"
-        echo "    ./configure ${SST_SELECTED_MACRO_CONFIG}"
-        echo "SST-MACRO BUILD INFO============================================================"
-    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo_macro.sh: running make install of SST-MACRO"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         # install SST
         make install
         retval=$?
@@ -2317,6 +2354,13 @@ dobuild() {
         then
             return $retval
         fi
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo       SST-MACRO make install complete without error
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
+        
         popd
     fi
 }
@@ -2392,7 +2436,6 @@ else
             # Perform the build
             dobuild -t $SST_BUILD_TYPE -a $arch -k $kernel
             retval=$?
-exit
             ;;
 
         *)
@@ -2419,7 +2462,10 @@ then
     if [ -d "test" ] ; then
         echo " \"test\" is a directory"
         echo " ############################  ENTER dotests ################## "
-        dotests $1 $4
+        
+        echo " DEBUG NEED TO ENABLE dotests to run tests! "
+        
+#        dotests $1 $4
     fi
 fi
 
