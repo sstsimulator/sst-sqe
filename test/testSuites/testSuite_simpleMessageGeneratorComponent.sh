@@ -98,18 +98,23 @@ test_simpleMessageGeneratorComponent() {
              return
         fi
         RemoveComponentWarning
-        diff -b ${referenceFile} ${outFile} > /dev/null;
-        if [ $? -ne 0 ]
+        wc $referenceFile $outFile
+        diff -b $referenceFile $outFile > _raw_diff
+        if [ $? != 0 ]
         then
-            wc ${referenceFile} ${outFile}
-            echo "     FAILED"
-            diff -u ${outFile} ${referenceFile}
-            fail "Does not match reference"
-            return
+           wc _raw_diff
+           compare_sorted $referenceFile $outFile
+           if [ $? == 0 ] ; then
+              echo " Sorted match with Reference File"
+              rm _raw_diff
+              return
+           else
+              fail " Reference does not Match Output"
+              diff -b $referenceFile $outFile
+           fi
         else
-            echo "     PASS"
+           echo "Exact match with Reference File"
         fi
-
     else
         # Problem encountered: can't find or can't run SUT (doesn't
         # really do anything in Phase I)
