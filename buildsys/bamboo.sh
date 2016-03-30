@@ -13,6 +13,7 @@
 # and test trees, from the githup repository prior to invocation of this
 # script. Plow through the build, exiting if something goes wrong.
 
+echo "************************ BAMBOO.SH STARTING ************************"
 echo ' '
 pwd
 df -h .
@@ -42,11 +43,6 @@ if [[ ${SST_ELEMENTSREPO:+isSet} != isSet ]] ; then
     SST_ELEMENTSREPO=https://github.com/sstsimulator/sst-elements
 fi
 
-# Which Repository to use for SQE (default is https://github.com/sstsimulator/sst)
-if [[ ${SST_TOPSSTREPO:+isSet} != isSet ]] ; then
-    SST_TOPSSTREPO=https://github.com/sstsimulator/sst
-fi
-
 ###
 
 # Which branches to use for each repo (default is devel)
@@ -55,7 +51,7 @@ if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
     SST_SQEBRANCH="detached"
 else
     echo ' ' ;  echo ' ' ; echo ' ' ; echo ' ' 
-    echo " Attempting to set SQE branch is no op"
+    echo " Attempting to set SQE branch is a no op"
     echo " SQE branch is selected by configure in Jenkins"
     echo "  Ignoring SST_SQEBRANCH =  ${SST_SQEBRANCH}"
     echo ' ' ;  echo ' ' ; echo ' ' ; echo ' ' 
@@ -69,16 +65,11 @@ if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
     SST_ELEMENTSBRANCH=devel
 fi
 
-if [[ ${SST_TOPSSTBRANCH:+isSet} != isSet ]] ; then
-    SST_TOPSSTBRANCH=devel
-fi
-
 echo "#############################################################"
-echo "===== BAMBOO.SH STARTED ====="
+echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
 echo "  GitHub SQE Repository and Branch = $SST_SQEREPO $SST_SQEBRANCH"
 echo "  GitHub CORE Repository and Branch = $SST_COREREPO $SST_COREBRANCH"
 echo "  GitHub ELEMENTS Repository and Branch = $SST_ELEMENTSREPO $SST_ELEMENTSBRANCH"
-echo "  GitHub Top SST Repository and Branch = $SST_TOPSSTREPO $SST_TOPSSTBRANCH"
 echo "#############################################################"
 
 
@@ -86,7 +77,7 @@ echo "#############################################################"
 export SST_ROOT=`pwd`
 
 echo "#############################################################"
-echo "  Version February 2 1100 hours "
+echo "  Version March 30 1100 hours "
 echo ' '
 pwd
 ls -la
@@ -101,45 +92,51 @@ popd
 if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
-   echo "     git clone -b $SST_TOPSSTBRANCH  $SST_TOPSSTREPO . "
-   git clone -b $SST_TOPSSTBRANCH $SST_TOPSSTREPO .
-   retVal=$?
-   if [ $retVal != 0 ] ; then
-      echo "\"git clone of $SST_TOPSSTREPO \" FAILED.  retVal = $retVal"
-      exit
-   fi
-   echo " "
-   echo " the sst Repo has been cloned. Core and Elements to go"
-   ls
-
-   mkdir -p sst
-   pushd sst
-   pwd
-   ls -l
-
-   echo "     git clone -b $SST_COREBRANCH $SST_COREREPO core "
-   git clone -b $SST_COREBRANCH $SST_COREREPO core
+## Cloning sst-core into <path>/devel/trunk     
+   echo "     git clone -b $SST_COREBRANCH $SST_COREREPO sst-core "
+   git clone -b $SST_COREBRANCH $SST_COREREPO sst-core
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone of $SST_COREREPO \" FAILED.  retVal = $retVal"
       exit
    fi
-   pushd core
+   echo " "
+   echo " The sst-core Repo has been cloned."
+   ls -l
+   pushd sst-core
+   
+   # Test for override of the branch to some other SHA1 
+   if [[ ${SST_CORE_RESET:+isSet} == isSet ]] ; then
+       echo "     Desired sst-element SHA1 is ${SST_CORE_RESET}"
+       git reset --hard ${SST_CORE_RESET}
+       retVal=$?
+       if [ $retVal != 0 ] ; then
+          echo "\"git reset --hard ${SST_CORE_RESET} \" FAILED.  retVal = $retVal"
+          exit
+       fi
+   fi
+   
    git log -n 1 | grep commit
+   ls -l
    popd
 
 
-   echo "     git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO elements "
+## Cloning sst-elements into <path>/devel/trunk     
+   echo "     git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
    git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO elements
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
       exit
    fi
-   pushd elements
+   echo " "
+   echo " The sst-elements Repo has been cloned."
+   ls -l
+   pushd sst-elements
 
+   # Test for override of the branch to some other SHA1 
    if [[ ${SST_ELEMENTS_RESET:+isSet} == isSet ]] ; then
-       echo "     Desired element SHA1 is ${SST_ELEMENTS_RESET}"
+       echo "     Desired sst-element SHA1 is ${SST_ELEMENTS_RESET}"
        git reset --hard ${SST_ELEMENTS_RESET}
        retVal=$?
        if [ $retVal != 0 ] ; then
@@ -149,13 +146,18 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    fi
 
    git log -n 1 | grep commit
-   
-   popd
    ls -l
    popd
+   
+# Link the deps and test directories to the trunk   
+   echo " Creating Symbolic Links to the sqe directories (deps & test)"
+   ls -l
    ln -s `pwd`/../sqe/buildsys/deps .
    ln -s `pwd`/../sqe/test .
+   ls -l
 fi
+
+echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE - NOW SETTING ENV RUNTIME VARS ########"
 
 
 #	This assumes a directory strucure
@@ -176,10 +178,20 @@ echo ' ' ; echo "        SST_BASE = $SST_BASE" ; echo ' '
 
 # Location of SST library dependencies (deprecated)
 export SST_DEPS=${SST_BASE}/local
+
+# Location where SST CORE files are installed
+export SST_CORE_INSTALL=${SST_INSTALL}/sst-core
+# Location where SST CORE build files are installed
+export SST_CORE_INSTALL_BIN=${SST_CORE_INSTALL}/bin
+
+# Location where SST ELEMENTS files are installed
+export SST_ELEMENTS_INSTALL=${SST_INSTALL}/sst-elements
+
 # Location where SST files are installed
-export SST_INSTALL=${SST_BASE}/local
+export SST_INSTALL=${SST_CORE_INSTALL}
 # Location where SST build files are installed
-export SST_INSTALL_BIN=${SST_INSTALL}/bin
+export SST_INSTALL_BIN=${SST_CORE_INSTALL_BIN}
+
 
 # Location where SST dependencies are installed. This only specifies
 # the root; dependencies may be installed in various locations under
@@ -670,8 +682,11 @@ setConvenienceVars() {
     echo "endfile-------"
     echo "setConvenienceVars() : exported variables"
     export | egrep SST_DEPS_
-    baseoptions="--disable-silent-rules --prefix=$SST_INSTALL --with-boost=$SST_DEPS_INSTALL_BOOST"
-    echo "setConvenienceVars() : baseoptions = $baseoptions"
+    corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL --with-boost=$SST_DEPS_INSTALL_BOOST"
+    elementsbaseoptions="--disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL
+    echo "setConvenienceVars() : " 
+    echo "          corebaseoptions = $corebaseoptions"
+    echo "      elementsbaseoptions = $elementsbaseoptions"
 }
 
 #-------------------------------------------------------------------------
@@ -736,7 +751,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83 -c default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $miscEnv"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $miscEnv"
             ;;
         sstmainline_config_VaultSim) 
             #-----------------------------------------------------------------
@@ -747,7 +763,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $miscEnv --with-libphx=$LIBPHX_HOME/src --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $miscEnv --with-libphx=$LIBPHX_HOME/src"
             ;;
         sstmainline_config_all) 
             #-----------------------------------------------------------------
@@ -758,7 +775,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83 -c default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-libphx=$LIBPHX_HOME/src --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL $miscEnv"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            elementsConfigStr="$elementsbaseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-libphx=$LIBPHX_HOME/src --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL $miscEnv"
             ;;
         sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_diropenmpI|sstmainline_config_dirnoncacheable|sstmainline_config_dir3cache|sstmainline_config_memH_Ariel) 
             #-----------------------------------------------------------------
@@ -769,7 +787,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -M none -N default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $miscEnv"
+            coreConfigStr="$corebaseoptions $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $miscEnv"
             ;;
         sstmainline_config_linux_with_ariel) 
             #-----------------------------------------------------------------
@@ -781,7 +800,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $miscEnv"
+            coreConfigStr="$corebaseoptions $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $miscEnv"
             ;;
         sstmainline_config_linux_with_ariel_no_gem5) 
             #-----------------------------------------------------------------
@@ -793,7 +813,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $miscEnv"
             ;;
         sstmainline_config_no_gem5) 
             #-----------------------------------------------------------------
@@ -807,7 +828,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83 -c default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $miscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $miscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
             ;;
         sstmainline_config_no_gem5_intel_gcc_4_8_1) 
             #-----------------------------------------------------------------
@@ -821,7 +843,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83 -c none"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-metis=${METIS_HOME} $miscEnv $IntelExtraConfigStr"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv $IntelExtraConfigStr"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} $miscEnv $IntelExtraConfigStr"
             ;;
 
         sstmainline_config_no_gem5_intel_gcc_4_8_1_with_c) 
@@ -836,7 +859,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83 -c default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $miscEnv $IntelExtraConfigStr"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv $IntelExtraConfigStr"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $miscEnv $IntelExtraConfigStr"
             ;;
 
         sstmainline_config_fast_intel_build_no_gem5) 
@@ -851,7 +875,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d none -p none  -g none -m none -i none -o none -h none -s none -q none -M none  -z none -c none"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-metis=${METIS_HOME} $miscEnv $IntelExtraConfigStr"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv $IntelExtraConfigStr"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} $miscEnv $IntelExtraConfigStr"
             ModuleEx unload metis
             ;;
 
@@ -864,7 +889,8 @@ getconfig() {
             miscEnv="CC=${cc_compiler} CXX=${cxx_compiler}"
             depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $miscEnv --disable-mpi"
+            coreConfigStr="$corebaseoptions $miscEnv --disable-mpi"
+            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $miscEnv --disable-mpi"
             ;;
 
         sstmainline_config_gem5_gcc_4_6_4) 
@@ -876,7 +902,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -b 1.50 -g gcc-4.6.4 -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83 -c default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $miscEnv"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $miscEnv"
             ;;
 
         sstmainline_config_gcc_4_8_1) 
@@ -888,7 +915,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $miscEnv"
+            coreConfigStr="$corebaseoptions $miscEnv"
+            elementsConfigStr="$elementsbaseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $miscEnv"
             ;;
         sstmainline_config_static) 
             #-----------------------------------------------------------------
@@ -899,7 +927,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-metis=${METIS_HOME} $miscEnv"
+            coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $miscEnv"
             ;;
 
         sstmainline_config_static_no_gem5) 
@@ -911,7 +940,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-metis=${METIS_HOME} --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $miscEnv"
+            coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            elementsConfigStr="$elementsbaseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $miscEnv"
             ;;
 
         sstmainline_config_fast_static) 
@@ -923,7 +953,8 @@ getconfig() {
             miscEnv="CC=${cc_compiler} CXX=${cxx_compiler}"
             depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --enable-static --disable-shared $miscEnv --disable-mpi"
+            coreConfigStr="$corebaseoptions --enable-static --disable-shared $miscEnv --disable-mpi"
+            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --enable-static --disable-shared $miscEnv --disable-mpi"
             ;;
 
         sstmainline_config_clang_core_only) 
@@ -933,7 +964,8 @@ getconfig() {
             #-----------------------------------------------------------------
             depsStr="-k none -d 2.2.2 -p none -z none -b none -g none -m none -i none -o none -h none -s none -q none -M none -N default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM"
+            coreConfigStr="$corebaseoptions"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM"
             ;;
         sstmainline_config_macosx) 
             #-----------------------------------------------------------------
@@ -944,7 +976,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -M 2.2.0"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-metis=${METIS_HOME} $miscEnv"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} $miscEnv"
             ;;
         sstmainline_config_macosx_no_gem5) 
             #-----------------------------------------------------------------
@@ -955,7 +988,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z 3.83  -b 1.50 -g none -m none -i none -o none -h none -s none -q none -M 2.2.0 -N default -c default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $miscEnv"
+            coreConfigStr="$corebaseoptions ${MTNLION_FLAG} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            elementsConfigStr="$elementsbaseoptions ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $miscEnv"
             ;;
         sstmainline_config_macosx_static) 
             #-----------------------------------------------------------------
@@ -966,7 +1000,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -M 2.2.0"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-metis=${METIS_HOME} $miscEnv"
+            coreConfigStr="$corebaseoptions  --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $miscEnv"
             ;;
         sstmainline_config_macosx_static_no_gem5) 
             #-----------------------------------------------------------------
@@ -977,7 +1012,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q none -z 3.83 -N default -M 2.2.0"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-metis=${METIS_HOME} $miscEnv"
+            coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $miscEnv"
             ;;
         sstmainline_config_static_macro_devel) 
             #-----------------------------------------------------------------
@@ -988,7 +1024,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g stabledevel -m none -i none -o none -h none -s stabledevel -q 0.2.1 -M none"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-sstmacro=$SST_DEPS_INSTALL_SSTMACRO  --with-qsim=$SST_DEPS_INSTALL_QSIM --enable-static --disable-shared $miscEnv"
+            coreConfigStr="$corebaseoptions --enable-static --disable-shared $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-sstmacro=$SST_DEPS_INSTALL_SSTMACRO  --with-qsim=$SST_DEPS_INSTALL_QSIM --enable-static --disable-shared $miscEnv"
             ;;
         sstmainline_sstmacro_xconfig) 
             #-----------------------------------------------------------------
@@ -999,7 +1036,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g stabledevel -m none -i none -o none -h none -s stabledevel -q 0.2.1 -M none"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-sstmacro=$SST_DEPS_INSTALL_SSTMACRO  --with-qsim=$SST_DEPS_INSTALL_QSIM $miscEnv"
+            coreConfigStr="$corebaseoptions $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-sstmacro=$SST_DEPS_INSTALL_SSTMACRO  --with-qsim=$SST_DEPS_INSTALL_QSIM $miscEnv"
             ;;
         sstmainline_config_test_output_config)
             #-----------------------------------------------------------------
@@ -1010,7 +1048,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-qsim=$SST_DEPS_INSTALL_QSIM $miscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
+            coreConfigStr="$corebaseoptions $miscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN"
+            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-qsim=$SST_DEPS_INSTALL_QSIM $miscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
             ;;
         sstmainline_config_xml2python_static) 
             #-----------------------------------------------------------------
@@ -1021,7 +1060,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q none -M none -N default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared $miscEnv"
+            coreConfigStr="$corebaseoptions --enable-static --disable-shared $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared $miscEnv"
             ;;
         sstmainline_config_memH_wo_openMP)
             #-----------------------------------------------------------------
@@ -1035,7 +1075,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -m none -o none -h none -s none -q 0.2.1 -M none -N default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $miscEnv"
+            coreConfigStr="$corebaseoptions $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $miscEnv"
             ;;
         sstmainline_config_develautotester)
             #-----------------------------------------------------------------
@@ -1053,7 +1094,8 @@ getconfig() {
             miscEnv="${mpi_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -m none -o none -h none -s none -q 0.2.1 -M none -N default"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $miscEnv"
+            coreConfigStr="$corebaseoptions $miscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $miscEnv"
             ;;
             
         # ====================================================================
@@ -1072,7 +1114,8 @@ getconfig() {
             #-----------------------------------------------------------------
             depsStr="-d none -g none"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions  --with-glpk=${GLPK_HOME} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
+            coreConfigStr="$corebaseoptions"
+            elementsConfigStr="$elementsbaseoptions  --with-glpk=${GLPK_HOME} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
    
   ## perhaps do no more here
             ;;
@@ -1083,7 +1126,8 @@ getconfig() {
             #-----------------------------------------------------------------
             depsStr="$defaultDeps"
             setConvenienceVars "$depsStr"
-            configStr="$baseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM"
+            coreConfigStr="$corebaseoptions"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM"
             ;;
 
         *)
@@ -1097,7 +1141,8 @@ getconfig() {
     esac
 
     export SST_SELECTED_DEPS="$depsStr"
-    export SST_SELECTED_CONFIG="$configStr"
+    export SST_SELECTED_CORE_CONFIG="$coreConfigStr"
+    export SST_SELECTED_ELEMENTS_CONFIG="$elementsConfigStr"
 #    echo $configStr
 }
 
@@ -1378,6 +1423,11 @@ ldModulesYosemiteClang() {
                         # METIS 5.1.0
                         echo "bamboo.sh: Load METIS 5.1.0"
                         ModuleEx load metis/metis-5.1.0_$ClangVersion
+                        
+                        # PTH 2.0.7
+                        echo "bamboo_macro.sh: Load PTH 2.0.7"
+                        ModuleEx load pth/pth-2.0.7
+                        
                         # Other misc
 #                        echo "bamboo.sh: Load libphx"
 #                        ModuleEx load libphx/libphx-2014-MAY-08_$ClangVersion
@@ -2475,14 +2525,15 @@ dobuild() {
         esac
     done
 
-    export PATH=$SST_INSTALL_BIN:$PATH
+    export PATH=$SST_CORE_INSTALL_BIN:$PATH
 
     # obtain dependency and configure args
     getconfig $buildtype $architecture $kernel
 
     # after getconfig is run,
     # $SST_SELECTED_DEPS now contains selected dependencies 
-    # $SST_SELECTED_CONFIG now contains config line
+    # $SST_SELECTED_CORE_CONFIG now contains config line for the SST-CORE
+    # $SST_SELECTED_ELEMENTS_CONFIG now contains config line for the SST-ELEMENTS
     # based on buildtype, configure and build dependencies
     # build, patch, and install dependencies
     $SST_DEPS_BIN/sstDependencies.sh $SST_SELECTED_DEPS cleanBuild
@@ -2492,7 +2543,7 @@ dobuild() {
         return $retval
     fi
 
-    echo "==================== Building SST ===================="
+    echo "==================== SETTING UP TO BUILD SST CORE AND ELEMENTS ===================="
     SAVE_LIBRARY_PATH=$LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=${SST_INSTALL_DEPS}/lib:${SST_INSTALL_DEPS}/lib/sst:${SST_DEPS_INSTALL_GEM5SST}:${SST_INSTALL_DEPS}/packages/DRAMSim:${SST_DEPS_INSTALL_NVDIMMSIM}:${SST_DEPS_INSTALL_HYBRIDSIM}:${SST_INSTALL_DEPS}/packages/Qsim/lib:${SST_DEPS_INSTALL_CHDL}/lib:${LD_LIBRARY_PATH}
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BOOST_LIBS
@@ -2501,6 +2552,7 @@ dobuild() {
     then
 	    export DYLD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${DYLD_LIBRARY_PATH}
     fi
+    
     # Dump pre-build environment and modules status
     echo "--------------------PRE-BUILD ENVIRONMENT VARIABLE DUMP--------------------"
     env | sort
@@ -2510,89 +2562,299 @@ dobuild() {
     ModuleEx list
     echo "--------------------modules status--------------------"
 
-    # autogen to create ./configure
-    echo "bamboo.sh: running \"autogen.sh\"..."
-    ./autogen.sh
-    retval=$?
-    if [ $retval -ne 0 ]
+    ### BUILDING THE SST-CORE
+    if [[ $SST_SELECTED_CORE_CONFIG == "NOBUILD" ]]
     then
-        return $retval
-    fi
-    echo "bamboo.sh: running \"configure\"..."
-    echo "bamboo.sh: config args = $SST_SELECTED_CONFIG"
-
-    ./configure $SST_SELECTED_CONFIG
-    retval=$?
-    if [ $retval -ne 0 ]
-    then
-        # Something went wrong in configure, so dump config.log
-        echo "bamboo.sh: Uh oh. Something went wrong during configure of sst.  Dumping config.log"
-        echo "--------------------dump of config.log--------------------"
-        sed -e 's/^/#dump /' ./config.log
-        echo "--------------------dump of config.log--------------------"
-        return $retval
-    fi
-    echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    echo ' '    
-    echo       Configure complete without error
-    echo ' '    
-    echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-
-    echo "at this time \$buildtype is $buildtype"
-
-    if [[ $buildtype == *_dist_* ]] ; then
-        make dist
-        retval=$?
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo       make dist is done
-        echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        ls -ltr | tail -5
-        return $retval        ##   This is in dobuild
-    fi
-    echo   " This is the non dist test path     +++++++++++++++++++++++++++++++++++++++++++++++"
-    echo "bamboo.sh: making SST"
-    # build SST
-    make -j4 all
-    retval=$?
-    if [ $retval -ne 0 ]
-    then
-        return $retval
-    fi
-
-    # print build and linkage information for warm fuzzy
-    echo "SSTBUILD INFO============================================================"
-    echo "Built SST with configure string"
-    echo "    ./configure ${SST_SELECTED_CONFIG}"
-    echo "----------------"
-    echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-    if [ $kernel == "Darwin" ]
-    then
-        # Mac OS X
-        echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
-    fi
-    echo "----------------"
-    echo "sst exectuable linkage information"
-
-    if [ $kernel == "Darwin" ]
-    then
-        # Mac OS X 
-        echo "$ otool -L ./sst/core/sstsim.x"
-        otool -L ./sst/core/sstsim.x
+        echo "============== SST CORE - NO BUILD REQUIRED ==============="
     else
-        echo "$ ldd ./sst/core/sstsim.x"
-        ldd ./sst/core/sstsim.x
+        echo "==================== Building SST CORE ===================="
+        echo `pwd`
+        pushd sst-core
+        echo `pwd`
+        ls -l
+        # autogen to create ./configure
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: running \"autogen.sh\"..."
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
+        ./autogen.sh
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: autogen complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: running \"configure\"..."
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "bamboo.sh: config args = $SST_SELECTED_CORE_CONFIG"
+        
+        ./configure $SST_SELECTED_CORE_CONFIG
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # Something went wrong in configure, so dump config.log
+            echo "bamboo.sh: Uh oh. Something went wrong during configure of sst-core.  Dumping config.log"
+            echo "--------------------dump of config.log--------------------"
+            sed -e 's/^/#dump /' ./config.log
+            echo "--------------------dump of config.log--------------------"
+            return $retval
+        fi
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: configure complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        
+        # Check to see if we are actually performing make dist 
+        echo "at this time \$buildtype is $buildtype"
+        if [[ $buildtype == *_dist_* ]] ; then
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make dist on SST-CORE"
+            echo ' '    
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            make dist
+            retval=$?
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make dist is complete without error"
+            echo ' '    
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo " "
+            ls -ltr | tail -5
+            return $retval        ##   This is in dobuild
+        fi
+        
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make SST-CORE"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        # build SST-CORE
+        make -j4 all
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+        
+        # print build and linkage information for warm fuzzy
+        echo "SST-CORE BUILD INFO============================================================"
+        echo "Built SST-CORE with configure string"
+        echo "    ./configure ${SST_SELECTED_CORE_CONFIG}"
+        echo "----------------"
+        echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+        if [ $kernel == "Darwin" ]
+        then
+            # Mac OS X
+            echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
+        fi
+        echo "----------------"
+        echo "sst exectuable linkage information"
+    
+        if [ $kernel == "Darwin" ]
+        then
+            # Mac OS X 
+            echo "$ otool -L ./sst/core/sstsim.x"
+            otool -L ./sst/core/sstsim.x
+        else
+            echo "$ ldd ./sst/core/sstsim.x"
+            ldd ./sst/core/sstsim.x
+        fi
+        echo "SST-CORE BUILD INFO============================================================"
+                
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make SST-CORE complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install SST-CORE"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
+        # install SST
+        make -j4 install
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install SST-CORE complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        # Go back to devel/trunk
+        popd
     fi
-    echo "SSTBUILD INFO============================================================"
 
-    # install SST
-    make -j4 install
-    retval=$?
-    if [ $retval -ne 0 ]
+        ### BUILDING THE SST-ELEMENTS
+    if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
     then
-        return $retval
+        echo "============== SST ELEMENTS - NO BUILD REQUIRED ==============="
+    else
+        echo "==================== Building SST ELEMENTS ===================="
+        echo `pwd`
+        pushd sst-elements
+        echo `pwd`
+        ls -l
+        # autogen to create ./configure
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: running \"autogen.sh\"..."
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
+        ./autogen.sh
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: autogen complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: running \"configure\"..."
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "bamboo.sh: config args = $SST_SELECTED_ELEMENTS_CONFIG"
+        
+        ./configure $SST_SELECTED_ELEMENTS_CONFIG
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # Something went wrong in configure, so dump config.log
+            echo "bamboo.sh: Uh oh. Something went wrong during configure of sst-elements.  Dumping config.log"
+            echo "--------------------dump of config.log--------------------"
+            sed -e 's/^/#dump /' ./config.log
+            echo "--------------------dump of config.log--------------------"
+            return $retval
+        fi
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: configure complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        
+        # Check to see if we are actually performing make dist 
+        echo "at this time \$buildtype is $buildtype"
+        if [[ $buildtype == *_dist_* ]] ; then
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make dist on SST-ELEMENTS"
+            echo ' '    
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            make dist
+            retval=$?
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make dist is complete without error"
+            echo ' '    
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo " "
+            ls -ltr | tail -5
+            return $retval        ##   This is in dobuild
+        fi
+        
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make SST-ELEMENTS"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        # build SST-ELEMENTS
+        make -j4 all
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+
+## NOT SURE IF THIS HAS A PLACE IN THE SPLIT CORE / ELEMENTS CONSTRUCTION        
+##        # print build and linkage information for warm fuzzy
+##        echo "SST-ELEMENTS BUILD INFO============================================================"
+##        echo "Built SST-ELEMENTS with configure string"
+##        echo "    ./configure ${SST_SELECTED_ELEMENTS_CONFIG}"
+##        echo "----------------"
+##        echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+##        if [ $kernel == "Darwin" ]
+##        then
+##            # Mac OS X
+##            echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
+##        fi
+##        echo "----------------"
+##        echo "sst exectuable linkage information"
+##    
+##        if [ $kernel == "Darwin" ]
+##        then
+##            # Mac OS X 
+##            echo "$ otool -L ./sst/core/sstsim.x"
+##            otool -L ./sst/core/sstsim.x
+##        else
+##            echo "$ ldd ./sst/core/sstsim.x"
+##            ldd ./sst/core/sstsim.x
+##        fi
+##        echo "SST-ELEMENTS BUILD INFO============================================================"
+                
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make SST-ELEMENTS complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install SST-ELEMENTS"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
+        # install SST
+        make -j4 install
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install SST-ELEMENTS complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        # Go back to devel/trunk
+        popd
     fi
 
 }
@@ -2699,6 +2961,7 @@ else
                 egrep "is not documented" $SST_ROOT/doc/makeHtmlErrors.txt | sort > $SST_ROOT/doc/undoc.txt
                 retval=0
             else
+                # Perform the build
                 dobuild -t $SST_BUILD_TYPE -a $arch -k $kernel
                 retval=$?
             fi
