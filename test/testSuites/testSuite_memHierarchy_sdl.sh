@@ -166,6 +166,8 @@ Tol=$2    ##  curTick tolerance
                       echo  "END of STDERR --------------------"
                   fi
                   fail " FAILURE:    Line / Word count do not agree (using DRAMSIM)"
+                  echo "Examine up to twenty lines of sorted difference"
+                  cat diff_sorted | sed 20q
               fi          
            fi              ##    --- end of code for Dramsim case ----
         fi
