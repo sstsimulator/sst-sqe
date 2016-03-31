@@ -178,6 +178,8 @@ echo ' ' ; echo "        SST_BASE = $SST_BASE" ; echo ' '
 
 # Location of SST library dependencies (deprecated)
 export SST_DEPS=${SST_BASE}/local
+# Starting Location where SST files are installed
+export SST_INSTALL=${SST_BASE}/local
 
 # Location where SST CORE files are installed
 export SST_CORE_INSTALL=${SST_INSTALL}/sst-core
@@ -187,7 +189,7 @@ export SST_CORE_INSTALL_BIN=${SST_CORE_INSTALL}/bin
 # Location where SST ELEMENTS files are installed
 export SST_ELEMENTS_INSTALL=${SST_INSTALL}/sst-elements
 
-# Location where SST files are installed
+# Final Location where SST executable files are installed
 export SST_INSTALL=${SST_CORE_INSTALL}
 # Location where SST build files are installed
 export SST_INSTALL_BIN=${SST_CORE_INSTALL_BIN}
