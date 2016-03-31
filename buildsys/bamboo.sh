@@ -75,6 +75,7 @@ echo "#############################################################"
 
 # Root of directory checked out, where this script should be found
 export SST_ROOT=`pwd`
+echo " SST_ROOT = $SST_ROOT"
 
 echo "#############################################################"
 echo "  Version March 30 1100 hours "
@@ -92,7 +93,8 @@ popd
 if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
-## Cloning sst-core into <path>/devel/trunk     
+## Cloning sst-core into <path>/devel/trunk   
+   echo " "
    echo "     git clone -b $SST_COREBRANCH $SST_COREREPO sst-core "
    git clone -b $SST_COREBRANCH $SST_COREREPO sst-core
    retVal=$?
@@ -122,8 +124,9 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
 
 ## Cloning sst-elements into <path>/devel/trunk     
+   echo " "
    echo "     git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
-   git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO elements
+   git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
