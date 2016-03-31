@@ -247,6 +247,7 @@ multithread_multirank_patch_Suites() {
        fi
     fi
 
+
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
 
         pushd test/testSuites
@@ -257,7 +258,7 @@ multithread_multirank_patch_Suites() {
              echo "Do not change $fn"
              continue
            fi
-           sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_THREAD_COUNT}"' ${sut/' $fn
+           sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' ${sut/' $fn
         done
         popd
         SET_TL=1
