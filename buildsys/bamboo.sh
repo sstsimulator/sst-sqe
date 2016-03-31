@@ -683,7 +683,7 @@ setConvenienceVars() {
     echo "setConvenienceVars() : exported variables"
     export | egrep SST_DEPS_
     corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL --with-boost=$SST_DEPS_INSTALL_BOOST"
-    elementsbaseoptions="--disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL
+    elementsbaseoptions="--disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL"
     echo "setConvenienceVars() : " 
     echo "          corebaseoptions = $corebaseoptions"
     echo "      elementsbaseoptions = $elementsbaseoptions"
