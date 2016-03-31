@@ -232,32 +232,42 @@ fi
 #
 #     Revised  October 30, 2015
 ######################################
-multithread_patch_Suites() {
-echo "multithread_patch_Suites: ########### Patch the test Suites"
-if [ $SST_MULTI_THREAD_COUNT == 0 ] ; then
-     echo " There is no -n count, Set to 1 "
-     export SST_MULTI_THREAD_COUNT=1
-else
-     pushd test/testSuites
-     for fn in `ls testSuite_*`
-     do
-         grep 'sut}.*sutArgs' $fn | grep mpirun 
-         if [ $? == 0 ] ; then
+multithread_multirank_patch_Suites() {
+    echo "multithread_multirank_patch_Suites: ########### Patch the test Suites"
+    SET_TL=0
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+       if [ $SST_MULTI_THREAD_COUNT == 0 ] ; then
+            echo " There is no -n count, Set to 1 "
+            export SST_MULTI_THREAD_COUNT=1
+       else
+            sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*
+##              EmberSweep processing move to EmberSweep test Suite/
+ ##         sed -i.x '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py
+            SET_TL=1
+       fi
+    fi
+
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
+
+        pushd test/testSuites
+        for fn in `ls testSuite_*`
+        do
+           grep 'sut}.*sutArgs' $fn | grep mpirun 
+           if [ $? == 0 ] ; then
              echo "Do not change $fn"
              continue
-         fi
-         sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_THREAD_COUNT}"' ${sut/' $fn
-     done
-     popd
+           fi
+           sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_THREAD_COUNT}"' ${sut/' $fn
+        done
+        popd
+        SET_TL=1
 
-##      sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_THREAD_COUNT}"' ${sut/' test/testSuites/testSuite_*
-##    sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*
-##    sed -i.x '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py
-fi
+    fi
 
-if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
-sed -i.y '/Invoke shunit2/i \
-export SST_TEST_ONE_TEST_TIMEOUT=200 \
- ' test/testSuites/testSuite_*
+    if [ $SET_TL == 1 ] ; then
+
+    sed -i.y '/Invoke shunit2/i \
+    export SST_TEST_ONE_TEST_TIMEOUT=200 \
+     ' test/testSuites/testSuite_*
 fi
 }
