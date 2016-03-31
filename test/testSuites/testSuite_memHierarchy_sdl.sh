@@ -83,7 +83,7 @@ Tol=$2    ##  curTick tolerance
       return
     fi
 
-    ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
+    mpirun -np  ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
@@ -327,6 +327,8 @@ export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
+    export SST_TEST_ONE_TEST_TIMEOUT=200 
+     
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
