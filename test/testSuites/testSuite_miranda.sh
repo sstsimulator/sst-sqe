@@ -138,6 +138,12 @@ test_miranda_singlestream() {
        return
     fi
 
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+       echo " Uses an event that does not implement serialization    OMIT"    
+       skip_this_test
+       return
+    fi
+
 miranda_Template singlestream
 
 }
@@ -153,7 +159,7 @@ miranda_Template revsinglestream
 
 test_miranda_randomgen() {
 
-   if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_THREAD_COUNT} -gt 1 ] ; then
+   if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
        echo " Uses an event that does not implement serialization    OMIT"    
        skip_this_test
        return
