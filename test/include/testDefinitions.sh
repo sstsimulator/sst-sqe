@@ -237,10 +237,10 @@ multithread_multirank_patch_Suites() {
     SET_TL=0
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
        if [ $SST_MULTI_THREAD_COUNT == 0 ] ; then
-            echo " There is no -n count, Set to 1 "
+            echo " There is a zero -n count, Set to 1 "
             export SST_MULTI_THREAD_COUNT=1
        else
-            sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*
+            sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*.sh
 ##              EmberSweep processing move to EmberSweep test Suite/
  ##         sed -i.x '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py
             SET_TL=1
@@ -250,12 +250,16 @@ multithread_multirank_patch_Suites() {
 
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
 
+        if [ $SST_MULTI_RANK_COUNT == 0 ] ; then
+            echo " There is a zero rank count, Set to 1 "
+            export SST_MULTI_RANK_COUNT=1
+        fi 
         pushd test/testSuites
-        for fn in `ls testSuite_*`
+        for fn in `ls testSuite_*.sh`
         do
            grep 'sut}.*sutArgs' $fn | grep mpirun 
            if [ $? == 0 ] ; then
-             echo "Do not change $fn"
+             echo "Do not change $fn, it already has mpirun"
              continue
            fi
            sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' ${sut/' $fn
