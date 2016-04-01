@@ -32,11 +32,9 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
-    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
-       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+    if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
            echo '           SKIP '
            preFail " Scheduler tests do not work with threading" "skip"
-       fi
     fi     
 
 #===============================================================================

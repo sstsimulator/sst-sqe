@@ -265,6 +265,7 @@ multithread_multirank_patch_Suites() {
     fi
 
     if [ $SET_TL == 1 ] ; then
+    export SST_MULTI_CORE=1
 
     sed -i.y '/Invoke shunit2/i \
     export SST_TEST_ONE_TEST_TIMEOUT=200 \
