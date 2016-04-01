@@ -110,7 +110,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
 
 ## Cloning sst-macro into <path>/devel/trunk     
-#   echo "     git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
+   echo "     git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
    git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
    retVal=$?
    if [ $retVal != 0 ] ; then
@@ -154,7 +154,7 @@ echo ' ' ; echo "        SST_BASE = $SST_BASE" ; echo ' '
 
 # Location of SST library dependencies (deprecated)
 export SST_DEPS=${SST_BASE}/local
-# Location where SST files are installed
+# Starting Location where SST files are installed
 export SST_INSTALL=${SST_BASE}/local
 
 # Location where SST CORE files are installed
@@ -165,7 +165,7 @@ export SST_CORE_INSTALL_BIN=${SST_CORE_INSTALL}/bin
 # Location where SST MACRO files are installed
 export SST_MACRO_INSTALL=${SST_INSTALL}/sst-macro
 
-# Location where SST files are installed
+# Final Location where SST Executable files are installed
 export SST_INSTALL=${SST_CORE_INSTALL}
 # Location where SST build files are installed
 export SST_INSTALL_BIN=${SST_CORE_INSTALL_BIN}
@@ -1877,14 +1877,30 @@ dobuild() {
         echo `pwd`
         ls -l
         # autogen to create ./configure
-        echo "bamboo_macro.sh: running \"autogen.sh\"..."
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo_macro.sh: running \"autogen.sh\" on SST-CORE..."
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
         ./autogen.sh
         retval=$?
         if [ $retval -ne 0 ]
         then
             return $retval
         fi
-        echo "bamboo_macro.sh: running \"configure\"..."
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo_macro.sh: autogen on SST-CORE complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo_macro.sh: running \"configure\" on SST-CORE..."
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "bamboo_macro.sh: config args = $SST_SELECTED_CORE_CONFIG"
     
         ./configure $SST_SELECTED_CORE_CONFIG
@@ -1900,11 +1916,16 @@ dobuild() {
         fi
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo       SST-CORE Configure complete without error
+        echo "bamboo_macro.sh: configure on SST-CORE complete without error"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
         
-        echo "bamboo_macro.sh: making SST-CORE"
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo_macro.sh: make on SST-CORE"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         # build SST-CORE
         make -j4 all
         retval=$?
@@ -1925,7 +1946,20 @@ dobuild() {
             echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
         fi
         echo "SST-CORE BUILD INFO============================================================"
-    
+
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo_macro.sh: make on SST-CORE complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo_macro.sh: make install on SST-CORE"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
         # install SST
         make -j4 install
         retval=$?
@@ -1933,6 +1967,15 @@ dobuild() {
         then
             return $retval
         fi
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo_macro.sh: make install on SST-CORE complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        # Go back to devel/trunk
         popd
     fi
 
@@ -1950,7 +1993,7 @@ dobuild() {
         # bootstrap to create ./configure
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo_macro.sh: running \"bootstrap.sh\"..."
+        echo "bamboo_macro.sh: running \"bootstrap.sh\" on SST-MACRO..."
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         ./bootstrap.sh
@@ -1967,7 +2010,7 @@ dobuild() {
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo_macro.sh: running \"configure\"..."
+        echo "bamboo_macro.sh: running \"configure\" on SST-MACRO..."
         echo "bamboo_macro.sh: config args = $SST_SELECTED_MACRO_CONFIG"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
@@ -1994,7 +2037,7 @@ dobuild() {
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         # build SST-MACRO
-        make
+        make -j4
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2008,11 +2051,11 @@ dobuild() {
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo_macro.sh: running make install of SST-MACRO"
+        echo "bamboo_macro.sh: running make install on SST-MACRO"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         # install SST
-        make install
+        make -j4 install
         retval=$?
         if [ $retval -ne 0 ]
         then

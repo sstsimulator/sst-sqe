@@ -75,7 +75,7 @@ test_macro_make_check() {
     then
         # Run SUT
 #        (make ${sutArgs} > $outFile)
-        (make ${sutArgs})
+        (make -j4 ${sutArgs})
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
@@ -137,7 +137,7 @@ test_macro_make_installcheck() {
     then
         # Run SUT
 #        (make ${sutArgs} > $outFile)
-        (make ${sutArgs})
+        (make -j4 ${sutArgs})
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
