@@ -68,8 +68,15 @@ Tol=$2    ##  curTick tolerance
         fi
 
         echo " Running from `pwd`"
-        ${sut} ${sutArgs} > ${tmpFile}
-        RetVal=$? 
+        if [[ ${SST_MULTI_RANK_COUNT:isSet} != isSet ]] ; then
+           ${sut} ${sutArgs} > ${tmpFile}
+           RetVal=$? 
+        else
+           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename _test.out ${sut} ${sutArgs}
+           RetVal=$? 
+           cat _output-file* > $tmpFile
+        fi
+
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
