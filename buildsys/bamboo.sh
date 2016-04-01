@@ -2580,7 +2580,7 @@ dobuild() {
         # autogen to create ./configure
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: running \"autogen.sh\"..."
+        echo "bamboo.sh: running \"autogen.sh\" on SST-CORE..."
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
@@ -2592,14 +2592,14 @@ dobuild() {
         fi
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: autogen complete without error"
+        echo "bamboo.sh: autogen on SST-CORE complete without error"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: running \"configure\"..."
+        echo "bamboo.sh: running \"configure\" on SST-CORE..."
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "bamboo.sh: config args = $SST_SELECTED_CORE_CONFIG"
@@ -2617,7 +2617,7 @@ dobuild() {
         fi
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: configure complete without error"
+        echo "bamboo.sh: configure on SST-CORE complete without error"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
@@ -2635,7 +2635,7 @@ dobuild() {
             retval=$?
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
-            echo "bamboo.sh: make dist is complete without error"
+            echo "bamboo.sh: make dist on SST_CORE is complete without error"
             echo ' '    
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo " "
@@ -2646,7 +2646,7 @@ dobuild() {
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: make SST-CORE"
+        echo "bamboo.sh: make on SST-CORE"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         # build SST-CORE
@@ -2684,14 +2684,14 @@ dobuild() {
                 
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: make SST-CORE complete without error"
+        echo "bamboo.sh: make on SST-CORE complete without error"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: make install SST-CORE"
+        echo "bamboo.sh: make install on SST-CORE"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
@@ -2705,7 +2705,7 @@ dobuild() {
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: make install SST-CORE complete without error"
+        echo "bamboo.sh: make install on SST-CORE complete without error"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
@@ -2727,7 +2727,7 @@ dobuild() {
         # autogen to create ./configure
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: running \"autogen.sh\"..."
+        echo "bamboo.sh: running \"autogen.sh\" on SST-ELEMENTS..."
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
@@ -2739,14 +2739,14 @@ dobuild() {
         fi
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: autogen complete without error"
+        echo "bamboo.sh: autogen on SST-ELEMENTS complete without error"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: running \"configure\"..."
+        echo "bamboo.sh: running \"configure\" on SST-ELEMENTS..."
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "bamboo.sh: config args = $SST_SELECTED_ELEMENTS_CONFIG"
@@ -2764,7 +2764,7 @@ dobuild() {
         fi
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: configure complete without error"
+        echo "bamboo.sh: configure on SST-ELEMENTS complete without error"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
@@ -2782,7 +2782,7 @@ dobuild() {
             retval=$?
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
-            echo "bamboo.sh: make dist is complete without error"
+            echo "bamboo.sh: make dist on SST-ELEMENTS is complete without error"
             echo ' '    
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo " "
@@ -2793,7 +2793,7 @@ dobuild() {
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: make SST-ELEMENTS"
+        echo "bamboo.sh: make on SST-ELEMENTS"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         # build SST-ELEMENTS
@@ -2832,14 +2832,14 @@ dobuild() {
                 
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: make SST-ELEMENTS complete without error"
+        echo "bamboo.sh: make on SST-ELEMENTS complete without error"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: make install SST-ELEMENTS"
+        echo "bamboo.sh: make install on SST-ELEMENTS"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
@@ -2853,7 +2853,7 @@ dobuild() {
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
-        echo "bamboo.sh: make install SST-ELEMENTS complete without error"
+        echo "bamboo.sh: make install on SST-ELEMENTS complete without error"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
