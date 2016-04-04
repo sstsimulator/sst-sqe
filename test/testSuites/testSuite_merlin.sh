@@ -49,7 +49,7 @@ Tol=$2    ##  curTick tolerance
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
-    tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
+    testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -68,13 +68,13 @@ Tol=$2    ##  curTick tolerance
         fi
 
         echo " Running from `pwd`"
-        if [[ ${SST_MULTI_RANK_COUNT:isSet} != isSet ]] ; then
-           ${sut} ${sutArgs} > ${tmpFile}
+        if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
+           ${sut} ${sutArgs} > ${outFile}
            RetVal=$? 
         else
-           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename _test.out ${sut} ${sutArgs}
+           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs}
            RetVal=$? 
-           cat _output-file* > $tmpFile
+           cat ${testOutFiles}* > $outFile
         fi
 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
@@ -91,7 +91,6 @@ Tol=$2    ##  curTick tolerance
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
-        mv ${tmpFile} ${outFile}
         wc ${outFile} ${referenceFile} | awk -F/ '{print $1, $(NF-1) "/" $NF}'
 
 
@@ -106,7 +105,6 @@ Tol=$2    ##  curTick tolerance
      sed s/' (.*)'// $outFile > $newOut
      new=`wc ${newOut} | awk '{print $1, $2}'`; 
      ##          new=`wc ${outFile}       | awk '{print $1, $2}'`;
-        echo DEBUG  $ref  $new
         wc $newOut       
                if [ "$ref" == "$new" ];
                then
