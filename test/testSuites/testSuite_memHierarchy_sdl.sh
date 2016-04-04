@@ -53,6 +53,7 @@ Tol=$2    ##  curTick tolerance
     startSeconds=`date +%s`
     testDataFileBase="test_memHierarchy_$memH_case"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    testOutFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
@@ -83,8 +84,15 @@ Tol=$2    ##  curTick tolerance
       return
     fi
 
-        ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
-        RetVal=$? 
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
+         ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
+         RetVal=$? 
+    else
+         mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
+         RetVal=$?
+         cat ${testOutFiles}* > $tmpFile
+    fi
+
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
