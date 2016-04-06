@@ -132,6 +132,8 @@ Tol=$2    ##  curTick tolerance
 
     grep -v ^cpu.*: $tmpFile > $outFile
     RemoveComponentWarning
+#          Append errFile to outFile   w/o  Not Aligned messages
+    grep -v 'not aligned to the request size' $errFile >> $outFile
     diff -b $referenceFile $outFile > _raw_diff
     if [ $? == 0 ] ; then
         fileSize=`wc -l $outFile | awk '{print $1}'`
