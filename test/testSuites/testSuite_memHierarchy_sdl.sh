@@ -84,16 +84,15 @@ Tol=$2    ##  curTick tolerance
     fi
 
     ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
-        RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
-             return 
-        fi 
-        if [ $RetVal != 0 ]  
-    then
+    RetVal=$? 
+    TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+    if [ -e $TIME_FLAG ] ; then 
+         echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+         fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+         rm $TIME_FLAG 
+         return 
+    fi 
+    if [ $RetVal != 0 ] ; then
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
          fail "WARNING: sst did not finish normally, RetVal=$RetVal"
@@ -125,6 +124,8 @@ Tol=$2    ##  curTick tolerance
 
     grep -v ^cpu.*: $tmpFile > $outFile
     RemoveComponentWarning
+#          Append errFile to outFile   w/o  Not Aligned messages
+    grep -v 'not aligned to the request size' $errFile >> $outFile
     diff -b $referenceFile $outFile > _raw_diff
     if [ $? == 0 ] ; then
         fileSize=`wc -l $outFile | awk '{print $1}'`
