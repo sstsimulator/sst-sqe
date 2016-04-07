@@ -177,6 +177,13 @@ allReduce_template 4x4 lineWordCt
 #	Sirius Zodiac Traces 27
 #
 test_Sirius_Zodiac_27() {
+
+   if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+       echo " Uses an event that does not implement serialization    OMIT"    
+       skip_this_test
+       return
+   fi
+
 allReduce_template 27 lineWordCt
 
 }

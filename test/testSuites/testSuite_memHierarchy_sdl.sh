@@ -53,6 +53,7 @@ Tol=$2    ##  curTick tolerance
     startSeconds=`date +%s`
     testDataFileBase="test_memHierarchy_$memH_case"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
@@ -83,8 +84,25 @@ Tol=$2    ##  curTick tolerance
       return
     fi
 
+<<<<<<< HEAD
     ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
     RetVal=$? 
+=======
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
+         ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
+         RetVal=$? 
+         notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
+         #          Append errFile to outFile   w/o  Not Aligned messages
+         grep -v 'not aligned to the request size' $errFile >> $tmpFile
+    else
+         #   This merges stderr with stdout
+         mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
+         RetVal=$?
+         cat ${testOutFiles}* > $tmpFile
+         notAlignedCt=`grep -c 'not aligned to the request size' $tmpFile`
+    fi
+
+>>>>>>> origin/serialization
     TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
     if [ -e $TIME_FLAG ] ; then 
          echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -96,18 +114,18 @@ Tol=$2    ##  curTick tolerance
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
          fail "WARNING: sst did not finish normally, RetVal=$RetVal"
+         #   The following is not complete for all cases but is benign
          if [ -s ${errFile} ] ; then
-             notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
              echo ' ' ; echo "* * * *  $notAlignedCt Not Aligned messages from $memH_case   * * * *" ; echo ' '
              echo "         stderr File  $memH_case"
              cat $errFile | grep -v 'not aligned to the request size'
              echo "          ----------"
          fi
-         popd
+         popd            #   Why popd here but not on Time Limit?
          return
     fi
 #                   --- It completed normally ---
-    notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
+
     if [ $notAlignedCt != 0 ] ; then
         echo ' ' 
         if [ $usingDramSim == 0 ] ; then    ## usingDramSim is TRUE
@@ -122,7 +140,7 @@ Tol=$2    ##  curTick tolerance
         echo "         ----- end stderr"
     fi
 
-    grep -v ^cpu.*: $tmpFile > $outFile
+    grep -v ^cpu.*: $tmpFile | grep -v 'not aligned to the request size' > $outFile
     RemoveComponentWarning
 #          Append errFile to outFile   w/o  Not Aligned messages
     grep -v 'not aligned to the request size' $errFile >> $outFile
@@ -134,6 +152,7 @@ Tol=$2    ##  curTick tolerance
     else
         wc $referenceFile $outFile
         wc _raw_diff
+        rm diff_sorted
         compare_sorted $referenceFile $outFile
         if [ $? == 0 ] ; then
            echo " Sorted match with Reference File"
@@ -167,6 +186,8 @@ Tol=$2    ##  curTick tolerance
                       echo  "END of STDERR --------------------"
                   fi
                   fail " FAILURE:    Line / Word count do not agree (using DRAMSIM)"
+                  echo "Examine up to twenty lines of sorted difference"
+                  cat diff_sorted | sed 20q
               fi          
            fi              ##    --- end of code for Dramsim case ----
         fi
@@ -326,6 +347,8 @@ export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
+    export SST_TEST_ONE_TEST_TIMEOUT=200 
+     
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
