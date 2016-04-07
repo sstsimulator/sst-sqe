@@ -84,13 +84,18 @@ Tol=$2    ##  curTick tolerance
       return
     fi
 
-    if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
          ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
          RetVal=$? 
+         notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
+         #          Append errFile to outFile   w/o  Not Aligned messages
+         grep -v 'not aligned to the request size' $errFile >> $tmpFile
     else
+         #   This merges stderr with stdout
          mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
          RetVal=$?
          cat ${testOutFiles}* > $tmpFile
+         notAlignedCt=`grep -c 'not aligned to the request size' $tmpFile`
     fi
 
     TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
@@ -104,18 +109,18 @@ Tol=$2    ##  curTick tolerance
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
          fail "WARNING: sst did not finish normally, RetVal=$RetVal"
+         #   The following is not complete for all cases but is benign
          if [ -s ${errFile} ] ; then
-             notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
              echo ' ' ; echo "* * * *  $notAlignedCt Not Aligned messages from $memH_case   * * * *" ; echo ' '
              echo "         stderr File  $memH_case"
              cat $errFile | grep -v 'not aligned to the request size'
              echo "          ----------"
          fi
-         popd
+         popd            #   Why popd here but not on Time Limit?
          return
     fi
 #                   --- It completed normally ---
-    notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
+
     if [ $notAlignedCt != 0 ] ; then
         echo ' ' 
         if [ $usingDramSim == 0 ] ; then    ## usingDramSim is TRUE
@@ -130,10 +135,8 @@ Tol=$2    ##  curTick tolerance
         echo "         ----- end stderr"
     fi
 
-    grep -v ^cpu.*: $tmpFile > $outFile
+    grep -v ^cpu.*: $tmpFile | grep -v 'not aligned to the request size' > $outFile
     RemoveComponentWarning
-#          Append errFile to outFile   w/o  Not Aligned messages
-    grep -v 'not aligned to the request size' $errFile >> $outFile
     diff -b $referenceFile $outFile > _raw_diff
     if [ $? == 0 ] ; then
         fileSize=`wc -l $outFile | awk '{print $1}'`
@@ -142,6 +145,7 @@ Tol=$2    ##  curTick tolerance
     else
         wc $referenceFile $outFile
         wc _raw_diff
+        rm diff_sorted
         compare_sorted $referenceFile $outFile
         if [ $? == 0 ] ; then
            echo " Sorted match with Reference File"
