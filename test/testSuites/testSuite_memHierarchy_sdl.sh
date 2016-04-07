@@ -84,10 +84,6 @@ Tol=$2    ##  curTick tolerance
       return
     fi
 
-<<<<<<< HEAD
-    ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
-    RetVal=$? 
-=======
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
          ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
          RetVal=$? 
@@ -102,7 +98,6 @@ Tol=$2    ##  curTick tolerance
          notAlignedCt=`grep -c 'not aligned to the request size' $tmpFile`
     fi
 
->>>>>>> origin/serialization
     TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
     if [ -e $TIME_FLAG ] ; then 
          echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
