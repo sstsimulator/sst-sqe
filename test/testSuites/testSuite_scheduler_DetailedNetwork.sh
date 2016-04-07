@@ -169,6 +169,7 @@ else
     wc $SST_TEST_REFERENCE/test_scheduler_DetailedNetwork.out $outFile
     echo "Test 6 FAILED"
     fail " Scheduler Test 6 FAILED"
+    cat $TEST_NAME.tmp
     return
 fi
     
