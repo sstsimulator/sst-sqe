@@ -1426,9 +1426,9 @@ do
                     ;;
                 *) # unknown gem5 argument
                     echo "# Unknown argument '$OPTARG', will not build Macsim"
-      fi
                     ;;
             esac
+      fi
             ;;
         i) # IntSim
             echo "# found the -i (Intsim) option, with value $OPTARG"
