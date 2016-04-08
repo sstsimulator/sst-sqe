@@ -573,10 +573,10 @@ TrivialCPU: Test Completed Successfuly
  n0.l2cache.eventSent_PutS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  n0.l2cache.eventSent_PutE : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  n0.l2cache.eventSent_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- n0.l2cache.eventSent_Inv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.eventSent_Inv : Accumulator : Sum.u64 = 86; SumSQ.u64 = 86; Count.u64 = 86; 
  n0.l2cache.eventSent_Fetch : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- n0.l2cache.eventSent_FetchInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- n0.l2cache.eventSent_FetchInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n0.l2cache.eventSent_FetchInv : Accumulator : Sum.u64 = 174; SumSQ.u64 = 174; Count.u64 = 174; 
+ n0.l2cache.eventSent_FetchInvX : Accumulator : Sum.u64 = 10; SumSQ.u64 = 10; Count.u64 = 10; 
  n0.l2cache.eventSent_FetchResp : Accumulator : Sum.u64 = 82; SumSQ.u64 = 82; Count.u64 = 82; 
  n0.l2cache.eventSent_FetchXResp : Accumulator : Sum.u64 = 10; SumSQ.u64 = 10; Count.u64 = 10; 
  n0.l2cache.eventSent_AckInv : Accumulator : Sum.u64 = 3; SumSQ.u64 = 3; Count.u64 = 3; 
@@ -1155,10 +1155,10 @@ TrivialCPU: Test Completed Successfuly
  n1.l2cache.eventSent_PutS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  n1.l2cache.eventSent_PutE : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  n1.l2cache.eventSent_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- n1.l2cache.eventSent_Inv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n1.l2cache.eventSent_Inv : Accumulator : Sum.u64 = 163; SumSQ.u64 = 163; Count.u64 = 163; 
  n1.l2cache.eventSent_Fetch : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- n1.l2cache.eventSent_FetchInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- n1.l2cache.eventSent_FetchInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ n1.l2cache.eventSent_FetchInv : Accumulator : Sum.u64 = 103; SumSQ.u64 = 103; Count.u64 = 103; 
+ n1.l2cache.eventSent_FetchInvX : Accumulator : Sum.u64 = 65; SumSQ.u64 = 65; Count.u64 = 65; 
  n1.l2cache.eventSent_FetchResp : Accumulator : Sum.u64 = 11; SumSQ.u64 = 11; Count.u64 = 11; 
  n1.l2cache.eventSent_FetchXResp : Accumulator : Sum.u64 = 65; SumSQ.u64 = 65; Count.u64 = 65; 
  n1.l2cache.eventSent_AckInv : Accumulator : Sum.u64 = 80; SumSQ.u64 = 80; Count.u64 = 80; 
@@ -1349,10 +1349,10 @@ TrivialCPU: Test Completed Successfuly
  l3cache.eventSent_PutS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.eventSent_PutE : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.eventSent_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l3cache.eventSent_Inv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l3cache.eventSent_Inv : Accumulator : Sum.u64 = 83; SumSQ.u64 = 83; Count.u64 = 83; 
  l3cache.eventSent_Fetch : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l3cache.eventSent_FetchInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l3cache.eventSent_FetchInvX : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l3cache.eventSent_FetchInv : Accumulator : Sum.u64 = 93; SumSQ.u64 = 93; Count.u64 = 93; 
+ l3cache.eventSent_FetchInvX : Accumulator : Sum.u64 = 75; SumSQ.u64 = 75; Count.u64 = 75; 
  l3cache.eventSent_FetchResp : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.eventSent_FetchXResp : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.eventSent_AckInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -1391,3 +1391,11 @@ Number of Pending Requests per Cycle (Binned by 2 Requests)
   [4, 6]  535
   [6, 8]  8
 Simulation is complete, simulated time: 104.195 us
+== Loading device model file 'DDR3_micron_32M_8B_x4_sg125.ini' == 
+== Loading system model file 'system.ini' == 
+WARNING: UNKNOWN KEY 'DEBUG_TRANS_FLOW' IN INI FILE
+===== MemorySystem 0 =====
+CH. 0 TOTAL_STORAGE : 2048MB | 1 Ranks | 16 Devices per rank
+===== MemorySystem 1 =====
+CH. 1 TOTAL_STORAGE : 2048MB | 1 Ranks | 16 Devices per rank
+DRAMSim2 Clock Frequency =1Hz, CPU Clock Frequency=1Hz

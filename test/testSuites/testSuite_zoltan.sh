@@ -211,7 +211,7 @@ test_zoltan_8()
 # "test"  will be automatically executed.
 
 export SST_TEST_ONE_TEST_TIMEOUT=30         # 1/2 minute is plenty  (30 seconds)
-if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_THREAD_COUNT -gt 0 ] ; then
+if [[ ${SST_MULTI_CORE+isSet} == isSet ]] ; then
     export SST_TEST_ONE_TEST_TIMEOUT=900         # 15 minute for multithread
 fi
 (. ${SHUNIT2_SRC}/shunit2)

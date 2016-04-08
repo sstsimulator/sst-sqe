@@ -100,6 +100,9 @@ test_simpleLookupTableComponent() {
               return
            else
               fail " Reference does not Match Output"
+              # cat _raw_diff
+              echo "Display up to 20 lines of Sorted Diff"
+              cat diff_sorted| seq 20q  ; echo ' '
            fi
            echo "     `grep 'Simulation is complete' $outFile`"
            echo "Ref: `grep 'Simulation is complete' $referenceFile`"
