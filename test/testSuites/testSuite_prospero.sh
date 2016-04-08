@@ -41,7 +41,7 @@ if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
    
    # ----------------- compile the sstmemtrace library
    echo "# ----------------- compile the sstmemtrace library"
-       cd ${SST_ROOT}/sst/elements/prospero/tracetool
+       cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tracetool
        echo "Now \"make clean\"  "
        make clean
        make
@@ -54,7 +54,7 @@ if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
 
    # ----------------- compile the file array   
    echo "## ----------------- compile the file array   "
-       cd ${SST_ROOT}/sst/elements/prospero/tests/array
+       cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array
    echo PWD `pwd`
        make clean
        make
@@ -74,7 +74,7 @@ if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
        PIN_TAR="Pin"
 else
    #  Download the trace files from sst-simulator.org
-       cd ${SST_ROOT}/sst/elements/prospero/tests/array
+       cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array
        echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz --no-check-certificate"
        wget "https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz" 
        if [ $? != 0 ] ; then
@@ -93,8 +93,8 @@ if [ $? != 0 ] ; then
 fi
 echo ' '
 
-ln -sf ${SST_ROOT}/sst/elements/memHierarchy/tests/DDR3_micron_32M_8B_x4_sg125.ini
-ln -sf ${SST_ROOT}/sst/elements/memHierarchy/tests/system.ini
+ln -sf ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/DDR3_micron_32M_8B_x4_sg125.ini
+ln -sf ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/system.ini
 
 # --------------------------------------------------
 #    Subroutine to yield integers with commas
@@ -114,7 +114,7 @@ wcomma() {
 #              trace file type:  (text, binary, compressed)
 #              with or without DramSim  ("DramSim" or other, "none", blank)
 template_prospero() {
-    ls ${SST_ROOT}/sst/elements/prospero/tests/array/*.trace > /dev/null 2>&1
+    ls ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/*.trace > /dev/null 2>&1
     rt=$?
     if [ 0 != $rt ] ; then
         fail "No trace file found (rt = $rt)"
@@ -141,8 +141,8 @@ template_prospero() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/prospero/tests/array/trace-common.py"
-    cd ${SST_ROOT}/sst/elements/prospero/tests/array
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/trace-common.py"
+    cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array
 
 
     if [ -f ${sut} ] && [ -x ${sut} ]

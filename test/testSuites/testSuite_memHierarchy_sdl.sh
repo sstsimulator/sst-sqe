@@ -59,14 +59,14 @@ Tol=$2    ##  curTick tolerance
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
     # Add basename to list for processing later
     L_TESTFILE+=(${testDataFileBase})
-    memH_sdl_dir=$SST_ROOT/sst/elements/memHierarchy/tests
+    memH_sdl_dir=$SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
     rm -f $memH_sdl_dir/dramsim*log
-    pushd $SST_ROOT/sst/elements/memHierarchy/tests
+    pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
     pyFileName=`echo ${memH_case}.py | sed s/_/-/`
-    sutArgs=${SST_ROOT}/sst/elements/memHierarchy/tests/$pyFileName
+    sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/$pyFileName
     echo $sutArgs
     grep backend $sutArgs | grep dramsim > /dev/null
     usingDramSim=$?

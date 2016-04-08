@@ -58,16 +58,16 @@ test_memHSieve() {
     # Define a common basename for test csv and reference
     # files. XML postprocessing requires this.
     testDataFileBase="test_memHSieve"
-    referenceFile="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv.gold"
-    csvFile="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv"
+    referenceFile="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv.gold"
+    csvFile="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/trace-text.py"
-    pushd ${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/trace-text.py"
+    pushd ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then

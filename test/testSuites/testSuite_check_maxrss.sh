@@ -61,7 +61,7 @@ test_check_maxrss() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_mersenne.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_mersenne.py"
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then

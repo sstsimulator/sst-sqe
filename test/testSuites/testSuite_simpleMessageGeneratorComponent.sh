@@ -73,7 +73,7 @@ test_simpleMessageGeneratorComponent() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/simpleElementExample/tests/test_simpleMessageGeneratorComponent.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleMessageGeneratorComponent.py"
     rm -f ${outFile}
 
     if [ -f ${sut} ] && [ -x ${sut} ]

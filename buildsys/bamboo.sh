@@ -3013,7 +3013,11 @@ then
             #    ---
             if [ -d "test" ] ; then
                 echo " \"test\" is a directory"
-                echo " ############################  ENTER dotests ################## "
+                echo " ################################################################"
+                echo " #"
+                echo " #         ENTERING dotests  "
+                echo " #"
+                echo " ################################################################"
                 dotests $1 $4
             fi
         fi               #   End of sstmainline_config_dist_test  conditional
