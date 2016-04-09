@@ -206,3 +206,11 @@ Number of Pending Requests per Cycle (Binned by 2 Requests)
   [0, 2]  103677
   [2, 4]  377
 Simulation is complete, simulated time: 104.054 us
+== Loading device model file 'DDR3_micron_32M_8B_x4_sg125.ini' == 
+== Loading system model file 'system.ini' == 
+WARNING: UNKNOWN KEY 'DEBUG_TRANS_FLOW' IN INI FILE
+===== MemorySystem 0 =====
+CH. 0 TOTAL_STORAGE : 2048MB | 1 Ranks | 16 Devices per rank
+===== MemorySystem 1 =====
+CH. 1 TOTAL_STORAGE : 2048MB | 1 Ranks | 16 Devices per rank
+DRAMSim2 Clock Frequency =1Hz, CPU Clock Frequency=1Hz
