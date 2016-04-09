@@ -47,7 +47,9 @@ Tol=$2    ##  curTick tolerance
     startSeconds=`date +%s`
     testDataFileBase="test_merlin_$merlin_case"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
+    newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
+    newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
+    testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -66,8 +68,15 @@ Tol=$2    ##  curTick tolerance
         fi
 
         echo " Running from `pwd`"
-        ${sut} ${sutArgs} > ${tmpFile}
-        RetVal=$? 
+        if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
+           ${sut} ${sutArgs} > ${outFile}
+           RetVal=$? 
+        else
+           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs}
+           RetVal=$? 
+           cat ${testOutFiles}* > $outFile
+        fi
+
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -82,15 +91,21 @@ Tol=$2    ##  curTick tolerance
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
-        mv ${tmpFile} ${outFile}
         wc ${outFile} ${referenceFile} | awk -F/ '{print $1, $(NF-1) "/" $NF}'
 
 
         diff ${referenceFile} ${outFile} > /dev/null;
         if [ $? -ne 0 ]
         then
-               ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
-               new=`wc ${outFile}       | awk '{print $1, $2}'`;
+##  Follows some bailing wire to allow serialization branch to work
+##          with same reference files
+     sed s/' (.*)'// $referenceFile > $newRef
+     ref=`wc ${newRef} | awk '{print $1, $2}'`; 
+     ##        ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
+     sed s/' (.*)'// $outFile > $newOut
+     new=`wc ${newOut} | awk '{print $1, $2}'`; 
+     ##          new=`wc ${outFile}       | awk '{print $1, $2}'`;
+        wc $newOut       
                if [ "$ref" == "$new" ];
                then
                    echo "outFile word/line count matches Reference"
@@ -181,6 +196,8 @@ export SST_TEST_ONE_TEST_TIMEOUT=3000         #  3000 seconds
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
+export SST_TEST_ONE_TEST_TIMEOUT=200 
+ 
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 #         Located here this timeout will override the multithread value
