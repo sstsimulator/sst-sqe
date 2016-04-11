@@ -1384,6 +1384,9 @@ do
             ;;
         M) # Macsim
             echo "# found the -M (Macsim) option, with value $OPTARG"
+
+      echo "#    MACsim doesn't build with PDES core"
+      if [ ! 0 ] ; then
             # process arg
             case "$OPTARG" in
                 default) # build default Macsim
@@ -1425,6 +1428,7 @@ do
                     echo "# Unknown argument '$OPTARG', will not build Macsim"
                     ;;
             esac
+      fi
             ;;
         i) # IntSim
             echo "# found the -i (Intsim) option, with value $OPTARG"
@@ -1508,10 +1512,12 @@ do
             ;;
         q) # Qsim
             echo "# found the -q (Qsim) option, with value $OPTARG.   (Ignore on MacOS)"
+      echo "#    Qsim doesn't build with PDES core"
+      if [ ! 0 ] ; then
             # process arg
                   ##   Qsim currently doesn't run on MacOS because of 32/64 bit issues.
-            if [ ! $SST_DEPS_OS_NAME = "Darwin" ]
-            then
+            ##if [ ! $SST_DEPS_OS_NAME = "Darwin" ]
+            ##then
                 case "$OPTARG" in
                     default|0.1.4) # build Qsim 0.1.4
                         echo "# (default) 0.1.4: will build Qsim 0.1.4"
