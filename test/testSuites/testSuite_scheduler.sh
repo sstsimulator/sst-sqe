@@ -32,11 +32,9 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
-    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
-       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+    if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
            echo '           SKIP '
            preFail " Scheduler tests do not work with threading" "skip"
-       fi
     fi     
 
 #===============================================================================
@@ -110,10 +108,15 @@ test_scheduler_0001() {
          diff -b ${outFile} ${referenceFile} > /dev/null
          if [ $? -ne 0 ]
          then
-             wc ${outFile} ${referenceFile};
-             echo word count of diff is:
-             diff ${outFile} ${referenceFile} | wc
-             fail "Output does NOT match Reference"
+             compare_sorted  ${outFile} ${referenceFile}
+             if [ $? -eq 0 ] ; then
+                 echo "sorted compare matches"
+             else
+                wc ${outFile} ${referenceFile};
+                echo word count of diff is:
+                diff ${outFile} ${referenceFile} | wc
+                fail "Output does NOT match Reference"
+             fi
          fi
     fi
 }
@@ -188,10 +191,15 @@ test_scheduler_0002() {
          diff -b ${outFile} ${referenceFile} > /dev/null
          if [ $? -ne 0 ]
          then
-             wc ${outFile} ${referenceFile};
-             echo word count of diff is:
-             diff ${outFile} ${referenceFile} | wc
-             fail "Output does NOT match Reference"
+             compare_sorted  ${outFile} ${referenceFile}
+             if [ $? -eq 0 ] ; then
+                 echo "sorted compare matches"
+             else
+                wc ${outFile} ${referenceFile};
+                echo word count of diff is:
+                diff ${outFile} ${referenceFile} | wc
+                fail "Output does NOT match Reference"
+             fi
          fi
        
     fi
@@ -285,10 +293,15 @@ echo ''
          diff -b ${outFile} ${referenceFile} > /dev/null
          if [ $? -ne 0 ]
          then
-             wc ${outFile} ${referenceFile};
-             echo word count of diff is:
-             diff ${outFile} ${referenceFile} | wc
-             fail "Output does NOT match Reference"
+             compare_sorted  ${outFile} ${referenceFile}
+             if [ $? -eq 0 ] ; then
+                 echo "sorted compare matches"
+             else
+                wc ${outFile} ${referenceFile};
+                echo word count of diff is:
+                diff ${outFile} ${referenceFile} | wc
+                fail "Output does NOT match Reference"
+             fi
          fi
     fi
 }
@@ -358,10 +371,15 @@ test_scheduler_0004() {
          diff -b ${outFile} ${referenceFile} > /dev/null
          if [ $? -ne 0 ]
          then
-             wc ${outFile} ${referenceFile};
-             echo word count of diff is:
-             diff ${outFile} ${referenceFile} | wc
-             fail "Output does NOT match Reference"
+             compare_sorted  ${outFile} ${referenceFile}
+             if [ $? -eq 0 ] ; then
+                 echo "sorted compare matches"
+             else
+                wc ${outFile} ${referenceFile};
+                echo word count of diff is:
+                diff ${outFile} ${referenceFile} | wc
+                fail "Output does NOT match Reference"
+             fi
          fi
     fi
 }

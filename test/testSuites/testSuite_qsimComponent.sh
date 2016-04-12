@@ -41,7 +41,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         SST_DEPS_INSTALL_QSIM=${SST_TEST_INSTALL_PACKAGES}/Qsim
         if [ ! -d ${SST_DEPS_INSTALL_QSIM} ] ; then
             echo " Did NOT find QSIM in ${SST_TEST_INSTALL_PACKAGES} "
-            preFail "Did NOT find QSIM in ${SST_TEST_INSTALL_PACKAGES}"
+            preFail "Did NOT find QSIM in ${SST_TEST_INSTALL_PACKAGES}" "skip"
         fi
     fi
 

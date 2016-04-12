@@ -24,11 +24,9 @@ L_SUITENAME="SST_sst_mcopteron" # Name of this test suite; will be used to
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
-    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
-       if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+    if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
            echo '           SKIP '
            preFail "McOpteron tests do not work with threading (#76)" "skip"
-       fi
     fi     
 
 #===============================================================================
