@@ -235,7 +235,6 @@ comp_n0_l2cache.addParams({
       "cache_size" : L2cachesz,
       "network_address" : """2""",
       "network_bw" : """25GB/s""",
-      "bottom_network" : """cache""",
       "mshr_num_entries" : L2MSHR,
       "prefetcher" : Pref2,
       "network_input_buffer_size" : "2KB",
@@ -259,7 +258,6 @@ comp_n1_l2cache.addParams({
       "cache_size" : L2cachesz,
       "network_address" : """3""",
       "network_bw" : """25GB/s""",
-      "bottom_network" : """cache""",
       "mshr_num_entries" : L2MSHR,
       "prefetcher" : Pref2,
       "network_input_buffer_size" : "2KB",
@@ -276,12 +274,9 @@ comp_l3cache0.addParams({
       "cache_line_size" : """64""",
       "debug_level" : """6""",
       "L1" : """0""",
-      "LLC" : """1""",
       "cache_size" : L3cachesz,
       "network_address" : """4""",
       "network_bw" : """25GB/s""",
-      "top_network" : """cache""",
-      "bottom_network" : """directory""",
       "mshr_num_entries" : L3MSHR,
       "network_input_buffer_size" : "2KB",
       "network_output_buffer_size" : "2KB",
@@ -299,13 +294,9 @@ comp_l3cache1.addParams({
       "associativity" : L3assoc,
       "cache_line_size" : """64""",
       "debug_level" : """6""",
-      "L1" : """0""",
-      "LLC" : """1""",
       "cache_size" : L3cachesz,
       "network_address" : """5""",
       "network_bw" : """25GB/s""",
-      "top_network" : """cache""",
-      "bottom_network" : """directory""",
       "mshr_num_entries" : L3MSHR,
       "network_input_buffer_size" : "2KB",
       "network_output_buffer_size" : "2KB",
@@ -333,12 +324,10 @@ comp_dirctrl0.addParams({
       "network_bw" : """25GB/s""",
       "addr_range_start" : """0x0""",
       "backing_store_size" : """0""",
-      "interleave_step" : """0""",
       "addr_range_end" : """0x000FFFFF""",
       "mshr_num_entries" : "2",
       "network_input_buffer_size" : "2KB",
       "network_output_buffer_size" : "2KB",
-      "interleave_size" : """0"""
 })
 comp_memory0 = sst.Component("memory0", "memHierarchy.MemController")
 comp_memory0.addParams({
@@ -358,12 +347,10 @@ comp_dirctrl1.addParams({
       "network_bw" : """25GB/s""",
       "addr_range_start" : """0x00100000""",
       "backing_store_size" : """0""",
-      "interleave_step" : """0""",
       "addr_range_end" : """0x3FFFFFFF""",
       "mshr_num_entries" : "2",
       "network_input_buffer_size" : "2KB",
       "network_output_buffer_size" : "2KB",
-      "interleave_size" : """0"""
 })
 comp_memory1 = sst.Component("memory1", "memHierarchy.MemController")
 comp_memory1.addParams({

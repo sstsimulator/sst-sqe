@@ -144,14 +144,12 @@ comp_n0_l2cache.addParams({
       "cache_line_size" : """64""",
       "debug_level" : """6""",
       "L1" : """0""",
-      "LLC" : """1""",
       "cache_size" : """64 KB""",
       "network_address" : """2""",
       "network_bw" : """25GB/s""",
       "mshr_num_entries" : """4096""",
       "network_input_buffer_size" : "2KB",
       "network_output_buffer_size" : "2KB",
-      "directory_at_next_level" : """1"""
 })
 comp_n1_bus = sst.Component("n1.bus", "memHierarchy.Bus")
 comp_n1_bus.addParams({
@@ -168,14 +166,12 @@ comp_n1_l2cache.addParams({
       "cache_line_size" : """64""",
       "debug_level" : """6""",
       "L1" : """0""",
-      "LLC" : """1""",
       "cache_size" : """64 KB""",
       "network_address" : """3""",
       "network_bw" : """25GB/s""",
       "mshr_num_entries" : """4096""",
       "network_input_buffer_size" : "2KB",
       "network_output_buffer_size" : "2KB",
-      "directory_at_next_level" : """1"""
 })
 comp_chipRtr = sst.Component("chipRtr", "merlin.hr_router")
 comp_chipRtr.addParams({
@@ -198,12 +194,10 @@ comp_dirctrl0.addParams({
       "addr_range_start" : """0x0""",
       "backing_store_size" : """0""",
       "printStats" : """""",
-      "interleave_step" : """0""",
       "addr_range_end" : """0x000FFFFF""",
       "mshr_num_entries" : "2",
       "network_input_buffer_size" : "2KB",
       "network_output_buffer_size" : "2KB",
-      "interleave_size" : """0"""
 })
 comp_memory0 = sst.Component("memory0", "memHierarchy.MemController")
 comp_memory0.addParams({
@@ -224,10 +218,8 @@ comp_dirctrl1.addParams({
       "addr_range_start" : """0x00100000""",
       "backing_store_size" : """0""",
       "printStats" : """""",
-      "interleave_step" : """0""",
       "addr_range_end" : """0x3FFFFFFF""",
       "mshr_num_entries" : "2",
-      "interleave_size" : """0"""
 })
 comp_memory1 = sst.Component("memory1", "memHierarchy.MemController")
 comp_memory1.addParams({
