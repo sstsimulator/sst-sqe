@@ -31,6 +31,13 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+
+    if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+           echo '           SKIP '
+           echo "This exclusion can be weakened when nrank=2 works with nthread=2"
+           preFail " Zoltan tests are multi rank.  Do not do added Multi" "skip"
+    fi     
+
 #===============================================================================
 # Use the new shunit2 option only
 #===============================================================================
