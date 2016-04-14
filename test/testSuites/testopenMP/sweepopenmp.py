@@ -191,7 +191,6 @@ comp_l2cache.addParams({
       "associativity" : L2assoc,
       "cache_line_size" : "64",
       "L1" : "0",
-      "LLC" : "1",
       "LL" : "1",
       "cache_size" : L2cachesz,
       "mshr_num_entries" : L2MSHR,
