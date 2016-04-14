@@ -1,5 +1,3 @@
-l1cache, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
  cpu.read_reqs : Accumulator : Sum.u64 = 437500; SumSQ.u64 = 437500; Count.u64 = 437500; 
  cpu.write_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  cpu.split_read_reqs : Accumulator : Sum.u64 = 62500; SumSQ.u64 = 62500; Count.u64 = 62500; 

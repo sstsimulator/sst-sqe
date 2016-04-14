@@ -13,8 +13,6 @@ RequestGenCPU[RequestGenCPU:103]: - Clock:                          2GHz
 RequestGenCPU[RequestGenCPU:104]: - Cache line size:                64 bytes
 RequestGenCPU[RequestGenCPU:105]: - Max requests per cycle:         2
 RequestGenCPU[RequestGenCPU:107]: Configuration completed.
-l1cache, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
  cpu.read_reqs : Accumulator : Sum.u64 = 108864; SumSQ.u64 = 108864; Count.u64 = 108864; 
  cpu.write_reqs : Accumulator : Sum.u64 = 4032; SumSQ.u64 = 4032; Count.u64 = 4032; 
  cpu.split_read_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 

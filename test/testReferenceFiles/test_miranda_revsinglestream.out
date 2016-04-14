@@ -2,8 +2,6 @@ ReverseSingleStreamGenerator[ReverseSingleStreamGenerator:36]: Start Address:   
 ReverseSingleStreamGenerator[ReverseSingleStreamGenerator:37]: Stop Address:          0
 ReverseSingleStreamGenerator[ReverseSingleStreamGenerator:38]: Data width:            8
 ReverseSingleStreamGenerator[ReverseSingleStreamGenerator:39]: Stride:                8
-l1cache, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
  cpu.read_reqs : Accumulator : Sum.u64 = 8192; SumSQ.u64 = 8192; Count.u64 = 8192; 
  cpu.write_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  cpu.split_read_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
