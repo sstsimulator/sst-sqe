@@ -81,7 +81,6 @@ for i in range(0, NCPUS):
     "cache_size" : "8kB",
     "cache_line_size" : "64",
     "access_latency_cycles" : "1",
-    "low_network_links" : "1",
     "L1" : "1"
   });
   l2.append(sst.Component("l2_%d"%i, "memHierarchy.Cache"));
@@ -95,8 +94,6 @@ for i in range(0, NCPUS):
     "cache_line_size" : "64",
     "access_latency_cycles" : "10",
     "L1" : "0",
-    "directory_at_next_level" : "1",
-    "high_network_links" : "1",
     "network_address" : "%d"%(1+i),
     "network_bw" : "2GB/s",
   });

@@ -23,7 +23,6 @@ comp_c0_l1cache.addParams({
       "associativity" : """4""",
       "cache_line_size" : """64""",
       "cache_size" : """4 KB""",
-      "printStats" : """1""",
       "L1" : """1""",
       "debug" : """0"""
 })
@@ -43,7 +42,6 @@ comp_c1_l1cache.addParams({
       "associativity" : """4""",
       "cache_line_size" : """64""",
       "cache_size" : """4 KB""",
-      "printStats" : """1""",
       "L1" : """1""",
       "debug" : """0"""
 })
@@ -60,7 +58,6 @@ comp_l2cache.addParams({
       "associativity" : """4""",
       "cache_line_size" : """64""",
       "cache_size" : """32 KB""",
-      "printStats" : """1""",
       "L1" : """0""",
       "debug" : """0""",
       "mshr_num_entries" : """4096"""

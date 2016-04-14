@@ -1,19 +1,17 @@
-l1cache, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
  cpu.read_reqs : Accumulator : Sum.u64 = 20000; SumSQ.u64 = 20000; Count.u64 = 20000; 
  cpu.write_reqs : Accumulator : Sum.u64 = 10000; SumSQ.u64 = 10000; Count.u64 = 10000; 
  cpu.split_read_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  cpu.split_write_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- cpu.cycles_with_issue : Accumulator : Sum.u64 = 2517921; SumSQ.u64 = 2517921; Count.u64 = 2517921; 
+ cpu.cycles_with_issue : Accumulator : Sum.u64 = 2519119; SumSQ.u64 = 2519119; Count.u64 = 2519119; 
  cpu.cycles_no_issue : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  cpu.total_bytes_read : Accumulator : Sum.u64 = 160000; SumSQ.u64 = 1280000; Count.u64 = 20000; 
  cpu.total_bytes_write : Accumulator : Sum.u64 = 80000; SumSQ.u64 = 640000; Count.u64 = 10000; 
- cpu.req_latency : Accumulator : Sum.u64 = 13356657; SumSQ.u64 = 11964443653; Count.u64 = 30000; 
- cpu.time : Accumulator : Sum.u64 = 1258961; SumSQ.u64 = 1584982799521; Count.u64 = 1; 
+ cpu.req_latency : Accumulator : Sum.u64 = 13154551; SumSQ.u64 = 11635922013; Count.u64 = 30000; 
+ cpu.time : Accumulator : Sum.u64 = 1259560; SumSQ.u64 = 1586491393600; Count.u64 = 1; 
  cpu.cycles_hit_fence : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  cpu.cycles_max_issue : Accumulator : Sum.u64 = 10000; SumSQ.u64 = 10000; Count.u64 = 10000; 
  cpu.cycles_max_reorder : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- cpu.cycles : Accumulator : Sum.u64 = 2517922; SumSQ.u64 = 2517922; Count.u64 = 2517922; 
+ cpu.cycles : Accumulator : Sum.u64 = 2519120; SumSQ.u64 = 2519120; Count.u64 = 2519120; 
  l1cache.prefetch_opportunities : Accumulator : Sum.u64 = 7539; SumSQ.u64 = 7539; Count.u64 = 7539; 
  l1cache.prefetches_issued : Accumulator : Sum.u64 = 3613; SumSQ.u64 = 3613; Count.u64 = 3613; 
  l1cache.prefetches_canceled_by_page_boundary : Accumulator : Sum.u64 = 77; SumSQ.u64 = 77; Count.u64 = 77; 
@@ -46,7 +44,7 @@ NO statistics will be printed otherwise!
  l1cache.FetchInvX_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.Inv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 33754362; SumSQ.u64 = 480276040; Count.u64 = 2517920; 
+ l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 33352508; SumSQ.u64 = 471372106; Count.u64 = 2519118; 
  l1cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_E : Accumulator : Sum.u64 = 2482; SumSQ.u64 = 2482; Count.u64 = 2482; 
@@ -185,7 +183,7 @@ NO statistics will be printed otherwise!
  l1cache.stateEvent_AckInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_AckInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_AckPut_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 7473708; SumSQ.u64 = 14974883196; Count.u64 = 3730; 
+ l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 7476340; SumSQ.u64 = 14985436144; Count.u64 = 3730; 
  l1cache.latency_GetS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.latency_GetX_IM : Accumulator : Sum.u64 = 40080; SumSQ.u64 = 80320320; Count.u64 = 20; 
  l1cache.latency_GetX_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -212,4 +210,4 @@ NO statistics will be printed otherwise!
  l1cache.eventSent_NACK_up : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.eventSent_NACK_down : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.EventStalledForLockedCacheline : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
-Simulation is complete, simulated time: 1.25896 ms
+Simulation is complete, simulated time: 1.25956 ms
