@@ -23,9 +23,7 @@ comp_c0_l1cache.addParams({
       "associativity" : """4""",
       "cache_line_size" : """64""",
       "cache_size" : """4 KB""",
-      "printStats" : """1""",
       "L1" : """1""",
-      "debug" : """"""
 })
 comp_cpu1 = sst.Component("cpu1", "memHierarchy.trivialCPU")
 comp_cpu1.addParams({
@@ -43,9 +41,7 @@ comp_c1_l1cache.addParams({
       "associativity" : """4""",
       "cache_line_size" : """64""",
       "cache_size" : """4 KB""",
-      "printStats" : """1""",
       "L1" : """1""",
-      "debug" : """"""
 })
 comp_bus = sst.Component("bus", "memHierarchy.Bus")
 comp_bus.addParams({
@@ -60,7 +56,6 @@ comp_l2cache.addParams({
       "associativity" : """4""",
       "cache_line_size" : """64""",
       "cache_size" : """32 KB""",
-      "printStats" : """1""",
       "L1" : """0""",
       "debug" : """""",
       "mshr_num_entries" : """4096"""
