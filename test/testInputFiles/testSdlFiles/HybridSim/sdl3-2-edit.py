@@ -57,13 +57,11 @@ comp_l2cache.addParams({
       "cache_line_size" : """64""",
       "cache_size" : """32 KB""",
       "L1" : """0""",
-      "debug" : """""",
       "mshr_num_entries" : """4096"""
 })
 comp_memory = sst.Component("memory", "memHierarchy.MemController")
 comp_memory.addParams({
       "coherence_protocol" : """MSI""",
-      "debug" : """""",
       "system_ini" : os.environ['SST_DEPS_INSTALL_HYBRIDSIM'] + '/ini/hybridsim.ini',
       "clock" : """1GHz""",
       "access_time" : """1000 ns""",
