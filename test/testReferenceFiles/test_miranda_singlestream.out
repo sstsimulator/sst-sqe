@@ -1,30 +1,28 @@
-l1cache, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
  cpu.read_reqs : Accumulator : Sum.u64 = 437500; SumSQ.u64 = 437500; Count.u64 = 437500; 
  cpu.write_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  cpu.split_read_reqs : Accumulator : Sum.u64 = 62500; SumSQ.u64 = 62500; Count.u64 = 62500; 
  cpu.split_write_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- cpu.cycles_with_issue : Accumulator : Sum.u64 = 502002; SumSQ.u64 = 502002; Count.u64 = 502002; 
- cpu.cycles_no_issue : Accumulator : Sum.u64 = 52338509; SumSQ.u64 = 52338509; Count.u64 = 52338509; 
+ cpu.cycles_with_issue : Accumulator : Sum.u64 = 502004; SumSQ.u64 = 502004; Count.u64 = 502004; 
+ cpu.cycles_no_issue : Accumulator : Sum.u64 = 52338515; SumSQ.u64 = 52338515; Count.u64 = 52338515; 
  cpu.total_bytes_read : Accumulator : Sum.u64 = 4000000; SumSQ.u64 = 32000000; Count.u64 = 500000; 
  cpu.total_bytes_write : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- cpu.req_latency : Accumulator : Sum.u64 = 421116378; SumSQ.u64 = 421014774600; Count.u64 = 562500; 
- cpu.time : Accumulator : Sum.u64 = 26420256; SumSQ.u64 = 698029927105536; Count.u64 = 1; 
+ cpu.req_latency : Accumulator : Sum.u64 = 421186483; SumSQ.u64 = 421243314647; Count.u64 = 562500; 
+ cpu.time : Accumulator : Sum.u64 = 26420260; SumSQ.u64 = 698030138467600; Count.u64 = 1; 
  cpu.cycles_hit_fence : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  cpu.cycles_max_issue : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  cpu.cycles_max_reorder : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- cpu.cycles : Accumulator : Sum.u64 = 52840512; SumSQ.u64 = 52840512; Count.u64 = 52840512; 
+ cpu.cycles : Accumulator : Sum.u64 = 52840520; SumSQ.u64 = 52840520; Count.u64 = 52840520; 
  l1cache.prefetch_opportunities : Accumulator : Sum.u64 = 151248; SumSQ.u64 = 151248; Count.u64 = 151248; 
  l1cache.prefetches_issued : Accumulator : Sum.u64 = 61525; SumSQ.u64 = 61525; Count.u64 = 61525; 
  l1cache.prefetches_canceled_by_page_boundary : Accumulator : Sum.u64 = 2691; SumSQ.u64 = 2691; Count.u64 = 2691; 
  l1cache.prefetches_canceled_by_history : Accumulator : Sum.u64 = 89723; SumSQ.u64 = 89723; Count.u64 = 89723; 
  l1cache.TotalEventsReceived : Accumulator : Sum.u64 = 686533; SumSQ.u64 = 686533; Count.u64 = 686533; 
- l1cache.TotalEventsReplayed : Accumulator : Sum.u64 = 541500; SumSQ.u64 = 541500; Count.u64 = 541500; 
- l1cache.CacheHits : Accumulator : Sum.u64 = 561516; SumSQ.u64 = 561516; Count.u64 = 561516; 
+ l1cache.TotalEventsReplayed : Accumulator : Sum.u64 = 499992; SumSQ.u64 = 499992; Count.u64 = 499992; 
+ l1cache.CacheHits : Accumulator : Sum.u64 = 520008; SumSQ.u64 = 520008; Count.u64 = 520008; 
  l1cache.GetSHit_Arrival : Accumulator : Sum.u64 = 20016; SumSQ.u64 = 20016; Count.u64 = 20016; 
  l1cache.GetXHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.GetSExHit_Arrival : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.GetSHit_Blocked : Accumulator : Sum.u64 = 541500; SumSQ.u64 = 541500; Count.u64 = 541500; 
+ l1cache.GetSHit_Blocked : Accumulator : Sum.u64 = 499992; SumSQ.u64 = 499992; Count.u64 = 499992; 
  l1cache.GetXHit_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.GetSExHit_Blocked : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.CacheMisses : Accumulator : Sum.u64 = 62509; SumSQ.u64 = 62509; Count.u64 = 62509; 
@@ -46,7 +44,7 @@ NO statistics will be printed otherwise!
  l1cache.FetchInvX_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.Inv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 911042926; SumSQ.u64 = 15782032904; Count.u64 = 52840510; 
+ l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 879902540; SumSQ.u64 = 14758951286; Count.u64 = 52840518; 
  l1cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_E : Accumulator : Sum.u64 = 62477; SumSQ.u64 = 62477; Count.u64 = 62477; 
@@ -63,7 +61,7 @@ NO statistics will be printed otherwise!
  l1cache.evict_SI : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_GetS_I : Accumulator : Sum.u64 = 62509; SumSQ.u64 = 62509; Count.u64 = 62509; 
  l1cache.stateEvent_GetS_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.stateEvent_GetS_E : Accumulator : Sum.u64 = 561516; SumSQ.u64 = 561516; Count.u64 = 561516; 
+ l1cache.stateEvent_GetS_E : Accumulator : Sum.u64 = 520008; SumSQ.u64 = 520008; Count.u64 = 520008; 
  l1cache.stateEvent_GetS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_GetX_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_GetX_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -185,7 +183,7 @@ NO statistics will be printed otherwise!
  l1cache.stateEvent_AckInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_AckInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_AckPut_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 125213556; SumSQ.u64 = 250822856796; Count.u64 = 62508; 
+ l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 125235598; SumSQ.u64 = 250915305840; Count.u64 = 62508; 
  l1cache.latency_GetS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.latency_GetX_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.latency_GetX_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 

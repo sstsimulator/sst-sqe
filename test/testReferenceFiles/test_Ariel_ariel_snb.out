@@ -33,54 +33,7 @@ Creating L3 cache block: 2 in group: 3
 Creating L3 cache block: 3 in group: 3
 Creating L3 cache block: 4 in group: 3
 Completed configuring the SST Sandy Bridge model
-l1cache_0, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l2cache_0, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l1cache_1, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l2cache_1, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-memory_0, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo to view available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-**WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo to view available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l1cache_2, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l2cache_2, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l1cache_3, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l2cache_3, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-memory_1, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo to view available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-**WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo to view available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l1cache_4, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l2cache_4, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l1cache_5, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l2cache_5, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-memory_2, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo to view available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-**WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo to view available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l1cache_6, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l2cache_6, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l1cache_7, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-l2cache_7, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo for available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-memory_3, **WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo to view available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
-**WARNING** The 'statistics' parameter is deprecated: memHierarchy statistics have been moved to the Statistics API. Please see sstinfo to view available statistics and update your configuration accordingly.
-NO statistics will be printed otherwise!
+SSTARIEL: Function profiling is disabled.
 0 Performing iteration 0
 0 Performing iteration 1
 0 Performing iteration 2
@@ -102,7 +55,7 @@ CORE ID: 0 PROCESSED AN EXIT EVENT
 Ariel Memory Management Statistics:
 ---------------------------------------------------------------------
 Page Table Sizes:
-- Map entries at level 0         30
+- Map entries at level 0         26
 Page Table Coverages:
-- Bytes at level 0              122880
-Simulation is complete, simulated time: 127.114 us
+- Bytes at level 0              106496
+Simulation is complete, simulated time: 417.307 us
