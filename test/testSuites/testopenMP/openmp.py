@@ -156,7 +156,6 @@ comp_l2cache.addParams({
       "cache_line_size" : "64",
       "L1" : "0",
       "LL" : "1",
-      "LLC" : "1",
       "cache_size" : "64 KB",
       "mshr_num_entries" : "4096"
 })

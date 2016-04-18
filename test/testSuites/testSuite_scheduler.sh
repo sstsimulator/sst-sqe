@@ -108,10 +108,15 @@ test_scheduler_0001() {
          diff -b ${outFile} ${referenceFile} > /dev/null
          if [ $? -ne 0 ]
          then
-             wc ${outFile} ${referenceFile};
-             echo word count of diff is:
-             diff ${outFile} ${referenceFile} | wc
-             fail "Output does NOT match Reference"
+             compare_sorted  ${outFile} ${referenceFile}
+             if [ $? -eq 0 ] ; then
+                 echo "sorted compare matches"
+             else
+                wc ${outFile} ${referenceFile};
+                echo word count of diff is:
+                diff ${outFile} ${referenceFile} | wc
+                fail "Output does NOT match Reference"
+             fi
          fi
     fi
 }
@@ -186,10 +191,15 @@ test_scheduler_0002() {
          diff -b ${outFile} ${referenceFile} > /dev/null
          if [ $? -ne 0 ]
          then
-             wc ${outFile} ${referenceFile};
-             echo word count of diff is:
-             diff ${outFile} ${referenceFile} | wc
-             fail "Output does NOT match Reference"
+             compare_sorted  ${outFile} ${referenceFile}
+             if [ $? -eq 0 ] ; then
+                 echo "sorted compare matches"
+             else
+                wc ${outFile} ${referenceFile};
+                echo word count of diff is:
+                diff ${outFile} ${referenceFile} | wc
+                fail "Output does NOT match Reference"
+             fi
          fi
        
     fi
@@ -283,10 +293,15 @@ echo ''
          diff -b ${outFile} ${referenceFile} > /dev/null
          if [ $? -ne 0 ]
          then
-             wc ${outFile} ${referenceFile};
-             echo word count of diff is:
-             diff ${outFile} ${referenceFile} | wc
-             fail "Output does NOT match Reference"
+             compare_sorted  ${outFile} ${referenceFile}
+             if [ $? -eq 0 ] ; then
+                 echo "sorted compare matches"
+             else
+                wc ${outFile} ${referenceFile};
+                echo word count of diff is:
+                diff ${outFile} ${referenceFile} | wc
+                fail "Output does NOT match Reference"
+             fi
          fi
     fi
 }
@@ -356,10 +371,15 @@ test_scheduler_0004() {
          diff -b ${outFile} ${referenceFile} > /dev/null
          if [ $? -ne 0 ]
          then
-             wc ${outFile} ${referenceFile};
-             echo word count of diff is:
-             diff ${outFile} ${referenceFile} | wc
-             fail "Output does NOT match Reference"
+             compare_sorted  ${outFile} ${referenceFile}
+             if [ $? -eq 0 ] ; then
+                 echo "sorted compare matches"
+             else
+                wc ${outFile} ${referenceFile};
+                echo word count of diff is:
+                diff ${outFile} ${referenceFile} | wc
+                fail "Output does NOT match Reference"
+             fi
          fi
     fi
 }

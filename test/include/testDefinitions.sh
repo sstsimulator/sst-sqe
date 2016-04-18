@@ -243,7 +243,9 @@ multithread_multirank_patch_Suites() {
             sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*.sh
 ##              EmberSweep processing move to EmberSweep test Suite/
  ##         sed -i.x '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py
-            SET_TL=1
+            if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+               SET_TL=1
+            fi
        fi
     fi
 
@@ -265,8 +267,9 @@ multithread_multirank_patch_Suites() {
            sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' ${sut/' $fn
         done
         popd
-        SET_TL=1
-
+        if [ $SST_MULTI_RANK_COUNT -gt 1 ] ; then
+           SET_TL=1
+        fi
     fi
 
     if [ $SET_TL == 1 ] ; then

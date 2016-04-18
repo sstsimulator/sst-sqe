@@ -89,7 +89,7 @@ ls -l test-app
        echo " which points to the Qsim install directory.   For example,"
        echo "\"export SST_DEPS_INSTALL_QSIM=~/local/packages/Qsim\""
        echo "                ---"
-       fail " \"SST_DEPS_INSTALL_QSIM\" is not defined"
+       fail " SST_DEPS_INSTALL_QSIM is not defined"
        return
     fi
     export QSIM_PREFIX=$SST_DEPS_INSTALL_QSIM
