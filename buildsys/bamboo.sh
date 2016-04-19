@@ -2589,12 +2589,13 @@ dobuild() {
         
         # Autogen SST-CORE
         ### First Run autogen in the source dir to create the configure file
-        echo "NOTE: Autogen Must be run in Source Dir to create configuration file"
+        echo "NOTE: Autogen Must be run in SST-CORE Source Dir to create configuration file"
         echo "Current Working Dir = `pwd`"
         echo "pushd sst-core"
         pushd sst-core
         echo "Autogen Working Dir = `pwd`"
         ls -l
+        echo "=== Running autogen.sh ==="
         
         ./autogen.sh
         retval=$?
@@ -2627,7 +2628,6 @@ dobuild() {
             echo "Current Working Dir = `pwd`"
             ls -l
             coresourcedir="../sst-core"
-            echo "Compiling SST-CORE in Directory `pwd`"
         else
             echo "NOTICE: BUILDING SST-CORE IN SOURCE DIR"
             echo "Starting Dir = `pwd`"
@@ -2636,7 +2636,6 @@ dobuild() {
             echo "Current Working Dir = `pwd`"
             ls -l
             coresourcedir="."
-            echo "Compiling SST-CORE in Directory `pwd`"
         fi        
 
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
@@ -2647,6 +2646,7 @@ dobuild() {
         echo "bamboo.sh: config args = $SST_SELECTED_CORE_CONFIG"
         
         # Configure SST-CORE
+        echo "=== Running configure ==="
         $coresourcedir/configure $SST_SELECTED_CORE_CONFIG
         retval=$?
         if [ $retval -ne 0 ]
@@ -2695,7 +2695,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Compile SST-CORE
-        $coresourcedir/make -j4 all
+        echo "=== Running make -j4 all ==="
+        make $coresourcedir/Makefile -j4 all
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2741,7 +2742,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
         # Install SST-CORE
-        $coresourcedir/make -j4 install
+        echo "=== Running make -j4 install ==="
+        make $coresourcedir/Makefile -j4 install
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2775,12 +2777,13 @@ dobuild() {
         
         # Autogen SST-ELEMENTS
         ### First Run autogen in the source dir to create the configure file
-        echo "NOTE: Autogen Must be run in Source Dir to create configuration file"
+        echo "NOTE: Autogen Must be run in SST-ELEMENTS Source Dir to create configuration file"
         echo "Current Working Dir = `pwd`"
         echo "pushd sst-elements"
         pushd sst-elements
         echo "Autogen Working Dir = `pwd`"
         ls -l
+        echo "=== Running autogen.sh ==="
         
         ./autogen.sh
         retval=$?
@@ -2813,7 +2816,6 @@ dobuild() {
             echo "Current Working Dir = `pwd`"
             ls -l
             elementssourcedir="../sst-elements"
-            echo "Compiling SST-ELEMENTS in Directory `pwd`"
         else
             echo "NOTICE: BUILDING SST-ELEMENTS IN SOURCE DIR"
             echo "Starting Dir = `pwd`"
@@ -2822,7 +2824,6 @@ dobuild() {
             echo "Current Working Dir = `pwd`"
             ls -l
             elementssourcedir="."
-            echo "Compiling SST-ELEMENTS in Directory `pwd`"
         fi        
 
         
@@ -2834,6 +2835,7 @@ dobuild() {
         echo "bamboo.sh: config args = $SST_SELECTED_ELEMENTS_CONFIG"
         
         # Configure SST-ELEMENTS
+        echo "=== Running configure ==="
         $elementssourcedir/configure $SST_SELECTED_ELEMENTS_CONFIG
         retval=$?
         if [ $retval -ne 0 ]
@@ -2882,7 +2884,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Compile SST-ELEMENTS
-        $elementssourcedir/make -j4 all
+        echo "=== Running make -j4 all ==="
+        make $elementssourcedir/Makefile -j4 all
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2929,7 +2932,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
         # Install SST-ELEMENTS
-        $elementssourcedir/make -j4 install
+        echo "=== Running make -j4 install ==="
+        make $elementssourcedir/Makefile -j4 install
         retval=$?
         if [ $retval -ne 0 ]
         then
