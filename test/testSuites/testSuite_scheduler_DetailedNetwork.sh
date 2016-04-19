@@ -63,7 +63,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 if [ "x$SST_SRC" == "x" ] ; then
 
 ##-John
-    SST_SRC=$SST_ROOT
+    SST_SRC=$SST_ROOT/sst-elements/src
 ##-John
 
     #source ~/SST/set_sst_env.sh
