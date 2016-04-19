@@ -2579,10 +2579,7 @@ dobuild() {
         echo "============== SST CORE - NO BUILD REQUIRED ==============="
     else
         echo "==================== Building SST CORE ===================="
-        echo `pwd`
-        pushd sst-core
-        echo `pwd`
-        ls -l
+        
         # autogen to create ./configure
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
@@ -2590,19 +2587,58 @@ dobuild() {
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
+        # Autogen SST-CORE
+        ### First Run autogen in the source dir to create the configure file
+        echo "NOTE: Autogen Must be run in Source Dir to create configuration file"
+        echo "Current Working Dir = `pwd`"
+        echo "pushd sst-core"
+        pushd sst-core
+        echo "Autogen Working Dir = `pwd`"
+        ls -l
+        
         ./autogen.sh
         retval=$?
         if [ $retval -ne 0 ]
         then
             return $retval
         fi
+        
+        echo "Done with Autogen"
+        echo "popd"
+        popd
+        echo "Current Working Dir = `pwd`"
+        ls -l
+
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: autogen on SST-CORE complete without error"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
-        
+
+        # Check to see if we are supposed to build out of the source
+        if [[ ${BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
+            echo "NOTICE: BUILDING SST-CORE OUT OF SOURCE DIR"
+            echo "Starting Dir = `pwd`"
+            echo "mkdir ./sst-core-builddir"
+            mkdir ./sst-core-builddir
+            echo "pushd sst-core-builddir"
+            pushd sst-core-builddir
+            echo "Current Working Dir = `pwd`"
+            ls -l
+            coresourcedir="../sst-core"
+            echo "Compiling SST-CORE in Directory `pwd`"
+        else
+            echo "NOTICE: BUILDING SST-CORE IN SOURCE DIR"
+            echo "Starting Dir = `pwd`"
+            echo "pushd sst-core"
+            pushd sst-core
+            echo "Current Working Dir = `pwd`"
+            ls -l
+            coresourcedir="."
+            echo "Compiling SST-CORE in Directory `pwd`"
+        fi        
+
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: running \"configure\" on SST-CORE..."
@@ -2610,7 +2646,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "bamboo.sh: config args = $SST_SELECTED_CORE_CONFIG"
         
-        ./configure $SST_SELECTED_CORE_CONFIG
+        # Configure SST-CORE
+        $coresourcedir/configure $SST_SELECTED_CORE_CONFIG
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2621,6 +2658,7 @@ dobuild() {
             echo "--------------------dump of config.log--------------------"
             return $retval
         fi
+        
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: configure on SST-CORE complete without error"
@@ -2655,8 +2693,9 @@ dobuild() {
         echo "bamboo.sh: make on SST-CORE"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        # build SST-CORE
-        make -j4 all
+
+        # Compile SST-CORE
+        $coresourcedir/make -j4 all
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2701,8 +2740,8 @@ dobuild() {
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
-        # install SST
-        make -j4 install
+        # Install SST-CORE
+        $coresourcedir/make -j4 install
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2720,16 +2759,13 @@ dobuild() {
         popd
     fi
 
-        ### BUILDING THE SST-ELEMENTS
+    ### BUILDING THE SST-ELEMENTS
     if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
     then
         echo "============== SST ELEMENTS - NO BUILD REQUIRED ==============="
     else
         echo "==================== Building SST ELEMENTS ===================="
-        echo `pwd`
-        pushd sst-elements
-        echo `pwd`
-        ls -l
+
         # autogen to create ./configure
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
@@ -2737,18 +2773,58 @@ dobuild() {
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
+        # Autogen SST-ELEMENTS
+        ### First Run autogen in the source dir to create the configure file
+        echo "NOTE: Autogen Must be run in Source Dir to create configuration file"
+        echo "Current Working Dir = `pwd`"
+        echo "pushd sst-elements"
+        pushd sst-elements
+        echo "Autogen Working Dir = `pwd`"
+        ls -l
+        
         ./autogen.sh
         retval=$?
         if [ $retval -ne 0 ]
         then
             return $retval
         fi
+
+        echo "Done with Autogen"
+        echo "popd"
+        popd
+        echo "Current Working Dir = `pwd`"
+        ls -l
+
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: autogen on SST-ELEMENTS complete without error"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
+        
+        # Check to see if we are supposed to build out of the source
+        if [[ ${BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
+            echo "NOTICE: BUILDING SST-ELEMENTS OUT OF SOURCE DIR"
+            echo "Starting Dir = `pwd`"
+            echo "mkdir ./sst-elements-builddir"
+            mkdir ./sst-elements-builddir
+            echo "pushd sst-elements-builddir"
+            pushd sst-elements-builddir
+            echo "Current Working Dir = `pwd`"
+            ls -l
+            elementssourcedir="../sst-elements"
+            echo "Compiling SST-ELEMENTS in Directory `pwd`"
+        else
+            echo "NOTICE: BUILDING SST-ELEMENTS IN SOURCE DIR"
+            echo "Starting Dir = `pwd`"
+            echo "pushd sst-elements"
+            pushd sst-elements
+            echo "Current Working Dir = `pwd`"
+            ls -l
+            elementssourcedir="."
+            echo "Compiling SST-ELEMENTS in Directory `pwd`"
+        fi        
+
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
@@ -2757,7 +2833,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "bamboo.sh: config args = $SST_SELECTED_ELEMENTS_CONFIG"
         
-        ./configure $SST_SELECTED_ELEMENTS_CONFIG
+        # Configure SST-ELEMENTS
+        $elementssourcedir/configure $SST_SELECTED_ELEMENTS_CONFIG
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2768,6 +2845,7 @@ dobuild() {
             echo "--------------------dump of config.log--------------------"
             return $retval
         fi
+        
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: configure on SST-ELEMENTS complete without error"
@@ -2802,8 +2880,9 @@ dobuild() {
         echo "bamboo.sh: make on SST-ELEMENTS"
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        # build SST-ELEMENTS
-        make -j4 all
+
+        # Compile SST-ELEMENTS
+        $elementssourcedir/make -j4 all
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2849,8 +2928,8 @@ dobuild() {
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
-        # install SST
-        make -j4 install
+        # Install SST-ELEMENTS
+        $elementssourcedir/make -j4 install
         retval=$?
         if [ $retval -ne 0 ]
         then
