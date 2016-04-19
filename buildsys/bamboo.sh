@@ -2618,7 +2618,7 @@ dobuild() {
         echo " "
 
         # Check to see if we are supposed to build out of the source
-        if [[ ${BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
+        if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
             echo "NOTICE: BUILDING SST-CORE OUT OF SOURCE DIR"
             echo "Starting Dir = `pwd`"
             echo "mkdir ./sst-core-builddir"
@@ -2806,7 +2806,7 @@ dobuild() {
         echo " "
         
         # Check to see if we are supposed to build out of the source
-        if [[ ${BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
+        if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
             echo "NOTICE: BUILDING SST-ELEMENTS OUT OF SOURCE DIR"
             echo "Starting Dir = `pwd`"
             echo "mkdir ./sst-elements-builddir"
