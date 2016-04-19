@@ -2646,7 +2646,7 @@ dobuild() {
         echo "bamboo.sh: config args = $SST_SELECTED_CORE_CONFIG"
         
         # Configure SST-CORE
-        echo "=== Running configure ==="
+        echo "=== Running $coresourcedir/configure <config args> ==="
         $coresourcedir/configure $SST_SELECTED_CORE_CONFIG
         retval=$?
         if [ $retval -ne 0 ]
@@ -2695,8 +2695,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Compile SST-CORE
-        echo "=== Running make -j4 all ==="
-        make $coresourcedir/Makefile -j4 all
+        echo "=== Running make -f $coresourcedir/Makefile -j4 all ==="
+        make -f $coresourcedir/Makefile -j4 all
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2742,8 +2742,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
         # Install SST-CORE
-        echo "=== Running make -j4 install ==="
-        make $coresourcedir/Makefile -j4 install
+        echo "=== Running make -f $coresourcedir/Makefile -j4 install ==="
+        make -f $coresourcedir/Makefile -j4 install
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2835,7 +2835,7 @@ dobuild() {
         echo "bamboo.sh: config args = $SST_SELECTED_ELEMENTS_CONFIG"
         
         # Configure SST-ELEMENTS
-        echo "=== Running configure ==="
+        echo "=== Running $elementssourcedir/configure <config args> ==="
         $elementssourcedir/configure $SST_SELECTED_ELEMENTS_CONFIG
         retval=$?
         if [ $retval -ne 0 ]
@@ -2884,8 +2884,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Compile SST-ELEMENTS
-        echo "=== Running make -j4 all ==="
-        make $elementssourcedir/Makefile -j4 all
+        echo "=== Running make -f $elementssourcedir/Makefile -j4 all ==="
+        make -f $elementssourcedir/Makefile -j4 all
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2932,8 +2932,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
         # Install SST-ELEMENTS
-        echo "=== Running make -j4 install ==="
-        make $elementssourcedir/Makefile -j4 install
+        echo "=== Running make -f $elementssourcedir/Makefile -j4 install ==="
+        make -f $elementssourcedir/Makefile -j4 install
         retval=$?
         if [ $retval -ne 0 ]
         then
