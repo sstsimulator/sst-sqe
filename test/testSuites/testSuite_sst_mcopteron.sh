@@ -135,7 +135,7 @@ echo "\$lout is $lout ############################################"
             if [[ ${lout:+isSet} != isSet ]]
             then
                 echo "Did NOT find \"Predicted.CPI\" in outFile"
-                fail "Did NOT find \"Predicted.CPI\" in outFile"
+                fail "Did NOT find Predicted.CPI in outFile"
                 return
             fi
 #           h=${lout: -5}
@@ -265,7 +265,7 @@ fi
             if [[ ${lout:+isSet} != isSet ]]
             then
                 echo "Did NOT find \"Predicted.CPI\" in outFile"
-                fail "Did NOT find \"Predicted.CPI\" in outFile"
+                fail "Did NOT find Predicted.CPI in outFile"
                 return
             fi
 #           h=${lout: -5}
