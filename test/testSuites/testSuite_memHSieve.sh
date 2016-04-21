@@ -60,6 +60,7 @@ test_memHSieve() {
     testDataFileBase="test_memHSieve"
     referenceFile="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv.gold"
     csvFile="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv"
+    csvFileBase="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/StatisticOutput"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -68,6 +69,7 @@ test_memHSieve() {
     sut="${SST_TEST_INSTALL_BIN}/sst"
     sutArgs="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/trace-text.py"
     pushd ${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests
+    rm -f StatisticOutput*csv
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -84,15 +86,25 @@ test_memHSieve() {
         if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
-             wc $referenceFile $csvFile
+             wc $referenceFile $csvFileBase*.csv
              ls -l ${sut}
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              popd
              return
         fi
+####
+#  According to Gwen:
+#  "The sieve test as is, is single-threaded - there's one processor and one sieve.  
+#    So there will only be one StatisticsOut file and n=4 doesn't make sense."
+#   ---- Here is bailing write to access the output file:
+wc StatisticOut*
+        if [ ! -e $csvFile ] ; then
+           cat StatisticOutput*.csv | grep -v 'Rank,.$' > $csvFile
+        fi
         # Ignore the time field in the answer, which has strange multi thread behavor
-        sed 's/Histogram,....../Histogram,/' $referenceFile > Tgold
-        sed 's/Histogram,....../Histogram,/' $csvFile > Tcsv 
+#  Also remove the Rank field, which is 0 for n=1 and 1 for n>1
+        sed 's/Histogram,........./Histogram,/' $referenceFile > Tgold
+        sed 's/Histogram,........./Histogram,/' $csvFile > Tcsv 
         wc $referenceFile $csvFile
         diff -b Tgold Tcsv
         if [ $? != 0 ]
