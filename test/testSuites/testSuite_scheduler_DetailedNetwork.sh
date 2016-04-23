@@ -137,7 +137,7 @@ if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_THREAD_COUNT 
 fi    
 
 if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ $SST_MULTI_RANK_COUNT -gt 0 ] ; then
-   echo "Setting Multi thread count to $SST_MULTI_RANK_COUNT"
+   echo "Setting Multi rank count to $SST_MULTI_RANK_COUNT"
    sed -i'.y' '/execcommand = "sst/s/sst/mpirun -np '"$SST_MULTI_RANK_COUNT sst"/ snapshotParser_sched.py
 fi    
 grep 'sst ' run_DetailedNetworkSim.py
