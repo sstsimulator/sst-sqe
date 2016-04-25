@@ -2742,8 +2742,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
         # Install SST-CORE
-        echo "=== Running make -f $coresourcedir/Makefile -j4 install ==="
-        make -f $coresourcedir/Makefile -j4 install
+        echo "=== Running make -j4 install ==="
+        make -j4 install
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2931,8 +2931,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
         # Install SST-ELEMENTS
-        echo "=== Running make -f $elementssourcedir/Makefile -j4 install ==="
-        make -f $elementssourcedir/Makefile -j4 install
+        echo "=== Running make -j4 install ==="
+        make -j4 install
         retval=$?
         if [ $retval -ne 0 ]
         then
