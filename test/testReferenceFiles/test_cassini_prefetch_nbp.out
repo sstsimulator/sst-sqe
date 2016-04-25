@@ -168,10 +168,10 @@
  l1cache.stateEvent_AckInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_AckInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_AckPut_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 24890550; SumSQ.u64 = 58310212748; Count.u64 = 12120; 
+ l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 24323878; SumSQ.u64 = 48816126828; Count.u64 = 12120; 
  l1cache.latency_GetS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.latency_GetX_IM : Accumulator : Sum.u64 = 771240; SumSQ.u64 = 1614231104; Count.u64 = 381; 
- l1cache.latency_GetX_SM : Accumulator : Sum.u64 = 18338100; SumSQ.u64 = 55165812728; Count.u64 = 6809; 
+ l1cache.latency_GetX_IM : Accumulator : Sum.u64 = 763948; SumSQ.u64 = 1531802336; Count.u64 = 381; 
+ l1cache.latency_GetX_SM : Accumulator : Sum.u64 = 17903136; SumSQ.u64 = 50062480360; Count.u64 = 6809; 
  l1cache.latency_GetX_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.latency_GetSEx_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.latency_GetSEx_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
