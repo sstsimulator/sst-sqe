@@ -2695,8 +2695,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Compile SST-CORE
-        echo "=== Running make -f $coresourcedir/Makefile -j4 all ==="
-        make -f $coresourcedir/Makefile -j4 all
+        echo "=== Running make -j4 all ==="
+        make -j4 all
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2883,8 +2883,8 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Compile SST-ELEMENTS
-        echo "=== Running make -f $elementssourcedir/Makefile -j4 all ==="
-        make -f $elementssourcedir/Makefile -j4 all
+        echo "=== Running make -j4 all ==="
+        make -f -j4 all
         retval=$?
         if [ $retval -ne 0 ]
         then
