@@ -2720,11 +2720,11 @@ dobuild() {
         if [ $kernel == "Darwin" ]
         then
             # Mac OS X 
-            echo "$ otool -L ./sst/core/sstsim.x"
-            otool -L ./sst/core/sstsim.x
+            echo "$ otool -L $coresourcedir/src/sst/core/sstsim.x"
+            otool -L $coresourcedir/src/sst/core/sstsim.x
         else
-            echo "$ ldd ./sst/core/sstsim.x"
-            ldd ./sst/core/sstsim.x
+            echo "$ ldd $coresourcedir/src/sst/core/sstsim.x"
+            ldd $coresourcedir/src/sst/core/sstsim.x
         fi
         echo "SST-CORE BUILD INFO============================================================"
                 
@@ -2758,7 +2758,10 @@ dobuild() {
         echo " "
         
         # Go back to devel/trunk
+        echo "popd"
         popd
+        echo "Current Working Dir = `pwd`"
+        ls -l
     fi
 
     ### BUILDING THE SST-ELEMENTS
@@ -2884,7 +2887,7 @@ dobuild() {
 
         # Compile SST-ELEMENTS
         echo "=== Running make -j4 all ==="
-        make -f -j4 all
+        make -j4 all
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2947,7 +2950,10 @@ dobuild() {
         echo " "
         
         # Go back to devel/trunk
+        echo "popd"
         popd
+        echo "Current Working Dir = `pwd`"
+        ls -l
     fi
 
 }
