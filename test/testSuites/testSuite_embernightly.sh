@@ -31,7 +31,6 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
-ls -d /tmp/openmpi-sessions-$USER@sst-test_0/* | wc
 #=====================================================
 #  A bit of code to clear out old openmpi files from /tmp
 
@@ -53,7 +52,6 @@ ls -d /tmp/openmpi-sessions-$USER@sst-test_0/* | wc
     done 3<__rmlist
     rm __rmlist
 #=====================================================
-ls -d /tmp/openmpi-sessions-$USER@sst-test_0/* | wc
 
 #===============================================================================
 # Test functions

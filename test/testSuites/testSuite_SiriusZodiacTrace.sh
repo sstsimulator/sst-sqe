@@ -62,6 +62,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
     startSeconds=`date +%s`
     testDataFileBase="test_Sirius_allred_$Sirius_case"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
@@ -74,12 +75,21 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
 
     sutArgs="--model-options \"--shape=${Sirius_case}\" ${SST_ROOT}/sst-elements/src/sst/elements/zodiac/test/allreduce/allreduce.py" 
 
-echo Need sutArgs
+echo sutArgs
 echo $sutArgs
 echo "------------------------------"
 
-    (${sut} ${sutArgs} > ${tmpFile}) 2>${errFile}
-        RetVal=$? 
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
+         ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
+         RetVal=$? 
+         cat $errFile >> $tmpFile
+    else
+         #   This merges stderr with stdout
+         mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
+         RetVal=$?
+         cat ${testOutFiles}* > $tmpFile
+    fi
+
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -108,6 +118,7 @@ echo "------------------------------"
         grep -v Warning:..Param $errFile
         echo ' '
     fi
+
     grep -e Total.Allreduce.Count -e Total.Allreduce.Bytes $tmpFile | awk -F: '{$1="";$6=""; print }' | sort -n > $outFile
     wc ${outFile} ${referenceFile} $tmpFile
     if [ -s $outFile ] ; then

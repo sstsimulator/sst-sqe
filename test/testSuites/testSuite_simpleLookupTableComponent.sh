@@ -59,6 +59,8 @@ test_simpleLookupTableComponent() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_simpleLookupTableComponent"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
+    testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -70,8 +72,20 @@ test_simpleLookupTableComponent() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        (${sut} ${sutArgs} > $outFile)
-        RetVal=$? 
+
+        if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
+             ${sut} ${sutArgs} > ${outFile}  2>${errFile}
+             RetVal=$? 
+             cat $errFile >> $outFile
+        else
+             #   This merges stderr with stdout
+             mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
+             RetVal=$?
+             wc ${testOutFiles}*
+             cat ${testOutFiles}* > $outFile
+        fi
+
+
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
