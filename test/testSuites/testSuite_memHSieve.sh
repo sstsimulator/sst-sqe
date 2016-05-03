@@ -36,7 +36,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   NOTE: These functions are invoked automatically by shunit2 as long
 #   as the function name begins with "test...".
 #===============================================================================
-
+preFail " Disable temporarily for update"  "skip"
 #-------------------------------------------------------------------------------
 # Test:
 #     test_memHSieve
