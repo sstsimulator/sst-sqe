@@ -34,23 +34,7 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 L_TESTFILE=()  # Empty list, used to hold test file names
 
 if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
-   #   Disabled per Issue #73  January 18, 2016
-   preFail "Prospero pin test is disabled per issue #73" "skip"
-   #    ###
    # ==================  Create program "array"
-   
-   # ----------------- compile the sstmemtrace library
-   echo "# ----------------- compile the sstmemtrace library"
-       cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tracetool
-       echo "Now \"make clean\"  "
-       make clean
-       make
-       rtval=$?
-       ls -l 
-   if [ $rtval != 0 ] ; then
-       echo Make failed
-       preFail "Make failed"
-   fi
 
    # ----------------- compile the file array   
    echo "## ----------------- compile the file array   "
@@ -63,14 +47,16 @@ if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
    ls -l array
    # --------------------------- run the pin trace program
    #    Build the compress, uncompressed and binary
+   rm -f *.trace
    echo "## --------------------------- run the pin trace program"
-       ls -l ${SST_DEPS_INSTALL_INTEL_PIN}/pin ../../tracetool/sstmemtrace.so
-       ${SST_DEPS_INSTALL_INTEL_PIN}/pin -t ../../tracetool/sstmemtrace.so -f compressed -- ./array
+   which sst-prospero-trace
+
+       sst-prospero-trace -t 1 -f compressed -o sstprospero -- ./array
        echo " pin return flag is from compressed: $?"   
 
-       ${SST_DEPS_INSTALL_INTEL_PIN}/pin -t ../../tracetool/sstmemtrace.so -f text -- ./array
+       sst-prospero-trace -t 1 -f text  -o sstprospero -- ./array
    
-       ${SST_DEPS_INSTALL_INTEL_PIN}/pin -t ../../tracetool/sstmemtrace.so -f binary -- ./array
+       sst-prospero-trace -t 1 -f binary -o sstprospero -- ./array
        PIN_TAR="Pin"
 else
    #  Download the trace files from sst-simulator.org
