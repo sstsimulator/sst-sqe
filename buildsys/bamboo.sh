@@ -2670,12 +2670,12 @@ else
 
             # if Intel PIN module is available, load 2.14 version
             #           ModuleEx puts the avail output on Stdout (where it belongs.)
-            ModuleEx avail | egrep -q "pin/pin-3.0-76991-gcc-linux
+            ModuleEx avail | egrep -q "pin/pin-3.0-76991-gcc-linux"
             if [ $? == 0 ] 
             then
             # if `pin module is available, use 2.14.
 
-	echo "using Intel PIN environment module  pin-3.0-76991-gcc-linux
+	echo "using Intel PIN environment module  pin-3.0-76991-gcc-linux"
                 #    Compiler is $4
                 if [[ "$4" != gcc-5* ]] ; then
                    echo "Loading Intel PIN environment module"
