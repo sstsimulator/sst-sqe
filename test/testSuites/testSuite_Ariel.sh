@@ -85,7 +85,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         pwd
         echo "ERROR: examples/stream: make failure"
         export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
-        preFail "ERROR: examples/stream: make failure"
+        preFail "ERROR: examples/stream: make failure" "skip"
     fi
 
 #     Subroutine to clean up shared memory ipc
