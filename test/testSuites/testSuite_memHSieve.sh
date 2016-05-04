@@ -36,7 +36,10 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   NOTE: These functions are invoked automatically by shunit2 as long
 #   as the function name begins with "test...".
 #===============================================================================
-preFail " Disable temporarily for update"  "skip"
+if [[ ${INTEL_PIN_DIRECTORY:+isSet} != "isSet" ]] ; then
+    echo " This is inadequet test !   Needs to require Ariel"
+    preFail "Skipping memHSieve, (no PIN)"  "skip"
+fi
 #-------------------------------------------------------------------------------
 # Test:
 #     test_memHSieve
@@ -53,6 +56,13 @@ preFail " Disable temporarily for update"  "skip"
 #     requiring that the command lines for creating both the csvput
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
+
+#   Build ompsievetest
+pushd $SST_ROOT/sst/elements/memHierarchy/Sieve/tests
+make
+ls
+popd
+
 test_memHSieve() {
 
     # Define a common basename for test csv and reference
@@ -67,7 +77,7 @@ test_memHSieve() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/trace-text.py"
+    sutArgs="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/sieve-test.py"
     pushd ${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests
     rm -f StatisticOutput*csv
 
@@ -92,6 +102,10 @@ test_memHSieve() {
              popd
              return
         fi
+#  Look at what we'e got
+echo "  Look at what we've got"
+ls -ltr
+
 ####
 #  According to Gwen:
 #  "The sieve test as is, is single-threaded - there's one processor and one sieve.  
