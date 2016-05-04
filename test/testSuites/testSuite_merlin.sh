@@ -89,6 +89,10 @@ Tol=$2    ##  curTick tolerance
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
+             wc $outFile
+             echo " 20 line tail of \$outFile"
+             tail -20 $outfile
+             echo "    --------------------"
              return
         fi
         wc ${outFile} ${referenceFile} | awk -F/ '{print $1, $(NF-1) "/" $NF}'
