@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 # bamboo.sh
 
 # Description:
@@ -457,6 +457,12 @@ echo " #####################################################"
             ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
             popd
         fi
+        export SST_BUILD_PROSPERO_TRACE_FILE=1
+        pushd ${SST_TEST_SUITES}
+          ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
+          ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
+          unset SST_BUILD_PROSPERO_TRACE_FILE
+        popd
         ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
         ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
@@ -1373,6 +1379,7 @@ fi
 
 ldModulesYosemiteClang() {
     ClangVersion=$1            #   example "clang-700.0.72"
+                        ModuleEx avail
                         # Use Boost and MPI built with CLANG from Xcode 6.3
                         ModuleEx unload mpi
                         ModuleEx unload boost
@@ -1428,7 +1435,9 @@ ldModulesYosemiteClang() {
                         esac
                         export CC=`which clang`
                         export CXX=`which clang++`
+                        echo "    Modules loaded"
                         ModuleEx list
+                        $CC --version
 }
 #-------------------------------------------------------------------------
 # Function: darwinSetBoostMPI
@@ -2067,6 +2076,7 @@ darwinSetBoostMPI() {
                 ;;
 ################################################################################
             10.10) # Yosemite
+                ModuleEx avail
                 # Depending on specified compiler, load Boost and MPI
                 case $compiler in
                     clang-600.0.57)
@@ -2670,22 +2680,30 @@ else
 
             # if Intel PIN module is available, load 2.14 version
             #           ModuleEx puts the avail output on Stdout (where it belongs.)
-            ModuleEx avail | egrep -q "pin/pin-3.0-76991-gcc-linux"
+            ModuleEx avail | egrep -q "pin/pin-2.14-71313"
             if [ $? == 0 ] 
             then
             # if `pin module is available, use 2.14.
+                if [ $kernel != "Darwin" ] ; then
 
-	echo "using Intel PIN environment module  pin-3.0-76991-gcc-linux"
-                #    Compiler is $4
-                if [[ "$4" != gcc-5* ]] ; then
+                   echo "using Intel PIN environment module  pin-2.14-71313-gcc.4.4.7-linux"
+                    #    Compiler is $4
+                   if [[ "$4" != gcc-5* ]] ; then
+                       echo "Loading Intel PIN environment module"
+                       ModuleEx load pin/pin-2.14-71313-gcc.4.4.7-linux
+                       echo  $INTEL_PIN_DIRECTORY
+                       ls $INTEL_PIN_DIRECTORY
+                   else 
+                      echo " ################################################################"
+                      echo " #"
+                      echo " #  pin-2.14-71313-gcc.4.4.7-linux is incompatible with gcc-5.x"
+                      echo " #"
+                      echo " ################################################################"
+                   fi
+                else        ##    MacOS   (Darwin)
+                   echo "using Intel PIN environment module  pin-2.14-71313-clang.5.1-mac"
                    echo "Loading Intel PIN environment module"
-                   ModuleEx load pin/pin-3.0-76991-gcc-linux
-                else 
-                   echo " ################################################################"
-                   echo " #"
-                   echo " #  pin-2.14-71313-gcc.4.4.7-linux is incompatible with gcc-5.x"
-                   echo " #"
-                   echo " ################################################################"
+                   ModuleEx load pin/pin-2.14-71313-clang.5.1-mac
                 fi
             else
                 echo "Intel PIN environment module not found on this host."
