@@ -36,7 +36,9 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   NOTE: These functions are invoked automatically by shunit2 as long
 #   as the function name begins with "test...".
 #===============================================================================
-preFail " Disable temporarily for update"  "skip"
+if [[ ! -s $sst_base/local/lib/sst/libariel.so ]] ; then
+    preFail "Skipping memHSieve, (no Ariel )"  "skip"
+fi
 #-------------------------------------------------------------------------------
 # Test:
 #     test_memHSieve
@@ -53,12 +55,22 @@ preFail " Disable temporarily for update"  "skip"
 #     requiring that the command lines for creating both the csvput
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
+
+pushd $SST_ROOT/sst/elements/memHierarchy/Sieve/tests
+#   Remove old files if any
+rm -f ompsievetest.o ompsievetest backtrace_*.txt StatisticOutput.csv mallocRank.txt-0.txt 23_43????
+
+#   Build ompsievetest
+make
+ls
+popd
+
 test_memHSieve() {
 
     # Define a common basename for test csv and reference
     # files. XML postprocessing requires this.
     testDataFileBase="test_memHSieve"
-    referenceFile="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv.gold"
+    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
     csvFile="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv"
     csvFileBase="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
@@ -67,7 +79,7 @@ test_memHSieve() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/trace-text.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/sieve-test.py"
     pushd ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests
     rm -f StatisticOutput*csv
 
@@ -92,28 +104,59 @@ test_memHSieve() {
              popd
              return
         fi
-####
-#  According to Gwen:
-#  "The sieve test as is, is single-threaded - there's one processor and one sieve.  
-#    So there will only be one StatisticsOut file and n=4 doesn't make sense."
-#   ---- Here is bailing write to access the output file:
-wc StatisticOut*
-        if [ ! -e $csvFile ] ; then
-           cat StatisticOutput*.csv | grep -v 'Rank,.$' > $csvFile
+#  Look at what we'e got
+echo "  Look at what we've got"
+ls -ltr
+##########################  the very fuzzy pass criteria  (four)
+        FAIL=0
+# all of the backtrace_*txt files have something in them.
+        for fn in `ls backtrace_*txt`
+        do
+           if [[ ! -s $fn ]] ; then
+              echo "$fn is empty, test fails"
+              FAIL=1
+           fi
+        done
+
+#  mallocRank.0 is not empty
+       if [[ ! -s mallocRank.txt-0.txt ]] ; then 
+          echo "mallocRank.0 is empty, test fails"
+          FAIL=1
+       fi
+
+# the six sieve statics in StatisticOutput.csv are non zero
+       SievecheckStats() {
+       notz=`grep -w $1 StatisticOutput.csv | awk '{print $NF*($NF-1)*$NF-2}'`
+       if [ $notz == 0 ] ; then
+          echo "stat $1 has a zero"
+          FAIL=1
+       fi
+       }
+       SievecheckStats "ReadHits"
+       SievecheckStats "ReadMisses"
+       SievecheckStats "WriteHits"
+       SievecheckStats "WriteMisses"
+       SievecheckStats "UnassociatedReadMisses"
+       SievecheckStats "UnassociatedWriteMisses"
+
+#   Refeference file should be exact mathch lines 23 to 43 of StatisticOutput.csv.gold
+
+        sed -n 23,43p $referenceFile  > 23_43.ref
+        sed -n 23,43p $outFile > 23_43.out 
+        diff 23_43.ref 23_43.out
+        if [ $? != 0 ] ; then
+           echo " lines 23 to 43 of csv gold did not match"
+           FAIL=1
         fi
-        # Ignore the time field in the answer, which has strange multi thread behavor
-#  Also remove the Rank field, which is 0 for n=1 and 1 for n>1
-        sed 's/Histogram,........./Histogram,/' $referenceFile > Tgold
-        sed 's/Histogram,........./Histogram,/' $csvFile > Tcsv 
-        wc $referenceFile $csvFile
-        diff -b Tgold Tcsv
-        if [ $? != 0 ]
-        then  
-             fail " Reference does not Match Output"
+
+        if [ $FAIL == 0 ] ; then
+           echo "Sieve test PASSED"
+        else
+           fail " Sieve test did NOT meet required conditions"
         fi
-        rm Tgold Tcsv
-        echo ' '
-        grep 'Simulation is complete' $outFile ; echo ' '
+
+            echo ' '
+            grep 'Simulation is complete' $outFile ; echo ' '
     else
         # Problem encountered: can't find or can't run SUT (doesn't
         # really do anything in Phase I)
