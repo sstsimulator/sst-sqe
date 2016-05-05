@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 # bamboo.sh
 
 # Description:
