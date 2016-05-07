@@ -39,6 +39,12 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 if [[ ! -s $SST_INSTALL/lib/sst/libariel.so ]] ; then
     preFail "Skipping memHSieve, (no Ariel )"  "skip"
 fi
+if [[ `uname -n` != sst-test* ]] ; then
+    echo " "
+    echo "libariel.so test is INADEQUATE!   "
+    preFail "Only running on sst-test at this time" "skip"
+fi
+
 #-------------------------------------------------------------------------------
 # Test:
 #     test_memHSieve
