@@ -36,9 +36,15 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   NOTE: These functions are invoked automatically by shunit2 as long
 #   as the function name begins with "test...".
 #===============================================================================
-if [[ ! -s $sst_base/local/lib/sst/libariel.so ]] ; then
+if [[ ! -s $SST_INSTALL/lib/sst/libariel.so ]] ; then
     preFail "Skipping memHSieve, (no Ariel )"  "skip"
 fi
+if [[ `uname -n` != sst-test* ]] ; then
+    echo " "
+    echo "libariel.so test is INADEQUATE!   "
+    preFail "Only running on sst-test at this time" "skip"
+fi
+
 #-------------------------------------------------------------------------------
 # Test:
 #     test_memHSieve
