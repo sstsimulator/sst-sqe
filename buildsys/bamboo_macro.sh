@@ -18,6 +18,25 @@ echo ' '
 pwd
 df -h .
 echo ' '
+
+#-------------------------------------------------------------------------
+# Function: TimeoutEx
+# Description:
+#   Purpose:
+#       This funciton is a wrapper Around the TimeoutEx.sh which will execute 
+#       a command with a timeout 
+#   Input:
+#       $@: Variable number of parameters depending upon module command operation
+#   Output: Any output from the command being run.
+#   Return value: The return value of the command being run or !=0 to indicate 
+#   a timeout or error.
+TimeoutEx() {
+    # Call (via "source") the moduleex.sh script with the passed in parameters  
+    ./$SST_ROOT/test/utilities/TimeoutEx.sh $@
+    # Get the return value from the moduleex.sh
+    return $retval  
+}
+
 #=========================================================================
 # Definitions
 #=========================================================================
@@ -94,7 +113,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
 ## Cloning sst-core into <path>/devel/trunk     
    echo "     git clone -b $SST_COREBRANCH $SST_COREREPO sst-core "
-   git clone -b $SST_COREBRANCH $SST_COREREPO sst-core
+   TimeoutEx -t 300 git clone -b $SST_COREBRANCH $SST_COREREPO sst-core
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone of $SST_COREREPO \" FAILED.  retVal = $retVal"
@@ -111,7 +130,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
 ## Cloning sst-macro into <path>/devel/trunk     
    echo "     git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
-   git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
+   TimeoutEx -t 300 git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone of $SST_MACROREPO \" FAILED.  retVal = $retVal"
