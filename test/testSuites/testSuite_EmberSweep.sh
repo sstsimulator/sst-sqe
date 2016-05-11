@@ -186,6 +186,10 @@ SE_fini() {
         sed -i.x '/print..sst.*model/s/..sst/ "mpirun -np '"${SST_MULTI_RANK_COUNT}"' sst/' EmberSweepGenerator.py 
     fi
     ./EmberSweepGenerator.py > bashIN
+    if [ $? -ne 0 ] ; then 
+        preFail " Test Generation FAILED"
+    fi
+
     #./Tester.py > bashIN
 
     #     This is the code to run just a few test from the sweep
