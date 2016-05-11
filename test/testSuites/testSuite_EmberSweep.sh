@@ -88,7 +88,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     L_TESTFILE+=(${testDataFileBase})
 pwd
 
-pushd ${SST_ROOT}/sst/elements/ember/test
+pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
 
 pwd
 ls
@@ -114,7 +114,7 @@ SE_start() {
     PARAMS="$1"
     echo "     $1"
 ## echo "    " torus --shape=16x16x16  AllPingPong iterations=10 messageSize=20000 
-    pushd $SST_ROOT/sst/elements/ember/test
+    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
 }
 ####################
 #    SE_fini()
@@ -223,5 +223,5 @@ popd
 #                In this position the local Time Out will override the multithread TL
 export SST_TEST_ONE_TEST_TIMEOUT=900
 
-(. ${SHUNIT2_SRC}/shunit2 ${SST_ROOT}/sst/elements/ember/test/bashIN)
+(. ${SHUNIT2_SRC}/shunit2 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/bashIN)
 
