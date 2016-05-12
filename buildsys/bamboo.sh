@@ -31,7 +31,7 @@ echo ' '
 #   a timeout or error.
 TimeoutEx() {
     # Call (via "source") the moduleex.sh script with the passed in parameters  
-    ./$SST_ROOT/test/utilities/TimeoutEx.sh $@
+    $SST_ROOT/test/utilities/TimeoutEx.sh $@
     # Get the return value from the moduleex.sh
     return $retval  
 }
