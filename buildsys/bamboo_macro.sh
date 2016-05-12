@@ -32,7 +32,7 @@ echo ' '
 #   a timeout or error.
 TimeoutEx() {
     # Call (via "source") the moduleex.sh script with the passed in parameters  
-    ./$SST_ROOT/test/utilities/TimeoutEx.sh $@
+    $SST_ROOT/../sqe/test/utilities/TimeoutEx.sh $@
     # Get the return value from the moduleex.sh
     return $retval  
 }
@@ -112,7 +112,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
 ## Cloning sst-core into <path>/devel/trunk     
-   echo "     git clone -b $SST_COREBRANCH $SST_COREREPO sst-core "
+   echo "     TimeoutEx -t 300 git clone -b $SST_COREBRANCH $SST_COREREPO sst-core "
    TimeoutEx -t 300 git clone -b $SST_COREBRANCH $SST_COREREPO sst-core
    retVal=$?
    if [ $retVal != 0 ] ; then
@@ -129,7 +129,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
 
 ## Cloning sst-macro into <path>/devel/trunk     
-   echo "     git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
+   echo "     TimeoutEx -t 300 git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
    TimeoutEx -t 300 git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
    retVal=$?
    if [ $retVal != 0 ] ; then

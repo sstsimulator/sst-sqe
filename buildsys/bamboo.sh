@@ -31,7 +31,7 @@ echo ' '
 #   a timeout or error.
 TimeoutEx() {
     # Call (via "source") the moduleex.sh script with the passed in parameters  
-    $SST_ROOT/test/utilities/TimeoutEx.sh $@
+    $SST_ROOT/../sqe/test/utilities/TimeoutEx.sh $@
     # Get the return value from the moduleex.sh
     return $retval  
 }
@@ -120,7 +120,7 @@ popd
 if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
-   echo "     git clone -b $SST_TOPSSTBRANCH  $SST_TOPSSTREPO . "
+   echo "     TimeoutEx -t 300 git clone -b $SST_TOPSSTBRANCH  $SST_TOPSSTREPO . "
    TimeoutEx -t 300 git clone -b $SST_TOPSSTBRANCH $SST_TOPSSTREPO .
    retVal=$?
    if [ $retVal != 0 ] ; then
@@ -136,7 +136,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    pwd
    ls -l
 
-   echo "     git clone -b $SST_COREBRANCH $SST_COREREPO core "
+   echo "     TimeoutEx -t 300 git clone -b $SST_COREBRANCH $SST_COREREPO core "
    TimeoutEx -t 300 git clone -b $SST_COREBRANCH $SST_COREREPO core
    retVal=$?
    if [ $retVal != 0 ] ; then
@@ -148,7 +148,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    popd
 
 
-   echo "     git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO elements "
+   echo "     TimeoutEx -t 300 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO elements "
    TimeoutEx -t 300 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO elements
    retVal=$?
    if [ $retVal != 0 ] ; then
