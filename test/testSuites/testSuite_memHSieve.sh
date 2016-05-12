@@ -36,7 +36,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   NOTE: These functions are invoked automatically by shunit2 as long
 #   as the function name begins with "test...".
 #===============================================================================
-if [[ ! -s $SST_INSTALL/lib/sst/libariel.so ]] ; then
+if [[ ! -s $SST_BASE/local/sst-elements/lib/sst-elements-library/libariel.so ]] ; then
     preFail "Skipping memHSieve, (no Ariel )"  "skip"
 fi
 if [[ `uname -n` != sst-test* ]] ; then
@@ -62,7 +62,7 @@ fi
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
 
-pushd $SST_ROOT/sst/elements/memHierarchy/Sieve/tests
+pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests
 #   Remove old files if any
 rm -f ompsievetest.o ompsievetest backtrace_*.txt StatisticOutput.csv mallocRank.txt-0.txt 23_43????
 
@@ -77,16 +77,16 @@ test_memHSieve() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_memHSieve"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
-    csvFile="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv"
-    csvFileBase="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/StatisticOutput"
+    csvFile="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv"
+    csvFileBase="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/sieve-test.py"
-    pushd ${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/sieve-test.py"
+    pushd ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests
     rm -f StatisticOutput*csv
     rm -f mallocRank.txt-0*
 

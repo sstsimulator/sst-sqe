@@ -88,7 +88,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     L_TESTFILE+=(${testDataFileBase})
 pwd
 
-pushd ${SST_ROOT}/sst/elements/ember/test
+pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
 
 pwd
 ls
@@ -114,7 +114,7 @@ SE_start() {
     PARAMS="$1"
     echo "     $1"
 ## echo "    " torus --shape=16x16x16  AllPingPong iterations=10 messageSize=20000 
-    pushd $SST_ROOT/sst/elements/ember/test
+    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
 }
 ####################
 #    SE_fini()
@@ -149,19 +149,19 @@ SE_fini() {
    if [ $FAILED == "TRUE" ] ; then
        FAILED_TESTS=$(($FAILED_TESTS + 1))
        echo ' '
-       grep Ember_${1} -A 5 ${SST_ROOT}/sst/elements/ember/test/bashIN | grep sst
+       grep Ember_${1} -A 5 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/bashIN | grep sst
        echo ' '
-       wc ${SST_ROOT}/sst/elements/ember/test/tmp_file
-       len_tmp_file=`wc -l ${SST_ROOT}/sst/elements/ember/test/tmp_file | awk '{print $1}'`
+       wc ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
+       len_tmp_file=`wc -l ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file | awk '{print $1}'`
        if [ $len_tmp_file -gt 25 ] ; then
            echo "      stdout from sst   first and last 25 lines"
-           Sed 25q ${SST_ROOT}/sst/elements/ember/test/tmp_file
+           Sed 25q ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
            echo "              . . ."      
-           tail -25 ${SST_ROOT}/sst/elements/ember/test/tmp_file
+           tail -25 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
            echo "    ----   end of stdout "
        else
            echo "    ----   stdout for sst:"
-           cat ${SST_ROOT}/sst/elements/ember/test/tmp_file
+           cat ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
            echo "    ----   end of stdout "
        fi
        echo ' '
@@ -186,6 +186,10 @@ SE_fini() {
         sed -i.x '/print..sst.*model/s/..sst/ "mpirun -np '"${SST_MULTI_RANK_COUNT}"' sst/' EmberSweepGenerator.py 
     fi
     ./EmberSweepGenerator.py > bashIN
+    if [ $? -ne 0 ] ; then 
+        preFail " Test Generation FAILED"
+    fi
+
     #./Tester.py > bashIN
 
     #     This is the code to run just a few test from the sweep
@@ -223,5 +227,5 @@ popd
 #                In this position the local Time Out will override the multithread TL
 export SST_TEST_ONE_TEST_TIMEOUT=900
 
-(. ${SHUNIT2_SRC}/shunit2 ${SST_ROOT}/sst/elements/ember/test/bashIN)
+(. ${SHUNIT2_SRC}/shunit2 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/bashIN)
 
