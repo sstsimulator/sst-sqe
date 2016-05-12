@@ -23,7 +23,7 @@ echo ' '
 # Function: TimeoutEx
 # Description:
 #   Purpose:
-#       This funciton is a wrapper Around the TimeoutEx.sh which will execute 
+#       This function is a wrapper Around the TimeoutEx.sh which will execute 
 #       a command with a timeout 
 #   Input:
 #       $@: Variable number of parameters depending upon module command operation
