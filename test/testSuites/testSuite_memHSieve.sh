@@ -36,9 +36,15 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   NOTE: These functions are invoked automatically by shunit2 as long
 #   as the function name begins with "test...".
 #===============================================================================
-if [[ ! -s $sst_base/local/lib/sst/libariel.so ]] ; then
+if [[ ! -s $SST_BASE/local/sst-elements/lib/sst-elements-library/libariel.so ]] ; then
     preFail "Skipping memHSieve, (no Ariel )"  "skip"
 fi
+if [[ `uname -n` != sst-test* ]] ; then
+    echo " "
+    echo "libariel.so test is INADEQUATE!   "
+    preFail "Only running on sst-test at this time" "skip"
+fi
+
 #-------------------------------------------------------------------------------
 # Test:
 #     test_memHSieve
@@ -56,7 +62,7 @@ fi
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
 
-pushd $SST_ROOT/sst/elements/memHierarchy/Sieve/tests
+pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests
 #   Remove old files if any
 rm -f ompsievetest.o ompsievetest backtrace_*.txt StatisticOutput.csv mallocRank.txt-0.txt 23_43????
 
@@ -71,17 +77,18 @@ test_memHSieve() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_memHSieve"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
-    csvFile="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv"
-    csvFileBase="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/StatisticOutput"
+    csvFile="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv"
+    csvFileBase="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests/sieve-test.py"
-    pushd ${SST_ROOT}/sst/elements/memHierarchy/Sieve/tests
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/sieve-test.py"
+    pushd ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests
     rm -f StatisticOutput*csv
+    rm -f mallocRank.txt-0*
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -119,14 +126,18 @@ ls -ltr
         done
 
 #  mallocRank.0 is not empty
-       if [[ ! -s mallocRank.txt-0.txt ]] ; then 
-          echo "mallocRank.0 is empty, test fails"
+   ls -l mallocRank*
+       mR_len=`wc -w mallocRank.txt* | awk '{print $1}'`
+       if [ $mR_len -ge 0 ] ; then
+          echo "mallocRank.txt has $mR_len words"
+       else
+          echo "mallocRank.txt-0 is empty, test fails"
           FAIL=1
        fi
 
 # the six sieve statics in StatisticOutput.csv are non zero
        SievecheckStats() {
-       notz=`grep -w $1 StatisticOutput.csv | awk '{print $NF*($NF-1)*$NF-2}'`
+       notz=`grep -w $1 StatisticOutput*.csv | awk '{print $NF*($NF-1)*$NF-2}'`
        if [ $notz == 0 ] ; then
           echo "stat $1 has a zero"
           FAIL=1
@@ -139,10 +150,11 @@ ls -ltr
        SievecheckStats "UnassociatedReadMisses"
        SievecheckStats "UnassociatedWriteMisses"
 
-#   Refeference file should be exact mathch lines 23 to 43 of StatisticOutput.csv.gold
+#   Refeference file should be exact match lines 23 to 43 of StatisticOutput.csv.gold
+#           Line numbers change slightly on Multi Rank.
 
-        sed -n 23,43p $referenceFile  > 23_43.ref
-        sed -n 23,43p $outFile > 23_43.out 
+        grep -w -e '^.$' -e '^..$' $referenceFile  > 23_43.ref
+        grep -w -e '^.$' -e '^..$' $outFile > 23_43.out 
         diff 23_43.ref 23_43.out
         if [ $? != 0 ] ; then
            echo " lines 23 to 43 of csv gold did not match"

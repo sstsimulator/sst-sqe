@@ -72,7 +72,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     OPWD=`pwd`
     export PKG_CONFIG_PATH=${SST_ROOT}/../../local/lib/pkgconfig
 
-    cd $SST_ROOT/sst/elements/ariel/frontend/simple
+    cd $SST_ROOT/sst-elements/src/sst/elements/ariel/frontend/simple
 
     pushd examples/stream
 
@@ -154,7 +154,7 @@ Ariel_template() {
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-    sutArgs="${SST_ROOT}/sst/elements/ariel/frontend/simple/examples/stream/${Ariel_case}.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/ariel/frontend/simple/examples/stream/${Ariel_case}.py"
     echo $sutArgs
     if [[ ${USE_OPENMP_BINARY:+isSet} == isSet ]] ; then
         export OMP_EXE=$SST_ROOT/test/testSuites/testopenMP/ompmybarrier/ompmybarrier
@@ -162,10 +162,10 @@ Ariel_template() {
         ls -l $OMP_EXE
     fi
     if [[ ${USE_MEMH:+isSet} == isSet ]] ; then
-        cd $SST_ROOT/sst/elements/ariel/frontend/simple      ## This is redundent
+        cd $SST_ROOT/sst-elements/src/sst/elements/ariel/frontend/simple      ## This is redundent
   
-        ln -sf ${SST_ROOT}/sst/elements/memHierarchy/tests/DDR3_micron_32M_8B_x4_sg125.ini .
-        ln -sf ${SST_ROOT}/sst/elements/memHierarchy/tests/system.ini .
+        ln -sf ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/DDR3_micron_32M_8B_x4_sg125.ini .
+        ln -sf ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/system.ini .
     fi 
 
     Tol=1            ##  Set tolerance at 0.1%
@@ -250,7 +250,7 @@ Ariel_template() {
     echo "Ariel ${Ariel_case}: Wall Clock Time  $elapsedSeconds seconds"
 }
 
-ls -l ${SST_ROOT}/sst/elements/ariel/frontend/simple/examples/stream
+ls -l ${SST_ROOT}/sst-elements/src/sst/elements/ariel/frontend/simple/examples/stream
 
 test_Ariel_runstream() {
     USE_OPENMP_BINARY=""

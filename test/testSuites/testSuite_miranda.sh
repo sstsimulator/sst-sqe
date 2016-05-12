@@ -66,7 +66,7 @@ miranda_case=$1
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/miranda/tests/${miranda_case}.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/miranda/tests/${miranda_case}.py"
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
