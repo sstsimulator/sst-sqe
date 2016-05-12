@@ -18,6 +18,25 @@ echo ' '
 pwd
 df -h .
 echo ' '
+
+#-------------------------------------------------------------------------
+# Function: TimeoutEx
+# Description:
+#   Purpose:
+#       This function is a wrapper Around the TimeoutEx.sh which will execute 
+#       a command with a timeout 
+#   Input:
+#       $@: Variable number of parameters depending upon module command operation
+#   Output: Any output from the command being run.
+#   Return value: The return value of the command being run or !=0 to indicate 
+#   a timeout or error.
+TimeoutEx() {
+    # Call (via "source") the moduleex.sh script with the passed in parameters  
+    $SST_ROOT/../sqe/test/utilities/TimeoutEx.sh $@
+    # Get the return value from the moduleex.sh
+    return $retval  
+}
+
 #=========================================================================
 # Definitions
 #=========================================================================
@@ -78,7 +97,7 @@ export SST_ROOT=`pwd`
 echo " SST_ROOT = $SST_ROOT"
 
 echo "#############################################################"
-echo "  Version March 30 1100 hours "
+echo "  Version May 12 1100 hours "
 echo ' '
 pwd
 ls -la
@@ -95,8 +114,8 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
 ## Cloning sst-core into <path>/devel/trunk   
    echo " "
-   echo "     git clone -b $SST_COREBRANCH $SST_COREREPO sst-core "
-   git clone -b $SST_COREBRANCH $SST_COREREPO sst-core
+   echo "     TimeoutEx -t 300 git clone -b $SST_COREBRANCH $SST_COREREPO sst-core "
+   TimeoutEx -t 300 git clone -b $SST_COREBRANCH $SST_COREREPO sst-core
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone of $SST_COREREPO \" FAILED.  retVal = $retVal"
@@ -125,8 +144,8 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
 ## Cloning sst-elements into <path>/devel/trunk     
    echo " "
-   echo "     git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
-   git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
+   echo "     TimeoutEx -t 300 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
+   TimeoutEx -t 300 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
    retVal=$?
    if [ $retVal != 0 ] ; then
       echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
