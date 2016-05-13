@@ -66,7 +66,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
         echo " Temporary patch"
         echo "Ariel on Ubuntu not working March 15th"
-        preFail "Ariel on Ubuntu not yet working"  "skip"
+        ## preFail "Ariel on Ubuntu not yet working"  "skip"
     fi    
 
     OPWD=`pwd`

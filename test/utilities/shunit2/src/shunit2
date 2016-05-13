@@ -942,7 +942,7 @@ _shunit_execSuite()
 
     # Setup to execute the test Case
     echo "         -------"
-    echo "${_shunit_case_}"
+    echo "${_shunit_case_} ${__project_name}"
     
     # Start the Time Limit Monitor
     $SST_TEST_UTILITIES/timeLimitEnforcer.sh $$ ${_shunit_case_} & 
@@ -1343,6 +1343,7 @@ if [ -z "${__shunit_pkg_name}" ]  # If no Jenkins project name, then create a de
 then
     __shunit_pkg_name="NonJenkinsRun"
 fi
+__project_name=`echo $__shunit_pkg_name | awk -F'testSuite_' '{print $2}'`
 
 # alter file descriptors
 #exec 6>&1 7>&2
