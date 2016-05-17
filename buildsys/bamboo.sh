@@ -3117,12 +3117,38 @@ else
 
             if [ $SST_BUILD_TYPE = "documentation" ]
             then
-                # build documentation, create list of undocumented files
+                # build sst-core documentation, create list of undocumented files
+                echo "Building SST-CORE Doxygen Documentation"
+                pushd $SST_ROOT/sst-core
                 ./autogen.sh
-                ./configure --disable-silent-rules --prefix=$HOME/local --with-boost=$BOOST_HOME
-                make html 2> $SST_ROOT/doc/makeHtmlErrors.txt
-                egrep "is not documented" $SST_ROOT/doc/makeHtmlErrors.txt | sort > $SST_ROOT/doc/undoc.txt
-                retval=0
+                ./configure --disable-silent-rules --prefix=$SST_CORE_INSTALL --with-boost=$BOOST_HOME
+                make html 2> ./doc/makeHtmlErrors.txt
+                egrep "is not documented" ./doc/makeHtmlErrors.txt | sort > ./doc/undoc.txt
+                test -d ./doc/html
+                retval=$?
+                if [ $retval -ne 0 ]
+                then
+                    echo "HTML directory not found! - Documentation build has failed"
+                    exit 1
+                fi
+                popd
+                
+                # build sst-elements documentation, create list of undocumented files
+                echo "Building SST-ELEMENTS Doxygen Documentation"
+                pushd $SST_ROOT/sst-elements
+                ./autogen.sh
+                ./configure --disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL
+                make html 2> ./doc/makeHtmlErrors.txt
+                egrep "is not documented" ./doc/makeHtmlErrors.txt | sort > ./doc/undoc.txt
+                test -d ./doc/html
+                retval=$?
+                if [ $retval -ne 0 ]
+                then
+                    echo "HTML directory not found! - Documentation build has failed"
+                    exit 1
+                fi
+                popd
+                
             else
                 # Perform the build
                 dobuild -t $SST_BUILD_TYPE -a $arch -k $kernel
@@ -3142,10 +3168,15 @@ if [ $retval -eq 0 ]
 then
     if [ $SST_BUILD_TYPE = "documentation" ]
     then
-        # dump list of undocumented files
-        echo "============================== DOXYGEN UNDOCUMENTED FILES =============================="
-        sed -e 's/^/#doxygen /' $SST_ROOT/doc/undoc.txt
-        echo "============================== DOXYGEN UNDOCUMENTED FILES =============================="
+        # dump list of sst-core undocumented files
+        echo "============================== SST-CORE DOXYGEN UNDOCUMENTED FILES =============================="
+        sed -e 's/^/#doxygen /' ./sst-core/doc/undoc.txt
+        echo "============================== SST-CORE DOXYGEN UNDOCUMENTED FILES =============================="
+        retval=0
+        # dump list of sst-elements undocumented files
+        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
+        sed -e 's/^/#doxygen /' ./sst-elements/doc/undoc.txt
+        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
         retval=0
     else
         # Build was successful, so run tests, providing command line args
