@@ -2808,6 +2808,12 @@ dobuild() {
             return $retval
         fi
         
+        echo
+        echo "=== DUMPING The SST-CORE installed sstsimulator.conf file ==="
+        echo "cat $SST_CORE/etc/sst/sstsimulator.conf"
+        cat $SST_CORE/etc/sst/sstsimulator.conf
+        echo
+        
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make install on SST-CORE complete without error"
@@ -2999,6 +3005,12 @@ dobuild() {
         then
             return $retval
         fi
+
+        echo
+        echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file ==="
+        echo "cat $HOME/.sst/sstsimulator.conf"
+        cat $HOME/.sst/sstsimulator.conf
+        echo
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
