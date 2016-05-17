@@ -2490,7 +2490,7 @@ ls
           echo "Untar of $tarName failed"
           exit 1
      fi
-     mv $Package trunk/sst-core
+     mv $Package sst-core
 
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
