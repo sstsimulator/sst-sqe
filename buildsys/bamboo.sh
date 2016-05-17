@@ -2495,6 +2495,8 @@ ls
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
      cd $SST_ROOT/sst-elements
+     echo "---   PWD  `pwd`"    
+ls
      Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
      tarName=${Package}.tar.gz
