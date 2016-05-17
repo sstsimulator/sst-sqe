@@ -2483,7 +2483,9 @@ setUPforMakeDisttest() {
           exit 1
      fi
      echo "   Untar the created file, $tarName"
+     echo "---   PWD  `pwd`"    
      tar xzf $tarName
+ls
      if [ $? -ne 0 ] ; then
           echo "Untar of $tarName failed"
           exit 1
