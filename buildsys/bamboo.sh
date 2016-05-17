@@ -2491,7 +2491,7 @@ setUPforMakeDisttest() {
      mv $Package trunk/sst-core
 
 #                          ELEMENTS
-         May 17, 2016    file name is sst-elements-library-devel.tar.gz
+#         May 17, 2016    file name is sst-elements-library-devel.tar.gz
      cd $SST_ROOT/sst-elements
      Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
