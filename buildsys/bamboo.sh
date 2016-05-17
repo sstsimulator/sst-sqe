@@ -37,6 +37,22 @@ TimeoutEx() {
     return $retval  
 }
 
+
+#-------------------------------------------------------------------------
+# Function: TimeoutEx
+# Trap the exit command an dump the $HOME/.sst/sstsimulator.conf file 
+# This is Temporary instrumentation for debugging external core testing issues.
+set -e
+function dumpconffile {
+    echo "EXIT COMMAND TRAPPED...."
+    echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file ==="
+    echo "cat $HOME/.sst/sstsimulator.conf"
+    cat $HOME/.sst/sstsimulator.conf
+    echo "=== DONE DUMPING ==="
+    echo
+}
+trap dumpconffile EXIT
+
 #=========================================================================
 # Definitions
 #=========================================================================
@@ -2808,6 +2824,12 @@ dobuild() {
             return $retval
         fi
         
+        echo
+        echo "=== DUMPING The SST-CORE installed sstsimulator.conf file ==="
+        echo "cat $SST_CORE_INSTALL/etc/sst/sstsimulator.conf"
+        cat $SST_CORE_INSTALL/etc/sst/sstsimulator.conf
+        echo
+        
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make install on SST-CORE complete without error"
@@ -2999,6 +3021,12 @@ dobuild() {
         then
             return $retval
         fi
+
+        echo
+        echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file ==="
+        echo "cat $HOME/.sst/sstsimulator.conf"
+        cat $HOME/.sst/sstsimulator.conf
+        echo
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
