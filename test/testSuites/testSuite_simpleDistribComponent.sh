@@ -53,13 +53,13 @@ Tol=$2    ##  curTick tolerance
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-        sutArgs="${SST_ROOT}/sst/elements/simpleElementExample/tests/test_simpleDistribComponent_${simpleDistrib_case}.py"
+        sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleDistribComponent_${simpleDistrib_case}.py"
         ls $sutArgs
         if [ $? != 0 ]
         then
           echo ' '
-          ls -d ${SST_ROOT}/sst/elements/simpleElementExample
-          ls ${SST_ROOT}/sst/elements/simpleElementExample
+          ls -d ${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample
+          ls ${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample
           echo ' '
         fi
 

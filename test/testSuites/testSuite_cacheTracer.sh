@@ -67,9 +67,9 @@ test_cacheTracer_1() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    cd ${SST_ROOT}/sst/elements/cacheTracer/tests
+    cd ${SST_ROOT}/sst-elements/src/sst/elements/cacheTracer/tests
 
-    sutArgs="${SST_ROOT}/sst/elements/cacheTracer/tests/test_cacheTracer_1.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/cacheTracer/tests/test_cacheTracer_1.py"
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -135,9 +135,9 @@ test_cacheTracer_2() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    cd ${SST_ROOT}/sst/elements/cacheTracer/tests
+    cd ${SST_ROOT}/sst-elements/src/sst/elements/cacheTracer/tests
 
-    sutArgs="${SST_ROOT}/sst/elements/cacheTracer/tests/test_cacheTracer_2.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/cacheTracer/tests/test_cacheTracer_2.py"
 
 touch $outFile
 ls $outFile

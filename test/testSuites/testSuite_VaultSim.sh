@@ -58,7 +58,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-    sutArgs=${SST_ROOT}/sst/elements/VaultSimC/tests/${VSim_case}.py
+    sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/VaultSimC/tests/${VSim_case}.py
 
     (${sut} ${sutArgs} > ${outFile})
         RetVal=$? 
