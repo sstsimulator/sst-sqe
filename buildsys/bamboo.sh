@@ -2466,7 +2466,7 @@ setUPforMakeDisttest() {
 #                             CORE
 #            May 17th, 2016     file is sstcore-6.0.0.tar.gz
      cd ${SST_ROOT}/sst-core
-     Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
+     Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
      tarName=${Package}.tar.gz
      ls $tarFile
