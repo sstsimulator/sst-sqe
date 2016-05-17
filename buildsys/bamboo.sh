@@ -2477,7 +2477,7 @@ setUPforMakeDisttest() {
      fi
      mkdir -p $SST_ROOT/distTestDir/trunk
      cd $SST_ROOT/distTestDir/trunk
-     mv $SST_ROOT/$tarName .
+     mv $SST_ROOT/sst-core/$tarName .
      if [ $? -ne 0 ] ; then
           echo "Move failed  \$SST_ROOT/$tarName to ."
           exit 1
@@ -2503,7 +2503,7 @@ setUPforMakeDisttest() {
          exit 1
      fi
      cd $SST_ROOT/distTestDir/trunk
-     mv $SST_ROOT/$tarName .
+     mv $SST_ROOT/sst-elements/$tarName .
      if [ $? -ne 0 ] ; then
           echo "Move failed  \$SST_ROOT/$tarName to ."
           exit 1
@@ -2514,7 +2514,9 @@ setUPforMakeDisttest() {
           echo "Untar of $tarName failed"
           exit 1
      fi
+     echo "---   PWD  `pwd`"    
      mv $Package sst-elements
+ls
 
      echo "Move in items not in the trunk, that are need for the bamboo build and test"
      cp  $SST_ROOT/../sqe/buildsys/bamboo.sh trunk
