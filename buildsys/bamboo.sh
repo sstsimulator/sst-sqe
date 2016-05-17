@@ -2826,8 +2826,8 @@ dobuild() {
         
         echo
         echo "=== DUMPING The SST-CORE installed sstsimulator.conf file ==="
-        echo "cat $SST_CORE/etc/sst/sstsimulator.conf"
-        cat $SST_CORE/etc/sst/sstsimulator.conf
+        echo "cat $SST_CORE_INSTALL/etc/sst/sstsimulator.conf"
+        cat $SST_CORE_INSTALL/etc/sst/sstsimulator.conf
         echo
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
