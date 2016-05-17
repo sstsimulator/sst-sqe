@@ -2463,6 +2463,9 @@ darwinSetBoostMPI() {
 setUPforMakeDisttest() {
      echo "Setting up to build from the tar created by make dist"
      echo "---   PWD  `pwd`"           ## Original trunk
+#                             CORE
+#            May 17th, 2016     file is sstcore-6.0.0.tar.gz
+     cd sst-core
      Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
      tarName=${Package}.tar.gz
@@ -2472,8 +2475,8 @@ setUPforMakeDisttest() {
          echo Can NOT find Tar File $Package .tar.gz
          exit 1
      fi
-     mkdir $SST_ROOT/distTestDir
-     cd $SST_ROOT/distTestDir
+     mkdir -p $SST_ROOT/distTestDir/trunk
+     cd $SST_ROOT/distTestDir/trunk
      mv $SST_ROOT/$tarName .
      if [ $? -ne 0 ] ; then
           echo "Move failed  \$SST_ROOT/$tarName to ."
@@ -2485,7 +2488,34 @@ setUPforMakeDisttest() {
           echo "Untar of $tarName failed"
           exit 1
      fi
-     mv $Package trunk
+     mv $Package trunk/sst-core
+
+#                          ELEMENTS
+         May 17, 2016    file name is sst-elements-library-devel.tar.gz
+     cd $SST_ROOT/sst-elements
+     Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
+     echo  PACKAGE is $Package
+     tarName=${Package}.tar.gz
+     ls $tarFile
+     if [ $? != 0 ] ; then
+         ls
+         echo Can NOT find Tar File $Package .tar.gz
+         exit 1
+     fi
+     cd $SST_ROOT/distTestDir/trunk
+     mv $SST_ROOT/$tarName .
+     if [ $? -ne 0 ] ; then
+          echo "Move failed  \$SST_ROOT/$tarName to ."
+          exit 1
+     fi
+     echo "   Untar the created file, $tarName"
+     tar xzf $tarName
+     if [ $? -ne 0 ] ; then
+          echo "Untar of $tarName failed"
+          exit 1
+     fi
+     mv $Package sst-elements
+
      echo "Move in items not in the trunk, that are need for the bamboo build and test"
      cp  $SST_ROOT/../sqe/buildsys/bamboo.sh trunk
      if [ -e trunk/deps ] ; then
