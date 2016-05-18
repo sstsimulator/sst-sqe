@@ -2915,7 +2915,7 @@ dobuild() {
             echo "NOTICE: BUILDING SST-ELEMENTS IN SOURCE DIR"
             echo "Starting Dir = `pwd`"
             echo "pushd sst-elements"
-            pushd sst-elements
+            pushd ${sst_ROOT}/sst-elements
             echo "Current Working Dir = `pwd`"
             ls -l
             elementssourcedir="."
