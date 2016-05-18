@@ -97,7 +97,7 @@ export SST_ROOT=`pwd`
 echo " SST_ROOT = $SST_ROOT"
 
 echo "#############################################################"
-echo "  Version May 12 1100 hours "
+echo "  Version May 18 1351 hours "
 echo ' '
 pwd
 ls -la
@@ -2931,6 +2931,10 @@ dobuild() {
         
         # Configure SST-ELEMENTS
         echo "=== Running $elementssourcedir/configure <config args> ==="
+echo PWD  `pwd`
+   ls
+find ../.. -name configure
+echo ' '
         $elementssourcedir/configure $SST_SELECTED_ELEMENTS_CONFIG
         retval=$?
         if [ $retval -ne 0 ]
