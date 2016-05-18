@@ -42,7 +42,7 @@ TimeoutEx() {
 # Function: TimeoutEx
 # Trap the exit command an dump the $HOME/.sst/sstsimulator.conf file 
 # This is Temporary instrumentation for debugging external core testing issues.
-set -e
+#set -e
 function dumpconffile {
     echo "EXIT COMMAND TRAPPED...."
     echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file ==="
