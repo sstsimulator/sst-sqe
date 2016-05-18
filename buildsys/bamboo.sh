@@ -2770,6 +2770,10 @@ dobuild() {
             echo ' '    
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             make dist
+            if [ $retval -ne 0 ]
+            then
+                return $retval
+            fi
             retval=$?
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
@@ -2934,6 +2938,8 @@ echo PWD  `pwd`
    ls
 find ../.. -name configure
 echo ' '
+echo PATH 
+env $PATH
         $elementssourcedir/configure $SST_SELECTED_ELEMENTS_CONFIG
         retval=$?
         if [ $retval -ne 0 ]
@@ -2964,6 +2970,10 @@ echo ' '
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             make dist
             retval=$?
+            if [ $retval -ne 0 ]
+            then
+                return $retval
+            fi
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
             echo "bamboo.sh: make dist on SST-ELEMENTS is complete without error"
