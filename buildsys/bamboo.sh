@@ -2648,7 +2648,7 @@ dobuild() {
         return $retval
     fi
 
-    echo "==================== SETTING UP TO BUILD SST CORE AND ELEMENTS ===================="
+    echo "==================== SETTING UP TO BUILD SST CORE AND ELEMENTS ====="
     SAVE_LIBRARY_PATH=$LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=${SST_INSTALL_DEPS}/lib:${SST_INSTALL_DEPS}/lib/sst:${SST_DEPS_INSTALL_GEM5SST}:${SST_INSTALL_DEPS}/packages/DRAMSim:${SST_DEPS_INSTALL_NVDIMMSIM}:${SST_DEPS_INSTALL_HYBRIDSIM}:${SST_INSTALL_DEPS}/packages/Qsim/lib:${SST_DEPS_INSTALL_CHDL}/lib:${LD_LIBRARY_PATH}
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BOOST_LIBS
@@ -2675,11 +2675,11 @@ dobuild() {
         echo "==================== Building SST CORE ===================="
         
         # autogen to create ./configure
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: running \"autogen.sh\" on SST-CORE..."
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
         # Autogen SST-CORE
         ### First Run autogen in the source dir to create the configure file
@@ -2704,11 +2704,11 @@ dobuild() {
         echo "Current Working Dir = `pwd`"
         ls -l
 
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: autogen on SST-CORE complete without error"
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
 
         # Check to see if we are supposed to build out of the source
@@ -2732,11 +2732,11 @@ dobuild() {
             coresourcedir="."
         fi        
 
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: running \"configure\" on SST-CORE..."
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "bamboo.sh: config args = $SST_SELECTED_CORE_CONFIG"
         
         # Configure SST-CORE
@@ -2753,109 +2753,108 @@ dobuild() {
             return $retval
         fi
         
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: configure on SST-CORE complete without error"
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
         
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
         if [[ $buildtype == *_dist_* ]] ; then
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
             echo "bamboo.sh: make dist on SST-CORE"
             echo ' '    
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             make dist
             retval=$?
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
             echo "bamboo.sh: make dist on SST_CORE is complete without error"
             echo ' '    
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo " "
             ls -ltr | tail -5
-            return $retval        ##   This is in dobuild
-        fi
-        
-        
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo "bamboo.sh: make on SST-CORE"
-        echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Compile SST-CORE
-        echo "=== Running make -j4 all ==="
-        make -j4 all
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-        
-        # print build and linkage information for warm fuzzy
-        echo "SST-CORE BUILD INFO============================================================"
-        echo "Built SST-CORE with configure string"
-        echo "    ./configure ${SST_SELECTED_CORE_CONFIG}"
-        echo "----------------"
-        echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-        if [ $kernel == "Darwin" ]
-        then
-            # Mac OS X
-            echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
-        fi
-        echo "----------------"
-        echo "sst exectuable linkage information"
-    
-        if [ $kernel == "Darwin" ]
-        then
-            # Mac OS X 
-            echo "$ otool -L $coresourcedir/src/sst/core/sstsim.x"
-            otool -L $coresourcedir/src/sst/core/sstsim.x
         else
-            echo "$ ldd $coresourcedir/src/sst/core/sstsim.x"
-            ldd $coresourcedir/src/sst/core/sstsim.x
+        
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make on SST-CORE"
+            echo ' '    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    
+            # Compile SST-CORE
+            echo "=== Running make -j4 all ==="
+            make -j4 all
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                return $retval
+            fi
+            
+            # print build and linkage information for warm fuzzy
+            echo "SST-CORE BUILD INFO============================================="
+            echo "Built SST-CORE with configure string"
+            echo "    ./configure ${SST_SELECTED_CORE_CONFIG}"
+            echo "----------------"
+            echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+            if [ $kernel == "Darwin" ]
+            then
+                # Mac OS X
+                echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
+            fi
+            echo "----------------"
+            echo "sst exectuable linkage information"
+        
+            if [ $kernel == "Darwin" ]
+            then
+                # Mac OS X 
+                echo "$ otool -L $coresourcedir/src/sst/core/sstsim.x"
+                otool -L $coresourcedir/src/sst/core/sstsim.x
+            else
+                echo "$ ldd $coresourcedir/src/sst/core/sstsim.x"
+                ldd $coresourcedir/src/sst/core/sstsim.x
+            fi
+            echo "SST-CORE BUILD INFO============================================="
+                    
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make on SST-CORE complete without error"
+            echo ' '    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo " "
+            
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make install on SST-CORE"
+            echo ' '    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            
+            # Install SST-CORE
+            echo "=== Running make -j4 install ==="
+            make -j4 install
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                return $retval
+            fi
+            
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make install on SST-CORE complete without error"
+            echo ' '    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo " "
+            
+            # Go back to devel/trunk
+            echo "popd"
+            popd
+            echo "Current Working Dir = `pwd`"
+            ls -l
         fi
-        echo "SST-CORE BUILD INFO============================================================"
-                
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo "bamboo.sh: make on SST-CORE complete without error"
-        echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-        
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo "bamboo.sh: make install on SST-CORE"
-        echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        
-        # Install SST-CORE
-        echo "=== Running make -j4 install ==="
-        make -j4 install
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-        
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo "bamboo.sh: make install on SST-CORE complete without error"
-        echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-        
-        # Go back to devel/trunk
-        echo "popd"
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
     fi
 
     ### BUILDING THE SST-ELEMENTS
@@ -2866,11 +2865,11 @@ dobuild() {
         echo "==================== Building SST ELEMENTS ===================="
 
         # autogen to create ./configure
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: running \"autogen.sh\" on SST-ELEMENTS..."
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
         # Autogen SST-ELEMENTS
         ### First Run autogen in the source dir to create the configure file
@@ -2895,11 +2894,11 @@ dobuild() {
         echo "Current Working Dir = `pwd`"
         ls -l
 
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: autogen on SST-ELEMENTS complete without error"
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
         # Check to see if we are supposed to build out of the source
@@ -2923,11 +2922,11 @@ dobuild() {
             elementssourcedir="."
         fi        
         
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: running \"configure\" on SST-ELEMENTS..."
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "bamboo.sh: config args = $SST_SELECTED_ELEMENTS_CONFIG"
         
         # Configure SST-ELEMENTS
@@ -2944,40 +2943,40 @@ dobuild() {
             return $retval
         fi
         
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: configure on SST-ELEMENTS complete without error"
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
         
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
         if [[ $buildtype == *_dist_* ]] ; then
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
             echo "bamboo.sh: make dist on SST-ELEMENTS"
             echo ' '    
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             make dist
             retval=$?
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
             echo "bamboo.sh: make dist on SST-ELEMENTS is complete without error"
             echo ' '    
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo " "
             ls -ltr | tail -5
             return $retval        ##   This is in dobuild
         fi
         
         
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make on SST-ELEMENTS"
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Compile SST-ELEMENTS
         echo "=== Running make -j4 all ==="
@@ -2990,7 +2989,7 @@ dobuild() {
 
 ## NOT SURE IF THIS HAS A PLACE IN THE SPLIT CORE / ELEMENTS CONSTRUCTION        
 ##        # print build and linkage information for warm fuzzy
-##        echo "SST-ELEMENTS BUILD INFO============================================================"
+##        echo "SST-ELEMENTS BUILD INFO========================================"
 ##        echo "Built SST-ELEMENTS with configure string"
 ##        echo "    ./configure ${SST_SELECTED_ELEMENTS_CONFIG}"
 ##        echo "----------------"
@@ -3012,20 +3011,20 @@ dobuild() {
 ##            echo "$ ldd ./sst/core/sstsim.x"
 ##            ldd ./sst/core/sstsim.x
 ##        fi
-##        echo "SST-ELEMENTS BUILD INFO============================================================"
+##        echo "SST-ELEMENTS BUILD INFO========================================"
                 
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make on SST-ELEMENTS complete without error"
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make install on SST-ELEMENTS"
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
         # Install SST-ELEMENTS
         echo "=== Running make -j4 install ==="
@@ -3036,11 +3035,11 @@ dobuild() {
             return $retval
         fi
         
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make install on SST-ELEMENTS complete without error"
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
         # Go back to devel/trunk
@@ -3060,9 +3059,9 @@ dobuild() {
 # $4 = compiler type
 #=========================================================================
 
-echo "==============================INITIAL ENVIRONMENT DUMP=============================="
+echo "==============================INITIAL ENVIRONMENT DUMP================="
 env|sort
-echo "==============================INITIAL ENVIRONMENT DUMP=============================="
+echo "==============================INITIAL ENVIRONMENT DUMP================="
 
 retval=0
 echo  $0  $1 $2 $3 $4
@@ -3179,9 +3178,9 @@ then
     if [ $SST_BUILD_TYPE = "documentation" ]
     then
         # dump list of undocumented files
-        echo "============================== DOXYGEN UNDOCUMENTED FILES =============================="
+        echo "============================== DOXYGEN UNDOCUMENTED FILES ======="
         sed -e 's/^/#doxygen /' $SST_ROOT/doc/undoc.txt
-        echo "============================== DOXYGEN UNDOCUMENTED FILES =============================="
+        echo "============================== DOXYGEN UNDOCUMENTED FILES ======="
         retval=0
     else
         # Build was successful, so run tests, providing command line args
