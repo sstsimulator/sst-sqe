@@ -2876,7 +2876,7 @@ dobuild() {
         echo "NOTE: Autogen Must be run in SST-ELEMENTS Source Dir to create configuration file"
         echo "Current Working Dir = `pwd`"
         echo "pushd sst-elements"
-        pushd sst-elements
+        pushd ${SST_ROOT}/sst-elements
         echo "Autogen Working Dir = `pwd`"
         ls -l
         echo "=== Running autogen.sh ==="
