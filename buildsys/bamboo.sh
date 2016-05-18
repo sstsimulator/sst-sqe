@@ -2889,7 +2889,6 @@ dobuild() {
         fi
 
         echo "Done with Autogen"
-        echo "popd"
         popd
         echo "Current Working Dir = `pwd`"
         ls -l
