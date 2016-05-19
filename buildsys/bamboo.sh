@@ -102,7 +102,9 @@ echo ' '
 pwd
 ls -la
 echo ' '
-pushd ../sqe
+echo "PWD = `pwd`"
+pushd ${SST_BASE}/devel/sqe
+echo "PWD = `pwd`"
 echo "               SQE branch"
 git branch
 echo ' '
