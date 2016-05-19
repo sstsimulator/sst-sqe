@@ -97,7 +97,7 @@ export SST_ROOT=`pwd`
 echo " SST_ROOT = $SST_ROOT"
 
 echo "#############################################################"
-echo "  Version May 18 1351 hours "
+echo "  Version May 19 0902 hours "
 echo ' '
 pwd
 ls -la
@@ -2770,11 +2770,11 @@ dobuild() {
             echo ' '    
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             make dist
+            retval=$?
             if [ $retval -ne 0 ]
             then
                 return $retval
             fi
-            retval=$?
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
             echo "bamboo.sh: make dist on SST_CORE is complete without error"
@@ -2782,7 +2782,12 @@ dobuild() {
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo " "
             ls -ltr | tail -5
-        else
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: After make dist on SST_CORE do the make install "
+            echo ' '    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        fi
         
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
@@ -2858,7 +2863,6 @@ dobuild() {
             popd
             echo "Current Working Dir = `pwd`"
             ls -l
-        fi
     fi
 
     ### BUILDING THE SST-ELEMENTS
@@ -2968,19 +2972,20 @@ env $PATH
             echo "bamboo.sh: make dist on SST-ELEMENTS"
             echo ' '    
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-echo " ####################################################### "
-echo ' '
-echo "              First try a make install in core"
-echo ' '
-echo " ####################################################### "
-      pushd ${SST_ROOT}/sst-core
-      make install
-      ls ${BASE}/local/sst-core/bin
-echo " ####################################################### "
-echo ' '
-echo "              "Are we now ready for ELEMENTS make dist?"
-echo ' '
-echo " ####################################################### "
+## echo " ####################################################### "
+## echo ' '
+## echo "              First try a make install in core"
+## echo ' '
+## echo " ####################################################### "
+##       pushd ${SST_ROOT}/sst-core
+##       make install
+##       ls ${BASE}/local/sst-core/bin
+##       popd
+## echo " ####################################################### "
+## echo ' '
+## echo "              "Are we now ready for ELEMENTS make dist?"
+## echo ' '
+## echo " ####################################################### "
 
             make dist
             retval=$?
