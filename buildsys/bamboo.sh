@@ -2968,6 +2968,20 @@ env $PATH
             echo "bamboo.sh: make dist on SST-ELEMENTS"
             echo ' '    
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo " ####################################################### "
+echo ' '
+echo "              First try a make install in core"
+echo ' '
+echo " ####################################################### "
+      pushd ${SST_ROOT}/sst-core
+      make install
+      ls ${BASE}/local/sst-core/bin
+echo " ####################################################### "
+echo ' '
+echo "              "Are we now ready for ELEMENTS make dist?"
+echo ' '
+echo " ####################################################### "
+
             make dist
             retval=$?
             if [ $retval -ne 0 ]
