@@ -2455,13 +2455,13 @@ darwinSetBoostMPI() {
 #-------------------------------------------------------------------------
 # Function: setUPforMakeDisttest
 # Description:
-#   Purpose: Unpack the make-dist tar and set the environment for testing 
+#   Purpose: Unpack the make-dist tars and set the environment for testing 
 #          
 #   Input:
 #   Output:
 #   Return value:
 setUPforMakeDisttest() {
-     echo "Setting up to build from the tar created by make dist"
+     echo "Setting up to build from the tars created by make dist"
      echo "---   PWD  `pwd`"           ## Original trunk
 #                             CORE
 #            May 17th, 2016     file is sstcore-6.0.0.tar.gz
@@ -2469,7 +2469,7 @@ setUPforMakeDisttest() {
      Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
      tarName=${Package}.tar.gz
-     ls $tarFile
+     ls $tarName
      if [ $? != 0 ] ; then
          ls
          echo Can NOT find Tar File $Package .tar.gz
@@ -2500,7 +2500,7 @@ ls
      Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
      tarName=${Package}.tar.gz
-     ls $tarFile
+     ls $tarName
      if [ $? != 0 ] ; then
          ls
          echo Can NOT find Tar File $Package .tar.gz
@@ -2523,22 +2523,27 @@ ls
 ls
 
      echo "Move in items not in the trunk, that are need for the bamboo build and test"
-     cp  $SST_ROOT/../sqe/buildsys/bamboo.sh trunk
-     if [ -e trunk/deps ] ; then
-        cp -r $SST_ROOT/deps/bin trunk/deps       ## the deps scripts
-        cp -r $SST_ROOT/deps/include trunk/deps          ## the deps scripts
-        cp -r $SST_ROOT/deps/patches trunk/deps          ## the deps scripts
+
+echo "####################################################################"
+echo "        Where are we?   Where are we supposed to be?  "
+echo ' '
+     echo "---   PWD  `pwd`"    
+echo  "   we are in distTestDir/trunk"
+     cp  $SST_ROOT/../sqe/buildsys/bamboo.sh .
+     if [ -e ./deps ] ; then
+        cp -r $SST_ROOT/deps/bin ./deps       ## the deps scripts
+        cp -r $SST_ROOT/deps/include ./deps          ## the deps scripts
+        cp -r $SST_ROOT/deps/patches ./deps          ## the deps scripts
      else
-        cp -r $SST_ROOT/deps trunk          ## the deps scripts
+        cp -r $SST_ROOT/deps .          ## the deps scripts
      fi
-     if [ ! -e trunk/deps/bin ] ; then
+     if [ ! -e ./deps/bin ] ; then
          echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
          echo SST_ROOT = $SST_ROOT
          ls $SST_ROOT/deps
          echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
          exit
      fi
-     cd trunk
      echo "                   List the directories in sst/elements"
      ls sst/elements
      echo ' '
