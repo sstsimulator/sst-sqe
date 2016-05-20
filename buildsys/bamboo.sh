@@ -234,7 +234,7 @@ export SST_INSTALL=${SST_CORE_INSTALL}
 export SST_INSTALL_BIN=${SST_CORE_INSTALL_BIN}
 
 # Setup the Location to find the sstsimulator.conf file
-export SST_CONFIG_FILE_PATH=${SST_CORE_INSTALL}/etc/sst/
+export SST_CONFIG_FILE_PATH=${SST_CORE_INSTALL}/etc/sst
 
 
 # Location where SST dependencies are installed. This only specifies
