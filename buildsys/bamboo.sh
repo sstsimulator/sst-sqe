@@ -2547,13 +2547,13 @@ echo  "   we are in distTestDir/trunk"
          exit
      fi
      echo "                   List the directories in sst/elements"
-     ls sst/elements
+     ls sst-elements/src/sst/elements
      echo ' '
 echo "####################################################################"
 echo "#             Remove the problem from auto tools."
 echo "#             We have content less directories"
 
-pushd sst/elements
+pushd sst-elements/src/sst/elements
 
 for dir in `ls`
 do
@@ -2617,8 +2617,13 @@ echo "####################################################################"
          distProject="sstmainline_config_no_gem5"
      fi
 
+     echo "---   PWD  `pwd`"    
 echo ' ' ; echo ' '
 echo " I can't beleive this is going to work "
+echo where is BAMBOO
+echo " PWD  `pwd` "
+cd $SST_ROOT/distTestDir/trunk
+find ../.. -name bamboo.sh
 echo ' ' ; echo ' '
               ##  Here is the bamboo invocation within bamboo
      echo "         INVOKE bamboo for the build from the dist tar"
