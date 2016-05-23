@@ -39,19 +39,18 @@ TimeoutEx() {
 
 
 #-------------------------------------------------------------------------
-# Function: TimeoutEx
-# Trap the exit command an dump the $HOME/.sst/sstsimulator.conf file 
-# This is Temporary instrumentation for debugging external core testing issues.
-#set -e
-function dumpconffile {
+# Function: ExitOfScriptHandler
+# Trap the exit command and perform end of script processing.
+function ExitOfScriptHandler {
     echo "EXIT COMMAND TRAPPED...."
+    echo
     echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file ==="
     echo "cat $HOME/.sst/sstsimulator.conf"
     cat $HOME/.sst/sstsimulator.conf
     echo "=== DONE DUMPING ==="
     echo
 }
-trap dumpconffile EXIT
+trap ExitOfScriptHandler EXIT
 
 #=========================================================================
 # Definitions
@@ -233,6 +232,9 @@ export SST_ELEMENTS_INSTALL_BIN=${SST_ELEMENTS_INSTALL}/bin
 export SST_INSTALL=${SST_CORE_INSTALL}
 # Location where SST build files are installed
 export SST_INSTALL_BIN=${SST_CORE_INSTALL_BIN}
+
+# Setup the Location to find the sstsimulator.conf file
+export SST_CONFIG_FILE_PATH=${SST_CORE_INSTALL}/etc/sst/sstsimulator.conf
 
 
 # Location where SST dependencies are installed. This only specifies
@@ -3023,9 +3025,15 @@ dobuild() {
         fi
 
         echo
-        echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file ==="
+        echo "=== DUMPING The SST-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
         echo "cat $HOME/.sst/sstsimulator.conf"
         cat $HOME/.sst/sstsimulator.conf
+        echo
+        
+        echo
+        echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
+        echo "cat $SST_CONFIG_FILE_PATH"
+        cat $SST_CONFIG_FILE_PATH
         echo
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
