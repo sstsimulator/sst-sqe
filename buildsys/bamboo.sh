@@ -2549,6 +2549,29 @@ echo  "   we are in distTestDir/trunk"
      echo "                   List the directories in sst/elements"
      ls sst/elements
      echo ' '
+echo "####################################################################"
+echo "#             Remove the problem from auto tools."
+echo "#             We have content less directories"
+
+pushd sst/elements
+
+for dir in `ls`
+do
+   if [ -d $dir ] ; then
+#      echo $dir
+      ct=`ls -d $dir/* | wc -l`
+#      echo $ct
+      if [ $ct == 1 ] ; then
+          echo $dir
+          ls $dir/
+          rm $dir/*m4
+          rmdir $dir
+      fi
+   fi
+done
+ls
+popd
+echo "####################################################################"
      ln -s ../../test              ## the subtree of tests
      ls -l
      echo SST_INSTALL_DEPS =  $SST_INSTALL_DEPS
@@ -2594,6 +2617,9 @@ echo  "   we are in distTestDir/trunk"
          distProject="sstmainline_config_no_gem5"
      fi
 
+echo ' ' ; echo ' '
+echo " I can't beleive this is going to work "
+echo ' ' ; echo ' '
               ##  Here is the bamboo invocation within bamboo
      echo "         INVOKE bamboo for the build from the dist tar"
      ./bamboo.sh $distProject $SST_DIST_MPI $SST_DIST_BOOST $SST_DIST_PARAM4
