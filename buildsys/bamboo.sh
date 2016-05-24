@@ -196,7 +196,21 @@ fi
 
 echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE - NOW SETTING ENV RUNTIME VARS ########"
 
-
+echo 
+echo 
+echo
+echo "#### DELETING THE HOME/.sst/sstsimulator.conf file ####"
+echo "#### NOTE: THIS CODE MAY NEED TO BE REMOVED IN THE NEAR FUTURE"
+echo "BEFORE:ls $HOME/.sst/sstsimulator.conf" 
+ls $HOME/.sst/sstsimulator.conf 
+echo "rm -f $HOME/.sst/sstsimulator.conf" 
+rm -f $HOME/.sst/sstsimulator.conf 
+echo "AFTER: ls $HOME/.sst/sstsimulator.conf" 
+ls $HOME/.sst/sstsimulator.conf 
+echo "#### DONE DELETING THE HOME/.sst/sstsimulator.conf file ####"
+echo 
+echo 
+echo 
 #	This assumes a directory strucure
 #                     SST_BASE   (was $HOME)
 #           devel                sstDeps
