@@ -1,18 +1,18 @@
-RequestGenCPU[RequestGenCPU:30]: Configured CPU to allow 16 maximum requests to be memory to be outstanding.
-RequestGenCPU[RequestGenCPU:34]: Memory interface to be loaded is: memHierarchy.memInterface
-RequestGenCPU[RequestGenCPU:45]: Loaded memory interface successfully.
-RequestGenCPU[RequestGenCPU:48]: Initializing memory interface...
-RequestGenCPU[RequestGenCPU:53]: Loaded memory initialize routine returned successfully.
-RequestGenCPU[RequestGenCPU:61]: Loaded memory interface successfully.
-RequestGenCPU[RequestGenCPU:65]: Request generator to be loaded is: miranda.Stencil3DBenchGenerator
-RequestGenCPU[RequestGenCPU:72]: Generator loaded successfully.
-RequestGenCPU[RequestGenCPU:78]: CPU clock configured for 2GHz
-RequestGenCPU[RequestGenCPU:101]: Miranda CPU Configuration:
-RequestGenCPU[RequestGenCPU:102]: - Max reorder lookups             16
-RequestGenCPU[RequestGenCPU:103]: - Clock:                          2GHz
-RequestGenCPU[RequestGenCPU:104]: - Cache line size:                64 bytes
-RequestGenCPU[RequestGenCPU:105]: - Max requests per cycle:         2
-RequestGenCPU[RequestGenCPU:107]: Configuration completed.
+cpu:RequestGenCPU[RequestGenCPU:34]: Configured CPU to allow 16 maximum requests to be memory to be outstanding.
+cpu:RequestGenCPU[RequestGenCPU:38]: Memory interface to be loaded is: memHierarchy.memInterface
+cpu:RequestGenCPU[RequestGenCPU:49]: Loaded memory interface successfully.
+cpu:RequestGenCPU[RequestGenCPU:52]: Initializing memory interface...
+cpu:RequestGenCPU[RequestGenCPU:57]: Loaded memory initialize routine returned successfully.
+cpu:RequestGenCPU[RequestGenCPU:65]: Loaded memory interface successfully.
+cpu:RequestGenCPU[RequestGenCPU:72]: CPU clock configured for 2GHz
+cpu:RequestGenCPU[RequestGenCPU:78]: Request generator to be loaded is: miranda.Stencil3DBenchGenerator
+cpu:RequestGenCPU[RequestGenCPU:84]: Generator loaded successfully.
+cpu:RequestGenCPU[RequestGenCPU:123]: Miranda CPU Configuration:
+cpu:RequestGenCPU[RequestGenCPU:124]: - Max reorder lookups             16
+cpu:RequestGenCPU[RequestGenCPU:125]: - Clock:                          2GHz
+cpu:RequestGenCPU[RequestGenCPU:126]: - Cache line size:                64 bytes
+cpu:RequestGenCPU[RequestGenCPU:127]: - Max requests per cycle:         2
+cpu:RequestGenCPU[RequestGenCPU:129]: Configuration completed.
  cpu.read_reqs : Accumulator : Sum.u64 = 108864; SumSQ.u64 = 108864; Count.u64 = 108864; 
  cpu.write_reqs : Accumulator : Sum.u64 = 4032; SumSQ.u64 = 4032; Count.u64 = 4032; 
  cpu.split_read_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 

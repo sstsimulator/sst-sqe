@@ -37,6 +37,21 @@ TimeoutEx() {
     return $retval  
 }
 
+
+#-------------------------------------------------------------------------
+# Function: ExitOfScriptHandler
+# Trap the exit command and perform end of script processing.
+function ExitOfScriptHandler {
+    echo "EXIT COMMAND TRAPPED...."
+    echo
+    echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file ==="
+    echo "cat $HOME/.sst/sstsimulator.conf"
+    cat $HOME/.sst/sstsimulator.conf
+    echo "=== DONE DUMPING ==="
+    echo
+}
+trap ExitOfScriptHandler EXIT
+
 #=========================================================================
 # Definitions
 #=========================================================================
@@ -183,7 +198,21 @@ fi
 
 echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE - NOW SETTING ENV RUNTIME VARS ########"
 
-
+echo 
+echo 
+echo
+echo "#### DELETING THE HOME/.sst/sstsimulator.conf file ####"
+echo "#### NOTE: THIS CODE MAY NEED TO BE REMOVED IN THE NEAR FUTURE"
+echo "BEFORE:ls $HOME/.sst/sstsimulator.conf" 
+ls $HOME/.sst/sstsimulator.conf 
+echo "rm -f $HOME/.sst/sstsimulator.conf" 
+rm -f $HOME/.sst/sstsimulator.conf 
+echo "AFTER: ls $HOME/.sst/sstsimulator.conf" 
+ls $HOME/.sst/sstsimulator.conf 
+echo "#### DONE DELETING THE HOME/.sst/sstsimulator.conf file ####"
+echo 
+echo 
+echo 
 #	This assumes a directory strucure
 #                     SST_BASE   (was $HOME)
 #           devel                sstDeps
@@ -219,6 +248,9 @@ export SST_ELEMENTS_INSTALL_BIN=${SST_ELEMENTS_INSTALL}/bin
 export SST_INSTALL=${SST_CORE_INSTALL}
 # Location where SST build files are installed
 export SST_INSTALL_BIN=${SST_CORE_INSTALL_BIN}
+
+# Setup the Location to find the sstsimulator.conf file
+export SST_CONFIG_FILE_PATH=${SST_CORE_INSTALL}/etc/sst/sstsimulator.conf
 
 
 # Location where SST dependencies are installed. This only specifies
@@ -2842,28 +2874,51 @@ dobuild() {
             echo ' '    
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     
-            # Compile SST-CORE
-            echo "=== Running make -j4 all ==="
-            make -j4 all
-            retval=$?
-            if [ $retval -ne 0 ]
-            then
-                return $retval
-            fi
-            
-            # print build and linkage information for warm fuzzy
-            echo "SST-CORE BUILD INFO============================================="
-            echo "Built SST-CORE with configure string"
-            echo "    ./configure ${SST_SELECTED_CORE_CONFIG}"
-            echo "----------------"
-            echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-            if [ $kernel == "Darwin" ]
-            then
-                # Mac OS X
-                echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
-            fi
-            echo "----------------"
-            echo "sst exectuable linkage information"
+        if [ $kernel == "Darwin" ]
+        then
+            # Mac OS X 
+            echo "$ otool -L $coresourcedir/src/sst/core/sstsim.x"
+            otool -L $coresourcedir/src/sst/core/sstsim.x
+        else
+            echo "$ ldd $coresourcedir/src/sst/core/sstsim.x"
+            ldd $coresourcedir/src/sst/core/sstsim.x
+        fi
+        echo "SST-CORE BUILD INFO============================================================"
+                
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make on SST-CORE complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install on SST-CORE"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
+        # Install SST-CORE
+        echo "=== Running make -j4 install ==="
+        make -j4 install
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+        
+        echo
+        echo "=== DUMPING The SST-CORE installed sstsimulator.conf file ==="
+        echo "cat $SST_CORE_INSTALL/etc/sst/sstsimulator.conf"
+        cat $SST_CORE_INSTALL/etc/sst/sstsimulator.conf
+        echo
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install on SST-CORE complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
         
             if [ $kernel == "Darwin" ]
             then
@@ -3113,6 +3168,18 @@ env $PATH
         then
             return $retval
         fi
+
+        echo
+        echo "=== DUMPING The SST-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
+        echo "cat $HOME/.sst/sstsimulator.conf"
+        cat $HOME/.sst/sstsimulator.conf
+        echo
+        
+        echo
+        echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
+        echo "cat $SST_CONFIG_FILE_PATH"
+        cat $SST_CONFIG_FILE_PATH
+        echo
         
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
@@ -3231,12 +3298,38 @@ else
 
             if [ $SST_BUILD_TYPE = "documentation" ]
             then
-                # build documentation, create list of undocumented files
+                # build sst-core documentation, create list of undocumented files
+                echo "Building SST-CORE Doxygen Documentation"
+                pushd $SST_ROOT/sst-core
                 ./autogen.sh
-                ./configure --disable-silent-rules --prefix=$HOME/local --with-boost=$BOOST_HOME
-                make html 2> $SST_ROOT/doc/makeHtmlErrors.txt
-                egrep "is not documented" $SST_ROOT/doc/makeHtmlErrors.txt | sort > $SST_ROOT/doc/undoc.txt
-                retval=0
+                ./configure --disable-silent-rules --prefix=$SST_CORE_INSTALL --with-boost=$BOOST_HOME
+                make html 2> ./doc/makeHtmlErrors.txt
+                egrep "is not documented" ./doc/makeHtmlErrors.txt | sort > ./doc/undoc.txt
+                test -d ./doc/html
+                retval=$?
+                if [ $retval -ne 0 ]
+                then
+                    echo "HTML directory not found! - Documentation build has failed"
+                    exit 1
+                fi
+                popd
+                
+                # build sst-elements documentation, create list of undocumented files
+                echo "Building SST-ELEMENTS Doxygen Documentation"
+                pushd $SST_ROOT/sst-elements
+                ./autogen.sh
+                ./configure --disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL
+                make html 2> ./doc/makeHtmlErrors.txt
+                egrep "is not documented" ./doc/makeHtmlErrors.txt | sort > ./doc/undoc.txt
+                test -d ./doc/html
+                retval=$?
+                if [ $retval -ne 0 ]
+                then
+                    echo "HTML directory not found! - Documentation build has failed"
+                    exit 1
+                fi
+                popd
+                
             else
                 # Perform the build
                 dobuild -t $SST_BUILD_TYPE -a $arch -k $kernel
@@ -3256,10 +3349,15 @@ if [ $retval -eq 0 ]
 then
     if [ $SST_BUILD_TYPE = "documentation" ]
     then
-        # dump list of undocumented files
-        echo "============================== DOXYGEN UNDOCUMENTED FILES ======="
-        sed -e 's/^/#doxygen /' $SST_ROOT/doc/undoc.txt
-        echo "============================== DOXYGEN UNDOCUMENTED FILES ======="
+        # dump list of sst-core undocumented files
+        echo "============================== SST-CORE DOXYGEN UNDOCUMENTED FILES =============================="
+        sed -e 's/^/#doxygen /' ./sst-core/doc/undoc.txt
+        echo "============================== SST-CORE DOXYGEN UNDOCUMENTED FILES =============================="
+        retval=0
+        # dump list of sst-elements undocumented files
+        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
+        sed -e 's/^/#doxygen /' ./sst-elements/doc/undoc.txt
+        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
         retval=0
     else
         # Build was successful, so run tests, providing command line args
