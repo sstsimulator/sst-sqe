@@ -2990,6 +2990,14 @@ dobuild() {
         fi
 
         echo "Done with Autogen"
+echo "################################## DEBUG DATA ########################"
+ls
+ls src
+ls src/sst
+ls src/sst/elements
+ls src/sst/elements/
+echo "##################### END ######## DEBUG DATA ########################"
+
         popd
         echo "Current Working Dir = `pwd`"
         ls -l
@@ -3050,6 +3058,13 @@ dobuild() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
+echo "################################## DEBUG DATA ########################"
+ls
+ls src
+ls src/sst
+ls src/sst/elements
+ls src/sst/elements/
+echo "##################### END ######## DEBUG DATA ########################"
         
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
