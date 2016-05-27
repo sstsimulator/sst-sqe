@@ -2990,13 +2990,6 @@ dobuild() {
         fi
 
         echo "Done with Autogen"
-echo "################################## DEBUG DATA ########################"
-ls
-ls src
-ls src/sst
-ls src/sst/elements/
-ls src/sst/elements/*/*m4
-echo "##################### END ######## DEBUG DATA ########################"
 
         popd
         echo "Current Working Dir = `pwd`"
