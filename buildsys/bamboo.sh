@@ -902,7 +902,7 @@ getconfig() {
             #     under those compilers.
             #-----------------------------------------------------------------
             ### touch sst/elements/ariel/.ignore
-            ls -a sst/elements/ariel
+            ls -a sst-elements/src/sst/elements/ariel
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
@@ -1168,7 +1168,7 @@ getconfig() {
             #     (Might as well skip building scheduler)
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
-            touch sst/elements/scheduler/.ignore
+            touch sst-elements/src/sst/elements/scheduler/.ignore
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
             depsStr="-k none -d 2.2.2 -p none -z none -m none -o none -h none -s none -q 0.2.1 -M none -N default"
@@ -2574,7 +2574,7 @@ echo  "   We are in distTestDir/trunk"
          echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
          exit
      fi
-     echo "                   List the directories in sst/elements"
+     echo "                   List the directories in sst-elements/src/sst/elements"
      ls sst-elements/src/sst/elements
      echo ' '
 echo "######  KLUDGE ALERT  ##############################################"
