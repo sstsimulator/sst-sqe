@@ -2577,38 +2577,7 @@ echo  "   We are in distTestDir/trunk"
      echo "                   List the directories in sst-elements/src/sst/elements"
      ls sst-elements/src/sst/elements
      echo ' '
-echo "######  KLUDGE ALERT  ##############################################"
-echo "#             Remove the problem from auto tools."
-echo "#             We have content less directories"
 
-pushd sst-elements/src/sst/elements
-echo "#   First we will bailing wire kludge ariel"
-rm -rf ariel
-ls ../../../../../..
-ls ../../../../../../sst-elements/src/sst/elements
-cp -r ../../../../../../sst-elements/src/sst/elements/ariel .
-ls
-echo " ARIEL  KLUDGED #######################################"
-
-
-
-for dir in `ls`
-do
-   if [ -d $dir ] ; then
-#      echo $dir
-      ct=`ls -d $dir/* | wc -l`
-#      echo $ct
-      if [ $ct == 1 ] ; then
-          echo $dir
-          ls $dir/
-          rm $dir/*m4
-          rmdir $dir
-      fi
-   fi
-done
-ls
-popd
-echo "########    END  of   KLUDGE  ######################################"
      ln -s ../../test              ## the subtree of tests
      ls -l
      echo SST_INSTALL_DEPS =  $SST_INSTALL_DEPS
