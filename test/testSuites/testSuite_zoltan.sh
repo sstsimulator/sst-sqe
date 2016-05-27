@@ -210,7 +210,7 @@ test_zoltan_4()
    zoltan_template 4
 }
 
-test_zoltan_8()
+xxtest_zoltan_8()
 {
    zoltan_template 8
 }
