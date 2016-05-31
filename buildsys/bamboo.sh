@@ -2494,11 +2494,12 @@ darwinSetBoostMPI() {
 #   Return value:
 setUPforMakeDisttest() {
      echo "Setting up to build from the tar created by make dist"
+     cd ${SST_ROOT}
      echo "---   PWD  `pwd`"           ## Original trunk
      Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
      tarName=${Package}.tar.gz
-     ls $tarFile
+     ls $tarName
      if [ $? != 0 ] ; then
          ls
          echo Can NOT find Tar File $Package .tar.gz
