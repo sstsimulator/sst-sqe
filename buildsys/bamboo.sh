@@ -2494,8 +2494,8 @@ darwinSetBoostMPI() {
 #   Return value:
 setUPforMakeDisttest() {
      echo "Setting up to build from the tar created by make dist"
-     cd ${SST_ROOT}
-     echo "---   PWD  `pwd`"           ## Original trunk
+     cd ${SST_ROOT}/sst-core
+     echo "---   PWD  `pwd`"           ## Original trunk/sst-core
      Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
      tarName=${Package}.tar.gz
@@ -2507,9 +2507,9 @@ setUPforMakeDisttest() {
      fi
      mkdir $SST_ROOT/distTestDir
      cd $SST_ROOT/distTestDir
-     mv $SST_ROOT/$tarName .
+     mv $SST_ROOT/sst-core/$tarName .
      if [ $? -ne 0 ] ; then
-          echo "Move failed  \$SST_ROOT/$tarName to ."
+          echo "Move failed  \$SST_ROOT/sst-core/$tarName to ."
           exit 1
      fi
      echo "   Untar the created file, $tarName"
