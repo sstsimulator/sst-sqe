@@ -2871,6 +2871,7 @@ dobuild() {
         echo "=== DUMPING The SST-CORE installed sstsimulator.conf file ==="
         echo "cat $SST_CORE_INSTALL/etc/sst/sstsimulator.conf"
         cat $SST_CORE_INSTALL/etc/sst/sstsimulator.conf
+        echo "=== DONE DUMPING ==="
         echo
         
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
@@ -3119,12 +3120,14 @@ echo "##################### END ######## DEBUG DATA ########################"
         echo "=== DUMPING The SST-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
         echo "cat $HOME/.sst/sstsimulator.conf"
         cat $HOME/.sst/sstsimulator.conf
+        echo "=== DONE DUMPING ==="
         echo
         
         echo
         echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
         echo "cat $SST_CONFIG_FILE_PATH"
         cat $SST_CONFIG_FILE_PATH
+        echo "=== DONE DUMPING ==="
         echo
         
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
