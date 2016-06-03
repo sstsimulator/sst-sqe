@@ -80,10 +80,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
     #  Most test Suites explicitly define an environment variable sut to be full path SST
     #     The Python script does not do this
-    pushd $SST_ROOT/../..
-    SST_TEST_INSTALL_BIN=`pwd`/local/bin
-    popd
-    export PATH=${SST_TEST_INSTALL_BIN}:${PATH}
 
     L_TESTFILE+=(${testDataFileBase})
 pwd
