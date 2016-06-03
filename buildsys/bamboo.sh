@@ -3263,21 +3263,21 @@ else
                 fi
                 popd
                 
-                # build sst-elements documentation, create list of undocumented files
-                echo "Building SST-ELEMENTS Doxygen Documentation"
-                pushd $SST_ROOT/sst-elements
-                ./autogen.sh
-                ./configure --disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL
-                make html 2> ./doc/makeHtmlErrors.txt
-                egrep "is not documented" ./doc/makeHtmlErrors.txt | sort > ./doc/undoc.txt
-                test -d ./doc/html
-                retval=$?
-                if [ $retval -ne 0 ]
-                then
-                    echo "HTML directory not found! - Documentation build has failed"
-                    exit 1
-                fi
-                popd
+###                # build sst-elements documentation, create list of undocumented files
+###                echo "Building SST-ELEMENTS Doxygen Documentation"
+###                pushd $SST_ROOT/sst-elements
+###                ./autogen.sh
+###                ./configure --disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL
+###                make html 2> ./doc/makeHtmlErrors.txt
+###                egrep "is not documented" ./doc/makeHtmlErrors.txt | sort > ./doc/undoc.txt
+###                test -d ./doc/html
+###                retval=$?
+###                if [ $retval -ne 0 ]
+###                then
+###                    echo "HTML directory not found! - Documentation build has failed"
+###                    exit 1
+###                fi
+###                popd
                 
             else
                 # Perform the build
@@ -3303,11 +3303,11 @@ then
         sed -e 's/^/#doxygen /' ./sst-core/doc/undoc.txt
         echo "============================== SST-CORE DOXYGEN UNDOCUMENTED FILES =============================="
         retval=0
-        # dump list of sst-elements undocumented files
-        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
-        sed -e 's/^/#doxygen /' ./sst-elements/doc/undoc.txt
-        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
-        retval=0
+###        # dump list of sst-elements undocumented files
+###        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
+###        sed -e 's/^/#doxygen /' ./sst-elements/doc/undoc.txt
+###        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
+###        retval=0
     else
         # Build was successful, so run tests, providing command line args
         # as a convenience. SST binaries must be generated before testing.
