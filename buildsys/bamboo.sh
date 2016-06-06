@@ -116,14 +116,19 @@ echo "  Version May 24 1633 hours "
 echo ' '
 pwd
 ls -la
-echo ' '
-echo "PWD = `pwd`"
-pushd ${SST_BASE}/devel/sqe
-echo "PWD = `pwd`"
-echo "               SQE branch"
-git branch
-echo ' '
-popd
+   echo ' '
+if [ -d ${SST_BASE}/devel/sqe ] ; then
+   echo "PWD = `pwd`"
+   pushd ${SST_BASE}/devel/sqe
+   echo "PWD = `pwd`"
+   echo "               SQE branch"
+   git branch
+   echo ' '
+   popd
+else
+   echo "Jenkin forks SQE so it is not tied to a remote repository"
+   echo ' '
+fi
 
 ##  Check out other repositories except second time on Make Dist test
 if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
