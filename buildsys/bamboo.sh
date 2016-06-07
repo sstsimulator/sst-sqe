@@ -3324,7 +3324,7 @@ then
             #    ---  These are probably temporary, but let's line them up properly anyway
             pwd
             echo "            CHECK ENVIRONMENT VARIABLES "
-            env | grep SST
+            env | grep -e SST -e PIN
             echo "            End of SST Environs"
             pwd
             ls
