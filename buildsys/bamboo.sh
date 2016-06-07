@@ -112,7 +112,7 @@ export SST_ROOT=`pwd`
 echo " SST_ROOT = $SST_ROOT"
 
 echo "#############################################################"
-echo "  Version May 24 1633 hours "
+echo "  Version June 7 1343 hours "
 echo ' '
 pwd
 ls -la
@@ -3240,6 +3240,8 @@ else
                    echo "Loading Intel PIN environment module"
                    ModuleEx load pin/pin-2.14-71313-clang.5.1-mac
                 fi
+                env | grep PIN
+                echo ' '
             else
                 echo "Intel PIN environment module not found on this host."
             fi
