@@ -76,7 +76,7 @@ test_qsimComponent() {
    
 ##   build the xml file
 echo ' ';  echo "            build the xml file"
-    pushd ${SST_ROOT}/sst/elements/qsimComponent/test
+    pushd ${SST_ROOT}/sst-elements/src/sst/elements/qsimComponent/test
 file test-app
 ls -l test-app
 ./test-app | wc
