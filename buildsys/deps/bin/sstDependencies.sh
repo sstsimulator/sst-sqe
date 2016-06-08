@@ -1512,8 +1512,6 @@ do
             ;;
         q) # Qsim
             echo "# found the -q (Qsim) option, with value $OPTARG.   (Ignore on MacOS)"
-      echo "#    Qsim doesn't build with PDES core"
-      if [ ! 0 ] ; then
             # process arg
                   ##   Qsim currently doesn't run on MacOS because of 32/64 bit issues.
             ##if [ ! $SST_DEPS_OS_NAME = "Darwin" ]
@@ -1551,7 +1549,6 @@ do
                         echo "# Unknown argument '$OPTARG', will not build Qsim"
                         ;;
                 esac
-            fi
             ;;
         e) # OMNeT++ / PhoenixSim
             echo "# found the -e (omnet++/PhoenixSim) option, with value $OPTARG"
