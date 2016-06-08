@@ -98,8 +98,8 @@ ls -l test-app
     
 echo SUT PATH is ${sut}
 
-    sutArgs=${SST_ROOT}/sst/elements/qsimComponent/test/test.xml
-appj=${SST_ROOT}/sst/elements/qsimComponent/test/test-app
+    sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/qsimComponent/test/test.xml
+appj=${SST_ROOT}/sst-elements/src/sst/elements/qsimComponent/test/test-app
 
 ##    export ARG1=" "
 ##    export ARG2=" "
