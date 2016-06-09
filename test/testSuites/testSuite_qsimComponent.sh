@@ -76,7 +76,7 @@ test_qsimComponent() {
    
 ##   build the xml file
 echo ' ';  echo "            build the xml file"
-    pushd ${SST_ROOT}/sst/elements/qsimComponent/test
+    pushd ${SST_ROOT}/sst-elements/src/sst/elements/qsimComponent/test
 file test-app
 ls -l test-app
 ./test-app | wc
@@ -98,8 +98,8 @@ ls -l test-app
     
 echo SUT PATH is ${sut}
 
-    sutArgs=${SST_ROOT}/sst/elements/qsimComponent/test/test.xml
-appj=${SST_ROOT}/sst/elements/qsimComponent/test/test-app
+    sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/qsimComponent/test/test.xml
+appj=${SST_ROOT}/sst-elements/src/sst/elements/qsimComponent/test/test-app
 
 ##    export ARG1=" "
 ##    export ARG2=" "
@@ -153,6 +153,11 @@ echo " ---------------------------------- end-of-outFile"
 echo ' ' ; echo "        Completed sst execution" ; echo ' '
 df /tmp
 echo ' '   
+echo "Remove \"deprecated\" messages"
+grep -v deprecated $outFile > tmp.out
+cp tmp.out $outFile
+myWC tmp.out $outFile
+echo ' '
                myWC ${outFile} ${referenceFile};
                echo ' '
                echo " Ignore \"IPI arrived\" messages"
@@ -191,7 +196,7 @@ echo ' '
     fi
 }
 
-export SST_TEST_ONE_TEST_TIMEOUT=180         # 3 minutes is plenty  (180 seconds)
+export SST_TEST_ONE_TEST_TIMEOUT=1800         # 3 minutes is plenty  (180 seconds)
 
 export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
