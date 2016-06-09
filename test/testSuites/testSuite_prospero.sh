@@ -33,6 +33,11 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+echo " ugly debut ====================================================="
+ls ${SST_ROOT}/sst-elements/src/sst/elements/prospero/
+tail ${SST_ROOT}/sst-elements/src/sst/elements/prospero/Makefile
+ls -l ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tracetool
+echo ' '
 if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
    # ==================  Create program "array"
 
