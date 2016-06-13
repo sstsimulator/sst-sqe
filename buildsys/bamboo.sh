@@ -549,6 +549,7 @@ echo " #####################################################"
         ## ${SST_TEST_SUITES}/testSuite_miranda.sh
         ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
         ${SST_TEST_SUITES}/testSuite_prospero.sh
+        ${SST_TEST_SUITES}/testSuite_qsimComponent.sh
         ${SST_TEST_SUITES}/testSuite_Ariel.sh
         return
     fi
