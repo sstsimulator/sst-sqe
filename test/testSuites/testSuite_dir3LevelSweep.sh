@@ -1,7 +1,7 @@
 #!/bin/bash 
 # testSuite_dir3LevelSweep.sh
 
-# Description: 
+# Description:
 
 # A shell script that defines a shunit2 test suite. This will be
 # invoked by the Bamboo script.
