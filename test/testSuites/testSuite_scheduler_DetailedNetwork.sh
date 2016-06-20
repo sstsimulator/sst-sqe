@@ -147,14 +147,9 @@ grep 'sst ' snapshotParser_sched.py
  
 ./run_DetailedNetworkSim.py --emberOut ember.out --schedPy ${TEST_NAME}.py > /dev/null
 retVal=$?
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
-             return 
-        fi 
 if [ $retVal -ne 0 ] ; then
+      ##  Do not insert standard TIME LIMIT code here.
+      ##  The temp file has a unix pid in its name.
 #    FAIL and BAIL
     fail "Scheduler test 6 execution Failed: retVal = $retVal"
     return
