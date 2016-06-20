@@ -121,6 +121,13 @@ ps -ef | grep ^$USER >> ps.before
 if [ "${SST_TEST_HOST_OS_DISTRIB}" != "toss" ] ; then 
         (${sut} ${sutArgs} > ${outFile}) 
         rt=$?
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
 else
    cat > inF << .EOF
    run ${sutArgs} > ${outFile}

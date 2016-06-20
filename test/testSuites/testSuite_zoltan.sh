@@ -97,6 +97,13 @@ NUMRANKS=$1
         # Run SUT
         mpirun -np ${NUMRANKS} ${sut} --verbose --partitioner zoltan --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         RetVal=$?
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
         if [ $RetVal != 0 ]
         then
              echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$RetVal" ; echo ' '
