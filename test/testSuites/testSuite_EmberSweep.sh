@@ -121,6 +121,8 @@ SE_start() {
 SE_fini() {
    TL=`grep Simulation.is.complete tmp_file`
    if [ $? != 0 ] ; then 
+      ##  Do not insert standard TIME LIMIT code here.
+      ##  The temp file has a unix pid in its name.
       echo "       SST run is incomplete, FATAL" 
       fail " # $TEST_INDEX: SST run is incomplete, FATAL" 
       FAILED="TRUE"

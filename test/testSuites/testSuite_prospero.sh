@@ -136,6 +136,13 @@ template_prospero() {
         # Run SUT
         ${sut} ${sutArgs} --model-options "--TraceType=$TYPE --UseDramSim=$useDRAMSIM"  > $outFile
         rc=$?
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
         echo ' ' ; grep simulated $outFile   ; echo ' '
         
         if [ $rc != 0 ]
