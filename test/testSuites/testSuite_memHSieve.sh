@@ -117,7 +117,11 @@ ls -ltr
 ##########################  the very fuzzy pass criteria  (four)
         FAIL=0
 # all of the backtrace_*txt files have something in them.
-        for fn in `ls backtrace_*txt`
+        ls backtrace_*txt.gz > /dev/null
+        if [ $? != 0 ] ; then
+           FAIL=1
+        fi
+        for fn in `ls backtrace_*txt.gz`
         do
            if [[ ! -s $fn ]] ; then
               echo "$fn is empty, test fails"
