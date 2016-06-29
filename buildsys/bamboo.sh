@@ -480,13 +480,13 @@ echo " #####################################################"
     #
     if [ $1 == "sstmainline_config_memH_Ariel" ]
     then
+        ${SST_TEST_SUITES}/testSuite_openMP.sh
         ${SST_TEST_SUITES}/testSuite_diropenMP.sh
         ${SST_TEST_SUITES}/testSuite_dirSweepB.sh
         ${SST_TEST_SUITES}/testSuite_dirSweepI.sh
         ${SST_TEST_SUITES}/testSuite_dirSweep.sh
         ${SST_TEST_SUITES}/testSuite_dirnoncacheable_openMP.sh
         ${SST_TEST_SUITES}/testSuite_noncacheable_openMP.sh
-        ${SST_TEST_SUITES}/testSuite_openMP.sh
         ${SST_TEST_SUITES}/testSuite_Sweep_openMP.sh
         ${SST_TEST_SUITES}/testSuite_dir3LevelSweep.sh
         return
@@ -528,6 +528,7 @@ echo " #####################################################"
 
     if [ $1 == "sstmainline_config_memH_wo_openMP" ]
     then
+        ${SST_TEST_SUITES}/testSuite_openMP.sh
         if [[ $SST_ROOT == *Ariel* ]] ; then
             pushd ${SST_TEST_SUITES}
             ln -s ${SST_TEST_SUITES}/testSuite_Ariel.sh testSuite_Ariel_extra.sh
@@ -1176,7 +1177,7 @@ getconfig() {
             touch sst-elements/src/sst/elements/scheduler/.ignore
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -m none -o none -h none -s none -q 0.2.1 -M none -N default"
+            depsStr="-k none -d 2.2.2 -p none -z none -m none -o none -h none -s none -q none -M none -N default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"

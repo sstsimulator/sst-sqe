@@ -1,0 +1,11 @@
+CXX=g++ 
+
+ompstream: ompstream.o
+	$(CXX) -O3 -o ompstream -fopenmp ompstream.o
+
+ompstream.o: ompstream.c
+	$(CXX) -O3 -o ompstream.o -fopenmp -c ompstream.c
+
+clean:
+	rm ompstream ompstream.o
+
