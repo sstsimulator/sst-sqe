@@ -188,7 +188,7 @@ echo "\$lout is $lout ############################################"
     echo "mcopteron test1: Wall Clock Time  $elapsedSeconds seconds"
 }
 
-test_sst_mcopteron_test2() {
+XXtest_sst_mcopteron_test2() {
      echo ' '
      echo "Test 2  universally disabled February 22, 2016"
      echo ' '

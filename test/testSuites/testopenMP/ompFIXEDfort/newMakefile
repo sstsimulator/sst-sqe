@@ -1,0 +1,11 @@
+CXX=g++ 
+
+ompFIXEDfort: ompFIXEDfort.o
+	$(CXX) -O3 -o ompFIXEDfort -fopenmp ompFIXEDfort.o
+
+ompFIXEDfort.o: ompFIXEDfort.c
+	$(CXX) -O3 -o ompFIXEDfort.o -fopenmp -c ompFIXEDfort.c
+
+clean:
+	rm ompFIXEDfort ompFIXEDfort.o
+

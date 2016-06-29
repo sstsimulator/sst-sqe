@@ -11,4 +11,5 @@ stream             #  uses the M5 test binaries
 diropenMP          #  uses M5 binaries
 noncacheable       #  uses M5 binaries
 openMP             #  uses M5 binaries
+simpleClocker      #  not reproducible, uses Wall Clock   
 ENDofLIST          #  Put new entries before this line!

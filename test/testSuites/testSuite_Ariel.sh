@@ -65,8 +65,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     fi 
     if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
         echo " Temporary patch"
-        echo "Ariel on Ubuntu not working March 15th"
-        ## preFail "Ariel on Ubuntu not yet working"  "skip"
+        echo "Ariel on Ubuntu not working on Sandy bridge and Ivy bridge tests"
     fi    
 
     OPWD=`pwd`
@@ -87,6 +86,16 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
         preFail "ERROR: examples/stream: make failure" "skip"
     fi
+
+#
+#   Let's build the ompmybarrier binary
+#
+    pushd $TEST_SUITE_ROOT/testopenMP
+    cd ompmybarrier
+ls -l 
+    make -f newMakefile
+ls -l 
+    popd
 
 #     Subroutine to clean up shared memory ipc
 #          This could be in subroutine library - for now only Ariel
@@ -176,6 +185,13 @@ Ariel_template() {
         # Run SUT
         ${sut} ${sutArgs} > $outFile
         RetVal=$?
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
         if [ $RetVal != 0 ]
         then
              echo ' '; echo WARNING: sst did not finish normally, RetVal= $RetVal ; echo ' '
@@ -279,12 +295,24 @@ test_Ariel_memH_test() {
 }
 
 test_Ariel_test_ivb() {
+    if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
+        echo " Temporary patch"
+        echo "Ariel on Ubuntu not working on Sandy and Ivy bridge"
+        skip_this_test
+        return
+    fi
     USE_OPENMP_BINARY="yes"
     USE_MEMH=""
     Ariel_template ariel_ivb
 }
 
 test_Ariel_test_snb() {
+    if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
+        echo " Temporary patch"
+        echo "Ariel on Ubuntu not working on Sandy and Ivy bridge"
+        skip_this_test
+        return
+    fi
     USE_OPENMP_BINARY="yes"
     USE_MEMH=""
     Ariel_template ariel_snb

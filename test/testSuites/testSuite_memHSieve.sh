@@ -36,13 +36,10 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   NOTE: These functions are invoked automatically by shunit2 as long
 #   as the function name begins with "test...".
 #===============================================================================
-if [[ ! -s $SST_BASE/local/sst-elements/lib/sst-elements-library/libariel.so ]] ; then
+if [[ ! -e $SST_ROOT/sst-elements/src/sst/elements/ariel/arielalloctrackev.h ]] ; then
     preFail "Skipping memHSieve, (no Ariel )"  "skip"
-fi
-if [[ `uname -n` != sst-test* ]] ; then
-    echo " "
-    echo "libariel.so test is INADEQUATE!   "
-    preFail "Only running on sst-test at this time" "skip"
+else
+     echo "Found the Ariel file! "
 fi
 
 #-------------------------------------------------------------------------------
@@ -62,13 +59,28 @@ fi
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
 
+    #          allows overriding Darwin as determination of OPENMP
+    if [[ ${SST_WITH_OPENMP:+isSet} != isSet ]] ; then
+        SST_WITH_OPENMP=1;
+        if [ $SST_TEST_HOST_OS_KERNEL == "Darwin" ] ; then
+           SST_WITH_OPENMP=0;
+        fi
+    fi
+
+        
 pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests
 #   Remove old files if any
-rm -f ompsievetest.o ompsievetest backtrace_*.txt StatisticOutput.csv mallocRank.txt-0.txt 23_43????
+rm -f ompsievetest.o ompsievetest backtrace_* StatisticOutput.csv mallocRank.txt-0.txt 23_43.ref 23_43.out
 
 #   Build ompsievetest
-make
-ls
+    #      Optionally remove openmp from the build
+    if [ $SST_WITH_OPENMP == 0 ] ; then
+        echo "         ### Remove \"-fopenmp\" from the make"
+        sed -i'.x' 's/-fopenmp//' Makefile
+    fi
+    make
+    ls -l ompsievetest
+
 popd
 
 test_memHSieve() {
@@ -93,7 +105,7 @@ test_memHSieve() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        (${sut} ${sutArgs} > $outFile)
+        (${sut}  ${sutArgs} | tee $outFile)
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
@@ -112,20 +124,31 @@ test_memHSieve() {
              return
         fi
 #  Look at what we'e got
-echo "  Look at what we've got"
+echo "  Check the result"
 ls -ltr
 ##########################  the very fuzzy pass criteria  (four)
         FAIL=0
 # all of the backtrace_*txt files have something in them.
-        for fn in `ls backtrace_*txt`
-        do
-           if [[ ! -s $fn ]] ; then
-              echo "$fn is empty, test fails"
-              FAIL=1
-           fi
-        done
+        echo "         1 - Check the Backtrace files"
+        ls backtrace_*txt.gz > /dev/null
+        if [ $? != 0 ] ; then
+           FAIL=1
+        fi
+        if [ $SST_WITH_OPENMP == 1 ] ; then
+           for gzfn in `ls backtrace_*txt.gz`
+           do
+              fn=`echo $gzfn | awk -F'.gz' '{print $1}'`
+              gzip -d $gzfn
+              if [[ ! -s $fn ]] ; then
+                 echo "$fn is empty, test fails"
+                 FAIL=1
+              fi
+           done
+           wc *.txt
+         fi
 
 #  mallocRank.0 is not empty
+   echo "         2 - Check mallockRank"
    ls -l mallocRank*
        mR_len=`wc -w mallocRank.txt* | awk '{print $1}'`
        if [ $mR_len -ge 0 ] ; then
@@ -136,6 +159,7 @@ ls -ltr
        fi
 
 # the six sieve statics in StatisticOutput.csv are non zero
+       echo "         3 - Check the stats"
        SievecheckStats() {
        notz=`grep -w $1 StatisticOutput*.csv | awk '{print $NF*($NF-1)*$NF-2}'`
        if [ $notz == 0 ] ; then
@@ -152,9 +176,13 @@ ls -ltr
 
 #   Refeference file should be exact match lines 23 to 43 of StatisticOutput.csv.gold
 #           Line numbers change slightly on Multi Rank.
+   echo  "         4 - Look at StatisticOutput.csv"
+        wc $referenceFile $outFile
 
         grep -w -e '^.$' -e '^..$' $referenceFile  > 23_43.ref
         grep -w -e '^.$' -e '^..$' $outFile > 23_43.out 
+        wc 23_43.???
+
         diff 23_43.ref 23_43.out
         if [ $? != 0 ] ; then
            echo " lines 23 to 43 of csv gold did not match"

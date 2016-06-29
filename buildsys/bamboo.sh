@@ -116,14 +116,19 @@ echo "  Version May 24 1633 hours "
 echo ' '
 pwd
 ls -la
-echo ' '
-echo "PWD = `pwd`"
-pushd ${SST_BASE}/devel/sqe
-echo "PWD = `pwd`"
-echo "               SQE branch"
-git branch
-echo ' '
-popd
+   echo ' '
+if [ -d ${SST_BASE}/devel/sqe ] ; then
+   echo "PWD = `pwd`"
+   pushd ${SST_BASE}/devel/sqe
+   echo "PWD = `pwd`"
+   echo "               SQE branch"
+   git branch
+   echo ' '
+   popd
+else
+   echo "Jenkin forks SQE so it is not tied to a remote repository"
+   echo ' '
+fi
 
 ##  Check out other repositories except second time on Make Dist test
 if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
@@ -475,13 +480,13 @@ echo " #####################################################"
     #
     if [ $1 == "sstmainline_config_memH_Ariel" ]
     then
+        ${SST_TEST_SUITES}/testSuite_openMP.sh
         ${SST_TEST_SUITES}/testSuite_diropenMP.sh
         ${SST_TEST_SUITES}/testSuite_dirSweepB.sh
         ${SST_TEST_SUITES}/testSuite_dirSweepI.sh
         ${SST_TEST_SUITES}/testSuite_dirSweep.sh
         ${SST_TEST_SUITES}/testSuite_dirnoncacheable_openMP.sh
         ${SST_TEST_SUITES}/testSuite_noncacheable_openMP.sh
-        ${SST_TEST_SUITES}/testSuite_openMP.sh
         ${SST_TEST_SUITES}/testSuite_Sweep_openMP.sh
         ${SST_TEST_SUITES}/testSuite_dir3LevelSweep.sh
         return
@@ -523,6 +528,7 @@ echo " #####################################################"
 
     if [ $1 == "sstmainline_config_memH_wo_openMP" ]
     then
+        ${SST_TEST_SUITES}/testSuite_openMP.sh
         if [[ $SST_ROOT == *Ariel* ]] ; then
             pushd ${SST_TEST_SUITES}
             ln -s ${SST_TEST_SUITES}/testSuite_Ariel.sh testSuite_Ariel_extra.sh
@@ -824,7 +830,7 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q none -M none -N default -z 3.83 -c default"
+            depsStr="-k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
@@ -909,7 +915,7 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q none -M none -N default -z 3.83 -c default"
+            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
@@ -1174,7 +1180,7 @@ getconfig() {
             touch sst-elements/src/sst/elements/scheduler/.ignore
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -m none -o none -h none -s none -q 0.2.1 -M none -N default"
+            depsStr="-k none -d 2.2.2 -p none -z none -m none -o none -h none -s none -q none -M none -N default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
@@ -1317,7 +1323,7 @@ linuxSetBoostMPI() {
    # Check to see if we are loading Boost 1.56 or greater, if so, we no longer
    # need to include mpi, so change the desiredBoost name as appropriate
    case $3 in
-       boost-1.56|boost-1.58) 
+       boost-1.56|boost-1.58|boost-1.61) 
            echo "Choosing nompi version of boost for Boost 1.56 and greater"
            if [ $compiler = "default" ]
            then
@@ -3266,21 +3272,21 @@ else
                 fi
                 popd
                 
-                # build sst-elements documentation, create list of undocumented files
-                echo "Building SST-ELEMENTS Doxygen Documentation"
-                pushd $SST_ROOT/sst-elements
-                ./autogen.sh
-                ./configure --disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL
-                make html 2> ./doc/makeHtmlErrors.txt
-                egrep "is not documented" ./doc/makeHtmlErrors.txt | sort > ./doc/undoc.txt
-                test -d ./doc/html
-                retval=$?
-                if [ $retval -ne 0 ]
-                then
-                    echo "HTML directory not found! - Documentation build has failed"
-                    exit 1
-                fi
-                popd
+###                # build sst-elements documentation, create list of undocumented files
+###                echo "Building SST-ELEMENTS Doxygen Documentation"
+###                pushd $SST_ROOT/sst-elements
+###                ./autogen.sh
+###                ./configure --disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL
+###                make html 2> ./doc/makeHtmlErrors.txt
+###                egrep "is not documented" ./doc/makeHtmlErrors.txt | sort > ./doc/undoc.txt
+###                test -d ./doc/html
+###                retval=$?
+###                if [ $retval -ne 0 ]
+###                then
+###                    echo "HTML directory not found! - Documentation build has failed"
+###                    exit 1
+###                fi
+###                popd
                 
             else
                 # Perform the build
@@ -3306,11 +3312,11 @@ then
         sed -e 's/^/#doxygen /' ./sst-core/doc/undoc.txt
         echo "============================== SST-CORE DOXYGEN UNDOCUMENTED FILES =============================="
         retval=0
-        # dump list of sst-elements undocumented files
-        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
-        sed -e 's/^/#doxygen /' ./sst-elements/doc/undoc.txt
-        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
-        retval=0
+###        # dump list of sst-elements undocumented files
+###        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
+###        sed -e 's/^/#doxygen /' ./sst-elements/doc/undoc.txt
+###        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
+###        retval=0
     else
         # Build was successful, so run tests, providing command line args
         # as a convenience. SST binaries must be generated before testing.

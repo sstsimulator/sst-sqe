@@ -76,7 +76,7 @@ test_qsimComponent() {
    
 ##   build the xml file
 echo ' ';  echo "            build the xml file"
-    pushd ${SST_ROOT}/sst/elements/qsimComponent/test
+    pushd ${SST_ROOT}/sst-elements/src/sst/elements/qsimComponent/test
 file test-app
 ls -l test-app
 ./test-app | wc
@@ -98,8 +98,8 @@ ls -l test-app
     
 echo SUT PATH is ${sut}
 
-    sutArgs=${SST_ROOT}/sst/elements/qsimComponent/test/test.xml
-appj=${SST_ROOT}/sst/elements/qsimComponent/test/test-app
+    sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/qsimComponent/test/test.xml
+appj=${SST_ROOT}/sst-elements/src/sst/elements/qsimComponent/test/test-app
 
 ##    export ARG1=" "
 ##    export ARG2=" "
@@ -121,6 +121,13 @@ ps -ef | grep ^$USER >> ps.before
 if [ "${SST_TEST_HOST_OS_DISTRIB}" != "toss" ] ; then 
         (${sut} ${sutArgs} > ${outFile}) 
         rt=$?
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
 else
    cat > inF << .EOF
    run ${sutArgs} > ${outFile}
