@@ -44,12 +44,17 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 OMP_Template() {
 OMP_case=$1
 Tol=$2    ##  curTick tolerance,  or  "lineWordCt" 
-    if [ ! -e $SST_TEST_ROOT/testSuites/testopenMP/pthread/m5threads/libpthread.a ] &&
-                       [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then
-        echo "no thread library directory"
-        fail "no thread library directory"
-        return
-    fi
+    cd $TEST_SUITE_ROOT/testopenMP
+pwd
+echo ' ' ; echo ' '
+
+
+    pushd $OMP_case
+pwd
+ls
+rm -f $OMP_case ${OMP_case}.x
+    make -f newMakefile
+    popd
 
     startSeconds=`date +%s`
     testDataFileBase="test_OMP_$OMP_case"
@@ -61,12 +66,12 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
     L_TESTFILE+=(${testDataFileBase})
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    export OMP_EXE=${OMP_case}/${OMP_case}.x
-
+    export OMP_EXE=${OMP_case}/${OMP_case}
+file $OMP_EXE
     cd $TEST_SUITE_ROOT/testopenMP
     sutArgs=openmp.py
      
-    if [ -f $OMP_case/$OMP_case.x ]
+    if [ -f $OMP_case/$OMP_case ]
     then
         (${sut} ${sutArgs} > ${outFile})
         RetVal=$? 
@@ -183,22 +188,26 @@ done 3< $referenceFile
 # Build Test app
 ##    The following code already explictly assume we're at trunk
   
+echo " " ; echo "                     getting set" ; echo ' '
+echo TEST_SUITE_ROOT is $TEST_SUITE_ROOT
+echo "Target is $TEST_SUITE_ROOT/testopenMP"
+ls $TEST_SUITE_ROOT/testopenMP
 cd $TEST_SUITE_ROOT/testopenMP
-    
-./buildall.sh 
-   
-
+    echo ' ' ; echo "Ready to go" 
+pwd
+  
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long
 #   as the function name begins with "test...".
 #===============================================================================
 
-
+echo "              Starting tests"
 #
 #     _ompmybarrier
 #
 test_ompmybarrier() {    
+echo " In the my Barrier test"
 OMP_Template ompmybarrier 9000
 
 }
@@ -236,7 +245,7 @@ ls -l ompfibtask
 #
 #     _ompatomicShort
 #
-test_ompatomicShort() {    
+xxtest_ompatomicShort() {    
 OMP_Template ompatomicShort 9000
 
 }
@@ -244,7 +253,7 @@ OMP_Template ompatomicShort 9000
 #
 #     _ompatomicfp
 #
-test_ompatomicfp() {    
+xxtest_ompatomicfp() {    
 OMP_Template ompatomicfp 9000
 
 }
