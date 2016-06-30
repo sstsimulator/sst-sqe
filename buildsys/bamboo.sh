@@ -1086,7 +1086,7 @@ getconfig() {
             depsStr="-k none -d 2.2.2 -p none -z 3.83  -b 1.50 -g none -m none -i none -o none -h none -s none -q none -M none -N default -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions ${MTNLION_FLAG} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             ;;
         sstmainline_config_macosx_static) 
             #-----------------------------------------------------------------
