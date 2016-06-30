@@ -36,7 +36,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   NOTE: These functions are invoked automatically by shunit2 as long
 #   as the function name begins with "test...".
 #===============================================================================
-if [[ ! -e $SST_ROOT/sst-elements/src/sst/elements/ariel/arielalloctrackev.h ]] ; then
+if [[ ! -s $SST_BASE/local/sst-elements/lib/sst-elements-library/libariel.so ]] ; then
     preFail "Skipping memHSieve, (no Ariel )"  "skip"
 else
      echo "Found the Ariel file! "
