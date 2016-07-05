@@ -517,7 +517,7 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
         ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
         ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
-        ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
+        ## ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
         ${SST_TEST_SUITES}/testSuite_VaultSim.sh
         return
      fi
@@ -589,8 +589,8 @@ echo " #####################################################"
     elif [ $1 == "sstmainline_config_macosx_static" -a $macosVersion == "10.9" ]
     then
     #   Run an extra pass of the mcOpteron test
-        ln -s ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh ${SST_TEST_SUITES}/testSuite_sst_mcopteron2.sh
-        ${SST_TEST_SUITES}/testSuite_sst_mcopteron2.sh
+        ## ln -s ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh ${SST_TEST_SUITES}/testSuite_sst_mcopteron2.sh
+        ## ${SST_TEST_SUITES}/testSuite_sst_mcopteron2.sh
     fi
     #
     #   Only run if configured for ariel
@@ -614,7 +614,7 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-    ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
+    ## ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
 
 
     ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
