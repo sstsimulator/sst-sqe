@@ -12,5 +12,5 @@ diropenMP          #  uses M5 binaries
 noncacheable       #  uses M5 binaries
 openMP             #  uses M5 binaries
 simpleClocker      #  not reproducible, uses Wall Clock   
-ENDofLIST          #  Put new entries before this line!
 sst_mcopteron      #  mcOpteron has been moved to the attic
+ENDofLIST          #  Put new entries before this line!
