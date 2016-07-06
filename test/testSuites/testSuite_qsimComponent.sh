@@ -209,6 +209,8 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
 # Invoke shunit2. Any function in this file whose name starts with
+
+export SST_TEST_ONE_TEST_TIMEOUT=240         # 3 minutes is not enough for Multi-thread=4 (180 seconds)
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
 
