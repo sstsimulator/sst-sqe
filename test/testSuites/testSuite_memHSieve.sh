@@ -205,7 +205,7 @@ ls -ltr
     fi
     popd
 }
-export SST_TEST_ONE_TEST_TIMEOUT=30
+export SST_TEST_ONE_TEST_TIMEOUT=50
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
