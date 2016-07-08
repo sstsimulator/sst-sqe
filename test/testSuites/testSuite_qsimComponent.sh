@@ -44,7 +44,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
             preFail "Did NOT find QSIM in ${SST_TEST_INSTALL_PACKAGES}" "skip"
         fi
     fi
-    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] || [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
         preFail "Qsim fails with time-limit on Multi Rank" "skip"
     fi
 

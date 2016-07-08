@@ -313,7 +313,7 @@ test_Ariel_test_snb() {
         skip_this_test
         return
     fi
-    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] || [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
         echo "Sandy Bridge test is incompatible with Multi-Rank"
         skip_this_test
         return
