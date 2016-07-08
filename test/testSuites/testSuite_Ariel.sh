@@ -120,10 +120,10 @@ removeFreeIPCs() {
          echo "         DEBUG ONLY `wc _ipc_list`"
     while read -u 3 key shmid own perm size n_att rest
     do
-         if [[ $key == "" ]] ; then
+         if [[ $key == "" ]] || [[ $n_att == "" ] ]; then
              continue
          fi
-         echo "         DEBUG ONLY $shmid, $own, $n_att"
+         echo "         DEBUG ONLY $key, $shmid, $own, $n_att"
        if [ $own == $USER ] && [ $n_att == 0 ] ; then
           echo " Removing an idle Shared Mem allocation"
           ipcrm -m $shmid
