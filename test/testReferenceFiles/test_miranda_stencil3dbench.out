@@ -60,6 +60,9 @@ cpu:RequestGenCPU[RequestGenCPU:129]: Configuration completed.
  l1cache.Inv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 1184733; SumSQ.u64 = 15981639; Count.u64 = 112423; 
+ l1cache.Prefetch_requests : Accumulator : Sum.u64 = 5351; SumSQ.u64 = 5351; Count.u64 = 5351; 
+ l1cache.Prefetch_hits : Accumulator : Sum.u64 = 4106; SumSQ.u64 = 4106; Count.u64 = 4106; 
+ l1cache.Prefetch_drops : Accumulator : Sum.u64 = 32; SumSQ.u64 = 32; Count.u64 = 32; 
  l1cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_E : Accumulator : Sum.u64 = 392; SumSQ.u64 = 392; Count.u64 = 392; 

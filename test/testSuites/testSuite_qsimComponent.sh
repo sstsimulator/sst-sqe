@@ -44,6 +44,9 @@ L_TESTFILE=()  # Empty list, used to hold test file names
             preFail "Did NOT find QSIM in ${SST_TEST_INSTALL_PACKAGES}" "skip"
         fi
     fi
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+        preFail "Qsim fails with time-limit on Multi Rank" "skip"
+    fi
 
 #-------------------------------------------------------------------------------
 # Test:
@@ -206,6 +209,8 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
 # Invoke shunit2. Any function in this file whose name starts with
+
+export SST_TEST_ONE_TEST_TIMEOUT=240         # 3 minutes is not enough for Multi-thread=4 (180 seconds)
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
 

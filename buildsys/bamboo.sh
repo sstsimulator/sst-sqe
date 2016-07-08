@@ -517,7 +517,7 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
         ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
         ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
-        ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
+        ## ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
         ${SST_TEST_SUITES}/testSuite_VaultSim.sh
         return
      fi
@@ -528,7 +528,6 @@ echo " #####################################################"
 
     if [ $1 == "sstmainline_config_memH_wo_openMP" ]
     then
-        ${SST_TEST_SUITES}/testSuite_openMP.sh
         if [[ $SST_ROOT == *Ariel* ]] ; then
             pushd ${SST_TEST_SUITES}
             ln -s ${SST_TEST_SUITES}/testSuite_Ariel.sh testSuite_Ariel_extra.sh
@@ -589,11 +588,6 @@ echo " #####################################################"
         # Only run if the OS *isn't* Darwin (MacOS)
         ${SST_TEST_SUITES}/testSuite_qsimComponent.sh
 #       ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-    elif [ $1 == "sstmainline_config_macosx_static" -a $macosVersion == "10.9" ]
-    then
-    #   Run an extra pass of the mcOpteron test
-        ln -s ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh ${SST_TEST_SUITES}/testSuite_sst_mcopteron2.sh
-        ${SST_TEST_SUITES}/testSuite_sst_mcopteron2.sh
     fi
     #
     #   Only run if configured for ariel
@@ -617,7 +611,7 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-    ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
+    ## ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
 
 
     ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
@@ -1089,7 +1083,7 @@ getconfig() {
             depsStr="-k none -d 2.2.2 -p none -z 3.83  -b 1.50 -g none -m none -i none -o none -h none -s none -q none -M none -N default -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions ${MTNLION_FLAG} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             ;;
         sstmainline_config_macosx_static) 
             #-----------------------------------------------------------------
