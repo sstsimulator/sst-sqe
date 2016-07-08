@@ -117,13 +117,13 @@ removeFreeIPCs() {
   
     #  Find and remove no longer attached shared memory segments  
     ipcs > _ipc_list
-##         echo "         DEBUG ONLY `wc _ipc_list`"
+         echo "         DEBUG ONLY `wc _ipc_list`"
     while read -u 3 key shmid own perm size n_att rest
     do
          if [[ $key == "" ]] ; then
              continue
          fi
-##         echo "         DEBUG ONLY $shmid, $own, $n_att"
+         echo "         DEBUG ONLY $shmid, $own, $n_att"
        if [ $own == $USER ] && [ $n_att == 0 ] ; then
           echo " Removing an idle Shared Mem allocation"
           ipcrm -m $shmid
