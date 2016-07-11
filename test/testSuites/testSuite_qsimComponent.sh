@@ -48,7 +48,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         preFail "Qsim fails with time-limit on Multi Rank" "skip"
     fi
     if [ $SST_TEST_HOST_OS_DISTRIB == "Ubuntu" ] && [ $SST_TEST_HOST_OS_DISTRIB_VERSION == "16.04" ] ; then
-        echo "Qsim Ubuntu-16.04 defer to SST version 7.0"
+        echo "Qsim Ubuntu-16.04 deferred to SST version 7.0"
         preFail "Qsim faults on Ubuntu 16.04   July 2016" "skip"
     fi
 #-------------------------------------------------------------------------------
