@@ -303,6 +303,8 @@ test_Ariel_test_ivb() {
     fi
     USE_OPENMP_BINARY="yes"
     USE_MEMH=""
+        USE_OPENMP_BINARY=""
+    USE_MEMH=""
     Ariel_template ariel_ivb
 }
 
@@ -320,6 +322,8 @@ test_Ariel_test_snb() {
     fi
 
     USE_OPENMP_BINARY="yes"
+        USE_OPENMP_BINARY=""
+    USE_MEMH=""
     USE_MEMH=""
     Ariel_template ariel_snb
 }
