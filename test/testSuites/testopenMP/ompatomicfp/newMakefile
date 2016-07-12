@@ -1,0 +1,11 @@
+CXX=g++ 
+
+ompatomicfp: ompatomicfp.o
+	$(CXX) -O3 -o ompatomicfp -fopenmp ompatomicfp.o
+
+ompatomicfp.o: ompatomicfp.c
+	$(CXX) -O3 -o ompatomicfp.o -fopenmp -c ompatomicfp.c
+
+clean:
+	rm ompatomicfp ompatomicfp.o
+

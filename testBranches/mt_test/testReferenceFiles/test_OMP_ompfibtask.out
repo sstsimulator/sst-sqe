@@ -1,6 +1,0 @@
-M5:configFile `openmp-M5.xml`
-M5:registering exit
-Inserting stop event at cycle 100ms, 100000000000
-fib(10) = 55
-M5:exiting: curTick()=95093000 cause=`target called exit()` code=0
-Simulation is complete, simulated time: 95.093 us

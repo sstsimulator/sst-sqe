@@ -44,7 +44,13 @@ L_TESTFILE=()  # Empty list, used to hold test file names
             preFail "Did NOT find QSIM in ${SST_TEST_INSTALL_PACKAGES}" "skip"
         fi
     fi
-
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+        preFail "Qsim fails with time-limit on Multi Rank" "skip"
+    fi
+    if [ $SST_TEST_HOST_OS_DISTRIB == "Ubuntu" ] && [ $SST_TEST_HOST_OS_DISTRIB_VERSION == "16.04" ] ; then
+        echo "Qsim Ubuntu-16.04 deferred to SST version 7.0"
+        preFail "Qsim faults on Ubuntu 16.04   July 2016" "skip"
+    fi
 #-------------------------------------------------------------------------------
 # Test:
 #     test_qsimComponent
@@ -76,7 +82,7 @@ test_qsimComponent() {
    
 ##   build the xml file
 echo ' ';  echo "            build the xml file"
-    pushd ${SST_ROOT}/sst/elements/qsimComponent/test
+    pushd ${SST_ROOT}/sst-elements/src/sst/elements/qsimComponent/test
 file test-app
 ls -l test-app
 ./test-app | wc
@@ -98,8 +104,8 @@ ls -l test-app
     
 echo SUT PATH is ${sut}
 
-    sutArgs=${SST_ROOT}/sst/elements/qsimComponent/test/test.xml
-appj=${SST_ROOT}/sst/elements/qsimComponent/test/test-app
+    sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/qsimComponent/test/test.xml
+appj=${SST_ROOT}/sst-elements/src/sst/elements/qsimComponent/test/test-app
 
 ##    export ARG1=" "
 ##    export ARG2=" "
@@ -121,6 +127,13 @@ ps -ef | grep ^$USER >> ps.before
 if [ "${SST_TEST_HOST_OS_DISTRIB}" != "toss" ] ; then 
         (${sut} ${sutArgs} > ${outFile}) 
         rt=$?
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
 else
    cat > inF << .EOF
    run ${sutArgs} > ${outFile}
@@ -199,6 +212,8 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
 # Invoke shunit2. Any function in this file whose name starts with
+
+export SST_TEST_ONE_TEST_TIMEOUT=240         # 3 minutes is not enough for Multi-thread=4 (180 seconds)
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
 

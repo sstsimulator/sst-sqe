@@ -71,7 +71,7 @@ test_scheduler_0001() {
     L_TESTFILE+=(${testDataFileBase})
 
     # Generate an SDL file for SST to load for testing
-    sdlGenerator="${SST_ROOT}/sst/elements/scheduler/simulations/makeSDL.pl"
+    sdlGenerator="${SST_ROOT}/sst-elements/src/sst/elements/scheduler/simulations/makeSDL.pl"
     sdlFile="${SST_TEST_SDL_FILES}/${testDataFileBase}.sdl"
     sdlGeneratorArgs="128 ${SST_TEST_INPUTS}/test_scheduler_0001.sim easy mesh[16,8] sortedfreelist none"
 
@@ -261,7 +261,7 @@ test_scheduler_0003() {
     sutArgs="${configFile}"
 
     cd ${SST_TEST_OUTPUTS}
-    ln -s ${SST_ROOT}/sst/elements/scheduler/simulations/DMatrix4_5_2 .
+    ln -s ${SST_ROOT}/sst-elements/src/sst/elements/scheduler/simulations/DMatrix4_5_2 .
     ln -s ${SST_TEST_INPUTS}/test_scheduler_0003.sim .
 
     if [ -f ${sut} ] && [ -x ${sut} ]
@@ -340,9 +340,9 @@ test_scheduler_0004() {
     sutArgs="${configFile}"
 
     cd ${SST_TEST_OUTPUTS}
-    ln -s ${SST_ROOT}/sst/elements/scheduler/simulations/sphere3.mtx .
-    ln -s ${SST_ROOT}/sst/elements/scheduler/simulations/sphere3_coord.mtx .
-    ln -s ${SST_ROOT}/sst/elements/scheduler/simulations/test_scheduler_Atlas.sim .
+    ln -s ${SST_ROOT}/sst-elements/src/sst/elements/scheduler/simulations/sphere3.mtx .
+    ln -s ${SST_ROOT}/sst-elements/src/sst/elements/scheduler/simulations/sphere3_coord.mtx .
+    ln -s ${SST_ROOT}/sst-elements/src/sst/elements/scheduler/simulations/test_scheduler_Atlas.sim .
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -442,9 +442,9 @@ test_scheduler_0005() {
 
     cd ${SST_TEST_OUTPUTS}
     #These are already linked in Test 4:
-    #ln -s ${SST_ROOT}/sst/elements/scheduler/simulations/sphere3.mtx .
-    #ln -s ${SST_ROOT}/sst/elements/scheduler/simulations/sphere3_coord.mtx .
-    #ln -s ${SST_ROOT}/sst/elements/scheduler/simulations/test_scheduler_Atlas.sim .
+    #ln -s ${SST_ROOT}/sst-elements/src/sst/elements/scheduler/simulations/sphere3.mtx .
+    #ln -s ${SST_ROOT}/sst-elements/src/sst/elements/scheduler/simulations/sphere3_coord.mtx .
+    #ln -s ${SST_ROOT}/sst-elements/src/sst/elements/scheduler/simulations/test_scheduler_Atlas.sim .
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then

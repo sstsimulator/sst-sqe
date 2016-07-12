@@ -167,11 +167,11 @@ PARTITIONER=$2
     distResultFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.dist"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
-    pushd ${SST_ROOT}/sst/elements/ember/test
+    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs=${SST_ROOT}/sst/elements/ember/test/emberLoad.py
+    sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/ember/test/emberLoad.py
     rm -f ${outFile}
 
     if [ -f ${sut} ] && [ -x ${sut} ]
@@ -179,6 +179,13 @@ PARTITIONER=$2
         # Run SUT
         mpirun -np ${NUMRANKS} ${sut} --verbose --run-mode init --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         retval=$?
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
         touch $partFile
         if [ $retval != 0 ]
         then

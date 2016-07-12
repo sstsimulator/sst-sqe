@@ -65,7 +65,7 @@ test_simpleRNGComponent_mersenne() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_mersenne.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_mersenne.py"
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -131,7 +131,7 @@ test_simpleRNGComponent_marsaglia() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_marsaglia.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_marsaglia.py"
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -196,7 +196,7 @@ test_simpleRNGComponent_xorshift() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_xorshift.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_xorshift.py"
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then

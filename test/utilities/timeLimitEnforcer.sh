@@ -6,7 +6,6 @@
 if [[ ${SST_TEST_ONE_TEST_TIMEOUT:+isSet} != isSet ]] ; then
     SST_TEST_ONE_TEST_TIMEOUT=1800         # 30 minutes 1800 seconds
 fi
-
 CASE=$2
 
 sleep $SST_TEST_ONE_TEST_TIMEOUT 

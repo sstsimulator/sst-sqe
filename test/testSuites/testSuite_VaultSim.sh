@@ -58,7 +58,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-    sutArgs=${SST_ROOT}/sst/elements/VaultSimC/tests/${VSim_case}.py
+    sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/VaultSimC/tests/${VSim_case}.py
 
     (${sut} ${sutArgs} > ${outFile})
         RetVal=$? 
@@ -157,7 +157,7 @@ VaultSim_Template sdl2 lineWordCt
 ##    Don't attempt this test without GEM5
 ##
 #
-test_VaultSim_sdl3() {    
+xxtest_VaultSim_sdl3() {    
 if [[ ${SST_DEPS_INSTALL_GEM5SST:+isSet} != isSet ]] ; then
       echo " "; echo "Can NOT run VaultSim sdl3 test without GEM5"; echo " "
       skip_this_test     # Skip function in shunit2

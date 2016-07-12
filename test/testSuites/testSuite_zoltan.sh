@@ -85,11 +85,11 @@ NUMRANKS=$1
     partFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.part"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
-    pushd ${SST_ROOT}/sst/elements/ember/test
+    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs=${SST_ROOT}/sst/elements/ember/test/emberLoad.py
+    sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/ember/test/emberLoad.py
     rm -f ${outFile}
 
     if [ -f ${sut} ] && [ -x ${sut} ]
@@ -97,6 +97,13 @@ NUMRANKS=$1
         # Run SUT
         mpirun -np ${NUMRANKS} ${sut} --verbose --partitioner zoltan --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         RetVal=$?
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
         if [ $RetVal != 0 ]
         then
              echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$RetVal" ; echo ' '
@@ -210,7 +217,7 @@ test_zoltan_4()
    zoltan_template 4
 }
 
-test_zoltan_8()
+xxtest_zoltan_8()
 {
    zoltan_template 8
 }

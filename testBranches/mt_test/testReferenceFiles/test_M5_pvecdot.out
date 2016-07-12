@@ -1,7 +1,0 @@
-WARNING: Building component "system" with no links assigned.
-M5:configFile `pvecdotM5.xml`
-default system
-default process
-M5:registering exit `m5.nid0.cpu0.workload`
-M5:registering exit
-0:Exit::refInc():45: component multiple increment

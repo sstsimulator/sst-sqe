@@ -12,7 +12,7 @@ PARENT_DIR="$( cd -P "$( dirname "$0" )"/.. && pwd )"
 # Environment variable unique to Zoltan
 export SST_BUILD_ZOLTAN=1
 # Environment variable uniquely identifying this script
-export SST_BUILD_ZOLTAN_3.83=1
+export SST_BUILD_ZOLTAN_3_83=1
 #===============================================================================
 # Zoltan
 #===============================================================================

@@ -1,3 +1,5 @@
+streamCPU Finished after 100000 issued reads, 100000 returned
+Completed @ 11629443 ns
  l1cache.prefetches_issued : Accumulator : Sum.u64 = 10718; SumSQ.u64 = 10718; Count.u64 = 10718; 
  l1cache.miss_events_processed : Accumulator : Sum.u64 = 10718; SumSQ.u64 = 10718; Count.u64 = 10718; 
  l1cache.hit_events_processed : Accumulator : Sum.u64 = 100000; SumSQ.u64 = 100000; Count.u64 = 100000; 
@@ -30,6 +32,9 @@
  l1cache.Inv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 137668354; SumSQ.u64 = 1216597430; Count.u64 = 23258882; 
+ l1cache.Prefetch_requests : Accumulator : Sum.u64 = 10718; SumSQ.u64 = 10718; Count.u64 = 10718; 
+ l1cache.Prefetch_hits : Accumulator : Sum.u64 = 93; SumSQ.u64 = 93; Count.u64 = 93; 
+ l1cache.Prefetch_drops : Accumulator : Sum.u64 = 2033; SumSQ.u64 = 2033; Count.u64 = 2033; 
  l1cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_S : Accumulator : Sum.u64 = 5257; SumSQ.u64 = 5257; Count.u64 = 5257; 
  l1cache.evict_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -195,6 +200,4 @@
  l1cache.eventSent_NACK_up : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.eventSent_NACK_down : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.EventStalledForLockedCacheline : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
-streamCPU Finished after 100000 issued reads, 100000 returned
-Completed @ 11629443 ns
 Simulation is complete, simulated time: 11.6294 ms

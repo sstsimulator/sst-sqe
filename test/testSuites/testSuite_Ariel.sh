@@ -65,14 +65,13 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     fi 
     if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
         echo " Temporary patch"
-        echo "Ariel on Ubuntu not working March 15th"
-        preFail "Ariel on Ubuntu not yet working"  "skip"
+        echo "Ariel on Ubuntu not working on Sandy bridge and Ivy bridge tests"
     fi    
 
     OPWD=`pwd`
     export PKG_CONFIG_PATH=${SST_ROOT}/../../local/lib/pkgconfig
 
-    cd $SST_ROOT/sst/elements/ariel/frontend/simple
+    cd $SST_ROOT/sst-elements/src/sst/elements/ariel/frontend/simple
 
     pushd examples/stream
 
@@ -87,6 +86,16 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
         preFail "ERROR: examples/stream: make failure" "skip"
     fi
+
+#
+#   Let's build the ompmybarrier binary
+#
+    pushd $TEST_SUITE_ROOT/testopenMP
+    cd ompmybarrier
+ls -l 
+    make -f newMakefile
+ls -l 
+    popd
 
 #     Subroutine to clean up shared memory ipc
 #          This could be in subroutine library - for now only Ariel
@@ -154,7 +163,7 @@ Ariel_template() {
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-    sutArgs="${SST_ROOT}/sst/elements/ariel/frontend/simple/examples/stream/${Ariel_case}.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/ariel/frontend/simple/examples/stream/${Ariel_case}.py"
     echo $sutArgs
     if [[ ${USE_OPENMP_BINARY:+isSet} == isSet ]] ; then
         export OMP_EXE=$SST_ROOT/test/testSuites/testopenMP/ompmybarrier/ompmybarrier
@@ -162,10 +171,10 @@ Ariel_template() {
         ls -l $OMP_EXE
     fi
     if [[ ${USE_MEMH:+isSet} == isSet ]] ; then
-        cd $SST_ROOT/sst/elements/ariel/frontend/simple      ## This is redundent
+        cd $SST_ROOT/sst-elements/src/sst/elements/ariel/frontend/simple      ## This is redundent
   
-        ln -sf ${SST_ROOT}/sst/elements/memHierarchy/tests/DDR3_micron_32M_8B_x4_sg125.ini .
-        ln -sf ${SST_ROOT}/sst/elements/memHierarchy/tests/system.ini .
+        ln -sf ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/DDR3_micron_32M_8B_x4_sg125.ini .
+        ln -sf ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/system.ini .
     fi 
 
     Tol=1            ##  Set tolerance at 0.1%
@@ -176,6 +185,13 @@ Ariel_template() {
         # Run SUT
         ${sut} ${sutArgs} > $outFile
         RetVal=$?
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
         if [ $RetVal != 0 ]
         then
              echo ' '; echo WARNING: sst did not finish normally, RetVal= $RetVal ; echo ' '
@@ -250,7 +266,7 @@ Ariel_template() {
     echo "Ariel ${Ariel_case}: Wall Clock Time  $elapsedSeconds seconds"
 }
 
-ls -l ${SST_ROOT}/sst/elements/ariel/frontend/simple/examples/stream
+ls -l ${SST_ROOT}/sst-elements/src/sst/elements/ariel/frontend/simple/examples/stream
 
 test_Ariel_runstream() {
     USE_OPENMP_BINARY=""
@@ -279,12 +295,30 @@ test_Ariel_memH_test() {
 }
 
 test_Ariel_test_ivb() {
+    if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
+        echo " Temporary patch"
+        echo "Ariel on Ubuntu not working on Sandy and Ivy bridge"
+        skip_this_test
+        return
+    fi
     USE_OPENMP_BINARY="yes"
     USE_MEMH=""
     Ariel_template ariel_ivb
 }
 
 test_Ariel_test_snb() {
+    if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
+        echo " Temporary patch"
+        echo "Ariel on Ubuntu not working on Sandy and Ivy bridge"
+        skip_this_test
+        return
+    fi
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+        echo "Sandy Bridge test is incompatible with Multi-Rank"
+        skip_this_test
+        return
+    fi
+
     USE_OPENMP_BINARY="yes"
     USE_MEMH=""
     Ariel_template ariel_snb

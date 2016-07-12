@@ -54,7 +54,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 #
 #       Download the tar file of traces, trace.txt,
-#                 and untar it into the sst/elements tree
+#                 and untar it into the sst-elements/src/sst/elements tree
 #
      echo " wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-mcopteron-traces.tar.gz --no-check-certificate"
      wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-mcopteron-traces.tar.gz
@@ -80,11 +80,11 @@ test_sst_mcopteron_test1() {
     startSeconds=`date +%s`
 
  
-    cd ${SST_ROOT}/sst/elements/sst_mcopteron
+    cd ${SST_ROOT}/sst-elements/src/sst/elements/sst_mcopteron
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/sst_mcopteron/test1.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/sst_mcopteron/test1.py"
 
     Tol=1            ##  Set tolerance at 0.1%
     rm -f ${outFile}
@@ -188,7 +188,7 @@ echo "\$lout is $lout ############################################"
     echo "mcopteron test1: Wall Clock Time  $elapsedSeconds seconds"
 }
 
-test_sst_mcopteron_test2() {
+XXtest_sst_mcopteron_test2() {
      echo ' '
      echo "Test 2  universally disabled February 22, 2016"
      echo ' '
@@ -219,11 +219,11 @@ fi
 
     startSeconds=`date +%s`
  
-    cd ${SST_ROOT}/sst/elements/sst_mcopteron
+    cd ${SST_ROOT}/sst-elements/src/sst/elements/sst_mcopteron
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst/elements/sst_mcopteron/test2.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/sst_mcopteron/test2.py"
 
     Tol=1            ##  Set tolerance at 0.1%
     rm -f ${outFile}
