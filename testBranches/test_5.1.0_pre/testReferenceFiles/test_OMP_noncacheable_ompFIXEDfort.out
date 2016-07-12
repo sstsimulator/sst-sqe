@@ -1,4 +1,0 @@
-M5:configFile `noncacheable-openmp-M5.xml`
-M5:registering exit
- Allocating Arrays...
- Sum is   1073741824.0000000     
