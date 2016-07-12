@@ -95,7 +95,7 @@ if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
 fi
                         
 if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
-    SST_COREBRANCH=6.0.0_Pre
+    SST_ELEMENTSBRANCH=6.0.0_Pre
 fi
 
 echo "#############################################################"
