@@ -301,9 +301,12 @@ test_Ariel_test_ivb() {
         skip_this_test
         return
     fi
+    if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then
+        echo "Open MP is not currently support on MacOS"
+        skip_this_test
+        return
+    fi
     USE_OPENMP_BINARY="yes"
-    USE_MEMH=""
-        USE_OPENMP_BINARY=""
     USE_MEMH=""
     Ariel_template ariel_ivb
 }
@@ -315,6 +318,12 @@ test_Ariel_test_snb() {
         skip_this_test
         return
     fi
+    if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then
+        echo "Open MP is not currently support on MacOS"
+        skip_this_test
+        return
+    fi
+
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
         echo "Sandy Bridge test is incompatible with Multi-Rank"
         skip_this_test
@@ -322,8 +331,6 @@ test_Ariel_test_snb() {
     fi
 
     USE_OPENMP_BINARY="yes"
-        USE_OPENMP_BINARY=""
-    USE_MEMH=""
     USE_MEMH=""
     Ariel_template ariel_snb
 }
