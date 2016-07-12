@@ -120,7 +120,7 @@ removeFreeIPCs() {
          echo "         DEBUG ONLY `wc _ipc_list`"
     while read -u 3 key shmid own perm size n_att rest
     do
-         if [[ $key == "" ]] || [[ $n_att == "" ] ]; then
+         if [[ $key == "" ]] || [[ $n_att == "" ]] ; then
              continue
          fi
          echo "         DEBUG ONLY $key, $shmid, $own, $n_att"
