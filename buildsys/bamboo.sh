@@ -81,7 +81,6 @@ fi
 
 # Which branches to use for each repo (default is devel)
 if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
-    SST_SQEBRANCH=devel
     SST_SQEBRANCH="detached"
 else
     echo ' ' ;  echo ' ' ; echo ' ' ; echo ' ' 
@@ -92,11 +91,11 @@ else
 fi
                         
 if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
-    SST_COREBRANCH=devel
+    SST_COREBRANCH=6.0.0_Pre
 fi
                         
 if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
-    SST_ELEMENTSBRANCH=devel
+    SST_COREBRANCH=6.0.0_Pre
 fi
 
 echo "#############################################################"
