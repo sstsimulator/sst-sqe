@@ -34,7 +34,13 @@ L_TESTFILE=()  # Empty list, used to hold test file names
            echo " on scheduler part, Multi Thread option on Ember"
            echo ' '
        fi
-    fi     
+    fi
+     
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+       echo "Test is incompatible with Multi-Rank. see Issue 327  7/14/2016"
+       preFail "Test is incompatible with Multi-Rank. See Issue 327  7/14/2016" "skip"
+    fi
+       
 
 #===============================================================================
 # Test functions
