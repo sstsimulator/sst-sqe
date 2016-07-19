@@ -18,7 +18,11 @@ echo $SST_TEST_ONE_TEST_TIMEOUT >> $TIME_FLAG
 chmod 777 $TIME_FLAG
 echo "         Create Time Limit Flag file, $TIME_FLAG"
 
+echo ' '
 echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
+ps -f -p $1
+ps -f -p $PPID
+echo ' '
 
 date
 echo ' '
@@ -36,12 +40,21 @@ if [ -z $KILL_PID ] ; then
     if [ -z $PY_PID ] ; then
         echo "No corresponding child named \"python\" "
         echo ' '
+    else
+        KILL_PID=$PY_PID
     fi
-    KILL_PID=$PY_PID
 fi
 
-ps -f -p $KILL_PID | grep $KILL_PID
-if [ $? == 1 ] ; then
+KILL_PARENT=0
+if [ -z $KILL_PID ] ; then
+    KILL_PARENT=1
+else
+    ps -f -p $KILL_PID | grep $KILL_PID
+    if [ $? == 1 ] ; then
+        KILL_PARENT=1
+    fi
+fi
+if [ $KILL_PARENT == 1 ] ; then
     echo " Can not find process to terminate,  pid = $KILL_PID "
     echo "     I am $MY_PID,   my parent was $PPID" 
     ps -f U $USER
