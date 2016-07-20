@@ -33,7 +33,7 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 echo "NEW  ${SST_BUILD_PROSPERO_TRACE_FILE}
-env | grep SST_TEST_HOST_OS 
+env | grep $SST_TEST_HOST_OS 
 if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
 echo line 38  $LINENO
     if [[ $SST_TEST_HOST_OS_DISTRIB_VERSION == "10.10" ]] ; then
