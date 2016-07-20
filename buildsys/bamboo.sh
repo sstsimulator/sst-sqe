@@ -316,7 +316,7 @@ dotests() {
     #    Going to load the gcc-4.8.1 module for now
  
    export JENKINS_PROJECT=`echo $WORKSPACE | awk -F'/' '{print $6}'`
-   export BAMBOO_PROJECT=$1
+   export BAMBOO_SCENARIO=$1
 
 echo " #####################################################"
    echo "parameter \$2 is $2  "
@@ -380,10 +380,10 @@ echo " #####################################################"
          echo ' '
          ## strip any comment off
          cat SuitesToOmitFromAll | awk  '{print $1}' > __omitlist__        
-         echo "      Suites to explictly OMIT from the \"all\" project:"
+         echo "      Suites to explictly OMIT from the \"all\" scenario:"
          ls testSuite_*sh | grep  -f __omitlist__
          echo ' '
-         #   Build the Suite list for the "All" project
+         #   Build the Suite list for the "All" scenario
          ls testSuite_*sh | grep -v -f __omitlist__ > Suite.list
          echo "all() {" > files.for.all
          sed  s\%^%\${SST_TEST_SUITES}/% Suite.list >> files.for.all
@@ -1231,9 +1231,9 @@ getconfig() {
 
         *)
             #-----------------------------------------------------------------
-            #  Unrecognized Project,  This is an error in the bamboo code
+            #  Unrecognized Scenario,  This is an error in the bamboo code
             #-----------------------------------------------------------------
-            echo ' ' ; echo "Unrecognized Project,  This is an error in the bamboo code"
+            echo ' ' ; echo "Unrecognized Scenario,  This is an error in the bamboo code"
             echo " UNRECOGNIZED:   ${1}"
             exit 1            
             ;;
@@ -2618,9 +2618,9 @@ echo  "   We are in distTestDir/trunk"
 
      echo SST_DEPS_USER_DIR= $SST_DEPS_USER_DIR
      if [ $buildtype == "sstmainline_config_dist_test" ] ; then
-         distProject="sstmainline_config_all"
+         distScenario="sstmainline_config_all"
      else
-         distProject="sstmainline_config_no_gem5"
+         distScenario="sstmainline_config_no_gem5"
      fi
 
      echo "---   PWD  `pwd`"    
@@ -2628,7 +2628,7 @@ echo  "   We are in distTestDir/trunk"
      # unlike regular test, make dist does move bamboo to trunk
               ##  Here is the bamboo invocation within bamboo
      echo "         INVOKE bamboo for the build from the dist tar"
-     ./bamboo.sh $distProject $SST_DIST_MPI $SST_DIST_BOOST $SST_DIST_PARAM4
+     ./bamboo.sh $distScenario $SST_DIST_MPI $SST_DIST_BOOST $SST_DIST_PARAM4
      retval=$?
      echo "         Returned from bamboo.sh $retval"
      if [ $retval != 0 ] ; then
