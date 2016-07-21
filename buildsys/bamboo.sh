@@ -969,7 +969,7 @@ getconfig() {
             #     This option used for configuring SST with MPI disabled
             #-----------------------------------------------------------------
             if [ ${MPIHOME:+isSet} == isSet ] ; then
-                echo " Test is flawed!  MPI module is loaded! "
+                echo ' ' ; echo " Test is flawed!  MPI module is loaded!" ; echo ' '
                 exit 1
             fi
             export | egrep SST_DEPS_
@@ -2473,7 +2473,7 @@ darwinSetBoostMPI() {
 
 ################################################################################
             10.11) # El Capitan
-                   ldModulesYosemiteClang clang-700.1.76    #  Xcode 7.1
+                   ldModulesYosemiteClang clang-700.1.76 $2 $3   #  Xcode 7.1
                    ;;
 ################################################################################
 
