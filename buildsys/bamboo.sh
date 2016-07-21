@@ -1542,6 +1542,9 @@ ldModulesYosemiteClang() {
                                 echo "OpenMPI 1.8 (openmpi-1.8) selected"
                                 ModuleEx add mpi/openmpi-1.8_$ClangVersion
                                 ;;
+                            none)
+                                echo  "No MPI loaded per selections"
+                                ;;
                             *)
                                 echo "Default MPI option, loading mpi/openmpi-1.8"
                                 ModuleEx load mpi/openmpi-1.8_$ClangVersion 2>catch.err
