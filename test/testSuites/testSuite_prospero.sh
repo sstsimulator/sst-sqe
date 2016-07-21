@@ -36,7 +36,7 @@ echo "NEW  ${SST_BUILD_PROSPERO_TRACE_FILE}"
 env | grep SST_TEST_HOST_OS 
 if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
 echo line 38  $LINENO
-    if [[ $SST_TEST_HOST_OS_DISTRIB_VERSION == "10.10" ]] ; then
+    if [[ $SST_TEST_HOST_OS_DISTRIB_VERSION == *10.10* ]] ; then
       preFail "Prospero Pin does not work on Yosemite - July 2016"  "skip"
     fi  
     preFail " NOT supposed to get here"
