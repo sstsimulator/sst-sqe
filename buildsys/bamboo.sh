@@ -974,7 +974,7 @@ getconfig() {
             depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv --disable-mpi"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
             ;;
 
         sstmainline_config_gem5_gcc_4_6_4) 
