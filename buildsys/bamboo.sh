@@ -1512,6 +1512,11 @@ fi
 
 ldModulesYosemiteClang() {
     ClangVersion=$1            #   example "clang-700.0.72"
+echo "stdout: Does this print?"
+echo "stderr:  This does print!" >&2
+echo "$LINENO : How many parmeters $#"  >&2
+echo "Parameters 2 and 3: $2 , $3 " >&2
+echo "Clang Version is $ClangVersion >&2
                         ModuleEx avail
                         # Use Boost and MPI built with CLANG from Xcode 6.3
                         ModuleEx unload mpi
