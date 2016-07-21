@@ -1537,6 +1537,8 @@ ldModulesYosemiteClang() {
 #                        ModuleEx load libphx/libphx-2014-MAY-08_$ClangVersion
 
                         # load MPI
+                        echo " ****** Loading MPI ********"
+                        echo "Request (\$2) is ${2}"
                         case $2 in
                             ompi_default|openmpi-1.8)
                                 echo "OpenMPI 1.8 (openmpi-1.8) selected"
@@ -1546,6 +1548,7 @@ ldModulesYosemiteClang() {
                                 echo  "No MPI loaded per selections"
                                 ;;
                             *)
+                                echo "Unrecognized MPI request"
                                 echo "Default MPI option, loading mpi/openmpi-1.8"
                                 ModuleEx load mpi/openmpi-1.8_$ClangVersion 2>catch.err
                                 if [ -s catch.err ] 
