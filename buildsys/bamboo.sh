@@ -1508,12 +1508,13 @@ fi
 # Description:
 #   Purpose: Performs selection and loading of Boost and MPI and 
 #            other compiler specific modules for MacOS Yosemite
-#   Parameter:   name of Clang compiler such as (clang-700.1.76)
+#   Parameters:   name of Clang compiler such as (clang-700.1.76)
+#                 Also need $2 and $3 passed along
 
 ldModulesYosemiteClang() {
-    ClangVersion=$1            #   example "clang-700.0.72"
+    ClangVersion=$1            #   example "clang-700.0.72" $2 $3
                         ModuleEx avail
-                        # Use Boost and MPI built with CLANG from Xcode 6.3
+                        # Use Boost and MPI built with CLANG from Xcode
                         ModuleEx unload mpi
                         ModuleEx unload boost
 
@@ -2454,7 +2455,7 @@ darwinSetBoostMPI() {
                         ;;
 
                     clang-700.1.76)
-                        ldModulesYosemiteClang clang-700.1.76    #  Xcode 7.1
+                        ldModulesYosemiteClang clang-700.1.76 $2 $3   #  Xcode 7.1
                         ;;
                     *)
                         # unknown compiler, use default
@@ -2470,7 +2471,7 @@ darwinSetBoostMPI() {
 
 ################################################################################
             10.11) # El Capitan
-                   ldModulesYosemiteClang clang-700.1.76    #  Xcode 7.1
+                   ldModulesYosemiteClang clang-700.1.76 $2 $3   #  Xcode 7.1
                    ;;
 ################################################################################
 
