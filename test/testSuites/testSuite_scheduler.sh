@@ -229,7 +229,7 @@ test_scheduler_0003() {
     testDataFileBase="test_scheduler_0003"
 
     # This test requires that sst be built with GLPK
-    grep "^#define.HAVE_GLPK.1" ${SST_ROOT}/config.log > /dev/null
+    grep "^#define.HAVE_GLPK.1" ${SST_ELEMENTS_INSTALL}/config.log > /dev/null
     if [ $? == 1 ] ; then
         echo "     SST NOT configured with GLPK,  skipping $testDataFileBase"
         skip_this_test     # Skip function in shunit2
@@ -408,7 +408,7 @@ test_scheduler_0005() {
     # files, and ".out" extension. XML postprocessing requires this.
     testDataFileBase="test_scheduler_0005"
     # This test requires that sst be built with METIS
-    grep "^#define.HAVE_METIS.1" ${SST_ROOT}/config.log > /dev/null
+    grep "^#define.HAVE_METIS.1" ${SST_ELEMENTS_INSTALL}/config.log > /dev/null
     if [ $? == 1 ] ; then
         echo "     SST NOT configured with METIS,  skipping $testDataFileBase"
         skip_this_test     # Skip function in shunit2
