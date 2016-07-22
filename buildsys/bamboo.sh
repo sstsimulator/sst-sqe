@@ -969,13 +969,13 @@ getconfig() {
             #     This option used for configuring SST with MPI disabled
             #-----------------------------------------------------------------
             if [ ${MPIHOME:+isSet} == isSet ] ; then
-                echo " Test is flawed!  MPI module is loaded! "
+                echo ' ' ; echo " Test is flawed!  MPI module is loaded!" ; echo ' '
                 exit 1
             fi
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default"
+            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q none -M none -N default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}"
@@ -1538,12 +1538,18 @@ ldModulesYosemiteClang() {
 #                        ModuleEx load libphx/libphx-2014-MAY-08_$ClangVersion
 
                         # load MPI
+                        echo " ****** Loading MPI ********"
+                        echo "Request (\$2) is ${2}"
                         case $2 in
                             ompi_default|openmpi-1.8)
                                 echo "OpenMPI 1.8 (openmpi-1.8) selected"
                                 ModuleEx add mpi/openmpi-1.8_$ClangVersion
                                 ;;
+                            none)
+                                echo  "No MPI loaded as requested"
+                                ;;
                             *)
+                                echo "Unrecognized MPI request"
                                 echo "Default MPI option, loading mpi/openmpi-1.8"
                                 ModuleEx load mpi/openmpi-1.8_$ClangVersion 2>catch.err
                                 if [ -s catch.err ] 
