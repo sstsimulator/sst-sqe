@@ -319,7 +319,7 @@ dotests() {
    export BAMBOO_SCENARIO=$1
 
 echo " #####################################################"
-   echo "parameter \$2 is $2  "
+   echo "parameter Scenario is $2  "
 echo " #####################################################"
 
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ||
@@ -492,35 +492,6 @@ echo " #####################################################"
         return
     fi
 
-    #
-    #   Run short list for FAST
-    #
-    if [ $1 == "sstmainline_config_fast" -o $1 == "sstmainline_config_fast_static" ]
-    then
-        ${SST_TEST_SUITES}/testSuite_BadPort.sh
-        ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
-        ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
-        ${SST_TEST_SUITES}/testSuite_embernightly.sh
-        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-        ${SST_TEST_SUITES}/testSuite_merlin.sh
-        ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
-        ${SST_TEST_SUITES}/testSuite_miranda.sh
-        ${SST_TEST_SUITES}/testSuite_prospero.sh
-        ${SST_TEST_SUITES}/testSuite_qsimComponent.sh
-        ${SST_TEST_SUITES}/testSuite_scheduler.sh
-        ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
-        ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
-        ${SST_TEST_SUITES}/testSuite_simpleDistribComponent.sh
-        ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
-        ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
-        ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
-        ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
-        ${SST_TEST_SUITES}/testSuite_VaultSim.sh
-        return
-     fi
-
      #
      #   Suites that used MemHierarchy, but not openMP
      #
@@ -570,7 +541,6 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-    ## ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
 
 
     ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
@@ -605,8 +575,6 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
     ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
       
-    HOST=`uname -n | awk -F. '{print $1}'`
-
     if [[ ${INTEL_PIN_DIRECTORY:+isSet} == isSet ]] ; then
         export SST_BUILD_PROSPERO_TRACE_FILE=1
         pushd ${SST_TEST_SUITES}
@@ -1118,21 +1086,6 @@ linuxSetBoostMPI() {
 
    # load corresponding Boost
    case $3 in
-       boost-1.43)
-           echo "bamboo.sh: Boost 1.43 selected"
-           ModuleEx unload boost
-           ModuleEx load boost/${desiredBoost}
-           ;;
-       boost-1.48)
-           echo "bamboo.sh: Boost 1.48 selected"
-           ModuleEx unload boost
-           ModuleEx load boost/${desiredBoost}
-           ;;
-       boost-1.50)
-           echo "bamboo.sh: Boost 1.50 selected"
-           ModuleEx unload boost
-           ModuleEx load boost/${desiredBoost}
-           ;;
        boost-1.54)
            echo "bamboo.sh: Boost 1.54 selected"
            ModuleEx unload boost
@@ -2134,7 +2087,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_config_linux_with_ariel|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_no_gem5_intel_gcc_4_8_1|sstmainline_config_no_gem5_intel_gcc_4_8_1_with_c|sstmainline_config_fast_intel_build_no_gem5|sstmainline_config_no_mpi|sstmainline_config_gcc_4_8_1|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_macosx_static|sstmainline_config_macosx_static_no_gem5|sstmainline_config_static_macro_devel|sstmainline_sstmacro_xconfig|sstmainline_config_test_output_config|sstmainline_config_xml2python_static|sstmainline_config_memH_only|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_VaultSim|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_gem5_gcc_4_6_4|sstmainline_config_fast_static|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester)
+        default|sstmainline_config|sstmainline_config_linux_with_ariel|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_no_gem5_intel_gcc_4_8_1|sstmainline_config_no_gem5_intel_gcc_4_8_1_with_c|sstmainline_config_no_mpi|sstmainline_config_gcc_4_8_1|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_macosx_static|sstmainline_config_macosx_static_no_gem5|sstmainline_config_static_macro_devel|sstmainline_sstmacro_xconfig|sstmainline_config_test_output_config|sstmainline_config_xml2python_static|sstmainline_config_memH_only|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_VaultSim|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_gem5_gcc_4_6_4|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester)
             #   Save Parameters $2, $3 and $4 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
