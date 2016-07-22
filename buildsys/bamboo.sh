@@ -1508,17 +1508,13 @@ fi
 # Description:
 #   Purpose: Performs selection and loading of Boost and MPI and 
 #            other compiler specific modules for MacOS Yosemite
-#   Parameter:   name of Clang compiler such as (clang-700.1.76)
+#   Parameters:   name of Clang compiler such as (clang-700.1.76)
+#                 Also need $2 and $3 passed along
 
 ldModulesYosemiteClang() {
-    ClangVersion=$1            #   example "clang-700.0.72"
-echo "stdout: Does this print?"
-echo "stderr:  This does print!" >&2
-echo "$LINENO : How many parmeters $#"  >&2
-echo "Parameters 2 and 3: $2 , $3 " >&2
-echo "Clang Version is $ClangVersion" >&2
+    ClangVersion=$1            #   example "clang-700.0.72" $2 $3
                         ModuleEx avail
-                        # Use Boost and MPI built with CLANG from Xcode 6.3
+                        # Use Boost and MPI built with CLANG from Xcode
                         ModuleEx unload mpi
                         ModuleEx unload boost
 
@@ -1550,7 +1546,7 @@ echo "Clang Version is $ClangVersion" >&2
                                 ModuleEx add mpi/openmpi-1.8_$ClangVersion
                                 ;;
                             none)
-                                echo  "No MPI loaded per selections"
+                                echo  "No MPI loaded as requested"
                                 ;;
                             *)
                                 echo "Unrecognized MPI request"
@@ -2465,7 +2461,7 @@ darwinSetBoostMPI() {
                         ;;
 
                     clang-700.1.76)
-                        ldModulesYosemiteClang clang-700.1.76    #  Xcode 7.1
+                        ldModulesYosemiteClang clang-700.1.76 $2 $3   #  Xcode 7.1
                         ;;
                     *)
                         # unknown compiler, use default
