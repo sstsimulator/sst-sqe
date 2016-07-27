@@ -675,7 +675,7 @@ echo " #####################################################"
       
     HOST=`uname -n | awk -F. '{print $1}'`
 
-    if [ $HOST == "sst-test" ] ; then
+    if [[ ${INTEL_PIN_DIRECTORY:+isSet} == isSet ]] ; then
         export SST_BUILD_PROSPERO_TRACE_FILE=1
         pushd ${SST_TEST_SUITES}
           ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
@@ -966,18 +966,22 @@ getconfig() {
             ModuleEx unload metis
             ;;
 
-        sstmainline_config_no_mpi|sstmainline_config_fast) 
+        sstmainline_config_no_mpi) 
             #-----------------------------------------------------------------
             # sstmainline_config
-            #     This option used for configuring SST with supported stabledevel deps
+            #     This option used for configuring SST with MPI disabled
             #-----------------------------------------------------------------
+            if [ ${MPIHOME:+isSet} == isSet ] ; then
+                echo ' ' ; echo " Test is flawed!  MPI module is loaded!" ; echo ' '
+                exit 1
+            fi
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default"
+            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q none -M none -N default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv --disable-mpi"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}"
             ;;
 
         sstmainline_config_gem5_gcc_4_6_4) 
@@ -1262,24 +1266,29 @@ linuxSetBoostMPI() {
    # For some reason, .bashrc is not being run prior to
    # this script. Kludge initialization of modules.
 
-   if [ $SST_TEST_HOST_OS_DISTRIB_VERSION != "16.04" ] ; then
-       if [ -f /etc/profile.modules ] ; then
-           . /etc/profile.modules
-           echo "bamboo.sh: loaded /etc/profile.modules. Available modules"
-           ModuleEx avail
-       fi
+   echo "Attempt to initialize the modules utility.  Look for modules init file in 1 of 2 places"
+   
+   echo "Location 1: ls -l /etc/profile.modules"
+   ls -l /etc/profile.modules
+   if [ -f /etc/profile.modules ] ; then
+       . /etc/profile.modules
+       echo "bamboo.sh: loaded /etc/profile.modules"
    else
+       echo "Location 2: ls -l /etc/profile.d/modules.sh"
        ls -l /etc/profile.d/modules.sh
        if [ -r /etc/profile.d/modules.sh ] ; then 
            source /etc/profile.d/modules.sh 
-           echo " bamboo.sh:  Available modules"
-           ModuleEx avail
-           if [ $? -ne 0 ] ; then
-               echo " ModuleEx Failed"
-               exit 1
-           fi    
+           echo "bamboo.sh: loaded /etc/profile.d/modules"
        fi
    fi
+   
+   echo "Testing modules utility via ModuleEx..."
+   echo "ModuleEx avail"
+   ModuleEx avail
+   if [ $? -ne 0 ] ; then
+       echo " ModuleEx Failed"
+       exit 1
+   fi    
 
    # build MPI and Boost selectors
    if [[ "$2" =~ openmpi.* ]]
@@ -1507,12 +1516,13 @@ fi
 # Description:
 #   Purpose: Performs selection and loading of Boost and MPI and 
 #            other compiler specific modules for MacOS Yosemite
-#   Parameter:   name of Clang compiler such as (clang-700.1.76)
+#   Parameters:   name of Clang compiler such as (clang-700.1.76)
+#                 Also need $2 and $3 passed along
 
 ldModulesYosemiteClang() {
-    ClangVersion=$1            #   example "clang-700.0.72"
+    ClangVersion=$1            #   example "clang-700.0.72" $2 $3
                         ModuleEx avail
-                        # Use Boost and MPI built with CLANG from Xcode 6.3
+                        # Use Boost and MPI built with CLANG from Xcode
                         ModuleEx unload mpi
                         ModuleEx unload boost
 
@@ -1536,12 +1546,18 @@ ldModulesYosemiteClang() {
 #                        ModuleEx load libphx/libphx-2014-MAY-08_$ClangVersion
 
                         # load MPI
+                        echo " ****** Loading MPI ********"
+                        echo "Request (\$2) is ${2}"
                         case $2 in
                             ompi_default|openmpi-1.8)
                                 echo "OpenMPI 1.8 (openmpi-1.8) selected"
                                 ModuleEx add mpi/openmpi-1.8_$ClangVersion
                                 ;;
+                            none)
+                                echo  "No MPI loaded as requested"
+                                ;;
                             *)
+                                echo "Unrecognized MPI request"
                                 echo "Default MPI option, loading mpi/openmpi-1.8"
                                 ModuleEx load mpi/openmpi-1.8_$ClangVersion 2>catch.err
                                 if [ -s catch.err ] 
@@ -2453,7 +2469,7 @@ darwinSetBoostMPI() {
                         ;;
 
                     clang-700.1.76)
-                        ldModulesYosemiteClang clang-700.1.76    #  Xcode 7.1
+                        ldModulesYosemiteClang clang-700.1.76 $2 $3   #  Xcode 7.1
                         ;;
                     *)
                         # unknown compiler, use default
@@ -2469,7 +2485,7 @@ darwinSetBoostMPI() {
 
 ################################################################################
             10.11) # El Capitan
-                   ldModulesYosemiteClang clang-700.1.76    #  Xcode 7.1
+                   ldModulesYosemiteClang clang-700.1.76 $2 $3   #  Xcode 7.1
                    ;;
 ################################################################################
 
@@ -3195,7 +3211,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_config_linux_with_ariel|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_no_gem5_intel_gcc_4_8_1|sstmainline_config_no_gem5_intel_gcc_4_8_1_with_c|sstmainline_config_fast_intel_build_no_gem5|sstmainline_config_no_mpi|sstmainline_config_gcc_4_8_1|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_macosx_static|sstmainline_config_macosx_static_no_gem5|sstmainline_config_static_macro_devel|sstmainline_sstmacro_xconfig|sstmainline_config_test_output_config|sstmainline_config_xml2python_static|sstmainline_config_memH_only|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_VaultSim|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_gem5_gcc_4_6_4|sstmainline_config_fast|sstmainline_config_fast_static|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester)
+        default|sstmainline_config|sstmainline_config_linux_with_ariel|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_no_gem5_intel_gcc_4_8_1|sstmainline_config_no_gem5_intel_gcc_4_8_1_with_c|sstmainline_config_fast_intel_build_no_gem5|sstmainline_config_no_mpi|sstmainline_config_gcc_4_8_1|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_macosx_static|sstmainline_config_macosx_static_no_gem5|sstmainline_config_static_macro_devel|sstmainline_sstmacro_xconfig|sstmainline_config_test_output_config|sstmainline_config_xml2python_static|sstmainline_config_memH_only|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_VaultSim|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_gem5_gcc_4_6_4|sstmainline_config_fast_static|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester)
             #   Save Parameters $2, $3 and $4 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3

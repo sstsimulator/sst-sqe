@@ -32,11 +32,14 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
                # that bamboo.sh defines it if you wish to use it.
 
 L_TESTFILE=()  # Empty list, used to hold test file names
-
+ 
 if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
+    if [[ $SST_TEST_HOST_OS_DISTRIB_VERSION == *10.10* ]] ; then
+      preFail "SKIP: Prospero Pin does not work on Yosemite - July 2016"  "skip"
+    fi  
    # ==================  Create program "array"
 
-   # ----------------- compile the file array   
+   # ----------------- compile the file array     
    echo "## ----------------- compile the file array   "
        cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array
    echo PWD `pwd`

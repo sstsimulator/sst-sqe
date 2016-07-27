@@ -1,9 +1,0 @@
-WARNING: Building component "system" with no links assigned.
-M5:configFile `hellowM5.xml`
-default system
-default process
-M5:registering exit `m5.nid0.cpu0.workload`
-M5:registering exit
-0:Exit::refInc():61: component in construction increments exit multiple times.
-#SSTTEST Hello World from SST
-M5:exiting: curTick()=16392000 cause=`target called exit()` code=0

@@ -120,9 +120,17 @@ SE_start() {
 #
 SE_fini() {
    TL=`grep Simulation.is.complete tmp_file`
-   if [ $? != 0 ] ; then 
-      ##  Do not insert standard TIME LIMIT code here.
-      ##  The temp file has a unix pid in its name.
+   RetVal=$?
+   TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+   if [ -e $TIME_FLAG ] ; then 
+        echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+        fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+        rm $TIME_FLAG 
+        FAILED_TESTS=$(($FAILED_TESTS + 1))
+        return 
+   fi 
+
+   if [ $RetVal != 0 ] ; then 
       echo "       SST run is incomplete, FATAL" 
       fail " # $TEST_INDEX: SST run is incomplete, FATAL" 
       FAILED="TRUE"
