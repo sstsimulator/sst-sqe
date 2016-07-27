@@ -1280,6 +1280,7 @@ linuxSetBoostMPI() {
    fi
    
    echo "Testing modules utility via ModuleEx..."
+   echo "ModuleEx avail"
    ModuleEx avail
    if [ $? -ne 0 ] ; then
        echo " ModuleEx Failed"
