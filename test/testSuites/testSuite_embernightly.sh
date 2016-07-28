@@ -32,7 +32,9 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 L_TESTFILE=()  # Empty list, used to hold test file names
 
 #=====================================================
+if [ $SST_TEST_HOST_OS_KERNEL != "Darwin" ] ; then
 #  A bit of code to clear out old openmpi files from /tmp
+#   --This is Linux code and MacOS can't handle this date syntax--
 
     ls -ld /tmp/openmpi-sessions*/* |grep $USER > __rmlist
     wc __rmlist
@@ -51,6 +53,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     
     done 3<__rmlist
     rm __rmlist
+fi
 #=====================================================
 
 #===============================================================================
