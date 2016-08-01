@@ -301,7 +301,7 @@ test_Ariel_test_ivb() {
         skip_this_test
         return
     fi
-    if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then
+    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
         echo "Open MP is not currently support on MacOS"
         skip_this_test
         return
@@ -318,7 +318,7 @@ test_Ariel_test_snb() {
         skip_this_test
         return
     fi
-    if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then
+    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
         echo "Open MP is not currently support on MacOS"
         skip_this_test
         return
