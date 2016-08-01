@@ -38,6 +38,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     wc __rmlist
     today=$(( 10#`date +%j` ))
     echo "today is $today"
+if [ $SST_TEST_HOST_OS_KERNEL != "Darwin" ] ; then
+#   --This is Linux code and MacOS can't handle this date syntax--
     
     while read -u 3 r1 r2 r3 r4 r5 mo da r8 name
     do
@@ -50,6 +52,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
       fi
     
     done 3<__rmlist
+fi
     rm __rmlist
 #=====================================================
 
