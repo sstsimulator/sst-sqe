@@ -478,13 +478,24 @@ echo " #####################################################"
     #
     #   Test for the new memH via Ariel testing
     #
+    #   With optional split into two tests
+    #
     if [ $1 == "sstmainline_config_memH_Ariel" ]
     then
-        ${SST_TEST_SUITES}/testSuite_openMP.sh
-        ${SST_TEST_SUITES}/testSuite_diropenMP.sh
-        ${SST_TEST_SUITES}/testSuite_dirSweepB.sh
-        ${SST_TEST_SUITES}/testSuite_dirSweepI.sh
-        ${SST_TEST_SUITES}/testSuite_dirSweep.sh
+        GROUP=0
+        if [[ ${SST_SWEEP_SPLIT:+isSet} == isSet ]] ; then
+            GROUP=${SST_SWEEP_SPLIT}
+        fi
+        if [ $GROUP != 2 ] ; then
+            ${SST_TEST_SUITES}/testSuite_openMP.sh
+            ${SST_TEST_SUITES}/testSuite_diropenMP.sh
+            ${SST_TEST_SUITES}/testSuite_dirSweepB.sh
+            ${SST_TEST_SUITES}/testSuite_dirSweepI.sh
+            ${SST_TEST_SUITES}/testSuite_dirSweep.sh
+        fi
+        if [ $GROUP == 1 ] ; then 
+            return
+        fi
         ${SST_TEST_SUITES}/testSuite_dirnoncacheable_openMP.sh
         ${SST_TEST_SUITES}/testSuite_noncacheable_openMP.sh
         ${SST_TEST_SUITES}/testSuite_Sweep_openMP.sh
