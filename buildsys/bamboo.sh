@@ -112,7 +112,7 @@ export SST_ROOT=`pwd`
 echo " SST_ROOT = $SST_ROOT"
 
 echo "#############################################################"
-echo "  Version May 24 1633 hours "
+echo "  Version July 20 1433 hours "
 echo ' '
 pwd
 ls -la
@@ -316,10 +316,10 @@ dotests() {
     #    Going to load the gcc-4.8.1 module for now
  
    export JENKINS_PROJECT=`echo $WORKSPACE | awk -F'/' '{print $6}'`
-   export BAMBOO_PROJECT=$1
+   export BAMBOO_SCENARIO=$1
 
 echo " #####################################################"
-   echo "parameter \$2 is $2  "
+   echo "parameter Scenario is $2  "
 echo " #####################################################"
 
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ||
@@ -380,10 +380,10 @@ echo " #####################################################"
          echo ' '
          ## strip any comment off
          cat SuitesToOmitFromAll | awk  '{print $1}' > __omitlist__        
-         echo "      Suites to explictly OMIT from the \"all\" project:"
+         echo "      Suites to explictly OMIT from the \"all\" scenario:"
          ls testSuite_*sh | grep  -f __omitlist__
          echo ' '
-         #   Build the Suite list for the "All" project
+         #   Build the Suite list for the "All" scenario
          ls testSuite_*sh | grep -v -f __omitlist__ > Suite.list
          echo "all() {" > files.for.all
          sed  s\%^%\${SST_TEST_SUITES}/% Suite.list >> files.for.all
@@ -492,36 +492,6 @@ echo " #####################################################"
         return
     fi
 
-    #
-    #   Run short list for FAST
-    #
-    if [ $1 == "sstmainline_config_fast" -o $1 == "sstmainline_config_fast_static" ]
-    then
-        ${SST_TEST_SUITES}/testSuite_BadPort.sh
-        ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
-        ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
-        ${SST_TEST_SUITES}/testSuite_embernightly.sh
-        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-        ${SST_TEST_SUITES}/testSuite_merlin.sh
-        ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
-        ${SST_TEST_SUITES}/testSuite_miranda.sh
-        ${SST_TEST_SUITES}/testSuite_prospero.sh
-        ${SST_TEST_SUITES}/testSuite_qsimComponent.sh
-        ${SST_TEST_SUITES}/testSuite_scheduler.sh
-        ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
-        ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
-        ${SST_TEST_SUITES}/testSuite_simpleDistribComponent.sh
-        ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
-        ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
-        ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
-        ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
-        ## ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
-        ${SST_TEST_SUITES}/testSuite_VaultSim.sh
-        return
-     fi
-
      #
      #   Suites that used MemHierarchy, but not openMP
      #
@@ -552,49 +522,12 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_Ariel.sh
         return
     fi
-    
-     #
-     #   Suites that used by the devel AutoTester 
-     #   These tests should be quick to minimize waits for approving pull requests
-     #
-
-    if [ $1 == "sstmainline_config_develautotester" ]
-    then
-        if [[ $SST_ROOT == *Ariel* ]] ; then
-            pushd ${SST_TEST_SUITES}
-            ln -s ${SST_TEST_SUITES}/testSuite_Ariel.sh testSuite_Ariel_extra.sh
-            ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
-            popd
-        fi
-        ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
-        ${SST_TEST_SUITES}/testSuite_embernightly.sh
-        ${SST_TEST_SUITES}/testSuite_BadPort.sh
-        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-        ${SST_TEST_SUITES}/testSuite_miranda.sh
-        ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
-        ${SST_TEST_SUITES}/testSuite_prospero.sh
-        ${SST_TEST_SUITES}/testSuite_Ariel.sh
-        return
-    fi
-    
 
     if [ $kernel != "Darwin" ]
     then
         # Only run if the OS *isn't* Darwin (MacOS)
         ${SST_TEST_SUITES}/testSuite_qsimComponent.sh
-#       ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     fi
-    #
-    #   Only run if configured for ariel
-    #
-#    if [[ $1 == sstmainline_config_linux_with_ariel* ]]
-#    then
-#         ${SST_TEST_SUITES}/testSuite_Ariel.sh
-#    else
-#         ${SST_TEST_SUITES}/testSuite_scheduler.sh
-#    fi
 
     #  
     #    Only if macsim was requested
@@ -608,7 +541,6 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-    ## ${SST_TEST_SUITES}/testSuite_sst_mcopteron.sh
 
 
     ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
@@ -632,33 +564,6 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_simpleDistribComponent.sh
     ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
 
-#gem5    if [ $1 != "sstmainline_config_gcc_4_8_1" -a $1 != "sstmainline_config_no_mpi" ] && [[ $1 != *no_gem5* ]] 
-#gem5    then
-#gem5        # Don't run gem5 dependent test suites in these configurations
-#gem5        # because gem5 is not enabled in them.
-#gem5        ${SST_TEST_SUITES}/testSuite_M5.sh
-#gem5        ${SST_TEST_SUITES}/testSuite_memHierarchy_bin.sh
-#gem5
-#gem5        # These also fail in gem5 with CentOS 6.6 (libgomp-4.4.7-11 vs libgomp-4.4.7-4)  
-#gem5        #         Also fail on current (Jan 21, 2015) TOSS VM
-#gem5#################################  February 3rd
-#gem5#   remove the TOSS and CentOS 6.6 exclusion
-#gem5#        Tests have been converted to use prebuilt binaries.
-#gem5#
-#gem5#        CentOS_version=`cat /etc/centos-release`
-#gem5#        echo " CentOS Version is ${CentOS_version}"
-#gem5#        if [ "${CentOS_version}" == "CentOS release 6.6 (Final)" ] ; then
-#gem5#           echo " This is CentOS 6.6,  omit running OpenMP tests.  Gem-5 is \"defunct\""
-#gem5#        elif [ "${SST_TEST_HOST_OS_DISTRIB}" == "toss" ] ; then
-#gem5#           echo " This is TOSS,  omit running OpenMP tests.  Gem-5 is \"defunct\""
-#gem5#        else
-#gem5           ${SST_TEST_SUITES}/testSuite_openMP.sh
-#gem5           ${SST_TEST_SUITES}/testSuite_diropenMP.sh
-#gem5           ${SST_TEST_SUITES}/testSuite_stream.sh
-#gem5           ${SST_TEST_SUITES}/testSuite_noncacheable_openMP.sh
-#gem5#        fi
-#gem5    fi
-
     if [ $1 != "sstmainline_config_no_mpi" ] ; then
         #  Zoltan test requires MPI to execute.
         #  sstmainline_config_no_gem5 deliberately omits Zoltan, so must skip test.
@@ -670,8 +575,6 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
     ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
       
-    HOST=`uname -n | awk -F. '{print $1}'`
-
     if [[ ${INTEL_PIN_DIRECTORY:+isSet} == isSet ]] ; then
         export SST_BUILD_PROSPERO_TRACE_FILE=1
         pushd ${SST_TEST_SUITES}
@@ -686,18 +589,6 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
     ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
     ${SST_TEST_SUITES}/testSuite_VaultSim.sh
-
-###     ## run only on HardWare
-###     
-###     if [ $HOST == "sst-test" ] || [ $HOST == "johnslion" ] ; then
-###         echo " $HOST: Running the Wall Clock timing test"
-###         ${SST_TEST_SUITES}/testSuite_simpleClockerComponent.sh
-###     else
-###         echo " $HOST: Not Running the Wall Clock timing test"
-###     fi
-### 
-###     ## run above only on HardWare
-    
 
     # Purge SST installation
     if [[ ${SST_RETAIN_BIN:+isSet} != isSet ]]
@@ -805,12 +696,6 @@ getconfig() {
         rm ./sst/elements/macro_component/.unignore
     fi
 
-    # On MacOSX Lion, suppress the following:
-#    #      PhoenixSim
-#    if [ $3 == "Darwin" ]
-#    then
-#        echo "$USER" > ./sst/elements/PhoenixSim/.ignore
-#    fi
 
     case $1 in
         sstmainline_config) 
@@ -826,19 +711,6 @@ getconfig() {
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             ;;
-        sstmainline_config_VaultSim) 
-            #-----------------------------------------------------------------
-            # sstmainline_config    -- temporary for testing with VaultSim
-            #    This one should be refined or incorporated into something else with dir changed.
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv --with-libphx=$LIBPHX_HOME/src"
-            ;;
         sstmainline_config_all) 
             #-----------------------------------------------------------------
             # sstmainline_config
@@ -847,7 +719,7 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83 -c default"
+            depsStr="-k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-libphx=$LIBPHX_HOME/src --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL $elementsMiscEnv"
@@ -864,20 +736,6 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            ;;
-        sstmainline_config_linux_with_ariel) 
-            #-----------------------------------------------------------------
-            # sstmainline_config_linux_with_ariel
-            #     This option used for configuring SST with supported stabledevel deps,
-            #     Intel PIN, and Ariel 
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
             ;;
         sstmainline_config_linux_with_ariel_no_gem5) 
             #-----------------------------------------------------------------
@@ -906,64 +764,13 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83 -c default"
+            depsStr="-k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
             ;;
-        sstmainline_config_no_gem5_intel_gcc_4_8_1) 
-            #-----------------------------------------------------------------
-            # sstmainline_config_no_gem5_wo_chdl
-            #     This option used for configuring SST with supported stabledevel deps
-            #     Some compilers (gcc 4.7, 4.8, intel 13.4) have problems building gem5,
-            #     so this option removes gem5 in order to evaluate the rest of the build
-            #     under those compilers. Omit chdl.  
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83 -c none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv $IntelExtraConfigStr"
-            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} $elementsMiscEnv $IntelExtraConfigStr"
-            ;;
 
-        sstmainline_config_no_gem5_intel_gcc_4_8_1_with_c) 
-            #-----------------------------------------------------------------
-            # sstmainline_config_no_gem5_wo_chdl
-            #     This option used for configuring SST with supported stabledevel deps
-            #     Some compilers (gcc 4.7, 4.8, intel 13.4) have problems building gem5,
-            #     so this option removes gem5 in order to evaluate the rest of the build
-            #     under those compilers. Include chdl.  
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83 -c default"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv $IntelExtraConfigStr"
-            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $elementsMiscEnv $IntelExtraConfigStr"
-            ;;
-
-        sstmainline_config_fast_intel_build_no_gem5) 
-            #-----------------------------------------------------------------
-            # sstmainline_config_no_gem5_wo_chdl
-            #     This option used for configuring SST with supported stabledevel deps
-            #     Some compilers (gcc 4.7, 4.8, intel 13.4) have problems building gem5,
-            #     so this option removes gem5 in order to evaluate the rest of the build
-            #     under those compilers. Omit chdl.  CXXFLAGS=-gxx-name=/usr/local/module-pkgs/gcc/4.8.1/bin/g++ CFLAGS=-gcc-name=/usr/local/module-pkgs/gcc/4.8.1/bin/gcc"
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d none -p none  -g none -m none -i none -o none -h none -s none -q none -M none  -z none -c none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv $IntelExtraConfigStr"
-            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} $elementsMiscEnv $IntelExtraConfigStr"
-            ModuleEx unload metis
-            ;;
-
-        sstmainline_config_no_mpi) 
+        sstmainline_config_no_mpi)
             #-----------------------------------------------------------------
             # sstmainline_config
             #     This option used for configuring SST with MPI disabled
@@ -975,39 +782,12 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q none -M none -N default"
+            depsStr="-k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none  -M none -N default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}"
             ;;
 
-        sstmainline_config_gem5_gcc_4_6_4) 
-            #-----------------------------------------------------------------
-            # sstmainline_config
-            #     This option used for configuring SST, forcing gem5 to be built with gcc-4.6.4
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g gcc-4.6.4 -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83 -c default"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $elementsMiscEnv"
-            ;;
-
-        sstmainline_config_gcc_4_8_1) 
-            #-----------------------------------------------------------------
-            # sstmainline_config_gcc_4_8_1
-            #     This option used for configuring SST with supported stabledevel deps
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv"
-            ;;
         sstmainline_config_static) 
             #-----------------------------------------------------------------
             # sstmainline_config_static
@@ -1016,7 +796,7 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83"
+            depsStr="-k none -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
@@ -1030,24 +810,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83"
+            depsStr="-k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -z 3.83"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            ;;
-
-        sstmainline_config_fast_static) 
-            #-----------------------------------------------------------------
-            # sstmainline_config_fast_static
-            #     This option used for quick static run omiting many options
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions --enable-static --disable-shared $coreMiscEnv --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --enable-static --disable-shared $elementsMiscEnv --disable-mpi"
             ;;
 
         sstmainline_config_clang_core_only) 
@@ -1055,7 +821,7 @@ getconfig() {
             # sstmainline_config_clang_core_only
             #     This option used for configuring SST with no deps to build the core with clang
             #-----------------------------------------------------------------
-            depsStr="-k none -d 2.2.2 -p none -z none -b none -g none -m none -i none -o none -h none -s none -q none -M none -N default"
+            depsStr="-k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none -M none -N default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM"
@@ -1068,7 +834,7 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -M 2.2.0"
+            depsStr="-k none -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -M 2.2.0"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} $elementsMiscEnv"
@@ -1081,7 +847,7 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z 3.83  -b 1.50 -g none -m none -i none -o none -h none -s none -q none -M none -N default -c default"
+            depsStr="-k none -d 2.2.2 -p none -z 3.83  -g none -m none -i none -o none -h none -s none -q none -M none -N default -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions ${MTNLION_FLAG} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
@@ -1094,49 +860,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -M 2.2.0"
+            depsStr="-k none -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -M 2.2.0"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions  --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
-            ;;
-        sstmainline_config_macosx_static_no_gem5) 
-            #-----------------------------------------------------------------
-            # sstmainline_config_macosx_static_no_gem5
-            #     This option used for configuring SST with supported stabledevel deps
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g none -m none -i none -o none -h none -s none -q none -z 3.83 -N default -M 2.2.0"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
-            ;;
-        sstmainline_config_static_macro_devel) 
-            #-----------------------------------------------------------------
-            # sstmainline_config_static_macro_devel
-            #     This option used for configuring SST with supported stabledevel deps
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g stabledevel -m none -i none -o none -h none -s stabledevel -q 0.2.1 -M none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions --enable-static --disable-shared $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-sstmacro=$SST_DEPS_INSTALL_SSTMACRO  --with-qsim=$SST_DEPS_INSTALL_QSIM --enable-static --disable-shared $elementsMiscEnv"
-            ;;
-        sstmainline_sstmacro_xconfig) 
-            #-----------------------------------------------------------------
-            # sstmainline_sstmacro_xconfig
-            #     This option used for configuring SST with sstmacro latest mainline UNSTABLE
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g stabledevel -m none -i none -o none -h none -s stabledevel -q 0.2.1 -M none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-sstmacro=$SST_DEPS_INSTALL_SSTMACRO  --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv"
             ;;
         sstmainline_config_test_output_config)
             #-----------------------------------------------------------------
@@ -1146,23 +873,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83"
+            depsStr="-k none -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN"
             elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
-            ;;
-        sstmainline_config_xml2python_static) 
-            #-----------------------------------------------------------------
-            # sstmainline_config_xml2python
-            #     This option used for verifying the auto generation of Python input files
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -b 1.50 -g stabledevel -m none -i none -o none -h none -s none -q none -M none -N default"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions --enable-static --disable-shared $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared $elementsMiscEnv"
             ;;
         sstmainline_config_memH_wo_openMP)
             #-----------------------------------------------------------------
@@ -1235,9 +949,9 @@ getconfig() {
 
         *)
             #-----------------------------------------------------------------
-            #  Unrecognized Project,  This is an error in the bamboo code
+            #  Unrecognized Scenario,  This is an error in the bamboo code
             #-----------------------------------------------------------------
-            echo ' ' ; echo "Unrecognized Project,  This is an error in the bamboo code"
+            echo ' ' ; echo "Unrecognized Scenario,  This is an error in the bamboo code"
             echo " UNRECOGNIZED:   ${1}"
             exit 1            
             ;;
@@ -1344,26 +1058,6 @@ linuxSetBoostMPI() {
 
    # load MPI
    case $2 in
-       mpich2_stable|mpich2-1.4.1p1)
-           echo "MPICH2 stable (mpich2-1.4.1p1) selected"
-           ModuleEx unload mpi # unload any default to avoid conflict error
-           ModuleEx load mpi/${desiredMPI}
-           ;;
-       openmpi-1.7.2)
-           echo "OpenMPI 1.7.2 (openmpi-1.7.2) selected"
-           ModuleEx unload mpi # unload any default to avoid conflict error
-           ModuleEx load mpi/${desiredMPI}
-           ;;
-       ompi_1.6_stable|openmpi-1.6)
-           echo "OpenMPI stable (openmpi-1.6) selected"
-           ModuleEx unload mpi # unload any default to avoid conflict error
-           ModuleEx load mpi/${desiredMPI}
-           ;;
-       openmpi-1.4.4)
-           echo "OpenMPI (openmpi-1.4.4) selected"
-           ModuleEx unload mpi # unload any default to avoid conflict error
-           ModuleEx load mpi/${desiredMPI}
-           ;;
        openmpi-1.6.5)
            echo "OpenMPI (openmpi-1.6.5) selected"
            ModuleEx unload mpi # unload any default to avoid conflict error
@@ -1397,21 +1091,6 @@ linuxSetBoostMPI() {
 
    # load corresponding Boost
    case $3 in
-       boost-1.43)
-           echo "bamboo.sh: Boost 1.43 selected"
-           ModuleEx unload boost
-           ModuleEx load boost/${desiredBoost}
-           ;;
-       boost-1.48)
-           echo "bamboo.sh: Boost 1.48 selected"
-           ModuleEx unload boost
-           ModuleEx load boost/${desiredBoost}
-           ;;
-       boost-1.50)
-           echo "bamboo.sh: Boost 1.50 selected"
-           ModuleEx unload boost
-           ModuleEx load boost/${desiredBoost}
-           ;;
        boost-1.54)
            echo "bamboo.sh: Boost 1.54 selected"
            ModuleEx unload boost
@@ -1421,29 +1100,6 @@ linuxSetBoostMPI() {
            echo "bamboo.sh: Boost 1.56 selected"
            ModuleEx unload boost
            ModuleEx load boost/${desiredBoost}
-           ;;
-       myBoost)
-           if [ $2 == "openmpi-1.8" ] ; then
-               export BOOST_HOME=/home/jpvandy/local/packages/boost/boost-1.54.0_ompi-1.8_mine
-               export BOOST_LIBS=/home/jpvandy/local/packages/boost/boost-1.54.0_ompi-1.8_mine/lib
-               export BOOST_INCLUDE=/home/jpvandy/local/packages/boost/boost-1.54.0_ompi-1.8_mine/include
-           else
-               export BOOST_LIBS=/home/jpvandy/User-Build-Oct14/local/module-pkgs/boost/boost-1.54.0/lib
-               export BOOST_HOME=/home/jpvandy/User-Build-Oct14/local/module-pkgs/boost/boost-1.54.0
-               export BOOST_INCLUDE=/home/jpvandy/User-Build-Oct14/local/module-pkgs/boost/boost-1.54.0/include
-           fi
-           ;; 
-       noMpiBoost)
-           export BOOST_LIBS=/home/jpvandy/local/packages/boost-1.54_no-mpi/lib
-           export BOOST_HOME=/home/jpvandy/local/packages/boost-1.54_no-mpi
-           export BOOST_INCLUDE=/home/jpvandy/local/packages/boost-1.54_no-mpi/include
-           export LD_LIBRARY_PATH=$BOOST_LIBS:$LD_LIBRARY_PATH
-           ;;
-       noMpiBoost-1.56)
-           export BOOST_LIBS=/home/jpvandy/local/packages/boost-1.56_no-mpi/lib
-           export BOOST_HOME=/home/jpvandy/local/packages/boost-1.56_no-mpi
-           export BOOST_INCLUDE=/home/jpvandy/local/packages/boost-1.56_no-mpi/include
-           export LD_LIBRARY_PATH=$BOOST_LIBS:$LD_LIBRARY_PATH
            ;;
        *)
            echo "bamboo.sh: \"Default\" Boost selected"
@@ -1502,8 +1158,6 @@ fi
            echo "bamboo.sh: module METIS 5.1.0 (gcc ${compiler} variant) Not Available"
        fi
        # Other misc
-#       echo "bamboo.sh: Load libphx (gcc 4.6.4 variant)"
-#       ModuleEx load libphx/libphx-2014-MAY-08_${compiler}
    fi
 }
 
@@ -1571,6 +1225,10 @@ ldModulesYosemiteClang() {
                                 echo "Boost 1.56 selected"
                                 ModuleEx add boost/boost-1.56.0-nompi_$ClangVersion
                                 ;;
+                            boost_default|boost-1.61)
+                                echo "Boost 1.61 selected"
+                                ModuleEx add boost/boost-1.61.0-nompi_$ClangVersion
+                                ;;
                             *)
                                 echo "bamboo.sh: \"Default\" Boost selected"
                                 echo "Third argument was $3"
@@ -1604,14 +1262,7 @@ darwinSetBoostMPI() {
 
     if [[ $macosVersion = "10.8" && $compiler = "clang-503.0.40" ]]
     then
-        # Mountain Lion + clang PATH                    
-        PATH="$HOME/Documents/GNUTools/Automake/1.14.1/bin:$HOME/Documents/GNUTools/Autoconf/2.69.0/bin:$HOME/Documents/GNUTools/Libtool/2.4.2/bin:$HOME/Documents/wget-1.15/bin:$PATH"
-        export PATH
-
-        # Mountain Lion requires this extra flag passed to SST ./configure
-        # Mavericks does not require this.
-        MTNLION_FLAG="--disable-cxx11"
-        export MTNLION_FLAG
+        echo "Probably un-needed  JVD"
     else
         # macports or hybrid clang/macports
         PATH="/opt/local/bin:/usr/local/bin:$PATH"
@@ -1633,778 +1284,11 @@ darwinSetBoostMPI() {
         echo "bamboo.sh: Loading Modules for MacOSX"
         # Do things specific to the MacOS version
         case $macosVersion in
-            10.6) # Snow Leopard
-                # use modules Boost, built-in MPI, default compiler
-                ModuleEx unload boost
-                ModuleEx add boost/boost-1.50.0
-                ModuleEx list
-                ;;
-            10.7) # Lion
-                # use modules Boost and MPI, default compiler (gcc)
-                ModuleEx unload mpi
-                ModuleEx unload boost
-
-#              // Lion used to be hardcoded to this configuration, now changed.                            
-#              ModuleEx add mpi/openmpi-1.4.4_gcc-4.2.1
-#              ModuleEx add boost/boost-1.50.0_ompi-1.4.4_gcc-4.2.1
-
-                #Check for Illegal configurations of Boost and MPI
-                if [[ ( $2 = "openmpi-1.7.2" &&  $3 = "boost_default" ) || \
-                      ( $2 = "openmpi-1.7.2" &&  $3 = "boost-1.50" )    || \
-                      ( $2 = "openmpi-1.4.4" &&  $3 = "boost-1.54" )    || \
-                      ( $2 = "ompi_default"  &&  $3 = "boost-1.54" ) ]]
-                then
-                    echo "ERROR: Invalid configuration of $2 and $3 These two modules cannot be combined"
-                    exit 0
-                fi
-               
-                # load MPI
-                case $2 in
-                    openmpi-1.7.2)
-                        echo "OpenMPI 1.7.2 (openmpi-1.7.2) selected"
-                        ModuleEx add mpi/openmpi-1.7.2_gcc-4.2.1
-                        ;;
-                    ompi_default|openmpi-1.4.4)
-                        echo "OpenMPI 1.4.4 (Default) (openmpi-1.4.4) selected"
-                        ModuleEx add mpi/openmpi-1.4.4_gcc-4.2.1
-                        ;;
-                    *)
-                        echo "Default MPI option, loading mpi/openmpi-1.4.4"
-                        ModuleEx load mpi/openmpi-1.4.4_gcc-4.2.1 2>catch.err
-                        if [ -s catch.err ] 
-                        then
-                            cat catch.err
-                            exit 0
-                        fi
-                        ;;
-                esac
-                                    
-                # load corresponding Boost
-                case $3 in
-                    boost-1.54)
-                        echo "Boost 1.54 selected"
-                        ModuleEx add boost/boost-1.54.0_ompi-1.7.2_gcc-4.2.1
-                        ;;
-                    boost_default|boost-1.50)
-                        echo "Boost 1.50 (Default) selected"
-                        ModuleEx add boost/boost-1.50.0_ompi-1.4.4_gcc-4.2.1
-                        ;;
-                    *)
-                        echo "bamboo.sh: \"Default\" Boost selected"
-                        echo "Third argument was $3"
-                        echo "Loading boost/Boost 1.50"
-                        ModuleEx load boost/boost-1.50.0_ompi-1.4.4_gcc-4.2.1 2>catch.err
-                        if [ -s catch.err ] 
-                        then
-                            cat catch.err
-                            exit 0
-                        fi
-                        ;;
-                esac
-                export CC=`which gcc`
-                export CXX=`which g++`
-                ModuleEx list
-                ;;
-            10.8) # Mountain Lion
-                # Depending on specified compiler, load Boost and MPI
-                case $compiler in
-                    gcc-4.2.1)
-                        # Use Selected Boost and MPI built with GCC
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
-
-                       #Check for Illegal configurations of Boost and MPI
-                        if [[ ( $2 = "openmpi-1.7.2" &&  $3 = "boost_default" ) || \
-                              ( $2 = "openmpi-1.7.2" &&  $3 = "boost-1.50" )    || \
-                              ( $2 = "openmpi-1.6.3" &&  $3 = "boost-1.54" )    || \
-                              ( $2 = "ompi_default"  &&  $3 = "boost-1.54" ) ]]
-                        then
-                            echo "ERROR: Invalid configuration of $2 and $3 These two modules cannot be combined"
-                            exit 0
-                        fi
-                       
-                        # load MPI
-                        case $2 in
-                            openmpi-1.7.2)
-                                echo "OpenMPI 1.7.2 (openmpi-1.7.2) selected"
-                                ModuleEx add mpi/openmpi-1.7.2_gcc-4.2.1
-                                ;;
-                            ompi_default|openmpi-1.6.3)
-                                echo "OpenMPI 1.6.3 (Default) (openmpi-1.6.3) selected"
-                                ModuleEx add mpi/openmpi-1.6.3_gcc-4.2.1
-                                ;;
-                            *)
-                                echo "Default MPI option, loading mpi/openmpi-1.6.3"
-                                ModuleEx load mpi/openmpi-1.6.3_gcc-4.2.1 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                                            
-                        # load corresponding Boost
-                        case $3 in
-                            boost-1.54)
-                                echo "Boost 1.54 selected"
-                                ModuleEx add boost/boost-1.54.0_ompi-1.7.2_gcc-4.2.1
-                                ;;
-                            boost_default|boost-1.50)
-                                echo "Boost 1.50 (Default) selected"
-                                ModuleEx add boost/boost-1.50.0_ompi-1.6.3_gcc-4.2.1
-                                ;;
-                            *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.50"
-                                ModuleEx load boost/boost-1.50.0_ompi-1.6.3_gcc-4.2.1 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which gcc`
-                        export CXX=`which g++`
-                        ModuleEx list
-                        ;;
-                        
-                        
-                    clang-425.0.27)
-                        # Use Boost and MPI built with CLANG
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
-
-                       #Check for Illegal configurations of Boost and MPI
-                        if [[ ( $2 = "openmpi-1.7.2" &&  $3 = "boost_default" ) || \
-                              ( $2 = "openmpi-1.7.2" &&  $3 = "boost-1.50" )    || \
-                              ( $2 = "openmpi-1.6.3" &&  $3 = "boost-1.54" )    || \
-                              ( $2 = "ompi_default"  &&  $3 = "boost-1.54" ) ]]
-                        then
-                            echo "ERROR: Invalid configuration of $2 and $3 These two modules cannot be combined"
-                            exit 0
-                        fi
-
-                        # load MPI
-                        case $2 in
-                            openmpi-1.7.2)
-                                echo "OpenMPI 1.7.2 (openmpi-1.7.2) selected"
-                                ModuleEx add mpi/openmpi-1.7.2_clang-425.0.27
-                                ;;
-                            ompi_default|openmpi-1.6.3)
-                                echo "OpenMPI 1.6.3 (Default) (openmpi-1.6.3) selected"
-                                ModuleEx add mpi/openmpi-1.6.3_clang-425.0.27
-                                ;;
-                            *)
-                                echo "Default MPI option, loading mpi/openmpi-1.6.3"
-                                ModuleEx load mpi/openmpi-1.6.3_clang-425.0.27 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                                            
-                        # load corresponding Boost
-                        case $3 in
-                            boost-1.54)
-                                echo "Boost 1.54 selected"
-                                ModuleEx add boost/boost-1.54.0_ompi-1.7.2_clang-425.0.27
-                                ;;
-                            boost_default|boost-1.50)
-                                echo "Boost 1.50 (Default) selected"
-                                ModuleEx add boost/boost-1.50.0_ompi-1.6.3_clang-425.0.27
-                                ;;
-                            *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.50"
-                                ModuleEx load boost/boost-1.50.0_ompi-1.6.3_clang-425.0.27 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which clang`
-                        export CXX=`which clang++`
-                        ModuleEx list
-                        ;;
-###
-                    gcc-4.6.4)
-                        # Use Selected Boost and MPI built with MacPorts GCC 4.6.4
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
-
-                        # Load gcc-4.6.4 specific modules
-                        # GNU Linear Programming Kit (GLPK)
-                        echo "bamboo.sh: Load GLPK"
-                        ModuleEx load glpk/glpk-4.54_gcc-4.6.4
-                        # System C
-#                        echo "bamboo.sh: Load System C"
-#                        ModuleEx load systemc/systemc-2.3.0_gcc-4.6.4
-                        # METIS 5.1.0
-                        echo "bamboo.sh: Load METIS 5.1.0"
-                        ModuleEx load metis/metis-5.1.0_gcc-4.6.4
-                        # Other misc
-#                        echo "bamboo.sh: Load libphx"
-#                        ModuleEx load libphx/libphx-2014-MAY-08_gcc-4.6.4
-
-                        # load MPI
-                        case $2 in
-                            ompi_default|openmpi-1.8)
-                                echo "OpenMPI 1.8 (openmpi-1.8) selected"
-                                ModuleEx add mpi/openmpi-1.8_gcc-4.6.4
-                                ;;
-                            *)
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_gcc-4.6.4 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-
-                        # load corresponding Boost
-                        case $3 in
-                            boost_default|boost-1.54)
-                                echo "Boost 1.54 selected"
-                                ModuleEx add boost/boost-1.54.0_ompi-1.8_gcc-4.6.4
-                                ;;
-                            boost_default|boost-1.56)
-                                echo "Boost 1.56 selected"
-                                ModuleEx add boost/boost-1.56.0-nompi_gcc-4.6.4
-                                ;;
-                            *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx add boost/boost-1.56.0-nompi_gcc-4.6.4 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which gcc`
-                        export CXX=`which g++`
-                        ModuleEx list
-                        ;;
-                        
-                    clang-503.0.38)
-                        # Use Boost and MPI built with CLANG from Xcode 5.1
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
-
-                        # Load other modules for clang-503.0.38
-                        # GNU Linear Programming Kit (GLPK)
-                        echo "bamboo.sh: Load GLPK"
-                        ModuleEx load glpk/glpk-4.54_clang-503.0.38
-                        # System C
-#                        echo "bamboo.sh: Load System C"
-#                        ModuleEx load systemc/systemc-2.3.0_clang-503.0.38
-                        # METIS 5.1.0
-                        echo "bamboo.sh: Load METIS 5.1.0"
-                        ModuleEx load metis/metis-5.1.0_clang-503.0.38
-                        # Other misc
-#                        echo "bamboo.sh: Load libphx"
-#                        ModuleEx load libphx/libphx-2014-MAY-08_clang-503.0.38
-
-                        # load MPI
-                        case $2 in
-                            ompi_default|openmpi-1.8)
-                                echo "OpenMPI 1.8 (openmpi-1.8) selected"
-                                ModuleEx add mpi/openmpi-1.8_clang-503.0.38
-                                ;;
-                            *)
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_clang-503.0.38 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                                            
-                        # load corresponding Boost
-                        case $3 in
-                            boost_default|boost-1.54)
-                                echo "Boost 1.54 selected"
-                                ModuleEx add boost/boost-1.54.0_ompi-1.8_clang-503.0.38
-                                ;;
-                            boost_default|boost-1.56)
-                                echo "Boost 1.56 selected"
-                                ModuleEx add boost/boost-1.56.0-nompi_clang-503.0.38
-                                ;;
-                            *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx load boost/boost-1.56.0-nompi_clang-503.0.38 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which clang`
-                        export CXX=`which clang++`
-                        ModuleEx list
-                        ;;
-
-                    clang-503.0.40)
-                        # Use Boost and MPI built with CLANG from Xcode 5.1
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
-
-                        # load MPI
-                        case $2 in
-                            ompi_default|openmpi-1.8)
-                                echo "OpenMPI 1.8 (openmpi-1.8) selected"
-                                ModuleEx add mpi/openmpi-1.8_clang-503.0.40
-                                ;;
-                            *)
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_clang-503.0.40 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                                            
-                        # load corresponding Boost
-                        case $3 in
-                            boost_default|boost-1.54)
-                                echo "Boost 1.54 selected"
-                                ModuleEx add boost/boost-1.54.0_ompi-1.8_clang-503.0.40
-                                ;;
-                            boost_default|boost-1.56)
-                                echo "Boost 1.56 selected"
-                                ModuleEx add boost/boost-1.56.0-nompi_clang-503.0.40
-                                ;;
-                            *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx load boost/boost-1.56.0-nompi_clang-503.0.40 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which clang`
-                        export CXX=`which clang++`
-                        ModuleEx list
-                        ;;
-
-###
-                    *)
-                        # unknown compiler, use default
-                        echo "bamboo.sh: Unknown compiler selection. Assuming gcc."
-                        ModuleEx unload boost
-                        ModuleEx unload mpi
-                        ModuleEx add boost/boost-1.50.0_ompi-1.6.3_gcc-4.2.1
-                        ModuleEx add mpi/openmpi-1.6.3_gcc-4.2.1
-                        ModuleEx list
-                        ;;  
-                esac
-                ;;
-
-################################################################################
-            10.9) # Mavericks
-                # Depending on specified compiler, load Boost and MPI
-                case $compiler in
-                    gcc-4.6.4)
-                        # Use Selected Boost and MPI built with MacPorts GCC 4.6.4
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
-
-                        # Load gcc-4.6.4 specific modules
-                        # GNU Linear Programming Kit (GLPK)
-                        echo "bamboo.sh: Load GLPK"
-                        ModuleEx load glpk/glpk-4.54_gcc-4.6.4
-                        # System C
-#                        echo "bamboo.sh: Load System C"
-#                        ModuleEx load systemc/systemc-2.3.0_gcc-4.6.4
-                        # METIS 5.1.0
-                        echo "bamboo.sh: Load METIS 5.1.0"
-                        ModuleEx load metis/metis-5.1.0_gcc-4.6.4
-                        # Other misc
-#                        echo "bamboo.sh: Load libphx"
-#                        ModuleEx load libphx/libphx-2014-MAY-08_gcc-4.6.4
-
-                        # load MPI
-                        case $2 in
-                            ompi_default|openmpi-1.8)
-                                echo "OpenMPI 1.8 (openmpi-1.8) selected"
-                                ModuleEx add mpi/openmpi-1.8_gcc-4.6.4
-                                ;;
-                            *)
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_gcc-4.6.4 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-
-                        # load corresponding Boost
-                        case $3 in
-                            boost_default|boost-1.54)
-                                echo "Boost 1.54 selected"
-                                ModuleEx add boost/boost-1.54.0_ompi-1.8_gcc-4.6.4
-                                ;;
-                            boost_default|boost-1.56)
-                                echo "Boost 1.56 selected"
-                                ModuleEx add boost/boost-1.56.0-nompi_gcc-4.6.4
-                                ;;
-                            *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx add boost/boost-1.56.0-nompi_gcc-4.6.4 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which gcc`
-                        export CXX=`which g++`
-                        ModuleEx list
-                        ;;
-                        
-                    clang-503.0.38)
-                        # Use Boost and MPI built with CLANG from Xcode 5.1
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
-
-                        # Load other modules for clang-503.0.38
-                        # GNU Linear Programming Kit (GLPK)
-                        echo "bamboo.sh: Load GLPK"
-                        ModuleEx load glpk/glpk-4.54_clang-503.0.38
-                        # System C
-#                        echo "bamboo.sh: Load System C"
-#                        ModuleEx load systemc/systemc-2.3.0_clang-503.0.38
-                        # METIS 5.1.0
-                        echo "bamboo.sh: Load METIS 5.1.0"
-                        ModuleEx load metis/metis-5.1.0_clang-503.0.38
-                        # Other misc
-#                        echo "bamboo.sh: Load libphx"
-#                        ModuleEx load libphx/libphx-2014-MAY-08_clang-503.0.38
-
-                        # load MPI
-                        case $2 in
-                            ompi_default|openmpi-1.8)
-                                echo "OpenMPI 1.8 (openmpi-1.8) selected"
-                                ModuleEx add mpi/openmpi-1.8_clang-503.0.38
-                                ;;
-                            *)
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_clang-503.0.38 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                                            
-                        # load corresponding Boost
-                        case $3 in
-                            boost_default|boost-1.54)
-                                echo "Boost 1.54 selected"
-                                ModuleEx add boost/boost-1.54.0_ompi-1.8_clang-503.0.38
-                                ;;
-                            boost_default|boost-1.56)
-                                echo "Boost 1.56 selected"
-                                ModuleEx add boost/boost-1.56.0-nompi_clang-503.0.38
-                                ;;
-                            *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx load boost/boost-1.56.0-nompi_clang-503.0.38 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which clang`
-                        export CXX=`which clang++`
-                        ModuleEx list
-                        ;;
-
-                    clang-600.0.57)
-                        # Use Boost and MPI built with CLANG from Xcode 5.1
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
-
-                        # Load other modules for clang-600.0.57
-                        # GNU Linear Programming Kit (GLPK)
-                        echo "bamboo.sh: Load GLPK"
-                        ModuleEx load glpk/glpk-4.54_clang-600.0.57
-                        # System C
-#                         echo "bamboo.sh: Load System C"
-#                         ModuleEx load systemc/systemc-2.3.0_clang-600.0.57
-                        # METIS 5.1.0
-                        echo "bamboo.sh: Load METIS 5.1.0"
-                        ModuleEx load metis/metis-5.1.0_clang-600.0.57
-                        # Other misc
-#                        echo "bamboo.sh: Load libphx"
-#                        ModuleEx load libphx/libphx-2014-MAY-08_clang-600.0.57
-
-                        # load MPI
-                        case $2 in
-                            ompi_default|openmpi-1.8)
-                                echo "OpenMPI 1.8 (openmpi-1.8) selected"
-                                ModuleEx add mpi/openmpi-1.8_clang-600.0.57
-                                ;;
-                            *)
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_clang-600.0.57 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                                            
-                        # load corresponding Boost
-                        case $3 in
-                            boost_default|boost-1.56)
-                                echo "Boost 1.56 selected"
-                                ModuleEx add boost/boost-1.56.0-nompi_clang-600.0.57
-                                ;;
-                            *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx load boost/boost-1.56.0-nompi_clang-600.0.57 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which clang`
-                        export CXX=`which clang++`
-                        ModuleEx list
-                        ;;
-
-
-                    *)
-                        # unknown compiler, use default
-                        echo "bamboo.sh: Unknown compiler selection. Assuming gcc."
-                        ModuleEx unload boost
-                        ModuleEx unload mpi
-                        ModuleEx add mpi/openmpi-1.8_gcc-4.6.4
-                        ModuleEx add boost/boost-1.56.0-nompi_gcc-4.6.4
-                        ModuleEx list
-                        ;;  
-                esac
-                ;;
 ################################################################################
             10.10) # Yosemite
                 ModuleEx avail
                 # Depending on specified compiler, load Boost and MPI
                 case $compiler in
-                    clang-600.0.57)
-                        # Use Boost and MPI built with CLANG from Xcode 6.2
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
-
-                        # Load other modules for clang-600.0.57
-                        # GNU Linear Programming Kit (GLPK)
-                        echo "bamboo.sh: Load GLPK"
-                        ModuleEx load glpk/glpk-4.54_clang-600.0.57
-                        # # System C
-                        # echo "bamboo.sh: Load System C"
-                        # ModuleEx load systemc/systemc-2.3.0_clang-600.0.57
-                        # METIS 5.1.0
-                        echo "bamboo.sh: Load METIS 5.1.0"
-                        ModuleEx load metis/metis-5.1.0_clang-600.0.57
-                        # Other misc
-#                        echo "bamboo.sh: Load libphx"
-#                        ModuleEx load libphx/libphx-2014-MAY-08_clang-600.0.57
-
-                        # load MPI
-                        case $2 in
-                            ompi_default|openmpi-1.8)
-                                echo "OpenMPI 1.8 (openmpi-1.8) selected"
-                                ModuleEx add mpi/openmpi-1.8_clang-600.0.57
-                                ;;
-                            *)
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_clang-600.0.57 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                                            
-                        # load corresponding Boost
-                        case $3 in
-                            boost_default|boost-1.56)
-                                echo "Boost 1.56 selected"
-                                ModuleEx add boost/boost-1.56.0-nompi_clang-600.0.57
-                                ;;
-                            *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx load boost/boost-1.56.0-nompi_clang-600.0.57 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which clang`
-                        export CXX=`which clang++`
-                        ModuleEx list
-                        ;;
-
-                    clang-602.0.49)
-                        # Use Boost and MPI built with CLANG from Xcode 6.3
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
-
-                        # Load other modules for clang-602.0.49
-                        # GNU Linear Programming Kit (GLPK)
-                        echo "bamboo.sh: Load GLPK"
-                        ModuleEx load glpk/glpk-4.54_clang-602.0.49
-                        # # System C
-                        # echo "bamboo.sh: Load System C"
-                        # ModuleEx load systemc/systemc-2.3.0_clang-602.0.49
-                        # METIS 5.1.0
-                        echo "bamboo.sh: Load METIS 5.1.0"
-                        ModuleEx load metis/metis-5.1.0_clang-602.0.49
-                        # Other misc
-#                        echo "bamboo.sh: Load libphx"
-#                        ModuleEx load libphx/libphx-2014-MAY-08_clang-602.0.49
-
-                        # load MPI
-                        case $2 in
-                            ompi_default|openmpi-1.8)
-                                echo "OpenMPI 1.8 (openmpi-1.8) selected"
-                                ModuleEx add mpi/openmpi-1.8_clang-602.0.49
-                                ;;
-                            *)
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_clang-602.0.49 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                                            
-                        # load corresponding Boost
-                        case $3 in
-                            boost_default|boost-1.56)
-                                echo "Boost 1.56 selected"
-                                ModuleEx add boost/boost-1.56.0-nompi_clang-602.0.49
-                                ;;
-                            *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx load boost/boost-1.56.0-nompi_clang-602.0.49 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which clang`
-                        export CXX=`which clang++`
-                        ModuleEx list
-                        ;;
-
-                    clang-602.0.53)
-                        # Use Boost and MPI built with CLANG from Xcode 6.3
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
-
-                        # Load other modules for clang-602.0.53
-                        # GNU Linear Programming Kit (GLPK)
-                        echo "bamboo.sh: Load GLPK"
-                        ModuleEx load glpk/glpk-4.54_clang-602.0.53
-                        # # System C
-                        # echo "bamboo.sh: Load System C"
-                        # ModuleEx load systemc/systemc-2.3.0_clang-602.0.53
-                        # METIS 5.1.0
-                        echo "bamboo.sh: Load METIS 5.1.0"
-                        ModuleEx load metis/metis-5.1.0_clang-602.0.53
-                        # Other misc
-#                        echo "bamboo.sh: Load libphx"
-#                        ModuleEx load libphx/libphx-2014-MAY-08_clang-602.0.53
-
-                        # load MPI
-                        case $2 in
-                            ompi_default|openmpi-1.8)
-                                echo "OpenMPI 1.8 (openmpi-1.8) selected"
-                                ModuleEx add mpi/openmpi-1.8_clang-602.0.53
-                                ;;
-                            *)
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_clang-602.0.53 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                                            
-                        # load corresponding Boost
-                        case $3 in
-                            boost_default|boost-1.56)
-                                echo "Boost 1.56 selected"
-                                ModuleEx add boost/boost-1.56.0-nompi_clang-602.0.53
-                                ;;
-                            *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx load boost/boost-1.56.0-nompi_clang-602.0.53 2>catch.err
-                                if [ -s catch.err ] 
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which clang`
-                        export CXX=`which clang++`
-                        ModuleEx list
-                        ;;
 
                     clang-700.0.72)
                         # Use Boost and MPI built with CLANG from Xcode 6.3
@@ -2634,9 +1518,9 @@ echo  "   We are in distTestDir/trunk"
 
      echo SST_DEPS_USER_DIR= $SST_DEPS_USER_DIR
      if [ $buildtype == "sstmainline_config_dist_test" ] ; then
-         distProject="sstmainline_config_all"
+         distScenario="sstmainline_config_all"
      else
-         distProject="sstmainline_config_no_gem5"
+         distScenario="sstmainline_config_no_gem5"
      fi
 
      echo "---   PWD  `pwd`"    
@@ -2644,7 +1528,7 @@ echo  "   We are in distTestDir/trunk"
      # unlike regular test, make dist does move bamboo to trunk
               ##  Here is the bamboo invocation within bamboo
      echo "         INVOKE bamboo for the build from the dist tar"
-     ./bamboo.sh $distProject $SST_DIST_MPI $SST_DIST_BOOST $SST_DIST_PARAM4
+     ./bamboo.sh $distScenario $SST_DIST_MPI $SST_DIST_BOOST $SST_DIST_PARAM4
      retval=$?
      echo "         Returned from bamboo.sh $retval"
      if [ $retval != 0 ] ; then
@@ -3208,7 +2092,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_config_linux_with_ariel|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_no_gem5_intel_gcc_4_8_1|sstmainline_config_no_gem5_intel_gcc_4_8_1_with_c|sstmainline_config_fast_intel_build_no_gem5|sstmainline_config_no_mpi|sstmainline_config_gcc_4_8_1|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_macosx_static|sstmainline_config_macosx_static_no_gem5|sstmainline_config_static_macro_devel|sstmainline_sstmacro_xconfig|sstmainline_config_test_output_config|sstmainline_config_xml2python_static|sstmainline_config_memH_only|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_VaultSim|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_gem5_gcc_4_6_4|sstmainline_config_fast_static|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester)
+        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester)
             #   Save Parameters $2, $3 and $4 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3

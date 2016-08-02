@@ -58,10 +58,10 @@ oneTimeTearDown() {
        if [[ "$__shunit_testsFailed" -gt 0 ]] ; then
           RESULT="$RESULT / $__shunit_testsFailed Fail"
        fi
-       B_PROJ=`echo $BAMBOO_PROJECT | sed s/sstmainline_config_//`
+       B_SCEN=`echo $BAMBOO_SCENARIO | sed s/sstmainline_config_//`
        J_PROJ=`echo $JENKINS_PROJECT | sed s/SST__//`
 
-       echo "$today $elapsedSeconds s $B_PROJ $J_PROJ $BUILD_NUMBER $RESULT" >> ~jpvandy/WhichTest/$WHICH_FILE
+       echo "$today $elapsedSeconds s $B_SCEN $J_PROJ $BUILD_NUMBER $RESULT" >> ~jpvandy/WhichTest/$WHICH_FILE
     fi
 }
 
