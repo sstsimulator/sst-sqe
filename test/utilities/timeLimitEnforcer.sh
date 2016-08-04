@@ -56,7 +56,7 @@ fi
 if [ $KILL_PARENT == 1 ] ; then
     echo " Can not find process to terminate,  pid = $KILL_PID "
     echo "     I am $MY_PID,   my parent was $PPID" 
-    ps -f U $USER
+    ps -f -U $USER
     echo ' '
     echo "                EXIT without killing my parents "
     exit               ###################################################3
@@ -71,7 +71,7 @@ else
     if [ $? == 1 ] ; then
         echo " Kill of $KILL_PID for TIME OUT   FAILED"
         echo "     I am $MY_PID,   my parent was $PPID" 
-        ps -f U $USER
+        ps -f -U $USER
         echo " Try a \"kill -9\"  "
         kill -9 $KILL_PID
     fi
