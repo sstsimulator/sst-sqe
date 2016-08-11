@@ -525,6 +525,17 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
         export SST_MULTI_THREAD_COUNT=2
+        export SST_TEST_SE_LIST="1 9 151"
+        HAM=5
+        while [ $HAM -gt 0 ]
+        do
+   echo $HAM
+            ln -s ${SST_TEST_SUITES}/testSuite_EmberSweep.sh ${SST_TEST_SUITES}/testSuite_EmberSweep_${HAM}.sh
+            ${SST_TEST_SUITES}/testSuite_EmberSweep_${HAM}.sh
+            ((HAM--))
+        done
+        return
+
         ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
         export SST_MULTI_THREAD_COUNT=1
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
