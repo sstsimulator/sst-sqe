@@ -18,6 +18,14 @@
 #    exit -1
 #fi
 
+# Verify that 'module' is runnable
+2>/dev/null 1>&2 module
+retval=$?
+if [ $retval -ne 0 ]; then 
+    echo "'module' command not found by shell"
+    return $retval
+fi
+
 # Create a Temp file
 TEMPOUTFILE=`mktemp /tmp/moduleex_XXXXXX`
 
