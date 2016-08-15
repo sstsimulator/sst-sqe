@@ -138,7 +138,7 @@ template_prospero() {
     then
         # Run SUT
         ${sut} ${sutArgs} --model-options "--TraceType=$TYPE --UseDramSim=$useDRAMSIM"  > $outFile
-        rc=$?
+        RetVal=$?
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -148,7 +148,7 @@ template_prospero() {
         fi 
         echo ' ' ; grep simulated $outFile   ; echo ' '
         
-        if [ $rc != 0 ]
+        if [ $RetVal != 0 ]
         then
              echo ' '; echo ERROR: sst did not finish normally ; echo ' '
              ls -l ${sut}
