@@ -21,7 +21,7 @@
 # Verify that 'module' is runnable
 2>/dev/null 1>&2 module
 retval=$?
-if [ $retval -ne 0 ]; then 
+if [ $retval -ne 0 ] && [ $retval -ne 1 ]; then 
     echo "'module' command not found by shell"
     return $retval
 fi
