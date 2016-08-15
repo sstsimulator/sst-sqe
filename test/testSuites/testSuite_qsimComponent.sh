@@ -126,7 +126,7 @@ ps -ef | grep ^$USER >> ps.before
 
 if [ "${SST_TEST_HOST_OS_DISTRIB}" != "toss" ] ; then 
         (${sut} ${sutArgs} > ${outFile}) 
-        rt=$?
+        RetVal=$?
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -143,12 +143,12 @@ else
 .EOF
 
    gdb $sut  < inF
-   rt=0
+   RetVal=0
 
    diff ${outFile} ${referenceFile}
 fi 
 
-        if [ $rt != 0 ]
+        if [ $RetVal != 0 ]
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
