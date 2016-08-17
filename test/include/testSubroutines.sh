@@ -305,3 +305,26 @@ RemoveComponentWarning() {
       rm -f ${outFile}.x
    fi
 }
+# ----------------------------------------------------
+#    Do the check on Valgrind on a test
+# ----------------------------------------------------
+checkValgrindOutput() {
+VGout=$1        #the Valgrind output file
+MPIerrors=$2
+grep ERROR.SUMMARY $VGout 
+if [ $? != 0 ] ; then 
+    echo "Valgrind Summary not found"
+    fail " No Valgrind Summary"
+    wc $VGout
+    return
+fi
+contextNumber=`grep ERROR.SUMMARY $VGout | awk '{print $7}'`
+if [ $contextNumber -gt $MPIerrors ] ; then
+    echo "Valgrind found issues"
+    fail " Valgind found $((contextNumber - MPIerrors)) issues"
+else
+    echo Valgrind found NO issues
+fi
+
+}
+

@@ -1,0 +1,61 @@
+#   Need a prolog
+pushd $SST_TEST_ROOT/testSuites
+   if [ $? != 0 ] ; then
+      echo "Can't find the test Suites"
+      exit 1
+   fi
+
+for Suite in testSuite_Ariel.sh testSuite_dir3LevelSweep.sh
+do
+echo "                               Debug  $Suite "
+#		Reset the Suite
+   git checkout -- $Suite
+#		Verify that there is an outFile defined
+   grep outFile= $Suite > /dev/null
+   if [ $? != 0 ] ; then
+      echo "Suite there is no outFile!"
+      exit 1
+   fi
+
+#		Define a unique output file for Valgrind 
+   sed -i'.x' /outFile=/a' \
+    VGout="${SST_TEST_OUTPUTS}/${testDataFileBase}.VGout" \
+    rm -f $VGout
+      ' $Suite
+
+#		-- Check the Valgrind output --
+#		Look for the "kludge" for the openmpi Valgrind issue
+   echo $MPIHOME | grep jpvandy
+   if [ $? == 0 ] ; then 
+      numberAllowed=0
+   else
+      numberAllowed=1
+   fi		
+#		Invoke the checking subroutine
+   cat > _tmp_in << .eol.
+   checkValgrindOutput \$VGout $numberAllowed 
+.eol.
+   
+   sed -i'.w' '/RetVal=$?/ r _tmp_in' $Suite
+
+#		Use the unwrapped sst executable, sstsim.x
+   sed -i'.z' /sut=/a' \
+   sut=$SST_INSTALL_BIN_USER/../libexec/sstsim.x
+      ' $Suite
+
+#		Remove parenthesis if needed
+#
+   sed '/sut.*sutArgs/s/(${sut}/${sut}/' $Suite > __half-way
+   diff $Suite __half-way 
+   if [ $? != 0 ] ; then
+      sed '/sut.*sutArgs/s/)//' __half-way > $Suite
+      diff __half-way $Suite
+   fi
+   rm __half-way
+
+#		Add Valgrind, with parameters to sst execution line
+   sed -i'.z' '/sut.*sutArgs/s/${sut} /valgrind --track-origins=yes --log-file=$VGout ${sut} /' $Suite
+
+
+
+done
