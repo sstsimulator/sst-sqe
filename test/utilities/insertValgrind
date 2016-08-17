@@ -5,7 +5,8 @@ pushd $SST_TEST_ROOT/testSuites
       exit 1
    fi
 
-for Suite in testSuite_Ariel.sh testSuite_dir3LevelSweep.sh
+for Suite in testSuite_Ariel.sh testSuite_memHierarchy_sdl.sh testSuite_embernightly.sh testSuite_merlin.sh testSuite_miranda.sh testSuite_memHSieve.sh testSuite_cassini_prefetch.sh 
+
 do
 echo "                               Debug  $Suite "
 #		Reset the Suite
@@ -57,5 +58,15 @@ echo "                               Debug  $Suite "
    sed -i'.z' '/sut.*sutArgs/s/${sut} /valgrind --track-origins=yes --log-file=$VGout ${sut} /' $Suite
 
 
-
 done
+#
+#		Jack the time limit way up
+echo Something is wrong
+ls -l ../utilities/timeLimitEnforcer.sh   
+wc    ../utilities/timeLimitEnforcer.sh   
+		
+   sed -i'.x' /CASE=/a' \
+    SST_TEST_ONE_TEST_TIMEOUT=3700         # Over an hour
+   ' ../utilities/timeLimitEnforcer.sh   
+wc    ../utilities/timeLimitEnforcer.sh   
+

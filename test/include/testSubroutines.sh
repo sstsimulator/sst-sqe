@@ -311,19 +311,22 @@ RemoveComponentWarning() {
 checkValgrindOutput() {
 VGout=$1        #the Valgrind output file
 MPIerrors=$2
-grep ERROR.SUMMARY $VGout 
+grep ERROR.SUMMARY $VGout  > /dev/null
 if [ $? != 0 ] ; then 
     echo "Valgrind Summary not found"
     fail " No Valgrind Summary"
     wc $VGout
     return
 fi
+    grep ERROR.SUMMARY $VGout | sed s/ERROR//
 contextNumber=`grep ERROR.SUMMARY $VGout | awk '{print $7}'`
 if [ $contextNumber -gt $MPIerrors ] ; then
     echo "Valgrind found issues"
     fail " Valgind found $((contextNumber - MPIerrors)) issues"
 else
-    echo Valgrind found NO issues
+    echo ' '
+    echo "             Valgrind found NO issues      "
+    echo ' '
 fi
 
 }
