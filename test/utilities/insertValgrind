@@ -41,7 +41,7 @@ echo "                               Debug  $Suite "
 
 #		Use the unwrapped sst executable, sstsim.x
    sed -i'.z' /sut=/a' \
-   sut=$SST_INSTALL_BIN_USER/../libexec/sstsim.x
+   sut=$SST_INSTALL_BIN/../libexec/sstsim.x
       ' $Suite
 
 #		Remove parenthesis if needed
