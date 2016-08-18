@@ -349,6 +349,11 @@ echo " #####################################################"
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
 
+    if [[ $1 == "sstmainline_config_valgrind" ]] ; then
+        echo ' '; echo "Inserting Valgrind commands" ; echo ' '
+        ./test/utilities/insertValgrind
+    fi
+
     if [[ $1 == *sstmainline_config_test_output_config* ]]
     then
         ./test/utilities/Build-output-config-check
@@ -945,8 +950,22 @@ getconfig() {
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions  --with-glpk=${GLPK_HOME} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
    
-  ## perhaps do no more here
+        sstmainline_config_valgrind) 
+            #-----------------------------------------------------------------
+            # sstmainline_config_valgrind
+            #     This option used for configuring SST with supported stabledevel deps
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            coreMiscEnv="${cc_environment} ${mpi_environment}"
+            elementsMiscEnv="${cc_environment}"
+            depsStr="-k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83 -c default"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            
             ;;
+
+  ## perhaps do no more here
         default)
             #-----------------------------------------------------------------
             # default
@@ -2103,7 +2122,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester)
+        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester|sstmainline_config_valgrind)
             #   Save Parameters $2, $3 and $4 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
