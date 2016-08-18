@@ -175,6 +175,9 @@ test_miranda_randomgen() {
              return
        fi
     fi
+   if [[ $SST_BUILD_TYPE == "sstmainline_config_valgrind" ]] ; then
+      skip_this_test
+   fi
 miranda_Template randomgen
 
 ##  Reset the Time Limit for reamainer of tests
