@@ -39,6 +39,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 echo ' ' ; echo " This one Passed Valgrind August 19, but took a long time"
            fail " This one Passed Valgrind August 19, but took a long time"
+           return
 echo ' '
 
 #===============================================================================
