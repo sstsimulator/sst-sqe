@@ -177,6 +177,8 @@ test_miranda_randomgen() {
     fi
    if [[ $SST_BUILD_TYPE == "sstmainline_config_valgrind" ]] ; then
       skip_this_test
+      echo " Skipping this test on valgrind, takes too long"
+      return
    fi
 miranda_Template randomgen
 
