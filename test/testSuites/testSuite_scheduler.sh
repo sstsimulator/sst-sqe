@@ -37,6 +37,10 @@ L_TESTFILE=()  # Empty list, used to hold test file names
            preFail " Scheduler tests do not work with threading" "skip"
     fi     
 
+echo ' ' ; echo " This one Passed Valgrind August 19, but took a long time"
+           fail " This one Passed Valgrind August 19, but took a long time"
+echo ' '
+
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long
