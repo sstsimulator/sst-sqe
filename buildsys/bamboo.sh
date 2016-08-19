@@ -949,7 +949,8 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions  --with-glpk=${GLPK_HOME} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
-   
+            ;;
+            
         sstmainline_config_valgrind) 
             #-----------------------------------------------------------------
             # sstmainline_config_valgrind
