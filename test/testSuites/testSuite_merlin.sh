@@ -181,9 +181,10 @@ env | grep SST_
 
    if [[ $SST_BUILD_TYPE == "sstmainline_config_valgrind" ]] ; then
       skip_this_test
+      echo ' ' ; echo "   ---- Skip this test for Valgrind" ; echo ' '
+      return
    fi
 echo ' ' ; echo "                         no skip" ; echo ' '
-skip_this_test
 
 merlin_Template ft_r16 500
 
