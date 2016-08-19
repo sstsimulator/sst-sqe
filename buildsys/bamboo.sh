@@ -319,7 +319,7 @@ dotests() {
    export BAMBOO_SCENARIO=$1
 
 echo " #####################################################"
-   echo "parameter Scenario is $2  "
+   echo "parameter \$2 is $2  "
 echo " #####################################################"
 
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ||
