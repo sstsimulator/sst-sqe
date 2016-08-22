@@ -383,12 +383,12 @@ echo " #####################################################"
         ./test/utilities/insertValgrind
     fi
 ###     The following is what makes this the QUICK Valgrind
-    if [[ $1 == "sstmainline_config_valgrind" ]] ; then
-        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-        ${SST_TEST_SUITES}/testSuite_embernightly.sh
-        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-        return
-    fi
+##    if [[ $1 == "sstmainline_config_valgrind" ]] ; then
+##        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
+##        ${SST_TEST_SUITES}/testSuite_embernightly.sh
+##        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
+##        return
+##    fi
 
     if [[ $1 == *sstmainline_config_test_output_config* ]]
     then
