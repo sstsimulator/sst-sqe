@@ -350,8 +350,44 @@ echo " #####################################################"
     mkdir -p ${SST_TEST_INPUTS_TEMP}
 
     if [[ $1 == "sstmainline_config_valgrind" ]] ; then
+        
+        echo "                   module list"
+        ModuleEx list
+        
+        ####   export variables  Library path, PATH, SST_ROOT, SST_TEST_ROOT
+        #
+        echo $LD_LIBRARY_PATH | grep /usr/local/lib
+        if [ $? != 0 ]
+        then
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+        fi
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_BASE/local/sst-core/lib
+        ##     Source the install location variables from the build
+        . ../../SST_deps_env.sh
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_GEM5SST:$SST_DEPS_INSTALL_DRAMSIM:$SST_DEPS_INSTALL_QSIM:$SST_DEPS_INSTALL_QSIM/lib:$SST_DEPS_INSTALL_HYBRIDSIM:$SST_DEPS_INSTALL_NVDIMMSIM
+        
+        if [ `uname` == "Darwin" ] 
+        then
+           export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
+        fi
+         
+        export PATH=/home/jpvandy/bin:$PATH:$SST_INSTALL_BIN_USER
+        
+        export SST_ROOT=$SST_BASE/devel/trunk
+        
+        export SST_TEST_ROOT=`pwd`/test
+        ####    Source the testDefinitions
+        . test/include/testDefinitions.sh
+        
         echo ' '; echo "Inserting Valgrind commands" ; echo ' '
         ./test/utilities/insertValgrind
+    fi
+###     The following is what makes this the QUICK Valgrind
+    if [[ $1 == "sstmainline_config_valgrind" ]] ; then
+        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
+        ${SST_TEST_SUITES}/testSuite_embernightly.sh
+        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
+        return
     fi
 
     if [[ $1 == *sstmainline_config_test_output_config* ]]
