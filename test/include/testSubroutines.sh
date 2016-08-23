@@ -318,14 +318,20 @@ if [ $? != 0 ] ; then
     wc $VGout
     return
 fi
+#Add for qsim
+    date
+    ls -l $VGout
+###  ------
     grep ERROR.SUMMARY $VGout | sed s/ERROR//
 contextNumber=`grep ERROR.SUMMARY $VGout | awk '{print $7}'`
 if [ $contextNumber -gt $MPIerrors ] ; then
+    echo ' '
     echo "Valgrind found issues"
-    fail " Valgind found $((contextNumber - MPIerrors)) issues"
+    fail " $testDataFileBase: Valgind found $((contextNumber - MPIerrors)) issues"
+    echo ' '
 else
     echo ' '
-    echo "             Valgrind found NO issues      "
+    echo "     $testDataFileBase:  Valgrind found NO issues      "
     echo ' '
 fi
 
