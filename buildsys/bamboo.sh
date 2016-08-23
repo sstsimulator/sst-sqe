@@ -365,6 +365,7 @@ echo " #####################################################"
         ##     Source the install location variables from the build
         . ../../SST_deps_env.sh
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_GEM5SST:$SST_DEPS_INSTALL_DRAMSIM:$SST_DEPS_INSTALL_QSIM:$SST_DEPS_INSTALL_QSIM/lib:$SST_DEPS_INSTALL_HYBRIDSIM:$SST_DEPS_INSTALL_NVDIMMSIM
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_CHDL/lib
         
         if [ `uname` == "Darwin" ] 
         then
