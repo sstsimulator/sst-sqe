@@ -66,7 +66,7 @@ ls -l ../utilities/timeLimitEnforcer.sh
 wc    ../utilities/timeLimitEnforcer.sh   
 		
    sed -i'.x' /CASE=/a' \
-    SST_TEST_ONE_TEST_TIMEOUT=3700         # Over an hour
+    SST_TEST_ONE_TEST_TIMEOUT=5000         # Over an hour
    ' ../utilities/timeLimitEnforcer.sh   
 wc    ../utilities/timeLimitEnforcer.sh   
 
