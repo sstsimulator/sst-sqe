@@ -178,7 +178,7 @@ PARTITIONER=$2
     then
         # Run SUT
         mpirun -np ${NUMRANKS} ${sut} --verbose --run-mode init --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
-        retval=$?
+        RetVal=$?
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -187,7 +187,7 @@ PARTITIONER=$2
              return 
         fi 
         touch $partFile
-        if [ $retval != 0 ]
+        if [ $RetVal != 0 ]
         then
              grep -e disable-mpi -e unrecognised.option $outFile > __away__
              if [ $? == 0 ] ; then
@@ -197,7 +197,7 @@ PARTITIONER=$2
                  return
              fi
              wc $errFile $outFile $partFile
-             echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$retval" ; echo ' '
+             echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$RetVal" ; echo ' '
              ls -l ${sut}
              if [ -s $errFile ] ; then
                 echo "   ---  And the Error File:" 
@@ -217,7 +217,7 @@ PARTITIONER=$2
                  return
              fi
              echo ' ' ; echo "could exit here, but analyze even if partitioned run fails"
-             fail "WARNING: sst did not finish normally, RetVal=$RetVal, RETVAL=$retval" 
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal, RETVAL=$RetVal" 
 #             return
         else
              wc $errFile $outFile $partFile

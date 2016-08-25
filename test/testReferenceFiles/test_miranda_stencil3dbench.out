@@ -1,18 +1,19 @@
-cpu:RequestGenCPU[RequestGenCPU:34]: Configured CPU to allow 16 maximum requests to be memory to be outstanding.
-cpu:RequestGenCPU[RequestGenCPU:38]: Memory interface to be loaded is: memHierarchy.memInterface
-cpu:RequestGenCPU[RequestGenCPU:49]: Loaded memory interface successfully.
-cpu:RequestGenCPU[RequestGenCPU:52]: Initializing memory interface...
-cpu:RequestGenCPU[RequestGenCPU:57]: Loaded memory initialize routine returned successfully.
-cpu:RequestGenCPU[RequestGenCPU:65]: Loaded memory interface successfully.
-cpu:RequestGenCPU[RequestGenCPU:72]: CPU clock configured for 2GHz
-cpu:RequestGenCPU[RequestGenCPU:78]: Request generator to be loaded is: miranda.Stencil3DBenchGenerator
-cpu:RequestGenCPU[RequestGenCPU:84]: Generator loaded successfully.
-cpu:RequestGenCPU[RequestGenCPU:123]: Miranda CPU Configuration:
-cpu:RequestGenCPU[RequestGenCPU:124]: - Max reorder lookups             16
-cpu:RequestGenCPU[RequestGenCPU:125]: - Clock:                          2GHz
-cpu:RequestGenCPU[RequestGenCPU:126]: - Cache line size:                64 bytes
-cpu:RequestGenCPU[RequestGenCPU:127]: - Max requests per cycle:         2
-cpu:RequestGenCPU[RequestGenCPU:129]: Configuration completed.
+0:cpu:RequestGenCPU[RequestGenCPU:35]: Configured CPU to allow 16 maximum requests to be memory to be outstanding.
+0:cpu:RequestGenCPU[RequestGenCPU:39]: Memory interface to be loaded is: memHierarchy.memInterface
+0:cpu:RequestGenCPU[RequestGenCPU:50]: Loaded memory interface successfully.
+0:cpu:RequestGenCPU[RequestGenCPU:53]: Initializing memory interface...
+0:cpu:RequestGenCPU[RequestGenCPU:58]: Loaded memory initialize routine returned successfully.
+0:cpu:RequestGenCPU[RequestGenCPU:66]: Loaded memory interface successfully.
+0:cpu:RequestGenCPU[RequestGenCPU:73]: CPU clock configured for 2GHz
+0:cpu:RequestGenCPU[RequestGenCPU:79]: Request generator to be loaded is: miranda.Stencil3DBenchGenerator
+0:cpu:RequestGenCPU[RequestGenCPU:85]: Generator loaded successfully.
+0:cpu:RequestGenCPU[RequestGenCPU:124]: Miranda CPU Configuration:
+0:cpu:RequestGenCPU[RequestGenCPU:125]: - Max requests per cycle:         2
+0:cpu:RequestGenCPU[RequestGenCPU:126]: - Max reorder lookups             16
+0:cpu:RequestGenCPU[RequestGenCPU:127]: - Clock:                          2GHz
+0:cpu:RequestGenCPU[RequestGenCPU:128]: - Cache line size:                64 bytes
+0:cpu:RequestGenCPU[RequestGenCPU:129]: - Max requests pending:           16
+0:cpu:RequestGenCPU[RequestGenCPU:130]: Configuration completed.
  cpu.read_reqs : Accumulator : Sum.u64 = 108864; SumSQ.u64 = 108864; Count.u64 = 108864; 
  cpu.write_reqs : Accumulator : Sum.u64 = 4032; SumSQ.u64 = 4032; Count.u64 = 4032; 
  cpu.split_read_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
