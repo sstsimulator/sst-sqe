@@ -1412,8 +1412,8 @@ Number of Pending Requests per Cycle (Binned by 2 Requests)
  dirctrl.responses_received_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  dirctrl.responses_received_PutE : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  dirctrl.responses_received_PutS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- dirctrl.memory_requests_data_write : Accumulator : Sum.u64 = 50; SumSQ.u64 = 50; Count.u64 = 50; 
- dirctrl.memory_requests_data_read : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ dirctrl.memory_requests_data_read : Accumulator : Sum.u64 = 50; SumSQ.u64 = 50; Count.u64 = 50; 
+ dirctrl.memory_requests_data_write : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  dirctrl.memory_requests_directory_entry_read : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  dirctrl.memory_requests_directory_entry_write : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  dirctrl.requests_sent_Inv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -1428,11 +1428,11 @@ Number of Pending Requests per Cycle (Binned by 2 Requests)
  memory.requests_received_GetX : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
  memory.requests_received_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.outstanding_requests : Accumulator : Sum.u64 = 5050; SumSQ.u64 = 6964; Count.u64 = 9999; 
- memory.latency_GetS : Accumulator : Sum.u64 = 18446744073515672643; SumSQ.u64 = 1121793740147545; Count.u64 = 49; 
+ memory.latency_GetS : Accumulator : Sum.u64 = 4949; SumSQ.u64 = 499849; Count.u64 = 49;
  memory.latency_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- memory.latency_GetX : Accumulator : Sum.u64 = 18446744073706804467; SumSQ.u64 = 7546827628201; Count.u64 = 1; 
+ memory.latency_GetX : Accumulator : Sum.u64 = 101; SumSQ.u64 = 10201; Count.u64 = 1; 
  memory.latency_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.cycles_with_issue : Accumulator : Sum.u64 = 50; SumSQ.u64 = 50; Count.u64 = 50; 
  memory.cycles_attempted_issue_but_rejected : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.total_cycles : Accumulator : Sum.u64 = 9999; SumSQ.u64 = 9999; Count.u64 = 9999; 
-Simulation is complete, simulated time: 10 us
+imulation is complete, simulated time: 10 us

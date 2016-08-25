@@ -206,10 +206,10 @@ Number of Pending Requests per Cycle (Binned by 2 Requests)
  memory.requests_received_GetX : Accumulator : Sum.u64 = 86; SumSQ.u64 = 86; Count.u64 = 86; 
  memory.requests_received_PutM : Accumulator : Sum.u64 = 75; SumSQ.u64 = 75; Count.u64 = 75; 
  memory.outstanding_requests : Accumulator : Sum.u64 = 632708; SumSQ.u64 = 4433220; Count.u64 = 108192; 
- memory.latency_GetS : Accumulator : Sum.u64 = 18446744049848745745; SumSQ.u64 = 1668652801746610227; Count.u64 = 471; 
+ memory.latency_GetS : Accumulator : Sum.u64 = 471540; SumSQ.u64 = 472080678; Count.u64 = 471; 
  memory.latency_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- memory.latency_GetX : Accumulator : Sum.u64 = 18446744068923371462; SumSQ.u64 = 363940642339096294; Count.u64 = 86; 
- memory.latency_PutM : Accumulator : Sum.u64 = 18446744069568937771; SumSQ.u64 = 301090058233438851; Count.u64 = 75; 
+ memory.latency_GetX : Accumulator : Sum.u64 = 86093; SumSQ.u64 = 86186107; Count.u64 = 86; 
+ memory.latency_PutM : Accumulator : Sum.u64 = 75075; SumSQ.u64 = 75150075; Count.u64 = 75; 
  memory.cycles_with_issue : Accumulator : Sum.u64 = 632; SumSQ.u64 = 632; Count.u64 = 632; 
  memory.cycles_attempted_issue_but_rejected : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.total_cycles : Accumulator : Sum.u64 = 108192; SumSQ.u64 = 108192; Count.u64 = 108192; 

@@ -1386,9 +1386,9 @@ Number of Pending Requests per Cycle (Binned by 2 Requests)
  memory.requests_received_GetX : Accumulator : Sum.u64 = 49; SumSQ.u64 = 49; Count.u64 = 49; 
  memory.requests_received_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.outstanding_requests : Accumulator : Sum.u64 = 3551; SumSQ.u64 = 3989; Count.u64 = 104195; 
- memory.latency_GetS : Accumulator : Sum.u64 = 18446744073321631854; SumSQ.u64 = 4590938823812724; Count.u64 = 62; 
+ memory.latency_GetS : Accumulator : Sum.u64 = 1959; SumSQ.u64 = 63277; Count.u64 = 62; 
  memory.latency_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- memory.latency_GetX : Accumulator : Sum.u64 = 18446744071627512808; SumSQ.u64 = 136309910944419036; Count.u64 = 49; 
+ memory.latency_GetX : Accumulator : Sum.u64 = 1592; SumSQ.u64 = 52036; Count.u64 = 49; 
  memory.latency_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.cycles_with_issue : Accumulator : Sum.u64 = 111; SumSQ.u64 = 111; Count.u64 = 111; 
  memory.cycles_attempted_issue_but_rejected : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
