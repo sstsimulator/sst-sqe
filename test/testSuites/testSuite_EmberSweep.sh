@@ -125,16 +125,6 @@ SE_start() {
 SE_fini() {
    TL=`grep Simulation.is.complete tmp_file`
    RetVal=$?
-#		-- Check the Valgrind output --
-#		Look for the "kludge" for the openmpi Valgrind issue
-   echo $MPIHOME | grep jpvandy
-   if [ $? == 0 ] ; then 
-      numberAllowed=0
-   else
-      numberAllowed=1
-   fi		
-#		Invoke the checking subroutine
-   checkValgrindOutput $VGout $numberAllowed 
 
    TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
    if [ -e $TIME_FLAG ] ; then 
