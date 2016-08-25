@@ -1,3 +1,8 @@
+TrivialCPU cpu Finished after 50 issued reads, 49 returned (4999 clocks)
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  3679
+  [2, 4]  1244
+  [4, 6]  76
  l1cache.TotalEventsReceived : Accumulator : Sum.u64 = 85; SumSQ.u64 = 85; Count.u64 = 85; 
  l1cache.TotalEventsReplayed : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
  l1cache.CacheHits : Accumulator : Sum.u64 = 14; SumSQ.u64 = 14; Count.u64 = 14; 
@@ -391,12 +396,11 @@
  memory.requests_received_GetX : Accumulator : Sum.u64 = 4; SumSQ.u64 = 4; Count.u64 = 4; 
  memory.requests_received_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.outstanding_requests : Accumulator : Sum.u64 = 3623; SumSQ.u64 = 6285; Count.u64 = 4999; 
+ memory.latency_GetS : Accumulator : Sum.u64 = 3131; SumSQ.u64 = 316231; Count.u64 = 31;
+ memory.latency_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ memory.latency_GetX : Accumulator : Sum.u64 = 404; SumSQ.u64 = 40804; Count.u64 = 4; 
+ memory.latency_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.cycles_with_issue : Accumulator : Sum.u64 = 36; SumSQ.u64 = 36; Count.u64 = 36; 
  memory.cycles_attempted_issue_but_rejected : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.total_cycles : Accumulator : Sum.u64 = 4999; SumSQ.u64 = 4999; Count.u64 = 4999; 
-TrivialCPU cpu Finished after 50 issued reads, 49 returned (4999 clocks)
-Number of Pending Requests per Cycle (Binned by 2 Requests)
-  [0, 2]  3679
-  [2, 4]  1244
-  [4, 6]  76
 Simulation is complete, simulated time: 5 us
