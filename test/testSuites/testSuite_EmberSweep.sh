@@ -213,7 +213,7 @@ SE_fini() {
 
     sed '/ .sst/s/ "sst/ "valgrind --track-origins=yes --log-file=$VGout $sut/' ${SST_TEST_INPUTS}/EmberSweepGenerator.py > EmberSweepGenerator.py
 
-   ./EmberSweepGenerator.py > bashIN
+    ./EmberSweepGenerator.py > bashIN
     if [ $? -ne 0 ] ; then 
         preFail " Test Generation FAILED"
     fi
