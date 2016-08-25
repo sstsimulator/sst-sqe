@@ -18,6 +18,8 @@
 # 
 #    That generated file is then sourced and that file fed to shuint2.
 #
+#    Note that this Suite runs in the ember elements sub-tree, not in test.
+#
 #    ------------------------------------------------------------------ 
 #       Env variable:    SST_TEST_SE_LIST   to run specific numbers only
 #######################################################################
@@ -81,7 +83,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     #  Most test Suites explicitly define an environment variable sut to be full path SST
     #     The Python script does not do this
 
-    L_TESTFILE+=(${testDataFileBase})
 pwd
 
 pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
@@ -94,6 +95,7 @@ RUNNING_INDEX=0
 FAILED_TESTS=0
 FAILED="FALSE"
 PARAMS=""
+VGout=""
  
 
 SE_start() {
@@ -109,7 +111,9 @@ SE_start() {
     FAILED="FALSE"
     PARAMS="$1"
     echo "     $1"
-## echo "    " torus --shape=16x16x16  AllPingPong iterations=10 messageSize=20000 
+    VGout="${SST_TEST_OUTPUTS}/testES_${TEST_INDEX}.VGout"
+    testDataFileBase="testES_${TEST_INDEX}"
+    L_TESTFILE+=(${testDataFileBase})
     pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
 }
 ####################
@@ -121,12 +125,22 @@ SE_start() {
 SE_fini() {
    TL=`grep Simulation.is.complete tmp_file`
    RetVal=$?
+#		-- Check the Valgrind output --
+#		Look for the "kludge" for the openmpi Valgrind issue
+   echo $MPIHOME | grep jpvandy
+   if [ $? == 0 ] ; then 
+      numberAllowed=0
+   else
+      numberAllowed=1
+   fi		
+#		Invoke the checking subroutine
+   checkValgrindOutput $VGout $numberAllowed 
+
    TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
    if [ -e $TIME_FLAG ] ; then 
         echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
         fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
         rm $TIME_FLAG 
-        FAILED_TESTS=$(($FAILED_TESTS + 1))
         return 
    fi 
 
@@ -179,7 +193,11 @@ SE_fini() {
    echo "${TEST_INDEX}: Wall Clock Time  $elapsedSeconds sec.  ${PARAMS}"
    echo " "
 
-}
+}     #  - - - END OF Subroutine SE_fini()
+
+###          Begin MAIN
+
+     export sut=$SST_TEST_INSTALL_BIN/../libexec/sstsim.x   ######################3 maybe
 #    Generate the bash input script
 
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} != isSet ]] ; then
@@ -191,12 +209,14 @@ SE_fini() {
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
         sed -i.x '/print..sst.*model/s/..sst/ "mpirun -np '"${SST_MULTI_RANK_COUNT}"' sst/' EmberSweepGenerator.py 
     fi
-    ./EmberSweepGenerator.py > bashIN
+##                                Edit EmberSweepGenerator.py
+
+    sed '/ .sst/s/ "sst/ "valgrind --track-origins=yes --log-file=$VGout $sut/' ${SST_TEST_INPUTS}/EmberSweepGenerator.py > EmberSweepGenerator.py
+
+   ./EmberSweepGenerator.py > bashIN
     if [ $? -ne 0 ] ; then 
         preFail " Test Generation FAILED"
     fi
-
-    #./Tester.py > bashIN
 
     #     This is the code to run just a few test from the sweep
     #     Using the indices defined by SST_TEST_SE_LIST
@@ -231,7 +251,7 @@ popd
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 #                In this position the local Time Out will override the multithread TL
-export SST_TEST_ONE_TEST_TIMEOUT=900
+export SST_TEST_ONE_TEST_TIMEOUT=1900
 
 (. ${SHUNIT2_SRC}/shunit2 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/bashIN)
 
