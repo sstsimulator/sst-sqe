@@ -95,7 +95,6 @@ RUNNING_INDEX=0
 FAILED_TESTS=0
 FAILED="FALSE"
 PARAMS=""
-VGout=""
  
 
 SE_start() {
@@ -111,7 +110,6 @@ SE_start() {
     FAILED="FALSE"
     PARAMS="$1"
     echo "     $1"
-    VGout="${SST_TEST_OUTPUTS}/testES_${TEST_INDEX}.VGout"
     testDataFileBase="testES_${TEST_INDEX}"
     L_TESTFILE+=(${testDataFileBase})
     pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
@@ -125,7 +123,6 @@ SE_start() {
 SE_fini() {
    TL=`grep Simulation.is.complete tmp_file`
    RetVal=$?
-
    TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
    if [ -e $TIME_FLAG ] ; then 
         echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -187,7 +184,6 @@ SE_fini() {
 
 ###          Begin MAIN
 
-     export sut=$SST_TEST_INSTALL_BIN/../libexec/sstsim.x   ######################3 maybe
 #    Generate the bash input script
 
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} != isSet ]] ; then
@@ -199,9 +195,6 @@ SE_fini() {
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
         sed -i.x '/print..sst.*model/s/..sst/ "mpirun -np '"${SST_MULTI_RANK_COUNT}"' sst/' EmberSweepGenerator.py 
     fi
-##                                Edit EmberSweepGenerator.py
-
-    sed '/ .sst/s/ "sst/ "valgrind --track-origins=yes --log-file=$VGout $sut/' ${SST_TEST_INPUTS}/EmberSweepGenerator.py > EmberSweepGenerator.py
 
     ./EmberSweepGenerator.py > bashIN
     if [ $? -ne 0 ] ; then 
@@ -241,7 +234,7 @@ popd
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 #                In this position the local Time Out will override the multithread TL
-export SST_TEST_ONE_TEST_TIMEOUT=1900
+export SST_TEST_ONE_TEST_TIMEOUT=900
 
 (. ${SHUNIT2_SRC}/shunit2 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/bashIN)
 
