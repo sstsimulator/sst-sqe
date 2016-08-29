@@ -19,13 +19,15 @@ do
    fi
 
 echo "                               Debug  $Suite "
+		grep -n VGout $Suite
 #		Reset the Suite
    git checkout -- $Suite
 #		Verify that there is an outFile defined
+		grep -n VGout $Suite
    grep outFile= $Suite > /dev/null
    if [ $? != 0 ] ; then
       echo "Suite there is no outFile!"
-      exit 1
+##      exit 1
    fi
 
 #		Define a unique output file for Valgrind 
@@ -64,9 +66,29 @@ echo "                               Debug  $Suite "
    fi
    rm __half-way
 
+echo "line  $LINENO"
+
 #		Add Valgrind, with parameters to sst execution line
    sed -i'.z' '/sut.*sutArgs/s/${sut} /valgrind --track-origins=yes --log-file=$VGout ${sut} /' $Suite
 
+echo "line  $LINENO"
+   if [ $Suite == "testSuite_EmberSweep.sh" ] ; then
+   sed -i'.x' '/PARAMS=""/ a \
+   VGout=""
+   ' $Suite
+
+echo "line  $LINENO"
+   sed -i'.y' '/testDataFileBase=/i \
+   VGout="${SST_TEST_OUTPUTS}/testES_${TEST_INDEX}.VGout"
+   ' $Suite
+
+echo "line  $LINENO"
+   DEST=${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+   sed '/ .sst/s/ "sst/ "valgrind --track-origins=yes --log-file=$VGout $sut/' ${SST_TEST_INPUTS}/EmberSweepGenerator.py > $DEST/EmberSweepGenerator.py
+ 
+   fi  
+
+echo "line  $LINENO"
 
 done
 #
