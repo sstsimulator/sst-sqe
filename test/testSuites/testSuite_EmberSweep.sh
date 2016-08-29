@@ -112,6 +112,7 @@ SE_start() {
     echo "     $1"
     testDataFileBase="testES_${TEST_INDEX}"
     L_TESTFILE+=(${testDataFileBase})
+#             For Valgrind, sut= will be installed after this line.
     pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
 }
 ####################
