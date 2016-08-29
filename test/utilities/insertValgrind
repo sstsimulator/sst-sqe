@@ -18,23 +18,8 @@ do
        fi
    fi
 
-echo "                               Debug  $Suite "
-		grep -n VGout $Suite
 #		Reset the Suite
    git checkout -- $Suite
-#		Verify that there is an outFile defined
-		grep -n VGout $Suite
-   grep outFile= $Suite > /dev/null
-   if [ $? != 0 ] ; then
-      echo "Suite there is no outFile!"
-##      exit 1
-   fi
-
-#		Define a unique output file for Valgrind 
-   sed -i'.x' /outFile=/a' \
-    VGout="${SST_TEST_OUTPUTS}/${testDataFileBase}.VGout" \
-    rm -f $VGout
-      ' $Suite
 
 #		-- Check the Valgrind output --
 #		Look for the "kludge" for the openmpi Valgrind issue
@@ -56,49 +41,61 @@ echo "                               Debug  $Suite "
    sut=$SST_INSTALL_BIN/../libexec/sstsim.x
       ' $Suite
 
+      if [ $Suite != "testSuite_EmberSweep.sh" ] ; then
+##           This is the code for all Suites except EmberSweep
+
+#		Check if there is an outFile defined
+      grep outFile= $Suite > /dev/null
+      if [ $? != 0 ] ; then
+         echo "$Suite -  Warning:  there is no outFile!"
+         echo "      Valgrind output, VGout will not be defined"
+      fi
+#		Define a unique output file for Valgrind 
+      sed -i'.x' /outFile=/a' \
+      VGout="${SST_TEST_OUTPUTS}/${testDataFileBase}.VGout" \
+      rm -f $VGout
+         ' $Suite
 #		Remove parenthesis if needed
 #
-   sed '/sut.*sutArgs/s/(${sut}/${sut}/' $Suite > __half-way
-   diff $Suite __half-way 
-   if [ $? != 0 ] ; then
-      sed '/sut.*sutArgs/s/)//' __half-way > $Suite
-      diff __half-way $Suite
-   fi
-   rm __half-way
+      sed '/sut.*sutArgs/s/(${sut}/${sut}/' $Suite > __half-way
+      diff $Suite __half-way 
+      if [ $? != 0 ] ; then
+         sed '/sut.*sutArgs/s/)//' __half-way > $Suite
+         diff __half-way $Suite
+      fi
+      rm __half-way
 
-echo "line  $LINENO"
 
 #		Add Valgrind, with parameters to sst execution line
-   sed -i'.z' '/sut.*sutArgs/s/${sut} /valgrind --track-origins=yes --log-file=$VGout ${sut} /' $Suite
+      sed -i'.z' '/sut.*sutArgs/s/${sut} /valgrind --track-origins=yes --log-file=$VGout ${sut} /' $Suite
 
-echo "line  $LINENO"
-   if [ $Suite == "testSuite_EmberSweep.sh" ] ; then
-   sed -i'.x' '/PARAMS=""/ a \
-   VGout=""
-   ' $Suite
+   else
 
-echo "line  $LINENO"
-   sed -i'.y' '/testDataFileBase=/i \
-   VGout="${SST_TEST_OUTPUTS}/testES_${TEST_INDEX}.VGout"
-   ' $Suite
+##           This is the code for the EmberSweep Suite
+      sed -i'.x' '/PARAMS=""/ a \
+      VGout=""
+      ' $Suite
 
-echo "line  $LINENO"
-   DEST=${SST_ROOT}/sst-elements/src/sst/elements/ember/test
-   sed '/ .sst/s/ "sst/ "valgrind --track-origins=yes --log-file=$VGout $sut/' ${SST_TEST_INPUTS}/EmberSweepGenerator.py > $DEST/EmberSweepGenerator.py
- 
+      sed -i'.y' '/testDataFileBase=/i \
+      VGout="${SST_TEST_OUTPUTS}/testES_${TEST_INDEX}.VGout"
+      ' $Suite
+
+      sed -i'.z' -e '/MULTI_THREAD/,/fi/ s/^/#/' $Suite
+
+      DEST=${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+      sed '/ .sst/s/ "sst/ "valgrind --track-origins=yes --log-file=$VGout $sut/' ${SST_TEST_INPUTS}/EmberSweepGenerator.py > $DEST/EmberSweepGenerator.py
+      chmod +x $DEST/EmberSweepGenerator.py 
    fi  
 
-echo "line  $LINENO"
 
 done
 #
 #		Jack the time limit way up
-echo Something is wrong
+echo "WARNING:  Time Limit Enforcer may not work!"
 ls -l ../utilities/timeLimitEnforcer.sh   
 wc    ../utilities/timeLimitEnforcer.sh   
 		
    sed -i'.x' /CASE=/a' \
     SST_TEST_ONE_TEST_TIMEOUT=5000         # Over an hour
    ' ../utilities/timeLimitEnforcer.sh   
-wc    ../utilities/timeLimitEnforcer.sh   
 
