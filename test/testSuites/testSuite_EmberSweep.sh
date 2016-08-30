@@ -112,6 +112,7 @@ SE_start() {
     echo "     $1"
     testDataFileBase="testES_${TEST_INDEX}"
     L_TESTFILE+=(${testDataFileBase})
+#             For Valgrind, sut= will be installed after this line.
     pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
 }
 ####################
@@ -128,6 +129,7 @@ SE_fini() {
         echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
         fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
         rm $TIME_FLAG 
+        FAILED_TESTS=$(($FAILED_TESTS + 1))
         return 
    fi 
 
