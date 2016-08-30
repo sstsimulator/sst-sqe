@@ -39,6 +39,15 @@ if [ -z $KILL_PID ] ; then
     if [ -z $PY_PID ] ; then
         echo "No corresponding child named \"python\" "
         echo ' '
+        #   Is there a Valgrind running from the Parent PID
+        echo " Look for a child named \"valgrind\""
+        VG_PID=`ps -ef | grep 'valgrind ' | grep $PPID | awk '{ print $2 }'`
+        if [ -z $VG_PID ] ; then
+            echo "No corresponding child named \"valgrind\" "
+            echo ' '
+        else
+            KILL_PID=$VG_PID
+        fi
     else
         KILL_PID=$PY_PID
     fi
