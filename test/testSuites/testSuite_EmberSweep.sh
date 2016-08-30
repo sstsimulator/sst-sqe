@@ -129,6 +129,7 @@ SE_fini() {
         echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
         fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
         rm $TIME_FLAG 
+        FAILED_TESTS=$(($FAILED_TESTS + 1))
         return 
    fi 
 
