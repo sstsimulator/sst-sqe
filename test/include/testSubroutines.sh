@@ -327,7 +327,7 @@ if [ $contextNumber -gt 0 ] ; then
     sed -n '/ Invalid.read.of.size.4/{N;p;q}' $VGout  | grep opal_os_dirpath_create > /dev/null
     if [ $? == 0 ] ;then
         contextNumber=$(($contextNumber-1))
-        echo "Ignoring MPI Invalid read of size 4"
+        echo "Ignoring MPI \"Invalid read of size 4\""
     fi
 fi
 if [ $contextNumber -gt 0 ] ; then
