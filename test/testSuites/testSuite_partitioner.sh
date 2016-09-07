@@ -160,7 +160,7 @@ PARTITIONER=$2
     # Define a common basename for test output and reference files
 
     startSeconds=`date +%s` 
-    testDataFileBase="test_${PARTITIONER}${NUMRANKS}"
+    testDataFileBase="test_partitioner_${PARTITIONER}${NUMRANKS}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     partFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.part"
