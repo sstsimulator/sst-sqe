@@ -176,15 +176,13 @@ merlin_Template dragon_72 500
 }
 
 test_merlin_ft_r16() {          
-echo "test_merlin_ft_r16"
-env | grep SST_
+   echo "SST_BUILD_TYPE = $SST_BUILD_TYPE"
 
    if [[ $SST_BUILD_TYPE == "sstmainline_config_valgrind" ]] ; then
       skip_this_test
       echo ' ' ; echo "   ---- Skip this test for Valgrind" ; echo ' '
       return
    fi
-echo ' ' ; echo "                         no skip" ; echo ' '
 
 merlin_Template ft_r16 500
 
