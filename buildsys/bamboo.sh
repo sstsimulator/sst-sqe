@@ -184,6 +184,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
  
          exit
       fi
+   done
    echo " "
    echo " The sst-elements Repo has been cloned."
    ls -l
