@@ -170,7 +170,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    do
       date
       echo " "
-      echo "     TimeoutEx -t 300 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
+      echo "     TimeoutEx -t 90 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
       date
       TimeoutEx -t 90 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
       retVal=$?
