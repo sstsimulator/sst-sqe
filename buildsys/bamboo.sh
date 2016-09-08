@@ -165,16 +165,25 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
 
 ## Cloning sst-elements into <path>/devel/trunk     
-   date
-   echo " "
-   echo "     TimeoutEx -t 300 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
-   TimeoutEx -t 300 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
-   retVal=$?
-   date
-   if [ $retVal != 0 ] ; then
-      echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
-      exit
-   fi
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
+      date
+      echo " "
+      echo "     TimeoutEx -t 300 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
+      TimeoutEx -t 3 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
+      retVal=$?
+      date
+      if [ $retVal != 0 ] ; then
+         echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaining - 1))
+         if [ $Num_Tries_remaing-- -gt 0 ] ; then
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             continue;
+         fi
+ 
+         exit
+      fi
    echo " "
    echo " The sst-elements Repo has been cloned."
    ls -l
