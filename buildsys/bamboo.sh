@@ -181,7 +181,7 @@ echo $LINENO $Num_Tries_remaing
       if [ $retVal != 0 ] ; then
 echo $LINENO $Num_Tries_remaing
          echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaining - 1))
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
 echo $LINENO $Num_Tries_remaing
          if [ $Num_Tries_remaing -gt 0 ] ; then
 echo $LINENO $Num_Tries_remaing
