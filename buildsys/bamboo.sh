@@ -167,27 +167,40 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 ## Cloning sst-elements into <path>/devel/trunk     
    Num_Tries_remaing=3
    while [ $Num_Tries_remaing -gt 0 ]
+echo $LINENO
    do
       date
       echo " "
       echo "     TimeoutEx -t 300 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
+      date
+echo $LINENO
       TimeoutEx -t 3 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
       retVal=$?
+echo $LINENO
       date
       if [ $retVal != 0 ] ; then
+echo $LINENO
          echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
          Num_Tries_remaing=$(($Num_Tries_remaining - 1))
+echo $LINENO
          if [ $Num_Tries_remaing -gt 0 ] ; then
+echo $LINENO
              echo "    ------   RETRYING    $Num_Tries_remaing "
              continue;
+echo $LINENO
          fi
+echo $LINENO
  
          exit
+echo $LINENO
       fi
+echo $LINENO
    done
    echo " "
+echo $LINENO
    echo " The sst-elements Repo has been cloned."
    ls -l
+echo $LINENO
    pushd sst-elements
 
    # Test for override of the branch to some other SHA1 
