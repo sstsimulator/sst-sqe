@@ -177,7 +177,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
       if [ $retVal != 0 ] ; then
          echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
          Num_Tries_remaing=$(($Num_Tries_remaining - 1))
-         if [ $Num_Tries_remaing-- -gt 0 ] ; then
+         if [ $Num_Tries_remaing -gt 0 ] ; then
              echo "    ------   RETRYING    $Num_Tries_remaing "
              continue;
          fi
