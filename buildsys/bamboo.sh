@@ -175,11 +175,14 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
       TimeoutEx -t 90 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
       retVal=$?
       date
-      if [ $retVal != 0 ] ; then
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
          echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
          Num_Tries_remaing=$(($Num_Tries_remaing - 1))
          if [ $Num_Tries_remaing -gt 0 ] ; then
              echo "    ------   RETRYING    $Num_Tries_remaing "
+             rm -rf sst-elements
              continue;
          fi
  
