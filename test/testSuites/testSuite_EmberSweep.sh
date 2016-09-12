@@ -112,6 +112,7 @@ SE_start() {
     echo "     $1"
     testDataFileBase="testES_${TEST_INDEX}"
     L_TESTFILE+=(${testDataFileBase})
+#             For Valgrind, sut= will be installed after this line.
     pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
 }
 ####################
@@ -128,6 +129,7 @@ SE_fini() {
         echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
         fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
         rm $TIME_FLAG 
+        FAILED_TESTS=$(($FAILED_TESTS + 1))
         return 
    fi 
 
@@ -201,8 +203,9 @@ SE_fini() {
         preFail " Test Generation FAILED"
     fi
 
-    #     This is the code to run just a few test from the sweep
-    #     Using the indices defined by SST_TEST_SE_LIST
+   #   This is the code to run just selected tests from the sweep
+   #        using the indices defined by SST_TEST_SE_LIST
+   #   An inclusive sub-list may be specified as "first-last"  (e.g. 7-10)
 
      SE_SELECT=0
      if [[ ${SST_TEST_SE_LIST:+isSet} == isSet ]] ; then
@@ -211,14 +214,42 @@ SE_fini() {
          ICT=1
          for IND in $SST_TEST_SE_LIST
          do
-             SE_LIST[$ICT]=$IND
-             ICT=$(($ICT+1))
-             S0=$(($IND-1))
-             S1=$(($S0*6))
-             START=$(($S1+1))
-             END=$(($START+5))
-             sed -n ${START},${END}p  bashIN0 >> bashIN
+             echo $IND | grep -e '-' > /dev/null   
+             if [ $? != 0 ] ; then
+                SE_LIST[$ICT]=$IND
+                ICT=$(($ICT+1))
+                S0=$(($IND-1))
+                S1=$(($S0*6))
+                START=$(($S1+1))
+                END=$(($START+5))
+             else
+#     echo IND = $IND
+                INDF=`echo $IND | awk -F'-' '{print $1}'`
+                INDL=`echo $IND | awk -F'-' '{print $2}'`
+#     echo "$INDF to $INDL"
+                INDR=$INDF
+                S0=$(($INDR-1))
+                S1=$(($S0*6))
+                START=$(($S1+1))
+                END=$(($START-1))
+#     echo INDR INDL   $INDR $INDL
+                while [ $INDR -le $INDL ]
+                do
+#     echo In the INDR loop INDR = $INDR
+                   SE_LIST[$ICT]=$INDR
+                   ICT=$(($ICT+1))
+                   END=$(($END+6))
+                   INDR=$(($INDR+1))
+                done    
+               fi
+               sed -n ${START},${END}p  bashIN0 >> bashIN
           done
+
+# Check it
+echo Check the result
+wc bashIN
+## for i in ${SE_LIST[@]}; do echo $i; done
+
      fi
 
 #    Source the bash file

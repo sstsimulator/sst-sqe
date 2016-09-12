@@ -135,14 +135,26 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
 ## Cloning sst-core into <path>/devel/trunk   
-   echo " "
-   echo "     TimeoutEx -t 300 git clone -b $SST_COREBRANCH $SST_COREREPO sst-core "
-   TimeoutEx -t 300 git clone -b $SST_COREBRANCH $SST_COREREPO sst-core
-   retVal=$?
-   if [ $retVal != 0 ] ; then
-      echo "\"git clone of $SST_COREREPO \" FAILED.  retVal = $retVal"
-      exit
-   fi
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
+      echo " "
+      echo "     TimeoutEx -t 90 git clone -b $SST_COREBRANCH $SST_COREREPO sst-core "
+      TimeoutEx -t 90 git clone -b $SST_COREBRANCH $SST_COREREPO sst-core
+      retVal=$?
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
+         echo "\"git clone of $SST_COREREPO \" FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+         if [ $Num_Tries_remaing -gt 0 ] ; then
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             rm -rf sst-core
+             continue
+         fi
+         exit
+      fi
+   done
    echo " "
    echo " The sst-core Repo has been cloned."
    ls -l
@@ -165,14 +177,30 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
 
 
 ## Cloning sst-elements into <path>/devel/trunk     
-   echo " "
-   echo "     TimeoutEx -t 300 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
-   TimeoutEx -t 300 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
-   retVal=$?
-   if [ $retVal != 0 ] ; then
-      echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
-      exit
-   fi
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
+      date
+      echo " "
+      echo "     TimeoutEx -t 90 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
+      date
+      TimeoutEx -t 90 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
+      retVal=$?
+      date
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
+         echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+         if [ $Num_Tries_remaing -gt 0 ] ; then
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             rm -rf sst-elements
+             continue
+         fi
+ 
+         exit
+      fi
+   done
    echo " "
    echo " The sst-elements Repo has been cloned."
    ls -l
@@ -348,6 +376,48 @@ echo " #####################################################"
     # Initialize directory to hold temporary test input files
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
+
+    if [[ $1 == *sstmainline_config_valgrind* ]] ; then
+        
+        echo "                   module list"
+        ModuleEx list
+        
+        ####   export variables  Library path, PATH, SST_ROOT, SST_TEST_ROOT
+        #
+        echo $LD_LIBRARY_PATH | grep /usr/local/lib
+        if [ $? != 0 ]
+        then
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+        fi
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_BASE/local/sst-core/lib
+        ##     Source the install location variables from the build
+        . ../../SST_deps_env.sh
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_GEM5SST:$SST_DEPS_INSTALL_DRAMSIM:$SST_DEPS_INSTALL_QSIM:$SST_DEPS_INSTALL_QSIM/lib:$SST_DEPS_INSTALL_HYBRIDSIM:$SST_DEPS_INSTALL_NVDIMMSIM
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_CHDL/lib
+        
+        if [ `uname` == "Darwin" ] 
+        then
+           export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
+        fi
+         
+        export PATH=/home/jpvandy/bin:$PATH:$SST_INSTALL_BIN_USER
+        
+        export SST_ROOT=$SST_BASE/devel/trunk
+        
+        export SST_TEST_ROOT=`pwd`/test
+        ####    Source the testDefinitions
+        . test/include/testDefinitions.sh
+        
+        echo ' '; echo "Inserting Valgrind commands" ; echo ' '
+        ./test/utilities/insertValgrind
+
+     #   Only run EmberSweep in Valgrind if explict request.
+     #       In that case run only EmberSweep Suite.
+        if [[ $1 == "sstmainline_config_valgrind_ES" ]] ; then
+            ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
+            return
+        fi
+    fi
 
     if [[ $1 == *sstmainline_config_test_output_config* ]]
     then
@@ -587,11 +657,17 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_embernightly.sh
  
     ${SST_TEST_SUITES}/testSuite_simpleDistribComponent.sh
-    ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
 
-    if [ $1 != "sstmainline_config_no_mpi" ] ; then
+    # Only run EmberSweep with valgrind with explict request.
+    #    Valgrind on 180 test Suite takes 15 hours. (Aug. 2016)
+    if [[ $1 != "sstmainline_config_valgrind" ]] ; then
+       ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
+    fi
+
+    if [ $1 != "sstmainline_config_no_mpi" ] && [[ $1 != "sstmainline_config_valgrind" ]] ; then
         #  Zoltan test requires MPI to execute.
         #  sstmainline_config_no_gem5 deliberately omits Zoltan, so must skip test.
+        #  Valgrind test as inserted here is incompatible with partitioning tests.
         if [ $1 != "sstmainline_config_linux_with_ariel" ] ; then
             ${SST_TEST_SUITES}/testSuite_zoltan.sh
             ${SST_TEST_SUITES}/testSuite_partitioner.sh
@@ -958,9 +1034,24 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions  --with-glpk=${GLPK_HOME} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
-   
-  ## perhaps do no more here
             ;;
+            
+        sstmainline_config_valgrind|sstmainline_config_valgrind_ES) 
+            #-----------------------------------------------------------------
+            # sstmainline_config_valgrind
+            #     This option used for configuring SST with supported stabledevel deps
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            coreMiscEnv="${cc_environment} ${mpi_environment}"
+            elementsMiscEnv="${cc_environment}"
+            depsStr="-k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -z 3.83 -c default"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            
+            ;;
+
+  ## perhaps do no more here
         default)
             #-----------------------------------------------------------------
             # default
@@ -2117,7 +2208,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester)
+        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester|sstmainline_config_valgrind|sstmainline_config_valgrind_ES)
             #   Save Parameters $2, $3 and $4 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3

@@ -2,11 +2,20 @@
 ##   This can be Globally changed by setting the Environment variable
 ##   This can be Locally changed for an entire Suite by exporting the
 ##      environment variable from in that Suite before shunit2 is invoked.
+##   September 2016: most Suites set it; thus over-riding the Environment
+##      value.  The utility that inserts Valgrind in things, jams a
+##      value directly in here, over riding the Suite.
+##   The new environment variable, SST_TEST_TIMEOUT_OVERRIDE, trumps all. 
+              
 
 if [[ ${SST_TEST_ONE_TEST_TIMEOUT:+isSet} != isSet ]] ; then
     SST_TEST_ONE_TEST_TIMEOUT=1800         # 30 minutes 1800 seconds
 fi
 CASE=$2
+
+if [[ ${SST_TEST_TIMEOUT_OVERRIDE:+isSet} == isSet ]] ; then
+    SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_TIMEOUT_OVERRIDE
+fi 
 
 sleep $SST_TEST_ONE_TEST_TIMEOUT 
 
@@ -39,6 +48,15 @@ if [ -z $KILL_PID ] ; then
     if [ -z $PY_PID ] ; then
         echo "No corresponding child named \"python\" "
         echo ' '
+        #   Is there a Valgrind running from the Parent PID
+        echo " Look for a child named \"valgrind\""
+        VG_PID=`ps -ef | grep 'valgrind ' | grep $PPID | awk '{ print $2 }'`
+        if [ -z $VG_PID ] ; then
+            echo "No corresponding child named \"valgrind\" "
+            echo ' '
+        else
+            KILL_PID=$VG_PID
+        fi
     else
         KILL_PID=$PY_PID
     fi

@@ -305,3 +305,41 @@ RemoveComponentWarning() {
       rm -f ${outFile}.x
    fi
 }
+# ----------------------------------------------------
+#    Do the check on Valgrind on a test
+# ----------------------------------------------------
+checkValgrindOutput() {
+VGout=$1        #the Valgrind output file
+grep ERROR.SUMMARY $VGout  > /dev/null
+if [ $? != 0 ] ; then 
+    echo "Valgrind Summary not found"
+    fail " No Valgrind Summary"
+    wc $VGout
+    return
+fi
+#Add for qsim
+    date
+    ls -l $VGout
+###  ------
+    grep ERROR.SUMMARY $VGout | sed s/ERROR//
+contextNumber=`grep ERROR.SUMMARY $VGout | awk '{print $7}'`
+if [ $contextNumber -gt 0 ] ; then
+    sed -n '/ Invalid.read.of.size.4/{N;p;q}' $VGout  | grep opal_os_dirpath_create > /dev/null
+    if [ $? == 0 ] ;then
+        contextNumber=$(($contextNumber-1))
+        echo "Ignoring MPI \"Invalid read of size 4\""
+    fi
+fi
+if [ $contextNumber -gt 0 ] ; then
+    echo ' '
+    echo "Valgrind found $contextNumber issues"
+    fail " $testDataFileBase: Valgind found $contextNumber issues"
+    echo ' '
+else
+    echo ' '
+    echo "     $testDataFileBase:  Valgrind found NO issues      "
+    echo ' '
+fi
+
+}
+
