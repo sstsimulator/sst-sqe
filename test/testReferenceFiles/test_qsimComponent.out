@@ -1,3 +1,7 @@
+c0.l2cache: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+c1.l2cache: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+c2.l2cache: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+c3.l2cache: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
 qsimComponent 0 init: loaded state
 qsimComponent 0 init: loaded application
 qsimComponent init: callbacks set

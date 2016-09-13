@@ -50,7 +50,7 @@ memory = sst.Component("memcontroller", "memHierarchy.MemController");
 memory.addParams({
   "coherence_protocol" : CPROT,
   "access_time" : "50ns",
-  "backend.mem_size" : "4096",
+  "backend.mem_size" : "4096MiB",
   "clock" : "1GHz"
 });
 
