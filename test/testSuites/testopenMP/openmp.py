@@ -155,7 +155,6 @@ comp_l2cache.addParams({
       "associativity" : "4",
       "cache_line_size" : "64",
       "L1" : "0",
-      "LL" : "1",
       "cache_size" : "64 KB",
       "mshr_num_entries" : "4096"
 })
@@ -163,7 +162,7 @@ comp_memory = sst.Component("memory", "memHierarchy.MemController")
 comp_memory.addParams({
       "debug" : "0",
       "coherence_protocol" : "MSI",
-      "backend.mem_size" : "1024",
+      "backend.mem_size" : "1024MiB",
       "backend.access_time" : "25 ns",
       "clock" : "2GHz",
       "request_width" : "64",

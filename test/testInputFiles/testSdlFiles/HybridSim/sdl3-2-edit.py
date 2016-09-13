@@ -72,7 +72,7 @@ comp_memory.addParams({
       "backend.access_time" : "1000 ns",
       "backend.device_ini" : "DDR3_micron_32M_8B_x4_sg125.ini",
       "backend.system_ini" : os.environ['SST_DEPS_INSTALL_HYBRIDSIM'] + '/ini/hybridsim.ini',
-      "backend.mem_size" : "512",
+      "backend.mem_size" : "512MiB",
       "backend" : """memHierarchy.hybridsim"""
 })
 

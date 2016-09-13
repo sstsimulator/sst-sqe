@@ -101,7 +101,6 @@ comp_c0_l1Dcache.addParams({
     "debug_level" : """6""",
     "L1" : """1""",
     "cache_size" : L1cachesz,
-    "lower_is_noninclusive" : 1,
     "prefetcher" : Pref1
 })
 comp_c0_l2cache = sst.Component("c0.l2cache", "memHierarchy.Cache")
@@ -113,7 +112,6 @@ comp_c0_l2cache.addParams({
     "coherence_protocol" : MSIMESI,
     "associativity" : L2assoc,
     "cache_type" : "noninclusive",
-    "lower_is_noninclusive" : 1,
     "cache_line_size" : "64",
     "debug_level" : L2debug_lev,
     "cache_size" : L2cachesz,
@@ -132,7 +130,6 @@ comp_c1_l1Dcache.addParams({
       "debug_level" : """6""",
       "L1" : """1""",
       "cache_size" : L1cachesz,
-      "lower_is_noninclusive" : 1,
       "prefetcher" : Pref1
 })
 comp_c1_l2cache = sst.Component("c1.l2cache", "memHierarchy.Cache")
@@ -144,7 +141,6 @@ comp_c1_l2cache.addParams({
     "coherence_protocol" : MSIMESI,
     "associativity" : L2assoc,
     "cache_type" : "noninclusive",
-    "lower_is_noninclusive" : 1,
     "cache_line_size" : "64",
     "debug_level" : L2debug_lev,
     "cache_size" : L2cachesz,
@@ -163,7 +159,6 @@ comp_c2_l1Dcache.addParams({
       "debug_level" : """6""",
       "L1" : """1""",
       "cache_size" : L1cachesz,
-      "lower_is_noninclusive" : 1,
       "prefetcher" : Pref1
 })
 comp_c2_l2cache = sst.Component("c2.l2cache", "memHierarchy.Cache")
@@ -175,7 +170,6 @@ comp_c2_l2cache.addParams({
     "coherence_protocol" : MSIMESI,
     "associativity" : L2assoc,
     "cache_type" : "noninclusive",
-    "lower_is_noninclusive" : 1,
     "cache_line_size" : "64",
     "debug_level" : L2debug_lev,
     "cache_size" : L2cachesz,
@@ -194,7 +188,6 @@ comp_c3_l1Dcache.addParams({
       "debug_level" : """6""",
       "L1" : """1""",
       "cache_size" : L1cachesz,
-      "lower_is_noninclusive" : 1,
       "prefetcher" : Pref1
 })
 comp_c3_l2cache = sst.Component("c3.l2cache", "memHierarchy.Cache")
@@ -206,7 +199,6 @@ comp_c3_l2cache.addParams({
     "coherence_protocol" : MSIMESI,
     "associativity" : L2assoc,
     "cache_type" : "noninclusive",
-    "lower_is_noninclusive" : 1,
     "cache_line_size" : "64",
     "debug_level" : L2debug_lev,
     "cache_size" : L2cachesz,
@@ -225,7 +217,6 @@ comp_c4_l1Dcache.addParams({
       "debug_level" : """6""",
       "L1" : """1""",
       "cache_size" : L1cachesz,
-      "lower_is_noninclusive" : 1,
       "prefetcher" : Pref1
 })
 comp_c4_l2cache = sst.Component("c4.l2cache", "memHierarchy.Cache")
@@ -237,7 +228,6 @@ comp_c4_l2cache.addParams({
     "coherence_protocol" : MSIMESI,
     "associativity" : L2assoc,
     "cache_type" : "noninclusive",
-    "lower_is_noninclusive" : 1,
     "cache_line_size" : "64",
     "debug_level" : L2debug_lev,
     "cache_size" : L2cachesz,
@@ -256,7 +246,6 @@ comp_c5_l1Dcache.addParams({
       "debug_level" : """6""",
       "L1" : """1""",
       "cache_size" : L1cachesz,
-      "lower_is_noninclusive" : 1,
       "prefetcher" : Pref1
 })
 comp_c5_l2cache = sst.Component("c5.l2cache", "memHierarchy.Cache")
@@ -268,7 +257,6 @@ comp_c5_l2cache.addParams({
     "coherence_protocol" : MSIMESI,
     "associativity" : L2assoc,
     "cache_type" : "noninclusive",
-    "lower_is_noninclusive" : 1,
     "cache_line_size" : "64",
     "debug_level" : L2debug_lev,
     "cache_size" : L2cachesz,
@@ -287,7 +275,6 @@ comp_c6_l1Dcache.addParams({
       "debug_level" : """6""",
       "L1" : """1""",
       "cache_size" : L1cachesz,
-      "lower_is_noninclusive" : 1,
       "prefetcher" : Pref1
 })
 comp_c6_l2cache = sst.Component("c6.l2cache", "memHierarchy.Cache")
@@ -299,7 +286,6 @@ comp_c6_l2cache.addParams({
     "coherence_protocol" : MSIMESI,
     "associativity" : L2assoc,
     "cache_type" : "noninclusive",
-    "lower_is_noninclusive" : 1,
     "cache_line_size" : "64",
     "debug_level" : L2debug_lev,
     "cache_size" : L2cachesz,
@@ -318,7 +304,6 @@ comp_c7_l1Dcache.addParams({
       "debug_level" : """6""",
       "L1" : """1""",
       "cache_size" : L1cachesz,
-      "lower_is_noninclusive" : 1,
       "prefetcher" : Pref1
 })
 comp_c7_l2cache = sst.Component("c7.l2cache", "memHierarchy.Cache")
@@ -330,7 +315,6 @@ comp_c7_l2cache.addParams({
     "coherence_protocol" : MSIMESI,
     "associativity" : L2assoc,
     "cache_type" : "noninclusive",
-    "lower_is_noninclusive" : 1,
     "cache_line_size" : "64",
     "debug_level" : L2debug_lev,
     "cache_size" : L2cachesz,
@@ -423,7 +407,7 @@ comp_memory0 = sst.Component("memory0", "memHierarchy.MemController")
 comp_memory0.addParams({
       "debug" : """0""",
       "coherence_protocol" : MSIMESI,
-      "backend.mem_size" : """512""",
+      "backend.mem_size" : """512MiB""",
       "clock" : """1.6GHz""",
       "access_time" : """25 ns""",
       "rangeStart" : """0"""
@@ -447,7 +431,7 @@ comp_memory1 = sst.Component("memory1", "memHierarchy.MemController")
 comp_memory1.addParams({
       "debug" : """0""",
       "coherence_protocol" : MSIMESI,
-      "backend.mem_size" : """512""",
+      "backend.mem_size" : """512MiB""",
       "clock" : """1.6GHz""",
       "access_time" : """25 ns""",
       "rangeStart" : """0"""
