@@ -6,8 +6,8 @@ ReverseSingleStreamGenerator[ReverseSingleStreamGenerator:39]: Stride:          
  cpu.write_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  cpu.split_read_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  cpu.split_write_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- cpu.cycles_with_issue : Accumulator : Sum.u64 = 8222; SumSQ.u64 = 8222; Count.u64 = 8222; 
- cpu.cycles_no_issue : Accumulator : Sum.u64 = 8439; SumSQ.u64 = 8439; Count.u64 = 8439; 
+ cpu.cycles_with_issue : Accumulator : Sum.u64 = 8192; SumSQ.u64 = 8192; Count.u64 = 8192; 
+ cpu.cycles_no_issue : Accumulator : Sum.u64 = 8469; SumSQ.u64 = 8469; Count.u64 = 8469; 
  cpu.total_bytes_read : Accumulator : Sum.u64 = 65536; SumSQ.u64 = 524288; Count.u64 = 8192; 
  cpu.total_bytes_write : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  cpu.req_latency : Accumulator : Sum.u64 = 124920; SumSQ.u64 = 1906520; Count.u64 = 8192; 
@@ -204,7 +204,7 @@ ReverseSingleStreamGenerator[ReverseSingleStreamGenerator:39]: Stride:          
  l1cache.eventSent_GetSResp : Accumulator : Sum.u64 = 8192; SumSQ.u64 = 8192; Count.u64 = 8192; 
  l1cache.eventSent_GetXResp : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.eventSent_PutS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.eventSent_PutE : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ l1cache.eventSent_PutE : Accumulator : Sum.u64 = 8287; SumSQ.u64 = 8287; Count.u64 = 8287; 
  l1cache.eventSent_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.eventSent_Inv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.eventSent_Fetch : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
