@@ -1084,8 +1084,12 @@ getconfig() {
 # Function: linuxSetBoostMPI
 # Description:
 #   Purpose: Performs selection and loading of Bost and MPI modules
-#            for MacOS
+#            for Linux
 #   Input:
+#      $1 - Bamboo Project
+#      $2 - mpi request
+#      $3 - boost  request
+#      $4   compiler (optional)
 #   Output:
 #   Return value:
 linuxSetBoostMPI() {
