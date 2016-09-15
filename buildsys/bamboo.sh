@@ -1472,8 +1472,17 @@ darwinSetBoostMPI() {
 
 ################################################################################
             10.11) # El Capitan
-                   ldModulesYosemiteClang clang-700.1.76 $2 $3   #  Xcode 7.1
-                   ;;
+                case $compiler in
+                    clang-700.1.76)
+                        ldModulesYosemiteClang clang-700.1.76 $2 $3   #  Xcode 7.1
+                        ;; 
+
+                    clang-800.0.38)
+                        ldModulesYosemiteClang clang-800.0.38 $2 $3   #  Xcode 8.0
+                        ;;
+                esac
+                ;;
+
 ################################################################################
 
                 *) # unknown
