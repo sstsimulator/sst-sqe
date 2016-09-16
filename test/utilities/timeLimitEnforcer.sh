@@ -35,32 +35,67 @@ echo ' '
 date
 echo ' '
 
-KILL_PID=`ps -ef | grep 'sst ' | grep $PPID | awk '{ print $2 }'`
 
-if [ -z $KILL_PID ] ; then
-    echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
-    echo "No corresponding child named \"sst\" "
-    ps -f | grep $PPID
-    echo ' '
-    #   Is there a Python running from the Parent PID
-    echo " Look for a child named \"python\""
-    PY_PID=`ps -ef | grep 'python ' | grep $PPID | awk '{ print $2 }'`
-    if [ -z $PY_PID ] ; then
-        echo "No corresponding child named \"python\" "
-        echo ' '
-        #   Is there a Valgrind running from the Parent PID
-        echo " Look for a child named \"valgrind\""
-        VG_PID=`ps -ef | grep 'valgrind ' | grep $PPID | awk '{ print $2 }'`
-        if [ -z $VG_PID ] ; then
-            echo "No corresponding child named \"valgrind\" "
-            echo ' '
-        else
-            KILL_PID=$VG_PID
-        fi
-    else
-        KILL_PID=$PY_PID
-    fi
+
+findChild()
+{
+   SPID=$1
+echo $LINENO   spid= $SPID
+   
+   KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
+   
+   if [ -z $KILL_PID ] ; then
+       echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
+       echo "No corresponding child named \"sst\" "
+       ps -f | grep $SPID
+       echo ' '
+       #   Is there a Python running from the Parent PID
+       echo " Look for a child named \"python\""
+       PY_PID=`ps -ef | grep 'python ' | grep $SPID | awk '{ print $2 }'`
+       if [ -z $PY_PID ] ; then
+           echo "No corresponding child named \"python\" "
+           echo ' '
+           #   Is there a Valgrind running from the Parent PID
+           echo " Look for a child named \"valgrind\""
+           VG_PID=`ps -ef | grep 'valgrind ' | grep $SPID | awk '{ print $2 }'`
+           if [ -z $VG_PID ] ; then
+               echo "No corresponding child named \"valgrind\" "
+               echo ' '
+           else
+               KILL_PID=$VG_PID
+           fi
+       else
+           KILL_PID=$PY_PID
+       fi
+   fi
+}   
+
+findChild $PPID
+
+
+   if [ -z $KILL_PID ] ; then
+      ps -ef > full_ps__
+while read -u 3 _who _task _paren _rest
+do
+   if [ $_paren != $PPID ] ; then
+      continue
+   fi 
+   if [ $_task == $MY_PID ] ; then
+      continue
+   fi 
+echo $LINENO   $_who $_task $_paren
+
+   echo "Sibling is $_task"
+   findChild $_task
+   break
+done 3< full_ps__
+
+echo $LINENO   $_who $_task $_paren
+echo $LINENO   $_who $_task $_paren
+echo $LINENO   $_who $_task $_paren
 fi
+
+echo Kill pid is $KILL_PID
 
 KILL_PARENT=0
 if [ -z $KILL_PID ] ; then
