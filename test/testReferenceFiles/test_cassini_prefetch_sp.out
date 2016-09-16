@@ -188,7 +188,7 @@ Completed @ 10593069 ns
  l1cache.eventSent_GetSResp : Accumulator : Sum.u64 = 89883; SumSQ.u64 = 89883; Count.u64 = 89883; 
  l1cache.eventSent_GetXResp : Accumulator : Sum.u64 = 10117; SumSQ.u64 = 10117; Count.u64 = 10117; 
  l1cache.eventSent_PutS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.eventSent_PutE : Accumulator : Sum.u64 = 5240; SumSQ.u64 = 5240; Count.u64 = 5240; 
+ l1cache.eventSent_PutE : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.eventSent_PutM : Accumulator : Sum.u64 = 7133; SumSQ.u64 = 7133; Count.u64 = 7133; 
  l1cache.eventSent_Inv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.eventSent_Fetch : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
