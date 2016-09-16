@@ -1,3 +1,5 @@
+l2_0: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l2_1: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
 8483 0 OUTPUT> Greetings from core 0 of 2
 11579 1 OUTPUT> Greetings from core 1 of 2
 15779 0 OUTPUT> 6
