@@ -34,13 +34,12 @@ echo ' '
 
 date
 echo ' '
-
-
-
+#
+#          Begin findChild() subroutine
+#
 findChild()
 {
    SPID=$1
-echo $LINENO   spid= $SPID
    
    KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
    
@@ -69,30 +68,31 @@ echo $LINENO   spid= $SPID
        fi
    fi
 }   
+#
+#          End findChild() subroutine
+#
 
 findChild $PPID
 
 
-   if [ -z $KILL_PID ] ; then
-      ps -ef > full_ps__
-while read -u 3 _who _task _paren _rest
-do
-   if [ $_paren != $PPID ] ; then
-      continue
-   fi 
-   if [ $_task == $MY_PID ] ; then
-      continue
-   fi 
-echo $LINENO   $_who $_task $_paren
-
-   echo "Sibling is $_task"
-   findChild $_task
-   break
-done 3< full_ps__
-
-echo $LINENO   $_who $_task $_paren
-echo $LINENO   $_who $_task $_paren
-echo $LINENO   $_who $_task $_paren
+if [ -z $KILL_PID ] ; then
+#
+#          Look for child of my siblings
+#
+   ps -ef > full_ps__
+    while read -u 3 _who _task _paren _rest
+    do
+       if [ $_paren != $PPID ] ; then
+          continue
+       fi 
+       if [ $_task == $MY_PID ] ; then
+          continue
+       fi 
+    
+       echo "Sibling is $_task"
+       findChild $_task
+       break
+    done 3< full_ps__
 fi
 
 echo Kill pid is $KILL_PID
