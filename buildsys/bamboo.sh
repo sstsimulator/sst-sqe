@@ -862,7 +862,7 @@ getconfig() {
             # sstmainline_config
             #     This option used for configuring SST with MPI disabled
             #-----------------------------------------------------------------
-            if [ ${MPIHOME:+isSet} == isSet ] ; then
+            if [[ ${MPIHOME:+isSet} == isSet ]] ; then
                 echo ' ' ; echo " Test is flawed!  MPI module is loaded!" ; echo ' '
                 exit 1
             fi
