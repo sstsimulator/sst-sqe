@@ -1480,16 +1480,22 @@ darwinSetBoostMPI() {
                     clang-800.0.38)
                         ldModulesYosemiteClang clang-800.0.38 $2 $3   #  Xcode 8.0
                         ;;
+
+                    *) # unknown
+                        echo "bamboo.sh: Unknown Clang version. $compiler"
+                        echo ' '
+                        exit
+                        ;;
                 esac
                 ;;
 
 ################################################################################
 
-                *) # unknown
-                    echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
-                    echo ' '
-                    exit
-                    ;;
+            *) # unknown
+                 echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
+                 echo ' '
+                 exit
+                 ;;
         esac
 
         echo "bamboo.sh: BOOST_HOME=${BOOST_HOME}"
