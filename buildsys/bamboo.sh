@@ -1364,7 +1364,9 @@ ldModulesYosemiteClang() {
 darwinSetBoostMPI() {
     # Obtain Mac OS version (works only on MacOS!!!)
     macosVersionFull=`sw_vers -productVersion`
+echo " DEBUG ******************* macosVersionFull= $macosVersionFull "
     macosVersion=${macosVersionFull%.*}
+echo " DEBUG ******************* macosVersion= $macosVersion "
 
     if [[ $macosVersion = "10.8" && $compiler = "clang-503.0.40" ]]
     then
