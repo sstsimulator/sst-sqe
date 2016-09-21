@@ -1472,22 +1472,9 @@ darwinSetBoostMPI() {
 
 ################################################################################
             10.11) # El Capitan
-                case $compiler in
-                    clang-700.1.76)
-                        ldModulesYosemiteClang clang-700.1.76 $2 $3   #  Xcode 7.1
-                        ;; 
-
-                    clang-800.0.38)
-                        ldModulesYosemiteClang clang-800.0.38 $2 $3   #  Xcode 8.0
-                        ;;
-
-                    *) # unknown
-                        echo "bamboo.sh: Unknown Clang version. $compiler"
-                        echo ' '
-                        exit
-                        ;;
-                esac
-                ;;
+echo    "This is El Capitan, Compiler is $compiler"
+                   ldModulesYosemiteClang $compiler  $2 $3   # any Xcode 
+                   ;;
 
 ################################################################################
 
