@@ -1477,6 +1477,12 @@ echo    "This is El Capitan, Compiler is $compiler"
                    ;;
 
 ################################################################################
+            10.12) # Sierra
+echo    "This is Sierra, Compiler is $compiler"
+                   ldModulesYosemiteClang $compiler  $2 $3   # any Xcode 
+                   ;;
+
+################################################################################
 
             *) # unknown
                  echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
