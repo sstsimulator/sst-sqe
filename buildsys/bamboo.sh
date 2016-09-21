@@ -350,6 +350,8 @@ echo " #####################################################"
    echo "parameter \$2 is $2  "
 echo " #####################################################"
 
+pwd
+chmod -R 555 sst-elements sst-core
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ||
        [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
     #    This subroutine is in test/include/testDefinitions.sh
