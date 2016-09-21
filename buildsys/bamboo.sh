@@ -1365,7 +1365,8 @@ darwinSetBoostMPI() {
     # Obtain Mac OS version (works only on MacOS!!!)
     macosVersionFull=`sw_vers -productVersion`
 echo " DEBUG ******************* macosVersionFull= $macosVersionFull "
-    macosVersion=${macosVersionFull%.*}
+###    macosVersion=${macosVersionFull%.*}
+    macosVersion=`echo ${macosVersionFull} | awk -F. '{print $1 "." $2 }'`
 echo " DEBUG ******************* macosVersion= $macosVersion "
 
     if [[ $macosVersion = "10.8" && $compiler = "clang-503.0.40" ]]
