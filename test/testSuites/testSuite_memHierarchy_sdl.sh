@@ -137,7 +137,7 @@ Tol=$2    ##  curTick tolerance
 
     grep -v ^cpu.*: $tmpFile | grep -v 'not aligned to the request size' > $outFile
     RemoveComponentWarning
-    pushd $(SSTTESTTEMPFILES}
+    pushd ${SSTTESTTEMPFILES}
 #          Append errFile to outFile   w/o  Not Aligned messages
     diff -b $referenceFile $outFile > _raw_diff
     if [ $? == 0 ] ; then
