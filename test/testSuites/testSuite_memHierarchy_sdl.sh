@@ -184,7 +184,10 @@ Tol=$2    ##  curTick tolerance
                   echo "Examine up to twenty lines of sorted difference"
                   cat diff_sorted | sed 20q
               fi          
+           else
+              fail "Output does not match Reference (w/o DRAMSim)"
            fi              ##    --- end of code for Dramsim case ----
+
         fi
     fi
     popd
