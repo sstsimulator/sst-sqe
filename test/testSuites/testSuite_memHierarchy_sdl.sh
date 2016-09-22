@@ -137,6 +137,7 @@ Tol=$2    ##  curTick tolerance
 
     grep -v ^cpu.*: $tmpFile | grep -v 'not aligned to the request size' > $outFile
     RemoveComponentWarning
+    pushd $(SSTTESTTEMPFILES}
 #          Append errFile to outFile   w/o  Not Aligned messages
     diff -b $referenceFile $outFile > _raw_diff
     if [ $? == 0 ] ; then
@@ -186,6 +187,7 @@ Tol=$2    ##  curTick tolerance
            fi              ##    --- end of code for Dramsim case ----
         fi
     fi
+    popd
     grep "Simulation is complete, simulated time:" $tmpFile
     if [ $? != 0 ] ; then 
         echo "Completion test message not found"

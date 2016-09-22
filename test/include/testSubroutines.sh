@@ -236,9 +236,10 @@ myWC() {
      echo ' '
 }
 
+SSTTESTTEMP=${SST_TEST_ROOT}/testTempFiles
 preFail() {
 
-cat > $SST_TEST_ROOT/prefail.in << .EOF.
+cat > $SSTTESTTEMP/prefail.in << .EOF.
 test_${L_SUITENAME}_Prefail() {
 if [ "$2" != "skip" ] ; then
     fail "$1"
@@ -252,9 +253,9 @@ fi
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 cd $SST_ROOT
-(. ${SHUNIT2_SRC}/shunit2 $SST_TEST_ROOT/prefail.in)
+(. ${SHUNIT2_SRC}/shunit2 $SSTTESTTEMP/prefail.in)
 echo ' ' ; echo "Returned from shunit2" ; echo ' '
-rm $SST_TEST_ROOT/prefail.in
+rm $SSTTESTTEMP/prefail.in
 exit
 }
 
@@ -265,14 +266,16 @@ exit
 #       (if don't match write the wc to stdout.)
 #   -----------------------------------------------
 compare_sorted() {
-   sort -o xo $1
-   sort -o xr $2
-   diff -b xo xr > diff_sorted
+   xo=${SSTTESTTEMP}/xo
+   xr=${SSTTESTTEMP}/xr
+   sort -o $xo $1
+   sort -o $xr $2
+   diff -b $xo $xr > ${SSTTESTTEMP}/diff_sorted
    if [ $? == 0 ] ; then
-      rm xo xr
+      rm $xo $xr
       return 0
    fi
-   wc diff_sorted
+   wc ${SSTTESTTEMP}/diff_sorted
    return 1
 }
 
