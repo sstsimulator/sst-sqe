@@ -238,7 +238,7 @@ myWC() {
 
 preFail() {
 
-cat > prefail.in << .EOF.
+cat > $SST_TEST_ROOT/prefail.in << .EOF.
 test_${L_SUITENAME}_Prefail() {
 if [ "$2" != "skip" ] ; then
     fail "$1"
@@ -251,9 +251,10 @@ fi
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
-(. ${SHUNIT2_SRC}/shunit2 prefail.in)
+cd $SST_ROOT
+(. ${SHUNIT2_SRC}/shunit2 $SST_TEST_ROOT/prefail.in)
 echo ' ' ; echo "Returned from shunit2" ; echo ' '
-rm prefail.in
+rm $SST_TEST_ROOT/prefail.in
 exit
 }
 
