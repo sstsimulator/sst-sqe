@@ -1364,7 +1364,10 @@ ldModulesYosemiteClang() {
 darwinSetBoostMPI() {
     # Obtain Mac OS version (works only on MacOS!!!)
     macosVersionFull=`sw_vers -productVersion`
-    macosVersion=${macosVersionFull%.*}
+echo "  ******************* macosVersionFull= $macosVersionFull "
+###    macosVersion=${macosVersionFull%.*}
+    macosVersion=`echo ${macosVersionFull} | awk -F. '{print $1 "." $2 }'`
+echo "  ******************* macosVersion= $macosVersion "
 
     if [[ $macosVersion = "10.8" && $compiler = "clang-503.0.40" ]]
     then
@@ -1472,22 +1475,15 @@ darwinSetBoostMPI() {
 
 ################################################################################
             10.11) # El Capitan
-                case $compiler in
-                    clang-700.1.76)
-                        ldModulesYosemiteClang clang-700.1.76 $2 $3   #  Xcode 7.1
-                        ;; 
+echo    "This is El Capitan, Compiler is $compiler"
+                   ldModulesYosemiteClang $compiler  $2 $3   # any Xcode 
+                   ;;
 
-                    clang-800.0.38)
-                        ldModulesYosemiteClang clang-800.0.38 $2 $3   #  Xcode 8.0
-                        ;;
-
-                    *) # unknown
-                        echo "bamboo.sh: Unknown Clang version. $compiler"
-                        echo ' '
-                        exit
-                        ;;
-                esac
-                ;;
+################################################################################
+            10.12) # Sierra
+echo    "This is Sierra, Compiler is $compiler"
+                   ldModulesYosemiteClang $compiler  $2 $3   # any Xcode 
+                   ;;
 
 ################################################################################
 
