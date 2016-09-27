@@ -1,3 +1,4 @@
+l3cache: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 32 cycles.
 TrivialCPU: Test Completed Successfuly
 TrivialCPU: Test Completed Successfuly
 TrivialCPU: Test Completed Successfuly
