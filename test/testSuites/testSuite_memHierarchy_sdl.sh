@@ -153,6 +153,9 @@ Tol=$2    ##  curTick tolerance
            echo " Sorted match with Reference File"
            rm _raw_diff
         else
+echo "Preliminary ---------------"
+cat ${SSTTESTTEMPFILES}/diff_sorted
+echo " ----------------- "
            echo "`diff $referenceFile $outFile | wc` $memH_case" >> ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
    #                             --- Special case with-DramSim --- 
            if [ $usingDramSim == 0 ] ; then    ## usingDramSim is TRUE
