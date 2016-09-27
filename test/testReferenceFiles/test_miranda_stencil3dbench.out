@@ -1,21 +1,3 @@
-0:cpu:RequestGenCPU[RequestGenCPU:36]: Configured CPU to allow 16 maximum Load requests to be memory to be outstanding.
-0:cpu:RequestGenCPU[RequestGenCPU:38]: Configured CPU to allow 16 maximum Store requests to be memory to be outstanding.
-0:cpu:RequestGenCPU[RequestGenCPU:42]: Memory interface to be loaded is: memHierarchy.memInterface
-0:cpu:RequestGenCPU[RequestGenCPU:53]: Loaded memory interface successfully.
-0:cpu:RequestGenCPU[RequestGenCPU:56]: Initializing memory interface...
-0:cpu:RequestGenCPU[RequestGenCPU:61]: Loaded memory initialize routine returned successfully.
-0:cpu:RequestGenCPU[RequestGenCPU:69]: Loaded memory interface successfully.
-0:cpu:RequestGenCPU[RequestGenCPU:76]: CPU clock configured for 2GHz
-0:cpu:RequestGenCPU[RequestGenCPU:82]: Request generator to be loaded is: miranda.Stencil3DBenchGenerator
-0:cpu:RequestGenCPU[RequestGenCPU:88]: Generator loaded successfully.
-0:cpu:RequestGenCPU[RequestGenCPU:127]: Miranda CPU Configuration:
-0:cpu:RequestGenCPU[RequestGenCPU:128]: - Max requests per cycle:         2
-0:cpu:RequestGenCPU[RequestGenCPU:129]: - Max reorder lookups             16
-0:cpu:RequestGenCPU[RequestGenCPU:130]: - Clock:                          2GHz
-0:cpu:RequestGenCPU[RequestGenCPU:131]: - Cache line size:                64 bytes
-0:cpu:RequestGenCPU[RequestGenCPU:132]: - Max Load requests pending:      16
-0:cpu:RequestGenCPU[RequestGenCPU:133]: - Max Store requests pending:     16
-0:cpu:RequestGenCPU[RequestGenCPU:134]: Configuration completed.
  cpu.read_reqs : Accumulator : Sum.u64 = 108864; SumSQ.u64 = 108864; Count.u64 = 108864; 
  cpu.write_reqs : Accumulator : Sum.u64 = 4032; SumSQ.u64 = 4032; Count.u64 = 4032; 
  cpu.split_read_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 

@@ -88,6 +88,10 @@ miranda_case=$1
              RemoveComponentWarning
              return
         fi
+        # Skip the Verbose configuration information (contains src line no.)
+        sed -i'.y' '/Req.*]: /d' $outFile
+        rm -f $outFile.y
+
         RemoveComponentWarning
         myWC $referenceFile $outFile
         diff -b $referenceFile $outFile  > raw_diff
