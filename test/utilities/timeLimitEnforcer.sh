@@ -32,8 +32,16 @@ echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
 ps -f -p ${1},${PPID}
 echo ' '
 
+ps -f | grep ompsievetest
 date
 echo ' '
+###                  memHS debug
+echo " ----------  memHS debug Info"
+ps -ef | grep ompsievetest
+echo "        ---------------    "
+ps -f
+echo "-------------------------------------------------------"
+###       END        memHS debug
 #
 #          Begin findChild() subroutine
 #
