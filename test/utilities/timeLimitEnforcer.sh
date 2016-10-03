@@ -142,7 +142,7 @@ fi
 ps -f -p $KILL_PID | grep $KILL_PID
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
-echo $LINENO ; ps -f -p $OPP_PID 
+echo $LINENO ; ps -f -p $OMP_PID 
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
     echo  "After \"kill -9\""
@@ -150,18 +150,18 @@ echo $LINENO ; ps -f -p $OPP_PID
     ps -f -p $KILL_PID | grep $KILL_PID
     if [ $? == 0 ] ; then
         echo " It's still there!  ($KILL_PID)"
-echo $LINENO ; ps -f -p $OPP_PID 
+echo $LINENO ; ps -f -p $OMP_PID 
         ps -f -U $USER
         echo "   Time Limit Processing FAILED "
         echo "                   KILL my parent" 
         kill -9 $PPID
         ps -f -U $USER
     fi
-    kill -9 $OPP_PID
+    kill -9 $OMP_PID
     ps -f -p $KILL_PID | grep $KILL_PID
     if [ $? == 0 ] ; then
         echo " It's still there!  ($KILL_PID)"
-echo $LINENO ; ps -f -p $OPP_PID 
+echo $LINENO ; ps -f -p $OMP_PID 
         ps -f -U $USER
         echo "   Time Limit Processing FAILED "
         echo "                   KILL my parent" 
