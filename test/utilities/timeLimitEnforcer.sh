@@ -32,8 +32,18 @@ echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
 ps -f -p ${1},${PPID}
 echo ' '
 
+ps -f | grep ompsievetest
+OMP_PID=`ps -f | grep ompsievetest | awk '{print $2}'`
+echo "OMP_PID = $OMP_PID"
 date
 echo ' '
+###                  memHS debug
+echo " ----------  memHS debug Info"
+ps -ef | grep ompsievetest
+echo "        ---------------    "
+ps -f
+echo "-------------------------------------------------------"
+###       END        memHS debug
 #
 #          Begin findChild() subroutine
 #
@@ -132,6 +142,30 @@ fi
 ps -f -p $KILL_PID | grep $KILL_PID
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
+echo $LINENO ; ps -f -p $OMP_PID 
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
+    echo  "After \"kill -9\""
+    date
+    ps -f -p $KILL_PID | grep $KILL_PID
+    if [ $? == 0 ] ; then
+        echo " It's still there!  ($KILL_PID)"
+echo $LINENO ; ps -f -p $OMP_PID 
+        ps -f -U $USER
+        echo "   Time Limit Processing FAILED "
+        echo "                   KILL my parent" 
+        kill -9 $PPID
+        ps -f -U $USER
+    fi
+    kill -9 $OMP_PID
+    ps -f -p $KILL_PID | grep $KILL_PID
+    if [ $? == 0 ] ; then
+        echo " It's still there!  ($KILL_PID)"
+echo $LINENO ; ps -f -p $OMP_PID 
+        ps -f -U $USER
+        echo "   Time Limit Processing FAILED "
+        echo "                   KILL my parent" 
+        kill -9 $PPID
+        ps -f -U $USER
+    fi
 fi
