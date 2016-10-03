@@ -134,4 +134,16 @@ if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
+    echo  "After \"kill -9\""
+    date
+    ps -f -p $KILL_PID | grep $KILL_PID
+    if [ $? == 0 ] ; then
+        echo " It's still there!  ($KILL_PID)"
+        ps -f -U $USER
+        echo "   Time Limit Processing FAILED "
+        echo "                   KILL my parent" 
+        kill -9 $PPID
+        ps -f -U $USER
+        exit 
+    fi
 fi
