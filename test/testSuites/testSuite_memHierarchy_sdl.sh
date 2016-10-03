@@ -187,9 +187,18 @@ echo " ----------------- "
                   echo "Examine up to twenty lines of sorted difference"
                   cat diff_sorted | sed 20q
               fi          
-           else
-              fail "Output does not match Reference (w/o DRAMSim)"
-           fi              ##    --- end of code for Dramsim case ----
+           else               ##    --- end of code for Dramsim case ----
+              echo "            wc the diff"
+              diff ${outFile} ${referenceFile} | wc; echo ' '
+              echo " Remove the histogram"
+              ref=`grep -v '\[.*\]' ${referenceFile} | wc | awk '{print $1, $2, $3}'`; 
+              new=`grep -v '\[.*\]' ${outFile}       | wc | awk '{print $1, $2, $3}'`;
+              if [ "$ref" == "$new" ] ; then
+                  echo " Word / Line count / char count  matches"
+              else 
+                  fail "Output does not match Reference "
+              fi
+	   fi   
 
         fi
     fi
