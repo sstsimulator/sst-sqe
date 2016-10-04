@@ -32,6 +32,13 @@ echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
 ps -f -p ${1},${PPID}
 echo ' '
 
+ps -f | grep ompsievetest
+OMP_PID=`ps -f | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
+echo "OMP_PID = $OMP_PID"
+if [ ! -z $OMP_PID ] ; then
+    kill -9 $OMP_PID
+fi
+
 date
 echo ' '
 #
