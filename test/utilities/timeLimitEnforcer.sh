@@ -164,4 +164,6 @@ if [ $? == 0 ] ; then
 echo " $LINENO                 ########################## $KILL_PID kill "
     kill -9 $KILL_PID
 echo " $LINENO                 ########################## executed      "
+ps -f -p $KILL_PID | grep $KILL_PID
+echo " $LINENO                 ##########################       "
 fi
