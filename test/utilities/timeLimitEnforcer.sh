@@ -33,7 +33,6 @@ ps -f -p ${1},${PPID}
 echo ' '
 
 ps -f | grep ompsievetest
-echo "############################################"
 echo " this might better go in the Suite"
 ps -f | grep ompsievetest | grep -v -e grep > omps_list
 wc omps_list
@@ -44,17 +43,11 @@ do
         kill -9 $_anOMP
     fi
 done 3<omps_list
-echo "############################################"
-
-ps -f | grep ompsievetest | grep -v -e grep
-echo "############################################ $LINENO"
-ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep 
-echo "############################################"
 
 OMP_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
 echo "OMP_PID = $OMP_PID"
 if [ ! -z $OMP_PID ] ; then
-echo " $LINENO                 ########################## executed      "
+echo " Line $LINENO   -- kill ompsievetest "
     kill -9 $OMP_PID
 fi
 
@@ -152,18 +145,13 @@ else
         echo "     I am $MY_PID,   my parent was $PPID" 
         ps -f -U $USER
         echo " Try a \"kill -9\"  "
-echo " $LINENO                 ########################## $KILL_PID kill "
         kill -9 $KILL_PID
-echo " $LINENO                 ########################## executed      "
     fi
 fi
 ps -f -p $KILL_PID | grep $KILL_PID
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
     echo " Try a \"kill -9\" "
-echo " $LINENO                 ########################## $KILL_PID kill "
     kill -9 $KILL_PID
-echo " $LINENO                 ########################## executed      "
 ps -f -p $KILL_PID | grep $KILL_PID
-echo " $LINENO                 ##########################       "
 fi
