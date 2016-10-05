@@ -52,6 +52,7 @@ echo "############################################"
 OMP_PID=`ps -f | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
 echo "OMP_PID = $OMP_PID"
 if [ ! -z $OMP_PID ] ; then
+echo " $LINENO                 ########################## executed      "
     kill -9 $OMP_PID
 fi
 
@@ -149,12 +150,16 @@ else
         echo "     I am $MY_PID,   my parent was $PPID" 
         ps -f -U $USER
         echo " Try a \"kill -9\"  "
+echo " $LINENO                 ########################## $KILL_PID kill "
         kill -9 $KILL_PID
+echo " $LINENO                 ########################## executed      "
     fi
 fi
 ps -f -p $KILL_PID | grep $KILL_PID
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
     echo " Try a \"kill -9\" "
+echo " $LINENO                 ########################## $KILL_PID kill "
     kill -9 $KILL_PID
+echo " $LINENO                 ########################## executed      "
 fi
