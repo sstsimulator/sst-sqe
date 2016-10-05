@@ -48,6 +48,8 @@ echo "############################################"
 
 ps -f | grep ompsievetest | grep -v -e grep
 echo "############################################"
+ps -f | cut -d\  -f -8 | grep ompsievetest | grep -v -e grep 
+echo "############################################"
 
 OMP_PID=`ps -f | cut -d\  -f -8 | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
 echo "OMP_PID = $OMP_PID"
