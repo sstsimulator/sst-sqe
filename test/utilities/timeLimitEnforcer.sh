@@ -47,7 +47,7 @@ done 3<omps_list
 echo "############################################"
 
 ps -f | grep ompsievetest | grep -v -e grep
-echo "############################################"
+echo "############################################ $LINENO"
 ps -f | cut -d\  -f -8 | grep ompsievetest | grep -v -e grep 
 echo "############################################"
 
