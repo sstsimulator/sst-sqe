@@ -48,7 +48,7 @@ echo "############################################"
 
 ps -f | grep ompsievetest | grep -v -e grep
 echo "############################################ $LINENO"
-ps -f | cut -d\  -f -8 | grep ompsievetest | grep -v -e grep 
+ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep 
 echo "############################################"
 
 OMP_PID=`ps -f | cut -d\  -f -8 | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
