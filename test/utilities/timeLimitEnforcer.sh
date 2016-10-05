@@ -46,6 +46,9 @@ do
 done 3<omps_list
 echo "############################################"
 
+ps -f | grep ompsievetest | grep -v -e grep
+echo "############################################"
+
 OMP_PID=`ps -f | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
 echo "OMP_PID = $OMP_PID"
 if [ ! -z $OMP_PID ] ; then
