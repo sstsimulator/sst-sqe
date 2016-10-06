@@ -75,6 +75,11 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
     pushd examples/stream
 
+    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+       echo "  ### MacOS remove \"-fopenMP\" from the make "
+       sed -i'.x' 's/-fopenmp//' Makefile
+    fi
+
     make 
     retval=$?
     echo "    Make in examples/stream returned \"ok\" "
