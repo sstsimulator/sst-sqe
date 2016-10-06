@@ -442,6 +442,8 @@ echo " #####################################################"
         # We currently dont want to run any other tests
         return
     fi    
+        ${SST_TEST_SUITES}/testSuite_Ariel.sh
+        return
 
     if [[ $1 == *sstmainline_config_valgrind* ]] ; then
         
