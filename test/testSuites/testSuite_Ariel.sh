@@ -74,6 +74,11 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     cd $SST_ROOT/sst-elements/src/sst/elements/ariel/frontend/simple
 
     pushd examples/stream
+echo "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"
+pwd
+ls
+     sed -i'.x' 's/-fopenmp//' Makefile
+echo "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"
 
     make 
     retval=$?
