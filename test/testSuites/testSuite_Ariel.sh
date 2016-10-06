@@ -74,11 +74,11 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     cd $SST_ROOT/sst-elements/src/sst/elements/ariel/frontend/simple
 
     pushd examples/stream
-echo "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"
-pwd
-ls
-     sed -i'.x' 's/-fopenmp//' Makefile
-echo "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"
+
+    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+       echo "  ### MacOS remove \"-fopenMP\" from the make "
+       sed -i'.x' 's/-fopenmp//' Makefile
+    fi
 
     make 
     retval=$?
