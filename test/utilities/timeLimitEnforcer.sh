@@ -32,6 +32,25 @@ echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
 ps -f -p ${1},${PPID}
 echo ' '
 
+ps -f | grep ompsievetest
+echo " this might better go in the Suite"
+ps -f | grep ompsievetest | grep -v -e grep > omps_list
+wc omps_list
+while read -u 3 _who _anOMP _own _rest
+do
+    if [ $_own == 1 ] ; then
+        echo " Attempt to remove $_anOMP "
+        kill -9 $_anOMP
+    fi
+done 3<omps_list
+
+OMP_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
+echo "OMP_PID = $OMP_PID"
+if [ ! -z $OMP_PID ] ; then
+echo " Line $LINENO   -- kill ompsievetest "
+    kill -9 $OMP_PID
+fi
+
 date
 echo ' '
 #
@@ -134,4 +153,5 @@ if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
+ps -f -p $KILL_PID | grep $KILL_PID
 fi
