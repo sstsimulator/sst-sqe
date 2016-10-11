@@ -34,7 +34,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 #===============================================================================
 #                     Set up
-echo "############################################## $LINENO "
 
     ls -d $SST_TEST_SUITES/testCramSim 
     if [ $? == 0 ] ; then
@@ -45,43 +44,25 @@ pushd $SST_TEST_SUITES/testCramSim
 pwd
 ls
 
-echo "############################################## $LINENO "
-### ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg .
+ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg .
 ls -l $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg
 if [ $? != 0 ] ; then
    ls $SST_ROOT/sst-elements/src/sst/elements/CramSim
-echo "############################################## $LINENO "
    exit
 fi
-cp $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg .
 ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/tests tests
-rm tests/*trc
+rm tests/*trc       ### this is left over from running in elements tree
 echo "###########################DDR4############### $LINENO "
 ls -l ddr4_verimem.cfg
 if [ $? != 0 ] ; then
 echo "############################################## $LINENO "
    exit
 fi
-echo "###########################DDR4############### $LINENO "
 ls -l tests
 ls
 echo "############################################## $LINENO "
 cd tests
 echo "############################################## $LINENO "
-pwd
-### ls
-### wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim-trace_verimem_1_R.trc.gz 
-### echo "####### Here is the PWD ############### $LINENO "
-### pwd
-### echo "####### Here is the zipped file ############### $LINENO "
-### ls -l *trc*
-### echo "############################################## $LINENO "
-### gunzip sst-CramSim-trace_verimem_1_R.trc.gz
-### echo "####### now it is unzipped  ############### $LINENO "
-### ls -l *trc*
-### echo "############################################## $LINENO "
-### cd .. 
-### echo "############################################## $LINENO "
 pwd
 ls
 
@@ -94,8 +75,6 @@ ls
 CramSim_Template() {
 trc=$1
 Tol=$2    ##  curTick tolerance
-
-echo "############################################## $LINENO "
 
 pushd $SST_TEST_SUITES/testCramSim
 
@@ -161,7 +140,6 @@ echo "############################################## $LINENO "
              echo " 20 line tail of \$outFile"
              tail -20 $outFile
              echo "    --------------------"
-echo "should return to SHUNIT2 at his point and be done"
              return
         fi
         wc ${outFile} ${referenceFile} | awk -F/ '{print $1, $(NF-1) "/" $NF}'
@@ -224,15 +202,13 @@ echo "==================================================Ready to EXECUTE =======
 #     For shunit2, the output files must match the reference file *exactly*,
 #     requiring that the command lines for creating both the output
 #     file and the reference file be exactly the same.
-# Exception for CramSim tests:
+# Exception for tests   (History note not CramSim):
 #     A fuzzy compare has been inserted here.   The only thing that varies is
 #     the value of the total Ticks simulated.  With binaries shared from SVN, 
 #     there should be no need for fuzziness.  When the static binary is build
 #     using compiler and libraries on the host, the exact number of Ticks in the 
 #     program may vary from that reported in the reference file checked into SVN.
-# Does not use subroutine because it invokes the build of all test binaries.
 #-------------------------------------------------------------------------------
-echo "############################################## $LINENO "
 test_CramSim_1_R() {          
 CramSim_Template 1_R 500
 
@@ -255,16 +231,6 @@ CramSim_Template 2_R 500
 
 test_CramSim_2_W() {          
 CramSim_Template 2_W 500
-
-}
-
-test_CramSim_3_R() {          
-CramSim_Template 3_R 500
-
-}
-
-test_CramSim_3_W() {          
-CramSim_Template 3_W 500
 
 }
 
@@ -312,4 +278,3 @@ export SST_TEST_ONE_TEST_TIMEOUT=200
 export SST_TEST_ONE_TEST_TIMEOUT=750
 (. ${SHUNIT2_SRC}/shunit2)
 
-echo " There does not need to be anything here"
