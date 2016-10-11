@@ -504,6 +504,8 @@ echo " #####################################################"
 
     # Run test suites
 
+            ${SST_TEST_SUITES}/testSuite_CramSim.sh
+
     # DO NOT pass args to the test suite, it confuses
     # shunit. Use an environment variable instead.
 
