@@ -504,6 +504,7 @@ echo " #####################################################"
 
     # Run test suites
 
+
     # DO NOT pass args to the test suite, it confuses
     # shunit. Use an environment variable instead.
 
@@ -684,6 +685,7 @@ echo " #####################################################"
     fi
 
     ${SST_TEST_SUITES}/testSuite_Ariel.sh
+    ${SST_TEST_SUITES}/testSuite_CramSim.sh
     ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
