@@ -663,6 +663,7 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
+        ${SST_TEST_SUITES}/testSuite_CramSim.sh
         ${SST_TEST_SUITES}/testSuite_hybridsim.sh
         ${SST_TEST_SUITES}/testSuite_miranda.sh
         ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
