@@ -36,35 +36,30 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #                     Set up
 
     ls -d $SST_TEST_SUITES/testCramSim 
-    if [ $? == 0 ] ; then
+    RetVal=$?
+echo " Return from ls -d is $RetVal"
+    if [ $RetVal == 0 ] ; then
         rm -rf $SST_TEST_SUITES/testCramSim
     fi
 mkdir -p $SST_TEST_SUITES/testCramSim
-pushd $SST_TEST_SUITES/testCramSim
+cd $SST_TEST_SUITES/testCramSim
 pwd
-ls
 
 ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg .
-ls -l $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg
+ls -l $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg  > /dev/null
 if [ $? != 0 ] ; then
    ls $SST_ROOT/sst-elements/src/sst/elements/CramSim
    exit
 fi
-ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/tests tests
-rm tests/*trc       ### this is left over from running in elements tree
-echo "###########################DDR4############### $LINENO "
+mkdir tests
+
+ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/tests/* tests
 ls -l ddr4_verimem.cfg
 if [ $? != 0 ] ; then
-echo "############################################## $LINENO "
+   echo "############################################## $LINENO "
    exit
 fi
-ls -l tests
-ls
-echo "############################################## $LINENO "
 cd tests
-echo "############################################## $LINENO "
-pwd
-ls
 
 #                       TEMPLATE
 #     Subroutine to run many similiar tests without reproducing the script.
@@ -76,7 +71,7 @@ CramSim_Template() {
 trc=$1
 Tol=$2    ##  curTick tolerance
 
-pushd $SST_TEST_SUITES/testCramSim
+cd $SST_TEST_SUITES/testCramSim
 
     startSeconds=`date +%s`
     testDataFileBase="test_CramSim_$trc"
@@ -90,40 +85,29 @@ pushd $SST_TEST_SUITES/testCramSim
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-echo "############################################## $LINENO "
-echo "                                                     ---- ${trc} is"
-echo "      ----------------------- "
 pushd tests
-wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim-trace_verimem_${trc}.trc.gz 
-if [ $? != 0 ] ; then
-    echo " Download of trace file failed for sst-CramSim-trace_verimem_${trc}.trc.gz "
-    fail " Download of trace file failed for sst-CramSim-trace_verimem_${trc}.trc.gz "
-    return
-fi
-gunzip sst-CramSim-trace_verimem_${trc}.trc.gz
-echo "####### now it is unzipped  ############### $LINENO "
+	wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim-trace_verimem_${trc}.trc.gz >o${trc} 2>e${trc} 
+	if [ $? != 0 ] ; then
+            echo " Download of trace file failed for sst-CramSim-trace_verimem_${trc}.trc.gz "
+            fail " Download of trace file failed for sst-CramSim-trace_verimem_${trc}.trc.gz "
+            echo "           ----- stdout -----"
+            cat o${trc}
+            echo "           ----- stderr -----"
+            cat e${trc}
+            return
+        fi
+        gunzip sst-CramSim-trace_verimem_${trc}.trc.gz
 popd
 
   ls -l tests/sst-CramSim-trace_verimem_${trc}.trc
-  ls -l ddr4_verimem.cfg
-echo "      -----------------------"
-echo "############################################## $LINENO "
-##    sutArgs="tests/test_txntrace4.py --model-options=\"--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc\""
-##  sutArgs="tests/test_txntrace4.py --model-options=\"--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc\""
-    ${sut} tests/test_txntrace4.py --model-options="--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc" >${outFile}
-    RetVal=$?
+#
+#          Warning the text appended to the next line after the ## is required for multiThread auto configuration.
+#
+      ${sut} tests/test_txntrace4.py --model-options="--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc" >$outFile   ##  ${sutArgs
+      RetVal=$?
 
         echo " Running from `pwd`"
-##         if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
-##            ${sut} ${sutArgs} > ${outFile}
-##            RetVal=$? 
-##         else
-##            mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs}
-##            RetVal=$?
-##            cat ${testOutFiles}* > $outFile
-##         fi
 
-echo "############################################## $LINENO "
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -149,7 +133,7 @@ echo "############################################## $LINENO "
         if [ $? -ne 0 ]
         then
 ##  Follows some bailing wire to allow serialization branch to work
-##          with same reference files
+##          with same reference files  (Vestigal -- Not Added for CramSim)
      sed s/' (.*)'// $referenceFile > $newRef
      ref=`wc ${newRef} | awk '{print $1, $2}'`; 
      ##        ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
@@ -161,9 +145,9 @@ echo "############################################## $LINENO "
                then
                    echo "outFile word/line count matches Reference"
                else
-                   echo "$CramSim_case test Fails"
-                   tail $outFile
+                   echo "CramSim_${trc} test Fails"
                    fail "outFile word/line count does NOT matches Reference"
+                   diff ${referenceFile} ${outFile} 
                fi
         else
                 echo ReferenceFile is an exact match of outFile
@@ -172,14 +156,10 @@ echo "############################################## $LINENO "
         endSeconds=`date +%s`
         echo " "
         elapsedSeconds=$(($endSeconds -$startSeconds))
-        echo "${CramSim_case}: Wall Clock Time  $elapsedSeconds seconds"
-         
+        echo "CramSim_${trc}: Wall Clock Time  $elapsedSeconds seconds"
 
 }
 
-echo "==================================================Ready to EXECUTE ================"
-  
-   
 
 #===============================================================================
 # Test functions
