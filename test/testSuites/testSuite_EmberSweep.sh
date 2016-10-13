@@ -138,7 +138,7 @@ SE_fini() {
       echo "       SST run is incomplete, FATAL" 
       grep bufLen tmp_err_file
       if [ $? == 0 ] ; then
-          fail " #$TEST_INDEX;   bufLen Assert   
+          fail " #$TEST_INDEX;   bufLen Assert   "
       else
           fail " # $TEST_INDEX: SST run is incomplete, FATAL" 
       fi
