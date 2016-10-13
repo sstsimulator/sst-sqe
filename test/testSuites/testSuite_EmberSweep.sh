@@ -136,7 +136,7 @@ SE_fini() {
 
    if [ $RetVal != 0 ] ; then 
       echo "       SST run is incomplete, FATAL" 
-      grep bufLen temp_err_flag
+      grep bufLen tmp_err_file
       if [ $? == 0 ] ; then
           fail " #$TEST_INDEX;   bufLen Assert   
       else
