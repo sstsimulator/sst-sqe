@@ -106,7 +106,7 @@ for network in networks :
                 print "test_EmberSweep_" + str(testi) + "_" + hex_dig + "() {"
 #                print "echo \"    \" {0} {1} {2} {3}".format(network['topo'], x, test['motif'], y)
                 print "SE_start \" {0} {1} {2} {3}\"".format(network['topo'], x, test['motif'], y)
-                print "sst --model-options=\"--topo={0} {1} --cmdLine=\\\"Init\\\" --cmdLine=\\\"{2} {3}\\\" --cmdLine=\\\"Fini\\\"\" {4} > tmp_file".format(network['topo'], x, test['motif'], y, config)
+                print "sst --model-options=\"--topo={0} {1} --cmdLine=\\\"Init\\\" --cmdLine=\\\"{2} {3}\\\" --cmdLine=\\\"Fini\\\"\" {4} > tmp_file 2> tmp_err_file".format(network['topo'], x, test['motif'], y, config)
                 print "SE_fini " + hex_dig
                 print "popd"
                 print "}"

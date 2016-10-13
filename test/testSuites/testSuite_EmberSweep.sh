@@ -124,6 +124,7 @@ SE_start() {
 SE_fini() {
    TL=`grep Simulation.is.complete tmp_file`
    RetVal=$?
+   cat tmp_err_file
    TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
    if [ -e $TIME_FLAG ] ; then 
         echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -135,7 +136,12 @@ SE_fini() {
 
    if [ $RetVal != 0 ] ; then 
       echo "       SST run is incomplete, FATAL" 
-      fail " # $TEST_INDEX: SST run is incomplete, FATAL" 
+      grep bufLen temp_err_flag
+      if [ $? == 0 ] ; then
+          fail " #$TEST_INDEX;   bufLen Assert   
+      else
+          fail " # $TEST_INDEX: SST run is incomplete, FATAL" 
+      fi
       FAILED="TRUE"
    else
        echo $TL
