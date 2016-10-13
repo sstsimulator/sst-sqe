@@ -115,8 +115,10 @@ Tol=$2    ##  curTick tolerance
                    echo "outFile word/line count matches Reference"
                else
                    echo "$merlin_case test Fails"
+                   echo "   tail of $outFile  ---- "
                    tail $outFile
                    fail "outFile word/line count does NOT matches Reference"
+                   diff ${referenceFile} ${outFile} 
                fi
         else
                 echo ReferenceFile is an exact match of outFile
