@@ -77,6 +77,11 @@ if [[ ${SST_ELEMENTSREPO:+isSet} != isSet ]] ; then
     SST_ELEMENTSREPO=https://github.com/sstsimulator/sst-elements
 fi
 
+# Which Repository to use for MACRO (default is https://github.com/sstsimulator/sst-macro)
+if [[ ${SST_MACROREPO:+isSet} != isSet ]] ; then
+    SST_MACROREPO=https://github.com/sstsimulator/sst-macro
+fi
+
 ###
 
 # Which branches to use for each repo (default is devel)
@@ -99,11 +104,16 @@ if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
     SST_ELEMENTSBRANCH=devel
 fi
 
+if [[ ${SST_MACROBRANCH:+isSet} != isSet ]] ; then
+    SST_MACROBRANCH=devel
+fi
+
 echo "#############################################################"
 echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
 echo "  GitHub SQE Repository and Branch = $SST_SQEREPO $SST_SQEBRANCH"
 echo "  GitHub CORE Repository and Branch = $SST_COREREPO $SST_COREBRANCH"
 echo "  GitHub ELEMENTS Repository and Branch = $SST_ELEMENTSREPO $SST_ELEMENTSBRANCH"
+echo "  GitHub MACRO Repository and Branch = $SST_MACROREPO $SST_MACROBRANCH"
 echo "#############################################################"
 
 
@@ -112,7 +122,7 @@ export SST_ROOT=`pwd`
 echo " SST_ROOT = $SST_ROOT"
 
 echo "#############################################################"
-echo "  Version July 20 1433 hours "
+echo "  Version Oct 4 1330 hours "
 echo ' '
 pwd
 ls -la
@@ -221,6 +231,51 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    ls -l
    popd
    
+## Cloning sst-macro into <path>/devel/trunk     
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
+      date
+      echo " "
+      echo "     TimeoutEx -t 90 git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
+      date
+      TimeoutEx -t 90 git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
+      retVal=$?
+      date
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
+         echo "\"git clone of $SST_MACROREPO \" FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+         if [ $Num_Tries_remaing -gt 0 ] ; then
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             rm -rf sst-macro
+             continue
+         fi
+ 
+         exit
+      fi
+   done
+   echo " "
+   echo " The sst-macro Repo has been cloned."
+   ls -l
+   pushd sst-macro
+
+   # Test for override of the branch to some other SHA1 
+   if [[ ${SST_MACRO_RESET:+isSet} == isSet ]] ; then
+       echo "     Desired sst-element SHA1 is ${SST_MACRO_RESET}"
+       git reset --hard ${SST_MACRO_RESET}
+       retVal=$?
+       if [ $retVal != 0 ] ; then
+          echo "\"git reset --hard ${SST_MACRO_RESET} \" FAILED.  retVal = $retVal"
+          exit
+       fi
+   fi
+
+   git log -n 1 | grep commit
+   ls -l
+   popd
+   
 # Link the deps and test directories to the trunk   
    echo " Creating Symbolic Links to the sqe directories (deps & test)"
    ls -l
@@ -276,6 +331,9 @@ export SST_CORE_INSTALL_BIN=${SST_CORE_INSTALL}/bin
 export SST_ELEMENTS_INSTALL=${SST_INSTALL}/sst-elements
 # Location where SST ELEMENTS build files are installed
 export SST_ELEMENTS_INSTALL_BIN=${SST_ELEMENTS_INSTALL}/bin
+
+# Location where SST MACRO files are installed
+export SST_MACRO_INSTALL=${SST_INSTALL}/sst-macro
 
 # Final Location where SST executable files are installed
 export SST_INSTALL=${SST_CORE_INSTALL}
@@ -376,6 +434,14 @@ echo " #####################################################"
     # Initialize directory to hold temporary test input files
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
+    
+    # Do we run the Macro Tests    
+    if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
+       [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ; then
+        ${SST_TEST_SUITES}/testSuite_macro.sh
+        # We currently dont want to run any other tests
+        return
+    fi    
 
     if [[ $1 == *sstmainline_config_valgrind* ]] ; then
         
@@ -437,6 +503,7 @@ echo " #####################################################"
     fi
 
     # Run test suites
+
 
     # DO NOT pass args to the test suite, it confuses
     # shunit. Use an environment variable instead.
@@ -610,6 +677,7 @@ echo " #####################################################"
         export SST_MULTI_THREAD_COUNT=1
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
+        ${SST_TEST_SUITES}/testSuite_CramSim.sh
         ${SST_TEST_SUITES}/testSuite_hybridsim.sh
         ${SST_TEST_SUITES}/testSuite_miranda.sh
         ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
@@ -632,6 +700,7 @@ echo " #####################################################"
     fi
 
     ${SST_TEST_SUITES}/testSuite_Ariel.sh
+    ${SST_TEST_SUITES}/testSuite_CramSim.sh
     ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
@@ -746,9 +815,11 @@ setConvenienceVars() {
     export | egrep SST_DEPS_
     corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL --with-boost=$SST_DEPS_INSTALL_BOOST"
     elementsbaseoptions="--disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL --with-sst-core=$SST_CORE_INSTALL"
+    macrobaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL --with-boost=$SST_DEPS_INSTALL_BOOST"
     echo "setConvenienceVars() : " 
     echo "          corebaseoptions = $corebaseoptions"
     echo "      elementsbaseoptions = $elementsbaseoptions"
+    echo "         macrobaseoptions = $macrobaseoptions"
 }
 
 #-------------------------------------------------------------------------
@@ -791,11 +862,11 @@ getconfig() {
     local cc_environment="CC=${cc_compiler} CXX=${cxx_compiler}"
     local mpi_environment="MPICC=${mpicc_compiler} MPICXX=${mpicxx_compiler}"
 
-    # make sure that sstmacro is suppressed
-    if [ -e ./sst/elements/macro_component/.unignore ] && [ -f ./sst/elements/macro_component/.unignore ]
-    then
-        rm ./sst/elements/macro_component/.unignore
-    fi
+#    # make sure that sstmacro is suppressed
+#    if [ -e ./sst/elements/macro_component/.unignore ] && [ -f ./sst/elements/macro_component/.unignore ]
+#    then
+#        rm ./sst/elements/macro_component/.unignore
+#    fi
 
 
     case $1 in
@@ -811,6 +882,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
             ;;
         sstmainline_config_all) 
             #-----------------------------------------------------------------
@@ -824,6 +896,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-libphx=$LIBPHX_HOME/src --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
             ;;
         sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_diropenmpI|sstmainline_config_dirnoncacheable|sstmainline_config_dir3cache|sstmainline_config_memH_Ariel) 
             #-----------------------------------------------------------------
@@ -837,6 +910,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
             ;;
         sstmainline_config_linux_with_ariel_no_gem5) 
             #-----------------------------------------------------------------
@@ -851,6 +925,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
             ;;
         sstmainline_config_no_gem5) 
             #-----------------------------------------------------------------
@@ -869,6 +944,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
+            macroConfigStr="NOBUILD"
             ;;
 
         sstmainline_config_no_mpi)
@@ -876,7 +952,7 @@ getconfig() {
             # sstmainline_config
             #     This option used for configuring SST with MPI disabled
             #-----------------------------------------------------------------
-            if [ ${MPIHOME:+isSet} == isSet ] ; then
+            if [[ ${MPIHOME:+isSet} == isSet ]] ; then
                 echo ' ' ; echo " Test is flawed!  MPI module is loaded!" ; echo ' '
                 exit 1
             fi
@@ -887,6 +963,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}"
+            macroConfigStr="NOBUILD"
             ;;
 
         sstmainline_config_static) 
@@ -901,6 +978,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
             ;;
 
         sstmainline_config_static_no_gem5) 
@@ -915,6 +993,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
             ;;
 
         sstmainline_config_clang_core_only) 
@@ -926,6 +1005,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM"
+            macroConfigStr="NOBUILD"
             ;;
         sstmainline_config_macosx) 
             #-----------------------------------------------------------------
@@ -939,6 +1019,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
             ;;
         sstmainline_config_macosx_no_gem5) 
             #-----------------------------------------------------------------
@@ -952,6 +1033,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions ${MTNLION_FLAG} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} --with-chdl=$SST_DEPS_INSTALL_CHDL --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
             ;;
         sstmainline_config_macosx_static) 
             #-----------------------------------------------------------------
@@ -965,6 +1047,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions  --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
             ;;
         sstmainline_config_test_output_config)
             #-----------------------------------------------------------------
@@ -978,6 +1061,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN"
             elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
+            macroConfigStr="NOBUILD"
             ;;
         sstmainline_config_memH_wo_openMP)
             #-----------------------------------------------------------------
@@ -994,6 +1078,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
             ;;
         sstmainline_config_develautotester)
             #-----------------------------------------------------------------
@@ -1014,6 +1099,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
             ;;
             
         # ====================================================================
@@ -1034,6 +1120,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions  --with-glpk=${GLPK_HOME} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
+            macroConfigStr="NOBUILD"
             ;;
             
         sstmainline_config_valgrind|sstmainline_config_valgrind_ES) 
@@ -1048,9 +1135,69 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-chdl=$SST_DEPS_INSTALL_CHDL --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            
+            macroConfigStr="NOBUILD"
             ;;
 
+        sst-macro_withsstcore_mac) 
+            #-----------------------------------------------------------------
+            # macro_withsstcore
+            #     This option used for configuring sst-core and sst-macro
+            #     NOTE: sst-macro is built with sst-core integration
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            miscEnv="${cc_environment} ${mpi_environment}"
+            depsStr="-k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$macrobaseoptions"
+            elementsConfigStr="NOBUILD"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_HOME --disable-regex --with-sst-core=$SST_CORE_INSTALL"
+            ;;
+   
+        sst-macro_nosstcore_mac) 
+            #-----------------------------------------------------------------
+            # macro_nosstcore
+            #     This option used for configuring sst-core and sst-macro
+            #     NOTE: sst-macro is NOT built with sst-core integration (using standalone integration)
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            miscEnv="${cc_environment} ${mpi_environment}"
+            depsStr="-k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="NOBUILD"
+            elementsConfigStr="NOBUILD"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_HOME --disable-regex"
+            ;;
+   
+        sst-macro_withsstcore_linux) 
+            #-----------------------------------------------------------------
+            # macro_withsstcore
+            #     This option used for configuring sst-core and sst-macro
+            #     NOTE: sst-macro is built with sst-core integration
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            miscEnv="${cc_environment} ${mpi_environment}"
+            depsStr="-k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$macrobaseoptions"
+            elementsConfigStr="NOBUILD"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
+            ;;
+   
+        sst-macro_nosstcore_linux) 
+            #-----------------------------------------------------------------
+            # macro_nosstcore
+            #     This option used for configuring sst-core and sst-macro
+            #     NOTE: sst-macro is NOT built with sst-core integration (using standalone integration)
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            miscEnv="${cc_environment} ${mpi_environment}"
+            depsStr="-k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="NOBUILD"
+            elementsConfigStr="NOBUILD"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers"
+            ;;
+            
   ## perhaps do no more here
         default)
             #-----------------------------------------------------------------
@@ -1076,6 +1223,7 @@ getconfig() {
     export SST_SELECTED_DEPS="$depsStr"
     export SST_SELECTED_CORE_CONFIG="$coreConfigStr"
     export SST_SELECTED_ELEMENTS_CONFIG="$elementsConfigStr"
+    export SST_SELECTED_MACRO_CONFIG="$macroConfigStr"
 #    echo $configStr
 }
 
@@ -1309,7 +1457,7 @@ ldModulesYosemiteClang() {
                         ModuleEx load metis/metis-5.1.0_$ClangVersion
                         
                         # PTH 2.0.7
-                        echo "bamboo_macro.sh: Load PTH 2.0.7"
+                        echo "bamboo.sh: Load PTH 2.0.7"
                         ModuleEx load pth/pth-2.0.7
                         
                         # Other misc
@@ -1378,7 +1526,10 @@ ldModulesYosemiteClang() {
 darwinSetBoostMPI() {
     # Obtain Mac OS version (works only on MacOS!!!)
     macosVersionFull=`sw_vers -productVersion`
-    macosVersion=${macosVersionFull%.*}
+echo "  ******************* macosVersionFull= $macosVersionFull "
+###    macosVersion=${macosVersionFull%.*}
+    macosVersion=`echo ${macosVersionFull} | awk -F. '{print $1 "." $2 }'`
+echo "  ******************* macosVersion= $macosVersion "
 
     if [[ $macosVersion = "10.8" && $compiler = "clang-503.0.40" ]]
     then
@@ -1486,15 +1637,23 @@ darwinSetBoostMPI() {
 
 ################################################################################
             10.11) # El Capitan
-                   ldModulesYosemiteClang clang-700.1.76 $2 $3   #  Xcode 7.1
+echo    "This is El Capitan, Compiler is $compiler"
+                   ldModulesYosemiteClang $compiler  $2 $3   # any Xcode 
                    ;;
+
+################################################################################
+            10.12) # Sierra
+echo    "This is Sierra, Compiler is $compiler"
+                   ldModulesYosemiteClang $compiler  $2 $3   # any Xcode 
+                   ;;
+
 ################################################################################
 
-                *) # unknown
-                    echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
-                    echo ' '
-                    exit
-                    ;;
+            *) # unknown
+                 echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
+                 echo ' '
+                 exit
+                 ;;
         esac
 
         echo "bamboo.sh: BOOST_HOME=${BOOST_HOME}"
@@ -1698,6 +1857,7 @@ dobuild() {
     # $SST_SELECTED_DEPS now contains selected dependencies 
     # $SST_SELECTED_CORE_CONFIG now contains config line for the SST-CORE
     # $SST_SELECTED_ELEMENTS_CONFIG now contains config line for the SST-ELEMENTS
+    # $SST_SELECTED_MACRO_CONFIG now contains config line for the SST-MACRO
     # based on buildtype, configure and build dependencies
     # build, patch, and install dependencies
     $SST_DEPS_BIN/sstDependencies.sh $SST_SELECTED_DEPS cleanBuild
@@ -1707,7 +1867,7 @@ dobuild() {
         return $retval
     fi
 
-    echo "==================== SETTING UP TO BUILD SST CORE AND ELEMENTS ====="
+    echo "==================== SETTING UP TO BUILD SST CORE ELEMENTS AND/OR MACRO ====="
     SAVE_LIBRARY_PATH=$LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=${SST_INSTALL_DEPS}/lib:${SST_INSTALL_DEPS}/lib/sst:${SST_DEPS_INSTALL_GEM5SST}:${SST_INSTALL_DEPS}/packages/DRAMSim:${SST_DEPS_INSTALL_NVDIMMSIM}:${SST_DEPS_INSTALL_HYBRIDSIM}:${SST_INSTALL_DEPS}/packages/Qsim/lib:${SST_DEPS_INSTALL_CHDL}/lib:${LD_LIBRARY_PATH}
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BOOST_LIBS
@@ -1734,11 +1894,11 @@ dobuild() {
         echo "==================== Building SST CORE ===================="
         
         # autogen to create ./configure
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: running \"autogen.sh\" on SST-CORE..."
         echo ' '    
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
         # Autogen SST-CORE
         ### First Run autogen in the source dir to create the configure file
@@ -1763,11 +1923,11 @@ dobuild() {
         echo "Current Working Dir = `pwd`"
         ls -l
 
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: autogen on SST-CORE complete without error"
         echo ' '    
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
 
         # Check to see if we are supposed to build out of the source
@@ -1791,11 +1951,11 @@ dobuild() {
             coresourcedir="."
         fi        
 
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: running \"configure\" on SST-CORE..."
         echo ' '    
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "bamboo.sh: config args = $SST_SELECTED_CORE_CONFIG"
         
         # Configure SST-CORE
@@ -1812,47 +1972,47 @@ dobuild() {
             return $retval
         fi
         
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: configure on SST-CORE complete without error"
         echo ' '    
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
         
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
         if [[ $buildtype == *_dist_* ]] ; then
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
             echo "bamboo.sh: make dist on SST-CORE"
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             make dist
             retval=$?
             if [ $retval -ne 0 ]
             then
                 return $retval
             fi
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
             echo "bamboo.sh: make dist on SST_CORE is complete without error"
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo " "
             ls -ltr | tail -5
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
             echo "bamboo.sh: After make dist on SST_CORE do the make install "
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         fi
         
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
             echo "bamboo.sh: make on SST-CORE"
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     
         if [ $kernel == "Darwin" ]
         then
@@ -1865,18 +2025,18 @@ dobuild() {
         fi
         echo "SST-CORE BUILD INFO============================================================"
                 
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make on SST-CORE complete without error"
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make install on SST-CORE"
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
         # Install SST-CORE
         echo "=== Running make -j4 install ==="
@@ -1894,11 +2054,11 @@ dobuild() {
         echo "=== DONE DUMPING ==="
         echo
         
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make install on SST-CORE complete without error"
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
             if [ $kernel == "Darwin" ]
@@ -1916,14 +2076,14 @@ dobuild() {
             echo ' '    
             echo "bamboo.sh: make on SST-CORE complete without error"
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo " "
             
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
             echo "bamboo.sh: make install on SST-CORE"
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             
             # Install SST-CORE
             echo "=== Running make -j4 install ==="
@@ -2013,11 +2173,11 @@ dobuild() {
             elementssourcedir="."
         fi        
         
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: running \"configure\" on SST-ELEMENTS..."
         echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "bamboo.sh: config args = $SST_SELECTED_ELEMENTS_CONFIG"
         
         # Configure SST-ELEMENTS
@@ -2121,11 +2281,11 @@ echo "##################### END ######## DEBUG DATA ########################"
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make install on SST-ELEMENTS"
         echo ' '    
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         
         # Install SST-ELEMENTS
         echo "=== Running make -j4 install ==="
@@ -2150,11 +2310,11 @@ echo "##################### END ######## DEBUG DATA ########################"
         echo "=== DONE DUMPING ==="
         echo
         
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make install on SST-ELEMENTS complete without error"
         echo ' '    
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
         # Go back to devel/trunk
@@ -2164,6 +2324,163 @@ echo "##################### END ######## DEBUG DATA ########################"
         ls -l
     fi
 
+    ### BUILDING THE SST-MACRO
+    if [[ $SST_SELECTED_MACRO_CONFIG == "NOBUILD" ]]
+    then
+        echo "============== SST MACRO - NO BUILD REQUIRED ==============="
+    else
+        echo "==================== Building SST MACRO ===================="
+        
+        # bootstrap to create ./configure
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: running \"bootstrap.sh\" on SST-MACRO..."
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+        # bootstrap SST-ELEMENTS
+        ### First Run bootstrap in the source dir to create the configure file
+        echo "NOTE: bootstrampn Must be run in SST-Macro Source Dir to create configuration file"
+        echo "Current Working Dir = `pwd`"
+        echo "pushd sst-macro"
+        pushd ${SST_ROOT}/sst-macro
+        echo "bootstrap Working Dir = `pwd`"
+        ls -l
+        echo "=== Running bootstrap.sh ==="
+        
+        ./bootstrap.sh
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+        
+        echo "Done with bootstrap"
+
+        popd
+        echo "Current Working Dir = `pwd`"
+        ls -l
+        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: bootstrap on SST-MACRO complete without error"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+
+        # Check to see if we are supposed to build out of the source
+        if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
+            echo "NOTICE: BUILDING SST-MACRO OUT OF SOURCE DIR"
+            echo "Starting Dir = `pwd`"
+            echo "mkdir ./sst-macro-builddir"
+            mkdir ./sst-macro-builddir
+            echo "pushd sst-macro-builddir"
+            pushd sst-macro-builddir
+            echo "Current Working Dir = `pwd`"
+            ls -l
+            macrosourcedir="../sst-macro"
+        else
+            echo "NOTICE: BUILDING SST-MACRO IN SOURCE DIR"
+            echo "Starting Dir = `pwd`"
+            echo "pushd sst-macro"
+            pushd ${SST_ROOT}/sst-macro
+            echo "Current Working Dir = `pwd`"
+            ls -l
+            macrosourcedir="."
+        fi        
+        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: running \"configure\" on SST-MACRO..."
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "bamboo.sh: config args = $SST_SELECTED_MACRO_CONFIG"
+
+        # Configure SSTMACRO
+        echo "=== Running $macrosourcedir/configure <config args> ==="
+        $macrosourcedir/configure $SST_SELECTED_MACRO_CONFIG
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # Something went wrong in configure, so dump config.log
+            echo "bamboo.sh: Uh oh. Something went wrong during configure of sst-macro.  Dumping config.log"
+            echo "--------------------dump of config.log--------------------"
+            sed -e 's/^/#dump /' ./config.log
+            echo "--------------------dump of config.log--------------------"
+            return $retval
+        fi
+
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: configure on SST-MACRO complete without error"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make on SST-MACRO"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+        # Compile SST-MACRO
+        echo "=== Running make -j4 ==="
+        make -j4 
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make on SST-MACRO complete without error"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install on SST-MACRO"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
+        # Install SST-MACRO
+        echo "=== Running make -j4 install ==="
+        make -j4 install
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+
+        echo
+        echo "=== DUMPING The SST-MACRO installed $HOME/.sst/sstsimulator.conf file ==="
+        echo "cat $HOME/.sst/sstsimulator.conf"
+        cat $HOME/.sst/sstsimulator.conf
+        echo "=== DONE DUMPING ==="
+        echo
+        
+        echo
+        echo "=== DUMPING The SST-MACRO installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
+        echo "cat $SST_CONFIG_FILE_PATH"
+        cat $SST_CONFIG_FILE_PATH
+        echo "=== DONE DUMPING ==="
+        echo
+        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install on SST-MACRO complete without error"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        # Go back to devel/trunk
+        echo "popd"
+        popd
+        echo "Current Working Dir = `pwd`"
+        ls -l
+    fi
 }
 
 #=========================================================================
@@ -2212,7 +2529,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester|sstmainline_config_valgrind|sstmainline_config_valgrind_ES)
+        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux)
             #   Save Parameters $2, $3 and $4 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3

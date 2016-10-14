@@ -5,7 +5,7 @@ pushd $SST_TEST_ROOT/testSuites
       exit 1
    fi
 
-for Suite in  testSuite_Ariel.sh testSuite_EmberSweep.sh testSuite_cacheTracer.sh testSuite_cassini_prefetch.sh testSuite_chdlComponent.sh testSuite_check_maxrss.sh testSuite_embernightly.sh testSuite_hybridsim.sh testSuite_memHierarchy_sdl.sh testSuite_memHSieve.sh testSuite_merlin.sh testSuite_miranda.sh testSuite_partitioner.sh testSuite_prospero.sh testSuite_qsimComponent.sh testSuite_scheduler_DetailedNetwork.sh testSuite_scheduler.sh testSuite_simpleClockerComponent.sh testSuite_simpleComponent.sh testSuite_simpleDistribComponent.sh testSuite_simpleLookupTableComponent.sh testSuite_simpleMessageGeneratorComponent.sh testSuite_simpleRNGComponent.sh testSuite_simpleStatisticsComponent.sh testSuite_SiriusZodiacTrace.sh testSuite_VaultSim.sh testSuite_zoltan.sh
+for Suite in  testSuite_Ariel.sh testSuite_EmberSweep.sh testSuite_cacheTracer.sh testSuite_cassini_prefetch.sh testSuite_chdlComponent.sh testSuite_check_maxrss.sh testSuite_CramSim.sh testSuite_embernightly.sh testSuite_hybridsim.sh testSuite_memHierarchy_sdl.sh testSuite_memHSieve.sh testSuite_merlin.sh testSuite_miranda.sh testSuite_partitioner.sh testSuite_prospero.sh testSuite_qsimComponent.sh testSuite_scheduler_DetailedNetwork.sh testSuite_scheduler.sh testSuite_simpleClockerComponent.sh testSuite_simpleComponent.sh testSuite_simpleDistribComponent.sh testSuite_simpleLookupTableComponent.sh testSuite_simpleMessageGeneratorComponent.sh testSuite_simpleRNGComponent.sh testSuite_simpleStatisticsComponent.sh testSuite_SiriusZodiacTrace.sh testSuite_VaultSim.sh testSuite_zoltan.sh
 
 do
    if [[ ${SST_ONE_VALGRIND:+isSet} == isSet ]]
