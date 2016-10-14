@@ -317,12 +317,12 @@ test_Ariel_test_ivb() {
 }
 
 test_Ariel_test_snb() {
-    if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
-        echo " Temporary patch"
-        echo "Ariel on Ubuntu not working on Sandy and Ivy bridge"
-        skip_this_test
-        return
-    fi
+##     if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
+##         echo " Temporary patch"
+##         echo "Ariel on Ubuntu not working on Sandy and Ivy bridge"
+##         skip_this_test
+##         return
+##     fi
     if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
         echo "Open MP is not currently support on MacOS"
         skip_this_test
