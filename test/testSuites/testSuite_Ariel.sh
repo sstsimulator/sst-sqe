@@ -250,6 +250,9 @@ Ariel_template() {
         elif [ $line_diff -gt 15 ] ; then
              echo "Ariel test ${Ariel_case} out varies from Ref by $line_diff lines"
              fail "Ariel test ${Ariel_case} out varies from Ref by $line_diff lines"
+             echo ' ' ; echo "---------------  tail of outFile -----"
+             tail -20 $outFile
+             echo "     -------------  "
         else
              echo "Output file within $line_diff lines of Reference File"
         fi
