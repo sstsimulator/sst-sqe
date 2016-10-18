@@ -13,15 +13,19 @@ if [[ ${SST_TEST_ONE_TEST_TIMEOUT:+isSet} != isSet ]] ; then
 fi
 CASE=$2
 
+####                    The OverRide
 if [[ ${SST_TEST_TIMEOUT_OVERRIDE:+isSet} == isSet ]] ; then
     SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_TIMEOUT_OVERRIDE
 fi 
 
+####                    The Sleep
 sleep $SST_TEST_ONE_TEST_TIMEOUT 
 
 echo ' ' ; echo "TL Enforcer:            TIME LIMIT     $CASE "
 echo "TL Enforcer: test has exceed alloted time of $SST_TEST_ONE_TEST_TIMEOUT seconds."
 MY_PID=$$
+
+####                     The Time Limit flag
 TIME_FLAG=/tmp/TimeFlag_${1}_${MY_PID}
 echo $SST_TEST_ONE_TEST_TIMEOUT >> $TIME_FLAG
 chmod 777 $TIME_FLAG
@@ -32,6 +36,7 @@ echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
 ps -f -p ${1},${PPID}
 echo ' '
 
+####                 Remove old ompsievetest task
 ps -ef | grep ompsievetest
 echo " this might better go in the Suite"
 ps -ef | grep ompsievetest | grep -v -e grep > omps_list
@@ -44,6 +49,7 @@ do
     fi
 done 3<omps_list
 
+####                  Find Pid of my ompsievetest
 OMP_PID=`ps -ef | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
 echo "OMP_PID = $OMP_PID"
 if [ ! -z $OMP_PID ] ; then
