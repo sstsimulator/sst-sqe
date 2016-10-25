@@ -83,7 +83,7 @@ do
       echo passed Sanity check
    fi
 
-   killChildren.sh \$_ch \$nlevel
+   ./killChildren.sh \$_ch \$nlevel
          echo    Return to \$thisPid at level \$level
 done 3<F\${level}.tmp
 
@@ -100,7 +100,7 @@ ps -ef | grep -v -e ' 1 ' -e ' 2 ' > /tmp/TheFile.timeL
 wc /tmp/TheFile.timeL
 
    st_pid=$1
-   killChildren.sh $starting_pid 1
+   ./killChildren.sh $starting_pid 1
 
 echo ' ' ; echo " The list "
 cat /tmp/TheFile.timeL
