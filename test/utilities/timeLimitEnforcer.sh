@@ -49,16 +49,6 @@ do
     fi
 done 3<omps_list
 
-####                  Find Pid of my ompsievetest
-OMP_PID=`ps -ef | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
-echo "OMP_PID = $OMP_PID"
-if [ ! -z $OMP_PID ] ; then
-echo " Line $LINENO   -- kill ompsievetest "
-    kill -9 $OMP_PID
-fi
-
-date
-echo ' '
 #
 #          Begin findChild() subroutine
 #
@@ -97,51 +87,63 @@ findChild()
 #          End findChild() subroutine
 #
 
-findChild $PPID
+####        findChild $PPID
 
 
 if [ -z $KILL_PID ] ; then
-#
-#          Look for child of my siblings
-#
-   ps -ef > full_ps__
-    while read -u 3 _who _task _paren _rest
-    do
-       if [ $_paren != $PPID ] ; then
-          continue
-       fi 
-       if [ $_task == $MY_PID ] ; then
-          continue
-       fi 
-    
-       echo "Sibling is $_task"
-       findChild $_task
-       break
-    done 3< full_ps__
-fi
 
-echo Kill pid is $KILL_PID
+echo "begin ----------------------------------------"
+ls -l killChildren.sh
+rm killChildren.sh
+ls -l killChildren.sh
+cat >> killChildren.sh << ..EOF..
+# killChildren (thispid, level)
+           echo Entered subroutine $1 $2
+thisPid=\$1
+level=\$2
+           echo Entered subroutine \$thisPid \$level
+grep \$thisPid /tmp/TheFile.timeL > F\${level}.tmp
+        wc F\${level}.tmp
+while read -u 3 _who _ch _pa rest
+do
+        echo READ: \$_who, \$_ch ,\$_pa  \$rest
+   if [ \$_ch == \$thisPid ] ; then
+             echo " THIS IS A match \$_ch \$thisPid "
+       continue
+   else
+             echo " THIS IS NOT A match \$_ch \$thisPid "
+   fi
+         echo    this is level  \$level
+   nlevel=\$(( \$level + 1 ))
+              echo this is level \$level
+   if [ \$level -gt 10 ] ; then
+       echo \$level is greater than 10
+       exit
+   fi
+# ASSERT    \$_pa is \$thisPid
+   if [ \$_pa -eq \$thisPid ] ; then
+      echo passed Sanity check
+   fi
 
-KILL_PARENT=0
-if [ -z $KILL_PID ] ; then
-    KILL_PARENT=1
-else
-    ps -f -p $KILL_PID | grep $KILL_PID
-    if [ $? == 1 ] ; then
-        KILL_PARENT=1
-    fi
-fi
-if [ $KILL_PARENT == 1 ] ; then
-    echo " Can not find process to terminate,  pid = $KILL_PID "
-    echo "     I am $MY_PID,   my parent was $PPID" 
-    ps -f -U $USER
-    echo ' '
-    echo "                EXIT without killing my parents "
-    exit               ###################################################3
-    echo "kill my parents"
-    kill -9 $1
-    kill -9 $PPID
-    exit
+   killChildren.sh \$_ch \$nlevel
+         echo    Return to \$thisPid at level \$level
+   done 3<F\${level}.tmp
+
+   echo Time to kill \$thisPid
+   ps -fp \$thisPid
+   ###   kill -9 \$thisPid
+   
+   
+   exit
+..EOF..
+ls -l killChildren.sh
+   
+   chmod +x killChildren.sh
+   ps -ef | grep -v ' 1 ' > /tmp/TheFile.timeL
+   wc /tmp/TheFile.timeL
+   st_pid=$1
+   killChildren.sh $st_pid 1
+
 else
 
     kill $KILL_PID
@@ -153,11 +155,12 @@ else
         echo " Try a \"kill -9\"  "
         kill -9 $KILL_PID
     fi
-fi
 ps -f -p $KILL_PID | grep $KILL_PID
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
 ps -f -p $KILL_PID | grep $KILL_PID
+fi
+
 fi
