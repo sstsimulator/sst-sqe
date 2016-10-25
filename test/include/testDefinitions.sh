@@ -5,7 +5,7 @@
 
 _SUITE_NAME=`echo $0 | awk -F/ '{print $NF}'`
 if [[ $_SUITE_NAME == *testSuite_* ]] ; then
-    echo "SST_BEGIN_NEW_SUITE  $_SUITE_NAME"
+    echo ' ' ; echo "SST_BEGIN_NEW_SUITE  $_SUITE_NAME"
 fi
 #===============================================================================
 # Directories

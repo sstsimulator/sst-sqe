@@ -98,8 +98,10 @@ ls -l killChildren.sh
 chmod +x killChildren.sh
 ps -ef | grep -v -e ' 1 ' -e ' 2 ' > /tmp/TheFile.timeL
 wc /tmp/TheFile.timeL
+echo ' ' ;  echo "              this in temporary "
+cat /tmp/TheFile.timeL
+echo ' ' ;  echo "              this in temporary "
 
-   st_pid=$1
    ./killChildren.sh $starting_pid 1
 
 echo ' ' ; echo " The list "
