@@ -23,16 +23,16 @@ sleep $SST_TEST_ONE_TEST_TIMEOUT
 
 echo ' ' ; echo "TL Enforcer:            TIME LIMIT     $CASE "
 echo "TL Enforcer: test has exceed alloted time of $SST_TEST_ONE_TEST_TIMEOUT seconds."
-MY_PID=$$
+export TL_MY_PID=$$
 
 ####                     The Time Limit flag
-TIME_FLAG=/tmp/TimeFlag_${1}_${MY_PID}
+TIME_FLAG=/tmp/TimeFlag_${1}_${TL_MY_PID}
 echo $SST_TEST_ONE_TEST_TIMEOUT >> $TIME_FLAG
 chmod 777 $TIME_FLAG
 echo "         Create Time Limit Flag file, $TIME_FLAG"
 
 echo ' '
-echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
+echo I am $TL_MY_PID,  I was called from $1, my parent PID is $PPID
 ps -f -p ${1},${PPID}
 echo ' '
 
@@ -66,8 +66,8 @@ grep \$thisPid /tmp/TheFile.timeL > F\${level}.tmp
 while read -u 3 _who _ch _pa rest
 do
         echo READ: \$_who, \$_ch ,\$_pa  \$rest
-   if [ \$_ch == \$thisPid ] ; then
-             echo " Parent entry  (skip)"
+   if [ \$_ch == \$thisPid ] || [ \$_ch == \$TL_MY_PID ] ; then
+             echo " Parent or me entry  (skip)"
        continue
    else
              echo " THIS IS A child  \$_ch \$thisPid "
@@ -86,7 +86,7 @@ do
    ./killChildren.sh \$_ch \$nlevel
          echo    Return to \$thisPid at level \$level
 done 3<F\${level}.tmp
-echo "DEBUG  loop \$level is done
+echo "DEBUG  loop \$level is done"
 ps -fp \$thisPid
 if [ \$? -eq 0 ] ; then
    echo Time to kill \$thisPid
