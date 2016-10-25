@@ -36,7 +36,7 @@ echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
 ps -f -p ${1},${PPID}
 echo ' '
 
-####                 Remove old ompsievetest task
+####                 Remove old ompsievetest tasks with parent 1
 ps -ef | grep ompsievetest
 echo " this might better go in the Suite"
 ps -ef | grep ompsievetest | grep -v -e grep > omps_list
@@ -48,57 +48,16 @@ do
         kill -9 $_anOMP
     fi
 done 3<omps_list
-
-#
-#          Begin findChild() subroutine
-#
-findChild()
-{
-   SPID=$1
-   
-   KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
-   
-   if [ -z $KILL_PID ] ; then
-       echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
-       echo "No corresponding child named \"sst\" "
-       ps -f | grep $SPID
-       echo ' '
-       #   Is there a Python running from the Parent PID
-       echo " Look for a child named \"python\""
-       PY_PID=`ps -ef | grep 'python ' | grep $SPID | awk '{ print $2 }'`
-       if [ -z $PY_PID ] ; then
-           echo "No corresponding child named \"python\" "
-           echo ' '
-           #   Is there a Valgrind running from the Parent PID
-           echo " Look for a child named \"valgrind\""
-           VG_PID=`ps -ef | grep 'valgrind ' | grep $SPID | awk '{ print $2 }'`
-           if [ -z $VG_PID ] ; then
-               echo "No corresponding child named \"valgrind\" "
-               echo ' '
-           else
-               KILL_PID=$VG_PID
-           fi
-       else
-           KILL_PID=$PY_PID
-       fi
-   fi
-}   
-#
-#          End findChild() subroutine
-#
-
-####        findChild $PPID
-
-
-if [ -z $KILL_PID ] ; then
+starting_pid=$1     ### Enforcer was called from
 
 echo "begin ----------------------------------------"
-ls -l killChildren.sh
+####                 Create the killChildren script
+ls -l killChildren.sh     # un-needed
 rm killChildren.sh
-ls -l killChildren.sh
+ls -l killChildren.sh       #  really un-needed
+
 cat >> killChildren.sh << ..EOF..
 # killChildren (thispid, level)
-           echo Entered subroutine $1 $2
 thisPid=\$1
 level=\$2
            echo Entered subroutine \$thisPid \$level
@@ -108,14 +67,13 @@ while read -u 3 _who _ch _pa rest
 do
         echo READ: \$_who, \$_ch ,\$_pa  \$rest
    if [ \$_ch == \$thisPid ] ; then
-             echo " THIS IS A match \$_ch \$thisPid "
+             echo " Parent entry  (skip)"
        continue
    else
-             echo " THIS IS NOT A match \$_ch \$thisPid "
+             echo " THIS IS A child  \$_ch \$thisPid "
    fi
          echo    this is level  \$level
    nlevel=\$(( \$level + 1 ))
-              echo this is level \$level
    if [ \$level -gt 10 ] ; then
        echo \$level is greater than 10
        exit
@@ -127,40 +85,23 @@ do
 
    killChildren.sh \$_ch \$nlevel
          echo    Return to \$thisPid at level \$level
-   done 3<F\${level}.tmp
+done 3<F\${level}.tmp
 
-   echo Time to kill \$thisPid
-   ps -fp \$thisPid
-   ###   kill -9 \$thisPid
+echo Time to kill \$thisPid
+ps -fp \$thisPid
+kill -9 \$thisPid
    
-   
-   exit
+exit
 ..EOF..
+
 ls -l killChildren.sh
-   
-   chmod +x killChildren.sh
-   ps -ef | grep -v ' 1 ' > /tmp/TheFile.timeL
-   wc /tmp/TheFile.timeL
+chmod +x killChildren.sh
+ps -ef | grep -v -e ' 1 ' -e ' 2 ' > /tmp/TheFile.timeL
+wc /tmp/TheFile.timeL
+
    st_pid=$1
-   killChildren.sh $st_pid 1
+   killChildren.sh $starting_pid 1
 
-else
+echo ' ' ; echo " The list "
+cat /tmp/TheFile.timeL
 
-    kill $KILL_PID
-#                     Believe I remember that this always return zero
-    if [ $? == 1 ] ; then
-        echo " Kill of $KILL_PID for TIME OUT   FAILED"
-        echo "     I am $MY_PID,   my parent was $PPID" 
-        ps -f -U $USER
-        echo " Try a \"kill -9\"  "
-        kill -9 $KILL_PID
-    fi
-ps -f -p $KILL_PID | grep $KILL_PID
-if [ $? == 0 ] ; then
-    echo " It's still there!  ($KILL_PID)"
-    echo " Try a \"kill -9\" "
-    kill -9 $KILL_PID
-ps -f -p $KILL_PID | grep $KILL_PID
-fi
-
-fi
