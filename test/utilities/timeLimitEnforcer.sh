@@ -87,10 +87,15 @@ do
          echo    Return to \$thisPid at level \$level
 done 3<F\${level}.tmp
 
-echo Time to kill \$thisPid
 ps -fp \$thisPid
-kill -9 \$thisPid
-   
+if [ $? -eq 0 ] ; then
+   echo Time to kill \$thisPid
+# ps -fp \$thisPid
+   kill -9 \$thisPid
+else
+   echo \$thisPid is gone
+fi
+
 exit
 ..EOF..
 
