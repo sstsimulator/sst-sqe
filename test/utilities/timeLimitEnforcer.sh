@@ -51,11 +51,21 @@ done 3<omps_list
 starting_pid=$1     ### Enforcer was called from
 
 echo "  ####################  Whole new way "
+echo $starting_pid
+ps -efp $starting_pid
+pstree -p $starting_pid 
+pstree -p $starting_pid | awk -F'- ' '{print $2}'
 pstree -p $starting_pid | awk -F'- ' '{print $2}' > raw-list
 cat raw-list | awk '{print $1, $3 }'
 cat raw-list
 
-cat raw-list | awk '{print $1}' | sed /$starting_pid/q
+cat raw-list | awk '{print $1}' | tail -r | sed /$starting_pid/q > kill-these
+cat kill-these
+for kpid in `cat kill-these`
+do
+echo " task to be killed   (not done in this code)"
+     echo $kpid
+done
 
 
 
