@@ -33,12 +33,15 @@ echo "         Create Time Limit Flag file, $TIME_FLAG"
 
 echo ' '
 echo I am $TL_MY_PID,  I was called from $1, my parent PID is $PPID
+echo " -------------------------------------------------   $LINENO"
 ps -f -p ${1},${PPID}
 echo ' '
 
 ####                 Remove old ompsievetest tasks with parent 1
+echo " -------------------------------------------------   $LINENO"
 ps -ef | grep ompsievetest
 echo " this might better go in the Suite"
+echo " -------------------------------------------------   $LINENO"
 ps -ef | grep ompsievetest | grep -v -e grep > omps_list
 wc omps_list
 while read -u 3 _who _anOMP _own _rest
@@ -53,7 +56,8 @@ starting_pid=$1     ### Enforcer was called from
 if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
 
    echo "  ####################  Whole new way "
-   echo $starting_pid
+   echo "                                      STARTING PID $starting_pid"
+echo " -------------------------------------------------   $LINENO"
    ps -efp $starting_pid
    pstree -p $starting_pid 
    pstree -p $starting_pid | awk -F'- ' '{print $2}' > raw-list
@@ -109,9 +113,11 @@ do
          echo    Return to \$thisPid at level \$level
 done 3<F\${level}.tmp
 echo "DEBUG  loop \$level is done"
+echo " -------------------------------------------------   \$LINENO"
 ps -fp \$thisPid
 if [ \$? -eq 0 ] ; then
    echo Time to kill \$thisPid
+echo " -------------------------------------------------   \$LINENO"
 # ps -fp \$thisPid
    kill -9 \$thisPid
 else
@@ -123,9 +129,12 @@ exit
 
 ls -l killChildren.sh
 chmod +x killChildren.sh
+echo " -------------------------------------------------   $LINENO"
 ps -ef | grep -v -e ' 1 ' -e ' 2 ' > /tmp/TheFile.timeL
 wc /tmp/TheFile.timeL
 echo ' ' ;  echo "              this in temporary "
+   echo "                                      STARTING PID $starting_pid"
+echo " -------------------------------------------------   $LINENO"
 pstree -p $starting_pid
 echo ' ' ;  echo "              this in temporary "
 cat /tmp/TheFile.timeL
