@@ -55,27 +55,24 @@ starting_pid=$1     ### Enforcer was called from
 
 if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
 
-   echo "  ####################  Whole new way "
    echo "                                      STARTING PID $starting_pid"
 echo " -------------------------------------------------   $LINENO"
-   ps -efp $starting_pid
+   ps -fp $starting_pid
    pstree -p $starting_pid 
    pstree -p $starting_pid | awk -F'- ' '{print $2}' > raw-list
-   cat raw-list | awk '{print $1, $3 }'
+   cat raw-list | awk '{print $1, $3, $4 }'
    
    cat raw-list | awk '{print $1}' | tail -r | sed /$starting_pid/q > kill-these
    cat kill-these
    for kpid in `cat kill-these | grep -v $starting_pid`
    do
-   echo " task to be killed   (not done in this code)"
-    kill -9 $kpid
+      echo " task to be killed   $kpid"
+      kill -9 $kpid
    done
 
 else  
 
-
-
-echo "begin ----------------------------------------"
+echo "begin ------------  Linux --------------------"
 
 ####                 Create the killChildren script
 ls -l killChildren.sh     # un-needed
