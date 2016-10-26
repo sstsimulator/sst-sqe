@@ -61,12 +61,18 @@ echo " -------------------------------------------------   $LINENO"
    pstree -p $starting_pid 
    pstree -p $starting_pid | awk -F'- ' '{print $2}' > raw-list
    cat raw-list | awk '{print $1, $3, $4 }'
+   cat raw-list | awk '{print $1, $3}' | awk -F/ '{print $1 $NF}' > display-file
+echo " Display File "
+cat display-file
+
    
    cat raw-list | awk '{print $1}' | tail -r | sed /$starting_pid/q > kill-these
    cat kill-these
    for kpid in `cat kill-these | grep -v $starting_pid`
    do
       echo " task to be killed   $kpid"
+      grep $kpid display-file
+   
       kill -9 $kpid
       echo " Return from kill $?"
    done
