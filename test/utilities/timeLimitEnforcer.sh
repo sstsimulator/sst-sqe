@@ -50,28 +50,29 @@ do
 done 3<omps_list
 starting_pid=$1     ### Enforcer was called from
 
-echo "  ####################  Whole new way "
-echo $starting_pid
-ps -efp $starting_pid
-pstree -p $starting_pid 
-pstree -p $starting_pid | awk -F'- ' '{print $2}'
-pstree -p $starting_pid | awk -F'- ' '{print $2}' > raw-list
-cat raw-list | awk '{print $1, $3 }'
-cat raw-list
+if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
 
-cat raw-list | awk '{print $1}' | tail -r | sed /$starting_pid/q > kill-these
-cat kill-these
-for kpid in `cat kill-these`
-do
-echo " task to be killed   (not done in this code)"
-     echo $kpid
-done
+   echo "  ####################  Whole new way "
+   echo $starting_pid
+   ps -efp $starting_pid
+   pstree -p $starting_pid 
+   pstree -p $starting_pid | awk -F'- ' '{print $2}' > raw-list
+   cat raw-list | awk '{print $1, $3 }'
+   
+   cat raw-list | awk '{print $1}' | tail -r | sed /$starting_pid/q > kill-these
+   cat kill-these
+   for kpid in `cat kill-these | grep -v $starting_pid`
+   do
+   echo " task to be killed   (not done in this code)"
+    kill -9 $kpid
+   done
 
-
+else  
 
 
 
 echo "begin ----------------------------------------"
+
 ####                 Create the killChildren script
 ls -l killChildren.sh     # un-needed
 rm killChildren.sh
@@ -135,3 +136,4 @@ echo ' ' ;  echo "              this in temporary "
 echo ' ' ; echo " The list "
 cat /tmp/TheFile.timeL
 
+fi
