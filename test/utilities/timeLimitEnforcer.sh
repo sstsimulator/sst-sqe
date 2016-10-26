@@ -68,6 +68,7 @@ echo " -------------------------------------------------   $LINENO"
    do
       echo " task to be killed   $kpid"
       kill -9 $kpid
+      echo " Return from kill $?"
    done
 
 else  
@@ -76,8 +77,7 @@ echo "begin ------------  Linux --------------------"
 
 ####                 Create the killChildren script
 ls -l killChildren.sh     # un-needed
-rm killChildren.sh
-ls -l killChildren.sh       #  really un-needed
+rm -f killChildren.sh
 
 cat >> killChildren.sh << ..EOF..
 # killChildren (thispid, level)
@@ -114,8 +114,7 @@ echo " -------------------------------------------------   \$LINENO"
 ps -fp \$thisPid
 if [ \$? -eq 0 ] ; then
    echo Time to kill \$thisPid
-echo " -------------------------------------------------   \$LINENO"
-# ps -fp \$thisPid
+ps --no-headers -fp \$thisPid
    kill -9 \$thisPid
 else
    echo \$thisPid is gone
