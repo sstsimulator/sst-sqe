@@ -50,6 +50,17 @@ do
 done 3<omps_list
 starting_pid=$1     ### Enforcer was called from
 
+echo "  ####################  Whole new way "
+pstree -p $starting_pid | awk -F'- ' '{print $2}' > raw-list
+cat raw-list | awk '{print $1, $3 }'
+cat raw-list
+
+cat raw-list | awk '{print $1}' | sed /$starting_pid/q
+
+
+
+
+
 echo "begin ----------------------------------------"
 ####                 Create the killChildren script
 ls -l killChildren.sh     # un-needed
