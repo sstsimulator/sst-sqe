@@ -43,8 +43,7 @@ ps -ef | grep ompsievetest
 echo " this might better go in the Suite"
 echo " -------------------------------------------------   $LINENO"
 ps -ef | grep ompsievetest | grep -v -e grep > omps_list
-wc omps_list
-while read -u 3 _who _anOMP _own _rest
+wc omps_listwhile read -u 3 _who _anOMP _own _rest
 do
     if [ $_own == 1 ] ; then
         echo " Attempt to remove $_anOMP "
@@ -56,14 +55,12 @@ starting_pid=$1     ### Enforcer was called from
 if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
 
    echo "                                      STARTING PID $starting_pid"
-echo " -------------------------------------------------   $LINENO"
    ps -fp $starting_pid
    pstree -p $starting_pid 
    pstree -p $starting_pid | awk -F'- ' '{print $2}' > raw-list
-   cat raw-list | awk '{print $1, $3, $4 }'
    cat raw-list | awk '{print $1, "/", $3}' | awk -F/ '{print $1 $NF}' > display-file
-echo " Display File "
-cat display-file
+   echo " Display File "
+   cat display-file
 
    
    cat raw-list | awk '{print $1}' | tail -r | sed /$starting_pid/q > kill-these
@@ -86,9 +83,9 @@ ls -l killChildren.sh     # un-needed
 rm -f killChildren.sh
 
 cat >> killChildren.sh << ..EOF..
-# killChildren (thispid, level)
-thisPid=\$1
-level=\$2
+# killChildren (level, thispid)
+level=\$1
+thisPid=\$2
            echo Entered subroutine \$thisPid \$level
 grep \$thisPid /tmp/TheFile.timeL > F\${level}.tmp
         wc F\${level}.tmp
@@ -99,7 +96,7 @@ do
              echo " Parent or me entry  (skip)"
        continue
    else
-             echo " THIS IS A child  \$_ch \$thisPid "
+             echo " THIS IS A child  \$_ch "
    fi
          echo    this is level  \$level
    nlevel=\$(( \$level + 1 ))
@@ -112,15 +109,14 @@ do
       echo passed Sanity check
    fi
 
-   ./killChildren.sh \$_ch \$nlevel
-         echo    Return to \$thisPid at level \$level
+   ./killChildren.sh \$nlevel \$_ch
+         echo    Return to level \$level \$thisPid
 done 3<F\${level}.tmp
 echo "DEBUG  loop \$level is done"
 echo " -------------------------------------------------   \$LINENO"
 ps -fp \$thisPid
 if [ \$? -eq 0 ] ; then
-   echo Time to kill \$thisPid
-ps --no-headers -fp \$thisPid
+   echo Time to kill `ps --no-headers -fp \$thisPid`
    kill -9 \$thisPid
 else
    echo \$thisPid is gone
