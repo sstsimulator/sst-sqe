@@ -61,7 +61,7 @@ echo " -------------------------------------------------   $LINENO"
    pstree -p $starting_pid 
    pstree -p $starting_pid | awk -F'- ' '{print $2}' > raw-list
    cat raw-list | awk '{print $1, $3, $4 }'
-   cat raw-list | awk '{print $1, $3}' | awk -F/ '{print $1 $NF}' > display-file
+   cat raw-list | awk '{print $1, "/", $3}' | awk -F/ '{print $1 $NF}' > display-file
 echo " Display File "
 cat display-file
 
