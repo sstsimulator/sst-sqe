@@ -2,8 +2,8 @@
  cpu.write_reqs : Accumulator : Sum.u64 = 10000; SumSQ.u64 = 10000; Count.u64 = 10000; 
  cpu.split_read_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  cpu.split_write_reqs : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- cpu.cycles_with_issue : Accumulator : Sum.u64 = 2519119; SumSQ.u64 = 2519119; Count.u64 = 2519119; 
- cpu.cycles_no_issue : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ cpu.cycles_with_issue : Accumulator : Sum.u64 = 18750; SumSQ.u64 = 18750; Count.u64 = 18750; 
+ cpu.cycles_no_issue : Accumulator : Sum.u64 = 2500369; SumSQ.u64 = 2500369; Count.u64 = 2500369; 
  cpu.total_bytes_read : Accumulator : Sum.u64 = 160000; SumSQ.u64 = 1280000; Count.u64 = 20000; 
  cpu.total_bytes_write : Accumulator : Sum.u64 = 80000; SumSQ.u64 = 640000; Count.u64 = 10000; 
  cpu.req_latency : Accumulator : Sum.u64 = 13154551; SumSQ.u64 = 11635922013; Count.u64 = 30000; 

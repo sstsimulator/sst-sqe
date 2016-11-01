@@ -75,6 +75,11 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
     pushd examples/stream
 
+    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+       echo "  ### MacOS remove \"-fopenMP\" from the make "
+       sed -i'.x' 's/-fopenmp//' Makefile
+    fi
+
     make 
     retval=$?
     echo "    Make in examples/stream returned \"ok\" "
@@ -245,6 +250,9 @@ Ariel_template() {
         elif [ $line_diff -gt 15 ] ; then
              echo "Ariel test ${Ariel_case} out varies from Ref by $line_diff lines"
              fail "Ariel test ${Ariel_case} out varies from Ref by $line_diff lines"
+             echo ' ' ; echo "---------------  tail of outFile -----"
+             tail -20 $outFile
+             echo "     -------------  "
         else
              echo "Output file within $line_diff lines of Reference File"
         fi
@@ -295,12 +303,12 @@ test_Ariel_memH_test() {
 }
 
 test_Ariel_test_ivb() {
-    if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
-        echo " Temporary patch"
-        echo "Ariel on Ubuntu not working on Sandy and Ivy bridge"
-        skip_this_test
-        return
-    fi
+##     if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
+##         echo " Temporary patch"
+##         echo "Ariel on Ubuntu not working on Sandy and Ivy bridge"
+##         skip_this_test
+##         return
+##     fi
     if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
         echo "Open MP is not currently support on MacOS"
         skip_this_test
@@ -312,12 +320,12 @@ test_Ariel_test_ivb() {
 }
 
 test_Ariel_test_snb() {
-    if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
-        echo " Temporary patch"
-        echo "Ariel on Ubuntu not working on Sandy and Ivy bridge"
-        skip_this_test
-        return
-    fi
+##     if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
+##         echo " Temporary patch"
+##         echo "Ariel on Ubuntu not working on Sandy and Ivy bridge"
+##         skip_this_test
+##         return
+##     fi
     if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
         echo "Open MP is not currently support on MacOS"
         skip_this_test

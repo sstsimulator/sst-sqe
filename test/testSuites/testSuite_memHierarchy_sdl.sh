@@ -137,6 +137,7 @@ Tol=$2    ##  curTick tolerance
 
     grep -v ^cpu.*: $tmpFile | grep -v 'not aligned to the request size' > $outFile
     RemoveComponentWarning
+    pushd ${SSTTESTTEMPFILES}
 #          Append errFile to outFile   w/o  Not Aligned messages
     diff -b $referenceFile $outFile > _raw_diff
     if [ $? == 0 ] ; then
@@ -152,6 +153,9 @@ Tol=$2    ##  curTick tolerance
            echo " Sorted match with Reference File"
            rm _raw_diff
         else
+echo "Preliminary ---------------"
+cat ${SSTTESTTEMPFILES}/diff_sorted
+echo " ----------------- "
            echo "`diff $referenceFile $outFile | wc` $memH_case" >> ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
    #                             --- Special case with-DramSim --- 
            if [ $usingDramSim == 0 ] ; then    ## usingDramSim is TRUE
@@ -183,9 +187,13 @@ Tol=$2    ##  curTick tolerance
                   echo "Examine up to twenty lines of sorted difference"
                   cat diff_sorted | sed 20q
               fi          
+           else
+              fail "Output does not match Reference (w/o DRAMSim)"
            fi              ##    --- end of code for Dramsim case ----
+
         fi
     fi
+    popd
     grep "Simulation is complete, simulated time:" $tmpFile
     if [ $? != 0 ] ; then 
         echo "Completion test message not found"
