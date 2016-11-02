@@ -211,6 +211,11 @@ miranda_Template inorderstream
 
 }
 
+test_miranda_gupsgen() {
+miranda_Template gupsgen
+
+}
+
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
  
