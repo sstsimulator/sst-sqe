@@ -43,7 +43,8 @@ ps -ef | grep ompsievetest
 echo " this might better go in the Suite"
 echo " -------------------------------------------------   $LINENO"
 ps -ef | grep ompsievetest | grep -v -e grep > omps_list
-wc omps_listwhile read -u 3 _who _anOMP _own _rest
+wc omps_list
+while read -u 3 _who _anOMP _own _rest
 do
     if [ $_own == 1 ] ; then
         echo " Attempt to remove $_anOMP "
