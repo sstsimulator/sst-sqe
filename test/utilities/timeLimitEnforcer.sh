@@ -27,7 +27,7 @@ export TL_MY_PID=$$
 export tLE_PP=$PPID
 
 ####                     The Time Limit flag
-TIME_FLAG=/tmp/TimeFlag_${1}_${TL_MY_PID}
+TIME_FLAG=__tmp_TimeFlag_${1}_${TL_MY_PID}
 echo $SST_TEST_ONE_TEST_TIMEOUT >> $TIME_FLAG
 chmod 777 $TIME_FLAG
 echo "         Create Time Limit Flag file, $TIME_FLAG"
@@ -87,7 +87,7 @@ cat >> killChildren.sh << ..EOF..
 level=\$1
 thisPid=\$2
            echo Entered subroutine \$thisPid \$level
-grep \$thisPid /tmp/TheFile.timeL > F\${level}.tmp
+grep \$thisPid __tmp_TheFile.timeL > F\${level}.tmp
         echo " THIS BETTER BE ZERO [ \$? ]"
         wc F\${level}.tmp
 while read -u 3 _who _ch _pa rest
@@ -137,22 +137,22 @@ exit
 
 ls -l killChildren.sh
 chmod +x killChildren.sh
-ps -ef | grep -v -e ' 1 ' -e ' 2 ' > /tmp/TheFile.timeL
+ps -ef | grep -v -e ' 1 ' -e ' 2 ' > __tmp_TheFile.timeL
 echo ' ' ;  echo " this is supposed to be the relevent tree"
-wc /tmp/TheFile.timeL
+wc __tmp_TheFile.timeL
 
 ##--
 echo ' ' ;  echo "              this in temporary "     > tmp.instrum.$$
    echo "                                      STARTING PID $starting_pid" >> tmp.instrum.$$
 pstree -p $starting_pid >> tmp.instrum.$$ 
 echo ' ' ;  echo "              this in temporary " >> tmp.instrum.$$
-cat /tmp/TheFile.timeL >> tmp.instrum.$$
+cat __tmp_TheFile.timeL >> tmp.instrum.$$
 echo ' ' ;  echo "              this in temporary " >> tmp.instrum.$$
 ##--
 
    ./killChildren.sh 1 $starting_pid
 
 echo ' ' ; echo " The list " >> tmp.instrum.$$
-cat /tmp/TheFile.timeL >> tmp.instrum.$$	
+cat __tmp_TheFile.timeL >> tmp.instrum.$$	
 
 fi
