@@ -27,7 +27,7 @@ export TL_MY_PID=$$
 export tLE_PP=$PPID
 
 ####                     The Time Limit flag
-TIME_FLAG=__tmp_TimeFlag_${1}_${TL_MY_PID}
+TIME_FLAG=/tmp/TimeFlag_${1}_${TL_MY_PID}
 echo $SST_TEST_ONE_TEST_TIMEOUT >> $TIME_FLAG
 chmod 777 $TIME_FLAG
 echo "         Create Time Limit Flag file, $TIME_FLAG"
