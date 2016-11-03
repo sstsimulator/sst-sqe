@@ -24,6 +24,7 @@ sleep $SST_TEST_ONE_TEST_TIMEOUT
 echo ' ' ; echo "TL Enforcer:            TIME LIMIT     $CASE "
 echo "TL Enforcer: test has exceed alloted time of $SST_TEST_ONE_TEST_TIMEOUT seconds."
 export TL_MY_PID=$$
+export tLE_PP=$PPID
 
 ####                     The Time Limit flag
 TIME_FLAG=/tmp/TimeFlag_${1}_${TL_MY_PID}
@@ -33,15 +34,12 @@ echo "         Create Time Limit Flag file, $TIME_FLAG"
 
 echo ' '
 echo I am $TL_MY_PID,  I was called from $1, my parent PID is $PPID
-echo " -------------------------------------------------   $LINENO"
 ps -f -p ${1},${PPID}
 echo ' '
 
 ####                 Remove old ompsievetest tasks with parent 1
-echo " -------------------------------------------------   $LINENO"
 ps -ef | grep ompsievetest
 echo " this might better go in the Suite"
-echo " -------------------------------------------------   $LINENO"
 ps -ef | grep ompsievetest | grep -v -e grep > omps_list
 wc omps_list
 while read -u 3 _who _anOMP _own _rest
@@ -53,6 +51,7 @@ do
 done 3<omps_list
 starting_pid=$1     ### Enforcer was called from
 
+####                 Darwin using pstree
 if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
 
    echo "                                      STARTING PID $starting_pid"
@@ -77,10 +76,10 @@ if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
 
 else  
 
+####                    LINUX
 echo "begin ------------  Linux --------------------"
 
 ####                 Create the killChildren script
-ls -l killChildren.sh     # un-needed
 rm -f killChildren.sh
 
 cat >> killChildren.sh << ..EOF..
@@ -89,10 +88,15 @@ level=\$1
 thisPid=\$2
            echo Entered subroutine \$thisPid \$level
 grep \$thisPid /tmp/TheFile.timeL > F\${level}.tmp
+        echo " THIS BETTER BE ZERO [ \$? ]"
         wc F\${level}.tmp
 while read -u 3 _who _ch _pa rest
 do
         echo READ: \$_who, \$_ch ,\$_pa  \$rest
+   if [ \$_who != \$USER ] ; then
+            echo " \$_who does not match \$USER "
+       continue
+   fi
    if [ \$_ch == \$thisPid ] || [ \$_ch == \$TL_MY_PID ] ; then
              echo " Parent or me entry  (skip)"
        continue
@@ -114,10 +118,15 @@ do
          echo    Return to level \$level \$thisPid
 done 3<F\${level}.tmp
 echo "DEBUG  loop \$level is done"
-echo " -------------------------------------------------   \$LINENO"
+if [ \$thisPid == \$tLE_PP ] ; then
+    echo "timeLimitEnforcer parent,  \"Done\""
+    exit
+fi
 ps -fp \$thisPid
 if [ \$? -eq 0 ] ; then
-   echo Time to kill `ps --no-headers -fp \$thisPid`
+                         #          no-header option is Linux only
+echo " -------------thisPid is \$thisPid "
+   echo "Time to kill \`ps --no-headers -fp \$thisPid\`"
    kill -9 \$thisPid
 else
    echo \$thisPid is gone
@@ -128,20 +137,22 @@ exit
 
 ls -l killChildren.sh
 chmod +x killChildren.sh
-echo " -------------------------------------------------   $LINENO"
 ps -ef | grep -v -e ' 1 ' -e ' 2 ' > /tmp/TheFile.timeL
+echo ' ' ;  echo " this is supposed to be the relevent tree"
 wc /tmp/TheFile.timeL
-echo ' ' ;  echo "              this in temporary "
-   echo "                                      STARTING PID $starting_pid"
-echo " -------------------------------------------------   $LINENO"
-pstree -p $starting_pid
-echo ' ' ;  echo "              this in temporary "
-cat /tmp/TheFile.timeL
-echo ' ' ;  echo "              this in temporary "
 
-   ./killChildren.sh $starting_pid 1
+##--
+echo ' ' ;  echo "              this in temporary "     > tmp.instrum.$$
+   echo "                                      STARTING PID $starting_pid" >> tmp.instrum.$$
+pstree -p $starting_pid >> tmp.instrum.$$ 
+echo ' ' ;  echo "              this in temporary " >> tmp.instrum.$$
+cat /tmp/TheFile.timeL >> tmp.instrum.$$
+echo ' ' ;  echo "              this in temporary " >> tmp.instrum.$$
+##--
 
-echo ' ' ; echo " The list "
-cat /tmp/TheFile.timeL
+   ./killChildren.sh 1 $starting_pid
+
+echo ' ' ; echo " The list " >> tmp.instrum.$$
+cat /tmp/TheFile.timeL >> tmp.instrum.$$	
 
 fi
