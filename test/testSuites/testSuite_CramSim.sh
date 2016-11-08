@@ -132,23 +132,12 @@ popd
         diff ${referenceFile} ${outFile} > /dev/null;
         if [ $? -ne 0 ]
         then
-##  Follows some bailing wire to allow serialization branch to work
-##          with same reference files  (Vestigal -- Not Added for CramSim)
-     sed s/' (.*)'// $referenceFile > $newRef
-     ref=`wc ${newRef} | awk '{print $1, $2}'`; 
-     ##        ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
-     sed s/' (.*)'// $outFile > $newOut
-     new=`wc ${newOut} | awk '{print $1, $2}'`; 
-     ##          new=`wc ${outFile}       | awk '{print $1, $2}'`;
-        wc $newOut       
-               if [ "$ref" == "$new" ];
-               then
-                   echo "outFile word/line count matches Reference"
-               else
-                   echo "CramSim_${trc} test Fails"
-                   fail "outFile word/line count does NOT matches Reference"
-                   diff ${referenceFile} ${outFile} 
-               fi
+            grep Cycles ${outFile} ${referenceFile}
+            echo Ref: `grep Simulation ${referenceFile}`
+            grep Simulation $outFile
+            if [ $? != 0 ] ; then 
+                 fail " Did not find Simulation complete message"
+            fi
         else
                 echo ReferenceFile is an exact match of outFile
         fi
