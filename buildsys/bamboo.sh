@@ -2533,6 +2533,9 @@ else
                 darwinSetBoostMPI $1 $2 $3 $4
             fi
 
+       if [[  ${SST_WITHOUT_PIN:+isSet} == isSet ]] ; then
+            echo "  This run is forced to be without PIN "
+       else
             # if Intel PIN module is available, load 2.14 version
             #           ModuleEx puts the avail output on Stdout (where it belongs.)
             ModuleEx avail | egrep -q "pin/pin-2.14-71313"
@@ -2563,6 +2566,7 @@ else
             else
                 echo "Intel PIN environment module not found on this host."
             fi
+       fi
 
             echo "bamboo.sh: LISTING LOADED MODULES"
             ModuleEx list
