@@ -37,6 +37,15 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   as the function name begins with "test...".
 #===============================================================================
 
+# Check to see if we are supposed to build out of the source
+if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
+    echo "NOTICE: TESTING SST-MACRO OUT OF SOURCE DIR"
+    macrobuilddir="sst-macro-builddir"
+else
+    echo "NOTICE: TESTING SST-MACRO IN SOURCE DIR"
+    macrobuilddir="sst-macro"
+fi        
+
 #-------------------------------------------------------------------------------
 # Test:
 #     test_macro_make_check
@@ -65,7 +74,7 @@ test_macro_make_check() {
     # Define Software Under Test (SUT) and its runtime arguments
     # NOTE: sst-macro Tests are run from the source directory, 
     #       NOT from the install directory
-    macrodir=${SST_ROOT}/sst-macro
+    macrodir=${SST_ROOT}/${macrobuilddir}
     sut="Makefile"
     sutArgs="check"
 	
@@ -127,7 +136,7 @@ test_macro_make_installcheck() {
     # Define Software Under Test (SUT) and its runtime arguments
     # NOTE: sst-macro Tests are run from the source directory, 
     #       NOT from the install directory
-    macrodir=${SST_ROOT}/sst-macro
+    macrodir=${SST_ROOT}/${macrobuilddir}
     sut="Makefile"
     sutArgs="installcheck"
 	

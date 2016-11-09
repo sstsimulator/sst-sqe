@@ -58,10 +58,10 @@ oneTimeTearDown() {
        if [[ "$__shunit_testsFailed" -gt 0 ]] ; then
           RESULT="$RESULT / $__shunit_testsFailed Fail"
        fi
-       B_PROJ=`echo $BAMBOO_PROJECT | sed s/sstmainline_config_//`
+       B_SCEN=`echo $BAMBOO_SCENARIO | sed s/sstmainline_config_//`
        J_PROJ=`echo $JENKINS_PROJECT | sed s/SST__//`
 
-       echo "$today $elapsedSeconds s $B_PROJ $J_PROJ $BUILD_NUMBER $RESULT" >> ~jpvandy/WhichTest/$WHICH_FILE
+       echo "$today $elapsedSeconds s $B_SCEN $J_PROJ $BUILD_NUMBER $RESULT" >> ~jpvandy/WhichTest/$WHICH_FILE
     fi
 }
 
@@ -236,9 +236,10 @@ myWC() {
      echo ' '
 }
 
+SSTTESTTEMPFILES=${SST_TEST_ROOT}/testTempFiles
 preFail() {
 
-cat > prefail.in << .EOF.
+cat > $SSTTESTTEMPFILES/prefail.in << .EOF.
 test_${L_SUITENAME}_Prefail() {
 if [ "$2" != "skip" ] ; then
     fail "$1"
@@ -251,9 +252,10 @@ fi
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
-(. ${SHUNIT2_SRC}/shunit2 prefail.in)
+cd $SST_ROOT
+(. ${SHUNIT2_SRC}/shunit2 $SSTTESTTEMPFILES/prefail.in)
 echo ' ' ; echo "Returned from shunit2" ; echo ' '
-rm prefail.in
+rm $SSTTESTTEMPFILES/prefail.in
 exit
 }
 
@@ -264,14 +266,16 @@ exit
 #       (if don't match write the wc to stdout.)
 #   -----------------------------------------------
 compare_sorted() {
-   sort -o xo $1
-   sort -o xr $2
-   diff -b xo xr > diff_sorted
+   xo=${SSTTESTTEMPFILES}/xo
+   xr=${SSTTESTTEMPFILES}/xr
+   sort -o $xo $1
+   sort -o $xr $2
+   diff -b $xo $xr > ${SSTTESTTEMPFILES}/diff_sorted
    if [ $? == 0 ] ; then
-      rm xo xr
+      rm $xo $xr
       return 0
    fi
-   wc diff_sorted
+   wc ${SSTTESTTEMPFILES}/diff_sorted
    return 1
 }
 
@@ -305,3 +309,41 @@ RemoveComponentWarning() {
       rm -f ${outFile}.x
    fi
 }
+# ----------------------------------------------------
+#    Do the check on Valgrind on a test
+# ----------------------------------------------------
+checkValgrindOutput() {
+VGout=$1        #the Valgrind output file
+grep ERROR.SUMMARY $VGout  > /dev/null
+if [ $? != 0 ] ; then 
+    echo "Valgrind Summary not found"
+    fail " No Valgrind Summary"
+    wc $VGout
+    return
+fi
+#Add for qsim
+    date
+    ls -l $VGout
+###  ------
+    grep ERROR.SUMMARY $VGout | sed s/ERROR//
+contextNumber=`grep ERROR.SUMMARY $VGout | awk '{print $7}'`
+if [ $contextNumber -gt 0 ] ; then
+    sed -n '/ Invalid.read.of.size.4/{N;p;q}' $VGout  | grep opal_os_dirpath_create > /dev/null
+    if [ $? == 0 ] ;then
+        contextNumber=$(($contextNumber-1))
+        echo "Ignoring MPI \"Invalid read of size 4\""
+    fi
+fi
+if [ $contextNumber -gt 0 ] ; then
+    echo ' '
+    echo "Valgrind found $contextNumber issues"
+    fail " $testDataFileBase: Valgind found $contextNumber issues"
+    echo ' '
+else
+    echo ' '
+    echo "     $testDataFileBase:  Valgrind found NO issues      "
+    echo ' '
+fi
+
+}
+

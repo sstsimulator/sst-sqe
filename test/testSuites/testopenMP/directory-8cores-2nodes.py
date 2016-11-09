@@ -203,7 +203,7 @@ comp_memory0 = sst.Component("memory0", "memHierarchy.MemController")
 comp_memory0.addParams({
       "debug" : """0""",
       "coherence_protocol" : """MSI""",
-      "backend.mem_size" : """512""",
+      "backend.mem_size" : """512MiB""",
       "clock" : """1.6GHz""",
       "access_time" : """25 ns""",
       "rangeStart" : """0"""
@@ -225,7 +225,7 @@ comp_memory1 = sst.Component("memory1", "memHierarchy.MemController")
 comp_memory1.addParams({
       "debug" : """0""",
       "coherence_protocol" : """MSI""",
-      "backend.mem_size" : """512""",
+      "backend.mem_size" : """512MiB""",
       "clock" : """1.6GHz""",
       "access_time" : """25 ns""",
       "rangeStart" : """0"""

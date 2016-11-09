@@ -1,4 +1,8 @@
 TrivialCPU: Test Completed Successfuly
+TrivialCPU cpu Finished after 1000 issued reads, 1000 returned (104054 clocks)
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  103696
+  [2, 4]  358
  l1cache.TotalEventsReceived : Accumulator : Sum.u64 = 1111; SumSQ.u64 = 1111; Count.u64 = 1111; 
  l1cache.TotalEventsReplayed : Accumulator : Sum.u64 = 1; SumSQ.u64 = 1; Count.u64 = 1; 
  l1cache.CacheHits : Accumulator : Sum.u64 = 889; SumSQ.u64 = 889; Count.u64 = 889; 
@@ -27,7 +31,7 @@ TrivialCPU: Test Completed Successfuly
  l1cache.FetchInvX_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.Inv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 7764; SumSQ.u64 = 8872; Count.u64 = 208104; 
+ l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 7540; SumSQ.u64 = 8576; Count.u64 = 208104; 
  l1cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_S : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -166,10 +170,10 @@ TrivialCPU: Test Completed Successfuly
  l1cache.stateEvent_AckInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_AckInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_AckPut_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 4266; SumSQ.u64 = 298324; Count.u64 = 62; 
+ l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 4142; SumSQ.u64 = 281508; Count.u64 = 62; 
  l1cache.latency_GetS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.latency_GetX_IM : Accumulator : Sum.u64 = 144; SumSQ.u64 = 10368; Count.u64 = 2; 
- l1cache.latency_GetX_SM : Accumulator : Sum.u64 = 3334; SumSQ.u64 = 237748; Count.u64 = 47; 
+ l1cache.latency_GetX_IM : Accumulator : Sum.u64 = 140; SumSQ.u64 = 9800; Count.u64 = 2; 
+ l1cache.latency_GetX_SM : Accumulator : Sum.u64 = 3240; SumSQ.u64 = 224600; Count.u64 = 47; 
  l1cache.latency_GetX_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.latency_GetSEx_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.latency_GetSEx_SM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -193,18 +197,18 @@ TrivialCPU: Test Completed Successfuly
  l1cache.eventSent_NACK_up : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.eventSent_NACK_down : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.EventStalledForLockedCacheline : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- memory.requests_received_GetS : Accumulator : Sum.u64 = 62; SumSQ.u64 = 62; Count.u64 = 62; 
+ memory.latency_GetS : Accumulator : Sum.u64 = 1947; SumSQ.u64 = 62341; Count.u64 = 62;
  memory.requests_received_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.requests_received_GetX : Accumulator : Sum.u64 = 49; SumSQ.u64 = 49; Count.u64 = 49; 
  memory.requests_received_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.outstanding_requests : Accumulator : Sum.u64 = 3539; SumSQ.u64 = 3977; Count.u64 = 104054; 
+ memory.latency_GetS : Accumulator : Sum.u64 = 18446744073328472922; SumSQ.u64 = 4506087833787444; Count.u64 = 62; 
+ memory.latency_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ memory.latency_GetX : Accumulator : Sum.u64 = 1592; SumSQ.u64 = 52036; Count.u64 = 49;
+ memory.latency_PutM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.cycles_with_issue : Accumulator : Sum.u64 = 111; SumSQ.u64 = 111; Count.u64 = 111; 
  memory.cycles_attempted_issue_but_rejected : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.total_cycles : Accumulator : Sum.u64 = 104054; SumSQ.u64 = 104054; Count.u64 = 104054; 
-TrivialCPU cpu Finished after 1000 issued reads, 1000 returned (104054 clocks)
-Number of Pending Requests per Cycle (Binned by 2 Requests)
-  [0, 2]  103677
-  [2, 4]  377
 Simulation is complete, simulated time: 104.054 us
 == Loading device model file 'DDR3_micron_32M_8B_x4_sg125.ini' == 
 == Loading system model file 'system.ini' == 

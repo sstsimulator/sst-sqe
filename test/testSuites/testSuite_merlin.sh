@@ -115,8 +115,10 @@ Tol=$2    ##  curTick tolerance
                    echo "outFile word/line count matches Reference"
                else
                    echo "$merlin_case test Fails"
+                   echo "   tail of $outFile  ---- "
                    tail $outFile
                    fail "outFile word/line count does NOT matches Reference"
+                   diff ${referenceFile} ${outFile} 
                fi
         else
                 echo ReferenceFile is an exact match of outFile
@@ -176,6 +178,14 @@ merlin_Template dragon_72 500
 }
 
 test_merlin_ft_r16() {          
+   echo "SST_BUILD_TYPE = $SST_BUILD_TYPE"
+
+   if [[ $SST_BUILD_TYPE == "sstmainline_config_valgrind" ]] ; then
+      skip_this_test
+      echo ' ' ; echo "   ---- Skip this test for Valgrind" ; echo ' '
+      return
+   fi
+
 merlin_Template ft_r16 500
 
 }

@@ -1,3 +1,11 @@
+TrivialCPU cpu Finished after 1967 issued reads, 1966 returned (199999 clocks)
+Number of Pending Requests per Cycle (Binned by 2 Requests)
+  [0, 2]  64554
+  [2, 4]  93411
+  [4, 6]  35857
+  [6, 8]  5630
+  [8, 10]  530
+  [10, 12]  17
  l1cache.TotalEventsReceived : Accumulator : Sum.u64 = 3926; SumSQ.u64 = 3926; Count.u64 = 3926; 
  l1cache.TotalEventsReplayed : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.CacheHits : Accumulator : Sum.u64 = 7; SumSQ.u64 = 7; Count.u64 = 7; 
@@ -26,7 +34,7 @@
  l1cache.FetchInvX_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.Inv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 926535; SumSQ.u64 = 3063413; Count.u64 = 399696; 
+ l1cache.MSHR_occupancy : Accumulator : Sum.u64 = 926715; SumSQ.u64 = 3064357; Count.u64 = 399696; 
  l1cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.evict_S : Accumulator : Sum.u64 = 1697; SumSQ.u64 = 1697; Count.u64 = 1697; 
  l1cache.evict_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -165,9 +173,9 @@
  l1cache.stateEvent_AckInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_AckInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.stateEvent_AckPut_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 828655; SumSQ.u64 = 397904525; Count.u64 = 1756; 
+ l1cache.latency_GetS_IS : Accumulator : Sum.u64 = 828805; SumSQ.u64 = 398049733; Count.u64 = 1756; 
  l1cache.latency_GetS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l1cache.latency_GetX_IM : Accumulator : Sum.u64 = 97293; SumSQ.u64 = 46935189; Count.u64 = 202; 
+ l1cache.latency_GetX_IM : Accumulator : Sum.u64 = 97323; SumSQ.u64 = 46964229; Count.u64 = 202; 
  l1cache.latency_GetX_SM : Accumulator : Sum.u64 = 483; SumSQ.u64 = 233289; Count.u64 = 1; 
  l1cache.latency_GetX_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l1cache.latency_GetSEx_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -220,7 +228,7 @@
  l2cache.FetchInvX_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l2cache.Inv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l2cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l2cache.MSHR_occupancy : Accumulator : Sum.u64 = 828104; SumSQ.u64 = 2533674; Count.u64 = 399675; 
+ l2cache.MSHR_occupancy : Accumulator : Sum.u64 = 828284; SumSQ.u64 = 2534542; Count.u64 = 399675; 
  l2cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l2cache.evict_S : Accumulator : Sum.u64 = 1264; SumSQ.u64 = 1264; Count.u64 = 1264; 
  l2cache.evict_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -359,9 +367,9 @@
  l2cache.stateEvent_AckInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l2cache.stateEvent_AckInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l2cache.stateEvent_AckPut_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l2cache.latency_GetS_IS : Accumulator : Sum.u64 = 740420; SumSQ.u64 = 319422500; Count.u64 = 1727; 
+ l2cache.latency_GetS_IS : Accumulator : Sum.u64 = 740570; SumSQ.u64 = 319552708; Count.u64 = 1727; 
  l2cache.latency_GetS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l2cache.latency_GetX_IM : Accumulator : Sum.u64 = 85461; SumSQ.u64 = 36960933; Count.u64 = 198; 
+ l2cache.latency_GetX_IM : Accumulator : Sum.u64 = 85491; SumSQ.u64 = 36986973; Count.u64 = 198; 
  l2cache.latency_GetX_SM : Accumulator : Sum.u64 = 2165; SumSQ.u64 = 937445; Count.u64 = 5; 
  l2cache.latency_GetX_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l2cache.latency_GetSEx_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -414,7 +422,7 @@
  l3cache.FetchInvX_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.Inv_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.NACK_recv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l3cache.MSHR_occupancy : Accumulator : Sum.u64 = 648923; SumSQ.u64 = 1695329; Count.u64 = 399999; 
+ l3cache.MSHR_occupancy : Accumulator : Sum.u64 = 649103; SumSQ.u64 = 1696057; Count.u64 = 399999; 
  l3cache.evict_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.evict_S : Accumulator : Sum.u64 = 781; SumSQ.u64 = 781; Count.u64 = 781; 
  l3cache.evict_E : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -553,9 +561,9 @@
  l3cache.stateEvent_AckInv_EInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.stateEvent_AckInv_MInv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.stateEvent_AckPut_I : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l3cache.latency_GetS_IS : Accumulator : Sum.u64 = 580041; SumSQ.u64 = 197793981; Count.u64 = 1701; 
+ l3cache.latency_GetS_IS : Accumulator : Sum.u64 = 580191; SumSQ.u64 = 197896589; Count.u64 = 1701; 
  l3cache.latency_GetS_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
- l3cache.latency_GetX_IM : Accumulator : Sum.u64 = 65813; SumSQ.u64 = 22442233; Count.u64 = 193; 
+ l3cache.latency_GetX_IM : Accumulator : Sum.u64 = 65843; SumSQ.u64 = 22462753; Count.u64 = 193; 
  l3cache.latency_GetX_SM : Accumulator : Sum.u64 = 3069; SumSQ.u64 = 1046529; Count.u64 = 9; 
  l3cache.latency_GetX_M : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.latency_GetSEx_IM : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -566,7 +574,7 @@
  l3cache.eventSent_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.eventSent_GetSResp : Accumulator : Sum.u64 = 1727; SumSQ.u64 = 1727; Count.u64 = 1727; 
  l3cache.eventSent_GetXResp : Accumulator : Sum.u64 = 203; SumSQ.u64 = 203; Count.u64 = 203; 
- l3cache.eventSent_PutS : Accumulator : Sum.u64 = 781; SumSQ.u64 = 781; Count.u64 = 781; 
+ l3cache.eventSent_PutS : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.eventSent_PutE : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  l3cache.eventSent_PutM : Accumulator : Sum.u64 = 89; SumSQ.u64 = 89; Count.u64 = 89; 
  l3cache.eventSent_Inv : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
@@ -584,16 +592,12 @@
  memory.requests_received_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.requests_received_GetX : Accumulator : Sum.u64 = 202; SumSQ.u64 = 202; Count.u64 = 202; 
  memory.requests_received_PutM : Accumulator : Sum.u64 = 89; SumSQ.u64 = 89; Count.u64 = 89; 
- memory.outstanding_requests : Accumulator : Sum.u64 = 201192; SumSQ.u64 = 421726; Count.u64 = 199999; 
+ memory.outstanding_requests : Accumulator : Sum.u64 = 201283; SumSQ.u64 = 421989; Count.u64 = 199999; 
+ memory.latency_GetS : Accumulator : Sum.u64 = 171876; SumSQ.u64 = 17367128; Count.u64 = 1701;
+ memory.latency_GetSEx : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
+ memory.latency_GetX : Accumulator : Sum.u64 = 20417; SumSQ.u64 = 2063647; Count.u64 = 202; 
+ memory.latency_PutM : Accumulator : Sum.u64 = 8990; SumSQ.u64 = 908092; Count.u64 = 89; 
  memory.cycles_with_issue : Accumulator : Sum.u64 = 1992; SumSQ.u64 = 1992; Count.u64 = 1992; 
  memory.cycles_attempted_issue_but_rejected : Accumulator : Sum.u64 = 0; SumSQ.u64 = 0; Count.u64 = 0; 
  memory.total_cycles : Accumulator : Sum.u64 = 199999; SumSQ.u64 = 199999; Count.u64 = 199999; 
-TrivialCPU cpu Finished after 1967 issued reads, 1966 returned (199999 clocks)
-Number of Pending Requests per Cycle (Binned by 2 Requests)
-  [0, 2]  64567
-  [2, 4]  93421
-  [4, 6]  35835
-  [6, 8]  5629
-  [8, 10]  530
-  [10, 12]  17
 Simulation is complete, simulated time: 200 us

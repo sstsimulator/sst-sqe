@@ -37,6 +37,9 @@ L_TESTFILE=()  # Empty list, used to hold test file names
            preFail " Scheduler tests do not work with threading" "skip"
     fi     
 
+echo ' ' ; echo " This one Passed Valgrind August 19, but took a long time"
+echo ' '
+
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long
@@ -229,8 +232,8 @@ test_scheduler_0003() {
     testDataFileBase="test_scheduler_0003"
 
     # This test requires that sst be built with GLPK
-    grep "^#define.HAVE_GLPK.1" ${SST_ROOT}/config.log > /dev/null
-    if [ $? == 1 ] ; then
+    grep "^#define.HAVE_GLPK.1" ${SST_ROOT}/sst-elements/config.log > /dev/null
+    if [ $? != 0 ] ; then
         echo "     SST NOT configured with GLPK,  skipping $testDataFileBase"
         skip_this_test     # Skip function in shunit2
         echo ' '
@@ -408,12 +411,15 @@ test_scheduler_0005() {
     # files, and ".out" extension. XML postprocessing requires this.
     testDataFileBase="test_scheduler_0005"
     # This test requires that sst be built with METIS
-    grep "^#define.HAVE_METIS.1" ${SST_ROOT}/config.log > /dev/null
-    if [ $? == 1 ] ; then
+    grep "^#define.HAVE_METIS.1" ${SST_ROOT}/sst-elements/config.log > /dev/null
+    retVal=$?
+    if [ $retVal != 0 ] ; then
         echo "     SST NOT configured with METIS,  skipping $testDataFileBase"
         skip_this_test     # Skip function in shunit2
         echo ' '
         return
+    else
+        echo "Return from Metis grep is $retVal"
     fi
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file

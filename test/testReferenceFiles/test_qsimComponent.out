@@ -1,13 +1,17 @@
+c0.l2cache: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+c1.l2cache: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+c2.l2cache: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+c3.l2cache: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
 qsimComponent 0 init: loaded state
 qsimComponent 0 init: loaded application
 qsimComponent init: callbacks set
 qsimComponent 0 init: sending init data
 qsimComponent 0 init: sent init data
-qsimComponent 1 init: loaded state
-qsimComponent 1 init: loaded application
-qsimComponent init: callbacks set
 qsimComponent 2 init: loaded state
 qsimComponent 2 init: loaded application
+qsimComponent init: callbacks set
+qsimComponent 1 init: loaded state
+qsimComponent 1 init: loaded application
 qsimComponent init: callbacks set
 qsimComponent 3 init: loaded state
 qsimComponent 3 init: loaded application
@@ -2688,15 +2692,15 @@ qsimComponent init: callbacks set
 4987
 4993
 4999
+qsimComponent 1 handleEvent: End message.
 qsimComponent 2 handleEvent: End message.
 qsimComponent 3 handleEvent: End message.
-qsimComponent 0 handleEvent: End message.
-8838328 instructions executed, 0 outstanding reqs, 3715662 messages received,
-6574593201 sim cycles
-5396255 instructions executed, 0 outstanding reqs, 2388322 messages received,
-6574593201 sim cycles
-8631403 instructions executed, 1 outstanding reqs, 4405671 messages received,
-6574593201 sim cycles
-12046771 instructions executed, 0 outstanding reqs, 5056358 messages received,
-6574593201 sim cycles
-Simulation is complete, simulated time: 6.57459 ms
+8707209 instructions executed, 0 outstanding reqs, 3742164 messages received,
+7091647201 sim cycles
+9148056 instructions executed, 1 outstanding reqs, 4678535 messages received,
+7091647201 sim cycles
+7701033 instructions executed, 0 outstanding reqs, 3266613 messages received,
+7091647201 sim cycles
+11534955 instructions executed, 0 outstanding reqs, 4807793 messages received,
+7091647201 sim cycles
+Simulation is complete, simulated time: 7.09165 ms

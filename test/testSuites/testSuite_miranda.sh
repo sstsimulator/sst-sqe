@@ -88,6 +88,10 @@ miranda_case=$1
              RemoveComponentWarning
              return
         fi
+        # Skip the Verbose configuration information (contains src line no.)
+        sed -i'.y' '/Req.*]: /d' $outFile
+        rm -f $outFile.y
+
         RemoveComponentWarning
         myWC $referenceFile $outFile
         diff -b $referenceFile $outFile  > raw_diff
@@ -175,6 +179,11 @@ test_miranda_randomgen() {
              return
        fi
     fi
+   if [[ $SST_BUILD_TYPE == "sstmainline_config_valgrind" ]] ; then
+      skip_this_test
+      echo " Skipping this test on valgrind, takes too long"
+      return
+   fi
 miranda_Template randomgen
 
 ##  Reset the Time Limit for reamainer of tests
@@ -199,6 +208,11 @@ miranda_Template copybench
 
 test_miranda_inorderstream() {
 miranda_Template inorderstream
+
+}
+
+test_miranda_gupsgen() {
+miranda_Template gupsgen
 
 }
 
