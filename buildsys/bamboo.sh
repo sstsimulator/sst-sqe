@@ -2532,7 +2532,7 @@ else
 
                 darwinSetBoostMPI $1 $2 $3 $4
             fi
-
+ SST_WITHOUT_PIN=1
        if [[  ${SST_WITHOUT_PIN:+isSet} == isSet ]] ; then
             echo "  This run is forced to be without PIN "
        else
