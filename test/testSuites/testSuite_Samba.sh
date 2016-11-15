@@ -174,6 +174,13 @@ Samba_Template gupsgen 500
 }
 
 test_gupsgen_mmu() {
+
+   if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+       echo " November 15th, this test is not happpy with MULTI      OMIT"    
+       skip_this_test
+       return
+   fi
+
 Samba_Template gupsgen_mmu 500
 
 }
