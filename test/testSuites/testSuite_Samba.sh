@@ -1,5 +1,5 @@
 #!/bin/bash 
-# testSuite_CramSim.sh
+# testSuite_Samba.sh
 
 # Description: 
 
@@ -20,7 +20,7 @@ TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 #=============================================================================
 # Variables global to functions in this suite
 #===============================================================================
-L_SUITENAME="SST_CramSim_suite" # Name of this test suite; will be used to
+L_SUITENAME="SST_Samba_suite" # Name of this test suite; will be used to
                                  # identify this suite in SDL file. This
                                  # should be a single string, no spaces
                                  # please.
@@ -33,47 +33,19 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 L_TESTFILE=()  # Empty list, used to hold test file names
 
 #===============================================================================
-#                     Set up
-
-    ls -d $SST_TEST_SUITES/testCramSim > /dev/null
-    Ret_Val=$?
-    if [ $Ret_Val == 0 ] ; then
-        rm -rf $SST_TEST_SUITES/testCramSim
-    fi
-mkdir -p $SST_TEST_SUITES/testCramSim
-cd $SST_TEST_SUITES/testCramSim
-pwd
-
-ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg .
-ls -l $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg  > /dev/null
-if [ $? != 0 ] ; then
-   ls $SST_ROOT/sst-elements/src/sst/elements/CramSim
-   exit
-fi
-mkdir tests
-
-ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/tests/* tests
-ls -l ddr4_verimem.cfg
-if [ $? != 0 ] ; then
-   echo "############################################## $LINENO "
-   exit
-fi
-cd tests
-
 #                       TEMPLATE
 #     Subroutine to run many similiar tests without reproducing the script.
-#      First parameter is the name of the test, must match test_CramSim_<name>()
+#      First parameter is the name of the test, must match test_Samba_<name>()
 #      Second parameter is the execution cycle tolerance in hundredths of a
 #         percent.   (5% therefore is 500.)
 
-CramSim_Template() {
-trc=$1
+Samba_Template() {
+Samba_case=$1
 Tol=$2    ##  curTick tolerance
 
-cd $SST_TEST_SUITES/testCramSim
 
     startSeconds=`date +%s`
-    testDataFileBase="test_CramSim_$trc"
+    testDataFileBase="test_Samba_$Samba_case"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
@@ -84,28 +56,19 @@ cd $SST_TEST_SUITES/testCramSim
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-pushd tests
-	wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim-trace_verimem_${trc}.trc.gz >o${trc} 2>e${trc} 
-	if [ $? != 0 ] ; then
-            echo " Download of trace file failed for sst-CramSim-trace_verimem_${trc}.trc.gz "
-            fail " Download of trace file failed for sst-CramSim-trace_verimem_${trc}.trc.gz "
-            echo "           ----- stdout -----"
-            cat o${trc}
-            echo "           ----- stderr -----"
-            cat e${trc}
-            return
-        fi
-        gunzip sst-CramSim-trace_verimem_${trc}.trc.gz
-popd
-
-  ls -l tests/sst-CramSim-trace_verimem_${trc}.trc
-#
-#          Warning the text appended to the next line after the ## is required for multiThread auto configuration.
-#
-      ${sut} tests/test_txntrace4.py --model-options="--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc" >$outFile   ##  ${sutArgs
-      RetVal=$?
+        pyFileName=${Samba_case}.py
+        sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/Samba/tests/${pyFileName}"
+        ls $sutArgs
 
         echo " Running from `pwd`"
+        if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
+           ${sut} ${sutArgs} > ${outFile}
+           RetVal=$? 
+        else
+           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs}
+           RetVal=$? 
+           cat ${testOutFiles}* > $outFile
+        fi
 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
@@ -121,22 +84,36 @@ popd
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              wc $outFile
              echo " 20 line tail of \$outFile"
-             tail -20 $outFile
+             tail -20 $outfile
              echo "    --------------------"
              return
         fi
         wc ${outFile} ${referenceFile} | awk -F/ '{print $1, $(NF-1) "/" $NF}'
 
+        RemoveComponentWarning
 
         diff ${referenceFile} ${outFile} > /dev/null;
         if [ $? -ne 0 ]
         then
-            grep Cycles ${outFile} ${referenceFile}
-            echo Ref: `grep Simulation ${referenceFile}`
-            grep Simulation $outFile
-            if [ $? != 0 ] ; then 
-                 fail " Did not find Simulation complete message"
-            fi
+##  Follows some bailing wire to allow serialization branch to work
+##          with same reference files
+     sed s/' (.*)'// $referenceFile > $newRef
+     ref=`wc ${newRef} | awk '{print $1, $2}'`; 
+     ##        ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
+     sed s/' (.*)'// $outFile > $newOut
+     new=`wc ${newOut} | awk '{print $1, $2}'`; 
+     ##          new=`wc ${outFile}       | awk '{print $1, $2}'`;
+        wc $newOut       
+               if [ "$ref" == "$new" ];
+               then
+                   echo "outFile word/line count matches Reference"
+               else
+                   echo "$Samba_case test Fails"
+                   echo "   tail of $outFile  ---- "
+                   tail $outFile
+                   fail "outFile word/line count does NOT matches Reference"
+                   diff ${referenceFile} ${outFile} 
+               fi
         else
                 echo ReferenceFile is an exact match of outFile
         fi
@@ -144,10 +121,16 @@ popd
         endSeconds=`date +%s`
         echo " "
         elapsedSeconds=$(($endSeconds -$startSeconds))
-        echo "CramSim_${trc}: Wall Clock Time  $elapsedSeconds seconds"
+        echo "${Samba_case}: Wall Clock Time  $elapsedSeconds seconds"
+         
 
 }
 
+
+# Build Test app
+##    The following code already explictly assume we are at trunk
+  
+   
 
 #===============================================================================
 # Test functions
@@ -157,83 +140,71 @@ popd
 
 #-------------------------------------------------------------------------------
 # Test:
-#     test_CramSim
+#     test_Samba
 # Purpose:
-#     Exercise the CramSim code in SST
+#     Exercise the Samba code in SST
 # Inputs:
 #     None
 # Outputs:
-#     test_CramSim_xxx.out file
+#     test_Samba_xxx.out file
 # Expected Results
 #     Match of output file against reference file
 # Caveats:
 #     For shunit2, the output files must match the reference file *exactly*,
 #     requiring that the command lines for creating both the output
 #     file and the reference file be exactly the same.
-# Exception for tests   (History note not CramSim):
+# Exception for Samba tests:
 #     A fuzzy compare has been inserted here.   The only thing that varies is
 #     the value of the total Ticks simulated.  With binaries shared from SVN, 
 #     there should be no need for fuzziness.  When the static binary is build
 #     using compiler and libraries on the host, the exact number of Ticks in the 
 #     program may vary from that reported in the reference file checked into SVN.
+# Does not use subroutine because it invokes the build of all test binaries.
+## -- test_gupsgen() {
+## -- test_gupsgen_mmu() {
+## -- test_stencil3dbench() {
+## -- test_stencil3dbench_mmu() {
+## -- test_streambench() {
+## -- test_streambench_mmu() {
+## -- stats-snb-ariel-dram.csv
 #-------------------------------------------------------------------------------
-test_CramSim_1_R() {          
-CramSim_Template 1_R 500
+test_gupsgen() {
+Samba_Template gupsgen 500
 
 }
 
-test_CramSim_1_RW() {          
-CramSim_Template 1_RW 500
+test_gupsgen_mmu() {
+
+   if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+       echo " November 15th, this test is not happpy with MULTI      OMIT"    
+       skip_this_test
+       return
+   fi
+
+Samba_Template gupsgen_mmu 500
 
 }
 
-test_CramSim_1_W() {          
-CramSim_Template 1_W 500
+test_stencil3dbench() {
+Samba_Template stencil3dbench 500
 
 }
 
-test_CramSim_2_R() {          
-CramSim_Template 2_R 500
+test_stencil3dbench_mmu() {
+Samba_Template stencil3dbench_mmu 500
 
 }
 
-test_CramSim_2_W() {          
-CramSim_Template 2_W 500
+test_streambench() {
+Samba_Template streambench 500
 
 }
 
-test_CramSim_4_R() {          
-CramSim_Template 4_R 500
+test_streambench_mmu() {
+Samba_Template streambench_mmu 500
 
 }
 
-test_CramSim_4_W() {          
-CramSim_Template 4_W 500
-
-}
-
-test_CramSim_5_R() {          
-CramSim_Template 5_R 500
-
-}
-
-test_CramSim_5_W() {          
-CramSim_Template 5_W 500
-
-}
-
-test_CramSim_6_R() {          
-CramSim_Template 6_R 500
-
-}
-
-test_CramSim_6_W() {          
-CramSim_Template 6_W 500
-
-}
-
-
-export SST_TEST_ONE_TEST_TIMEOUT=3000         #  3000 seconds
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
@@ -243,6 +214,6 @@ export SST_TEST_ONE_TEST_TIMEOUT=200
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 #         Located here this timeout will override the multithread value
-export SST_TEST_ONE_TEST_TIMEOUT=750
+
 (. ${SHUNIT2_SRC}/shunit2)
 
