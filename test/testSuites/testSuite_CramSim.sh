@@ -35,9 +35,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #===============================================================================
 #                     Set up
 
-    ls -d $SST_TEST_SUITES/testCramSim 
+    ls -d $SST_TEST_SUITES/testCramSim > /dev/null
     Ret_Val=$?
-echo " Return from ls -d is $Ret_Val"
     if [ $Ret_Val == 0 ] ; then
         rm -rf $SST_TEST_SUITES/testCramSim
     fi
