@@ -17,7 +17,7 @@ TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 . $TEST_SUITE_ROOT/../include/testSubroutines.sh
 
 
-if [[ $SST_BUILD_TYPE == "sstmainline_config_make_dist_no_gem5" ]] ; then
+if [[ $SST_BUILD_TYPE == "sstmainline_config_no_gem5" ]] ; then
      preFail " CramSim has problems with make-dist"  "skip"
 fi
 
