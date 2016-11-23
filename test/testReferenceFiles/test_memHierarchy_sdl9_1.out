@@ -1,5 +1,6 @@
 l2cache: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 5 cycles.
 l3cache: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 32 cycles.
+TrivialCPU: Test Completed Successfuly
 TrivialCPU cpu Finished after 10000 issued reads, 10000 returned (1004898 clocks)
 	5 Noncacheable Reads
 	1 Noncacheable Writes
