@@ -47,7 +47,6 @@ VaultSim_Template() {
 VSim_case=$1
 Tol=$2    ##  curTick tolerance,  or  "lineWordCt" 
 
-    cd $SST_ROOT/sst/elements/VaultSimC/tests
     startSeconds=`date +%s`
     testDataFileBase="test_VaultSim_$VSim_case"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
