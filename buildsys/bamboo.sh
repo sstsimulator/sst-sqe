@@ -662,6 +662,7 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
+        ${SST_TEST_SUITES}/testSuite_memHA.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
         ${SST_TEST_SUITES}/testSuite_CramSim.sh
         ${SST_TEST_SUITES}/testSuite_hybridsim.sh
@@ -691,6 +692,7 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
+    ${SST_TEST_SUITES}/testSuite_memHA.sh
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
 
 
