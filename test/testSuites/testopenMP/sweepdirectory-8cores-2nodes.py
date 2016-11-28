@@ -79,9 +79,9 @@ ariel_cpus.addParams({
     "pipetimeout"       : 0,
     "corecount"         : 8,
     "arielmode"         : 1,
-    "memorylevels"      : 1,
-    "pagecount0"        : 262144,
-    "defaultlevel"      : 0,
+    "memmgr.memorylevels"      : 1,
+    "memmgr.pagecount0"        : 262144,
+    "memmgr.defaultlevel"      : 0,
     "executable"        : Executable
 })
 comp_c0_l1Dcache = sst.Component("c0.l1Dcache", "memHierarchy.Cache")
