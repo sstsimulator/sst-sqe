@@ -94,37 +94,67 @@ Tol=$2    ##  curTick tolerance
 
         RemoveComponentWarning
 
-        diff ${referenceFile} ${outFile} > /dev/null;
-        if [ $? -ne 0 ]
-        then
+        pushd ${SSTTESTTEMPFILES}
+
+        diff -b $referenceFile $outFile > _raw_diff
+        if [ $? == 0 ] ; then
+             echo ReferenceFile is an exact match of outFile
+             rm _raw_diff
+        else
+             wc $referenceFile $outFile
+             wc _raw_diff
+             rm diff_sorted
+             compare_sorted $referenceFile $outFile
+             if [ $? == 0 ] ; then
+                 echo " Sorted match with Reference File is EXACT"
+                 rm _raw_diff
+             else
+##    echo "Preliminary ---------------"
+#################### This is much too profuse (some times 30k lines)
+## cat ${SSTTESTTEMPFILES}/diff_sorted
+##    echo " ----------------- "
+                 ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
+                 new=`wc ${outFile}       | awk '{print $1, $2}'`;
+                 if [ "$ref" == "$new" ] ; then
+                     echo "outFile word/line count matches Reference"
+                 else
+                     echo "$memHA_case test Fails"
+                     echo "   tail of $outFile  ---- "
+                     tail $outFile
+                     fail "outFile word/line count does NOT match Reference"
+                     diff ${referenceFile} ${outFile} 
+                 fi
+             fi
+        fi
+        popd
+
 ##  Follows some bailing wire to allow serialization branch to work
 ##          with same reference files
-     sed s/' (.*)'// $referenceFile > $newRef
-     ref=`wc ${newRef} | awk '{print $1, $2}'`; 
-     ##        ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
-     sed s/' (.*)'// $outFile > $newOut
-     new=`wc ${newOut} | awk '{print $1, $2}'`; 
-     ##          new=`wc ${outFile}       | awk '{print $1, $2}'`;
-        wc $newOut       
-               if [ "$ref" == "$new" ];
-               then
-                   echo "outFile word/line count matches Reference"
-               else
-                   echo "$memHA_case test Fails"
-                   echo "   tail of $outFile  ---- "
-                   tail $outFile
-                   fail "outFile word/line count does NOT matches Reference"
-                   diff ${referenceFile} ${outFile} 
-               fi
-        else
-                echo ReferenceFile is an exact match of outFile
-        fi
+##     sed s/' (.*)'// $referenceFile > $newRef
+##     ref=`wc ${newRef} | awk '{print $1, $2}'`; 
+##     ##        ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
+##     sed s/' (.*)'// $outFile > $newOut
+##     new=`wc ${newOut} | awk '{print $1, $2}'`; 
+##     ##          new=`wc ${outFile}       | awk '{print $1, $2}'`;
+##        wc $newOut       
+##               if [ "$ref" == "$new" ];
+##               then
+##                   echo "outFile word/line count matches Reference"
+##               else
+##                   echo "$memHA_case test Fails"
+##                   echo "   tail of $outFile  ---- "
+##                   tail $outFile
+##                   fail "outFile word/line count does NOT match Reference"
+##                   diff ${referenceFile} ${outFile} 
+##               fi
+##        else
+##                echo ReferenceFile is an exact match of outFile
+##        fi
 
         endSeconds=`date +%s`
         echo " "
         elapsedSeconds=$(($endSeconds -$startSeconds))
         echo "${memHA_case}: Wall Clock Time  $elapsedSeconds seconds"
-         
 
 }
 
