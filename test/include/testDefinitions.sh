@@ -233,7 +233,6 @@ fi
 #     Revised  October 30, 2015
 ######################################
 multithread_multirank_patch_Suites() {
-    echo "multithread_multirank_patch_Suites: ########### Patch the test Suites"
     SET_TL=0
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
        if [ $SST_MULTI_THREAD_COUNT == 0 ] ; then
@@ -273,6 +272,7 @@ multithread_multirank_patch_Suites() {
     fi
 
     if [ $SET_TL == 1 ] ; then
+    echo "multithread_multirank_patch_Suites: ########### Patch the test Suites"
     export SST_MULTI_CORE=1
 
     sed -i.y '/Invoke shunit2/i \
