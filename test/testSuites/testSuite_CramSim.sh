@@ -231,9 +231,6 @@ CramSim_Template 6_W 500
 
 }
 
-
-export SST_TEST_ONE_TEST_TIMEOUT=3000         #  3000 seconds
-
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
@@ -242,6 +239,6 @@ export SST_TEST_ONE_TEST_TIMEOUT=200
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 #         Located here this timeout will override the multithread value
-export SST_TEST_ONE_TEST_TIMEOUT=750
+
 (. ${SHUNIT2_SRC}/shunit2)
 
