@@ -16,6 +16,17 @@ TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 . $TEST_SUITE_ROOT/../include/testDefinitions.sh
 . $TEST_SUITE_ROOT/../include/testSubroutines.sh
 
+remove_DRAMSim_noise() {
+ grep -v -e '== Loading device model file .DDR3_micron_32M_8B_x4_sg125.ini. ==' \
+   -e  '== Loading system model file .system.ini. ==' \
+   -e  'WARNING: UNKNOWN KEY .DEBUG_TRANS_FLOW. IN INI FILE' \
+   -e  '===== MemorySystem 0 =====' \
+   -e  'CH. 0 TOTAL_STORAGE : 2048MB | 1 Ranks | 16 Devices per rank' \
+   -e  '===== MemorySystem 1 =====' \
+   -e  'CH. 1 TOTAL_STORAGE : 2048MB | 1 Ranks | 16 Devices per rank' \
+   -e  'DRAMSim2 Clock Frequency =1Hz, CPU Clock Frequency=1Hz'  $1 > __tmp__
+cp __tmp__ $1
+}
 
 #=============================================================================
 # Variables global to functions in this suite
@@ -53,6 +64,7 @@ Tol=$2    ##  curTick tolerance
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
+    pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
@@ -70,6 +82,10 @@ Tol=$2    ##  curTick tolerance
            mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs}
            RetVal=$? 
            cat ${testOutFiles}* > $outFile
+           wc $outFile
+           remove_DRAMSim_noise $outFile
+           wc $outFile
+
         fi
 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
@@ -77,6 +93,7 @@ Tol=$2    ##  curTick tolerance
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
              rm $TIME_FLAG 
+             popd
              return 
         fi 
         if [ $RetVal != 0 ]  
@@ -88,6 +105,7 @@ Tol=$2    ##  curTick tolerance
              echo " 20 line tail of \$outFile"
              tail -20 $outFile
              echo "    --------------------"
+             popd
              return
         fi
         wc ${outFile} ${referenceFile} | awk -F/ '{print $1, $(NF-1) "/" $NF}'
@@ -126,6 +144,7 @@ Tol=$2    ##  curTick tolerance
                  fi
              fi
         fi
+        popd
         popd
 
 ##  Follows some bailing wire to allow serialization branch to work
@@ -185,24 +204,8 @@ Tol=$2    ##  curTick tolerance
 #     For shunit2, the output files must match the reference file *exactly*,
 #     requiring that the command lines for creating both the output
 #     file and the reference file be exactly the same.
-# Exception for memHA tests:
-#     A fuzzy compare has been inserted here.   The only thing that varies is
-#     the value of the total Ticks simulated.  With binaries shared from SVN, 
-#     there should be no need for fuzziness.  When the static binary is build
-#     using compiler and libraries on the host, the exact number of Ticks in the 
-#     program may vary from that reported in the reference file checked into SVN.
 # Does not use subroutine because it invokes the build of all test binaries.
-## -- test_gupsgen() {
-## -- test_gupsgen_mmu() {
-## -- test_stencil3dbench() {
-## -- test_stencil3dbench_mmu() {
-## -- test_streambench() {
-## -- test_streambench_mmu() {
-## -- stats-snb-ariel-dram.csv
 #-------------------------------------------------------------------------------
-
-        ln -sf ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/DDR3_micron_32M_8B_x4_sg125.ini .
-        ln -sf ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/system.ini .
 
 test_memHA_BackendChaining () {
     memHA_Template BackendChaining
@@ -211,7 +214,6 @@ test_memHA_BackendChaining () {
 test_memHA_BackendDelayBuffer  () {
     memHA_Template BackendDelayBuffer
 }
-
 
 
 test_memHA_BackendPagedMulti () {
