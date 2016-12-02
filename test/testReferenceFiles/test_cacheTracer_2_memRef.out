@@ -5,9 +5,9 @@ SB: Addr: 0x55084 timestamp: 340 Cmd: 7 ID: 4-0 ResponseID: 4-0 @170 ns
 NB: Addr: 0x65276 timestamp: 650 Cmd: 1 ID: 5-0 ResponseID: 0--1 @325 ns
 SB: Addr: 0x65276 timestamp: 852 Cmd: 7 ID: 5-0 ResponseID: 5-0 @426 ns
 NB: Addr: 0x40016 timestamp: 950 Cmd: 1 ID: 6-0 ResponseID: 0--1 @475 ns
-NB: Addr: 0x52728 timestamp: 976 Cmd: 1 ID: 7-0 ResponseID: 0--1 @488 ns
+NB: Addr: 0x52728 timestamp: 976 Cmd: 2 ID: 7-0 ResponseID: 0--1 @488 ns
 SB: Addr: 0x40016 timestamp: 1152 Cmd: 7 ID: 6-0 ResponseID: 6-0 @576 ns
-SB: Addr: 0x52728 timestamp: 1178 Cmd: 7 ID: 7-0 ResponseID: 7-0 @589 ns
+SB: Addr: 0x52728 timestamp: 1178 Cmd: 8 ID: 7-0 ResponseID: 7-0 @589 ns
 NB: Addr: 0x56368 timestamp: 1240 Cmd: 1 ID: 8-0 ResponseID: 0--1 @620 ns
 NB: Addr: 0x48872 timestamp: 1384 Cmd: 1 ID: 9-0 ResponseID: 0--1 @692 ns
 NB: Addr: 0x44964 timestamp: 1436 Cmd: 1 ID: 10-0 ResponseID: 0--1 @718 ns
@@ -37,9 +37,9 @@ SB: Addr: 0x23188 timestamp: 3040 Cmd: 7 ID: 20-0 ResponseID: 20-0 @1520 ns
 NB: Addr: 0x42264 timestamp: 3122 Cmd: 1 ID: 21-0 ResponseID: 0--1 @1561 ns
 NB: Addr: 0x24740 timestamp: 3218 Cmd: 1 ID: 22-0 ResponseID: 0--1 @1609 ns
 SB: Addr: 0x42264 timestamp: 3324 Cmd: 7 ID: 21-0 ResponseID: 21-0 @1662 ns
-NB: Addr: 0x57832 timestamp: 3328 Cmd: 1 ID: 23-0 ResponseID: 0--1 @1664 ns
+NB: Addr: 0x57832 timestamp: 3328 Cmd: 2 ID: 23-0 ResponseID: 0--1 @1664 ns
 SB: Addr: 0x24740 timestamp: 3420 Cmd: 7 ID: 22-0 ResponseID: 22-0 @1710 ns
-SB: Addr: 0x57832 timestamp: 3530 Cmd: 7 ID: 23-0 ResponseID: 23-0 @1765 ns
+SB: Addr: 0x57832 timestamp: 3530 Cmd: 8 ID: 23-0 ResponseID: 23-0 @1765 ns
 NB: Addr: 0x62876 timestamp: 3958 Cmd: 1 ID: 25-0 ResponseID: 0--1 @1979 ns
 SB: Addr: 0x62876 timestamp: 4160 Cmd: 7 ID: 25-0 ResponseID: 25-0 @2080 ns
 NB: Addr: 0x28900 timestamp: 4858 Cmd: 2 ID: 26-0 ResponseID: 0--1 @2429 ns
@@ -79,18 +79,18 @@ SB: Addr: 0x360 timestamp: 8154 Cmd: 7 ID: 43-0 ResponseID: 43-0 @4077 ns
 NB: Addr: 0x18796 timestamp: 8392 Cmd: 1 ID: 44-0 ResponseID: 0--1 @4196 ns
 NB: Addr: 0x17036 timestamp: 8480 Cmd: 1 ID: 46-0 ResponseID: 0--1 @4240 ns
 SB: Addr: 0x18796 timestamp: 8594 Cmd: 7 ID: 44-0 ResponseID: 44-0 @4297 ns
-NB: Addr: 0x51444 timestamp: 8632 Cmd: 2 ID: 47-0 ResponseID: 0--1 @4316 ns
+NB: Addr: 0x51444 timestamp: 8632 Cmd: 1 ID: 47-0 ResponseID: 0--1 @4316 ns
 SB: Addr: 0x17036 timestamp: 8682 Cmd: 7 ID: 46-0 ResponseID: 46-0 @4341 ns
 NB: Addr: 0x7084 timestamp: 8690 Cmd: 1 ID: 48-0 ResponseID: 0--1 @4345 ns
-SB: Addr: 0x51444 timestamp: 8834 Cmd: 8 ID: 47-0 ResponseID: 47-0 @4417 ns
+SB: Addr: 0x51444 timestamp: 8834 Cmd: 7 ID: 47-0 ResponseID: 47-0 @4417 ns
 SB: Addr: 0x7084 timestamp: 8892 Cmd: 7 ID: 48-0 ResponseID: 48-0 @4446 ns
 NB: Addr: 0x43684 timestamp: 9520 Cmd: 1 ID: 50-0 ResponseID: 0--1 @4760 ns
 NB: Addr: 0x36068 timestamp: 9580 Cmd: 1 ID: 51-0 ResponseID: 0--1 @4790 ns
-NB: Addr: 0x51752 timestamp: 9704 Cmd: 1 ID: 52-0 ResponseID: 0--1 @4852 ns
+NB: Addr: 0x51752 timestamp: 9704 Cmd: 2 ID: 52-0 ResponseID: 0--1 @4852 ns
 SB: Addr: 0x43684 timestamp: 9722 Cmd: 7 ID: 50-0 ResponseID: 50-0 @4861 ns
 SB: Addr: 0x36068 timestamp: 9782 Cmd: 7 ID: 51-0 ResponseID: 51-0 @4891 ns
 NB: Addr: 0x12248 timestamp: 9792 Cmd: 1 ID: 53-0 ResponseID: 0--1 @4896 ns
-SB: Addr: 0x51752 timestamp: 9906 Cmd: 7 ID: 52-0 ResponseID: 52-0 @4953 ns
+SB: Addr: 0x51752 timestamp: 9906 Cmd: 8 ID: 52-0 ResponseID: 52-0 @4953 ns
 SB: Addr: 0x12248 timestamp: 9994 Cmd: 7 ID: 53-0 ResponseID: 53-0 @4997 ns
 NB: Addr: 0x10832 timestamp: 10074 Cmd: 1 ID: 54-0 ResponseID: 0--1 @5037 ns
 NB: Addr: 0x49036 timestamp: 10114 Cmd: 1 ID: 55-0 ResponseID: 0--1 @5057 ns
@@ -133,25 +133,27 @@ SB: Addr: 0x28088 timestamp: 14948 Cmd: 7 ID: 79-0 ResponseID: 79-0 @7474 ns
 NB: Addr: 0x34900 timestamp: 15026 Cmd: 1 ID: 80-0 ResponseID: 0--1 @7513 ns
 NB: Addr: 0x47344 timestamp: 15150 Cmd: 2 ID: 81-0 ResponseID: 0--1 @7575 ns
 NB: Addr: 0x43004 timestamp: 15176 Cmd: 1 ID: 82-0 ResponseID: 0--1 @7588 ns
+NB: Addr: 0x23712 timestamp: 15208 Cmd: 2 ID: 84-0 ResponseID: 0--1 @7604 ns
 SB: Addr: 0x34900 timestamp: 15228 Cmd: 7 ID: 80-0 ResponseID: 80-0 @7614 ns
 SB: Addr: 0x47344 timestamp: 15352 Cmd: 8 ID: 81-0 ResponseID: 81-0 @7676 ns
 NB: Addr: 0x47228 timestamp: 15358 Cmd: 1 ID: 85-0 ResponseID: 0--1 @7679 ns
 SB: Addr: 0x43004 timestamp: 15378 Cmd: 7 ID: 82-0 ResponseID: 82-0 @7689 ns
+SB: Addr: 0x23712 timestamp: 15410 Cmd: 8 ID: 84-0 ResponseID: 84-0 @7705 ns
 SB: Addr: 0x47228 timestamp: 15560 Cmd: 7 ID: 85-0 ResponseID: 85-0 @7780 ns
 NB: Addr: 0x51836 timestamp: 15606 Cmd: 2 ID: 87-0 ResponseID: 0--1 @7803 ns
 SB: Addr: 0x51836 timestamp: 15808 Cmd: 8 ID: 87-0 ResponseID: 87-0 @7904 ns
 NB: Addr: 0x29884 timestamp: 15930 Cmd: 1 ID: 89-0 ResponseID: 0--1 @7965 ns
 SB: Addr: 0x29884 timestamp: 16132 Cmd: 7 ID: 89-0 ResponseID: 89-0 @8066 ns
-NB: Addr: 0x57352 timestamp: 16206 Cmd: 1 ID: 91-0 ResponseID: 0--1 @8103 ns
+NB: Addr: 0x57352 timestamp: 16206 Cmd: 2 ID: 91-0 ResponseID: 0--1 @8103 ns
 NB: Addr: 0x19096 timestamp: 16306 Cmd: 1 ID: 93-0 ResponseID: 0--1 @8153 ns
 NB: Addr: 0x62228 timestamp: 16376 Cmd: 1 ID: 95-0 ResponseID: 0--1 @8188 ns
-SB: Addr: 0x57352 timestamp: 16408 Cmd: 7 ID: 91-0 ResponseID: 91-0 @8204 ns
-NB: Addr: 0x10136 timestamp: 16468 Cmd: 2 ID: 97-0 ResponseID: 0--1 @8234 ns
-NB: Addr: 0x59316 timestamp: 16506 Cmd: 2 ID: 99-0 ResponseID: 0--1 @8253 ns
+SB: Addr: 0x57352 timestamp: 16408 Cmd: 8 ID: 91-0 ResponseID: 91-0 @8204 ns
+NB: Addr: 0x10136 timestamp: 16468 Cmd: 1 ID: 97-0 ResponseID: 0--1 @8234 ns
+NB: Addr: 0x59316 timestamp: 16506 Cmd: 1 ID: 99-0 ResponseID: 0--1 @8253 ns
 SB: Addr: 0x19096 timestamp: 16508 Cmd: 7 ID: 93-0 ResponseID: 93-0 @8254 ns
 SB: Addr: 0x62228 timestamp: 16578 Cmd: 7 ID: 95-0 ResponseID: 95-0 @8289 ns
-SB: Addr: 0x10136 timestamp: 16670 Cmd: 8 ID: 97-0 ResponseID: 97-0 @8335 ns
-SB: Addr: 0x59316 timestamp: 16708 Cmd: 8 ID: 99-0 ResponseID: 99-0 @8354 ns
+SB: Addr: 0x10136 timestamp: 16670 Cmd: 7 ID: 97-0 ResponseID: 97-0 @8335 ns
+SB: Addr: 0x59316 timestamp: 16708 Cmd: 7 ID: 99-0 ResponseID: 99-0 @8354 ns
 NB: Addr: 0x31068 timestamp: 16964 Cmd: 1 ID: 101-0 ResponseID: 0--1 @8482 ns
 NB: Addr: 0x832 timestamp: 17110 Cmd: 1 ID: 103-0 ResponseID: 0--1 @8555 ns
 SB: Addr: 0x31068 timestamp: 17166 Cmd: 7 ID: 101-0 ResponseID: 101-0 @8583 ns
@@ -177,12 +179,12 @@ SB: Addr: 0x21372 timestamp: 18926 Cmd: 7 ID: 120-0 ResponseID: 120-0 @9463 ns
 NB: Addr: 0x4856 timestamp: 19218 Cmd: 1 ID: 122-0 ResponseID: 0--1 @9609 ns
 NB: Addr: 0x55168 timestamp: 19232 Cmd: 1 ID: 123-0 ResponseID: 0--1 @9616 ns
 NB: Addr: 0x39800 timestamp: 19342 Cmd: 1 ID: 125-0 ResponseID: 0--1 @9671 ns
-NB: Addr: 0x13484 timestamp: 19420 Cmd: 1 ID: 127-0 ResponseID: 0--1 @9710 ns
+NB: Addr: 0x13484 timestamp: 19420 Cmd: 2 ID: 127-0 ResponseID: 0--1 @9710 ns
 SB: Addr: 0x4856 timestamp: 19420 Cmd: 7 ID: 122-0 ResponseID: 122-0 @9710 ns
 SB: Addr: 0x55168 timestamp: 19434 Cmd: 7 ID: 123-0 ResponseID: 123-0 @9717 ns
 SB: Addr: 0x39800 timestamp: 19544 Cmd: 7 ID: 125-0 ResponseID: 125-0 @9772 ns
 NB: Addr: 0x3328 timestamp: 19552 Cmd: 1 ID: 129-0 ResponseID: 0--1 @9776 ns
-SB: Addr: 0x13484 timestamp: 19622 Cmd: 7 ID: 127-0 ResponseID: 127-0 @9811 ns
+SB: Addr: 0x13484 timestamp: 19622 Cmd: 8 ID: 127-0 ResponseID: 127-0 @9811 ns
 NB: Addr: 0x22924 timestamp: 19702 Cmd: 1 ID: 131-0 ResponseID: 0--1 @9851 ns
 SB: Addr: 0x3328 timestamp: 19754 Cmd: 7 ID: 129-0 ResponseID: 129-0 @9877 ns
 NB: Addr: 0x45492 timestamp: 19872 Cmd: 1 ID: 133-0 ResponseID: 0--1 @9936 ns
@@ -190,9 +192,9 @@ SB: Addr: 0x22924 timestamp: 19904 Cmd: 7 ID: 131-0 ResponseID: 131-0 @9952 ns
 SB: Addr: 0x45492 timestamp: 20074 Cmd: 7 ID: 133-0 ResponseID: 133-0 @10037 ns
 FINAL STATS:
 -----------------------------------------------------------------
-- Events at NorthBus                 : 95
-- Events at SouthBus                 : 95
-- Total Events                       : 190
+- Events at NorthBus                 : 96
+- Events at SouthBus                 : 96
+- Total Events                       : 192
 -----------------------------------------------------------------
 
 Address Histogram:
@@ -203,7 +205,7 @@ Address_Range: Count
 - [8192-12287]: 5
 - [12288-16383]: 5
 - [16384-20479]: 8
-- [20480-24575]: 7
+- [20480-24575]: 8
 - [24576-28671]: 5
 - [28672-32767]: 7
 - [32768-36863]: 8
@@ -215,7 +217,7 @@ Address_Range: Count
 - [57344-61439]: 4
 - [61440-65535]: 4
 -----------------------------------------------------------------
-- Total_Events_Address: 95
+- Total_Events_Address: 96
 -----------------------------------------------------------------
 
 Access Latency Distribution (ns):
@@ -223,8 +225,8 @@ Access Latency Distribution (ns):
 Min-Latency(ns): 101  Max-Latency(ns): 101  #Bins: 10
 -----------------------------------------------------------------
 Latency Range(ns): Count
-- [101-101]: 95
+- [101-101]: 96
 -----------------------------------------------------------------
-- Total_Events_Latency: 95
+- Total_Events_Latency: 96
 -----------------------------------------------------------------
-
+ 
