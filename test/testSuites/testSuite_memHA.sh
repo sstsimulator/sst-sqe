@@ -116,7 +116,7 @@ Tol=$2    ##  curTick tolerance
 
         diff -b $referenceFile $outFile > _raw_diff
         if [ $? == 0 ] ; then
-             echo ReferenceFile is an exact match of outFile
+             echo "PASS:  Exact match $memHA_case"
              rm _raw_diff
         else
              wc $referenceFile $outFile
@@ -124,7 +124,7 @@ Tol=$2    ##  curTick tolerance
              rm diff_sorted
              compare_sorted $referenceFile $outFile
              if [ $? == 0 ] ; then
-                 echo " Sorted match with Reference File is EXACT"
+                 echo "PASS:  Sorted match $memHA_case"
                  rm _raw_diff
              else
 ##    echo "Preliminary ---------------"
@@ -134,7 +134,7 @@ Tol=$2    ##  curTick tolerance
                  ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
                  new=`wc ${outFile}       | awk '{print $1, $2}'`;
                  if [ "$ref" == "$new" ] ; then
-                     echo "outFile word/line count matches Reference"
+                     echo "PASS: word/line count match $memHA_case"
                  else
                      echo "$memHA_case test Fails"
                      echo "   tail of $outFile  ---- "
