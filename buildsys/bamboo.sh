@@ -687,7 +687,9 @@ echo " #####################################################"
     fi
 
     ${SST_TEST_SUITES}/testSuite_Ariel.sh
-    ${SST_TEST_SUITES}/testSuite_Samba.sh
+    #  Samba is not being released with 6.1
+    #        omit from mainline testing.
+    #  ${SST_TEST_SUITES}/testSuite_Samba.sh
     ${SST_TEST_SUITES}/testSuite_CramSim.sh
     ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
