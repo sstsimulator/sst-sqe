@@ -42,6 +42,17 @@ else
      echo "Found the Ariel file! "
 fi
 
+####                 Remove old ompsievetest tasks with parent 1
+ps -ef | grep ompsievetest | grep -v -e grep > omps_list
+wc omps_list
+while read -u 3 _who _anOMP _own _rest
+do
+    if [ $_own == 1 ] ; then
+        echo " Attempt to remove $_anOMP "
+        kill -9 $_anOMP
+    fi
+done 3<omps_list
+
 #-------------------------------------------------------------------------------
 # Test:
 #     test_memHSieve
