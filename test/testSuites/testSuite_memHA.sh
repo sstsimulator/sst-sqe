@@ -52,7 +52,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 memHA_Template() {
 memHA_case=$1
-Tol=$2    ##  curTick tolerance
+Match=$2    ##  Match criteron
 
 
     startSeconds=`date +%s`
@@ -70,8 +70,6 @@ Tol=$2    ##  curTick tolerance
 
     pyFileName=`echo test${memHA_case}.py | sed s/_/-/`
     sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/$pyFileName
-##        pyFileName=${memHA_case}.py
- ##       sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/memHA/tests/${pyFileName}"
         ls $sutArgs
 
         echo " Running from `pwd`"
@@ -126,11 +124,7 @@ Tol=$2    ##  curTick tolerance
              if [ $? == 0 ] ; then
                  echo "PASS:  Sorted match $memHA_case"
                  rm _raw_diff
-             else
-##    echo "Preliminary ---------------"
-#################### This is much too profuse (some times 30k lines)
-## cat ${SSTTESTTEMPFILES}/diff_sorted
-##    echo " ----------------- "
+             elif [ "lineWordCt" == "$Match" ] || [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
                  ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
                  new=`wc ${outFile}       | awk '{print $1, $2}'`;
                  if [ "$ref" == "$new" ] ; then
@@ -142,33 +136,14 @@ Tol=$2    ##  curTick tolerance
                      fail "outFile word/line count does NOT match Reference"
                      diff ${referenceFile} ${outFile} 
                  fi
+             else
+                 fail "outFile does not match Reference"
+                 echo "              Sorted Diff"
+                 cat ${SSTTESTTEMPFILES}/diff_sorted
              fi
         fi
         popd
         popd
-
-##  Follows some bailing wire to allow serialization branch to work
-##          with same reference files
-##     sed s/' (.*)'// $referenceFile > $newRef
-##     ref=`wc ${newRef} | awk '{print $1, $2}'`; 
-##     ##        ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
-##     sed s/' (.*)'// $outFile > $newOut
-##     new=`wc ${newOut} | awk '{print $1, $2}'`; 
-##     ##          new=`wc ${outFile}       | awk '{print $1, $2}'`;
-##        wc $newOut       
-##               if [ "$ref" == "$new" ];
-##               then
-##                   echo "outFile word/line count matches Reference"
-##               else
-##                   echo "$memHA_case test Fails"
-##                   echo "   tail of $outFile  ---- "
-##                   tail $outFile
-##                   fail "outFile word/line count does NOT match Reference"
-##                   diff ${referenceFile} ${outFile} 
-##               fi
-##        else
-##                echo ReferenceFile is an exact match of outFile
-##        fi
 
         endSeconds=`date +%s`
         echo " "
@@ -180,8 +155,6 @@ Tol=$2    ##  curTick tolerance
 
 # Build Test app
 ##    The following code already explictly assume we are at trunk
-  
-   
 
 #===============================================================================
 # Test functions
@@ -208,86 +181,87 @@ Tol=$2    ##  curTick tolerance
 #-------------------------------------------------------------------------------
 
 test_memHA_BackendChaining () {
-    memHA_Template BackendChaining
+    memHA_Template BackendChaining "M"
 }
 
 test_memHA_BackendDelayBuffer  () {
-    memHA_Template BackendDelayBuffer
+    memHA_Template BackendDelayBuffer "M"
 }
 
 
 test_memHA_BackendPagedMulti () {
-    memHA_Template BackendPagedMulti
+    memHA_Template BackendPagedMulti "M"
 }
 
 
 test_memHA_BackendReorderRow () {
-    memHA_Template BackendReorderRow
+    memHA_Template BackendReorderRow "M"
 }
 
 
 test_memHA_BackendReorderSimple () {
-    memHA_Template BackendReorderSimple
+    memHA_Template BackendReorderSimple "M"
 }
 
 
 test_memHA_BackendSimpleDRAM_1 () {
-    memHA_Template BackendSimpleDRAM_1
+    memHA_Template BackendSimpleDRAM_1 "M"
 }
 
 
 test_memHA_BackendSimpleDRAM_2 () {
-    memHA_Template BackendSimpleDRAM_2
+    memHA_Template BackendSimpleDRAM_2 "M"
 }
 
 
 test_memHA_BackendVaultSim () {
-    memHA_Template BackendVaultSim
+    memHA_Template BackendVaultSim "lineWordCt"
 }
 
 
 test_memHA_DistributedCaches () {
-    memHA_Template DistributedCaches
+    memHA_Template DistributedCaches "lineWordCt"
 }
 
 
 test_memHA_Flushes_2 () {
-    memHA_Template Flushes_2
+    memHA_Template Flushes_2  "M"
 }
 
 
 test_memHA_Flushes () {
-    memHA_Template Flushes
+    memHA_Template Flushes  "M"
 }
 
 
 test_memHA_HashXor () {
-    memHA_Template HashXor
+    memHA_Template HashXor  "M"
 }
 
 
 test_memHA_Incoherent () {
-    memHA_Template Incoherent
+    memHA_Template Incoherent  "M"
+
 }
 
 
 test_memHA_Noninclusive_1 () {
-    memHA_Template Noninclusive_1
+    memHA_Template Noninclusive_1 "M"
 }
 
 
 test_memHA_Noninclusive_2 () {
-    memHA_Template Noninclusive_2
+    memHA_Template Noninclusive_2 "M"
 }
 
 
 test_memHA_PrefetchParams () {
-    memHA_Template PrefetchParams
+    memHA_Template PrefetchParams "M"
 }
 
 
 test_memHA_ThroughputThrottling () {
-    memHA_Template ThroughputThrottling
+    memHA_Template ThroughputThrottling  "M"
 }
 
 
