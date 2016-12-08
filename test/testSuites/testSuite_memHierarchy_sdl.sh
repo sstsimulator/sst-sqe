@@ -45,6 +45,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 export EXACT=0
 export COUNT_SST_FAILS=0
 rm -f ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
+mkdir -p $SST_TEST_INPUTS_TEMP
 
 memHierarchy_Template() {
 memH_case=$1
