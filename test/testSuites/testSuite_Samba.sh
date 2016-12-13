@@ -168,12 +168,12 @@ Tol=$2    ##  curTick tolerance
 ## -- test_streambench_mmu() {
 ## -- stats-snb-ariel-dram.csv
 #-------------------------------------------------------------------------------
-test_gupsgen() {
+test_Samba_gupsgen() {
 Samba_Template gupsgen 500
 
 }
 
-test_gupsgen_mmu() {
+test_Samba_gupsgen_mmu() {
 
    if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
        echo " November 15th, this test is not happpy with MULTI      OMIT"    
@@ -185,22 +185,22 @@ Samba_Template gupsgen_mmu 500
 
 }
 
-test_stencil3dbench() {
+test_Samba_stencil3dbench() {
 Samba_Template stencil3dbench 500
 
 }
 
-test_stencil3dbench_mmu() {
+test_Samba_stencil3dbench_mmu() {
 Samba_Template stencil3dbench_mmu 500
 
 }
 
-test_streambench() {
+test_Samba_streambench() {
 Samba_Template streambench 500
 
 }
 
-test_streambench_mmu() {
+test_Samba_streambench_mmu() {
 Samba_Template streambench_mmu 500
 
 }

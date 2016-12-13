@@ -200,6 +200,7 @@ template_prospero() {
 
 
 }
+mkdir -p $SST_TEST_INPUTS_TEMP
 script6=${SST_TEST_INPUTS_TEMP}/__prospero_tmp_${PIN_TAR}
 cat > $script6 << ..EOF.
 test_prospero_compressed_${PIN_TAR}() {
