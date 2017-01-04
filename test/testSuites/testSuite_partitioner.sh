@@ -177,7 +177,7 @@ PARTITIONER=$2
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        mpirun -np ${NUMRANKS} ${sut} --verbose --run-mode init --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
+        mpirun -np ${NUMRANKS} ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         RetVal=$?
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
