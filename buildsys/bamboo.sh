@@ -2478,6 +2478,9 @@ export SST_CONFIG_FILE_PATH=${SST_CORE_INSTALL}/etc/sst/sstsimulator.conf
 export SST_INSTALL_DEPS=${SST_BASE}/local
 # Initialize build type to null
 export SST_BUILD_TYPE=""
+
+cloneOtherRepos 
+
 # Load test definitions
 echo "bamboo.sh: This directory is:"
 pwd
@@ -2492,7 +2495,6 @@ echo "bamboo.sh: Done sourcing deps/include/depsDefinitions.sh"
 # retain binaries after build
 #export SST_RETAIN_BIN=1
 
-cloneOtherRepos 
 
 echo "==============================INITIAL ENVIRONMENT DUMP================="
 env|sort
