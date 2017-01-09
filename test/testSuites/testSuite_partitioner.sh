@@ -58,6 +58,11 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 # Caveats:
 #    
 #-------------------------------------------------------------------------------
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_THREAD_COUNT} -gt 1 ] ; then
+         echo '           SKIP '
+         preFail " Partition tests are multi-rank, hence, do not work with threading" "skip"
+    fi     
+
     if [ "`which mpirun | awk -F/ '{print $NF}'`" != "mpirun" ] ; then
         echo "    MPIRUN not FOUND "
         echo "    Add the appropriate mpi module or"
