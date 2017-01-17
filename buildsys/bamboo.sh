@@ -183,7 +183,7 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    ls -l
 fi
 
-echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE - NOW SETTING ENV RUNTIME VARS ########"
+echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE  ########"
 }
 #=========================================================================
 #Functions
@@ -2065,32 +2065,6 @@ echo "##################### END ######## DEBUG DATA ########################"
             return $retval
         fi
 
-## NOT SURE IF THIS HAS A PLACE IN THE SPLIT CORE / ELEMENTS CONSTRUCTION        
-##        # print build and linkage information for warm fuzzy
-##        echo "SST-ELEMENTS BUILD INFO========================================"
-##        echo "Built SST-ELEMENTS with configure string"
-##        echo "    ./configure ${SST_SELECTED_ELEMENTS_CONFIG}"
-##        echo "----------------"
-##        echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-##        if [ $kernel == "Darwin" ]
-##        then
-##            # Mac OS X
-##            echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
-##        fi
-##        echo "----------------"
-##        echo "sst exectuable linkage information"
-##    
-##        if [ $kernel == "Darwin" ]
-##        then
-##            # Mac OS X 
-##            echo "$ otool -L ./sst/core/sstsim.x"
-##            otool -L ./sst/core/sstsim.x
-##        else
-##            echo "$ ldd ./sst/core/sstsim.x"
-##            ldd ./sst/core/sstsim.x
-##        fi
-##        echo "SST-ELEMENTS BUILD INFO========================================"
-                
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make on SST-ELEMENTS complete without error"
@@ -2300,14 +2274,6 @@ echo "##################### END ######## DEBUG DATA ########################"
     fi
 }
 
-#=========================================================================
-# main
-# $1 = build type
-# $2 = MPI type
-# $3 = boost type
-# $4 = compiler type
-#=========================================================================
-
 
 #-------------------------------------------------------------------------
 # Function: ExitOfScriptHandler
@@ -2321,6 +2287,14 @@ function ExitOfScriptHandler {
     echo "=== DONE DUMPING ==="
     echo
 }
+
+#=========================================================================
+# main
+# $1 = build type
+# $2 = MPI type
+# $3 = boost type
+# $4 = compiler type
+#=========================================================================
 trap ExitOfScriptHandler EXIT
 
 #=========================================================================
@@ -2656,11 +2630,6 @@ then
         sed -e 's/^/#doxygen /' ./sst-core/doc/undoc.txt
         echo "============================== SST-CORE DOXYGEN UNDOCUMENTED FILES =============================="
         retval=0
-###        # dump list of sst-elements undocumented files
-###        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
-###        sed -e 's/^/#doxygen /' ./sst-elements/doc/undoc.txt
-###        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
-###        retval=0
     else
         # Build was successful, so run tests, providing command line args
         # as a convenience. SST binaries must be generated before testing.
