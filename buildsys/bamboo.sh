@@ -40,10 +40,6 @@ TimeoutEx() {
 
 cloneOtherRepos() {
 ##  Check out other repositories except second time on Make Dist test
-echo "############################################## debug "
-    echo "PWD = `pwd`"
-ls -d ../..
-echo "############################################## debug "
 
 ls -d ../../distTestDir
 if [ 0 != $? ] ; then
