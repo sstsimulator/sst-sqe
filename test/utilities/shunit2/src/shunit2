@@ -942,7 +942,14 @@ _shunit_execSuite()
 
     # Setup to execute the test Case
     echo "         -------"
-    echo "${_shunit_case_}"
+    MULT=""
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
+        MULT=" nt=${SST_MULTI_THREAD_COUNT}"
+    fi
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
+        MULT="${MULT}  rt=${SST_MULTI_RANK_COUNT}"
+    fi
+    echo "${_shunit_case_} $MULT"
     
     # Start the Time Limit Monitor
     $SST_TEST_UTILITIES/timeLimitEnforcer.sh $$ ${_shunit_case_} & 

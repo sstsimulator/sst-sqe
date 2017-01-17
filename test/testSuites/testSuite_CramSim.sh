@@ -57,7 +57,15 @@ ls -l ddr4_verimem.cfg
 if [ $? != 0 ] ; then
    preFail "Can't find ddr4_verimem.cfg in SQE CramSim directory"
 fi
-cd tests
+
+cd $SST_TEST_SUITES/testCramSim/tests
+     wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim_trace_verimem_trace_files.tar.gz
+     if [ $? != 0 ] ; then
+        echo "wget failed"
+        preFail "wget failed"
+     fi
+
+     tar -xzf sst-CramSim_trace_verimem_trace_files.tar.gz
 
 #                       TEMPLATE
 #     Subroutine to run many similiar tests without reproducing the script.
@@ -83,19 +91,6 @@ cd $SST_TEST_SUITES/testCramSim
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-pushd tests
-	wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim-trace_verimem_${trc}.trc.gz >o${trc} 2>e${trc} 
-	if [ $? != 0 ] ; then
-            echo " Download of trace file failed for sst-CramSim-trace_verimem_${trc}.trc.gz "
-            fail " Download of trace file failed for sst-CramSim-trace_verimem_${trc}.trc.gz "
-            echo "           ----- stdout -----"
-            cat o${trc}
-            echo "           ----- stderr -----"
-            cat e${trc}
-            return
-        fi
-        gunzip sst-CramSim-trace_verimem_${trc}.trc.gz
-popd
 
   ls -l tests/sst-CramSim-trace_verimem_${trc}.trc
 #
