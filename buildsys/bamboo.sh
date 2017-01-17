@@ -40,7 +40,14 @@ TimeoutEx() {
 
 cloneOtherRepos() {
 ##  Check out other repositories except second time on Make Dist test
-if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
+echo "############################################## debug "
+    echo "PWD = `pwd`"
+ls -d ../..
+echo "############################################## debug "
+
+ls -d ../../distTestDir
+if [ 0 != $? ] ; then
+## if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
 ## Cloning sst-core into <path>/devel/trunk   
