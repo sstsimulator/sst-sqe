@@ -194,7 +194,8 @@ Ariel_template() {
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
+             rm $TIME_FLAG
+             removeFreeIPCs
              return 
         fi 
         if [ $RetVal != 0 ]
