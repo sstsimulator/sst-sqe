@@ -22,9 +22,9 @@ ariel_cpus.addParams({
     "pipetimeout"       : 0,
     "corecount"         : 8,
     "arielmode"         : 1,
-    "memorylevels"      : 1,
-    "pagecount0"        : 262144,
-    "defaultlevel"      : 0,
+    "memmgr.memorylevels"      : 1,
+    "memmgr.pagecount0"        : 262144,
+    "memmgr.defaultlevel"      : 0,
     "executable"        : Executable
 })
 
@@ -216,7 +216,7 @@ comp_memory0 = sst.Component("memory0", "memHierarchy.MemController")
 comp_memory0.addParams({
       "debug" : """0""",
       "coherence_protocol" : """MSI""",
-      "backend.mem_size" : """512MiB""",
+      "backend.mem_size" : "512MiB",
       "clock" : """1.6GHz""",
       "access_time" : """25 ns""",
       "rangeStart" : """0"""
@@ -240,7 +240,7 @@ comp_memory1 = sst.Component("memory1", "memHierarchy.MemController")
 comp_memory1.addParams({
       "debug" : """0""",
       "coherence_protocol" : """MSI""",
-      "backend.mem_size" : """512MiB""",
+      "backend.mem_size" : "512MiB",
       "clock" : """1.6GHz""",
       "access_time" : """25 ns""",
       "rangeStart" : """0"""

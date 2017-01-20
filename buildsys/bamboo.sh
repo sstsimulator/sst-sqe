@@ -676,6 +676,7 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
         export SST_MULTI_THREAD_COUNT=1
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
+        ${SST_TEST_SUITES}/testSuite_memHA.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
         ${SST_TEST_SUITES}/testSuite_CramSim.sh
         ${SST_TEST_SUITES}/testSuite_hybridsim.sh
@@ -700,10 +701,14 @@ echo " #####################################################"
     fi
 
     ${SST_TEST_SUITES}/testSuite_Ariel.sh
+    #  Samba is not being released with 6.1
+    #        omit from mainline testing.
+    #  ${SST_TEST_SUITES}/testSuite_Samba.sh
     ${SST_TEST_SUITES}/testSuite_CramSim.sh
     ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
+    ${SST_TEST_SUITES}/testSuite_memHA.sh
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
 
 
@@ -1242,23 +1247,25 @@ getconfig() {
 #   Return value:
 linuxSetBoostMPI() {
 
-   # For some reason, .bashrc is not being run prior to
-   # this script. Kludge initialization of modules.
-
-   echo "Attempt to initialize the modules utility.  Look for modules init file in 1 of 2 places"
+   if [[ ${SST_STOP_AFTER_BUILD:+isSet} != isSet ]] ; then
+      # For some reason, .bashrc is not being run prior to
+      # this script. Kludge initialization of modules.
    
-   echo "Location 1: ls -l /etc/profile.modules"
-   ls -l /etc/profile.modules
-   if [ -f /etc/profile.modules ] ; then
-       . /etc/profile.modules
-       echo "bamboo.sh: loaded /etc/profile.modules"
-   else
-       echo "Location 2: ls -l /etc/profile.d/modules.sh"
-       ls -l /etc/profile.d/modules.sh
-       if [ -r /etc/profile.d/modules.sh ] ; then 
-           source /etc/profile.d/modules.sh 
-           echo "bamboo.sh: loaded /etc/profile.d/modules"
-       fi
+      echo "Attempt to initialize the modules utility.  Look for modules init file in 1 of 2 places"
+      
+      echo "Location 1: ls -l /etc/profile.modules"
+      ls -l /etc/profile.modules
+      if [ -f /etc/profile.modules ] ; then
+          . /etc/profile.modules
+          echo "bamboo.sh: loaded /etc/profile.modules"
+      else
+          echo "Location 2: ls -l /etc/profile.d/modules.sh"
+          ls -l /etc/profile.d/modules.sh
+          if [ -r /etc/profile.d/modules.sh ] ; then 
+              source /etc/profile.d/modules.sh 
+              echo "bamboo.sh: loaded /etc/profile.d/modules"
+          fi
+      fi
    fi
    
    echo "Testing modules utility via ModuleEx..."
@@ -2544,7 +2551,9 @@ else
 
                 darwinSetBoostMPI $1 $2 $3 $4
             fi
-
+       if [[  ${SST_WITHOUT_PIN:+isSet} == isSet ]] ; then
+            echo "  This run is forced to be without PIN "
+       else
             # if Intel PIN module is available, load 2.14 version
             #           ModuleEx puts the avail output on Stdout (where it belongs.)
             ModuleEx avail | egrep -q "pin/pin-2.14-71313"
@@ -2575,6 +2584,7 @@ else
             else
                 echo "Intel PIN environment module not found on this host."
             fi
+       fi
 
             echo "bamboo.sh: LISTING LOADED MODULES"
             ModuleEx list
@@ -2620,6 +2630,14 @@ else
                 # Perform the build
                 dobuild -t $SST_BUILD_TYPE -a $arch -k $kernel
                 retval=$?
+                if [[ ${SST_STOP_AFTER_BUILD:+isSet} == isSet ]] ; then
+                    if [ $retval -eq 0 ] ; then
+                        echo "$0 : exit success."
+                    else
+                        echo "$0 : exit failure."
+                    fi
+                    exit $retval
+                fi
             fi
 
             ;;

@@ -35,9 +35,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #===============================================================================
 #                     Set up
 
-    ls -d $SST_TEST_SUITES/testCramSim 
+    ls -d $SST_TEST_SUITES/testCramSim > /dev/null
     Ret_Val=$?
-echo " Return from ls -d is $Ret_Val"
     if [ $Ret_Val == 0 ] ; then
         rm -rf $SST_TEST_SUITES/testCramSim
     fi
@@ -49,17 +48,24 @@ ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg .
 ls -l $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg  > /dev/null
 if [ $? != 0 ] ; then
    ls $SST_ROOT/sst-elements/src/sst/elements/CramSim
-   exit
+   preFail "Can't find/access ddr4_verimem.cfg from sst-elements"
 fi
 mkdir tests
 
 ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/tests/* tests
 ls -l ddr4_verimem.cfg
 if [ $? != 0 ] ; then
-   echo "############################################## $LINENO "
-   exit
+   preFail "Can't find ddr4_verimem.cfg in SQE CramSim directory"
 fi
-cd tests
+
+cd $SST_TEST_SUITES/testCramSim/tests
+     wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim_trace_verimem_trace_files.tar.gz
+     if [ $? != 0 ] ; then
+        echo "wget failed"
+        preFail "wget failed"
+     fi
+
+     tar -xzf sst-CramSim_trace_verimem_trace_files.tar.gz
 
 #                       TEMPLATE
 #     Subroutine to run many similiar tests without reproducing the script.
@@ -85,19 +91,6 @@ cd $SST_TEST_SUITES/testCramSim
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-pushd tests
-	wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim-trace_verimem_${trc}.trc.gz >o${trc} 2>e${trc} 
-	if [ $? != 0 ] ; then
-            echo " Download of trace file failed for sst-CramSim-trace_verimem_${trc}.trc.gz "
-            fail " Download of trace file failed for sst-CramSim-trace_verimem_${trc}.trc.gz "
-            echo "           ----- stdout -----"
-            cat o${trc}
-            echo "           ----- stderr -----"
-            cat e${trc}
-            return
-        fi
-        gunzip sst-CramSim-trace_verimem_${trc}.trc.gz
-popd
 
   ls -l tests/sst-CramSim-trace_verimem_${trc}.trc
 #
@@ -132,23 +125,12 @@ popd
         diff ${referenceFile} ${outFile} > /dev/null;
         if [ $? -ne 0 ]
         then
-##  Follows some bailing wire to allow serialization branch to work
-##          with same reference files  (Vestigal -- Not Added for CramSim)
-     sed s/' (.*)'// $referenceFile > $newRef
-     ref=`wc ${newRef} | awk '{print $1, $2}'`; 
-     ##        ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
-     sed s/' (.*)'// $outFile > $newOut
-     new=`wc ${newOut} | awk '{print $1, $2}'`; 
-     ##          new=`wc ${outFile}       | awk '{print $1, $2}'`;
-        wc $newOut       
-               if [ "$ref" == "$new" ];
-               then
-                   echo "outFile word/line count matches Reference"
-               else
-                   echo "CramSim_${trc} test Fails"
-                   fail "outFile word/line count does NOT matches Reference"
-                   diff ${referenceFile} ${outFile} 
-               fi
+            grep Cycles ${outFile} ${referenceFile}
+            echo Ref: `grep Simulation ${referenceFile}`
+            grep Simulation $outFile
+            if [ $? != 0 ] ; then 
+                 fail " Did not find Simulation complete message"
+            fi
         else
                 echo ReferenceFile is an exact match of outFile
         fi
@@ -244,9 +226,6 @@ CramSim_Template 6_W 500
 
 }
 
-
-export SST_TEST_ONE_TEST_TIMEOUT=3000         #  3000 seconds
-
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
@@ -255,6 +234,6 @@ export SST_TEST_ONE_TEST_TIMEOUT=200
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 #         Located here this timeout will override the multithread value
-export SST_TEST_ONE_TEST_TIMEOUT=750
+
 (. ${SHUNIT2_SRC}/shunit2)
 

@@ -45,6 +45,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 export EXACT=0
 export COUNT_SST_FAILS=0
 rm -f ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
+mkdir -p $SST_TEST_INPUTS_TEMP
 
 memHierarchy_Template() {
 memH_case=$1
@@ -65,7 +66,7 @@ Tol=$2    ##  curTick tolerance
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-    pyFileName=`echo ${memH_case}.py | sed s/_/-/`
+    pyFileName=`echo ${memH_case}.py | sed s/_/-/ | sed s/_MC//`
     sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/$pyFileName
     echo $sutArgs
     grep backend $sutArgs | grep dramsim > /dev/null
@@ -324,7 +325,13 @@ memHierarchy_Template sdl8_4 500
 }
 
 test_memHierarchy_sdl9_1() {
-memHierarchy_Template sdl9_1 500
+
+if [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
+    memHierarchy_Template sdl9_1 500
+else                    # is multi core
+    memHierarchy_Template sdl9_1_MC 500
+fi 
+
 }
 
 test_memHierarchy_sdl9_2() {          

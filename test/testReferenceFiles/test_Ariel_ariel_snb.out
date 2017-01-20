@@ -33,269 +33,169 @@ Creating L3 cache block: 2 in group: 3
 Creating L3 cache block: 3 in group: 3
 Creating L3 cache block: 4 in group: 3
 Completed configuring the SST Sandy Bridge model
+l2cache_0: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l2cache_1: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache0: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache1: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache2: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache3: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache4: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l2cache_2: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l2cache_3: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache5: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache6: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache7: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache8: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache9: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l2cache_4: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l2cache_5: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache10: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache11: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache12: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache13: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache14: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l2cache_6: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l2cache_7: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache15: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache16: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache17: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache18: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
+l3cache19: No MSHR lookup latency provided (mshr_latency_cycles)...intrapolated to 2 cycles.
 SSTARIEL: Function profiling is disabled.
-15 Performing iteration 0
-4 Performing iteration 0
-11 Performing iteration 0
-8 Performing iteration 0
-13 Performing iteration 0
-2 Performing iteration 0
 0 Performing iteration 0
-1 Performing iteration 0
-6 Performing iteration 0
-10 Performing iteration 0
-14 Performing iteration 0
 7 Performing iteration 0
-9 Performing iteration 0
 3 Performing iteration 0
+4 Performing iteration 0
+6 Performing iteration 0
 5 Performing iteration 0
-12 Performing iteration 0
-9 Performing iteration 1
-13 Performing iteration 1
-10 Performing iteration 1
-8 Performing iteration 1
-14 Performing iteration 1
-11 Performing iteration 1
-12 Performing iteration 1
-15 Performing iteration 1
-2 Performing iteration 1
+1 Performing iteration 0
+2 Performing iteration 0
+7 Performing iteration 1
 1 Performing iteration 1
 4 Performing iteration 1
-3 Performing iteration 1
+6 Performing iteration 1
+2 Performing iteration 1
 0 Performing iteration 1
 5 Performing iteration 1
-7 Performing iteration 1
-6 Performing iteration 1
-13 Performing iteration 2
-9 Performing iteration 2
-11 Performing iteration 2
-8 Performing iteration 2
-14 Performing iteration 2
-12 Performing iteration 2
-15 Performing iteration 2
-10 Performing iteration 2
-6 Performing iteration 2
-5 Performing iteration 2
-2 Performing iteration 2
+3 Performing iteration 1
 4 Performing iteration 2
-0 Performing iteration 2
-7 Performing iteration 2
-3 Performing iteration 2
 1 Performing iteration 2
-13 Performing iteration 3
-11 Performing iteration 3
-10 Performing iteration 3
-14 Performing iteration 3
-9 Performing iteration 3
-12 Performing iteration 3
-8 Performing iteration 3
-15 Performing iteration 3
-2 Performing iteration 3
-3 Performing iteration 3
-7 Performing iteration 3
-0 Performing iteration 3
-1 Performing iteration 3
-6 Performing iteration 3
-5 Performing iteration 3
+2 Performing iteration 2
+6 Performing iteration 2
+0 Performing iteration 2
+3 Performing iteration 2
+5 Performing iteration 2
+7 Performing iteration 2
 4 Performing iteration 3
-11 Performing iteration 4
-10 Performing iteration 4
-13 Performing iteration 4
-8 Performing iteration 4
-14 Performing iteration 4
-12 Performing iteration 4
-9 Performing iteration 4
-15 Performing iteration 4
-7 Performing iteration 4
-2 Performing iteration 4
-4 Performing iteration 4
-3 Performing iteration 4
-5 Performing iteration 4
+2 Performing iteration 3
+1 Performing iteration 3
+3 Performing iteration 3
+0 Performing iteration 3
+6 Performing iteration 3
+7 Performing iteration 3
+5 Performing iteration 3
 1 Performing iteration 4
+2 Performing iteration 4
 6 Performing iteration 4
 0 Performing iteration 4
-13 Performing iteration 5
-9 Performing iteration 5
-12 Performing iteration 5
-14 Performing iteration 5
-11 Performing iteration 5
-10 Performing iteration 5
+3 Performing iteration 4
+4 Performing iteration 4
+5 Performing iteration 4
+7 Performing iteration 4
 4 Performing iteration 5
-2 Performing iteration 5
-15 Performing iteration 5
-1 Performing iteration 5
-8 Performing iteration 5
 5 Performing iteration 5
 6 Performing iteration 5
-7 Performing iteration 5
 3 Performing iteration 5
+1 Performing iteration 5
+2 Performing iteration 5
 0 Performing iteration 5
-13 Performing iteration 6
-11 Performing iteration 6
-9 Performing iteration 6
-10 Performing iteration 6
-12 Performing iteration 6
-8 Performing iteration 6
-14 Performing iteration 6
-6 Performing iteration 6
-15 Performing iteration 6
+7 Performing iteration 5
 5 Performing iteration 6
+6 Performing iteration 6
+3 Performing iteration 6
 7 Performing iteration 6
-1 Performing iteration 6
 2 Performing iteration 6
 4 Performing iteration 6
+1 Performing iteration 6
 0 Performing iteration 6
-3 Performing iteration 6
-13 Performing iteration 7
-14 Performing iteration 7
-11 Performing iteration 7
-4 Performing iteration 7
-15 Performing iteration 7
-10 Performing iteration 7
 3 Performing iteration 7
-9 Performing iteration 7
-8 Performing iteration 7
 2 Performing iteration 7
+1 Performing iteration 7
 6 Performing iteration 7
 5 Performing iteration 7
-7 Performing iteration 7
 0 Performing iteration 7
-12 Performing iteration 7
-1 Performing iteration 7
-13 Performing iteration 8
-14 Performing iteration 8
-8 Performing iteration 8
-9 Performing iteration 8
-10 Performing iteration 8
-2 Performing iteration 8
-15 Performing iteration 8
-12 Performing iteration 8
-11 Performing iteration 8
-6 Performing iteration 8
-3 Performing iteration 8
-4 Performing iteration 8
-7 Performing iteration 8
+4 Performing iteration 7
+7 Performing iteration 7
 5 Performing iteration 8
 0 Performing iteration 8
+4 Performing iteration 8
+6 Performing iteration 8
+3 Performing iteration 8
 1 Performing iteration 8
-11 Performing iteration 9
-8 Performing iteration 9
-15 Performing iteration 9
-13 Performing iteration 9
-10 Performing iteration 9
-5 Performing iteration 9
-12 Performing iteration 9
-14 Performing iteration 9
-9 Performing iteration 9
-4 Performing iteration 9
-7 Performing iteration 9
+2 Performing iteration 8
+7 Performing iteration 8
 3 Performing iteration 9
-2 Performing iteration 9
-1 Performing iteration 9
-0 Performing iteration 9
 6 Performing iteration 9
-13 Performing iteration 10
-10 Performing iteration 10
-9 Performing iteration 10
-11 Performing iteration 10
-14 Performing iteration 10
-8 Performing iteration 10
-12 Performing iteration 10
-15 Performing iteration 10
+0 Performing iteration 9
+1 Performing iteration 9
+7 Performing iteration 9
+5 Performing iteration 9
+4 Performing iteration 9
+2 Performing iteration 9
 4 Performing iteration 10
 6 Performing iteration 10
-5 Performing iteration 10
-7 Performing iteration 10
-2 Performing iteration 10
 1 Performing iteration 10
-0 Performing iteration 10
+2 Performing iteration 10
 3 Performing iteration 10
-9 Performing iteration 11
-13 Performing iteration 11
-11 Performing iteration 11
-8 Performing iteration 11
-10 Performing iteration 11
-15 Performing iteration 11
-12 Performing iteration 11
-14 Performing iteration 11
+0 Performing iteration 10
+7 Performing iteration 10
+5 Performing iteration 10
+7 Performing iteration 11
 0 Performing iteration 11
 1 Performing iteration 11
-5 Performing iteration 11
 2 Performing iteration 11
 4 Performing iteration 11
-6 Performing iteration 11
 3 Performing iteration 11
-7 Performing iteration 11
-9 Performing iteration 12
-15 Performing iteration 12
-14 Performing iteration 12
-11 Performing iteration 12
-8 Performing iteration 12
-10 Performing iteration 12
-13 Performing iteration 12
-7 Performing iteration 12
-12 Performing iteration 12
-5 Performing iteration 12
+6 Performing iteration 11
+5 Performing iteration 11
+3 Performing iteration 12
 4 Performing iteration 12
+5 Performing iteration 12
+1 Performing iteration 12
 2 Performing iteration 12
 0 Performing iteration 12
-1 Performing iteration 12
-3 Performing iteration 12
+7 Performing iteration 12
 6 Performing iteration 12
-13 Performing iteration 13
-10 Performing iteration 13
-8 Performing iteration 13
-11 Performing iteration 13
-15 Performing iteration 13
-3 Performing iteration 13
-9 Performing iteration 13
-14 Performing iteration 13
-12 Performing iteration 13
-2 Performing iteration 13
 1 Performing iteration 13
-6 Performing iteration 13
 7 Performing iteration 13
 5 Performing iteration 13
 0 Performing iteration 13
 4 Performing iteration 13
-13 Performing iteration 14
-15 Performing iteration 14
-12 Performing iteration 14
-2 Performing iteration 14
-10 Performing iteration 14
-11 Performing iteration 14
-9 Performing iteration 14
-14 Performing iteration 14
-8 Performing iteration 14
-5 Performing iteration 14
-1 Performing iteration 14
-4 Performing iteration 14
-3 Performing iteration 14
-6 Performing iteration 14
+6 Performing iteration 13
+3 Performing iteration 13
+2 Performing iteration 13
 7 Performing iteration 14
+5 Performing iteration 14
+4 Performing iteration 14
 0 Performing iteration 14
-11 Performing iteration 15
-13 Performing iteration 15
-15 Performing iteration 15
-9 Performing iteration 15
-14 Performing iteration 15
-10 Performing iteration 15
-8 Performing iteration 15
-12 Performing iteration 15
+6 Performing iteration 14
+1 Performing iteration 14
+2 Performing iteration 14
+3 Performing iteration 14
 2 Performing iteration 15
-0 Performing iteration 15
-1 Performing iteration 15
+6 Performing iteration 15
 5 Performing iteration 15
+4 Performing iteration 15
 7 Performing iteration 15
 3 Performing iteration 15
-6 Performing iteration 15
-4 Performing iteration 15
+0 Performing iteration 15
+1 Performing iteration 15
 CORE ID: 0 PROCESSED AN EXIT EVENT
 
 Ariel Memory Management Statistics:
 ---------------------------------------------------------------------
 Page Table Sizes:
-- Map entries at level 0         252
+- Map entries at level 0         233
 Page Table Coverages:
-- Bytes at level 0              1032192
-Simulation is complete, simulated time: 1.66975 ms
+- Bytes at level 0              954368
+Simulation is complete, simulated time: 1.35557 ms
