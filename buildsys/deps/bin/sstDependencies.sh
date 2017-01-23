@@ -1193,7 +1193,7 @@ sstDepsDoDependencies ()
 # use getopts
 OPTIND=1 
 
-while getopts :k:d:p:z:b:g:m:M:i:o:h:s:q:e:4:I:N:a:c: opt
+while getopts :k:d:p:z:b:g:m:M:i:o:h:s:e:4:I:N:a:c: opt
 
 do
     case "$opt" in
