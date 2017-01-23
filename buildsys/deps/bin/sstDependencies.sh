@@ -1193,7 +1193,7 @@ sstDepsDoDependencies ()
 # use getopts
 OPTIND=1 
 
-while getopts :k:d:p:z:b:g:m:M:i:o:h:s:e:4:I:N:a:c: opt
+while getopts :k:d:p:z:b:g:m:M:i:o:h:s:q:e:4:I:N:a:c: opt
 
 do
     case "$opt" in
@@ -1512,6 +1512,8 @@ do
             ;;
         q) # Qsim
             echo "# found the -q (Qsim) option, with value $OPTARG.   (Ignore on MacOS)"
+            echo "#  Option set to none"
+            OPTARG="none"
             # process arg
                   ##   Qsim currently doesn't run on MacOS because of 32/64 bit issues.
             ##if [ ! $SST_DEPS_OS_NAME = "Darwin" ]
