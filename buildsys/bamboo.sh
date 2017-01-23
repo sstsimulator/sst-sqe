@@ -676,7 +676,8 @@ echo " #####################################################"
     if [ $kernel != "Darwin" ]
     then
         # Only run if the OS *isn't* Darwin (MacOS)
-        ${SST_TEST_SUITES}/testSuite_qsimComponent.sh
+echo " ********************* Omitting Qsim "
+#        ${SST_TEST_SUITES}/testSuite_qsimComponent.sh
     fi
 
     #  
