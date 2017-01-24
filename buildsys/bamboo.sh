@@ -38,110 +38,12 @@ TimeoutEx() {
 }
 
 
-#-------------------------------------------------------------------------
-# Function: ExitOfScriptHandler
-# Trap the exit command and perform end of script processing.
-function ExitOfScriptHandler {
-    echo "EXIT COMMAND TRAPPED...."
-    echo
-    echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file ==="
-    echo "cat $HOME/.sst/sstsimulator.conf"
-    cat $HOME/.sst/sstsimulator.conf
-    echo "=== DONE DUMPING ==="
-    echo
-}
-trap ExitOfScriptHandler EXIT
-
-#=========================================================================
-# Definitions
-#=========================================================================
-
-# Check Environement variables that control what Repo and branch we are planning
-# to use.  Most of the time the defaults are used, but by setting the Environment
-# variables, we can control what (and from where) files are pulled.
-# This feature is critical for the autotesters as files may come from a different 
-# branch and/or fork
-
-# Which Repository to use for SQE (default is https://github.com/sstsimulator/sst-sqe)
-if [[ ${SST_SQEREPO:+isSet} != isSet ]] ; then
-    SST_SQEREPO=https://github.com/sstsimulator/sst-sqe
-fi
-
-# Which Repository to use for CORE (default is https://github.com/sstsimulator/sst-core)
-if [[ ${SST_COREREPO:+isSet} != isSet ]] ; then
-    SST_COREREPO=https://github.com/sstsimulator/sst-core
-fi
-
-# Which Repository to use for ELEMENTS (default is https://github.com/sstsimulator/sst-elements)
-if [[ ${SST_ELEMENTSREPO:+isSet} != isSet ]] ; then
-    SST_ELEMENTSREPO=https://github.com/sstsimulator/sst-elements
-fi
-
-# Which Repository to use for MACRO (default is https://github.com/sstsimulator/sst-macro)
-if [[ ${SST_MACROREPO:+isSet} != isSet ]] ; then
-    SST_MACROREPO=https://github.com/sstsimulator/sst-macro
-fi
-
-###
-
-# Which branches to use for each repo (default is devel)
-if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
-    SST_SQEBRANCH=devel
-    SST_SQEBRANCH="detached"
-else
-    echo ' ' ;  echo ' ' ; echo ' ' ; echo ' ' 
-    echo " Attempting to set SQE branch is a no op"
-    echo " SQE branch is selected by configure in Jenkins"
-    echo "  Ignoring SST_SQEBRANCH =  ${SST_SQEBRANCH}"
-    echo ' ' ;  echo ' ' ; echo ' ' ; echo ' ' 
-fi
-                        
-if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
-    SST_COREBRANCH=devel
-fi
-                        
-if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
-    SST_ELEMENTSBRANCH=devel
-fi
-
-if [[ ${SST_MACROBRANCH:+isSet} != isSet ]] ; then
-    SST_MACROBRANCH=devel
-fi
-
-echo "#############################################################"
-echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
-echo "  GitHub SQE Repository and Branch = $SST_SQEREPO $SST_SQEBRANCH"
-echo "  GitHub CORE Repository and Branch = $SST_COREREPO $SST_COREBRANCH"
-echo "  GitHub ELEMENTS Repository and Branch = $SST_ELEMENTSREPO $SST_ELEMENTSBRANCH"
-echo "  GitHub MACRO Repository and Branch = $SST_MACROREPO $SST_MACROBRANCH"
-echo "#############################################################"
-
-
-# Root of directory checked out, where this script should be found
-export SST_ROOT=`pwd`
-echo " SST_ROOT = $SST_ROOT"
-
-echo "#############################################################"
-echo "  Version Oct 4 1330 hours "
-echo ' '
-pwd
-ls -la
-   echo ' '
-if [ -d ${SST_BASE}/devel/sqe ] ; then
-   echo "PWD = `pwd`"
-   pushd ${SST_BASE}/devel/sqe
-   echo "PWD = `pwd`"
-   echo "               SQE branch"
-   git branch
-   echo ' '
-   popd
-else
-   echo "Jenkin forks SQE so it is not tied to a remote repository"
-   echo ' '
-fi
-
+cloneOtherRepos() {
 ##  Check out other repositories except second time on Make Dist test
-if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
+
+ls -d ../../distTestDir
+if [ 0 != $? ] ; then
+## if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
 ## Cloning sst-core into <path>/devel/trunk   
@@ -284,91 +186,8 @@ if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
    ls -l
 fi
 
-echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE - NOW SETTING ENV RUNTIME VARS ########"
-
-echo 
-echo 
-echo
-echo "#### DELETING THE HOME/.sst/sstsimulator.conf file ####"
-echo "#### NOTE: THIS CODE MAY NEED TO BE REMOVED IN THE NEAR FUTURE"
-echo "BEFORE:ls $HOME/.sst/sstsimulator.conf" 
-ls $HOME/.sst/sstsimulator.conf 
-echo "rm -f $HOME/.sst/sstsimulator.conf" 
-rm -f $HOME/.sst/sstsimulator.conf 
-echo "AFTER: ls $HOME/.sst/sstsimulator.conf" 
-ls $HOME/.sst/sstsimulator.conf 
-echo "#### DONE DELETING THE HOME/.sst/sstsimulator.conf file ####"
-echo 
-echo 
-echo 
-#	This assumes a directory strucure
-#                     SST_BASE   (was $HOME)
-#           devel                sstDeps
-#           trunk (SST_ROOT)       src
-
-echo SST_DEPS_USER_MODE = ${SST_DEPS_USER_MODE}
-if [[ ${SST_DEPS_USER_MODE:+isSet} = isSet ]]
-then
-    echo  SST_BASE=\$SST_DEPS_USER_DIR
-    export SST_BASE=$SST_DEPS_USER_DIR
-else
-    echo SST_BASE=\$HOME
-    export SST_BASE=$HOME
-fi
-echo ' ' ; echo "        SST_BASE = $SST_BASE" ; echo ' '
-
-# Location of SST library dependencies (deprecated)
-export SST_DEPS=${SST_BASE}/local
-# Starting Location where SST files are installed
-export SST_INSTALL=${SST_BASE}/local
-
-# Location where SST CORE files are installed
-export SST_CORE_INSTALL=${SST_INSTALL}/sst-core
-# Location where SST CORE build files are installed
-export SST_CORE_INSTALL_BIN=${SST_CORE_INSTALL}/bin
-
-# Location where SST ELEMENTS files are installed
-export SST_ELEMENTS_INSTALL=${SST_INSTALL}/sst-elements
-# Location where SST ELEMENTS build files are installed
-export SST_ELEMENTS_INSTALL_BIN=${SST_ELEMENTS_INSTALL}/bin
-
-# Location where SST MACRO files are installed
-export SST_MACRO_INSTALL=${SST_INSTALL}/sst-macro
-
-# Final Location where SST executable files are installed
-export SST_INSTALL=${SST_CORE_INSTALL}
-# Location where SST build files are installed
-export SST_INSTALL_BIN=${SST_CORE_INSTALL_BIN}
-
-# Setup the Location to find the sstsimulator.conf file
-export SST_CONFIG_FILE_PATH=${SST_CORE_INSTALL}/etc/sst/sstsimulator.conf
-
-
-# Location where SST dependencies are installed. This only specifies
-# the root; dependencies may be installed in various locations under
-# this directory. The user can override this value by setting the
-# exporting the SST_INSTALL_DEPS_USER variable in their environment.
-export SST_INSTALL_DEPS=${SST_BASE}/local
-# Initialize build type to null
-export SST_BUILD_TYPE=""
-# Load test definitions
-echo "bamboo.sh: This directory is:"
-pwd
-echo "bamboo.sh: ls test/include"
-ls test/include
-echo "bamboo.sh: ls deps/include"
-ls deps/include
-echo "bamboo.sh: Sourcing test/include/testDefinitions.sh"
-. test/include/testDefinitions.sh
-echo "bamboo.sh: Done sourcing test/include/testDefinitions.sh"
-# Load dependency definitions
-echo "bamboo.sh: deps/include/depsDefinitions.sh"
-. deps/include/depsDefinitions.sh
-echo "bamboo.sh: Done sourcing deps/include/depsDefinitions.sh"
-
-# Uncomment the following line or export from your environment to
-# retain binaries after build
-#export SST_RETAIN_BIN=1
+echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE  ########"
+}
 #=========================================================================
 #Functions
 #=========================================================================
@@ -400,6 +219,14 @@ dotests() {
     #  Second parameter is compiler choice, if non-default.
     #  If it is Intel, Need a GCC library also
     #    Going to load the gcc-4.8.1 module for now
+
+   echo "bamboo.sh: This directory is:"
+   pwd
+   echo "bamboo.sh: ls test/include"
+   ls test/include
+   echo "bamboo.sh: Sourcing test/include/testDefinitions.sh"
+   . test/include/testDefinitions.sh
+   echo "bamboo.sh: Done sourcing test/include/testDefinitions.sh"
  
    export JENKINS_PROJECT=`echo $WORKSPACE | awk -F'/' '{print $6}'`
    export BAMBOO_SCENARIO=$1
@@ -2242,32 +2069,6 @@ echo "##################### END ######## DEBUG DATA ########################"
             return $retval
         fi
 
-## NOT SURE IF THIS HAS A PLACE IN THE SPLIT CORE / ELEMENTS CONSTRUCTION        
-##        # print build and linkage information for warm fuzzy
-##        echo "SST-ELEMENTS BUILD INFO========================================"
-##        echo "Built SST-ELEMENTS with configure string"
-##        echo "    ./configure ${SST_SELECTED_ELEMENTS_CONFIG}"
-##        echo "----------------"
-##        echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-##        if [ $kernel == "Darwin" ]
-##        then
-##            # Mac OS X
-##            echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
-##        fi
-##        echo "----------------"
-##        echo "sst exectuable linkage information"
-##    
-##        if [ $kernel == "Darwin" ]
-##        then
-##            # Mac OS X 
-##            echo "$ otool -L ./sst/core/sstsim.x"
-##            otool -L ./sst/core/sstsim.x
-##        else
-##            echo "$ ldd ./sst/core/sstsim.x"
-##            ldd ./sst/core/sstsim.x
-##        fi
-##        echo "SST-ELEMENTS BUILD INFO========================================"
-                
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make on SST-ELEMENTS complete without error"
@@ -2477,6 +2278,20 @@ echo "##################### END ######## DEBUG DATA ########################"
     fi
 }
 
+
+#-------------------------------------------------------------------------
+# Function: ExitOfScriptHandler
+# Trap the exit command and perform end of script processing.
+function ExitOfScriptHandler {
+    echo "EXIT COMMAND TRAPPED...."
+    echo
+    echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file ==="
+    echo "cat $HOME/.sst/sstsimulator.conf"
+    cat $HOME/.sst/sstsimulator.conf
+    echo "=== DONE DUMPING ==="
+    echo
+}
+
 #=========================================================================
 # main
 # $1 = build type
@@ -2484,6 +2299,180 @@ echo "##################### END ######## DEBUG DATA ########################"
 # $3 = boost type
 # $4 = compiler type
 #=========================================================================
+trap ExitOfScriptHandler EXIT
+
+#=========================================================================
+# Definitions
+#=========================================================================
+
+# Check Environement variables that control what Repo and branch we are planning
+# to use.  Most of the time the defaults are used, but by setting the Environment
+# variables, we can control what (and from where) files are pulled.
+# This feature is critical for the autotesters as files may come from a different 
+# branch and/or fork
+
+# Which Repository to use for SQE (default is https://github.com/sstsimulator/sst-sqe)
+if [[ ${SST_SQEREPO:+isSet} != isSet ]] ; then
+    SST_SQEREPO=https://github.com/sstsimulator/sst-sqe
+fi
+
+# Which Repository to use for CORE (default is https://github.com/sstsimulator/sst-core)
+if [[ ${SST_COREREPO:+isSet} != isSet ]] ; then
+    SST_COREREPO=https://github.com/sstsimulator/sst-core
+fi
+
+# Which Repository to use for ELEMENTS (default is https://github.com/sstsimulator/sst-elements)
+if [[ ${SST_ELEMENTSREPO:+isSet} != isSet ]] ; then
+    SST_ELEMENTSREPO=https://github.com/sstsimulator/sst-elements
+fi
+
+# Which Repository to use for MACRO (default is https://github.com/sstsimulator/sst-macro)
+if [[ ${SST_MACROREPO:+isSet} != isSet ]] ; then
+    SST_MACROREPO=https://github.com/sstsimulator/sst-macro
+fi
+
+###
+
+# Which branches to use for each repo (default is devel)
+if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
+    SST_SQEBRANCH=devel
+    SST_SQEBRANCH="detached"
+else
+    echo ' ' ;  echo ' ' ; echo ' ' ; echo ' ' 
+    echo " Attempting to set SQE branch is a no op"
+    echo " SQE branch is selected by configure in Jenkins"
+    echo "  Ignoring SST_SQEBRANCH =  ${SST_SQEBRANCH}"
+    echo ' ' ;  echo ' ' ; echo ' ' ; echo ' ' 
+fi
+                        
+if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
+    SST_COREBRANCH=devel
+fi
+                        
+if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
+    SST_ELEMENTSBRANCH=devel
+fi
+
+if [[ ${SST_MACROBRANCH:+isSet} != isSet ]] ; then
+    SST_MACROBRANCH=devel
+fi
+
+echo "#############################################################"
+echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
+echo "  GitHub SQE Repository and Branch = $SST_SQEREPO $SST_SQEBRANCH"
+echo "  GitHub CORE Repository and Branch = $SST_COREREPO $SST_COREBRANCH"
+echo "  GitHub ELEMENTS Repository and Branch = $SST_ELEMENTSREPO $SST_ELEMENTSBRANCH"
+echo "  GitHub MACRO Repository and Branch = $SST_MACROREPO $SST_MACROBRANCH"
+echo "#############################################################"
+
+
+# Root of directory checked out, where this script should be found
+export SST_ROOT=`pwd`
+echo " SST_ROOT = $SST_ROOT"
+
+echo "#############################################################"
+echo "  Version Oct 4 1330 hours "
+echo ' '
+pwd
+ls -la
+   echo ' '
+if [ -d ${SST_BASE}/devel/sqe ] ; then
+   echo "PWD = `pwd`"
+   pushd ${SST_BASE}/devel/sqe
+   echo "PWD = `pwd`"
+   echo "               SQE branch"
+   git branch
+   echo ' '
+   popd
+else
+   echo "Jenkin forks SQE so it is not tied to a remote repository"
+   echo ' '
+fi
+
+echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE - NOW SETTING ENV RUNTIME VARS ########"
+
+echo 
+echo 
+echo
+echo "#### DELETING THE HOME/.sst/sstsimulator.conf file ####"
+echo "#### NOTE: THIS CODE MAY NEED TO BE REMOVED IN THE NEAR FUTURE"
+echo "BEFORE:ls $HOME/.sst/sstsimulator.conf" 
+ls $HOME/.sst/sstsimulator.conf 
+echo "rm -f $HOME/.sst/sstsimulator.conf" 
+rm -f $HOME/.sst/sstsimulator.conf 
+echo "AFTER: ls $HOME/.sst/sstsimulator.conf" 
+ls $HOME/.sst/sstsimulator.conf 
+echo "#### DONE DELETING THE HOME/.sst/sstsimulator.conf file ####"
+echo 
+echo 
+echo 
+#	This assumes a directory strucure
+#                     SST_BASE   (was $HOME)
+#           devel                sstDeps
+#           trunk (SST_ROOT)       src
+
+echo SST_DEPS_USER_MODE = ${SST_DEPS_USER_MODE}
+if [[ ${SST_DEPS_USER_MODE:+isSet} = isSet ]]
+then
+    echo  SST_BASE=\$SST_DEPS_USER_DIR
+    export SST_BASE=$SST_DEPS_USER_DIR
+else
+    echo SST_BASE=\$HOME
+    export SST_BASE=$HOME
+fi
+echo ' ' ; echo "        SST_BASE = $SST_BASE" ; echo ' '
+
+# Location of SST library dependencies (deprecated)
+export SST_DEPS=${SST_BASE}/local
+# Starting Location where SST files are installed
+export SST_INSTALL=${SST_BASE}/local
+
+# Location where SST CORE files are installed
+export SST_CORE_INSTALL=${SST_INSTALL}/sst-core
+# Location where SST CORE build files are installed
+export SST_CORE_INSTALL_BIN=${SST_CORE_INSTALL}/bin
+
+# Location where SST ELEMENTS files are installed
+export SST_ELEMENTS_INSTALL=${SST_INSTALL}/sst-elements
+# Location where SST ELEMENTS build files are installed
+export SST_ELEMENTS_INSTALL_BIN=${SST_ELEMENTS_INSTALL}/bin
+
+# Location where SST MACRO files are installed
+export SST_MACRO_INSTALL=${SST_INSTALL}/sst-macro
+
+# Final Location where SST executable files are installed
+export SST_INSTALL=${SST_CORE_INSTALL}
+# Location where SST build files are installed
+export SST_INSTALL_BIN=${SST_CORE_INSTALL_BIN}
+
+# Setup the Location to find the sstsimulator.conf file
+export SST_CONFIG_FILE_PATH=${SST_CORE_INSTALL}/etc/sst/sstsimulator.conf
+
+
+# Location where SST dependencies are installed. This only specifies
+# the root; dependencies may be installed in various locations under
+# this directory. The user can override this value by setting the
+# exporting the SST_INSTALL_DEPS_USER variable in their environment.
+export SST_INSTALL_DEPS=${SST_BASE}/local
+# Initialize build type to null
+export SST_BUILD_TYPE=""
+
+cloneOtherRepos 
+
+# Load test definitions
+echo "bamboo.sh: This directory is:"
+pwd
+echo "bamboo.sh: ls deps/include"
+ls deps/include
+# Load dependency definitions
+echo "bamboo.sh: deps/include/depsDefinitions.sh"
+. deps/include/depsDefinitions.sh
+echo "bamboo.sh: Done sourcing deps/include/depsDefinitions.sh"
+
+# Uncomment the following line or export from your environment to
+# retain binaries after build
+#export SST_RETAIN_BIN=1
+
 
 echo "==============================INITIAL ENVIRONMENT DUMP================="
 env|sort
@@ -2645,11 +2634,6 @@ then
         sed -e 's/^/#doxygen /' ./sst-core/doc/undoc.txt
         echo "============================== SST-CORE DOXYGEN UNDOCUMENTED FILES =============================="
         retval=0
-###        # dump list of sst-elements undocumented files
-###        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
-###        sed -e 's/^/#doxygen /' ./sst-elements/doc/undoc.txt
-###        echo "============================== SST-ELEMENTS DOXYGEN UNDOCUMENTED FILES =============================="
-###        retval=0
     else
         # Build was successful, so run tests, providing command line args
         # as a convenience. SST binaries must be generated before testing.
