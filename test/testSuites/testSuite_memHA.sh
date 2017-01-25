@@ -57,7 +57,7 @@ Match=$2    ##  Match criteron
 
     startSeconds=`date +%s`
     testDataFileBase="test_memHA_$memHA_case"
-    memH_test_dir=$SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
+    memH_test_dir=$SST_REFERENCE_ELEMENTS/memHierarchy/tests
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"

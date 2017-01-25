@@ -78,6 +78,11 @@ export SHUNIT2_SRC=${SHUNIT2_ROOT}/src
 # Adjust path for Bamboo install preferences
 export PATH=${PATH}:/usr/local/bin
 
+# Define the path to the Elements Reference files
+if [[ ${SST_REFERENCE_ELEMENTS:+isSet} != isSet ]] ; then
+   export SST_REFERENCE_ELEMENTS=$SST_ROOT/sst-elements/src/sst/elements
+fi
+
 # Location of external test files
 export SST_TEST_EXTERNAL_INPUT_FILES=${HOME}/sstDeps/test/inputFiles
 # Location of external test input files for prospero
