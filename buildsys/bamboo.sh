@@ -184,6 +184,8 @@ if [ 0 != $? ] ; then
    ln -s `pwd`/../sqe/buildsys/deps .
    ln -s `pwd`/../sqe/test .
    ls -l
+# Define the path to the Elements Reference files
+   export SST_REFERENCE_ELEMENTS=$SST_ROOT/sst-elements/src/sst/elements
 fi
 
 echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE  ########"
