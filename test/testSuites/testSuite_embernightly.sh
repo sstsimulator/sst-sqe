@@ -80,7 +80,7 @@ test_embernightly() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_embernightly"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/ember/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
     pushd $SST_ROOT/sst-elements/src/sst/elements/ember/test

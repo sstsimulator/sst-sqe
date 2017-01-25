@@ -69,7 +69,7 @@ test_scheduler_0001() {
     testDataFileBase="test_scheduler_0001"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -150,7 +150,7 @@ test_scheduler_0002() {
     faultLog="${SST_TEST_OUTPUTS}/${testDataFileBase}_faultlog.csv"
     errorLog="${SST_TEST_OUTPUTS}/${testDataFileBase}_errorlog.csv"
     # This is the expected name and location of the reference file
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
     joblogReferenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_joblog.csv"
     faultlogReferenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_faultlog.csv"
     errorlogReferenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_errorlog.csv"
@@ -253,7 +253,7 @@ test_scheduler_0003() {
 
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -332,7 +332,7 @@ test_scheduler_0004() {
     testDataFileBase="test_scheduler_0004"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -423,7 +423,7 @@ test_scheduler_0005() {
     fi
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
     ####################
     #      Intel compiler requires unique Reference file
     $CXX --version > check-comp 2>&1

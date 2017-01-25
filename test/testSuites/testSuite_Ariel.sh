@@ -156,7 +156,7 @@ Ariel_template() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_Ariel_${Ariel_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/ariel/frontend/simple/examples/stream/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
     startSeconds=`date +%s`
