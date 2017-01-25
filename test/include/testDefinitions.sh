@@ -79,7 +79,7 @@ export SHUNIT2_SRC=${SHUNIT2_ROOT}/src
 export PATH=${PATH}:/usr/local/bin
 
 # Define the path to the Elements Reference files
-if [[ ${SST_SST_REFERENCE_ELEMENTS:+isSet} != isSet ]] ; then
+if [[ ${SST_REFERENCE_ELEMENTS:+isSet} != isSet ]] ; then
    export SST_REFERENCE_ELEMENTS=$SST_ROOT/sst-elements/src/sst/elements
 fi
 
