@@ -53,16 +53,16 @@ Tol=$2    ##  curTick tolerance
 
     startSeconds=`date +%s`
     testDataFileBase="test_memHierarchy_$memH_case"
+    memH_test_dir=${SST_REFERENCE_ELEMENTS}/memHierarchy/tests
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
     # Add basename to list for processing later
     L_TESTFILE+=(${testDataFileBase})
-    memH_sdl_dir=$SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
-    rm -f $memH_sdl_dir/dramsim*log
     pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
+    rm -f dramsim*.log
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
@@ -78,7 +78,7 @@ Tol=$2    ##  curTick tolerance
       ls $sutArgs
       echo ' FAILED to find Python file.'
       echo ' '
-      ls ${memH_sdl_dir}/*.py
+      ls *.py
       echo ' '
       fail ' FAILED to find Python file.'
       popd
@@ -363,6 +363,7 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 (. ${SHUNIT2_SRC}/shunit2)
 
 echo ' '
+touch $$_tmp
 cat $$_tmp
 echo ' '
 echo "   Summary of diff vs. Reference file"
