@@ -140,7 +140,7 @@ SE_fini() {
    else
        echo $TL
        echo $1   $TL >> $SST_TEST_OUTPUTS/EmberSweep_cumulative.out
-       RL=`grep $1 $SST_TEST_REFERENCE/test_EmberSweep.out`
+       RL=`grep $1 $SST_REFERENCE_ELEMENTS/ember/tests/refFiles/test_EmberSweep.out`
        if [ $? != 0 ] ; then 
           echo " Can't locate this test in Reference file "
           fail " # $TEST_INDEX:  Can't locate this test in Reference file "

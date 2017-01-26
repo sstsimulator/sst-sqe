@@ -61,7 +61,7 @@ test_simpleLookupTableComponent() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

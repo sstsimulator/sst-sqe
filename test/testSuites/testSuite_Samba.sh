@@ -51,6 +51,7 @@ Tol=$2    ##  curTick tolerance
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/Samba/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
