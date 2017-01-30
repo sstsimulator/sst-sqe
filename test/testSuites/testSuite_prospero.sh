@@ -124,7 +124,7 @@ template_prospero() {
          echo ' '
     fi
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}_${TYPE}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_${TYPE}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/prospero/tests/refFiles/${testDataFileBase}_${TYPE}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

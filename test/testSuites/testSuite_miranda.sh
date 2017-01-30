@@ -60,7 +60,7 @@ miranda_case=$1
     # Define a common basename for test output and reference files.
     testDataFileBase="test_miranda_${miranda_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/miranda/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

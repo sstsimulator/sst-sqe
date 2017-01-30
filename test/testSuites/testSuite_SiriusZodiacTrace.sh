@@ -66,7 +66,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/zodiac/sirius/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

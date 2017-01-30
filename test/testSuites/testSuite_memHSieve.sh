@@ -88,7 +88,7 @@ test_memHSieve() {
     # Define a common basename for test csv and reference
     # files. XML postprocessing requires this.
     testDataFileBase="test_memHSieve"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/memHierarchy/Sieve/tests/refFiles/${testDataFileBase}.out"
     csvFile="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv"
     csvFileBase="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"

@@ -59,7 +59,7 @@ CP_case=$1
     testDataFileBase="test_cassini_prefetch_${CP_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/cassini/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
