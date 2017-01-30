@@ -68,9 +68,10 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         echo "wget failed"
         preFail
     fi
-
+    ls -l *bz2
     bunzip2 iqyax.nand.bz2
     bunzip2 partest.bin.bz2
+    ls =l iqy*  part*
     popd
 
 #-------------------------------------------------------------------------------
