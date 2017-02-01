@@ -67,12 +67,14 @@ fi
         fi
     fi
 
-        
-pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests
+mkdir $SST_TEST_SUITES/memHS_folder        
+pushd $SST_TEST_SUITES/memHS_folder        
 #   Remove old files if any
 rm -f ompsievetest.o ompsievetest backtrace_* StatisticOutput.csv mallocRank.txt-0.txt ${SSTTESTTEMPFILES}/23_43.ref ${SSTTESTTEMPFILES}/23_43.out
 
 #   Build ompsievetest
+    cp $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/Makefile .
+    ln -s $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/ompsievetest.c
     #      Optionally remove openmp from the build
     if [ $SST_WITH_OPENMP == 0 ] ; then
         echo "         ### Remove \"-fopenmp\" from the make"
@@ -80,8 +82,6 @@ rm -f ompsievetest.o ompsievetest backtrace_* StatisticOutput.csv mallocRank.txt
     fi
     make
     ls -l ompsievetest
-
-popd
 
 test_memHSieve() {
 
@@ -98,7 +98,6 @@ test_memHSieve() {
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
     sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/sieve-test.py"
-    pushd ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests
     rm -f StatisticOutput*csv
     rm -f mallocRank.txt-0*
 
