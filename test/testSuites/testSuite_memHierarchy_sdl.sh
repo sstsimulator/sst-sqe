@@ -140,19 +140,19 @@ Tol=$2    ##  curTick tolerance
     RemoveComponentWarning
     pushd ${SSTTESTTEMPFILES}
 #          Append errFile to outFile   w/o  Not Aligned messages
-    diff -b $referenceFile $outFile > _raw_diff
+    diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
     if [ $? == 0 ] ; then
         fileSize=`wc -l $outFile | awk '{print $1}'`
         echo "            Exact Match of reduced Output  -- $fileSize lines"
-        rm _raw_diff
+        rm ${SSTTESTTEMPFILES}/_raw_diff
     else
         wc $referenceFile $outFile
-        wc _raw_diff
+        wc ${SSTTESTTEMPFILES}/_raw_diff
         rm diff_sorted
         compare_sorted $referenceFile $outFile
         if [ $? == 0 ] ; then
            echo " Sorted match with Reference File"
-           rm _raw_diff
+           rm ${SSTTESTTEMPFILES}/_raw_diff
         else
 echo "Preliminary ---------------"
 cat ${SSTTESTTEMPFILES}/diff_sorted

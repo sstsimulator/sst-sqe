@@ -70,7 +70,7 @@ fi
         
 pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests
 #   Remove old files if any
-rm -f ompsievetest.o ompsievetest backtrace_* StatisticOutput.csv mallocRank.txt-0.txt 23_43.ref 23_43.out
+rm -f ompsievetest.o ompsievetest backtrace_* StatisticOutput.csv mallocRank.txt-0.txt ${SSTTESTTEMPFILES}/23_43.ref ${SSTTESTTEMPFILES}/23_43.out
 
 #   Build ompsievetest
     #      Optionally remove openmp from the build
@@ -179,11 +179,11 @@ ls -ltr
    echo  "         4 - Look at StatisticOutput.csv"
         wc $referenceFile $outFile
 
-        grep -w -e '^.$' -e '^..$' $referenceFile  > 23_43.ref
-        grep -w -e '^.$' -e '^..$' $outFile > 23_43.out 
-        wc 23_43.???
+        grep -w -e '^.$' -e '^..$' $referenceFile  > ${SSTTESTTEMPFILES}/23_43.ref
+        grep -w -e '^.$' -e '^..$' $outFile > ${SSTTESTTEMPFILES}/23_43.out 
+        wc ${SSTTESTTEMPFILES}/23_43.???
 
-        diff 23_43.ref 23_43.out
+        diff ${SSTTESTTEMPFILES}/23_43.ref ${SSTTESTTEMPFILES}/23_43.out
         if [ $? != 0 ] ; then
            echo " lines 23 to 43 of csv gold did not match"
            FAIL=1

@@ -103,18 +103,18 @@ test_simpleLookupTableComponent() {
         fi
         RemoveComponentWarning
         wc $referenceFile $outFile
-        diff -b $referenceFile $outFile > _raw_diff
+        diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
         if [ $? != 0 ]
         then  
-           wc _raw_diff
+           wc ${SSTTESTTEMPFILES}/_raw_diff
            compare_sorted $referenceFile $outFile
            if [ $? == 0 ] ; then
               echo " Sorted match with Reference File"
-              rm _raw_diff
+              rm ${SSTTESTTEMPFILES}/_raw_diff
               return
            else
               fail " Reference does not Match Output"
-              # cat _raw_diff
+              # cat ${SSTTESTTEMPFILES}/_raw_diff
               echo "Display up to 20 lines of Sorted Diff"
               cat diff_sorted| sed 20q  ; echo ' '
            fi
