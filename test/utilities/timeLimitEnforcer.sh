@@ -39,16 +39,17 @@ echo ' '
 ####                 Remove old ompsievetest task
 ps -ef | grep ompsievetest
 echo " this might better go in the Suite"
-ps -ef | grep ompsievetest | grep -v -e grep > ${SSTTESTTEMPFILES}/omps_list
-wc ${SSTTESTTEMPFILES}/omps_list
+ps -ef | grep ompsievetest | grep -v -e grep > /tmp/${MY_PID}_omps_list
+wc /tmp/${MY_PID}_omps_list
 while read -u 3 _who _anOMP _own _rest
 do
     if [ $_own == 1 ] ; then
         echo " Attempt to remove $_anOMP "
         kill -9 $_anOMP
     fi
-done 3<${SSTTESTTEMPFILES}/omps_list
+done 3</tmp/${MY_PID}_omps_list
 
+rm /tmp/${MY_PID}_omps_list
 ####                  Find Pid of my ompsievetest
 OMP_PID=`ps -ef | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
 echo "OMP_PID = $OMP_PID"
