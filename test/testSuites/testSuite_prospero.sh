@@ -41,8 +41,14 @@ if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
 
    # ----------------- compile the file array     
    echo "## ----------------- compile the file array   "
-       cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array
+###---       cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array
+   mkdir ${SST_TEST_SUITES}/Prospero_folder
+   cd ${SST_TEST_SUITES}/Prospero_folder
    echo PWD `pwd`
+       ln -s ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/Makefile .
+       ln -s ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/array.c .
+       ln -s ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/*.py .
+
        make clean
        make
    ls -l 
@@ -63,7 +69,7 @@ if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
        PIN_TAR="Pin"
 else
    #  Download the trace files from sst-simulator.org
-       cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array
+###=--       cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array
        echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz --no-check-certificate"
        wget "https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz" 
        if [ $? != 0 ] ; then
