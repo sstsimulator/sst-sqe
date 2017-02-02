@@ -308,10 +308,10 @@ echo "DEBUG: numrank $numranks, was $was"
         wc $distResultFile
 
             #         Source $distResultFile (with the RANK array)
-            . $distResultFile 2>std.err
-            if [ -s std.err ] ; then
+            . $distResultFile 2>${SSTTESTTEMPFILES}/std.err
+            if [ -s ${SSTTESTTEMPFILES}/std.err ] ; then
                  echo "source of $distResultFile failed:"
-                 cat std.err
+                 cat ${SSTTESTTEMPFILES}/std.err
                  fail " Source of $distResultFile failed"
                  return
             fi
