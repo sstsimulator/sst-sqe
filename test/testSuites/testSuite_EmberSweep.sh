@@ -85,7 +85,11 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 pwd
 
-pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+###--- pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+    mkdir ${SST_TEST_SUITES}/emberSweep_folder
+    pushd ${SST_TEST_SUITES}/emberSweep_folder
+    cp ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/* .
+    chmod +w *
 
 pwd
 ls
@@ -113,8 +117,9 @@ SE_start() {
     testDataFileBase="testES_${TEST_INDEX}"
     L_TESTFILE+=(${testDataFileBase})
 #             For Valgrind, sut= will be installed after this line.
-    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
-}
+###---    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+    pushd ${SST_TEST_SUITES}/emberSweep_folder
+}   
 ####################
 #    SE_fini()
 #          tmp_file is output from SST
@@ -158,19 +163,20 @@ SE_fini() {
    if [ $FAILED == "TRUE" ] ; then
        FAILED_TESTS=$(($FAILED_TESTS + 1))
        echo ' '
-       grep Ember_${1} -A 5 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/${SSTTESTTEMPFILES}/bashIN | grep sst
+       grep Ember_${1} -A 5 ${SSTTESTTEMPFILES}/bashIN | grep sst
        echo ' '
-       wc ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
-       len_tmp_file=`wc -l ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file | awk '{print $1}'`
+###---       wc ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
+       wc tmp_file
+       len_tmp_file=`wc -l ./tmp_file | awk '{print $1}'`
        if [ $len_tmp_file -gt 25 ] ; then
            echo "      stdout from sst   first and last 25 lines"
-           Sed 25q ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
+           Sed 25q ./tmp_file
            echo "              . . ."      
-           tail -25 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
+           tail -25 ./tmp_file
            echo "    ----   end of stdout "
        else
            echo "    ----   stdout for sst:"
-           cat ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
+           cat ./tmp_file
            echo "    ----   end of stdout "
        fi
        echo ' '
@@ -268,5 +274,5 @@ popd
 export SST_TEST_ONE_TEST_TIMEOUT=900
 cd $SST_ROOT
 
-(. ${SHUNIT2_SRC}/shunit2 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/${SSTTESTTEMPFILES}/bashIN)
+(. ${SHUNIT2_SRC}/shunit2 ${SSTTESTTEMPFILES}/bashIN)
 
