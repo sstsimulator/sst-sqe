@@ -669,6 +669,8 @@ echo " #####################################################"
    echo $HAM
             ln -s ${SST_TEST_SUITES}/testSuite_EmberSweep.sh ${SST_TEST_SUITES}/testSuite_EmberSweep_${HAM}.sh
             ${SST_TEST_SUITES}/testSuite_EmberSweep_${HAM}.sh
+	    ln -s ${SST_TEST_SUITES}/testSuite_embernightly.sh ${SST_TEST_SUITES}/testSuite_embernightly_${HAM}.sh
+            ${SST_TEST_SUITES}/testSuite_embernightly_${HAM}.sh
             ((HAM--))
         done
         return
