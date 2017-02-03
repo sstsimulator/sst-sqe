@@ -1501,7 +1501,11 @@ setUPforMakeDisttest() {
      echo "---   PWD  `pwd`"           ## Original trunk
 #                             CORE
 #            May 24th, 2016     file is sstcore-6.0.0.tar.gz
-     cd ${SST_ROOT}/sst-core
+     LOC_OF_TAR=""
+     if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
+         LOC_OF_TAR="-builddir" 
+     fi 
+     cd ${SST_ROOT}/sst-core${LOC_OF_TAR}
      Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
      tarName=${Package}.tar.gz
@@ -1529,7 +1533,7 @@ setUPforMakeDisttest() {
 
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
-     cd $SST_ROOT/sst-elements
+     cd $SST_ROOT/sst-elements${LOC_OF_TAR}
      echo "---   PWD  `pwd`"    
      Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
