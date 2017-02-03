@@ -222,6 +222,13 @@ dotests() {
     #  If it is Intel, Need a GCC library also
     #    Going to load the gcc-4.8.1 module for now
 
+   if [[ ${SST_TEST_WITH_NO_ELEMENTS_WRITE:+isSet} == isSet ]] ; then
+       echo "#################################################### "
+       echo ' '
+       echo "     ENFORCING no write to elements by SQE tests"
+       echo ' '
+       echo "#################################################### "
+   fi
    echo "bamboo.sh: This directory is:"
    pwd
    echo "bamboo.sh: ls test/include"
