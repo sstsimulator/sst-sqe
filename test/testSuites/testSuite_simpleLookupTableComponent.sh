@@ -114,7 +114,6 @@ test_simpleLookupTableComponent() {
               return
            else
               fail " Reference does not Match Output"
-              # cat ${SSTTESTTEMPFILES}/_raw_diff
               echo "Display up to 20 lines of Sorted Diff"
               cat diff_sorted| sed 20q  ; echo ' '
            fi

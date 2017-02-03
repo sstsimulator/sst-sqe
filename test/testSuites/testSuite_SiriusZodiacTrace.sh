@@ -43,7 +43,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 #       Download the tar file of traces   and untar it into the sst-elements/src/sst/elements tree
 #
-###---     pushd ${SST_ROOT}/sst-elements/src
      mkdir ${SST_TEST_SUITES}/SiriusZ_folder
      cd ${SST_TEST_SUITES}/SiriusZ_folder
      echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz --no-check-certificate"
@@ -54,19 +53,13 @@ L_TESTFILE=()  # Empty list, used to hold test file names
      fi
      tar -xzf sst-Sirius-Allreduce-traces.tar.gz
      
-echo "$LINENO --- PWD  `pwd`"
-ls
      rm sst-Sirius-Allreduce-traces.tar.gz
-###---   popd 
 
 ##   Right now this feels to me like the "allreduce template", rather than "Sirius".
 allReduce_template() {
 Sirius_case=$1
 Tol=$2    ##  curTick tolerance,  or  "lineWordCt" 
 
-     
-echo "$LINENO --- PWD  `pwd`"
-ls
     startSeconds=`date +%s`
     testDataFileBase="test_Sirius_allred_$Sirius_case"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
@@ -77,7 +70,6 @@ ls
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
-###---    pushd $SST_ROOT/sst-elements/src/sst/elements/zodiac/test/allreduce
     pushd ./sst/elements/zodiac/test/allreduce
     pwd
 

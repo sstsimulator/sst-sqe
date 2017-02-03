@@ -137,7 +137,6 @@ test_cacheTracer_2() {
     sut="${SST_TEST_INSTALL_BIN}/sst"
     mkdir $SST_TEST_SUITES/cacheTracer_folder
     pushd $SST_TEST_SUITES/cacheTracer_folder
-###---    cd ${SST_ROOT}/sst-elements/src/sst/elements/cacheTracer/tests
 
     sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/cacheTracer/tests/test_cacheTracer_2.py"
 

@@ -153,7 +153,6 @@ checkAndPrint() {
             alln=`grep found $outFile | grep in.partition.graph | awk -F'found' '{print $2}' | awk '{print $1 }'`
             
             grep 'rank .* (assigned .* components)' $outFile | awk -F'rank' '{print $2}' | awk '{print "rank[" $1 "]=" $3}' > ${af}
-#            grep Export.to.rank $outFile | awk '{print "rank[" $8 "]=" $10 ";"}'> ${af}
             numranks=`wc -l ${af} | awk '{print $1}'` ; ((numranks++))
             echo " Total vertices: $alln, numranks = $numranks "
 

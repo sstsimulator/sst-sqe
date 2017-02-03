@@ -83,16 +83,12 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     #  Most test Suites explicitly define an environment variable sut to be full path SST
     #     The Python script does not do this
 
-pwd
 
-###--- pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
     mkdir ${SST_TEST_SUITES}/emberSweep_folder
     pushd ${SST_TEST_SUITES}/emberSweep_folder
     cp ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/* .
     chmod +w *
 
-pwd
-ls
 #      Initialize variables
 startSeconds=0
 RUNNING_INDEX=0
@@ -117,7 +113,6 @@ SE_start() {
     testDataFileBase="testES_${TEST_INDEX}"
     L_TESTFILE+=(${testDataFileBase})
 #             For Valgrind, sut= will be installed after this line.
-###---    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
     pushd ${SST_TEST_SUITES}/emberSweep_folder
 }   
 ####################
@@ -165,7 +160,6 @@ SE_fini() {
        echo ' '
        grep Ember_${1} -A 5 ${SSTTESTTEMPFILES}/bashIN | grep sst
        echo ' '
-###---       wc ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
        wc tmp_file
        len_tmp_file=`wc -l ./tmp_file | awk '{print $1}'`
        if [ $len_tmp_file -gt 25 ] ; then
