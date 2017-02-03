@@ -1529,7 +1529,7 @@ setUPforMakeDisttest() {
           echo "Untar of $tarName failed"
           exit 1
      fi
-     mv $Package sst-core
+     mv $Package sst-core${LOC_OF_TAR}
 
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
@@ -1557,7 +1557,7 @@ setUPforMakeDisttest() {
           exit 1
      fi
      echo "---   PWD  `pwd`"    
-     mv $Package sst-elements
+     mv $Package sst-elements${LOC_OF_TAR}
 
      echo "Move in items not in the trunk, that are need for the bamboo build and test"
 
