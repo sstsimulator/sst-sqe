@@ -1500,7 +1500,7 @@ setUPforMakeDisttest() {
      echo "Setting up to build from the tars created by make dist"
      echo "---   PWD  `pwd`"           ## Original trunk
 #                             CORE
-#            May 24th, 2016     file is sstcore-6.0.0.tar.gz
+#            May 24th, 2016     file is: sstcore-6.0.0.tar.gz
      LOC_OF_TAR=""
      if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
          LOC_OF_TAR="-builddir" 
@@ -1517,7 +1517,7 @@ setUPforMakeDisttest() {
      fi
      mkdir -p $SST_ROOT/distTestDir/trunk
      cd $SST_ROOT/distTestDir/trunk
-     mv $SST_ROOT/sst-core/$tarName .
+     mv $SST_ROOT/sst-core${LOC_OF_TAR}/$tarName .
      if [ $? -ne 0 ] ; then
           echo "Move failed  \$SST_ROOT/$tarName to ."
           exit 1
