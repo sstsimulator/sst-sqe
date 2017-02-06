@@ -228,6 +228,7 @@ dotests() {
        echo "     ENFORCING no write to elements by SQE tests"
        echo ' '
        echo "#################################################### "
+       chmod -w -R $SST_ROOT/sst-elements/src/sst/elements
    fi
    echo "bamboo.sh: This directory is:"
    pwd
