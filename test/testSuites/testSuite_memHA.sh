@@ -113,18 +113,18 @@ Match=$2    ##  Match criteron
 
         pushd ${SSTTESTTEMPFILES}
 
-        diff -b $referenceFile $outFile > _raw_diff
+        diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
         if [ $? == 0 ] ; then
              echo "PASS:  Exact match $memHA_case"
-             rm _raw_diff
+             rm ${SSTTESTTEMPFILES}/_raw_diff
         else
              wc $referenceFile $outFile
-             wc _raw_diff
+             wc ${SSTTESTTEMPFILES}/_raw_diff
              rm diff_sorted
              compare_sorted $referenceFile $outFile
              if [ $? == 0 ] ; then
                  echo "PASS:  Sorted match $memHA_case"
-                 rm _raw_diff
+                 rm ${SSTTESTTEMPFILES}/_raw_diff
              elif [ "lineWordCt" == "$Match" ] || [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
                  ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
                  new=`wc ${outFile}       | awk '{print $1, $2}'`;

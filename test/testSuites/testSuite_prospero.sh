@@ -33,6 +33,9 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
  
+rm -rf ${SST_TEST_SUITES}/Prospero_folder
+mkdir ${SST_TEST_SUITES}/Prospero_folder
+cd ${SST_TEST_SUITES}/Prospero_folder
 if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
     if [[ $SST_TEST_HOST_OS_DISTRIB_VERSION == *10.10* ]] ; then
       preFail "SKIP: Prospero Pin does not work on Yosemite - July 2016"  "skip"
@@ -41,8 +44,10 @@ if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
 
    # ----------------- compile the file array     
    echo "## ----------------- compile the file array   "
-       cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array
-   echo PWD `pwd`
+       ln -s ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/Makefile .
+       ln -s ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/array.c .
+       ln -s ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/*.py .
+
        make clean
        make
    ls -l 
@@ -63,7 +68,6 @@ if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
        PIN_TAR="Pin"
 else
    #  Download the trace files from sst-simulator.org
-       cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array
        echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz --no-check-certificate"
        wget "https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz" 
        if [ $? != 0 ] ; then
@@ -103,7 +107,8 @@ wcomma() {
 #              trace file type:  (text, binary, compressed)
 #              with or without DramSim  ("DramSim" or other, "none", blank)
 template_prospero() {
-    ls ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/*.trace > /dev/null 2>&1
+    cd ${SST_TEST_SUITES}/Prospero_folder
+    ls ${SST_TEST_SUITES}/Prospero_folder/*.trace > /dev/null 2>&1
     rt=$?
     if [ 0 != $rt ] ; then
         fail "No trace file found (rt = $rt)"
@@ -115,11 +120,9 @@ template_prospero() {
     # files. XML postprocessing requires this.
     if [ "$2" != "DramSim" ] ; then
          testDataFileBase="test_prospero_wo_dramsim"
-         # echo ' ' ; echo "        entering test  $TYPE  without DramSim" ; pwd ; echo ' '
          useDRAMSIM="no"
     else
          testDataFileBase="test_prospero_with_dramsim"
-         # echo ' ' ; echo "        entering test  $TYPE  with DramSim" ; pwd ; echo ' '
          useDRAMSIM="yes"
          echo ' '
     fi
@@ -131,8 +134,6 @@ template_prospero() {
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
     sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/trace-common.py"
-    cd ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array
-
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -189,6 +190,7 @@ template_prospero() {
         else
             echo "OutFile word/line count DOES NOT matches Reference"
             fail "OutFile word/line count DOES NOT matches Reference"
+            diff $outFile $referenceFile
         fi
     else
         echo OutFile is an exact match of ReferenceFile

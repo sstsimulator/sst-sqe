@@ -101,14 +101,14 @@ test_cacheTracer_1() {
              return
         fi
         wc $referenceFile $outFile
-        diff -b $referenceFile $outFile > _raw_diff
+        diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
         if [ $? != 0 ]
         then  
-           wc _raw_diff
+           wc ${SSTTESTTEMPFILES}/_raw_diff
            compare_sorted $referenceFile $outFile
            if [ $? == 0 ] ; then
               echo " Sorted match with Reference File"
-              rm _raw_diff
+              rm ${SSTTESTTEMPFILES}/_raw_diff
               return
            else
               fail " Reference does not Match Output"
@@ -135,7 +135,8 @@ test_cacheTracer_2() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    cd ${SST_ROOT}/sst-elements/src/sst/elements/cacheTracer/tests
+    mkdir $SST_TEST_SUITES/cacheTracer_folder
+    pushd $SST_TEST_SUITES/cacheTracer_folder
 
     sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/cacheTracer/tests/test_cacheTracer_2.py"
 
@@ -144,6 +145,7 @@ ls $outFile
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
+pwd
         (${sut} ${sutArgs} > $outFile)
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
