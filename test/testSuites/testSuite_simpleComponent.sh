@@ -59,6 +59,7 @@ test_simpleComponent() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_simpleComponent"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -70,8 +71,15 @@ test_simpleComponent() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        (${sut} ${sutArgs} > $outFile)
-        RetVal=$? 
+        if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
+           ${sut} ${sutArgs} > ${outFile}
+           RetVal=$? 
+        else
+           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs}
+           RetVal=$? 
+           cat ${testOutFiles}* > $outFile
+        fi
+
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
