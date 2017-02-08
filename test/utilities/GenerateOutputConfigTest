@@ -6,7 +6,7 @@ pushd test/testSuites
  
 if [ $? != 0 ] ; then
     echo "   ################################################################################ "
-    echo "   cd failed
+    echo "   cd failed    === needs to find test"
     echo "  Must be issue with Directory structure or pwd"
     echo "    PWD is `pwd`"
     echo "   ################################################################################ "
@@ -30,8 +30,7 @@ then
     fi
 fi
 
-
-svn revert $fn
+git checkout -- $fn          # Restore the Suite.
 
                          #  Remember insert goes BEFORE!
 sed -i'.sd' '/sut.*sutArgs/i \
@@ -54,6 +53,7 @@ if [ $? != 0 ] ; then \
      echo " " \
      return 1 \
 fi \
+echo "   Generated new python file:   ls, wc, and cksum" \
 ls -l $pyFile \
 wc $pyFile \
 cksum $pyFile \
