@@ -96,7 +96,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         }
         #                     --- end of Subroutine
      echo ' '
-     grep 'sut.*sutArgs' $SST_TEST_SUITES/testSuite_partitioner.sh
+     tA="tArgs"
+     grep 'sut.*su'${tA} $SST_TEST_SUITES/testSuite_partitioner.sh
      echo ' '
 ##            subroutine create_distResultFile() 
 #
