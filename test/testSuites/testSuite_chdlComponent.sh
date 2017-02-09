@@ -152,6 +152,10 @@ df /tmp
 echo ' '   
                wc ${outFile} ${referenceFile};
                echo "                   Line and Word count of the diff: "
+               echo " Ignore \"Warning: In memHierarchyInterface, write request size does not match payload size. Request size: 1. Payload size: 4. MemEvent will use payload size\" messages"
+               grep -c 'Warning: In memHierarchy.*payload size' ${outFile}
+               sed -i'Warn-memH' '/Warning: In memHierarchy.*payload size/d' ${outFile} 
+               echo ' '
                echo "                              `diff ${outFile} ${referenceFile} | wc `"
                ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
                new=`wc ${outFile}       | awk '{print $1, $2}'`;
