@@ -62,7 +62,12 @@ Match=$2    ##  Match criteron
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
-    referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+    if [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
+        referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+    else
+        #           This is multi-core case
+        referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MC.out"
+    fi
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
     pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
