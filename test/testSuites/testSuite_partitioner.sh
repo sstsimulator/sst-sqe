@@ -96,6 +96,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         }
         #                     --- end of Subroutine
      echo ' '
+     ## The following ugliness is so the generate output config 
+     ##       script won't treat this line as an sst execution.
      tA="tArgs"
      grep 'sut.*su'${tA} $SST_TEST_SUITES/testSuite_partitioner.sh
      echo ' '
