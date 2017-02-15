@@ -280,6 +280,9 @@ echo " #####################################################"
         return
     fi    
 
+    $SST_ROOT/test/utilities/invokeSuite memHA 1 1 hain A
+    $SST_ROOT/test/utilities/invokeSuite memHA 1 2 hain B
+
     if [[ $1 == *sstmainline_config_valgrind* ]] ; then
         
         echo "                   module list"
