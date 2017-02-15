@@ -53,10 +53,6 @@
     export SST_MULTI_THREAD_COUNT=$N_Threads
     export SST_MULTI_RANK_COUNT=$N_Ranks
      
-#####   Haven't default or initialized values    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-#
-
-echo $LINENO theSuite: $theSuite
 
    tmpSuite=$SST_TEST_SUITES/tmpSuite_${1}-${2}-${3}_${5}.temp
    origSuite=$theSuite
@@ -94,8 +90,6 @@ echo $LINENO theSuite: $theSuite
           fi
        fi
    fi
-
-#                    echo "    is TEST Suites defined: $SST_TEST_SUITES"
 
    if [ ! -z $SelectTests ] ; then
        if [ ! -s $tmpSuite ] ; then                  #  -s means is NOT zero size
