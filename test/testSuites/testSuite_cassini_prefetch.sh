@@ -59,7 +59,7 @@ CP_case=$1
     testDataFileBase="test_cassini_prefetch_${CP_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/cassini/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -97,17 +97,17 @@ CP_case=$1
      RemoveComponentWarning
      grep "simulated.time" $outFile ; echo ' '
      wc  $outFile $referenceFile
-     diff -b $referenceFile $outFile > _raw_diff
+     diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
      if [ $? != 0 ] ; then
-        wc _raw_diff
+        wc ${SSTTESTTEMPFILES}/_raw_diff
         compare_sorted $referenceFile $outFile
         if [ $? == 0 ] ; then
            echo " Sorted match with Reference File"
-           rm _raw_diff
+           rm ${SSTTESTTEMPFILES}/_raw_diff
            return
         else
            echo "Output does not match Reference File"
-           cat _raw_diff
+           cat ${SSTTESTTEMPFILES}/_raw_diff
 #           echo " Reference File "
 #           cat $referenceFile
 #           echo "       ------  "
@@ -115,7 +115,7 @@ CP_case=$1
 #           cat $outFile
 #           echo "       ------  "
            fail "Output does not match Reference File"
-           rm _raw_diff
+           rm ${SSTTESTTEMPFILES}/_raw_diff
         fi
      else
         echo ' '

@@ -67,12 +67,14 @@ fi
         fi
     fi
 
-        
-pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests
+mkdir $SST_TEST_SUITES/memHS_folder        
+pushd $SST_TEST_SUITES/memHS_folder        
 #   Remove old files if any
-rm -f ompsievetest.o ompsievetest backtrace_* StatisticOutput.csv mallocRank.txt-0.txt 23_43.ref 23_43.out
+rm -f ompsievetest.o ompsievetest backtrace_* StatisticOutput.csv mallocRank.txt-0.txt ${SSTTESTTEMPFILES}/23_43.ref ${SSTTESTTEMPFILES}/23_43.out
 
 #   Build ompsievetest
+    cp $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/Makefile .
+    ln -s $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/ompsievetest.c
     #      Optionally remove openmp from the build
     if [ $SST_WITH_OPENMP == 0 ] ; then
         echo "         ### Remove \"-fopenmp\" from the make"
@@ -81,14 +83,12 @@ rm -f ompsievetest.o ompsievetest backtrace_* StatisticOutput.csv mallocRank.txt
     make
     ls -l ompsievetest
 
-popd
-
 test_memHSieve() {
 
     # Define a common basename for test csv and reference
     # files. XML postprocessing requires this.
     testDataFileBase="test_memHSieve"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/memHierarchy/Sieve/tests/refFiles/${testDataFileBase}.out"
     csvFile="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv"
     csvFileBase="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
@@ -98,7 +98,6 @@ test_memHSieve() {
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
     sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/sieve-test.py"
-    pushd ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests
     rm -f StatisticOutput*csv
     rm -f mallocRank.txt-0*
 
@@ -179,11 +178,11 @@ ls -ltr
    echo  "         4 - Look at StatisticOutput.csv"
         wc $referenceFile $outFile
 
-        grep -w -e '^.$' -e '^..$' $referenceFile  > 23_43.ref
-        grep -w -e '^.$' -e '^..$' $outFile > 23_43.out 
-        wc 23_43.???
+        grep -w -e '^.$' -e '^..$' $referenceFile  > ${SSTTESTTEMPFILES}/23_43.ref
+        grep -w -e '^.$' -e '^..$' $outFile > ${SSTTESTTEMPFILES}/23_43.out 
+        wc ${SSTTESTTEMPFILES}/23_43.???
 
-        diff 23_43.ref 23_43.out
+        diff ${SSTTESTTEMPFILES}/23_43.ref ${SSTTESTTEMPFILES}/23_43.out
         if [ $? != 0 ] ; then
            echo " lines 23 to 43 of csv gold did not match"
            FAIL=1

@@ -1512,6 +1512,8 @@ do
             ;;
         q) # Qsim
             echo "# found the -q (Qsim) option, with value $OPTARG.   (Ignore on MacOS)"
+            echo "#  Option set to none"
+            OPTARG="none"
             # process arg
                   ##   Qsim currently doesn't run on MacOS because of 32/64 bit issues.
             ##if [ ! $SST_DEPS_OS_NAME = "Darwin" ]

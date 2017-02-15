@@ -947,7 +947,7 @@ _shunit_execSuite()
         MULT=" nt=${SST_MULTI_THREAD_COUNT}"
     fi
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
-        MULT="${MULT}  rt=${SST_MULTI_RANK_COUNT}"
+        MULT="${MULT}  nr=${SST_MULTI_RANK_COUNT}"
     fi
     echo "${_shunit_case_} $MULT"
     

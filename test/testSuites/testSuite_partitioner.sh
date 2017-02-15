@@ -244,27 +244,27 @@ PARTITIONER=$2
             numComp=`grep found $outFile | grep in.partition.graph | awk -F'found' '{print $2}' | awk '{print $1 }'`
             
             #   Collect number rank 0 sends to each other rank
-            grep Export.to.rank $outFile | awk '{print "rank[" $8 "]=" $10 ";"}'> af
-            numranks=`wc -l af | awk '{print $1}'` ; ((numranks++))
+            grep Export.to.rank $outFile | awk '{print "rank[" $8 "]=" $10 ";"}'> ${SSTTESTTEMPFILES}/af
+            numranks=`wc -l ${SSTTESTTEMPFILES}/af | awk '{print $1}'` ; ((numranks++))
             echo " Total vertices: $numComp, numranks = $numranks "
 
             # Insert a sanity Check.   This has failed twice on Mavericks!
-            OtherRanks=`wc -l af | awk '{print $1}'`
+            OtherRanks=`wc -l ${SSTTESTTEMPFILES}/af | awk '{print $1}'`
             ((OtherRanks++))   # Include rank zero
             #               BAD USAGE   numranks and NUMRANKS
             #           Verify that output file is valid
             if [ $OtherRanks != $NUMRANKS ] ; then
                 echo "test assumptions not met"
     #            fail "test assumptions not met"
-                cat af
+                cat ${SSTTESTTEMPFILES}/af
                 wc $outFile
                 grep -e Export -e 'to.rank' -B 4 -A 4 $outFile
                 return
             fi
 
-            . af     #  Source the file (create array of components on node)
+            . ${SSTTESTTEMPFILES}/af     #  Source the file (create array of components on node)
 #
-#   LOGIC PROBLEM extracting as subroutine this requires prior source of af!
+#   LOGIC PROBLEM extracting as subroutine this requires prior source of ${SSTTESTTEMPFILES}/af!
 #            
             #     Find out how many left on rank 0
             rank[0]=$numComp
@@ -308,10 +308,10 @@ echo "DEBUG: numrank $numranks, was $was"
         wc $distResultFile
 
             #         Source $distResultFile (with the RANK array)
-            . $distResultFile 2>std.err
-            if [ -s std.err ] ; then
+            . $distResultFile 2>${SSTTESTTEMPFILES}/std.err
+            if [ -s ${SSTTESTTEMPFILES}/std.err ] ; then
                  echo "source of $distResultFile failed:"
-                 cat std.err
+                 cat ${SSTTESTTEMPFILES}/std.err
                  fail " Source of $distResultFile failed"
                  return
             fi

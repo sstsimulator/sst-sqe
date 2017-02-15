@@ -59,7 +59,7 @@ test_simpleRNGComponent_mersenne() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_simpleRNGComponent_mersenne"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -125,7 +125,7 @@ test_simpleRNGComponent_marsaglia() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_simpleRNGComponent_marsaglia"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -190,7 +190,7 @@ test_simpleRNGComponent_xorshift() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_simpleRNGComponent_xorshift"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

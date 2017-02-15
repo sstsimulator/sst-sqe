@@ -57,11 +57,17 @@ Match=$2    ##  Match criteron
 
     startSeconds=`date +%s`
     testDataFileBase="test_memHA_$memHA_case"
+    memH_test_dir=$SST_REFERENCE_ELEMENTS/memHierarchy/tests
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    if [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
+        referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+    else
+        #           This is multi-core case
+        referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MC.out"
+    fi
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
     pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
@@ -112,18 +118,18 @@ Match=$2    ##  Match criteron
 
         pushd ${SSTTESTTEMPFILES}
 
-        diff -b $referenceFile $outFile > _raw_diff
+        diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
         if [ $? == 0 ] ; then
              echo "PASS:  Exact match $memHA_case"
-             rm _raw_diff
+             rm ${SSTTESTTEMPFILES}/_raw_diff
         else
              wc $referenceFile $outFile
-             wc _raw_diff
+             wc ${SSTTESTTEMPFILES}/_raw_diff
              rm diff_sorted
              compare_sorted $referenceFile $outFile
              if [ $? == 0 ] ; then
                  echo "PASS:  Sorted match $memHA_case"
-                 rm _raw_diff
+                 rm ${SSTTESTTEMPFILES}/_raw_diff
              elif [ "lineWordCt" == "$Match" ] || [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
                  ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
                  new=`wc ${outFile}       | awk '{print $1, $2}'`;

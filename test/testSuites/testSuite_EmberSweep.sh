@@ -83,12 +83,12 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     #  Most test Suites explicitly define an environment variable sut to be full path SST
     #     The Python script does not do this
 
-pwd
 
-pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+    mkdir ${SST_TEST_SUITES}/emberSweep_folder
+    pushd ${SST_TEST_SUITES}/emberSweep_folder
+    cp ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/* .
+    chmod +w *
 
-pwd
-ls
 #      Initialize variables
 startSeconds=0
 RUNNING_INDEX=0
@@ -149,7 +149,7 @@ SE_fini() {
    else
        echo $TL
        echo $1   $TL >> $SST_TEST_OUTPUTS/EmberSweep_cumulative.out
-       RL=`grep $1 $SST_TEST_REFERENCE/test_EmberSweep.out`
+       RL=`grep $1 $SST_REFERENCE_ELEMENTS/ember/tests/refFiles/test_EmberSweep.out`
        if [ $? != 0 ] ; then 
           echo " Can't locate this test in Reference file "
           fail " # $TEST_INDEX:  Can't locate this test in Reference file "
@@ -167,19 +167,19 @@ SE_fini() {
    if [ $FAILED == "TRUE" ] ; then
        FAILED_TESTS=$(($FAILED_TESTS + 1))
        echo ' '
-       grep Ember_${1} -A 5 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/bashIN | grep sst
+       grep Ember_${1} -A 5 ${SSTTESTTEMPFILES}/bashIN | grep sst
        echo ' '
-       wc ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
-       len_tmp_file=`wc -l ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file | awk '{print $1}'`
+       wc tmp_file
+       len_tmp_file=`wc -l ./tmp_file | awk '{print $1}'`
        if [ $len_tmp_file -gt 25 ] ; then
            echo "      stdout from sst   first and last 25 lines"
-           Sed 25q ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
+           Sed 25q ./tmp_file
            echo "              . . ."      
-           tail -25 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
+           tail -25 ./tmp_file
            echo "    ----   end of stdout "
        else
            echo "    ----   stdout for sst:"
-           cat ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
+           cat ./tmp_file
            echo "    ----   end of stdout "
        fi
        echo ' '
@@ -207,7 +207,7 @@ SE_fini() {
         sed -i.x '/print..sst.*model/s/..sst/ "mpirun -np '"${SST_MULTI_RANK_COUNT}"' sst/' EmberSweepGenerator.py 
     fi
 
-    ./EmberSweepGenerator.py > bashIN
+    ./EmberSweepGenerator.py > ${SSTTESTTEMPFILES}/bashIN
     if [ $? -ne 0 ] ; then 
         preFail " Test Generation FAILED"
     fi
@@ -219,7 +219,7 @@ SE_fini() {
      SE_SELECT=0
      if [[ ${SST_TEST_SE_LIST:+isSet} == isSet ]] ; then
          SE_SELECT=1
-         mv bashIN bashIN0
+         mv ${SSTTESTTEMPFILES}/bashIN ${SSTTESTTEMPFILES}/bashIN0
          ICT=1
          for IND in $SST_TEST_SE_LIST
          do
@@ -251,19 +251,19 @@ SE_fini() {
                    INDR=$(($INDR+1))
                 done    
                fi
-               sed -n ${START},${END}p  bashIN0 >> bashIN
+               sed -n ${START},${END}p  ${SSTTESTTEMPFILES}/bashIN0 >> ${SSTTESTTEMPFILES}/bashIN
           done
 
 # Check it
 echo Check the result
-wc bashIN
+wc ${SSTTESTTEMPFILES}/bashIN
 ## for i in ${SE_LIST[@]}; do echo $i; done
 
      fi
 
 #    Source the bash file
 
-    . bashIN
+    . ${SSTTESTTEMPFILES}/bashIN
 
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
@@ -277,5 +277,5 @@ popd
 export SST_TEST_ONE_TEST_TIMEOUT=900
 cd $SST_ROOT
 
-(. ${SHUNIT2_SRC}/shunit2 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/bashIN)
+(. ${SHUNIT2_SRC}/shunit2 ${SSTTESTTEMPFILES}/bashIN)
 

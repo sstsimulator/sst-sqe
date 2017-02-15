@@ -68,9 +68,10 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         echo "wget failed"
         preFail
     fi
-
+    ls -l *bz2
     bunzip2 iqyax.nand.bz2
     bunzip2 partest.bin.bz2
+    ls -l iqy*  part*
     popd
 
 #-------------------------------------------------------------------------------
@@ -96,6 +97,7 @@ test_chdlComponent() {
     testDataFileBase="test_chdlComponent"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/chdlComponent/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -149,8 +151,17 @@ echo ' '
 df /tmp
 echo ' '   
                wc ${outFile} ${referenceFile};
-               echo "                   Line and Word count of the diff: "
-               echo "                              `diff ${outFile} ${referenceFile} | wc `"
+               echo " "
+               echo " Ignore \"Warning: In memHierarchyInterface, write request size does not match payload size. Request size: 1. Payload size: 4. MemEvent will use payload size\" messages"
+               grep -c 'Warning: In memHierarchy.*payload size' ${outFile}
+               sed -i'Warn-memH' '/Warning: In memHierarchy.*payload size/d' ${outFile} 
+               echo ' '
+               diff ${outFile} ${referenceFile} > /dev/null
+               if [ $? == 0 ] ; then
+                   echo  "Exact match  - -  PASS "
+                   return
+               fi
+               echo "   Word count of diff   `diff ${outFile} ${referenceFile} | wc `"
                ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
                new=`wc ${outFile}       | awk '{print $1, $2}'`;
                if [ "$ref" != "$new" ];

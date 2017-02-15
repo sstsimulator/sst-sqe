@@ -106,7 +106,7 @@ ls -l
 #          This could be in subroutine library - for now only Ariel
 removeFreeIPCs() {
     #   Find and kill orphanned running binaries
-    ps -f > _running_bin
+    ps -f > ${SSTTESTTEMPFILES}/_running_bin
     while read -u 3 uid pid ppid p4 p5 p6 p7 cmd
     do
 ##        echo "          DEBUG ONLY $uid $pid $ppid $cmd"
@@ -118,11 +118,11 @@ removeFreeIPCs() {
                echo " Omitting kill of $uid $ppid $cmd"
            fi
         fi
-    done 3<_running_bin
+    done 3<${SSTTESTTEMPFILES}/_running_bin
   
     #  Find and remove no longer attached shared memory segments  
-    ipcs > _ipc_list
-    ##     echo "         DEBUG ONLY `wc _ipc_list`"
+    ipcs > ${SSTTESTTEMPFILES}/_ipc_list
+    ##     echo "         DEBUG ONLY `wc ${SSTTESTTEMPFILES}/_ipc_list`"
     while read -u 3 key shmid own perm size n_att rest
     do
          if [[ $key == "" ]] || [[ $n_att == "" ]] ; then
@@ -133,8 +133,8 @@ removeFreeIPCs() {
           echo " Removing an idle Shared Mem allocation"
           ipcrm -m $shmid
        fi
-    done 3<_ipc_list
-    rm _ipc_list  _running_bin
+    done 3<${SSTTESTTEMPFILES}/_ipc_list
+    rm ${SSTTESTTEMPFILES}/_ipc_list  ${SSTTESTTEMPFILES}/_running_bin
 }
 
 #-------------------------------------------------------------------------------
@@ -156,7 +156,7 @@ Ariel_template() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_Ariel_${Ariel_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/ariel/frontend/simple/examples/stream/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
     startSeconds=`date +%s`
