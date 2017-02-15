@@ -3,16 +3,22 @@
 #	specifing number of threads, number of ranks and specific test
 #	to run.
 #
-#	It has four parameters, space separated.  The are positional, so 
-#	if a later parameter is to used earlier must be supplied.
+#	It has five parameters, space separated.  The are positional, so 
+#	if a later parameter is to used, earlier must be supplied.
 #	    Suite name - without the "testSuite_" or the ".sh"
 #	    Number of threads to use. [zero (0) or none default to 1]
 #	    Number of ranks to use [zero (0) or none default to 1]
-#	    The tests to run, colon separated.  Default is alli.
+#	    The tests to run, colon separated.  Default is all.
 #	         (A unique portion of the name is all that required.)
+#	         "all" my be specified if the fifth parameter is needed.
+#	    The optional fifth parameter is added text (char).
+#	Jenkins does not report multiple runs of a Suite of the same 
+#	name, so the numbers are append to the name. If it is desired
+#	to run a configuration more than once, the fifth parameter
+#	can be used.        
 #
-#       Currently this specification will override an environment 
-#       variable specification.
+#       WARNING:  Currently this specification MAY override an 
+#       environment variable specification.
 #       It is assume that SST_ROOT points to the directory where test of
 #       the SQE tree resides.   
 #
@@ -26,7 +32,10 @@
         N_Threads=1 ; N_Ranks=1
     elif [[ ${3:+isSet} != isSet ]] ; then
         N_Ranks=1
+    elif [ "all" == ${4} ] ; then
+        SelectTests=""
     fi
+
     if [ 0 == $N_Threads ] ; then
         N_Threads=1
     fi
