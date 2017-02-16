@@ -31,6 +31,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 OPWD=`pwd`    # Save Original PWD
 
+     preFail "Hybrid Sim test disabled until ref file issues fixed"  "skip"
+
 if [[ ${SST_DEPS_INSTALL_HYBRIDSIM:+isSet} != isSet ]] ; then
     echo "HybridSim requires manual definition of environment variable:"
     echo "      SST_DEPS_INSTALL_HYBRIDSIM"
