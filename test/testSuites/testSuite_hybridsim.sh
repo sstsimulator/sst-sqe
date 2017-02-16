@@ -53,7 +53,7 @@ fi
 #   NOTE: These functions are invoked automatically by shunit2 as long
 #   as the function name begins with "test...".
 #===============================================================================
-                                   ${SST_REFERENCE_ELEMENTS}
+
 #-------------------------------------------------------------------------------
 # Test:
 #     test_hybridsim
