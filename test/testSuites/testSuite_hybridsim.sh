@@ -31,8 +31,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 OPWD=`pwd`    # Save Original PWD
 
-     preFail "Hybrid Sim test disabled until ref file issues fixed"  "skip"
-
 if [[ ${SST_DEPS_INSTALL_HYBRIDSIM:+isSet} != isSet ]] ; then
     echo "HybridSim requires manual definition of environment variable:"
     echo "      SST_DEPS_INSTALL_HYBRIDSIM"
@@ -80,7 +78,8 @@ test_hybridsim() {
     testDataFileBase="test_hybridsim"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    memH_test_dir=${SST_REFERENCE_ELEMENTS}/memHierarchy/tests
+    referenceFile="${memH_test_dir}/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
