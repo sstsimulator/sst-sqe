@@ -58,7 +58,7 @@ ls -l $pyFile \
 wc $pyFile \
 cksum $pyFile \
 echo "Done with step 1 building pyFile" \
-echo ' ' \
+echo " " \
 
  ' $fn
 
