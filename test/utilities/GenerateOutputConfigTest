@@ -59,6 +59,7 @@ wc $pyFile \
 cksum $pyFile \
 echo "Done with step 1 building pyFile" \
 echo " " \
+echo " Now test the generated python input file " \
 
  ' $fn
 
