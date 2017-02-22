@@ -500,7 +500,7 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
         export SST_MULTI_THREAD_COUNT=2
         export SST_TEST_SE_LIST="1 9 151"
-        HAM=5
+        HAM=25
         while [ $HAM -gt 0 ]
         do
    echo $HAM
