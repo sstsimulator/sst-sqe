@@ -175,7 +175,7 @@ test_miranda_randomgen() {
              skip_this_test
              echo " skipping randomgen on multi-thread"   
 ##  Reset the Time Limit for reamainer of tests
-             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL
+             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL_TL
              return
        fi
     fi
@@ -187,7 +187,7 @@ test_miranda_randomgen() {
 miranda_Template randomgen
 
 ##  Reset the Time Limit for reamainer of tests
-             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL
+             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL_TL
 }
 
 test_miranda_stencil3dbench() {
