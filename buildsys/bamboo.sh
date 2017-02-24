@@ -222,6 +222,14 @@ dotests() {
     #  If it is Intel, Need a GCC library also
     #    Going to load the gcc-4.8.1 module for now
 
+   if [[ ${SST_TEST_WITH_NO_ELEMENTS_WRITE:+isSet} == isSet ]] ; then
+       echo "#################################################### "
+       echo ' '
+       echo "     ENFORCING no write to elements by SQE tests"
+       echo ' '
+       echo "#################################################### "
+       chmod -w -R $SST_ROOT/sst-elements/src/sst/elements
+   fi
    echo "bamboo.sh: This directory is:"
    pwd
    echo "bamboo.sh: ls test/include"
@@ -1500,8 +1508,12 @@ setUPforMakeDisttest() {
      echo "Setting up to build from the tars created by make dist"
      echo "---   PWD  `pwd`"           ## Original trunk
 #                             CORE
-#            May 24th, 2016     file is sstcore-6.0.0.tar.gz
-     cd ${SST_ROOT}/sst-core
+#            May 24th, 2016     file is: sstcore-6.0.0.tar.gz
+     LOC_OF_TAR=""
+     if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
+         LOC_OF_TAR="-builddir" 
+     fi 
+     cd ${SST_ROOT}/sst-core${LOC_OF_TAR}
      Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
      tarName=${Package}.tar.gz
@@ -1513,7 +1525,7 @@ setUPforMakeDisttest() {
      fi
      mkdir -p $SST_ROOT/distTestDir/trunk
      cd $SST_ROOT/distTestDir/trunk
-     mv $SST_ROOT/sst-core/$tarName .
+     mv $SST_ROOT/sst-core${LOC_OF_TAR}/$tarName .
      if [ $? -ne 0 ] ; then
           echo "Move failed  \$SST_ROOT/$tarName to ."
           exit 1
@@ -1529,7 +1541,7 @@ setUPforMakeDisttest() {
 
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
-     cd $SST_ROOT/sst-elements
+     cd $SST_ROOT/sst-elements${LOC_OF_TAR}
      echo "---   PWD  `pwd`"    
      Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
@@ -1541,7 +1553,7 @@ setUPforMakeDisttest() {
          exit 1
      fi
      cd $SST_ROOT/distTestDir/trunk
-     mv $SST_ROOT/sst-elements/$tarName .
+     mv $SST_ROOT/sst-elements${LOC_OF_TAR}/$tarName .
      if [ $? -ne 0 ] ; then
           echo "Move failed  \$SST_ROOT/$tarName to ."
           exit 1

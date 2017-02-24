@@ -149,26 +149,26 @@ checkAndPrint() {
             echo ' '
             grep Export.to.rank $outFile
             
+            af=${SSTTESTTEMPFILES}/af
             alln=`grep found $outFile | grep in.partition.graph | awk -F'found' '{print $2}' | awk '{print $1 }'`
             
-            grep 'rank .* (assigned .* components)' $outFile | awk -F'rank' '{print $2}' | awk '{print "rank[" $1 "]=" $3}' > af
-#            grep Export.to.rank $outFile | awk '{print "rank[" $8 "]=" $10 ";"}'> af
-            numranks=`wc -l af | awk '{print $1}'` ; ((numranks++))
+            grep 'rank .* (assigned .* components)' $outFile | awk -F'rank' '{print $2}' | awk '{print "rank[" $1 "]=" $3}' > ${af}
+            numranks=`wc -l ${af} | awk '{print $1}'` ; ((numranks++))
             echo " Total vertices: $alln, numranks = $numranks "
 
             # Insert a sanity Check.   This has failed twice on Mavericks!
-            OtherRanks=`wc -l af | awk '{print $1}'`
+            OtherRanks=`wc -l ${af} | awk '{print $1}'`
             ((OtherRanks++))   # Include rank zero
             #               BAD USAGE   numranks and NUMRANKS
             if [ $OtherRanks != $NUMRANKS ] ; then
                 fail "test assumptions not met"
-                cat af
+                cat ${af}
                 wc $outFile
                 grep -e Export -e 'to.rank' -B 4 -A 4 $outFile
                 return
             fi
 
-            . af
+            . ${af}
             
             rank[0]=$alln
             ind=1

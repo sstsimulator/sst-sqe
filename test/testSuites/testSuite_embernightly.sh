@@ -80,7 +80,7 @@ test_embernightly() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_embernightly"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/ember/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
     pushd $SST_ROOT/sst-elements/src/sst/elements/ember/test
@@ -113,7 +113,7 @@ test_embernightly() {
              return
         fi
         wc $referenceFile $outFile
-        diff ${referenceFile} ${outFile} > full.diff 
+        diff ${referenceFile} ${outFile} > ${SSTTESTTEMPFILES}/full.diff 
         if [ $? -ne 0 ]
         then
             ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
@@ -125,7 +125,7 @@ test_embernightly() {
                 echo "    Output Flunked  lineWordCt Count match"
                 fail "    Output Flunked  lineWordCt Count match"
             fi
-            wc full.diff
+            wc ${SSTTESTTEMPFILES}/full.diff
             lcr=`wc -l $referenceFile | awk '{print $1}'`
             lco=`wc -l $outFile | awk '{print $1}'`
             if [ $lco -gt $lcr ] ; then
@@ -134,7 +134,7 @@ test_embernightly() {
                 echo "     $(($lcr-$lco)) lines less in output"
             fi
             echo "            *** Tail of Diff ***"
-            tail -10 full.diff
+            tail -10 ${SSTTESTTEMPFILES}/full.diff
         else
             grep 'Simulation is complete' $outFile
             echo "    Output matches Reference File exactly"

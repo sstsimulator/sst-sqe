@@ -60,7 +60,7 @@ miranda_case=$1
     # Define a common basename for test output and reference files.
     testDataFileBase="test_miranda_${miranda_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/miranda/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -175,7 +175,7 @@ test_miranda_randomgen() {
              skip_this_test
              echo " skipping randomgen on multi-thread"   
 ##  Reset the Time Limit for reamainer of tests
-             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL
+             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL_TL
              return
        fi
     fi
@@ -187,7 +187,7 @@ test_miranda_randomgen() {
 miranda_Template randomgen
 
 ##  Reset the Time Limit for reamainer of tests
-             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL
+             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL_TL
 }
 
 test_miranda_stencil3dbench() {
