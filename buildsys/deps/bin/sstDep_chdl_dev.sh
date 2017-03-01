@@ -93,9 +93,14 @@ sstDepsStage_chdl ()
 #
 #    git reset --hard ba3cbe3d63fcae84f6fb39d0c6d4eace524c364a
 
+
+#         Appears to have been broken for Ubuntu 16.04 on February 14, 2017
+     git reset --hard d4704318c400ac1cddb395bce484d496b6e45688       ##  back to Jan 3, 2017
     popd
 
 #   sstDepsAnnounce -h $FUNCNAME -m "Fetched CHDL from github rev ba3cbe3d63fcae84f6fb39d0c6d4eace524c364a"
+    sstDepsAnnounce -h $FUNCNAME -m "Fetched CHDL from github rev d4704318c400ac1cddb395bce484d496b6e45688"
+
 
     popd
 }
