@@ -90,14 +90,13 @@ cd $SST_TEST_SUITES/testCramSim
     L_TESTFILE+=(${testDataFileBase})
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
+    sutArgs="tests/test_txntrace4.py"
 
 
-  ls -l tests/sst-CramSim-trace_verimem_${trc}.trc
+        ls -l tests/sst-CramSim-trace_verimem_${trc}.trc
 #
-#          Warning the text appended to the next line after the ## is required for multiThread auto configuration.
-#
-      ${sut} tests/test_txntrace4.py --model-options="--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc" >$outFile   ##  ${sutArgs
-      RetVal=$?
+        ${sut} ${sutArgs} --model-options="--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc" >$outFile   ## 
+        RetVal=$?
 
         echo " Running from `pwd`"
 
