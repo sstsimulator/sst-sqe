@@ -1,0 +1,117 @@
+# /bin/bash
+#	This script is a wrapper for an individual test Suite to allow 
+#	specifing number of threads, number of ranks and specific test
+#	to run.
+#
+#	It has five parameters, space separated.  The are positional, so 
+#	if a later parameter is to used, earlier must be supplied.
+#	    Suite name - without the "testSuite_" or the ".sh"
+#	    Number of threads to use. [zero (0) or none default to 1]
+#	    Number of ranks to use [zero (0) or none default to 1]
+#	    The tests to run, colon separated.  Default is all.
+#	         (A unique portion of the name is all that required.)
+#	         "all" my be specified if the fifth parameter is needed.
+#	    The optional fifth parameter is added text (char).
+#	Jenkins does not report multiple runs of a Suite of the same 
+#	name, so the numbers are append to the name. If it is desired
+#	to run a configuration more than once, the fifth parameter
+#	can be used.        
+#
+#       WARNING:  Currently this specification MAY override an 
+#       environment variable specification.
+#       It is assume that SST_ROOT points to the directory where test of
+#       the SQE tree resides.   
+#
+    SST_TEST_SUITES=$SST_ROOT/test/testSuites
+    theSuite=${SST_TEST_SUITES}/testSuite_${1}.sh
+    N_Threads=$2
+    N_Ranks=$3
+    SelectTests=$4
+
+    if [[ ${2:+isSet} != isSet ]] ; then
+        N_Threads=1 ; N_Ranks=1
+    elif [[ ${3:+isSet} != isSet ]] ; then
+        N_Ranks=1
+    elif [ "all" == ${4} ] ; then
+        SelectTests=""
+    fi
+
+    if [ 0 == $N_Threads ] ; then
+        N_Threads=1
+    fi
+    if [ 0 == $N_Ranks ] ; then
+        N_Ranks=1
+    fi
+
+    echo $theSuite, $N_Threads, $N_Ranks, $SelectTests
+    ls $theSuite >/dev/null 2>1
+    if [ $? -ne 0 ] ; then
+       echo "invalid Suite name:  $theSuite"
+       exit
+    fi
+
+    export SST_MULTI_THREAD_COUNT=$N_Threads
+    export SST_MULTI_RANK_COUNT=$N_Ranks
+     
+
+   tmpSuite=$SST_TEST_SUITES/tmpSuite_${1}-${2}-${3}_${5}.temp
+   origSuite=$theSuite
+   rm -f $tmpSuite
+   pushd $SST_TEST_SUITES
+#
+##    Insert special code for Multi Thread
+#
+   if [[ ${N_Threads:+isSet} == isSet ]] && [ $N_Threads -gt 1 ] ; then
+       echo ' ' ; echo "   Running Multi Thread:  nt = $N_Threads "
+       sed '/sut}.*${sutA/s/sut}'/"sut} -n $N_Threads /" $origSuite > $tmpSuite
+       theSuite=$tmpSuite
+       grep 'sut.*sutA' $theSuite
+       chmod +x $theSuite
+       export SST_MULTI_THREAD_COUNT=$N_Threads
+       export SST_MULTI_CORE=1
+   fi
+#
+##    Insert special code for Multi Rank
+#
+   if [[ ${N_Ranks:+isSet} == isSet ]] && [ $N_Ranks -gt 1 ] ; then
+       echo ' ' ; echo "   Running Multi Rank:  nr = $N_Ranks "
+       export SST_MULTI_RANK_COUNT=$N_Ranks
+       export SST_MULTI_CORE=1
+       grep 'sut}.*sutArgs' $theSuite | grep mpirun 
+       if [ $? == 0 ] ; then
+          echo "Do not change $origSuite, it already has mpirun"
+       else
+          if [ -s $tmpSuite ] ; then                  #  -s means is NOT zero size
+             sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' ${sut/' $tmpSuite
+          else
+             sed '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' ${sut/' $origSuite > $tmpSuite
+             theSuite=$tmpSuite
+             chmod +x $theSuite
+          fi
+       fi
+   fi
+
+   if [ ! -z $SelectTests ] ; then
+       if [ ! -s $tmpSuite ] ; then                  #  -s means is NOT zero size
+           cp $origSuite $tmpSuite
+       fi
+       sed -i'.x' -e s/^test_/xxtest_/ $tmpSuite 
+
+       for _TEST in `echo $SelectTests | sed 's/:/ /g'`
+       do
+           sed -i'.x' -e /xxtest.*${_TEST}.*/s/^xxtest/test/ $tmpSuite
+           theSuite=$tmpSuite
+           chmod +x $theSuite
+       done
+
+        grep ^test_ $theSuite
+        if [ $? != 0 ] ; then
+            echo ' ' ; echo " No runnable test";  echo " did not find $SelectTests among"
+            grep ^test_ $SST_TEST_SUITES/$theSuite | awk -F\( '{print $1}'
+            exit
+        fi
+   fi
+     
+   popd
+     
+   $theSuite
