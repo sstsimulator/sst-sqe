@@ -95,7 +95,7 @@ cd $SST_TEST_SUITES/testCramSim
 
         ls -l tests/sst-CramSim-trace_verimem_${trc}.trc
 #
-        ${sut} ${sutArgs} --model-options="--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc" >$outFile   ## 
+        ${sut} --model-options="--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc" ${sutArgs} >$outFile   ## 
         RetVal=$?
 
         echo " Running from `pwd`"
