@@ -86,17 +86,17 @@ Tol=$2    ##  curTick tolerance
     fi
 
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
-         ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
+         ${sut} ${sutArgs} > ${outFile}  2>${errFile}
          RetVal=$? 
          notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
          #          Append errFile to outFile   w/o  Not Aligned messages
-         grep -v 'not aligned to the request size' $errFile >> $tmpFile
+         grep -v 'not aligned to the request size' $errFile >> $outFile
     else
          #   This merges stderr with stdout
          mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
          RetVal=$?
-         cat ${testOutFiles}* > $tmpFile
-         notAlignedCt=`grep -c 'not aligned to the request size' $tmpFile`
+         cat ${testOutFiles}* > $outFile
+         notAlignedCt=`grep -c 'not aligned to the request size' $outFile`
     fi
 
     TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
@@ -136,7 +136,8 @@ Tol=$2    ##  curTick tolerance
         echo "         ----- end stderr"
     fi
 
-    grep -v ^cpu.*: $tmpFile | grep -v 'not aligned to the request size' > $outFile
+    grep -v ^cpu.*: $outFile > $tmpFile
+    grep -v 'not aligned to the request size' $tmpFile > $outFile
     RemoveComponentWarning
     pushd ${SSTTESTTEMPFILES}
 #          Append errFile to outFile   w/o  Not Aligned messages
