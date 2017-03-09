@@ -100,7 +100,12 @@ echo "Debug "
 
 test_simpleRNGComponent_mersenne() {
 simpleRNG_Template mersenne
-cat tmp1
+## cat tmp1
+echo "-----------------  First 10 of tmp1 ----------"
+sed 10q tmp1
+echo " ------------------Last 10 of tmp1 ........."
+tail -10 tmp1
+echo "-------------------------------------------"
 }
 
 test_simpleRNGComponent_marsaglia() {
