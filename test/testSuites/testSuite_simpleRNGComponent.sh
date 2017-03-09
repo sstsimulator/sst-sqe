@@ -55,7 +55,7 @@ RNG_case=$1
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-#        ${sut} ${sutArgs} | grep Random | tail -5 > $outFile
+#        ${su t} ${sutArgs} | grep Random | tail -5 > $outFile    ### space inserted ##
         ${sut} ${sutArgs} > tmp1
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
