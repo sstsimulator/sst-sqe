@@ -6,10 +6,6 @@
 # A shell script that defines a shunit2 test suite. This will be
 # invoked by the Bamboo script.
 
-# Preconditions:
-
-# 1) The SUT (software under test) must have built successfully.
-# 2) A test success reference file is available.
 
 TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 # Load test definitions
@@ -39,25 +35,14 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 #-------------------------------------------------------------------------------
 # Test:
-#     test_simpleRNGComponent_mersenne
-# Purpose:
-#     Exercise the simpleRNGComponent of the simpleElementExample
-# Inputs:
-#     None
-# Outputs:
-#     test_simpleRNGComponent_mersenne.out file
-# Expected Results
-#     Match of output file against reference file
-# Caveats:
-#     The output files must match the reference file *exactly*,
-#     requiring that the command lines for creating both the output
-#     file and the reference file be exactly the same.
+#     test_simpleRNGComponents
 #-------------------------------------------------------------------------------
-test_simpleRNGComponent_mersenne() {
+simpleRNG_Template() {
+RNG_case=$1
 
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
-    testDataFileBase="test_simpleRNGComponent_mersenne"
+    testDataFileBase="test_simpleRNGComponent_${RNG_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
@@ -65,7 +50,7 @@ test_simpleRNGComponent_mersenne() {
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_mersenne.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_${RNG_case}.py"
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -87,6 +72,7 @@ test_simpleRNGComponent_mersenne() {
              wc $referenceFile $outFile
              return
         fi
+        cd $outFile
         diff ${referenceFile} ${outFile}
         if [ $? -ne 0 ]
         then
@@ -103,136 +89,18 @@ test_simpleRNGComponent_mersenne() {
 
 }
 
-#-------------------------------------------------------------------------------
-# Test:
-#     test_simpleRNGComponent_marsaglia
-# Purpose:
-#     Exercise the simpleRNGComponent of the simpleElementExample
-# Inputs:
-#     None
-# Outputs:
-#     test_simpleRNGComponent_marsaglia.out file
-# Expected Results
-#     Match of output file against reference file
-# Caveats:
-#     The output files must match the reference file *exactly*,
-#     requiring that the command lines for creating both the output
-#     file and the reference file be exactly the same.
-#-------------------------------------------------------------------------------
+test_simpleRNGComponent_mersenne() {
+simpleRNG_Template mersenne
+}
+
 test_simpleRNGComponent_marsaglia() {
-
-    # Define a common basename for test output and reference
-    # files. XML postprocessing requires this.
-    testDataFileBase="test_simpleRNGComponent_marsaglia"
-    outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
-    # Add basename to list for XML processing later
-    L_TESTFILE+=(${testDataFileBase})
-
-    # Define Software Under Test (SUT) and its runtime arguments
-    sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_marsaglia.py"
-
-    if [ -f ${sut} ] && [ -x ${sut} ]
-    then
-        # Run SUT
-        ${sut} ${sutArgs} | grep Random | tail -5 > $outFile
-        RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
-             return 
-        fi 
-        if [ $RetVal != 0 ]  
-        then
-             echo ' '; echo WARNING: sst did not finish normally ; echo ' '
-             ls -l ${sut}
-             fail " WARNING: sst did not finish normally, RetVal=$RetVal"
-             wc $referenceFile $outFile
-             return
-        fi
-        diff ${referenceFile} ${outFile}
-        if [ $? -ne 0 ]
-        then
-            echo ' '; echo MATCH FAILED; echo ' '
-            fail " MATCH FAILED"
-        fi
-    else
-        # Problem encountered: can't find or can't run SUT (doesn't
-        # really do anything in Phase I)
-        ls -l ${sut}
-        fail "Problem with SUT: ${sut}"
-    fi
-    tail -1 $outFile
-
+simpleRNG_Template marsaglia
 }
-#-------------------------------------------------------------------------------
-# Test:
-#     test_simpleRNGComponent_xorshift
-# Purpose:
-#     Exercise the simpleRNGComponent of the simpleElementExample
-# Inputs:
-#     None
-# Outputs:
-#     test_simpleRNGComponent_xorshift.out file
-# Expected Results
-#     Match of output file against reference file
-# Caveats:
-#     The output files must match the reference file *exactly*,
-#     requiring that the command lines for creating both the output
-#     file and the reference file be exactly the same.
-#-------------------------------------------------------------------------------
+
 test_simpleRNGComponent_xorshift() {
-
-    # Define a common basename for test output and reference
-    # files. XML postprocessing requires this.
-    testDataFileBase="test_simpleRNGComponent_xorshift"
-    outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
-    # Add basename to list for XML processing later
-    L_TESTFILE+=(${testDataFileBase})
-
-    # Define Software Under Test (SUT) and its runtime arguments
-    sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_xorshift.py"
-
-    if [ -f ${sut} ] && [ -x ${sut} ]
-    then
-        # Run SUT
-        ${sut} ${sutArgs} | grep Random | tail -5 > $outFile
-        RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
-             return 
-        fi 
-        if [ $RetVal != 0 ]  
-        then
-             echo ' '; echo WARNING: sst did not finish normally ; echo ' '
-             ls -l ${sut}
-             fail " WARNING: sst did not finish normally, RetVal=$RetVal"
-             wc $referenceFile $outFile
-             return
-        fi
-        diff ${referenceFile} ${outFile}
-        if [ $? -ne 0 ]
-        then
-            echo ' '; echo MATCH FAILED; echo ' '
-            fail " MATCH FAILED"
-        fi
-    else
-        # Problem encountered: can't find or can't run SUT (doesn't
-        # really do anything in Phase I)
-        ls -l ${sut}
-        fail "Problem with SUT: ${sut}"
-    fi
-    tail -1 $outFile
-
+simpleRNG_Template xorshift 
 }
+
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 

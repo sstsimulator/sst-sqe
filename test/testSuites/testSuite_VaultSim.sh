@@ -79,6 +79,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
          sed -i'.3sed' -e'/ nan$/d' $outFile        ## This is needed 11/21/13
          sed -i'.4sed' -e'/ -nan$/d' $outFile       ## This is needed 11/21/13
 
+         wc ${referenceFile} ${outFile} 
          diff ${referenceFile} ${outFile} > /dev/null;
          if [ $? -ne 0 ]
          then
