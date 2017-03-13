@@ -55,7 +55,8 @@ RNG_case=$1
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs} | grep Random | tail -5 > $outFile
+#        ${su t} ${sutArgs} | grep Random | tail -5 > $outFile    ### space inserted ##
+        ${sut} ${sutArgs} > tmp1
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
@@ -72,7 +73,15 @@ RNG_case=$1
              wc $referenceFile $outFile
              return
         fi
+        grep Random tmp1 > tmp2 
+        tail -5 tmp2 > $outFile
+        wc tmp1 tmp2
+##        rm tmp1 and tmp2 if this code stays
         wc $outFile
+echo "Debug (extra on tmp1)"
+grep -v Random tmp1 
+echo "Debug "
+
         diff ${referenceFile} ${outFile}
         if [ $? -ne 0 ]
         then
@@ -91,6 +100,12 @@ RNG_case=$1
 
 test_simpleRNGComponent_mersenne() {
 simpleRNG_Template mersenne
+## cat tmp1
+echo "-----------------  First 10 of tmp1 ----------"
+sed 10q tmp1
+echo " ------------------Last 10 of tmp1 ........."
+tail -10 tmp1
+echo "-------------------------------------------"
 }
 
 test_simpleRNGComponent_marsaglia() {
