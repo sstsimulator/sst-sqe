@@ -72,7 +72,7 @@ RNG_case=$1
              wc $referenceFile $outFile
              return
         fi
-        cd $outFile
+        wc $outFile
         diff ${referenceFile} ${outFile}
         if [ $? -ne 0 ]
         then
