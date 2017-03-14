@@ -16,6 +16,20 @@ echo "       ----"
 #                  (Must be in the list below)
 #
  
+/bin/ls ../../devel/trunk > /dev/null 2>&1
+retval=$?
+if [ $retval != 0 ]
+then 
+    if [[ `pwd` == *devel/trunk* ]] ; then
+        tBase=`pwd | awk -F'/devel/trunk' '{print $1}'`
+        builtin cd $tBase/devel/trunk
+    else
+        echo ' '
+        echo Wrong level in tree  `pwd`
+        echo "Requires Jon's tree structure."
+        exit
+    fi
+fi
 pushd test/testSuites
 if [ $? != 0 ] ; then
     echo "   ######################################################################## "
