@@ -44,6 +44,7 @@ RNG_case=$1
     # files. XML postprocessing requires this.
     testDataFileBase="test_simpleRNGComponent_${RNG_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -56,7 +57,7 @@ RNG_case=$1
     then
         # Run SUT
 #        ${su t} ${sutArgs} | grep Random | tail -5 > $outFile    ### space inserted ##
-        ${sut} ${sutArgs} > tmp1
+        ${sut} ${sutArgs} > $outFile
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
@@ -73,14 +74,10 @@ RNG_case=$1
              wc $referenceFile $outFile
              return
         fi
-        grep Random tmp1 > tmp2 
-        tail -5 tmp2 > $outFile
-        wc tmp1 tmp2
-##        rm tmp1 and tmp2 if this code stays
-        wc $outFile
-echo "Debug (extra on tmp1)"
-grep -v Random tmp1 
-echo "Debug "
+        grep Random $outFile > $tmpFile 
+        wc $outFile $tmpFile
+        tail -5 $tmpFile > $outFile
+        myWC $outFile $referenceFile
 
         diff ${referenceFile} ${outFile}
         if [ $? -ne 0 ]
@@ -100,12 +97,6 @@ echo "Debug "
 
 test_simpleRNGComponent_mersenne() {
 simpleRNG_Template mersenne
-## cat tmp1
-echo "-----------------  First 10 of tmp1 ----------"
-sed 10q tmp1
-echo " ------------------Last 10 of tmp1 ........."
-tail -10 tmp1
-echo "-------------------------------------------"
 }
 
 test_simpleRNGComponent_marsaglia() {
