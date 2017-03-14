@@ -77,7 +77,7 @@ RNG_case=$1
         grep Random $outFile > $tmpFile 
         wc $outFile $tmpFile
         tail -5 $tmpFile > $outFile
-        wc $outFile
+        myWC $outFile $referenceFile
 
         diff ${referenceFile} ${outFile}
         if [ $? -ne 0 ]
