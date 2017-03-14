@@ -125,7 +125,7 @@ echo " " \
 echo " Now test the generated python input file " \
     ' $fn
 ###  Insert redirection of STDOUT, if needed
-grep 'errFile=' $fn
+grep 'errFile=' $fn  > /dev/null
 if [ $? == 0 ] ; then    ##  Patch for errFile
 sed -i'.x' '/Now test the generated python input file/a \
 ${sut} $pyFile > $outFile 2>$errFile  \
