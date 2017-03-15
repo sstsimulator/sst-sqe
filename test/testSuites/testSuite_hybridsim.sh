@@ -90,7 +90,7 @@ test_hybridsim() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        (${sut} ${sutArgs} > $tmpFile)
+        (${sut} ${sutArgs} > $outFile)
         RetVal=$? 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
@@ -113,13 +113,9 @@ test_hybridsim() {
         return
     fi
     ###################################
-    #                    Previous way to reduce file to check:
-    #   grep -A 50 -e "TrivialCPU.cpu" $tmpFile > $outFile
-    #         With C++11 there was a change in order of stdout from
-    #         different nodes.     (5/21/15)
-    #
-    grep -v 'cpu.:' $tmpFile > $outFile
+    grep -v 'cpu.:' $outFile > $tmpFile
     wc $referenceFile  $outFile $tmpFile
+    cp $tmpFile $outFile
 
     diff ${outFile} ${referenceFile} > /dev/null;
     if [ $? -ne 0 ]

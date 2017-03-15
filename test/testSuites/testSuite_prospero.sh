@@ -138,7 +138,7 @@ template_prospero() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs} --model-options "--TraceType=$TYPE --UseDramSim=$useDRAMSIM"  > $outFile
+        ${sut}  --model-options "--TraceType=$TYPE --UseDramSim=$useDRAMSIM" ${sutArgs} > $outFile
         RetVal=$?
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 

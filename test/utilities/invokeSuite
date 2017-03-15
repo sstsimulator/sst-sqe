@@ -32,7 +32,7 @@
         N_Threads=1 ; N_Ranks=1
     elif [[ ${3:+isSet} != isSet ]] ; then
         N_Ranks=1
-    elif [ "all" == ${4} ] ; then
+    elif [ "all" == "${4}" ] ; then
         SelectTests=""
     fi
 
