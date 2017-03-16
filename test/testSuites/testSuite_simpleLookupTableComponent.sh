@@ -99,6 +99,9 @@ test_simpleLookupTableComponent() {
              wc $referenceFile $outFile
              ls -l ${sut}
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
+             echo " 20 line tail of \$outFile"
+             tail -20 $outFile
+             echo "    --------------------"
              return
         fi
         RemoveComponentWarning
