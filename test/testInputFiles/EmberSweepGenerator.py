@@ -103,7 +103,7 @@ for network in networks :
                 testi = testi + 1
                 hash_object  = hashlib.md5(b"sst --model-options=\"--topo={0} {1} --cmdLine=\\\"{2} {3}\\\"\" {4}".format(network['topo'], x, test['motif'], y, config))
                 hex_dig = hash_object.hexdigest()
-                print "test_EmberSweep_" + str(testi) + "_" + hex_dig + "() {"
+                print "test_EmberSweep_" + add_nulls(testi,3) + "_" + hex_dig + "() {"
 #                print "echo \"    \" {0} {1} {2} {3}".format(network['topo'], x, test['motif'], y)
                 print "SE_start \" {0} {1} {2} {3}\"".format(network['topo'], x, test['motif'], y)
                 print "sst --model-options=\"--topo={0} {1} --cmdLine=\\\"Init\\\" --cmdLine=\\\"{2} {3}\\\" --cmdLine=\\\"Fini\\\"\" {4} > tmp_file".format(network['topo'], x, test['motif'], y, config)
