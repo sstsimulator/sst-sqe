@@ -96,6 +96,8 @@ tests.append( test )
 
 testi = 0
 
+add_nulls = lambda number, zero_count : "{0:0{1}d}".format(number, zero_count)
+
 for network in networks :
     for test in tests :
         for x in CrossProduct( network['args'] ) :
