@@ -129,7 +129,7 @@ class GDBEngine(Engine):
         self.threadRE = re.compile('^Thread (\d+) \(Thread 0x[0-9a-zA-Z]+ \(LWP \d+\)\):')
         self.frameRE = re.compile('^#(\d+)[ ]+(?:0x[0-9a-zA-Z]+ in )?(.*) (?:at|from) (.*)$')
         self.cmdFile = tempfile.NamedTemporaryFile()
-        self.cmdFile.write("set width unlimited\n")
+        self.cmdFile.write("set width 0\n")
         self.cmdFile.write("thread apply all bt\n")
         self.cmdFile.write("quit\n")
         self.cmdFile.flush()
