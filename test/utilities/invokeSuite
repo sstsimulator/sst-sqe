@@ -10,7 +10,7 @@
 #	    Number of ranks to use [zero (0) or none default to 1]
 #	    The tests to run, colon separated.  Default is all.
 #	         (A unique portion of the name is all that required.)
-#	         "all" my be specified if the fifth parameter is needed.
+#	         "all" may be specified if the fifth parameter is needed.
 #	    The optional fifth parameter is added text (char).
 #	Jenkins does not report multiple runs of a Suite of the same 
 #	name, so the numbers are append to the name. If it is desired
