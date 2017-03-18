@@ -82,14 +82,14 @@ echo $sutArgs
 echo "------------------------------"
 
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
-         ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
+         ${sut} ${sutArgs} > ${outFile}  2>${errFile}
          RetVal=$? 
-         cat $errFile >> $tmpFile
+         cat $errFile >> $outFile
     else
          #   This merges stderr with stdout
          mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
          RetVal=$?
-         cat ${testOutFiles}* > $tmpFile
+         cat ${testOutFiles}* > $outFile
     fi
 
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
@@ -103,7 +103,7 @@ echo "------------------------------"
     then
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
-         wc ${tmpFile} ${referenceFile}
+         wc ${outFile} ${referenceFile}
          fail " WARNING: sst did not finish normally, RetVal=$RetVal" 
          grep -v Warning:..Param $errFile
          return
@@ -121,8 +121,10 @@ echo "------------------------------"
         echo ' '
     fi
 
-    grep -e Total.Allreduce.Count -e Total.Allreduce.Bytes $tmpFile | awk -F: '{$1="";$6=""; print }' | sort -n > $outFile
-    wc ${outFile} ${referenceFile} $tmpFile
+    SIMReport=`grep Simulation $outFile`
+    grep -e Total.Allreduce.Count -e Total.Allreduce.Bytes $outFile > $tmpFile 
+    awk -F: '{$1="";$6=""; print }' $tmpFile | sort -n > $outFile
+    wc ${tmpFile} ${referenceFile} $outFile
     if [ -s $outFile ] ; then
         diff ${referenceFile} ${outFile}
         if [ $? -ne 0 ] ; then
@@ -137,7 +139,7 @@ echo "------------------------------"
     fi
 
     popd
-    grep Simulation $tmpFile
+    echo $SIMReport
 
     endSeconds=`date +%s`
     echo " "
