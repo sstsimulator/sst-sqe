@@ -132,6 +132,7 @@ test_BadPort() {
     fi
 }
 
+export SST_TEST_ONE_TEST_TIMEOUT=5
 
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
