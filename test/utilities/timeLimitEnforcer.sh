@@ -60,6 +60,15 @@ fi
 
 date
 echo ' '
+## #          Invoke the traceback routine
+## echo "          Invoke the traceback routine " ; echo ' '
+## 
+## ## $SST_ROOT/test/utilities/stackback.py --all    #-# Clear which place to invoke this
+## 
+## echo ' '
+## echo "   Return to timeLimitEnforcer"
+## echo ' '
+#          Prooced to attempt the kill
 #
 #          Begin findChild() subroutine
 #
@@ -123,6 +132,15 @@ fi
 
 echo Kill pid is $KILL_PID
 
+echo ' '
+#          Invoke the traceback routine
+echo "          Invoke the traceback routine " ; echo ' '
+
+$SST_ROOT/test/utilities/stackback.py $KILL_PID
+
+echo ' '
+echo "   Return to timeLimitEnforcer"
+echo ' '
 KILL_PARENT=0
 if [ -z $KILL_PID ] ; then
     KILL_PARENT=1
