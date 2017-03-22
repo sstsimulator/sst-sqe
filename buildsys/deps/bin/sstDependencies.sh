@@ -1632,14 +1632,7 @@ do
             echo "# found the -c (chdl) option, with value $OPTARG"
             # process arg
             case "$OPTARG" in
-                default)   # Build CHDL
-
-                    echo "# default: will build CHDL"
-                    . ${SST_DEPS_BIN}/sstDep_chdl_dev.sh
-		    . ${SST_DEPS_BIN}/sstDep_chdl-stl_dev.sh
-		    . ${SST_DEPS_BIN}/sstDep_chdl-module_dev.sh
-                    ;;
-                none)  # Do not build CHDL
+                none|default)  # Do not build CHDL
                     echo "# none:  will not build CHDL"
                     ;;
             esac
