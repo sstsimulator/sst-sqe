@@ -544,6 +544,7 @@ echo " ********************* Omitting Qsim "
     ${SST_TEST_SUITES}/testSuite_merlin.sh
     ${SST_TEST_SUITES}/testSuite_embernightly.sh
  
+    ${SST_TEST_SUITES}/testSuite_simpleSimulation.sh
     ${SST_TEST_SUITES}/testSuite_simpleDistribComponent.sh
 
     # Only run EmberSweep with valgrind with explict request.
