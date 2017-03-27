@@ -1,5 +1,5 @@
 # !/bin/bash
-# testSuite_simpleSimulation.sh
+# testSuite_simpleSimulation_CarWash.sh
 
 # Description:
 
@@ -19,7 +19,7 @@ TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 #===============================================================================
 # Variables global to functions in this suite
 #===============================================================================
-L_SUITENAME="SST_simpleSimulation_suite" # Name of this test suite; will be used to
+L_SUITENAME="SST_simpleSimulation_CarWash_suite" # Name of this test suite; will be used to
                                         # identify this suite in XML file. This
                                         # should be a single string, no spaces
                                         # please.
@@ -39,13 +39,13 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 #-------------------------------------------------------------------------------
 # Test:
-#     test_simpleSimulation
+#     test_simpleSimulation_CarWash
 # Purpose:
-#     Exercise the simpleSimulation of the simpleElementExample
+#     Exercise the simpleSimulation of the simpleElement CarWash example
 # Inputs:
 #     None
 # Outputs:
-#     test_simpleSimulation.out file
+#     test_simpleSimulation_CarWash.out file
 # Expected Results
 #     Match of output file against reference file
 # Caveats:
