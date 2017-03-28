@@ -94,6 +94,9 @@ test_simpleSimulation_CarWash() {
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
+
+        RemoveComponentWarning
+
         myWC $referenceFile $outFile
         diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
         if [ $? != 0 ]
