@@ -169,10 +169,7 @@ Tol=$2    ##  curTick tolerance
 ## -- test_streambench_mmu() {
 ## -- stats-snb-ariel-dram.csv
 #-------------------------------------------------------------------------------
-test_Samba_gupsgen() {
-Samba_Template gupsgen 500
 
-}
 
 test_Samba_gupsgen_mmu() {
 
@@ -186,20 +183,12 @@ Samba_Template gupsgen_mmu 500
 
 }
 
-test_Samba_stencil3dbench() {
-Samba_Template stencil3dbench 500
-
-}
 
 test_Samba_stencil3dbench_mmu() {
 Samba_Template stencil3dbench_mmu 500
 
 }
 
-test_Samba_streambench() {
-Samba_Template streambench 500
-
-}
 
 test_Samba_streambench_mmu() {
 Samba_Template streambench_mmu 500

@@ -53,13 +53,22 @@ rm /tmp/${MY_PID}_omps_list
 ####                  Find Pid of my ompsievetest
 OMP_PID=`ps -ef | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
 echo "OMP_PID = $OMP_PID"
-if [ ! -z $OMP_PID ] ; then
+if [ ! -z "$OMP_PID" ] ; then
 echo " Line $LINENO   -- kill ompsievetest "
     kill -9 $OMP_PID
 fi
 
 date
 echo ' '
+## #          Invoke the traceback routine
+## echo "          Invoke the traceback routine " ; echo ' '
+## 
+## ## $SST_ROOT/test/utilities/stackback.py --all    #-# Clear which place to invoke this
+## 
+## echo ' '
+## echo "   Return to timeLimitEnforcer"
+## echo ' '
+#          Prooced to attempt the kill
 #
 #          Begin findChild() subroutine
 #
@@ -69,7 +78,7 @@ findChild()
    
    KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
    
-   if [ -z $KILL_PID ] ; then
+   if [ -z "$KILL_PID" ] ; then
        echo I am $MY_PID,  I was called from $1, my parent PID is $PPID
        echo "No corresponding child named \"sst\" "
        ps -f | grep $SPID
@@ -77,13 +86,13 @@ findChild()
        #   Is there a Python running from the Parent PID
        echo " Look for a child named \"python\""
        PY_PID=`ps -ef | grep 'python ' | grep $SPID | awk '{ print $2 }'`
-       if [ -z $PY_PID ] ; then
+       if [ -z "$PY_PID" ] ; then
            echo "No corresponding child named \"python\" "
            echo ' '
            #   Is there a Valgrind running from the Parent PID
            echo " Look for a child named \"valgrind\""
            VG_PID=`ps -ef | grep 'valgrind ' | grep $SPID | awk '{ print $2 }'`
-           if [ -z $VG_PID ] ; then
+           if [ -z "$VG_PID" ] ; then
                echo "No corresponding child named \"valgrind\" "
                echo ' '
            else
@@ -101,7 +110,7 @@ findChild()
 findChild $PPID
 
 
-if [ -z $KILL_PID ] ; then
+if [ -z "$KILL_PID" ] ; then
 #
 #          Look for child of my siblings
 #
@@ -123,8 +132,17 @@ fi
 
 echo Kill pid is $KILL_PID
 
+echo ' '
+#          Invoke the traceback routine
+echo "          Invoke the traceback routine " ; echo ' '
+
+$SST_ROOT/test/utilities/stackback.py $KILL_PID
+
+echo ' '
+echo "   Return to timeLimitEnforcer"
+echo ' '
 KILL_PARENT=0
-if [ -z $KILL_PID ] ; then
+if [ -z "$KILL_PID" ] ; then
     KILL_PARENT=1
 else
     ps -f -p $KILL_PID | grep $KILL_PID
