@@ -136,7 +136,7 @@ echo ' '
 #          Invoke the traceback routine
 echo "          Invoke the traceback routine " ; echo ' '
 
-$SST_ROOT/test/utilities/stackback.py
+$SST_ROOT/test/utilities/stackback.py --mpi $KILL_PID
 
 echo ' '
 echo "   Return to timeLimitEnforcer"
