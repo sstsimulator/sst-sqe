@@ -506,7 +506,7 @@ echo " #####################################################"
         return
     fi
 
-    if [ $1 == "sstmainline_config_develautotester " ] ; then
+    if [ $1 == "sstmainline_config_develautotester" ] ; then
         $SST_ROOT/../sqe/test/utilities/invokeSuite memHierarchy_sdl 2 2 all autotest_multirank_plus_multithread_2x2
     fi
     
