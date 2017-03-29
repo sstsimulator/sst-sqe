@@ -506,6 +506,11 @@ echo " #####################################################"
         return
     fi
 
+    if [ $1 == "sstmainline_config_develautotester " ] ; then
+        $SST_ROOT/../sqe/test/utilities/invokeSuite memHierarchy_sdl 2 2 all autotest_multirank_plus_multithread_2x2
+    fi
+    
+    
     if [ $kernel != "Darwin" ]
     then
         # Only run if the OS *isn't* Darwin (MacOS)
@@ -580,6 +585,10 @@ echo " ********************* Omitting Qsim "
     ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
     ${SST_TEST_SUITES}/testSuite_VaultSim.sh
 
+#    if [ $1 == "sstmainline_config_develautotester " ] ; then
+#        ${SST_TEST_SUITES}/testSuite_Ariel.sh
+#    fi
+    
     # Purge SST installation
     if [[ ${SST_RETAIN_BIN:+isSet} != isSet ]]
     then
@@ -915,10 +924,10 @@ getconfig() {
             touch sst/elements/scheduler/.ignore
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-k none -d 2.2.2 -p none -z none -m none -o none -h none -s none -q 0.2.1 -M none -N default"
+            depsStr="-k none -d 2.2.2 -p none -z none -m none -o none -h none -s none -M none -N default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             ;;
             
