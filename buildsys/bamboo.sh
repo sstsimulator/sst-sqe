@@ -506,18 +506,9 @@ echo " #####################################################"
         return
     fi
 
-    if [ $kernel != "Darwin" ]
-    then
-        # Only run if the OS *isn't* Darwin (MacOS)
-echo " ********************* Omitting Qsim "
-#        ${SST_TEST_SUITES}/testSuite_qsimComponent.sh
-    fi
-
 
     ${SST_TEST_SUITES}/testSuite_Ariel.sh
-    #  Samba is not being released with 6.1
-    #        omit from mainline testing.
-    #  ${SST_TEST_SUITES}/testSuite_Samba.sh
+    ${SST_TEST_SUITES}/testSuite_Samba.sh
     ${SST_TEST_SUITES}/testSuite_CramSim.sh
     ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh

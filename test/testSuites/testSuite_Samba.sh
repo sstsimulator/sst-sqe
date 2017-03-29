@@ -172,14 +172,17 @@ Tol=$2    ##  curTick tolerance
 
 
 test_Samba_gupsgen_mmu() {
-
-   if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
-       echo " November 15th, this test is not happpy with MULTI      OMIT"    
-       skip_this_test
-       return
-   fi
-
 Samba_Template gupsgen_mmu 500
+
+}
+
+test_Samba_gupsgen_mmu_4KB() {
+Samba_Template gupsgen_mmu_4KB 500
+
+}
+
+test_Samba_gupsgen_mmu_three_levels() {
+Samba_Template gupsgen_mmu_three_levels 500
 
 }
 
