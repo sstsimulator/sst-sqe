@@ -55,6 +55,19 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     rm __rmlist
 #=====================================================
 
+countStreams() {    
+   ps -ef | grep stream | awk '{print $2}'
+   if [ "$1" == "Delete" ] ; then
+      ps -ef | grep stream| grep -v -e grep > /tmp/$$_stream_list
+      wc /tmp/$$_stream_list
+      
+      while read -u 3 _who _strEX _own _rest
+      do
+              echo " Attempt to remove $_strEX "
+              kill -9 $_strEX
+      done 3</tmp/$$_stream_list
+   fi  
+}      
     
     echo "INTEL_PIN_DIRECTORY = $INTEL_PIN_DIRECTORY"
     if [ ! -d "$INTEL_PIN_DIRECTORY" ] ; then
@@ -66,7 +79,9 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
         echo " Temporary patch"
         echo "Ariel on Ubuntu not working on Sandy bridge and Ivy bridge tests"
-    fi    
+    fi
+   
+    countStreams    
 
     OPWD=`pwd`
     export PKG_CONFIG_PATH=${SST_ROOT}/../../local/lib/pkgconfig
@@ -355,3 +370,7 @@ export SST_TEST_ONE_TEST_TIMEOUT=60
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
+
+    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+         countStreams "Delete"
+    fi
