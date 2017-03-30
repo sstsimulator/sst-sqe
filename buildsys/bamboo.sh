@@ -508,7 +508,7 @@ echo " #####################################################"
 
 
     ${SST_TEST_SUITES}/testSuite_Ariel.sh
-    ${SST_TEST_SUITES}/testSuite_Samba.sh
+   ## ${SST_TEST_SUITES}/testSuite_Samba.sh
     ${SST_TEST_SUITES}/testSuite_CramSim.sh
     ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
