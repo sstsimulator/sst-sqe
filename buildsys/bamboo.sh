@@ -585,10 +585,6 @@ echo " ********************* Omitting Qsim "
     ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
     ${SST_TEST_SUITES}/testSuite_VaultSim.sh
 
-#    if [ $1 == "sstmainline_config_develautotester " ] ; then
-#        ${SST_TEST_SUITES}/testSuite_Ariel.sh
-#    fi
-    
     # Purge SST installation
     if [[ ${SST_RETAIN_BIN:+isSet} != isSet ]]
     then
