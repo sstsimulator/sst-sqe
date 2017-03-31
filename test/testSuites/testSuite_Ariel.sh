@@ -56,6 +56,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #=====================================================
 
 countStreams() {    
+   echo "        Entering subroutine countStreams() $1 "
    ps -ef | grep stream | awk '{print $2}'
    if [ "$1" == "Delete" ] ; then
       ps -ef | grep stream| grep -v -e grep > /tmp/$$_stream_list
@@ -81,6 +82,7 @@ countStreams() {
         echo "Ariel on Ubuntu not working on Sandy bridge and Ivy bridge tests"
     fi
    
+echo " First call to countStreams follow: "
     countStreams    
 
     OPWD=`pwd`
@@ -371,6 +373,9 @@ export SST_TEST_ONE_TEST_TIMEOUT=60
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
 
+echo " Test ENV VAR  $SST_TEST_HOST_OS_KERNEL"
     if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+
+echo " Call to countStreams \"Delete\"follows: "
          countStreams "Delete"
     fi
