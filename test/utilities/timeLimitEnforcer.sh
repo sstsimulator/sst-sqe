@@ -133,10 +133,18 @@ fi
 echo Kill pid is $KILL_PID
 
 echo ' '
+#   -----          Invoke the traceback routine  ----- "
+    ps -f -p $KILL_PID | grep mpirun
+    if [ $? == 0 ] ; then
+        KILL_PARAM="--mpi $KILL_PID"
+    else
+        KILL_PARAM=$KILL_PID
+    fi
 #          Invoke the traceback routine
-echo "          Invoke the traceback routine " ; echo ' '
+echo "          Invoke the traceback routine "
 
-$SST_ROOT/test/utilities/stackback.py $KILL_PID
+echo "\$SST_ROOT/test/utilities/stackback.py $KILL_PARAM" ; echo
+$SST_ROOT/test/utilities/stackback.py $KILL_PARAM
 
 echo ' '
 echo "   Return to timeLimitEnforcer"
