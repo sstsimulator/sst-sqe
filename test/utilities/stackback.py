@@ -83,7 +83,7 @@ class LLDBEngine(Engine):
         self.frameRE = re.compile('^[ \*]+frame #(\d+): 0x[0-9a-zA-Z]+ ([^`]+)`([^[+]+)(?:\+ \d+|\[inlined\][^\)]+)(?: at (.*))?')
 
     def _lldb(self, pid):
-        p = Popen(["lldb", "-p", str(pid)], stdout=PIPE, stdin=PIPE)
+        p = Popen(["lldb", "-p", str(pid)], stdout=PIPE, stdin=PIPE, stderr=PIPE)
         res = p.communicate("""
 bt all
 exit
@@ -136,7 +136,7 @@ class GDBEngine(Engine):
 
     def _gdb(self, pid):
         cmd = ["timeout", "-k", "30s", "15s", "gdb", "-q", "-n", "-x", self.cmdFile.name, "-p", str(pid)]
-        p = Popen(cmd, stdout=PIPE, stdin=PIPE)
+        p = Popen(cmd, stdout=PIPE, stdin=PIPE, stderr=PIPE)
         res = p.communicate()[0]
         return res.split('\n')
 
