@@ -114,6 +114,9 @@ test_embernightly() {
              return
         fi
         wc $referenceFile $outFile
+
+        RemoveComponentWarning
+
         diff ${referenceFile} ${outFile} > ${SSTTESTTEMPFILES}/full.diff 
         if [ $? -ne 0 ]
         then
