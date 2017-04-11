@@ -54,7 +54,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #    
 #-------------------------------------------------------------------------------
 
-PreFail " Skip BadPort test for now "  "skip"
+preFail " Skip BadPort test for now "  "skip"
 
 test_BadPort() {
 
