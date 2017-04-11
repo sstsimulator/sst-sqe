@@ -53,6 +53,9 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 # Caveats:
 #    
 #-------------------------------------------------------------------------------
+
+PreFail " Skip BadPort test for now "  "skip"
+
 test_BadPort() {
 
     # Define a common basename for test output and reference
