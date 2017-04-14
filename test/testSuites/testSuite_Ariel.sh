@@ -224,6 +224,7 @@ Ariel_template() {
         fi
 
         wc ${outFile} ${referenceFile} 
+        RemoveComponentWarning
 
         echo " "
 

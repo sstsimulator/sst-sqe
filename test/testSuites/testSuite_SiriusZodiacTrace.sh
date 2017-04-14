@@ -87,7 +87,7 @@ echo "------------------------------"
          cat $errFile >> $outFile
     else
          #   This merges stderr with stdout
-         mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
+         mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles -map-by numa:PE=2 ${sut} ${sutArgs} 2>${errFile}
          RetVal=$?
          cat ${testOutFiles}* > $outFile
     fi

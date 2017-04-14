@@ -72,7 +72,7 @@ Tol=$2    ##  curTick tolerance
            ${sut} ${sutArgs} > ${outFile}
            RetVal=$? 
         else
-           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs}
+           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles -map-by numa:PE=2 ${sut} ${sutArgs}
            RetVal=$? 
            cat ${testOutFiles}* > $outFile
         fi

@@ -80,6 +80,8 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
          sed -i'.4sed' -e'/ -nan$/d' $outFile       ## This is needed 11/21/13
 
          wc ${referenceFile} ${outFile} 
+         
+         RemoveComponentWarning
          diff ${referenceFile} ${outFile} > /dev/null;
          if [ $? -ne 0 ]
          then
