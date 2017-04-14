@@ -63,7 +63,6 @@ Match=$2
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
-ls  ${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles
 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -98,6 +97,9 @@ ls  ${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
+
+        RemoveComponentWarning
+
         wc $referenceFile $outFile
         diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
         if [ $? != 0 ]
@@ -175,6 +177,9 @@ test_simpleSubComponent_original() {
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
+
+        RemoveComponentWarning
+
         wc $referenceFile $outFile
         diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
         if [ $? != 0 ]
