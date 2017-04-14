@@ -53,20 +53,24 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #     requiring that the command lines for creating both the output
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
-test_simpleComponent() {
+simpleComponent_Template() {
+simpleC_case=$1
+Match=$2
 
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
-    testDataFileBase="test_simpleComponent"
+    testDataFileBase="test_simple${simpleC_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
+ls  ${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles
+
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleComponent.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simple${simpleC_case}.py"
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -119,7 +123,18 @@ test_simpleComponent() {
     fi
 }
 
+test_simpleComponent() {
+
+simpleComponent_Template  Component
+
+}
+
 test_simpleSubComponent() {
+simpleComponent_Template  SubComponent
+
+}
+
+test_simpleSubComponent_original() {
 
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
