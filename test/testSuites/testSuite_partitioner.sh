@@ -58,6 +58,10 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 # Caveats:
 #    
 #-------------------------------------------------------------------------------
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_THREAD_COUNT} -gt 1 ] ; then
+         echo '           SKIP '
+         preFail " Partition tests are multi-rank, hence, do not work with threading" "skip"
+    fi     
 
     if [ "`which mpirun | awk -F/ '{print $NF}'`" != "mpirun" ] ; then
         echo "    MPIRUN not FOUND "
@@ -181,7 +185,7 @@ PARTITIONER=$2
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        mpirun -np ${NUMRANKS} -map-by numa:PE=2 ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
+        mpirun -np ${NUMRANKS} ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         RetVal=$?
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
