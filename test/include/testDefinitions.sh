@@ -295,11 +295,11 @@ set_map-by_parameter() {
 
     echo "  Number of cores = $ncore"
 
-    if [ $ncore == 1 ] ; then
+    if [ $ncores == 1 ] ; then
         NUMA_PARAM=" "
-    elif [ $ncore -ge 2 ] && [ $ncore -le 4 ] ; then
+    elif [ $ncores -ge 2 ] && [ $ncore -le 4 ] ; then
         NUMA_PARAM="-map-by numa:pe=2 -oversubscribe"
-    elif [ $ncore -ge 4 ] ; then
+    elif [ $ncores -ge 4 ] ; then
         NUMA_PARAM="-map-by numa:pe=2"
     fi
     export NUMA_PARAM
