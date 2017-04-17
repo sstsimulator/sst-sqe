@@ -268,7 +268,7 @@ multithread_multirank_patch_Suites() {
              echo "Do not change $fn, it already has mpirun"
              continue
            fi
-           sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' -map-by numa:PE=2 ${sut/' $fn
+           sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' $NUMA_PARAM ${sut/' $fn
         done
         popd
         if [ $SST_MULTI_RANK_COUNT -gt 1 ] ; then
