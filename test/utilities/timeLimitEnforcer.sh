@@ -147,6 +147,7 @@ echo "\$SST_ROOT/test/utilities/stackback.py $KILL_PARAM" ; echo
 $SST_ROOT/test/utilities/stackback.py $KILL_PARAM
 
 echo ' '
+date
 echo "   Return to timeLimitEnforcer"
 echo ' '
 KILL_PARENT=0
