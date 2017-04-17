@@ -285,3 +285,23 @@ multithread_multirank_patch_Suites() {
      ' test/testSuites/testSuite_*
 fi
 }
+
+set_map-by_parameter() {
+    if [ $SST_TEST_HOST_OS_KERNEL = "Darwin" ] ; then
+        ncores=`sysctl -n hw.ncpu`
+    else
+        ncores=`cat /proc/cpuinfo |grep processor | wc -l`
+    fi
+
+    echo "  Number of cores = $ncore"
+
+    if [ $ncore == 1 ] ; then
+        NUMA_PARAM=" "
+    elif [ $ncore -ge 2 ] && [ $ncore -le 4 ] ; then
+        NUMA_PARAM="-map-by numa:pe=2 -oversubscribe"
+    elif [ $ncore -ge 4 ] ; then
+        NUMA_PARAM="-map-by numa:pe=2"
+    fi
+    export NUMA_PARAM
+    echo "   NUMA PARAM = $NUMA_PARAM"
+}

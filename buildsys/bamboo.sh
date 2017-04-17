@@ -247,6 +247,7 @@ echo " #####################################################"
 
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ||
        [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
+           set_map-by_parameter
     #    This subroutine is in test/include/testDefinitions.sh
     #    (It is a subroutine, but testSubroutines is only sourced
     #        into test Suites, not bamboo.sh.
