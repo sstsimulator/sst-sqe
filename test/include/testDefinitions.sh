@@ -293,11 +293,11 @@ set_map-by_parameter() {
         ncores=`cat /proc/cpuinfo |grep processor | wc -l`
     fi
 
-    echo "  Number of cores = $ncore"
+    echo "  Number of cores = $ncores"
 
     if [ $ncores == 1 ] ; then
         NUMA_PARAM=" "
-    elif [ $ncores -ge 2 ] && [ $ncore -le 4 ] ; then
+    elif [ $ncores -ge 2 ] && [ $ncores -le 4 ] ; then
         NUMA_PARAM="-map-by numa:pe=2 -oversubscribe"
     elif [ $ncores -ge 4 ] ; then
         NUMA_PARAM="-map-by numa:pe=2"
