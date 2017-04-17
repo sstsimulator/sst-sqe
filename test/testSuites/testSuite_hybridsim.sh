@@ -117,6 +117,8 @@ test_hybridsim() {
     wc $referenceFile  $outFile $tmpFile
     cp $tmpFile $outFile
 
+    RemoveComponentWarning
+
     diff ${outFile} ${referenceFile} > /dev/null;
     if [ $? -ne 0 ]
     then
