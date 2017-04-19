@@ -253,6 +253,7 @@ echo " #####################################################"
          multithread_multirank_patch_Suites
     fi
     #    The following is to include the map-by numa parameter
+    export NUMA_PARAM=" "
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
            set_map-by_parameter
     fi
