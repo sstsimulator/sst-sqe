@@ -31,7 +31,6 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
-   preFail " Takes too long 2x2 "   "skip"
 #===============================================================================
 # Test functions
 #   NOTE: These functions are invoked automatically by shunit2 as long
