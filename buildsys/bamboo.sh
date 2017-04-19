@@ -247,11 +247,14 @@ echo " #####################################################"
 
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ||
        [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
-           set_map-by_parameter
     #    This subroutine is in test/include/testDefinitions.sh
     #    (It is a subroutine, but testSubroutines is only sourced
     #        into test Suites, not bamboo.sh.
          multithread_multirank_patch_Suites
+    fi
+    #    The following is to include the map-by numa parameter
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+           set_map-by_parameter
     fi
     #       Recover library path
     export LD_LIBRARY_PATH=$SAVE_LIBRARY_PATH
