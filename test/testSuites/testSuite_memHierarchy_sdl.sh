@@ -93,7 +93,7 @@ Tol=$2    ##  curTick tolerance
          grep -v 'not aligned to the request size' $errFile >> $outFile
     else
          #   This merges stderr with stdout
-         mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles $NUMA_PARAM ${sut} ${sutArgs} 2>${errFile}
+         mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles $NUMA_PARAM ${sut} ${sutArgs} 2>${errFile}
          RetVal=$?
          cat ${testOutFiles}* > $outFile
          notAlignedCt=`grep -c 'not aligned to the request size' $outFile`
