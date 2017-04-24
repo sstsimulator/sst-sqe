@@ -66,7 +66,7 @@ Tol=$2    ##  curTick tolerance
            ${sut} ${sutArgs} > ${outFile}
            RetVal=$? 
         else
-           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs}
+           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles $NUMA_PARAM ${sut} ${sutArgs}
            RetVal=$? 
            cat ${testOutFiles}* > $outFile
         fi
@@ -85,7 +85,7 @@ Tol=$2    ##  curTick tolerance
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              wc $outFile
              echo " 20 line tail of \$outFile"
-             tail -20 $outfile
+             tail -20 $outFile
              echo "    --------------------"
              return
         fi

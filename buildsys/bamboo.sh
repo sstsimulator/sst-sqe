@@ -252,6 +252,11 @@ echo " #####################################################"
     #        into test Suites, not bamboo.sh.
          multithread_multirank_patch_Suites
     fi
+    #    The following is to include the map-by numa parameter
+    export NUMA_PARAM=" "
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+           set_map-by_parameter
+    fi
     #       Recover library path
     export LD_LIBRARY_PATH=$SAVE_LIBRARY_PATH
     export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH 
@@ -516,6 +521,7 @@ echo " #####################################################"
     
     ${SST_TEST_SUITES}/testSuite_Ariel.sh
     ${SST_TEST_SUITES}/testSuite_Samba.sh
+  ##  ${SST_TEST_SUITES}/testSuite_Messier.sh
     ${SST_TEST_SUITES}/testSuite_CramSim.sh
     ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh

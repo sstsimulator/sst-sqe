@@ -308,11 +308,26 @@ RemoveComponentWarning() {
       sed -i.x '/Event queue empty/d' $outFile
       rm -f ${outFile}.x
    fi
+
+   grep 'usually is due to not having the required NUMA' $outFile > /dev/null
+   if [ $? == 0 ] ; then
+      echo "##############################################"
+      echo "#"
+      echo "#   ${testDataFileBase}: Removing 12 lines "
+      echo "#  Warning about not binding nodes per NUMA request "
+      echo "#"
+      echo "##############################################"
+      vim -e - $outFile <<@@@
+g/WARNING: a request was made to bind a process/.-1,.+10d
+wq
+@@@
+   fi
 }
 # ----------------------------------------------------
 #    Do the check on Valgrind on a test
 # ----------------------------------------------------
 checkValgrindOutput() {
+
 VGout=$1        #the Valgrind output file
 grep ERROR.SUMMARY $VGout  > /dev/null
 if [ $? != 0 ] ; then 
