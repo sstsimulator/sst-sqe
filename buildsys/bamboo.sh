@@ -637,9 +637,9 @@ setConvenienceVars() {
     echo "endfile-------"
     echo "setConvenienceVars() : exported variables"
     export | egrep SST_DEPS_
-    corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL --with-boost=$SST_DEPS_INSTALL_BOOST"
+    corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL"
     elementsbaseoptions="--disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL --with-sst-core=$SST_CORE_INSTALL"
-    macrobaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL --with-boost=$SST_DEPS_INSTALL_BOOST"
+    macrobaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL"
     echo "setConvenienceVars() : " 
     echo "          corebaseoptions = $corebaseoptions"
     echo "      elementsbaseoptions = $elementsbaseoptions"
@@ -2596,7 +2596,7 @@ else
                 echo "Building SST-CORE Doxygen Documentation"
                 pushd $SST_ROOT/sst-core
                 ./autogen.sh
-                ./configure --disable-silent-rules --prefix=$SST_CORE_INSTALL --with-boost=$BOOST_HOME
+                ./configure --disable-silent-rules --prefix=$SST_CORE_INSTALL
                 make html 2> ./doc/makeHtmlErrors.txt
                 egrep "is not documented" ./doc/makeHtmlErrors.txt | sort > ./doc/undoc.txt
                 test -d ./doc/html
