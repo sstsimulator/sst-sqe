@@ -268,7 +268,7 @@ multithread_multirank_patch_Suites() {
              echo "Do not change $fn, it already has mpirun"
              continue
            fi
-           sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' ${sut/' $fn
+           sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' $NUMA_PARAM ${sut/' $fn
         done
         popd
         if [ $SST_MULTI_RANK_COUNT -gt 1 ] ; then
@@ -284,4 +284,24 @@ multithread_multirank_patch_Suites() {
     export SST_TEST_ONE_TEST_TIMEOUT=200 \
      ' test/testSuites/testSuite_*
 fi
+}
+
+set_map-by_parameter() {
+    if [ $SST_TEST_HOST_OS_KERNEL = "Darwin" ] ; then
+        ncores=`sysctl -n hw.ncpu`
+    else
+        ncores=`cat /proc/cpuinfo |grep processor | wc -l`
+    fi
+
+    echo "  Number of cores = $ncores"
+
+    if [ $ncores == 1 ] ; then
+        NUMA_PARAM=" "
+    elif [ $ncores -ge 2 ] && [ $ncores -le 4 ] ; then
+        NUMA_PARAM="-map-by numa:pe=2 -oversubscribe"
+    elif [ $ncores -ge 4 ] ; then
+        NUMA_PARAM="-map-by numa:pe=2"
+    fi
+    export NUMA_PARAM
+    echo "   NUMA PARAM = $NUMA_PARAM"
 }

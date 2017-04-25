@@ -80,7 +80,7 @@ test_cacheTracer_1() {
              cat $errFile >> $outFile
         else
              #   This merges stderr with stdout
-             mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
+             mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles $NUMA_PARAM ${sut} ${sutArgs} 2>${errFile}
              RetVal=$?
              wc ${testOutFiles}*
              cat ${testOutFiles}* > $outFile
