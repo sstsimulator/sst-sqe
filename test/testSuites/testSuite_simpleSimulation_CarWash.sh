@@ -75,7 +75,7 @@ test_simpleSimulation_CarWash() {
            ${sut} ${sutArgs} > ${outFile}
            RetVal=$? 
         else
-           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles $NUMA_PARAM ${sut} ${sutArgs}
+           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
            RetVal=$? 
            cat ${testOutFiles}* > $outFile
         fi
