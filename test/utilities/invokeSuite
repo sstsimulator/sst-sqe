@@ -22,6 +22,8 @@
 #       It is assume that SST_ROOT points to the directory where test of
 #       the SQE tree resides.   
 #
+    . $SST_ROOT/test/include/testDefinitions.sh
+
     SST_TEST_SUITES=$SST_ROOT/test/testSuites
     theSuite=${SST_TEST_SUITES}/testSuite_${1}.sh
     N_Threads=$2
@@ -77,14 +79,17 @@
        echo ' ' ; echo "   Running Multi Rank:  nr = $N_Ranks "
        export SST_MULTI_RANK_COUNT=$N_Ranks
        export SST_MULTI_CORE=1
+
+       set_map-by_parameter        ## generate NUMA_PARAM
+
        grep 'sut}.*sutArgs' $theSuite | grep mpirun 
        if [ $? == 0 ] ; then
           echo "Do not change $origSuite, it already has mpirun"
        else
           if [ -s $tmpSuite ] ; then                  #  -s means is NOT zero size
-             sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' ${sut/' $tmpSuite
+             sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT} $NUMA_PARAM"' ${sut/' $tmpSuite
           else
-             sed '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' ${sut/' $origSuite > $tmpSuite
+             sed '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT} $NUMA_PARAM"' ${sut/' $origSuite > $tmpSuite
              theSuite=$tmpSuite
              chmod +x $theSuite
           fi
