@@ -362,3 +362,21 @@ fi
 
 }
 
+#    Routine from Ariel to count and optional delete
+#            stream executables
+
+countStreams() {    
+   echo "        Entering subroutine countStreams() $1 "
+   ps -f | grep stream | awk '{print $2}'
+   if [ "$1" == "Delete" ] ; then
+      ps -f | grep stream| grep -v -e grep > /tmp/$$_stream_list
+      wc /tmp/$$_stream_list
+      
+      while read -u 3 _who _strEX _own _rest
+      do
+              echo " Attempt to remove $_strEX "
+              kill -9 $_strEX
+      done 3</tmp/$$_stream_list
+   fi  
+}      
+

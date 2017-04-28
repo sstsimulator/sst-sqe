@@ -59,7 +59,10 @@ fi
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
 
-    #          allows overriding Darwin as determination of OPENMP
+echo " First call to countStreams follow: "
+    countStreams    
+
+#          allows overriding Darwin as determination of OPENMP
     if [[ ${SST_WITH_OPENMP:+isSet} != isSet ]] ; then
         SST_WITH_OPENMP=1;
         if [ $SST_TEST_HOST_OS_KERNEL == "Darwin" ] ; then
@@ -204,6 +207,10 @@ ls -ltr
     fi
     popd
 }
+
+echo " Call to countStreams \"Delete\"follows: "
+         countStreams "Delete"
+
 export SST_TEST_ONE_TEST_TIMEOUT=50
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
