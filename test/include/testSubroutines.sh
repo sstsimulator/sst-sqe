@@ -367,9 +367,9 @@ fi
 
 countStreams() {    
    echo "        Entering subroutine countStreams() $1 "
-   ps -f | grep stream | awk '{print $2}'
+   ps -ef | grep stream | awk '{print $2}'
    if [ "$1" == "Delete" ] ; then
-      ps -f | grep stream| grep -v -e grep > /tmp/$$_stream_list
+      ps -ef | grep stream| grep -v -e grep > /tmp/$$_stream_list
       wc /tmp/$$_stream_list
       
       while read -u 3 _who _strEX _own _rest
