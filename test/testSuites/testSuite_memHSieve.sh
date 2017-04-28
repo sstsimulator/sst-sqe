@@ -208,9 +208,6 @@ ls -ltr
     popd
 }
 
-echo " Call to countStreams \"Delete\"follows: "
-         countStreams "Delete"
-
 export SST_TEST_ONE_TEST_TIMEOUT=50
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
@@ -218,3 +215,6 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
+
+echo " Call to countStreams \"Delete\"follows: "
+         countStreams "Delete"
