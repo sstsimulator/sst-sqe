@@ -378,5 +378,6 @@ countStreams() {
               kill -9 $_strEX
       done 3</tmp/$$_stream_list
    fi  
+   echo "               -----"
 }      
 
