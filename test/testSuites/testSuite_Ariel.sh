@@ -55,7 +55,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     rm __rmlist
 #=====================================================
 
-countStreams() {    
+xxxcountStreams() {    
    echo "        Entering subroutine countStreams() $1 "
    ps -f | grep stream | awk '{print $2}'
    if [ "$1" == "Delete" ] ; then
