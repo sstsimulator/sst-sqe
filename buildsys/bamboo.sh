@@ -247,11 +247,15 @@ echo " #####################################################"
 
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ||
        [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
-           set_map-by_parameter
     #    This subroutine is in test/include/testDefinitions.sh
     #    (It is a subroutine, but testSubroutines is only sourced
     #        into test Suites, not bamboo.sh.
          multithread_multirank_patch_Suites
+    fi
+    #    The following is to include the map-by numa parameter
+    export NUMA_PARAM=" "
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+           set_map-by_parameter
     fi
     #       Recover library path
     export LD_LIBRARY_PATH=$SAVE_LIBRARY_PATH
@@ -517,7 +521,7 @@ echo " #####################################################"
     
     ${SST_TEST_SUITES}/testSuite_Ariel.sh
     ${SST_TEST_SUITES}/testSuite_Samba.sh
-  ##  ${SST_TEST_SUITES}/testSuite_Messier.sh
+    ${SST_TEST_SUITES}/testSuite_Messier.sh
     ${SST_TEST_SUITES}/testSuite_CramSim.sh
     ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
@@ -633,9 +637,9 @@ setConvenienceVars() {
     echo "endfile-------"
     echo "setConvenienceVars() : exported variables"
     export | egrep SST_DEPS_
-    corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL --with-boost=$SST_DEPS_INSTALL_BOOST"
+    corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL"
     elementsbaseoptions="--disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL --with-sst-core=$SST_CORE_INSTALL"
-    macrobaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL --with-boost=$SST_DEPS_INSTALL_BOOST"
+    macrobaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL"
     echo "setConvenienceVars() : " 
     echo "          corebaseoptions = $corebaseoptions"
     echo "      elementsbaseoptions = $elementsbaseoptions"
@@ -2592,7 +2596,7 @@ else
                 echo "Building SST-CORE Doxygen Documentation"
                 pushd $SST_ROOT/sst-core
                 ./autogen.sh
-                ./configure --disable-silent-rules --prefix=$SST_CORE_INSTALL --with-boost=$BOOST_HOME
+                ./configure --disable-silent-rules --prefix=$SST_CORE_INSTALL
                 make html 2> ./doc/makeHtmlErrors.txt
                 egrep "is not documented" ./doc/makeHtmlErrors.txt | sort > ./doc/undoc.txt
                 test -d ./doc/html
