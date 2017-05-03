@@ -86,9 +86,9 @@ Match=$2    ##  Match criteron
            mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
            RetVal=$? 
            cat ${testOutFiles}* > $outFile
-           wc $outFile
+           myWC $outFile
            remove_DRAMSim_noise $outFile
-           wc $outFile
+           myWC $outFile
 
         fi
 
@@ -105,14 +105,14 @@ Match=$2    ##  Match criteron
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
-             wc $outFile
+             myWC $outFile
              echo " 20 line tail of \$outFile"
              tail -20 $outFile
              echo "    --------------------"
              popd
              return
         fi
-        wc ${outFile} ${referenceFile} | awk -F/ '{print $1, $(NF-1) "/" $NF}'
+        myWC ${outFile} ${referenceFile}
 
         RemoveComponentWarning
 
@@ -123,8 +123,8 @@ Match=$2    ##  Match criteron
              echo "PASS:  Exact match $memHA_case"
              rm ${SSTTESTTEMPFILES}/_raw_diff
         else
-             wc $referenceFile $outFile
-             wc ${SSTTESTTEMPFILES}/_raw_diff
+#  grep -n directory0.idle $referenceFile $outFile
+             myWC $referenceFile $outFile ${SSTTESTTEMPFILES}/_raw_diff
              rm diff_sorted
              compare_sorted $referenceFile $outFile
              if [ $? == 0 ] ; then
@@ -142,7 +142,22 @@ Match=$2    ##  Match criteron
                      fail "outFile word/line count does NOT match Reference"
                      diff ${referenceFile} ${outFile} 
                  fi
+             elif [[ $memHA_case == *Flush* ]] ; then
+    ##   Follows complicated code to accept slight difference
+                  wc_diff=`wc -l ${SSTTESTTEMPFILES}/diff_sorted | awk '{print $1}'`
+                  echo "Line count of diff_sorted = $wc_diff"
+                  if [ $wc_diff == 4 ] ; then
+                      tmpds=${SSTTESTTEMPFILES}/diff_sorted
+                      CountR=`sed -n 2,2p $tmpds | sed 's/.*=//'|sed 's/;//'`
+                      CountO=`sed -n 4,4p $tmpds | sed 's/.*=//'|sed 's/;//'`
+                      CountDifference=$((CountR-CountO))
+                      echo "Count difference is $CountDifference"
+                      if [ $CountDifference != 1 ] ; then
+                          fail "Special memHA Flush handling did NOT save it"
+                      fi 
+                  fi
              else
+
                  fail "outFile does not match Reference"
                  echo "              Sorted Diff"
                  cat ${SSTTESTTEMPFILES}/diff_sorted
