@@ -94,9 +94,9 @@ if [ 0 != $? ] ; then
    do
       date
       echo " "
-      echo "     TimeoutEx -t 90 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
+      echo "     TimeoutEx -t 250 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
       date
-      TimeoutEx -t 90 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
+      TimeoutEx -t 250 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
       retVal=$?
       date
       if [ $retVal == 0 ] ; then
