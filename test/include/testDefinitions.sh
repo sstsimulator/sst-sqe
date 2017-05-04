@@ -244,11 +244,9 @@ multithread_multirank_patch_Suites() {
             echo " There is a zero -n count, Set to 1 "
             export SST_MULTI_THREAD_COUNT=1
        else
-            sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*.sh
-##              EmberSweep processing move to EmberSweep test Suite/
- ##         sed -i.x '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py
             if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
                SET_TL=1
+               sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*.sh
             fi
        fi
     fi
