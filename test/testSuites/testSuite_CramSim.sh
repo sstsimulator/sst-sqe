@@ -59,7 +59,7 @@ if [ $? != 0 ] ; then
 fi
 
 cd $SST_TEST_SUITES/testCramSim/tests
-     wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim_trace_verimem_trace_files.tar.gz
+     wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim_trace_verimem_trace_files.tar.gz --no-check-certificate
      if [ $? != 0 ] ; then
         echo "wget failed"
         preFail "wget failed"

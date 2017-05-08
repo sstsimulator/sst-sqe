@@ -46,7 +46,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
      mkdir ${SST_TEST_SUITES}/SiriusZ_folder
      cd ${SST_TEST_SUITES}/SiriusZ_folder
      echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz --no-check-certificate"
-     wget "https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz"
+     wget "https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz --no-check-certificate" 
      if [ $? != 0 ] ; then
         echo "wget failed"
         preFail "wget failed"
