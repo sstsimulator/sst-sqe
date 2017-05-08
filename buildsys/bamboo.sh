@@ -51,8 +51,8 @@ if [ 0 != $? ] ; then
    while [ $Num_Tries_remaing -gt 0 ]
    do
       echo " "
-      echo "     TimeoutEx -t 90 git clone -b $SST_COREBRANCH $SST_COREREPO sst-core "
-      TimeoutEx -t 90 git clone -b $SST_COREBRANCH $SST_COREREPO sst-core
+      echo "     TimeoutEx -t 90 git clone --depth 1 -b $SST_COREBRANCH $SST_COREREPO sst-core "
+      TimeoutEx -t 90 git clone --depth 1 -b $SST_COREBRANCH $SST_COREREPO sst-core
       retVal=$?
       if [ $retVal == 0 ] ; then
          Num_Tries_remaing=-1
@@ -94,9 +94,9 @@ if [ 0 != $? ] ; then
    do
       date
       echo " "
-      echo "     TimeoutEx -t 250 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
+      echo "     TimeoutEx -t 250 git clone --depth 1 -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
       date
-      TimeoutEx -t 250 git clone -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
+      TimeoutEx -t 250 git clone --depth 1 -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
       retVal=$?
       date
       if [ $retVal == 0 ] ; then
@@ -139,9 +139,9 @@ if [ 0 != $? ] ; then
    do
       date
       echo " "
-      echo "     TimeoutEx -t 90 git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
+      echo "     TimeoutEx -t 90 git clone --depth 1 -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
       date
-      TimeoutEx -t 90 git clone -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
+      TimeoutEx -t 90 git clone --depth 1 -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
       retVal=$?
       date
       if [ $retVal == 0 ] ; then
