@@ -107,6 +107,28 @@ findChild()
 #          End findChild() subroutine
 #
 
+echo " ###############################################################"
+echo "  JOHNS sanity check"
+ps -ef | grep bin/sst | grep -v grep 
+echo " ----------- first"
+ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q
+echo " ----------- all  "
+ps -ef | grep bin/sst | grep -v grep | grep -v mpirun 
+ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
+JVD_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+echo " the pid of an sst is $JVD_PID "
+echo " the pid of the mpirun is $MPIRUN_PID "
+
+echo " Check for Dead Lock"
+kill -USR1 $JVD_PID
+sleep 2
+kill -USR1 $JVD_PID
+
+grep -i signal $SST_ROOT/test/testOutputs/*
+grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/*
+echo " ###############################################################"
+
 findChild $PPID
 
 
@@ -136,7 +158,7 @@ echo ' '
 #   -----          Invoke the traceback routine  ----- "
     ps -f -p $KILL_PID | grep mpirun
     if [ $? == 0 ] ; then
-        KILL_PARAM="--mpi $KILL_PID"
+        KILL_PARAM="--mpi $MPIRUN_PID"
     else
         KILL_PARAM=$KILL_PID
     fi
