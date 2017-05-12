@@ -41,18 +41,27 @@ TimeoutEx() {
 cloneOtherRepos() {
 ##  Check out other repositories except second time on Make Dist test
 
-ls -d ../../distTestDir
-if [ 0 != $? ] ; then
+if [ ! -d ../../distTestDir ] ; then
 ## if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD = `pwd`"
 
+## Set the clone depth parameter
+   _DEPTH_="--depth 1"
+   if [[ ${SST_GIT_CLONE_DEPTH_PARAMETER:+isSet} == isSet ]] ; then
+       if [ ${SST_GIT_CLONE_DEPTH_PARAMETER} == "none" ] ; then
+           _DEPTH_=""
+       else
+           _DEPTH_="${SST_GIT_CLONE_DEPTH_PARAMETER}"
+       fi
+   fi
+   echo " Cloning depth parameter set to \"${_DEPTH_}\""
 ## Cloning sst-core into <path>/devel/trunk   
    Num_Tries_remaing=3
    while [ $Num_Tries_remaing -gt 0 ]
    do
       echo " "
-      echo "     TimeoutEx -t 90 git clone --depth 1 -b $SST_COREBRANCH $SST_COREREPO sst-core "
-      TimeoutEx -t 90 git clone --depth 1 -b $SST_COREBRANCH $SST_COREREPO sst-core
+      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_COREBRANCH $SST_COREREPO sst-core "
+      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_COREBRANCH $SST_COREREPO sst-core
       retVal=$?
       if [ $retVal == 0 ] ; then
          Num_Tries_remaing=-1
@@ -94,9 +103,9 @@ if [ 0 != $? ] ; then
    do
       date
       echo " "
-      echo "     TimeoutEx -t 250 git clone --depth 1 -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
+      echo "     TimeoutEx -t 250 git clone ${_DEPTH_} -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
       date
-      TimeoutEx -t 250 git clone --depth 1 -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
+      TimeoutEx -t 250 git clone ${_DEPTH_} -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
       retVal=$?
       date
       if [ $retVal == 0 ] ; then
@@ -139,9 +148,9 @@ if [ 0 != $? ] ; then
    do
       date
       echo " "
-      echo "     TimeoutEx -t 90 git clone --depth 1 -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
+      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
       date
-      TimeoutEx -t 90 git clone --depth 1 -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
+      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
       retVal=$?
       date
       if [ $retVal == 0 ] ; then
