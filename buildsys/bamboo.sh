@@ -2368,7 +2368,7 @@ else
 fi
                         
 if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
-    SST_COREBRANCH=v7.0.0_beta
+    SST_COREBRANCH=v7.0.1_beta
 fi
                         
 if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
