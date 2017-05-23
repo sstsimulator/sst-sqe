@@ -144,28 +144,39 @@ Match=$2    ##  Match criteron
                               [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
                      echo "PASS: word/line count match $memHA_case"
                  else
-##                                      elif [[ $memHA_case == *Flush* ]] ; then
 ##   Follows complicated code to accept slight difference (original for Flush)
                      wc_diff=`wc -l ${SSTTESTTEMPFILES}/diff_sorted |
                                                               awk '{print $1}'`
-                     echo "Line count of diff_sorted = $wc_diff"
-                     if [ $wc_diff == 4 ] ; then
-                         tmpds=${SSTTESTTEMPFILES}/diff_sorted
-                         CountR=`sed -n 2,2p $tmpds | sed 's/.*=//'|sed 's/;//'`
-                         CountO=`sed -n 4,4p $tmpds | sed 's/.*=//'|sed 's/;//'`
-                         CountDifference=$((CountR-CountO))
+                     NUM_IDLE=$wc_diff
+                     IND=2
+echo NUM_IDLE=$NUM_IDLE
+                     while [ $IND -lt $NUM_IDLE ]
+                     do
+echo in loop
+                         R=$IND
+                         O=$((IND + 2))
+    echo $R and $O
+                         CountO=`sed -n ${O},${O}p $tmpds | sed 's/.*=//'|sed 's/;//'`
+                         CountR=`sed -n ${R},${R}p $tmpds | sed 's/.*=//'|sed 's/;//'`
+echo CountO = $CountO
+echo CountR = $CountR
+                             CountDifference=$((CountR-CountO))
+                             echo "CountDifference is $CountDifference"
+                         IND=$((IND + 4))
+##                   if [ $wc_diff == 4 ] ; then
+##                       tmpds=${SSTTESTTEMPFILES}/diff_sorted
+##                       CountR=`sed -n 2,2p $tmpds | sed 's/.*=//'|sed 's/;//'`
+##                       CountO=`sed -n 4,4p $tmpds | sed 's/.*=//'|sed 's/;//'`
+##                       CountDifference=$((CountR-CountO))
                          echo "Count difference is $CountDifference"
                          if [ $CountDifference != 1 ] ; then
                              fail "Special memHA Flush handling did NOT save it"
+                             break
                          fi
-                     fi
+                     done
+         #            fi
                  fi
              fi
-         else
-
-             fail "outFile does not match Reference"
-             echo "              Sorted Diff"
-             cat ${SSTTESTTEMPFILES}/diff_sorted
          fi
     fi
     popd
