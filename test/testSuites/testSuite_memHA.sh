@@ -130,6 +130,7 @@ Match=$2    ##  Match criteron
              if [ $? == 0 ] ; then
                  echo "PASS:  Sorted match $memHA_case"
                  rm ${SSTTESTTEMPFILES}/_raw_diff
+             else
                  ref=`wc ${referenceFile} | awk '{print $1, $2}'`;
                  new=`wc ${outFile}       | awk '{print $1, $2}'`;
                  if [ "$ref" != "$new" ] ; then
