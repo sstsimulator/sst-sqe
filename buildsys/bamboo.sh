@@ -2392,7 +2392,7 @@ echo "##################### END ######## DEBUG DATA ########################"
         # bootstrap SST-EXTERNAL-ELEMENTS
         ### First Run bootstrap in the source dir to create the configure file
         echo "pushd sst-external-element/src"
-        pushd ${SST_ROOT}/sst-external-element
+        pushd ${SST_ROOT}/sst-external-element/src
         echo "Build Working Dir = `pwd`"
        
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
