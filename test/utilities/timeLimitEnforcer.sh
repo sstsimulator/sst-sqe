@@ -42,28 +42,6 @@ echo I am $TL_MY_PID,  I was called from $TL_CALLER, my parent PID is $TL_PPID
 ps -f -p ${1},${TL_PPID}
 echo ' '
 
-####                 Remove old ompsievetest task
-ps -ef | grep ompsievetest
-echo " this might better go in the Suite"
-ps -ef | grep ompsievetest | grep -v -e grep > /tmp/${TL_MY_PID}_omps_list
-wc /tmp/${TL_MY_PID}_omps_list
-while read -u 3 _who _anOMP _own _rest
-do
-    if [ $_own == 1 ] ; then
-        echo " Attempt to remove $_anOMP "
-        kill -9 $_anOMP
-    fi
-done 3</tmp/${TL_MY_PID}_omps_list
-
-rm /tmp/${TL_MY_PID}_omps_list
-####                  Find Pid of my ompsievetest
-OMP_PID=`ps -ef | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
-echo "OMP_PID = $OMP_PID"
-if [ ! -z "$OMP_PID" ] ; then
-echo " Line $LINENO   -- kill ompsievetest "
-    kill -9 $OMP_PID
-fi
-
 date
 echo ' '
 #          Prooced to attempt the kill
