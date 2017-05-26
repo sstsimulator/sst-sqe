@@ -51,9 +51,12 @@ echo ' '
 findChild()
 {
    SPID=$1
-   
-   KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
-   
+   if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+       KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
+   else
+       KILL_PID=`ps -f | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
+   fi
+
    if [ -z "$KILL_PID" ] ; then
 echo "------------------   Debug ------/$SPID is $SPID -------"
    ps -ef | grep bin/sst
@@ -98,8 +101,13 @@ ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q
 echo " ----------- all  "
 ps -ef | grep bin/sst | grep -v grep | grep -v mpirun 
 ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
-SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
-MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+    SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+else
+    SST_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+fi
 echo " the pid of an sst is $SST_PID "
 echo " the pid of the mpirun is $MPIRUN_PID "
 
