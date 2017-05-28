@@ -42,28 +42,6 @@ echo I am $TL_MY_PID,  I was called from $TL_CALLER, my parent PID is $TL_PPID
 ps -f -p ${1},${TL_PPID}
 echo ' '
 
-####                 Remove old ompsievetest task
-ps -ef | grep ompsievetest
-echo " this might better go in the Suite"
-ps -ef | grep ompsievetest | grep -v -e grep > /tmp/${TL_MY_PID}_omps_list
-wc /tmp/${TL_MY_PID}_omps_list
-while read -u 3 _who _anOMP _own _rest
-do
-    if [ $_own == 1 ] ; then
-        echo " Attempt to remove $_anOMP "
-        kill -9 $_anOMP
-    fi
-done 3</tmp/${TL_MY_PID}_omps_list
-
-rm /tmp/${TL_MY_PID}_omps_list
-####                  Find Pid of my ompsievetest
-OMP_PID=`ps -ef | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
-echo "OMP_PID = $OMP_PID"
-if [ ! -z "$OMP_PID" ] ; then
-echo " Line $LINENO   -- kill ompsievetest "
-    kill -9 $OMP_PID
-fi
-
 date
 echo ' '
 #          Prooced to attempt the kill
@@ -73,9 +51,12 @@ echo ' '
 findChild()
 {
    SPID=$1
-   
-   KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
-   
+   if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+       KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
+   else
+       KILL_PID=`ps -f | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
+   fi
+
    if [ -z "$KILL_PID" ] ; then
        echo I am $TL_MY_PID,  findChild invoked with $1, my parent PID is $TL_PPID
        echo "No corresponding child named \"sst\" "
@@ -113,8 +94,13 @@ ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q
 echo " ----------- all  "
 ps -ef | grep bin/sst | grep -v grep | grep -v mpirun 
 ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
-SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
-MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+    SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+else
+    SST_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+fi
 echo " the pid of an sst is $SST_PID "
 echo " the pid of the mpirun is $MPIRUN_PID "
 

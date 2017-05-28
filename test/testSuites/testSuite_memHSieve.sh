@@ -70,6 +70,20 @@ echo " First call to countStreams follow: "
         fi
     fi
 
+####                 Remove old ompsievetest task
+ps -ef | grep ompsievetest
+ps -ef | grep ompsievetest | grep -v -e grep > /tmp/${TL_MY_PID}_omps_list
+wc /tmp/${TL_MY_PID}_omps_list
+while read -u 3 _who _anOMP _own _rest
+do
+    if [ $_own == 1 ] ; then
+        echo " Attempt to remove $_anOMP "
+        kill -9 $_anOMP
+    fi
+done 3</tmp/${TL_MY_PID}_omps_list
+
+rm /tmp/${TL_MY_PID}_omps_list
+
 mkdir $SST_TEST_SUITES/memHS_folder        
 pushd $SST_TEST_SUITES/memHS_folder        
 #   Remove old files if any
@@ -216,5 +230,18 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
 
+####                  Find Pid of my ompsievetest
+OMP_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
+echo "OMP_PID = $OMP_PID"
+if [ ! -z $OMP_PID ] ; then
+echo " Line $LINENO   -- kill ompsievetest "
+    ps -e -p $OMP_PID
+    kill -9 $OMP_PID
+fi
+
+date
+echo ' '
+
 echo " Call to countStreams \"Delete\"follows: "
+
          countStreams "Delete"
