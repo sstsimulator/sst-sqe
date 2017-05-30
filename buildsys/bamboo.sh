@@ -1656,6 +1656,11 @@ setUPforMakeDisttest() {
      echo "---   PWD  `pwd`"    
      mv $Package sst-elements
 
+echo "===============   MOVE IN THE EXTERNAL ELEMENT ====================="
+echo " PWD=`pwd` "
+     mv $SST_ROOT/sst-external-element .
+
+echo "=============================="
      echo "Move in items not in the trunk, that are need for the bamboo build and test"
 
 echo "####################################################################"
