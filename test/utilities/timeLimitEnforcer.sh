@@ -77,7 +77,7 @@ echo "------------------   Debug -------------"
            echo ' '
            #   Is there a Valgrind running from the Parent PID
            echo " Look for a child named \"valgrind\""
-           VG_PID=`ps -ef | grep 'valgrind ' | grep $SPID | awk '{ print $2 }'`
+           VG_PID=`ps -ef | grep ' valgrind ' | grep $SPID | awk '{ print $2 }'`
            if [ -z "$VG_PID" ] ; then
                echo "No corresponding child named \"valgrind\" "
                echo ' '
