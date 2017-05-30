@@ -140,8 +140,9 @@ Match=$2    ##  Match criteron
                  fail "outFile word/line count does NOT match Reference"
                  diff ${referenceFile} ${outFile}
              else
-                 if [ "lineWordCt" == "$Match" ] ||
-                              [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
+                 if [ "lineWordCt" == "$Match" ] ; then
+                 ###########  [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
+                 ####  Do not understand why this was ever here.   5/30/17
                      echo "PASS: word/line count match $memHA_case"
                  else
 ##   Follows complicated code to accept slight difference (original for Flush)
@@ -160,21 +161,15 @@ echo in loop
                          CountR=`sed -n ${R},${R}p $tmpds | sed 's/.*=//'|sed 's/;//'`
 echo CountO = $CountO
 echo CountR = $CountR
-                             CountDifference=$((CountR-CountO))
-                             echo "CountDifference is $CountDifference"
+                         CountDifference=$((CountR-CountO))
+                         echo "CountDifference is $CountDifference"
                          IND=$((IND + 4))
-##                   if [ $wc_diff == 4 ] ; then
-##                       tmpds=${SSTTESTTEMPFILES}/diff_sorted
-##                       CountR=`sed -n 2,2p $tmpds | sed 's/.*=//'|sed 's/;//'`
-##                       CountO=`sed -n 4,4p $tmpds | sed 's/.*=//'|sed 's/;//'`
-##                       CountDifference=$((CountR-CountO))
                          echo "Count difference is $CountDifference"
                          if [ $CountDifference != 1 ] ; then
                              fail "Special memHA Flush handling did NOT save it"
                              break
                          fi
                      done
-         #            fi
                  fi
              fi
          fi
