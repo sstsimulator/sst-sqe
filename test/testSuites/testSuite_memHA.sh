@@ -146,6 +146,8 @@ Match=$2    ##  Match criteron
                      echo "PASS: word/line count match $memHA_case"
                  else
 ##   Follows complicated code to accept slight difference (original for Flush)
+                     cat ${SSTTESTTEMPFILES}/diff_sorted 
+
                      wc_diff=`wc -l ${SSTTESTTEMPFILES}/diff_sorted |
                                                               awk '{print $1}'`
                      NUM_IDLE=$wc_diff
@@ -157,6 +159,7 @@ echo in loop
                          R=$IND
                          O=$((IND + 2))
     echo $R and $O
+                         tmpds=${SSTTESTTEMPFILES}/diff_sorted
                          CountO=`sed -n ${O},${O}p $tmpds | sed 's/.*=//'|sed 's/;//'`
                          CountR=`sed -n ${R},${R}p $tmpds | sed 's/.*=//'|sed 's/;//'`
 echo CountO = $CountO
