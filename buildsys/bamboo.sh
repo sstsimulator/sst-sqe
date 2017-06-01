@@ -586,6 +586,7 @@ echo " #####################################################"
 
     ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
     ${SST_TEST_SUITES}/testSuite_sstexternalelement.sh
+    ${SST_TEST_SUITES}/testSuite_sst-info-test.sh
     ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
     ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
     ${SST_TEST_SUITES}/testSuite_miranda.sh
