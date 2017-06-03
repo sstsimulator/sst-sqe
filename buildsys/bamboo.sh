@@ -174,11 +174,56 @@ if [ ! -d ../../distTestDir ] ; then
 
    # Test for override of the branch to some other SHA1 
    if [[ ${SST_MACRO_RESET:+isSet} == isSet ]] ; then
-       echo "     Desired sst-element SHA1 is ${SST_MACRO_RESET}"
+       echo "     Desired sst-macro SHA1 is ${SST_MACRO_RESET}"
        git reset --hard ${SST_MACRO_RESET}
        retVal=$?
        if [ $retVal != 0 ] ; then
           echo "\"git reset --hard ${SST_MACRO_RESET} \" FAILED.  retVal = $retVal"
+          exit
+       fi
+   fi
+
+   git log -n 1 | grep commit
+   ls -l
+   popd
+   
+## Cloning sst-external-element into <path>/devel/trunk     
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
+      date
+      echo " "
+      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_EXERNALELEMENTBRANCH $SST_EXTERNALELEMENTREPO sst-external-element "
+      date
+      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_EXERNALELEMENTBRANCH $SST_EXTERNALELEMENTREPO sst-external-element
+      retVal=$?
+      date
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
+         echo "\"git clone of https://github.com/sstsimulator/sst-external-element.git \" FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+         if [ $Num_Tries_remaing -gt 0 ] ; then
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             rm -rf sst-external-element
+             continue
+         fi
+ 
+         exit
+      fi
+   done
+   echo " "
+   echo " The sst-external-element Repo has been cloned."
+   ls -l
+   pushd sst-external-element
+
+   # Test for override of the branch to some other SHA1 
+   if [[ ${SST_EXTERNALELEMENT_RESET:+isSet} == isSet ]] ; then
+       echo "     Desired sst-external-element SHA1 is ${SST_EXTERNALELEMENT_RESET}"
+       git reset --hard ${SST_EXTERNALELEMENT_RESET}
+       retVal=$?
+       if [ $retVal != 0 ] ; then
+          echo "\"git reset --hard ${SST_EXTERNALELEMENT_RESET} \" FAILED.  retVal = $retVal"
           exit
        fi
    fi
@@ -540,6 +585,8 @@ echo " #####################################################"
 
 
     ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
+    ${SST_TEST_SUITES}/testSuite_sstexternalelement.sh
+    ${SST_TEST_SUITES}/testSuite_sst_info_test.sh
     ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
     ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
     ${SST_TEST_SUITES}/testSuite_miranda.sh
@@ -649,10 +696,12 @@ setConvenienceVars() {
     corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL"
     elementsbaseoptions="--disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL --with-sst-core=$SST_CORE_INSTALL"
     macrobaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL"
+    externalelementbaseoptions=""
     echo "setConvenienceVars() : " 
-    echo "          corebaseoptions = $corebaseoptions"
-    echo "      elementsbaseoptions = $elementsbaseoptions"
-    echo "         macrobaseoptions = $macrobaseoptions"
+    echo "           corebaseoptions = $corebaseoptions"
+    echo "       elementsbaseoptions = $elementsbaseoptions"
+    echo "          macrobaseoptions = $macrobaseoptions"
+    echo "externalelementbaseoptions = $externalelementbaseoptions"
 }
 
 #-------------------------------------------------------------------------
@@ -716,6 +765,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
         sstmainline_config_all) 
             #-----------------------------------------------------------------
@@ -730,6 +780,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-libphx=$LIBPHX_HOME/src --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME}   $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
         sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_diropenmpI|sstmainline_config_dirnoncacheable|sstmainline_config_dir3cache|sstmainline_config_memH_Ariel) 
             #-----------------------------------------------------------------
@@ -744,6 +795,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
         sstmainline_config_linux_with_ariel_no_gem5) 
             #-----------------------------------------------------------------
@@ -759,6 +811,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
         sstmainline_config_no_gem5) 
             #-----------------------------------------------------------------
@@ -778,6 +831,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
 
         sstmainline_config_no_mpi)
@@ -797,6 +851,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
 
         sstmainline_config_static) 
@@ -812,6 +867,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
 
         sstmainline_config_static_no_gem5) 
@@ -827,6 +883,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
 
         sstmainline_config_clang_core_only) 
@@ -839,6 +896,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
         sstmainline_config_macosx) 
             #-----------------------------------------------------------------
@@ -853,6 +911,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
         sstmainline_config_macosx_no_gem5) 
             #-----------------------------------------------------------------
@@ -867,6 +926,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions ${MTNLION_FLAG} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
         sstmainline_config_macosx_static) 
             #-----------------------------------------------------------------
@@ -881,6 +941,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions  --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
         sstmainline_config_test_output_config)
             #-----------------------------------------------------------------
@@ -895,6 +956,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions $coreMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN"
             elementsConfigStr="$elementsbaseoptions --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
         sstmainline_config_memH_wo_openMP)
             #-----------------------------------------------------------------
@@ -912,6 +974,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
         sstmainline_config_develautotester_linux)
             #-----------------------------------------------------------------
@@ -929,6 +992,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
         sstmainline_config_develautotester_mac)
             #-----------------------------------------------------------------
@@ -946,6 +1010,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions ${MTNLION_FLAG} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
             
         # ====================================================================
@@ -967,6 +1032,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions  --with-glpk=${GLPK_HOME} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
             
         sstmainline_config_valgrind|sstmainline_config_valgrind_ES) 
@@ -982,6 +1048,7 @@ getconfig() {
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
 
         sst-macro_withsstcore_mac) 
@@ -997,6 +1064,7 @@ getconfig() {
             coreConfigStr="$macrobaseoptions"
             elementsConfigStr="NOBUILD"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_HOME --disable-regex --with-sst-core=$SST_CORE_INSTALL"
+            externalelementConfigStr="NOBUILD"
             ;;
    
         sst-macro_nosstcore_mac) 
@@ -1012,6 +1080,7 @@ getconfig() {
             coreConfigStr="NOBUILD"
             elementsConfigStr="NOBUILD"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_HOME --disable-regex"
+            externalelementConfigStr="NOBUILD"
             ;;
    
         sst-macro_withsstcore_linux) 
@@ -1027,6 +1096,7 @@ getconfig() {
             coreConfigStr="$macrobaseoptions"
             elementsConfigStr="NOBUILD"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
+            externalelementConfigStr="NOBUILD"
             ;;
    
         sst-macro_nosstcore_linux) 
@@ -1042,6 +1112,7 @@ getconfig() {
             coreConfigStr="NOBUILD"
             elementsConfigStr="NOBUILD"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers"
+            externalelementConfigStr="NOBUILD"
             ;;
             
   ## perhaps do no more here
@@ -1054,6 +1125,8 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM"
+            macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
             ;;
 
         *)
@@ -1070,7 +1143,7 @@ getconfig() {
     export SST_SELECTED_CORE_CONFIG="$coreConfigStr"
     export SST_SELECTED_ELEMENTS_CONFIG="$elementsConfigStr"
     export SST_SELECTED_MACRO_CONFIG="$macroConfigStr"
-#    echo $configStr
+    export SST_SELECTED_EXTERNALELEMENT_CONFIG="$externalelementConfigStr"
 }
 
 
@@ -1584,6 +1657,11 @@ setUPforMakeDisttest() {
      echo "---   PWD  `pwd`"    
      mv $Package sst-elements
 
+echo "===============   MOVE IN THE EXTERNAL ELEMENT ====================="
+echo " PWD=`pwd` "
+     mv $SST_ROOT/sst-external-element .
+
+echo "=============================="
      echo "Move in items not in the trunk, that are need for the bamboo build and test"
 
 echo "####################################################################"
@@ -1710,6 +1788,7 @@ dobuild() {
     # $SST_SELECTED_CORE_CONFIG now contains config line for the SST-CORE
     # $SST_SELECTED_ELEMENTS_CONFIG now contains config line for the SST-ELEMENTS
     # $SST_SELECTED_MACRO_CONFIG now contains config line for the SST-MACRO
+    # $SST_SELECTED_EXTERNALELEMENT_CONFIG now contains config line for the externalelement
     # based on buildtype, configure and build dependencies
     # build, patch, and install dependencies
     $SST_DEPS_BIN/sstDependencies.sh $SST_SELECTED_DEPS cleanBuild
@@ -2164,9 +2243,9 @@ echo "##################### END ######## DEBUG DATA ########################"
         echo ' '    
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        # bootstrap SST-ELEMENTS
+        # bootstrap SST-MACRO
         ### First Run bootstrap in the source dir to create the configure file
-        echo "NOTE: bootstrampn Must be run in SST-Macro Source Dir to create configuration file"
+        echo "NOTE: bootstrap Must be run in SST-Macro Source Dir to create configuration file"
         echo "Current Working Dir = `pwd`"
         echo "pushd sst-macro"
         pushd ${SST_ROOT}/sst-macro
@@ -2307,6 +2386,85 @@ echo "##################### END ######## DEBUG DATA ########################"
         echo "Current Working Dir = `pwd`"
         ls -l
     fi
+
+    ### BUILDING THE SST-EXTERNALELEMENT
+    if [[ $SST_SELECTED_EXTERNALELEMENT_CONFIG == "NOBUILD" ]]
+    then
+        echo "============== SST EXTERNAL-ELEMENT - NO BUILD REQUIRED ==============="
+    else
+        echo "==================== Building SST EXTERNAL-ELEMENT ===================="
+        
+
+        # bootstrap SST-EXTERNAL-ELEMENTS
+        ### First Run bootstrap in the source dir to create the configure file
+        echo "pushd sst-external-element/src"
+        pushd ${SST_ROOT}/sst-external-element/src
+        echo "Build Working Dir = `pwd`"
+       
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make on SST-EXTERNAL-ELEMENTS"
+        echo ' '    
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+        # Compile SST-EXTERNAL-ELEMENTS
+        echo "=== Running make -j4 ==="
+        make -j4 
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make on SST-EXTERNAL-ELEMENTS complete without error"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install on SST-EXTERNAL-ELEMENTS"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
+        # Install SST-EXTERNAL-ELEMENTS
+        echo "=== Running make -j4 install ==="
+        make -j4 install
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+
+        echo
+        echo "=== DUMPING The SST-EXTERNAL-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
+        echo "cat $HOME/.sst/sstsimulator.conf"
+        cat $HOME/.sst/sstsimulator.conf
+        echo "=== DONE DUMPING ==="
+        echo
+        
+        echo
+        echo "=== DUMPING The SST-EXTERNAL-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
+        echo "cat $SST_CONFIG_FILE_PATH"
+        cat $SST_CONFIG_FILE_PATH
+        echo "=== DONE DUMPING ==="
+        echo
+        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install on SST-EXTERNAL-ELEMENTS complete without error"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        # Go back to devel/trunk
+        echo "popd"
+        popd
+        echo "Current Working Dir = `pwd`"
+        ls -l
+    fi
 }
 
 
@@ -2362,6 +2520,10 @@ if [[ ${SST_MACROREPO:+isSet} != isSet ]] ; then
     SST_MACROREPO=https://github.com/sstsimulator/sst-macro
 fi
 
+# Which Repository to use for EXTERNAL-ELEMENT (default is https://github.com/sstsimulator/sst-external-element)
+if [[ ${SST_EXTERNALELEMENTREPO:+isSet} != isSet ]] ; then
+    SST_EXTERNALELEMENTREPO=https://github.com/sstsimulator/sst-external-element
+fi
 ###
 
 # Which branches to use for each repo (default is devel)
@@ -2388,12 +2550,17 @@ if [[ ${SST_MACROBRANCH:+isSet} != isSet ]] ; then
     SST_MACROBRANCH=devel
 fi
 
+if [[ ${SST_EXERNALELEMENTBRANCH:+isSet} != isSet ]] ; then
+    SST_EXERNALELEMENTBRANCH=master
+fi
+
 echo "#############################################################"
 echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
 echo "  GitHub SQE Repository and Branch = $SST_SQEREPO $SST_SQEBRANCH"
 echo "  GitHub CORE Repository and Branch = $SST_COREREPO $SST_COREBRANCH"
 echo "  GitHub ELEMENTS Repository and Branch = $SST_ELEMENTSREPO $SST_ELEMENTSBRANCH"
 echo "  GitHub MACRO Repository and Branch = $SST_MACROREPO $SST_MACROBRANCH"
+echo "  GitHub EXTERNAL-ELEMENT Repository and Branch = $SST_EXTERNALELEMENTREPO $SST_EXERNALELEMENTBRANCH"
 echo "#############################################################"
 
 

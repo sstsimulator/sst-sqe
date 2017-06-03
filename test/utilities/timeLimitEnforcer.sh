@@ -58,6 +58,13 @@ findChild()
    fi
 
    if [ -z "$KILL_PID" ] ; then
+echo "------------------   Debug ------/$SPID is $SPID -------"
+   ps -ef | grep bin/sst
+echo "------------------   Debug -------------"
+       KILL_PID=`ps -ef | grep bin/sst  | grep $SPID | awk '{ print $2 }'`
+   fi
+      
+   if [ -z "$KILL_PID" ] ; then
        echo I am $TL_MY_PID,  findChild invoked with $1, my parent PID is $TL_PPID
        echo "No corresponding child named \"sst\" "
        ps -f | grep $SPID
@@ -70,7 +77,7 @@ findChild()
            echo ' '
            #   Is there a Valgrind running from the Parent PID
            echo " Look for a child named \"valgrind\""
-           VG_PID=`ps -ef | grep 'valgrind ' | grep $SPID | awk '{ print $2 }'`
+           VG_PID=`ps -ef | grep ' valgrind ' | grep $SPID | awk '{ print $2 }'`
            if [ -z "$VG_PID" ] ; then
                echo "No corresponding child named \"valgrind\" "
                echo ' '
