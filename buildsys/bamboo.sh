@@ -330,7 +330,52 @@ echo " #####################################################"
     # Initialize directory to hold temporary test input files
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
+ 
+    invokeSuites memHS 1 0 0 all a
+    invokeSuites memHS 2 0 0 all b
+    invokeSuites memHS 4 0 0 all c
+    invokeSuites memHS 1 0 0 all d
+    invokeSuites memHS 2 0 0 all e
+    invokeSuites memHS 4 0 0 all f
+export SST_TEST_TIMEOUT_OVERRIDE=3
+    invokeSuites memHS 1 0 0 all g
+    invokeSuites memHS 2 0 0 all h
+    invokeSuites memHS 4 0 0 all i
+    invokeSuites memHS 1 0 0 all j
+    invokeSuites memHS 2 0 0 all k
+    invokeSuites memHS 4 0 0 all l
+export SST_TEST_TIMEOUT_OVERRIDE=2
+    invokeSuites memHS 1 0 0 all m
+    invokeSuites memHS 2 0 0 all n
+    invokeSuites memHS 4 0 0 all o
+    invokeSuites memHS 1 0 0 all p
+    invokeSuites memHS 2 0 0 all q
+    invokeSuites memHS 4 0 0 all r
     
+unset SST_TEST_TIMEOUT_OVERRIDE
+    invokeSuites memHS 1 0 0 all s
+    invokeSuites memHS 2 0 0 all t
+    invokeSuites memHS 4 0 0 all u
+    invokeSuites memHS 1 0 0 all v
+    invokeSuites memHS 2 0 0 all w
+    invokeSuites memHS 4 0 0 all x
+export SST_TEST_TIMEOUT_OVERRIDE=3
+    invokeSuites memHS 1 0 0 all y
+    invokeSuites memHS 2 0 0 all z
+    invokeSuites memHS 4 0 0 all aa
+    invokeSuites memHS 1 0 0 all ab
+    invokeSuites memHS 2 0 0 all ac
+    invokeSuites memHS 4 0 0 all ad
+export SST_TEST_TIMEOUT_OVERRIDE=2
+    invokeSuites memHS 1 0 0 all ae
+    invokeSuites memHS 2 0 0 all af
+    invokeSuites memHS 4 0 0 all ag
+    invokeSuites memHS 1 0 0 all ah
+    invokeSuites memHS 2 0 0 all ai
+    invokeSuites memHS 4 0 0 all aj
+
+    return
+
     # Do we run the Macro Tests    
     if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
        [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ; then
