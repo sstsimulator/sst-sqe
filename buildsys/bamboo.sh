@@ -331,48 +331,48 @@ echo " #####################################################"
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
  
-    invokeSuites memHS 1 0 0 all a
-    invokeSuites memHS 2 0 0 all b
-    invokeSuites memHS 4 0 0 all c
-    invokeSuites memHS 1 0 0 all d
-    invokeSuites memHS 2 0 0 all e
-    invokeSuites memHS 4 0 0 all f
+    invokeSuite memHS 1 0 0 all a
+    invokeSuite memHS 2 0 0 all b
+    invokeSuite memHS 4 0 0 all c
+    invokeSuite memHS 1 0 0 all d
+    invokeSuite memHS 2 0 0 all e
+    invokeSuite memHS 4 0 0 all f
 export SST_TEST_TIMEOUT_OVERRIDE=3
-    invokeSuites memHS 1 0 0 all g
-    invokeSuites memHS 2 0 0 all h
-    invokeSuites memHS 4 0 0 all i
-    invokeSuites memHS 1 0 0 all j
-    invokeSuites memHS 2 0 0 all k
-    invokeSuites memHS 4 0 0 all l
+    invokeSuite memHS 1 0 0 all g
+    invokeSuite memHS 2 0 0 all h
+    invokeSuite memHS 4 0 0 all i
+    invokeSuite memHS 1 0 0 all j
+    invokeSuite memHS 2 0 0 all k
+    invokeSuite memHS 4 0 0 all l
 export SST_TEST_TIMEOUT_OVERRIDE=2
-    invokeSuites memHS 1 0 0 all m
-    invokeSuites memHS 2 0 0 all n
-    invokeSuites memHS 4 0 0 all o
-    invokeSuites memHS 1 0 0 all p
-    invokeSuites memHS 2 0 0 all q
-    invokeSuites memHS 4 0 0 all r
+    invokeSuite memHS 1 0 0 all m
+    invokeSuite memHS 2 0 0 all n
+    invokeSuite memHS 4 0 0 all o
+    invokeSuite memHS 1 0 0 all p
+    invokeSuite memHS 2 0 0 all q
+    invokeSuite memHS 4 0 0 all r
     
 unset SST_TEST_TIMEOUT_OVERRIDE
-    invokeSuites memHS 1 0 0 all s
-    invokeSuites memHS 2 0 0 all t
-    invokeSuites memHS 4 0 0 all u
-    invokeSuites memHS 1 0 0 all v
-    invokeSuites memHS 2 0 0 all w
-    invokeSuites memHS 4 0 0 all x
+    invokeSuite memHS 1 0 0 all s
+    invokeSuite memHS 2 0 0 all t
+    invokeSuite memHS 4 0 0 all u
+    invokeSuite memHS 1 0 0 all v
+    invokeSuite memHS 2 0 0 all w
+    invokeSuite memHS 4 0 0 all x
 export SST_TEST_TIMEOUT_OVERRIDE=3
-    invokeSuites memHS 1 0 0 all y
-    invokeSuites memHS 2 0 0 all z
-    invokeSuites memHS 4 0 0 all aa
-    invokeSuites memHS 1 0 0 all ab
-    invokeSuites memHS 2 0 0 all ac
-    invokeSuites memHS 4 0 0 all ad
+    invokeSuite memHS 1 0 0 all y
+    invokeSuite memHS 2 0 0 all z
+    invokeSuite memHS 4 0 0 all aa
+    invokeSuite memHS 1 0 0 all ab
+    invokeSuite memHS 2 0 0 all ac
+    invokeSuite memHS 4 0 0 all ad
 export SST_TEST_TIMEOUT_OVERRIDE=2
-    invokeSuites memHS 1 0 0 all ae
-    invokeSuites memHS 2 0 0 all af
-    invokeSuites memHS 4 0 0 all ag
-    invokeSuites memHS 1 0 0 all ah
-    invokeSuites memHS 2 0 0 all ai
-    invokeSuites memHS 4 0 0 all aj
+    invokeSuite memHS 1 0 0 all ae
+    invokeSuite memHS 2 0 0 all af
+    invokeSuite memHS 4 0 0 all ag
+    invokeSuite memHS 1 0 0 all ah
+    invokeSuite memHS 2 0 0 all ai
+    invokeSuite memHS 4 0 0 all aj
 
     return
 
