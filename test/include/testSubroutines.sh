@@ -272,7 +272,7 @@ compare_sorted() {
    sort -o $xr $2
    diff -b $xo $xr > ${SSTTESTTEMPFILES}/diff_sorted
    if [ $? == 0 ] ; then
-      rm $xo $xr
+   ##   rm $xo $xr
       return 0
    fi
    wc ${SSTTESTTEMPFILES}/diff_sorted
@@ -384,3 +384,19 @@ countStreams() {
    echo "               -----"
 }      
 
+Remove_old_ompsievetest_task() {
+memHS_PID=$$
+   echo " Begin Remover -------------------"
+ps -ef | grep ompsievetest
+ps -ef | grep ompsievetest | grep -v -e grep > /tmp/${memHS_PID}_omps_list
+wc /tmp/${memHS_PID}_omps_list
+while read -u 3 _who _anOMP _own _rest
+do
+    if [ $_own == 1 ] ; then
+        echo " Attempt to remove $_anOMP "
+        kill -9 $_anOMP
+    fi
+done 3</tmp/${memHS_PID}_omps_list
+
+rm /tmp/${memHS_PID}_omps_list
+}
