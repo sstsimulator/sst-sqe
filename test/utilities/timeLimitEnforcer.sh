@@ -104,21 +104,23 @@ ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2
 if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
     SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
     MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
-else
-    SST_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
-    MPIRUN_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+else       # - LINUX -
+    SST_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
 fi
 echo " the pid of an sst is $SST_PID "
 echo " the pid of the mpirun is $MPIRUN_PID "
 
-echo " Check for Dead Lock"
-kill -USR1 $SST_PID
-sleep 2
-kill -USR1 $SST_PID
-
-grep -i signal $SST_ROOT/test/testOutputs/*
-grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/*
-echo " ###############################################################"
+if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+    echo " Check for Dead Lock"
+    kill -USR1 $SST_PID
+    sleep 1
+    kill -USR1 $SST_PID
+    
+    grep -i signal $SST_ROOT/test/testOutputs/*
+    grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/*
+    echo " ###############################################################"
+fi
 
 findChild $TL_PPID
 
