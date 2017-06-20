@@ -1,3 +1,7 @@
+##   timeLimitEnforcer.sh
+
+. $SST_ROOT/test/include/testSubroutines.sh
+
 ##   Default time out is set to 1800 seconds (30 minutes) per test.
 ##   This can be Globally changed by setting the Environment variable
 ##   This can be Locally changed for an entire Suite by exporting the
@@ -7,7 +11,6 @@
 ##      value directly in here, over riding the Suite.
 ##   The new environment variable, SST_TEST_TIMEOUT_OVERRIDE, trumps all. 
               
-
 if [[ ${SST_TEST_ONE_TEST_TIMEOUT:+isSet} != isSet ]] ; then
     SST_TEST_ONE_TEST_TIMEOUT=1800         # 30 minutes 1800 seconds
 fi
@@ -178,7 +181,11 @@ fi
 ps -f -p $KILL_PID | grep $KILL_PID
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
+ps -ef | grep ompsievetest
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
 ps -f -p $KILL_PID | grep $KILL_PID
+ps -ef | grep ompsievetest
+    Remove_old_ompsievetest_task
+ps -ef | grep ompsievetest
 fi
