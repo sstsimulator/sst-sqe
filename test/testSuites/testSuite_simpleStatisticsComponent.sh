@@ -55,6 +55,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #-------------------------------------------------------------------------------
 test_simpleStatisticsComponent() {
 
+    startSeconds=`date +%s`
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
     testDataFileBase="test_simpleStatisticsComponent"
@@ -101,6 +102,10 @@ wc $referenceFile $outFile
         ls -l ${sut}
         fail "Problem with SUT: ${sut}"
     fi
+    endSeconds=`date +%s`
+    echo " "
+    elapsedSeconds=$(($endSeconds -$startSeconds))
+    echo "${testDataFileBase}: Wall Clock Time  $elapsedSeconds seconds"
 }
 
 
