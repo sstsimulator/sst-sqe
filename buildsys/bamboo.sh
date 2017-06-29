@@ -383,6 +383,32 @@ unset SST_TEST_TIMEOUT_OVERRIDE
     utilities/invokeSuite memHSieve 2 0 all ai
     utilities/invokeSuite memHSieve 4 0 all aj
 
+    utilities/invokeSuite memHSieve 1 0 all be
+    utilities/invokeSuite memHSieve 1 0 all bf
+    utilities/invokeSuite memHSieve 1 0 all bg
+    
+    
+    utilities/invokeSuite memHSieve 1 0 all bk
+    utilities/invokeSuite memHSieve 1 0 all bi
+    utilities/invokeSuite memHSieve 1 0 all bj
+    utilities/invokeSuite memHSieve 1 0 all bl
+    utilities/invokeSuite memHSieve 1 0 all bm
+    utilities/invokeSuite memHSieve 1 0 all bn
+    
+    utilities/invokeSuite memHSieve 1 0 all bo
+    utilities/invokeSuite memHSieve 1 0 all bp
+    utilities/invokeSuite memHSieve 1 0 all bq
+    utilities/invokeSuite memHSieve 1 0 all ck
+    utilities/invokeSuite memHSieve 1 0 all ci
+    utilities/invokeSuite memHSieve 1 0 all cj
+    utilities/invokeSuite memHSieve 1 0 all cl
+    utilities/invokeSuite memHSieve 1 0 all cm
+    utilities/invokeSuite memHSieve 1 0 all cn
+    
+
+
+
+
     return
 
     # Do we run the Macro Tests    
