@@ -338,7 +338,53 @@ echo " #####################################################"
     # Initialize directory to hold temporary test input files
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
+ 
+    cd $SST_ROOT/test
+    utilities/invokeSuite memHSieve 1 0 all a
+    utilities/invokeSuite memHSieve 2 0 all b
+    utilities/invokeSuite memHSieve 4 0 all c
+    utilities/invokeSuite memHSieve 1 0 all d
+    utilities/invokeSuite memHSieve 2 0 all e
+    utilities/invokeSuite memHSieve 4 0 all f
+export SST_TEST_TIMEOUT_OVERRIDE=3
+    utilities/invokeSuite memHSieve 1 0 all g
+    utilities/invokeSuite memHSieve 2 0 all h
+    utilities/invokeSuite memHSieve 4 0 all i
+    utilities/invokeSuite memHSieve 1 0 all j
+    utilities/invokeSuite memHSieve 2 0 all k
+    utilities/invokeSuite memHSieve 4 0 all l
+export SST_TEST_TIMEOUT_OVERRIDE=2
+    utilities/invokeSuite memHSieve 1 0 all m
+    utilities/invokeSuite memHSieve 2 0 all n
+    utilities/invokeSuite memHSieve 4 0 all o
+    utilities/invokeSuite memHSieve 1 0 all p
+    utilities/invokeSuite memHSieve 2 0 all q
+    utilities/invokeSuite memHSieve 4 0 all r
     
+unset SST_TEST_TIMEOUT_OVERRIDE
+    utilities/invokeSuite memHSieve 1 0 all s
+    utilities/invokeSuite memHSieve 2 0 all t
+    utilities/invokeSuite memHSieve 4 0 all u
+    utilities/invokeSuite memHSieve 1 0 all v
+    utilities/invokeSuite memHSieve 2 0 all w
+    utilities/invokeSuite memHSieve 4 0 all x
+export SST_TEST_TIMEOUT_OVERRIDE=3
+    utilities/invokeSuite memHSieve 1 0 all y
+    utilities/invokeSuite memHSieve 2 0 all z
+    utilities/invokeSuite memHSieve 4 0 all aa
+    utilities/invokeSuite memHSieve 1 0 all ab
+    utilities/invokeSuite memHSieve 2 0 all ac
+    utilities/invokeSuite memHSieve 4 0 all ad
+export SST_TEST_TIMEOUT_OVERRIDE=2
+    utilities/invokeSuite memHSieve 1 0 all ae
+    utilities/invokeSuite memHSieve 2 0 all af
+    utilities/invokeSuite memHSieve 4 0 all ag
+    utilities/invokeSuite memHSieve 1 0 all ah
+    utilities/invokeSuite memHSieve 2 0 all ai
+    utilities/invokeSuite memHSieve 4 0 all aj
+
+    return
+
     # Do we run the Macro Tests    
     if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
        [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ; then
