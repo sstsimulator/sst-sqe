@@ -74,6 +74,7 @@ echo " First call to countStreams follow: "
 ####                 Remove old ompsievetest task
     Remove_old_ompsievetest_task
 
+rm -fr $SST_TEST_SUITES/memHS_folder        
 mkdir $SST_TEST_SUITES/memHS_folder        
 pushd $SST_TEST_SUITES/memHS_folder        
 #   Remove old files if any
@@ -81,7 +82,7 @@ rm -f ompsievetest.o ompsievetest backtrace_* StatisticOutput.csv mallocRank.txt
 
 #   Build ompsievetest
     cp $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/Makefile .
-    ln -s $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/ompsievetest.c
+    ln -sf $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/ompsievetest.c .
     #      Optionally remove openmp from the build
     if [ $SST_WITH_OPENMP == 0 ] ; then
         echo "         ### Remove \"-fopenmp\" from the make"
