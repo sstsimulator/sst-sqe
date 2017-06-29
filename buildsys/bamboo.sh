@@ -340,71 +340,73 @@ echo " #####################################################"
     mkdir -p ${SST_TEST_INPUTS_TEMP}
  
     cd $SST_ROOT/test
-    utilities/invokeSuite memHSieve 1 0 all a
-    utilities/invokeSuite memHSieve 2 0 all b
-    utilities/invokeSuite memHSieve 1 0 all c
-    utilities/invokeSuite memHSieve 1 0 all d
-    utilities/invokeSuite memHSieve 2 0 all e
-    utilities/invokeSuite memHSieve 1 0 all f
+for $Ind in 1 2
+do
+    utilities/invokeSuite memHSieve 1 0 all a${Ind}
+    utilities/invokeSuite memHSieve 2 0 all b${Ind}
+    utilities/invokeSuite memHSieve 1 0 all c${Ind}
+    utilities/invokeSuite memHSieve 1 0 all d${Ind}
+    utilities/invokeSuite memHSieve 2 0 all e${Ind}
+    utilities/invokeSuite memHSieve 1 0 all f${Ind}
 # export SST_TEST_TIMEOUT_OVERRIDE=3
-    utilities/invokeSuite memHSieve 1 0 all g
-    utilities/invokeSuite memHSieve 2 0 all h
-    utilities/invokeSuite memHSieve 1 0 all i
-    utilities/invokeSuite memHSieve 1 0 all j
-    utilities/invokeSuite memHSieve 2 0 all k
-    utilities/invokeSuite memHSieve 1 0 all l
+    utilities/invokeSuite memHSieve 1 0 all g${Ind}
+    utilities/invokeSuite memHSieve 2 0 all h${Ind}
+    utilities/invokeSuite memHSieve 1 0 all i${Ind}
+    utilities/invokeSuite memHSieve 1 0 all j${Ind}
+    utilities/invokeSuite memHSieve 2 0 all k${Ind}
+    utilities/invokeSuite memHSieve 1 0 all l${Ind}
 # export SST_TEST_TIMEOUT_OVERRIDE=2
-    utilities/invokeSuite memHSieve 1 0 all m
-    utilities/invokeSuite memHSieve 2 0 all n
-    utilities/invokeSuite memHSieve 1 0 all o
-    utilities/invokeSuite memHSieve 1 0 all p
-    utilities/invokeSuite memHSieve 2 0 all q
-    utilities/invokeSuite memHSieve 1 0 all r
-    
-unset SST_TEST_TIMEOUT_OVERRIDE
-    utilities/invokeSuite memHSieve 1 0 all s
-    utilities/invokeSuite memHSieve 2 0 all t
-    utilities/invokeSuite memHSieve 1 0 all u
-    utilities/invokeSuite memHSieve 1 0 all v
-    utilities/invokeSuite memHSieve 2 0 all w
-    utilities/invokeSuite memHSieve 1 0 all x
-# export SST_TEST_TIMEOUT_OVERRIDE=3
-    utilities/invokeSuite memHSieve 1 0 all y
-    utilities/invokeSuite memHSieve 2 0 all z
-    utilities/invokeSuite memHSieve 1 0 all aa
-    utilities/invokeSuite memHSieve 1 0 all ab
-    utilities/invokeSuite memHSieve 2 0 all ac
-    utilities/invokeSuite memHSieve 1 0 all ad
-# export SST_TEST_TIMEOUT_OVERRIDE=2
-    utilities/invokeSuite memHSieve 1 0 all ae
-    utilities/invokeSuite memHSieve 2 0 all af
-    utilities/invokeSuite memHSieve 1 0 all ag
-    utilities/invokeSuite memHSieve 1 0 all ah
-    utilities/invokeSuite memHSieve 2 0 all ai
-    utilities/invokeSuite memHSieve 1 0 all aj
+    utilities/invokeSuite memHSieve 1 0 all m${Ind}
+    utilities/invokeSuite memHSieve 2 0 all n${Ind}
+    utilities/invokeSuite memHSieve 1 0 all o${Ind}
+    utilities/invokeSuite memHSieve 1 0 all p${Ind}
+    utilities/invokeSuite memHSieve 2 0 all q${Ind}
+    utilities/invokeSuite memHSieve 1 0 all r${Ind}
 
-    utilities/invokeSuite memHSieve 1 0 all be
-    utilities/invokeSuite memHSieve 1 0 all bf
-    utilities/invokeSuite memHSieve 1 0 all bg
-    
-    
-    utilities/invokeSuite memHSieve 1 0 all bk
-    utilities/invokeSuite memHSieve 1 0 all bi
-    utilities/invokeSuite memHSieve 1 0 all bj
-    utilities/invokeSuite memHSieve 1 0 all bl
-    utilities/invokeSuite memHSieve 1 0 all bm
-    utilities/invokeSuite memHSieve 1 0 all bn
-    
-    utilities/invokeSuite memHSieve 1 0 all bo
-    utilities/invokeSuite memHSieve 1 0 all bp
-    utilities/invokeSuite memHSieve 1 0 all bq
-    utilities/invokeSuite memHSieve 1 0 all ck
-    utilities/invokeSuite memHSieve 1 0 all ci
-    utilities/invokeSuite memHSieve 1 0 all cj
-    utilities/invokeSuite memHSieve 1 0 all cl
-    utilities/invokeSuite memHSieve 1 0 all cm
-    utilities/invokeSuite memHSieve 1 0 all cn
-    
+unset SST_TEST_TIMEOUT_OVERRIDE
+    utilities/invokeSuite memHSieve 1 0 all s${Ind}
+    utilities/invokeSuite memHSieve 2 0 all t${Ind}
+    utilities/invokeSuite memHSieve 1 0 all u${Ind}
+    utilities/invokeSuite memHSieve 1 0 all v${Ind}
+    utilities/invokeSuite memHSieve 2 0 all w${Ind}
+    utilities/invokeSuite memHSieve 1 0 all x${Ind}
+# export SST_TEST_TIMEOUT_OVERRIDE=3
+    utilities/invokeSuite memHSieve 1 0 all y${Ind}
+    utilities/invokeSuite memHSieve 2 0 all ${Ind}z
+    utilities/invokeSuite memHSieve 1 0 all aa${Ind}
+    utilities/invokeSuite memHSieve 1 0 all ab${Ind}
+    utilities/invokeSuite memHSieve 2 0 all ac${Ind}
+    utilities/invokeSuite memHSieve 1 0 all ad${Ind}
+# export SST_TEST_TIMEOUT_OVERRIDE=2
+    utilities/invokeSuite memHSieve 1 0 all ae${Ind}
+    utilities/invokeSuite memHSieve 2 0 all af${Ind}
+    utilities/invokeSuite memHSieve 1 0 all ag${Ind}
+    utilities/invokeSuite memHSieve 1 0 all ah${Ind}
+    utilities/invokeSuite memHSieve 2 0 all ai${Ind}
+    utilities/invokeSuite memHSieve 1 0 all aj${Ind}
+
+    utilities/invokeSuite memHSieve 1 0 all be${Ind}
+    utilities/invokeSuite memHSieve 1 0 all bf${Ind}
+    utilities/invokeSuite memHSieve 1 0 all bg${Ind}
+
+
+    utilities/invokeSuite memHSieve 1 0 all bk${Ind}
+    utilities/invokeSuite memHSieve 1 0 all bi${Ind}
+    utilities/invokeSuite memHSieve 1 0 all bj${Ind}
+    utilities/invokeSuite memHSieve 1 0 all bl${Ind}
+    utilities/invokeSuite memHSieve 1 0 all bm${Ind}
+    utilities/invokeSuite memHSieve 1 0 all bn${Ind}
+
+    utilities/invokeSuite memHSieve 1 0 all bo${Ind}
+    utilities/invokeSuite memHSieve 1 0 all bp${Ind}
+    utilities/invokeSuite memHSieve 1 0 all bq${Ind}
+    utilities/invokeSuite memHSieve 1 0 all ck${Ind}
+    utilities/invokeSuite memHSieve 1 0 all ci${Ind}
+    utilities/invokeSuite memHSieve 1 0 all cj${Ind}
+    utilities/invokeSuite memHSieve 1 0 all cl${Ind}
+    utilities/invokeSuite memHSieve 1 0 all cm${Ind}
+    utilities/invokeSuite memHSieve 1 0 all cn${Ind}
+done 
 
 
 
