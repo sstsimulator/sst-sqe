@@ -276,6 +276,14 @@ dotests() {
     #  If it is Intel, Need a GCC library also
     #    Going to load the gcc-4.8.1 module for now
 
+   echo "-- Number processers"
+   if [ `uname` == "Darwin" ] ; then
+       sysctl -n hw.ncpu
+   else
+       grep -c processor /proc/cpuinfo
+   fi
+   echo ' '
+
    if [[ ${SST_TEST_WITH_NO_ELEMENTS_WRITE:+isSet} == isSet ]] ; then
        echo "#################################################### "
        echo ' '
