@@ -95,6 +95,8 @@ echo "------------------   Debug -------------"
 #
 #          End findChild() subroutine
 #
+   echo ' ' ;   echo "Should be undefined"
+   echo " SST = $SST_PID, MPI = $MPI_PID, Kill = $KILL_PID "
 
 echo " ###############################################################"
 echo "  JOHNS sanity check"
