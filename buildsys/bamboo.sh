@@ -340,72 +340,72 @@ echo " #####################################################"
     mkdir -p ${SST_TEST_INPUTS_TEMP}
  
     cd $SST_ROOT/test
-for $Ind in 1 2
+for Ind in 1 2 3
 do
     utilities/invokeSuite memHSieve 1 0 all a${Ind}
     utilities/invokeSuite memHSieve 2 0 all b${Ind}
-    utilities/invokeSuite memHSieve 1 0 all c${Ind}
+    utilities/invokeSuite memHSieve 1 2 all c${Ind}
     utilities/invokeSuite memHSieve 1 0 all d${Ind}
     utilities/invokeSuite memHSieve 2 0 all e${Ind}
-    utilities/invokeSuite memHSieve 1 0 all f${Ind}
+    utilities/invokeSuite memHSieve 1 2 all f${Ind}
 # export SST_TEST_TIMEOUT_OVERRIDE=3
     utilities/invokeSuite memHSieve 1 0 all g${Ind}
     utilities/invokeSuite memHSieve 2 0 all h${Ind}
-    utilities/invokeSuite memHSieve 1 0 all i${Ind}
+    utilities/invokeSuite memHSieve 1 2 all i${Ind}
     utilities/invokeSuite memHSieve 1 0 all j${Ind}
     utilities/invokeSuite memHSieve 2 0 all k${Ind}
-    utilities/invokeSuite memHSieve 1 0 all l${Ind}
+    utilities/invokeSuite memHSieve 1 2 all l${Ind}
 # export SST_TEST_TIMEOUT_OVERRIDE=2
     utilities/invokeSuite memHSieve 1 0 all m${Ind}
     utilities/invokeSuite memHSieve 2 0 all n${Ind}
-    utilities/invokeSuite memHSieve 1 0 all o${Ind}
+    utilities/invokeSuite memHSieve 1 2 all o${Ind}
     utilities/invokeSuite memHSieve 1 0 all p${Ind}
     utilities/invokeSuite memHSieve 2 0 all q${Ind}
-    utilities/invokeSuite memHSieve 1 0 all r${Ind}
+    utilities/invokeSuite memHSieve 1 2 all r${Ind}
 
 unset SST_TEST_TIMEOUT_OVERRIDE
     utilities/invokeSuite memHSieve 1 0 all s${Ind}
     utilities/invokeSuite memHSieve 2 0 all t${Ind}
-    utilities/invokeSuite memHSieve 1 0 all u${Ind}
+    utilities/invokeSuite memHSieve 1 2 all u${Ind}
     utilities/invokeSuite memHSieve 1 0 all v${Ind}
     utilities/invokeSuite memHSieve 2 0 all w${Ind}
-    utilities/invokeSuite memHSieve 1 0 all x${Ind}
+    utilities/invokeSuite memHSieve 1 2 all x${Ind}
 # export SST_TEST_TIMEOUT_OVERRIDE=3
     utilities/invokeSuite memHSieve 1 0 all y${Ind}
-    utilities/invokeSuite memHSieve 2 0 all ${Ind}z
-    utilities/invokeSuite memHSieve 1 0 all aa${Ind}
+    utilities/invokeSuite memHSieve 2 0 all z${Ind}
+    utilities/invokeSuite memHSieve 1 2 all aa${Ind}
     utilities/invokeSuite memHSieve 1 0 all ab${Ind}
     utilities/invokeSuite memHSieve 2 0 all ac${Ind}
-    utilities/invokeSuite memHSieve 1 0 all ad${Ind}
+    utilities/invokeSuite memHSieve 1 2 all ad${Ind}
 # export SST_TEST_TIMEOUT_OVERRIDE=2
     utilities/invokeSuite memHSieve 1 0 all ae${Ind}
     utilities/invokeSuite memHSieve 2 0 all af${Ind}
-    utilities/invokeSuite memHSieve 1 0 all ag${Ind}
+    utilities/invokeSuite memHSieve 1 2 all ag${Ind}
     utilities/invokeSuite memHSieve 1 0 all ah${Ind}
     utilities/invokeSuite memHSieve 2 0 all ai${Ind}
-    utilities/invokeSuite memHSieve 1 0 all aj${Ind}
+    utilities/invokeSuite memHSieve 1 2 all aj${Ind}
 
     utilities/invokeSuite memHSieve 1 0 all be${Ind}
-    utilities/invokeSuite memHSieve 1 0 all bf${Ind}
+    utilities/invokeSuite memHSieve 1 2 all bf${Ind}
     utilities/invokeSuite memHSieve 1 0 all bg${Ind}
 
 
-    utilities/invokeSuite memHSieve 1 0 all bk${Ind}
+    utilities/invokeSuite memHSieve 1 2 all bk${Ind}
     utilities/invokeSuite memHSieve 1 0 all bi${Ind}
-    utilities/invokeSuite memHSieve 1 0 all bj${Ind}
+    utilities/invokeSuite memHSieve 1 2 all bj${Ind}
     utilities/invokeSuite memHSieve 1 0 all bl${Ind}
-    utilities/invokeSuite memHSieve 1 0 all bm${Ind}
+    utilities/invokeSuite memHSieve 1 2 all bm${Ind}
     utilities/invokeSuite memHSieve 1 0 all bn${Ind}
 
-    utilities/invokeSuite memHSieve 1 0 all bo${Ind}
+    utilities/invokeSuite memHSieve 1 2 all bo${Ind}
     utilities/invokeSuite memHSieve 1 0 all bp${Ind}
-    utilities/invokeSuite memHSieve 1 0 all bq${Ind}
+    utilities/invokeSuite memHSieve 1 2 all bq${Ind}
     utilities/invokeSuite memHSieve 1 0 all ck${Ind}
-    utilities/invokeSuite memHSieve 1 0 all ci${Ind}
+    utilities/invokeSuite memHSieve 1 2 all ci${Ind}
     utilities/invokeSuite memHSieve 1 0 all cj${Ind}
-    utilities/invokeSuite memHSieve 1 0 all cl${Ind}
+    utilities/invokeSuite memHSieve 1 2 all cl${Ind}
     utilities/invokeSuite memHSieve 1 0 all cm${Ind}
-    utilities/invokeSuite memHSieve 1 0 all cn${Ind}
+    utilities/invokeSuite memHSieve 1 2 all cn${Ind}
 done 
 
 
