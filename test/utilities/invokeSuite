@@ -56,7 +56,7 @@
     export SST_MULTI_RANK_COUNT=$N_Ranks
      
 
-   tmpSuite=$SST_TEST_SUITES/tmpSuite_${1}-${2}-${3}_${5}.temp
+   tmpSuite=$SST_TEST_SUITES/tmptestSuite_${1}-${2}-${3}_${5}.temp
    ##origSuite=$theSuite
    ## rm $tmpSuite
    cp $origSuite $tmpSuite
