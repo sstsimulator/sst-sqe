@@ -124,12 +124,12 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
     if [ $SSTPAR_PID -eq $TL_PPID ] ; then
        MPIRUN_PID=0
     else
-       ps -f -p SSTPAR_PID | grep mpirun
+       ps -f -p $SSTPAR_PID | grep mpirun
        if [ 0 == $? ] ; then
            MPIRUN_PID=$SSTPAR_PID
        else 
            echo "Unexpect value for SSTPAR_PID (parent)"
-           ps -f -p SSTPAR_PID
+           ps -f -p $SSTPAR_PID
            MPIRUN_PID=0
        fi
     fi
