@@ -392,11 +392,12 @@ ps -ef | grep ompsievetest | grep -v -e grep > /tmp/${memHS_PID}_omps_list
 wc /tmp/${memHS_PID}_omps_list
 while read -u 3 _who _anOMP _own _rest
 do
+echo " Looping  $LINENO "
     if [ $_own == 1 ] ; then
         echo " Attempt to remove $_anOMP "
         kill -9 $_anOMP
     fi
 done 3</tmp/${memHS_PID}_omps_list
-
+echo " Done    $LINENO  "
 rm /tmp/${memHS_PID}_omps_list
 }

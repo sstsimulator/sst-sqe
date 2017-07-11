@@ -222,8 +222,7 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 (. ${SHUNIT2_SRC}/shunit2)
 
     Remove_old_ompsievetest_task
-
-####                  Find Pid of my ompsievetest
+echo "                --- returned from Remove_old_omps...   "
 OMP_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
 echo "OMP_PID = $OMP_PID"
 if [ ! -z $OMP_PID ] ; then
