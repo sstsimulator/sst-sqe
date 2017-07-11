@@ -139,9 +139,5 @@
    fi
      
    popd
-
-   echo ' '
-   grep 'sut.*sutArgs' $theSuite
-   echo ' '
      
    $theSuite

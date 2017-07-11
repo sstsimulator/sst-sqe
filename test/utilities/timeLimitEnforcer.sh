@@ -47,7 +47,7 @@ echo ' '
 
 date
 echo ' '
-#          Prooced to attempt the kill
+#          Proceed to attempt the kill
 #
 #          Begin findChild() subroutine
 #
@@ -96,14 +96,14 @@ echo "------------------   Debug -------------"
 #          End findChild() subroutine
 #
    echo ' ' ;   echo "Should be undefined"
-   echo " SST = $SST_PID, MPI = $MPI_PID, Kill = $KILL_PID "
+   echo " SST = $SST_PID, MPI = $MPIRUN_PID, Kill = $KILL_PID "
 
 echo " ###############################################################"
-echo "  JOHNS sanity check"
+echo "  JOHNS sanity check   --  all bin/sst"
 ps -ef | grep bin/sst | grep -v grep 
-echo " ----------- first"
+echo " ----------- first entry in ps list"
 ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q
-echo " ----------- all  "
+echo " ----------- all non-mpirun "
 ps -ef | grep bin/sst | grep -v grep | grep -v mpirun 
 ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
 if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
@@ -114,13 +114,33 @@ else       # - LINUX -
 
     ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | grep -v mpirun
 
-    SST_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | \
+    SST_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
+                   grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | \
                    grep -v mpirun | sed 1q | awk '{ print $2 }'`
-    MPIRUN_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | \
+    SSTPAR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
+                   grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | \
                    grep -v mpirun | sed 1q | awk '{ print $3 }'`
+echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $SST_PPID"
+    if [ $SSTPAR_PID -eq $TL_PPID ] ; then
+       MPIRUN_PID=0
+    else
+       ps -f -p SSTPAR_PID | grep mpirun
+       if [ 0 == $? ] ; then
+           MPIRUN_PID=$SSTPAR_PID
+       else 
+           echo "Unexpect value for SSTPAR_PID (parent)"
+           ps -f -p SSTPAR_PID
+           MPIRUN_PID=0
+       fi
+    fi
 fi
 echo " the pid of an sst is $SST_PID "
 echo " the pid of the mpirun is $MPIRUN_PID "
+if [ $MPIRUN_PID -eq 0 ] ; then
+    KILL_PID=$SST_PID
+else
+    KILL_PID=$MPIRUN_PID
+fi
 
 if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
     echo " Check for Dead Lock"
@@ -133,7 +153,9 @@ if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
     echo " ###############################################################"
 fi
 
-findChild $TL_PPID
+if [ -z $KILL_PID ] ; then
+    findChild $TL_PPID
+fi 
 
 
 if [ -z "$KILL_PID" ] ; then
