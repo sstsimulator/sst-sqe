@@ -120,7 +120,7 @@ else       # - LINUX -
     SSTPAR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
                    grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | \
                    grep -v mpirun | sed 1q | awk '{ print $3 }'`
-echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $SST_PPID"
+echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
     if [ $SSTPAR_PID -eq $TL_PPID ] ; then
        MPIRUN_PID=0
     else
