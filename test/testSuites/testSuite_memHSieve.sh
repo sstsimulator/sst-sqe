@@ -227,10 +227,21 @@ OMP_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | gre
 echo "OMP_PID = $OMP_PID"
 if [ ! -z $OMP_PID ] ; then
 echo " Line $LINENO   -- kill ompsievetest "
-    ps -e -p $OMP_PID
+    ps -f -p $OMP_PID
     kill -9 $OMP_PID
 fi
-
+OMPS=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep`
+nOMPS=`cat $OMPS | wc -l`
+echo "  Number of ompsievetask still there is $nOMPS"
+if [ $nOMPS -eq 1 ] ; then
+    PARENT=`cat $OMPS | awk '{print $3}'
+    echo "Kill parent"
+    ps h -f -p $PARENT
+########################   No can't kill Parent without verifying that it's not 1
+  echo " can't kill Parent without verifying that it's not 1"
+#    kill -9 $PARENT
+    ps -f
+fi
 date
 echo ' '
 
