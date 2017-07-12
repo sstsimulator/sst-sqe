@@ -211,11 +211,16 @@ fi
 ps -f -p $KILL_PID | grep $KILL_PID
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
+echo "  tLE ==== $LINENO   "
 ps -ef | grep ompsievetest
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
+echo "  tLE ==== $LINENO   "
 ps -f -p $KILL_PID | grep $KILL_PID
+echo "  tLE ==== $LINENO   "
 ps -ef | grep ompsievetest
+echo "  tLE ==== $LINENO   "
     Remove_old_ompsievetest_task
 ps -ef | grep ompsievetest
+echo "  tLE ==== $LINENO   "
 fi

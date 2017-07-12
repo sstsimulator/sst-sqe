@@ -223,11 +223,12 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
     Remove_old_ompsievetest_task
 echo "                --- returned from Remove_old_omps...   "
+echo " memHS $LINENO ----------------"
 OMP_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep -v -e grep | grep ompsievetest | awk '{print $2}'`
 echo "OMP_PID = $OMP_PID"
 if [ ! -z $OMP_PID ] ; then
 echo " Line $LINENO   -- kill ompsievetest "
-    ps -e -p $OMP_PID
+    ps -f -p $OMP_PID
     kill -9 $OMP_PID
 fi
 

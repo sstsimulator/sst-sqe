@@ -388,7 +388,9 @@ Remove_old_ompsievetest_task() {
 memHS_PID=$$
    echo " Begin Remover -------------------"
 ps -ef | grep ompsievetest
+echo "  remover  ==== $LINENO   "
 ps -ef | grep ompsievetest | grep -v -e grep > /tmp/${memHS_PID}_omps_list
+echo "  remover  ==== $LINENO   "
 wc /tmp/${memHS_PID}_omps_list
 while read -u 3 _who _anOMP _own _rest
 do
@@ -400,4 +402,5 @@ echo " Looping  $LINENO "
 done 3</tmp/${memHS_PID}_omps_list
 echo " Done    $LINENO  "
 rm /tmp/${memHS_PID}_omps_list
+echo "  remover  ==== $LINENO   "
 }
