@@ -1,3 +1,7 @@
+##   timeLimitEnforcer.sh
+
+. $SST_ROOT/test/include/testSubroutines.sh
+
 ##   Default time out is set to 1800 seconds (30 minutes) per test.
 ##   This can be Globally changed by setting the Environment variable
 ##   This can be Locally changed for an entire Suite by exporting the
@@ -7,7 +11,6 @@
 ##      value directly in here, over riding the Suite.
 ##   The new environment variable, SST_TEST_TIMEOUT_OVERRIDE, trumps all. 
               
-
 if [[ ${SST_TEST_ONE_TEST_TIMEOUT:+isSet} != isSet ]] ; then
     SST_TEST_ONE_TEST_TIMEOUT=1800         # 30 minutes 1800 seconds
 fi
@@ -92,6 +95,8 @@ echo "------------------   Debug -------------"
 #
 #          End findChild() subroutine
 #
+   echo ' ' ;   echo "Should be undefined"
+   echo " SST = $SST_PID, MPI = $MPI_PID, Kill = $KILL_PID "
 
 echo " ###############################################################"
 echo "  JOHNS sanity check"
@@ -104,21 +109,29 @@ ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2
 if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
     SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
     MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
-else
-    SST_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
-    MPIRUN_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+else       # - LINUX -
+    echo "      finding SST_PID and MPIRUN_PID"
+
+    ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | grep -v mpirun
+
+    SST_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | \
+                   grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | \
+                   grep -v mpirun | sed 1q | awk '{ print $3 }'`
 fi
 echo " the pid of an sst is $SST_PID "
 echo " the pid of the mpirun is $MPIRUN_PID "
 
-echo " Check for Dead Lock"
-kill -USR1 $SST_PID
-sleep 2
-kill -USR1 $SST_PID
-
-grep -i signal $SST_ROOT/test/testOutputs/*
-grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/*
-echo " ###############################################################"
+if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+    echo " Check for Dead Lock"
+    kill -USR1 $SST_PID
+    sleep 1
+    kill -USR1 $SST_PID
+    
+    grep -i signal $SST_ROOT/test/testOutputs/*
+    grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/*
+    echo " ###############################################################"
+fi
 
 findChild $TL_PPID
 
@@ -176,7 +189,11 @@ fi
 ps -f -p $KILL_PID | grep $KILL_PID
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
+ps -ef | grep ompsievetest
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
 ps -f -p $KILL_PID | grep $KILL_PID
+ps -ef | grep ompsievetest
+    Remove_old_ompsievetest_task
+ps -ef | grep ompsievetest
 fi

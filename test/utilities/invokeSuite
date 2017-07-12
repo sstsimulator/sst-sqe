@@ -25,7 +25,7 @@
     . $SST_ROOT/test/include/testDefinitions.sh
 
     SST_TEST_SUITES=$SST_ROOT/test/testSuites
-    theSuite=${SST_TEST_SUITES}/testSuite_${1}.sh
+    origSuite=${SST_TEST_SUITES}/testSuite_${1}.sh
     N_Threads=$2
     N_Ranks=$3
     SelectTests=$4
@@ -45,10 +45,10 @@
         N_Ranks=1
     fi
 
-    echo $theSuite, $N_Threads, $N_Ranks, $SelectTests
-    ls $theSuite >/dev/null 2>1
+    echo $origSuite, $N_Threads, $N_Ranks, $SelectTests
+    ls $origSuite >/dev/null 2>1
     if [ $? -ne 0 ] ; then
-       echo "invalid Suite name:  $theSuite"
+       echo "invalid Suite name:  $origSuite"
        exit
     fi
 
@@ -56,12 +56,20 @@
     export SST_MULTI_RANK_COUNT=$N_Ranks
      
 
-   tmpSuite=$SST_TEST_SUITES/tmpSuite_${1}-${2}-${3}_${5}.temp
-   origSuite=$theSuite
-   rm -f $tmpSuite
+   tmpSuite=$SST_TEST_SUITES/tmptestSuite_${1}-${2}-${3}_${5}.temp
+   ##origSuite=$theSuite
+   ## rm $tmpSuite
+   cp $origSuite $tmpSuite
+   theSuite=$tmpSuite
    pushd $SST_TEST_SUITES
+
+##  At this point theSuite points to the original testSuite
+##       and tmpSuite is the name of the empty file to be developed
+#
 #
 ##    Insert special code for Multi Thread
+#        If (and only if this is multi-thread, this section will
+#        include the multi thread code and write it to tmpSuite.
 #
    if [[ ${N_Threads:+isSet} == isSet ]] && [ $N_Threads -gt 1 ] ; then
        echo ' ' ; echo "   Running Multi Thread:  nt = $N_Threads "
@@ -72,8 +80,13 @@
        export SST_MULTI_THREAD_COUNT=$N_Threads
        export SST_MULTI_CORE=1
    fi
+
+##   At this point if and only if multi thread, tmpSuite has content
+#        and theSuite points to tmpSuite.
 #
 ##    Insert special code for Multi Rank
+#        If Multi Rank is requested this section will do as needed to 
+#        get the correct code in tmpSuite and make theSuite point to it.
 #
    if [[ ${N_Ranks:+isSet} == isSet ]] && [ $N_Ranks -gt 1 ] ; then
        echo ' ' ; echo "   Running Multi Rank:  nr = $N_Ranks "
@@ -96,9 +109,17 @@
        fi
    fi
 
+## At this point if anything is multi, tmpSuite contains the Suite to use and
+#    theSuite points to it.
+#       If nothing is multi the file tmpSuite is empty and theSuite still points to 
+#       the orginal testSuite.
+#             
+##   This section select tests to run from the Suite and it will populate tmpSuite,
+#       if needed  . . .
+#       ---  I don't know about this section ?????  it's COB.
    if [ ! -z $SelectTests ] ; then
        if [ ! -s $tmpSuite ] ; then                  #  -s means is NOT zero size
-           cp $origSuite $tmpSuite
+           cp $theSuite $tmpSuite
        fi
        sed -i'.x' -e s/^test_/xxtest_/ $tmpSuite 
 

@@ -59,6 +59,7 @@ fi
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
 
+
 echo " First call to countStreams follow: "
     countStreams    
 
@@ -71,19 +72,9 @@ echo " First call to countStreams follow: "
     fi
 
 ####                 Remove old ompsievetest task
-ps -ef | grep ompsievetest
-ps -ef | grep ompsievetest | grep -v -e grep > /tmp/${TL_MY_PID}_omps_list
-wc /tmp/${TL_MY_PID}_omps_list
-while read -u 3 _who _anOMP _own _rest
-do
-    if [ $_own == 1 ] ; then
-        echo " Attempt to remove $_anOMP "
-        kill -9 $_anOMP
-    fi
-done 3</tmp/${TL_MY_PID}_omps_list
+    Remove_old_ompsievetest_task
 
-rm /tmp/${TL_MY_PID}_omps_list
-
+rm -fr $SST_TEST_SUITES/memHS_folder        
 mkdir $SST_TEST_SUITES/memHS_folder        
 pushd $SST_TEST_SUITES/memHS_folder        
 #   Remove old files if any
@@ -91,7 +82,7 @@ rm -f ompsievetest.o ompsievetest backtrace_* StatisticOutput.csv mallocRank.txt
 
 #   Build ompsievetest
     cp $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/Makefile .
-    ln -s $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/ompsievetest.c
+    ln -sf $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/ompsievetest.c .
     #      Optionally remove openmp from the build
     if [ $SST_WITH_OPENMP == 0 ] ; then
         echo "         ### Remove \"-fopenmp\" from the make"
@@ -229,6 +220,8 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
+
+    Remove_old_ompsievetest_task
 
 ####                  Find Pid of my ompsievetest
 OMP_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
