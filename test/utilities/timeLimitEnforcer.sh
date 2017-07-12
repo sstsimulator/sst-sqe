@@ -101,7 +101,6 @@ echo "------------------   Debug -------------"
 echo " ###############################################################"
 echo "  JOHNS sanity check   --  all bin/sst"
 ps -ef | grep bin/sst | grep -v grep 
-ps -ef | grep omptestsieve | grep -v grep       ## perhaps temporary
 echo " ----------- first entry in ps list"
 ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q
 echo " ----------- all non-mpirun "
@@ -197,7 +196,7 @@ $SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
 
 echo ' '
 date
-echo "   Returned to timeLimitEnforcer"
+echo "   Return to timeLimitEnforcer"
 echo ' '
 
 kill $KILL_PID
@@ -217,9 +216,6 @@ ps -ef | grep ompsievetest
     kill -9 $KILL_PID
 ps -f -p $KILL_PID | grep $KILL_PID
 ps -ef | grep ompsievetest
-###         All this ompsievetest should NOT be here
-    echo "  $case  from $0  "
     Remove_old_ompsievetest_task
-    echo "       ---- returned ---- "
 ps -ef | grep ompsievetest
 fi
