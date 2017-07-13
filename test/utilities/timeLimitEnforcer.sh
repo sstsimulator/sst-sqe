@@ -112,11 +112,11 @@ if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
 else       # - LINUX -
     echo "      finding SST_PID and MPIRUN_PID"
 
-    ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | grep -v mpirun
+    ps -f | grep -e bin/sst  -e sstsim.x | grep -v grep | grep -v mpirun
 
-    SST_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | \
+    SST_PID=`ps -f | grep -e bin/sst  -e sstsim.x | grep -v grep | \
                    grep -v mpirun | sed 1q | awk '{ print $2 }'`
-    MPIRUN_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | \
+    MPIRUN_PID=`ps -f | grep -e bin/sst -e sstsim.x | grep -v grep | \
                    grep -v mpirun | sed 1q | awk '{ print $3 }'`
 fi
 echo " the pid of an sst is $SST_PID "
