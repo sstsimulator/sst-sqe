@@ -100,14 +100,12 @@ echo "------------------   Debug -------------"
 echo " ###############################################################"
 echo "  JOHNS sanity check   --  all bin/sst"
 ps -ef | grep bin/sst | grep -v grep 
-echo " ----------- first entry in ps list"
-ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q
-echo " ----------- all non-mpirun "
-ps -ef | grep bin/sst | grep -v grep | grep -v mpirun 
-ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
-if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then     ## ps -ef
-    SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
-    MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+echo " ----------- all  "
+ps -f | grep bin/sst | grep -v grep | grep -v mpirun 
+ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
+if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+    SST_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
 else       # - LINUX -
     echo "      finding SST_PID and MPIRUN_PID
     ps -f | grep -e bin/sst -e sstsim.x | grep -v grep | grep -v mpirun
