@@ -42,7 +42,7 @@ echo "         Create Time Limit Flag file, $TIME_FLAG"
 
 echo ' '
 echo I am $TL_MY_PID,  I was called from $TL_CALLER, my parent PID is $TL_PPID
-ps -f -p ${1},${TL_PPID}
+ps -f -p ${1},${TL_PPID} ${TL_MY_PID}
 echo ' '
 
 date
@@ -54,7 +54,7 @@ echo ' '
 findChild()
 {
    SPID=$1
-   if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+   if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then              ## ps -ef
        KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
    else
        KILL_PID=`ps -f | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
@@ -64,7 +64,7 @@ findChild()
 echo "------------------   Debug ------/$SPID is $SPID -------"
    ps -ef | grep bin/sst
 echo "------------------   Debug -------------"
-       KILL_PID=`ps -ef | grep bin/sst  | grep $SPID | awk '{ print $2 }'`
+       KILL_PID=`ps -f | grep bin/sst  | grep $SPID | awk '{ print $2 }'`
    fi
       
    if [ -z "$KILL_PID" ] ; then
@@ -74,13 +74,13 @@ echo "------------------   Debug -------------"
        echo ' '
        #   Is there a Python running from the Parent PID
        echo " Look for a child named \"python\""
-       PY_PID=`ps -ef | grep 'python ' | grep $SPID | awk '{ print $2 }'`
+       PY_PID=`ps -f | grep 'python ' | grep $SPID | awk '{ print $2 }'`
        if [ -z "$PY_PID" ] ; then
            echo "No corresponding child named \"python\" "
            echo ' '
            #   Is there a Valgrind running from the Parent PID
            echo " Look for a child named \"valgrind\""
-           VG_PID=`ps -ef | grep ' valgrind ' | grep $SPID | awk '{ print $2 }'`
+           VG_PID=`ps -f | grep ' valgrind ' | grep $SPID | awk '{ print $2 }'`
            if [ -z "$VG_PID" ] ; then
                echo "No corresponding child named \"valgrind\" "
                echo ' '
@@ -95,8 +95,7 @@ echo "------------------   Debug -------------"
 #
 #          End findChild() subroutine
 #
-   echo ' ' ;   echo "Should be undefined"
-   echo " SST = $SST_PID, MPI = $MPIRUN_PID, Kill = $KILL_PID "
+   echo ' ' ; echo "Should be undefined: SST = $SST_PID, MPI = $MPIRUN_PID, Kill = $KILL_PID"
 
 echo " ###############################################################"
 echo "  JOHNS sanity check   --  all bin/sst"
@@ -106,7 +105,7 @@ ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q
 echo " ----------- all non-mpirun "
 ps -ef | grep bin/sst | grep -v grep | grep -v mpirun 
 ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
-if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then     ## ps -ef
     SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
     MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
 else       # - LINUX -
@@ -136,6 +135,22 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
 fi
 echo " the pid of an sst is $SST_PID "
 echo " the pid of the mpirun is $MPIRUN_PID "
+
+##############  this belongs in Subroutines
+echo  "  This belongs in Subroutines"
+MY_HOME=`pwd`
+is_it_mine() {
+echo "From \"is_it_mine()\"  "
+echo $MY_HOME
+
+echo $1
+ps -f $1
+}
+is_it_mine  $MPIRUN_PID
+is_it_mine $SST_PID
+is_it_mine $SST_KILL
+
+
 if [ $MPIRUN_PID -eq 0 ] ; then
     KILL_PID=$SST_PID
 else
@@ -162,7 +177,7 @@ if [ -z "$KILL_PID" ] ; then
 #
 #          Look for child of my siblings
 #
-   ps -ef > full_ps__
+   ps -f > full_ps__
     while read -u 3 _who _task _paren _rest
     do
        if [ $_paren != $TL_PPID ] ; then
