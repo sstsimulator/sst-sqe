@@ -104,10 +104,10 @@ echo " ----------- all  "
 ps -f | grep bin/sst | grep -v grep | grep -v mpirun 
 ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
 if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
-    SST_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
-    MPIRUN_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+    SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
 else       # - LINUX -
-    echo "      finding SST_PID and MPIRUN_PID
+    echo "      finding SST_PID and MPIRUN_PID"
     ps -f | grep -e bin/sst -e sstsim.x | grep -v grep | grep -v mpirun
 
     SST_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
