@@ -64,7 +64,7 @@ findChild()
 echo "------------------   Debug ------/$SPID is $SPID -------"
    ps -ef | grep bin/sst
 echo "------------------   Debug -------------"
-       KILL_PID=`ps -ef | grep bin/sst  | grep $SPID | awk '{ print $2 }'`
+       KILL_PID=`ps -f | grep bin/sst  | grep $SPID | awk '{ print $2 }'`
    fi
       
    if [ -z "$KILL_PID" ] ; then
@@ -74,13 +74,13 @@ echo "------------------   Debug -------------"
        echo ' '
        #   Is there a Python running from the Parent PID
        echo " Look for a child named \"python\""
-       PY_PID=`ps -ef | grep 'python ' | grep $SPID | awk '{ print $2 }'`
+       PY_PID=`ps -f | grep 'python ' | grep $SPID | awk '{ print $2 }'`
        if [ -z "$PY_PID" ] ; then
            echo "No corresponding child named \"python\" "
            echo ' '
            #   Is there a Valgrind running from the Parent PID
            echo " Look for a child named \"valgrind\""
-           VG_PID=`ps -ef | grep ' valgrind ' | grep $SPID | awk '{ print $2 }'`
+           VG_PID=`ps -f | grep ' valgrind ' | grep $SPID | awk '{ print $2 }'`
            if [ -z "$VG_PID" ] ; then
                echo "No corresponding child named \"valgrind\" "
                echo ' '
@@ -102,21 +102,21 @@ echo " ###############################################################"
 echo "  JOHNS sanity check"
 ps -ef | grep bin/sst | grep -v grep 
 echo " ----------- first"
-ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q
+ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q
 echo " ----------- all  "
-ps -ef | grep bin/sst | grep -v grep | grep -v mpirun 
-ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
+ps -f | grep bin/sst | grep -v grep | grep -v mpirun 
+ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
 if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
-    SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
-    MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+    SST_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
 else       # - LINUX -
     echo "      finding SST_PID and MPIRUN_PID"
 
-    ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | grep -v mpirun
+    ps -f | grep -e bin/sst  -e sstsim.x | grep -v grep | grep -v mpirun
 
-    SST_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | \
+    SST_PID=`ps -f | grep -e bin/sst  -e sstsim.x | grep -v grep | \
                    grep -v mpirun | sed 1q | awk '{ print $2 }'`
-    MPIRUN_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | \
+    MPIRUN_PID=`ps -f | grep -e bin/sst -e sstsim.x | grep -v grep | \
                    grep -v mpirun | sed 1q | awk '{ print $3 }'`
 fi
 echo " the pid of an sst is $SST_PID "
@@ -140,7 +140,7 @@ if [ -z "$KILL_PID" ] ; then
 #
 #          Look for child of my siblings
 #
-   ps -ef > full_ps__
+   ps -f > full_ps__
     while read -u 3 _who _task _paren _rest
     do
        if [ $_paren != $TL_PPID ] ; then
