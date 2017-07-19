@@ -118,20 +118,21 @@ else       # - LINUX -
                    grep -v mpirun | sed 1q | awk '{ print $3 }'`
 echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
     if [ $SSTPAR_PID -eq $TL_PPID ] ; then
+       echo "              UNEXPECTED PATH !"
        MPIRUN_PID=0
     else
        ps -f -p $SSTPAR_PID | grep mpirun
        if [ 0 == $? ] ; then
            MPIRUN_PID=$SSTPAR_PID
+           echo " the pid of the mpirun is $MPIRUN_PID "
        else 
-           echo "Unexpect value for SSTPAR_PID (parent)"
+           echo "SST parent is not mpirun"
            ps -f -p $SSTPAR_PID
            MPIRUN_PID=0
        fi
     fi
 fi
 echo " the pid of an sst is $SST_PID "
-echo " the pid of the mpirun is $MPIRUN_PID "
 
 ##############  this belongs in Subroutines
 echo  "  This belongs in Subroutines"
