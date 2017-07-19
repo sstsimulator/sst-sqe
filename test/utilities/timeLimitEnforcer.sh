@@ -134,19 +134,20 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
 fi
 echo " the pid of an sst is $SST_PID "
 
+######################  Why is this?
 ##############  this belongs in Subroutines
-echo  "  This belongs in Subroutines"
-MY_HOME=`pwd`
-is_it_mine() {
-echo "From \"is_it_mine()\"  "
-echo $MY_HOME
-
-echo $1
-ps -f $1
-}
-is_it_mine  $MPIRUN_PID
-is_it_mine $SST_PID
-is_it_mine $SST_KILL
+# echo  "  This belongs in Subroutines"
+# MY_HOME=`pwd`
+# is_it_mine() {
+# echo "From \"is_it_mine()\"  "
+# echo $MY_HOME
+# 
+# echo $1
+# ps -f $1
+# }
+# is_it_mine  $MPIRUN_PID
+# is_it_mine $SST_PID
+# is_it_mine $SST_KILL
 
 
 if [ $MPIRUN_PID -eq 0 ] ; then
