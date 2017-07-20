@@ -117,7 +117,7 @@ else       # - LINUX -
                    grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $2 }'`
     SSTPAR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
                    grep -e bin/sst -e sstsim.x | grep -v grep | \
-                   grep -v mpirun | sed 1q | awk '{ print $3 }'`
+                   grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $3 }'`
 echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
     if [ $SSTPAR_PID -eq $TL_PPID ] ; then
        echo "              UNEXPECTED PATH !"
