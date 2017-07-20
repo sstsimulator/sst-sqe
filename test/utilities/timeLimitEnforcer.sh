@@ -42,19 +42,19 @@ echo "         Create Time Limit Flag file, $TIME_FLAG"
 
 echo ' '
 echo I am $TL_MY_PID,  I was called from $TL_CALLER, my parent PID is $TL_PPID
-ps -f -p ${1},${TL_PPID}
+ps -f -p ${1},${TL_PPID} ${TL_MY_PID}
 echo ' '
 
 date
 echo ' '
-#          Prooced to attempt the kill
+#          Proceed to attempt the kill
 #
 #          Begin findChild() subroutine
 #
 findChild()
 {
    SPID=$1
-   if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+   if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then              ## ps -ef
        KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
    else
        KILL_PID=`ps -f | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
@@ -95,32 +95,68 @@ echo "------------------   Debug -------------"
 #
 #          End findChild() subroutine
 #
-   echo ' ' ;   echo "Should be undefined"
-   echo " SST = $SST_PID, MPI = $MPI_PID, Kill = $KILL_PID "
+   echo ' ' ; echo "Should be undefined: SST = $SST_PID, MPI = $MPIRUN_PID, Kill = $KILL_PID"
 
 echo " ###############################################################"
-echo "  JOHNS sanity check"
+MY_TREE=`pwd | awk -F 'devel/trunk' '{print $1 }'`
+echo  "DEBUG?   MY_TREE is $MY_TREE "
+echo "  JOHNS sanity check   --  all bin/sst"
 ps -ef | grep bin/sst | grep -v grep 
-echo " ----------- first"
-ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q
 echo " ----------- all  "
 ps -f | grep bin/sst | grep -v grep | grep -v mpirun 
 ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
 if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
-    SST_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
-    MPIRUN_PID=`ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+    SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
 else       # - LINUX -
     echo "      finding SST_PID and MPIRUN_PID"
+    ps -f | grep -e bin/sst -e sstsim.x | grep -v grep | grep -v mpirun
 
-    ps -f | grep -e bin/sst  -e sstsim.x | grep -v grep | grep -v mpirun
-
-    SST_PID=`ps -f | grep -e bin/sst  -e sstsim.x | grep -v grep | \
-                   grep -v mpirun | sed 1q | awk '{ print $2 }'`
-    MPIRUN_PID=`ps -f | grep -e bin/sst -e sstsim.x | grep -v grep | \
-                   grep -v mpirun | sed 1q | awk '{ print $3 }'`
+    SST_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
+                   grep -e bin/sst -e sstsim.x | grep -v grep | \
+                   grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $2 }'`
+    SSTPAR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
+                   grep -e bin/sst -e sstsim.x | grep -v grep | \
+                   grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $3 }'`
+echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
+    if [ $SSTPAR_PID -eq $TL_PPID ] ; then
+       echo " No mpirun "
+       MPIRUN_PID=0
+    else
+       ps -f -p $SSTPAR_PID | grep mpirun
+       if [ 0 == $? ] ; then
+           MPIRUN_PID=$SSTPAR_PID
+           echo " the pid of the mpirun is $MPIRUN_PID "
+       else 
+           echo "SST parent is not mpirun"
+           ps -f -p $SSTPAR_PID
+           MPIRUN_PID=0
+       fi
+    fi
 fi
 echo " the pid of an sst is $SST_PID "
-echo " the pid of the mpirun is $MPIRUN_PID "
+
+######################  Why is this?
+##############  this belongs in Subroutines
+# echo  "  This belongs in Subroutines"
+# MY_HOME=`pwd`
+# is_it_mine() {
+# echo "From \"is_it_mine()\"  "
+# echo $MY_HOME
+# 
+# echo $1
+# ps -f $1
+# }
+# is_it_mine  $MPIRUN_PID
+# is_it_mine $SST_PID
+# is_it_mine $SST_KILL
+
+
+if [ $MPIRUN_PID -eq 0 ] ; then
+    KILL_PID=$SST_PID
+else
+    KILL_PID=$MPIRUN_PID
+fi
 
 if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
     echo " Check for Dead Lock"
@@ -133,7 +169,13 @@ if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
     echo " ###############################################################"
 fi
 
-findChild $TL_PPID
+if [ -z $KILL_PID ] ; then
+    findChild $TL_PPID
+    if [ ! -z $KILL_PID ] ; then
+        echo found KILL_PID $KILL_PID
+        ps -f $KILL_PID
+    fi
+fi 
 
 
 if [ -z "$KILL_PID" ] ; then
@@ -189,11 +231,16 @@ fi
 ps -f -p $KILL_PID | grep $KILL_PID
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
+echo "  tLE ==== $LINENO   "
 ps -ef | grep ompsievetest
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
+echo "  tLE ==== $LINENO   "
 ps -f -p $KILL_PID | grep $KILL_PID
+echo "  tLE ==== $LINENO   "
 ps -ef | grep ompsievetest
+echo "  tLE ==== $LINENO   "
     Remove_old_ompsievetest_task
 ps -ef | grep ompsievetest
+echo "  tLE ==== $LINENO   "
 fi
