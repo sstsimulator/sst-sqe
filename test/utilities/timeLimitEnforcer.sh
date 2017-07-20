@@ -98,6 +98,8 @@ echo "------------------   Debug -------------"
    echo ' ' ; echo "Should be undefined: SST = $SST_PID, MPI = $MPIRUN_PID, Kill = $KILL_PID"
 
 echo " ###############################################################"
+MY_TREE=`pwd | awk -F 'devel/trunk' '{print $1 }'`
+echo  "DEBUG?   MY_TREE is $MY_TREE "
 echo "  JOHNS sanity check   --  all bin/sst"
 ps -ef | grep bin/sst | grep -v grep 
 echo " ----------- all  "
@@ -112,7 +114,7 @@ else       # - LINUX -
 
     SST_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
                    grep -e bin/sst -e sstsim.x | grep -v grep | \
-                   grep -v mpirun | sed 1q | awk '{ print $2 }'`
+                   grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $2 }'`
     SSTPAR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
                    grep -e bin/sst -e sstsim.x | grep -v grep | \
                    grep -v mpirun | sed 1q | awk '{ print $3 }'`
