@@ -213,7 +213,7 @@ ls -ltr
     popd
 }
 
-export SST_TEST_ONE_TEST_TIMEOUT=50
+export SST_TEST_ONE_TEST_TIMEOUT=100
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
@@ -222,13 +222,13 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 (. ${SHUNIT2_SRC}/shunit2)
 
     Remove_old_ompsievetest_task
-
-####                  Find Pid of my ompsievetest
-OMP_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep ompsievetest | grep -v -e grep | awk '{print $2}'`
+echo "                --- returned from Remove_old_omps...   "
+echo " memHS $LINENO ----------------"
+OMP_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep -v -e grep | grep ompsievetest | awk '{print $2}'`
 echo "OMP_PID = $OMP_PID"
 if [ ! -z $OMP_PID ] ; then
 echo " Line $LINENO   -- kill ompsievetest "
-    ps -e -p $OMP_PID
+    ps -f -p $OMP_PID
     kill -9 $OMP_PID
 fi
 
