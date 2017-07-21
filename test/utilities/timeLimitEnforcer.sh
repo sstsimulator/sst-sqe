@@ -119,8 +119,13 @@ else       # - LINUX -
                    grep -e bin/sst -e sstsim.x | grep -v grep | \
                    grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $3 }'`
 echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
+<<<<<<< HEAD
     if [ $SSTPAR_PID -eq $TL_PPID ] ; then
        echo "              UNEXPECTED PATH !"
+=======
+    if [ -z $SSTPAR_PID ] || [ "$SSTPAR_PID" == $TL_PPID ] ; then
+       echo " No mpirun "
+>>>>>>> 4push2devel
        MPIRUN_PID=0
     else
        ps -f -p $SSTPAR_PID | grep mpirun
@@ -164,13 +169,17 @@ if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
     sleep 1
     kill -USR1 $SST_PID
     
-    grep -i signal $SST_ROOT/test/testOutputs/*
-    grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/*
+    grep -i signal $SST_ROOT/test/testOutputs/${CASE}*
+    grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
     echo " ###############################################################"
 fi
 
 if [ -z $KILL_PID ] ; then
     findChild $TL_PPID
+    if [ ! -z $KILL_PID ] ; then
+        echo found KILL_PID $KILL_PID
+        ps -f $KILL_PID
+    fi
 fi 
 
 
@@ -205,7 +214,8 @@ echo ' '
         TRACEBACK_PARAM=$KILL_PID
     fi
 #          Invoke the traceback routine
-echo "          Invoke the traceback routine "
+date
+echo "   Invoke the traceback routine  ---- $CASE"
 
 echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
 $SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
@@ -236,7 +246,12 @@ ps -f -p $KILL_PID | grep $KILL_PID
 echo "  tLE ==== $LINENO   "
 ps -ef | grep ompsievetest
 echo "  tLE ==== $LINENO   "
+<<<<<<< HEAD
+=======
+date
+>>>>>>> 4push2devel
     Remove_old_ompsievetest_task
+date
 ps -ef | grep ompsievetest
 echo "  tLE ==== $LINENO   "
 fi
