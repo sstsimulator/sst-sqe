@@ -242,10 +242,7 @@ ps -f -p $KILL_PID | grep $KILL_PID
 echo "  tLE ==== $LINENO   "
 ps -ef | grep ompsievetest
 echo "  tLE ==== $LINENO   "
-<<<<<<< HEAD
-=======
 date
->>>>>>> 4push2devel
     Remove_old_ompsievetest_task
 date
 ps -ef | grep ompsievetest
