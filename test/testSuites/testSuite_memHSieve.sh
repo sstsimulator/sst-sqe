@@ -224,16 +224,23 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
     Remove_old_ompsievetest_task
 echo "                --- returned from Remove_old_omps...   "
 echo " memHS $LINENO ----------------"
-OMP_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep -v -e grep | grep ompsievetest | awk '{print $2}'`
-echo "OMP_PID = $OMP_PID"
-if [ ! -z $OMP_PID ] ; then
-echo " Line $LINENO   -- kill ompsievetest "
-    ps -f -p $OMP_PID
-    kill -9 $OMP_PID
+ 
+MY_TREE=`pwd | awk -F 'devel/trunk' '{print $1 }'`
+echo  "DEBUG?   MY_TREE is $MY_TREE "
+PAIR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep -v -e grep | grep ompsievetest | awk '{print $2, $3}'`
+if [ ! -z $PAIR_PID ] ; then
+    TREE_PID=`echo $PAIR_PID | awk '{print $3}'`
+    OMP_PID=`echo $PAIR_PID | awk '{print $2}'`
+    ps -f -p $TREE_PID | grep $MY_TREE
+    if [ $? == 0 ] ; then
+        echo " Line $LINENO   -- kill ompsievetest "
+        ps -f -p $OMP_PID
+        kill -9 $OMP_PID
+    else
+        echo "$OMP_PID - ompsievetest is not on this tree"
+    fi
 fi
 
-date
-echo ' '
 
 echo " Call to countStreams \"Delete\"follows: "
 
