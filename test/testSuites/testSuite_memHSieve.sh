@@ -228,6 +228,7 @@ echo " memHS $LINENO ----------------"
 MY_TREE=`pwd | awk -F 'devel/trunk' '{print $1 }'`
 echo  "DEBUG?   MY_TREE is $MY_TREE "
 PAIR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep -v -e grep | grep ompsievetest | awk '{print $2, $3}'`
+echo "$PAIR_PID +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 if [ ! -z $PAIR_PID ] ; then
     TREE_PID=`echo $PAIR_PID | awk '{print $3}'`
     OMP_PID=`echo $PAIR_PID | awk '{print $2}'`
