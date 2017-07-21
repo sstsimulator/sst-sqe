@@ -210,7 +210,7 @@ echo ' '
     fi
 #          Invoke the traceback routine
 date
-echo "          Invoke the traceback routine "
+echo "   Invoke the traceback routine  ---- $CASE"
 
 echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
 $SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
