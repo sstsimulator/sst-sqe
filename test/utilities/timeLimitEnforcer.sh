@@ -119,13 +119,9 @@ else       # - LINUX -
                    grep -e bin/sst -e sstsim.x | grep -v grep | \
                    grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $3 }'`
 echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
-<<<<<<< HEAD
-    if [ $SSTPAR_PID -eq $TL_PPID ] ; then
-       echo "              UNEXPECTED PATH !"
-=======
+
     if [ -z $SSTPAR_PID ] || [ "$SSTPAR_PID" == $TL_PPID ] ; then
        echo " No mpirun "
->>>>>>> 4push2devel
        MPIRUN_PID=0
     else
        ps -f -p $SSTPAR_PID | grep mpirun
