@@ -209,6 +209,7 @@ echo ' '
         TRACEBACK_PARAM=$KILL_PID
     fi
 #          Invoke the traceback routine
+date
 echo "          Invoke the traceback routine "
 
 echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
@@ -240,7 +241,9 @@ ps -f -p $KILL_PID | grep $KILL_PID
 echo "  tLE ==== $LINENO   "
 ps -ef | grep ompsievetest
 echo "  tLE ==== $LINENO   "
+date
     Remove_old_ompsievetest_task
+date
 ps -ef | grep ompsievetest
 echo "  tLE ==== $LINENO   "
 fi
