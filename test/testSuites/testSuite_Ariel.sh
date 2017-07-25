@@ -214,6 +214,11 @@ Ariel_template() {
 
         echo " "
 
+        grep FATAL ${outFile}
+        if [ $? == 0 ] ; then
+            fail "Fatal error detected"
+            return
+        fi
 ##########################################################################
 #     The following code besides being very wrong is doomed.
 #         Any such test being applied to Ariel fails because of
