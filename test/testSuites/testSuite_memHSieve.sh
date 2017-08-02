@@ -218,8 +218,6 @@ ls -ltr
 test_Report_Time_Limit() {
     if [ $TL_FLAG == 1 ] ; then
         fail "Report time limit"
-    else
-        skip_this_test
     fi
 }
 
