@@ -108,6 +108,7 @@ test_memHSieve() {
     sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/sieve-test.py"
     rm -f StatisticOutput*csv
     rm -f mallocRank.txt-0*
+    export TL_FLAG=0
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -119,6 +120,7 @@ test_memHSieve() {
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
              rm $TIME_FLAG 
+             export TL_FLAG=1
              return 
         fi 
         if [ $RetVal != 0 ]  
@@ -211,6 +213,12 @@ ls -ltr
         fail "Problem with SUT: ${sut}"
     fi
     popd
+}
+
+test_Report_Time_Limit() {
+    if [ $TL_FLAG == 1 ] ; then
+        fail "Report time limit"
+    fi
 }
 
 export SST_TEST_ONE_TEST_TIMEOUT=100
