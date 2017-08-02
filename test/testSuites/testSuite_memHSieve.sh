@@ -59,6 +59,12 @@ fi
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
 
+##  Subroutine for logging memHSieve runs.
+log_memHS() {
+    if [[ `uname -n` == sst-test* ]] ; then
+        echo " `date` ${1}  $JOB_NAME $BUILD_NUMBER" >> ~jpvandy/memHS-follow
+    fi
+}
 
 echo " First call to countStreams follow: "
     countStreams    
@@ -121,6 +127,7 @@ test_memHSieve() {
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
              rm $TIME_FLAG 
              export TL_FLAG=1
+             log_memHS "Time Limit"
              return 
         fi 
         if [ $RetVal != 0 ]  
@@ -130,6 +137,7 @@ test_memHSieve() {
              ls -l ${sut}
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              popd
+             log_memHS "Did not finish correctly"
              return
         fi
 #  Look at what we'e got
@@ -200,8 +208,10 @@ ls -ltr
 
         if [ $FAIL == 0 ] ; then
            echo "Sieve test PASSED"
+           log_memHS "Pass"
         else
            fail " Sieve test did NOT meet required conditions"
+           log_memHS "Bad Output"
         fi
 
             echo ' '
