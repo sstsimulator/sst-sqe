@@ -59,12 +59,28 @@ if [ $? != 0 ] ; then
 fi
 
 cd $SST_TEST_SUITES/testCramSim/tests
+## wget of data file, with retries
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
      echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim_trace_verimem_trace_files.tar.gz --no-check-certificate"
      wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim_trace_verimem_trace_files.tar.gz --no-check-certificate
-     if [ $? != 0 ] ; then
-        echo "wget failed"
-        preFail "wget failed"
-     fi
+      retVal=$?
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
+         echo "    WGET FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+         if [ $Num_Tries_remaing -gt 0 ] ; then
+             echo "   Wait 5 minutes"
+             sleep 300        # Wait 5 minutes
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             continue
+         fi
+         preFail "wget failed"
+      fi
+   done
+   echo " "
 
      tar -xzf sst-CramSim_trace_verimem_trace_files.tar.gz
 
