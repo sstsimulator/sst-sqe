@@ -387,7 +387,7 @@ countStreams() {
 Remove_old_ompsievetest_task() {
 memHS_PID=$$
    echo " Begin Remover -------------------"
-ps -ef | grep ompsievetest
+ps -ef | grep ompsievetest | grep -v -e grep
 echo "  remover  ==== $LINENO   "
 ps -ef | grep ompsievetest | grep -v -e grep > /tmp/${memHS_PID}_omps_list
 echo "  remover  ==== $LINENO   "
