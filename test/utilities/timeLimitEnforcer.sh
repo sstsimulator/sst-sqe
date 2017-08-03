@@ -233,17 +233,17 @@ ps -f -p $KILL_PID | grep $KILL_PID
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
 echo "  tLE ==== $LINENO   "
-ps -ef | grep ompsievetest
+ps -ef | grep ompsievetest | grep -v -e grep
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
 echo "  tLE ==== $LINENO   "
 ps -f -p $KILL_PID | grep $KILL_PID
 echo "  tLE ==== $LINENO   "
-ps -ef | grep ompsievetest
+ps -ef | grep ompsievetest | grep -v -e grep
 echo "  tLE ==== $LINENO   "
 date
     Remove_old_ompsievetest_task
 date
-ps -ef | grep ompsievetest
+ps -ef | grep ompsievetest | grep -v -e grep
 echo "  tLE ==== $LINENO   "
 fi
