@@ -59,6 +59,12 @@ fi
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
 
+##  Subroutine for logging memHSieve runs.
+log_memHS() {
+    if [[ `uname -n` == sst-test* ]] ; then
+        echo " `date` ${1}  $JOB_NAME $BUILD_NUMBER" >> ~jpvandy/memHS-follow
+    fi
+}
 
 echo " First call to countStreams follow: "
     countStreams    
@@ -119,6 +125,7 @@ test_memHSieve() {
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
              rm $TIME_FLAG 
+             log_memHS "Time Limit"
              return 
         fi 
         if [ $RetVal != 0 ]  
@@ -128,6 +135,7 @@ test_memHSieve() {
              ls -l ${sut}
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              popd
+             log_memHS "Did not finish correctly"
              return
         fi
 #  Look at what we'e got
@@ -198,8 +206,10 @@ ls -ltr
 
         if [ $FAIL == 0 ] ; then
            echo "Sieve test PASSED"
+           log_memHS "Pass"
         else
            fail " Sieve test did NOT meet required conditions"
+           log_memHS "Bad Output"
         fi
 
             echo ' '
@@ -213,7 +223,7 @@ ls -ltr
     popd
 }
 
-export SST_TEST_ONE_TEST_TIMEOUT=100
+export SST_TEST_ONE_TEST_TIMEOUT=200
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
@@ -224,12 +234,22 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
     Remove_old_ompsievetest_task
 echo "                --- returned from Remove_old_omps...   "
 echo " memHS $LINENO ----------------"
-OMP_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep -v -e grep | grep ompsievetest | awk '{print $2}'`
-echo "OMP_PID = $OMP_PID"
-if [ ! -z $OMP_PID ] ; then
-echo " Line $LINENO   -- kill ompsievetest "
-    ps -f -p $OMP_PID
-    kill -9 $OMP_PID
+ 
+MY_TREE=`pwd | awk -F 'devel/trunk' '{print $1 }'`
+echo  "DEBUG?   MY_TREE is $MY_TREE "
+PAIR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep -v -e grep | grep ompsievetest | awk '{print $2, $3}'`
+echo "$PAIR_PID ++++ PAIR_PID +++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+TREE_PID=`echo $PAIR_PID | awk '{print $2}'`
+OMP_PID=`echo $PAIR_PID | awk '{print $1}'`
+if [ ! -z $TREE_PID ] && [ ! -z $OMP_PID ] ; then
+    ps -f -p $TREE_PID | grep $MY_TREE
+    if [ $? == 0 ] ; then
+        echo " Line $LINENO   -- kill ompsievetest "
+        ps -f -p $OMP_PID
+        kill -9 $OMP_PID
+    else
+        echo "$OMP_PID - ompsievetest is not on current tree"
+    fi
 fi
 
 date
