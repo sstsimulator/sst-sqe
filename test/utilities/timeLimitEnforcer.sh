@@ -103,12 +103,21 @@ echo  "DEBUG?   MY_TREE is $MY_TREE "
 echo "  JOHNS sanity check   --  all bin/sst"
 ps -ef | grep bin/sst | grep -v grep 
 echo " ----------- all  "
-ps -f | grep bin/sst | grep -v grep | grep -v mpirun 
-ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
 if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
-    SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
-    MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+    ps -ef | grep bin/sst | grep -v grep | grep -v mpirun 
+    ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
+    echo "      finding SST_PID and MPIRUN_PID"
+    ps -ef | grep -e bin/sst -e sstsim.x | grep -v grep | grep -v mpirun
+
+    SST_PID=`ps -ef | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
+                   grep -e bin/sst -e sstsim.x | grep -v grep | \
+                   grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $2 }'`
+    SSTPAR_PID=`ps -ef | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
+                   grep -e bin/sst -e sstsim.x | grep -v grep | \
+                   grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $3 }'`
 else       # - LINUX -
+    ps -f | grep bin/sst | grep -v grep | grep -v mpirun 
+    ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
     echo "      finding SST_PID and MPIRUN_PID"
     ps -f | grep -e bin/sst -e sstsim.x | grep -v grep | grep -v mpirun
 
@@ -118,6 +127,7 @@ else       # - LINUX -
     SSTPAR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
                    grep -e bin/sst -e sstsim.x | grep -v grep | \
                    grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $3 }'`
+fi
 echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
     if [ -z $SSTPAR_PID ] || [ "$SSTPAR_PID" == $TL_PPID ] ; then
        echo " No mpirun "
@@ -133,24 +143,7 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
            MPIRUN_PID=0
        fi
     fi
-fi
 echo " the pid of an sst is $SST_PID "
-
-######################  Why is this?
-##############  this belongs in Subroutines
-# echo  "  This belongs in Subroutines"
-# MY_HOME=`pwd`
-# is_it_mine() {
-# echo "From \"is_it_mine()\"  "
-# echo $MY_HOME
-# 
-# echo $1
-# ps -f $1
-# }
-# is_it_mine  $MPIRUN_PID
-# is_it_mine $SST_PID
-# is_it_mine $SST_KILL
-
 
 if [ $MPIRUN_PID -eq 0 ] ; then
     KILL_PID=$SST_PID
