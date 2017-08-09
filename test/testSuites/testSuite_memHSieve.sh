@@ -62,7 +62,8 @@ fi
 ##  Subroutine for logging memHSieve runs.
 log_memHS() {
     if [[ `uname -n` == sst-test* ]] ; then
-        echo " `date` ${1}  $JOB_NAME $BUILD_NUMBER" >> ~jpvandy/memHS-follow
+        __MUL="$SST_MULTI_THREAD_COUNT - $SST_MULTI_RANK_COUNT"
+        echo " `date` ${1} $__MUL $JOB_NAME $BUILD_NUMBER" >> ~jpvandy/memHS-follow
     fi
 }
 
@@ -126,6 +127,14 @@ test_memHSieve() {
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
              rm $TIME_FLAG 
              log_memHS "Time Limit"
+    ls -ltr
+    if [[ `uname -n` == sst-test* ]] ; then
+         __dir=`date | sed 's/ /_/g'`
+         echo "Directory is $__dir"
+         mkdir ~jpvandy/memHS-dir/$__dir
+         cp *map.txt ~jpvandy/memHS-dir/$__dir
+         cp backtrace_*.gz ~jpvandy/memHS-dir/$__dir
+    fi
              return 
         fi 
         if [ $RetVal != 0 ]  
