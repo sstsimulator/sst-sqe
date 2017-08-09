@@ -62,7 +62,8 @@ fi
 ##  Subroutine for logging memHSieve runs.
 log_memHS() {
     if [[ `uname -n` == sst-test* ]] ; then
-        echo " `date` ${1}  $JOB_NAME $BUILD_NUMBER" >> ~jpvandy/memHS-follow
+        __MUL="$SST_MULTI_THREAD_COUNT - $SST_MULTI_RANK_COUNT"
+        echo " `date` ${1} $__MUL $JOB_NAME $BUILD_NUMBER" >> ~jpvandy/memHS-follow
     fi
 }
 
