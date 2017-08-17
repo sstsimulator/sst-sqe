@@ -45,11 +45,10 @@ echo I am $TL_MY_PID,  I was called from $TL_CALLER, my parent PID is $TL_PPID
 ps -f -p ${1},${TL_PPID} ${TL_MY_PID}
 echo ' '
    echo "  NODE NAME is $NODE_NAME"
-   NN=`echo $NODE_NAME | sed 's/ //g'`
-   echo " NN = $NN"
+   touch ttt       # empty greps
    ##if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] || [[ ! "$NN" == *Xcode7* ]] ; then
    if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then
-      echo "This is the non El Capitan Xcode-7 path"
+      echo "This is the non non-Mac path"
 date
 echo ' '
 #          Proceed to attempt the kill
@@ -139,7 +138,7 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
        echo " No mpirun "
        MPIRUN_PID=0
     else
-       ps -f -p $SSTPAR_PID | grep mpirun
+       ps -f -p $SSTPAR_PID > ttt; grep mpirun ttt
        if [ 0 == $? ] ; then
            MPIRUN_PID=$SSTPAR_PID
            echo " the pid of the mpirun is $MPIRUN_PID "
@@ -201,7 +200,7 @@ echo Kill pid is $KILL_PID
 
 echo ' '
 #   -----          Invoke the traceback routine  ----- "
-    ps -f -p $KILL_PID | grep mpirun
+    ps -f -p $KILL_PID > ttt ; grep mpirun ttt
     if [ $? == 0 ] ; then
         TRACEBACK_PARAM="--mpi $MPIRUN_PID"
     else
@@ -228,7 +227,7 @@ if [ $? == 1 ] ; then
     echo " Try a \"kill -9\"  "
     kill -9 $KILL_PID
 fi
-ps -f -p $KILL_PID | grep $KILL_PID
+ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
 echo "  tLE ==== $LINENO   "
@@ -236,7 +235,7 @@ ps -ef | grep ompsievetest | grep -v -e grep
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
 echo "  tLE ==== $LINENO   "
-ps -f -p $KILL_PID | grep $KILL_PID
+ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
 echo "  tLE ==== $LINENO   "
 ps -ef | grep ompsievetest | grep -v -e grep
 echo "  tLE ==== $LINENO   "
@@ -384,7 +383,7 @@ echo Kill pid is $KILL_PID
 
 echo ' '
 #   -----          Invoke the traceback routine  ----- "
-    ps -f -p $KILL_PID | grep mpirun
+    ps -f -p $KILL_PID > ttt ; grep mpirun ttt
     if [ $? == 0 ] ; then
         TRACEBACK_PARAM="--mpi $MPIRUN_PID"
     else
@@ -410,13 +409,13 @@ if [ $? == 1 ] ; then
     echo " Try a \"kill -9\"  "
     kill -9 $KILL_PID
 fi
-ps -f -p $KILL_PID | grep $KILL_PID
+ps -f -p $KILL_PID > ttt grep $KILL_PID ttt
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
 ps -ef | grep ompsievetest
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
-ps -f -p $KILL_PID | grep $KILL_PID
+ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
 ps -ef | grep ompsievetest
     Remove_old_ompsievetest_task
 ps -ef | grep ompsievetest
