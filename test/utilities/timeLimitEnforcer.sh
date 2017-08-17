@@ -44,10 +44,12 @@ echo ' '
 echo I am $TL_MY_PID,  I was called from $TL_CALLER, my parent PID is $TL_PPID
 ps -f -p ${1},${TL_PPID} ${TL_MY_PID}
 echo ' '
+   if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] || ; then              ## ps -ef
 
 date
 echo ' '
 #          Proceed to attempt the kill
+
 #
 #          Begin findChild() subroutine
 #
