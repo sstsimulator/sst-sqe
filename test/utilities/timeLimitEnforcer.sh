@@ -47,7 +47,8 @@ echo ' '
    echo "  NODE NAME is $NODE_NAME"
    NN=`echo $NODE_NAME | sed 's/ //g'`
    echo " NN = $NN"
-   if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] || [[ ! "$NN" == *Xcode7* ]] ; then
+   ##if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] || [[ ! "$NN" == *Xcode7* ]] ; then
+   if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then
       echo "This is the non El Capitan Xcode-7 path"
 date
 echo ' '
