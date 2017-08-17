@@ -44,8 +44,11 @@ echo ' '
 echo I am $TL_MY_PID,  I was called from $TL_CALLER, my parent PID is $TL_PPID
 ps -f -p ${1},${TL_PPID} ${TL_MY_PID}
 echo ' '
-   if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] || ; then              ## ps -ef
-
+   echo "  NODE NAME is $NODE_NAME"
+   NN=`echo $NODE_NAME | sed 's/ //g'`
+   echo " NN = $NN"
+   if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] || [[ ! "$NN" == *Xcode7* ]] ; then
+      echo "This is the non El Capitan Xcode-7 path"
 date
 echo ' '
 #          Proceed to attempt the kill
@@ -242,3 +245,179 @@ date
 ps -ef | grep ompsievetest | grep -v -e grep
 echo "  tLE ==== $LINENO   "
 fi
+
+    else    ###       This is the El Capitan  (pstree path)
+
+        echo "this is the El Capitan X code 7 path  (pstree) "
+
+
+date
+echo ' '
+
+
+  if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+
+   echo "                                      STARTING PID $TL_CALLER"
+   ps -fp $TL_CALLER
+   pstree -p $TL_CALLER 
+   pstree -p $TL_CALLER | awk -F'- ' '{print $2}' > raw-list
+   cat raw-list | awk '{print $1, "/", $3}' | awk -F/ '{print $1 $NF}' > display-file
+   echo " Display File "
+   cat display-file
+
+   
+   cat raw-list | awk '{print $1}' | tail -r | sed /$TL_CALLER/q > kill-these
+   cat kill-these
+   for kpid in `cat kill-these | grep -v $TL_CALLER`
+   do
+      echo " task to be killed   $kpid"
+      grep $kpid display-file
+   
+ ##    kill -9 $kpid
+      echo " Return from kill $?"
+   done
+  fi
+
+#          Prooced to attempt the kill
+#
+#          Begin findChild() subroutine
+#
+findChild()
+{
+   SPID=$1
+   if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+       KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
+   else
+       KILL_PID=`ps -f | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
+   fi
+
+   if [ -z "$KILL_PID" ] ; then
+echo "------------------   Debug ------/$SPID is $SPID -------"
+   ps -ef | grep bin/sst
+echo "------------------   Debug -------------"
+       KILL_PID=`ps -ef | grep bin/sst  | grep $SPID | awk '{ print $2 }'`
+   fi
+      
+   if [ -z "$KILL_PID" ] ; then
+       echo I am $TL_MY_PID,  findChild invoked with $1, my parent PID is $TL_PPID
+       echo "No corresponding child named \"sst\" "
+       ps -f | grep $SPID
+       echo ' '
+       #   Is there a Python running from the Parent PID
+       echo " Look for a child named \"python\""
+       PY_PID=`ps -ef | grep 'python ' | grep $SPID | awk '{ print $2 }'`
+       if [ -z "$PY_PID" ] ; then
+           echo "No corresponding child named \"python\" "
+           echo ' '
+           #   Is there a Valgrind running from the Parent PID
+           echo " Look for a child named \"valgrind\""
+           VG_PID=`ps -ef | grep ' valgrind ' | grep $SPID | awk '{ print $2 }'`
+           if [ -z "$VG_PID" ] ; then
+               echo "No corresponding child named \"valgrind\" "
+               echo ' '
+           else
+               KILL_PID=$VG_PID
+           fi
+       else
+           KILL_PID=$PY_PID
+       fi
+   fi
+}   
+#
+#          End findChild() subroutine
+#
+
+echo " ###############################################################"
+echo "  JOHNS sanity check"
+ps -ef | grep bin/sst | grep -v grep 
+echo " ----------- first"
+ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q
+echo " ----------- all  "
+ps -ef | grep bin/sst | grep -v grep | grep -v mpirun 
+ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
+if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+    SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+else       # - LINUX -
+    SST_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+fi
+echo " the pid of an sst is $SST_PID "
+echo " the pid of the mpirun is $MPIRUN_PID "
+
+if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+    echo " Check for Dead Lock"
+    kill -USR1 $SST_PID
+    sleep 1
+    kill -USR1 $SST_PID
+    
+    grep -i signal $SST_ROOT/test/testOutputs/*
+    grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/*
+    echo " ###############################################################"
+fi
+
+findChild $TL_PPID
+
+
+if [ -z "$KILL_PID" ] ; then
+#
+#          Look for child of my siblings
+#
+   ps -ef > full_ps__
+    while read -u 3 _who _task _paren _rest
+    do
+       if [ $_paren != $TL_PPID ] ; then
+          continue
+       fi 
+       if [ $_task == $TL_MY_PID ] ; then
+          continue
+       fi 
+    
+       echo "Sibling is $_task"
+       findChild $_task
+       break
+    done 3< full_ps__
+fi
+
+echo Kill pid is $KILL_PID
+
+echo ' '
+#   -----          Invoke the traceback routine  ----- "
+    ps -f -p $KILL_PID | grep mpirun
+    if [ $? == 0 ] ; then
+        TRACEBACK_PARAM="--mpi $MPIRUN_PID"
+    else
+        TRACEBACK_PARAM=$KILL_PID
+    fi
+#          Invoke the traceback routine
+echo "          Invoke the traceback routine "
+
+echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
+$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
+
+echo ' '
+date
+echo "   Return to timeLimitEnforcer"
+echo ' '
+
+kill $KILL_PID
+#                     Believe I remember that this always return zero
+if [ $? == 1 ] ; then
+    echo " Kill of $KILL_PID for TIME OUT   FAILED"
+    echo "     I am $TL_MY_PID,   my parent was $TL_PPID" 
+    ps -f -U $USER
+    echo " Try a \"kill -9\"  "
+    kill -9 $KILL_PID
+fi
+ps -f -p $KILL_PID | grep $KILL_PID
+if [ $? == 0 ] ; then
+    echo " It's still there!  ($KILL_PID)"
+ps -ef | grep ompsievetest
+    echo " Try a \"kill -9\" "
+    kill -9 $KILL_PID
+ps -f -p $KILL_PID | grep $KILL_PID
+ps -ef | grep ompsievetest
+    Remove_old_ompsievetest_task
+ps -ef | grep ompsievetest
+fi
+    fi ####   End of El Capitan  pstree path
