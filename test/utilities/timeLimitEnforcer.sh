@@ -403,6 +403,7 @@ echo "   Return to timeLimitEnforcer"
 echo ' '
 
 kill $KILL_PID
+echo "  tLE ==== $LINENO   KILL_PID is $KILL_PID"
 #                     Believe I remember that this always return zero
 if [ $? == 1 ] ; then
     echo " Kill of $KILL_PID for TIME OUT   FAILED"
@@ -411,15 +412,22 @@ if [ $? == 1 ] ; then
     echo " Try a \"kill -9\"  "
     kill -9 $KILL_PID
 fi
+echo "  tLE ==== $LINENO   "
 ps -f -p $KILL_PID > ttt grep $KILL_PID ttt
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
+echo "  tLE ==== $LINENO   "
 ps -ef | grep ompsievetest
     echo " Try a \"kill -9\" "
     kill -9 $KILL_PID
+echo "  tLE ==== $LINENO   "
 ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
+echo "  tLE ==== $LINENO   "
 ps -ef | grep ompsievetest
+echo "  tLE ==== $LINENO   "
+date
     Remove_old_ompsievetest_task
 ps -ef | grep ompsievetest
+echo "  tLE ==== $LINENO   "
 fi
     fi ####   End of El Capitan  pstree path
