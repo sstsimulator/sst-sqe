@@ -138,7 +138,7 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
        echo " No mpirun "
        MPIRUN_PID=0
     else
-       ps -f -p $SSTPAR_PID > ttt; grep mpirun ttt
+       ps -f -p $SSTPAR_PID > ttt ; grep mpirun ttt
        if [ 0 == $? ] ; then
            MPIRUN_PID=$SSTPAR_PID
            echo " the pid of the mpirun is $MPIRUN_PID "
@@ -413,7 +413,7 @@ if [ $? == 1 ] ; then
     kill -9 $KILL_PID
 fi
 echo "  tLE ==== $LINENO   "
-ps -f -p $KILL_PID > ttt grep $KILL_PID ttt
+ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
 if [ $? == 0 ] ; then
     echo " It's still there!  ($KILL_PID)"
 echo "  tLE ==== $LINENO   "
