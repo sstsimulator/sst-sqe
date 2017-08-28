@@ -254,7 +254,7 @@ echo ' '
           echo Task to be killed $_tokill $_name 
           kill -9 $_tokill
        fi
-   done
+   done 3< display-file
 
 echo   "this is for a Sanity check -- Not required(?)"
 
