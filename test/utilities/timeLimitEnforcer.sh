@@ -46,7 +46,7 @@ ps -f -p ${1},${TL_PPID} ${TL_MY_PID}
 echo ' '
    echo "  NODE NAME is $NODE_NAME"
    touch ttt       # empty greps
-   if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then
+   if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then    ######   LINUX #####
       echo "This is the non non-Mac path"
       date
       echo ' '
@@ -232,16 +232,12 @@ ps -ef | grep ompsievetest | grep -v -e grep
 echo "  tLE ==== $LINENO   "
 fi
 
-    else    ###       This is the El Capitan  (pstree path)
+    else    ###   This is the El Capitan  (pstree path)      ####    macOS 
 
-        echo "this is the El Capitan X code 7 path  (pstree) "
-
+        echo "This is the MacOS (Darwin)  path with pstree "
 
 date
 echo ' '
-
-
-  if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
 
    echo "                                      STARTING PID $TL_CALLER"
    ps -fp $TL_CALLER
@@ -251,21 +247,19 @@ echo ' '
    echo " Display File "
    cat display-file
 
-   
-   cat raw-list | awk '{print $1}' | tail -r | sed /$TL_CALLER/q > kill-these
-   cat kill-these
-   for kpid in `cat kill-these | grep -v $TL_CALLER`
+   while read -u 3 _tokill _name _rest
    do
-      echo " task to be killed   $kpid"
-      grep $kpid display-file
-   
-     echo " --- NOTICE, THERE IS NO KILL ---  "
- ##    kill -9 $kpid
-      echo " Return from kill $?"
-   done
-  fi
+       echo $_name | grep -w -e sst -e pinbin -e ompsievetest
+       if [ $? == 0 ] ; then
+          echo Task to be killed $_tokill $_name 
+          kill -9 $_tokill
+       fi
+   done 3< display-file
 
-#          Prooced to attempt the kill
+echo   "this is for a Sanity check -- Not required(?)"
+
+   pstree -p $TL_CALLER 
+echo   "this is for a Sanity check -- Not required(?)"
 #
 #          Begin findChild() subroutine
 #
