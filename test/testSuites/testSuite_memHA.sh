@@ -146,13 +146,14 @@ Match=$2    ##  Match criteron
                  else
                      fail "output does not match Reference"
 
+                     echo"   ---- Here is the sorted diff ---"
+                     cat ${SSTTESTTEMPFILES}/diff_sorted 
+
 ## ##   Follows complicated code to accept slight difference (original for Flush)
 #      It was very specific code to accomodate one extra clock tick occasionally
 #      encountered with multi core processing.   The output format has since changed
 #      sufficiently that this code terminates the test Suite with an error.
 #            - - - - -
-##                      cat ${SSTTESTTEMPFILES}/diff_sorted 
-## 
 ##                      wc_diff=`wc -l ${SSTTESTTEMPFILES}/diff_sorted |
 ##                                                               awk '{print $1}'`
 ##                      NUM_IDLE=$wc_diff
