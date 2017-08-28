@@ -249,7 +249,7 @@ echo ' '
 
    while read -u 3 _tokill _name _rest
    do
-       cat $_name | grep -w -e sst -e pinbin -e ompsievetest
+       echo $_name | grep -w -e sst -e pinbin -e ompsievetest
        if [ $? == 0 ] ; then
           echo Task to be killed $_tokill $_name 
           kill -9 $_tokill
