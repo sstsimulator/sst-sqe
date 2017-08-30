@@ -176,6 +176,8 @@ Match=$2    ##  Match criteron
                           echo "Count difference is $CountDifference"
                           if [ $CountDifference != 1 ] ; then
                               fail "Special memHA Flush handling did NOT save it"
+                              wc ${SSTTESTTEMPFILES}/diff_sorted
+                              cat ${SSTTESTTEMPFILES}/diff_sorted
                               break
                           fi
                       done
