@@ -283,10 +283,6 @@ dotests() {
        grep -c processor /proc/cpuinfo
    fi
    echo ' '
-echo " # # # # # # # # # # # # #"
-echo "            Check for Stray omp tasks"
-ps -ef | grep -e 'omp.*omp.*x'
-echo " # # # # # # # # # # # # #"
 
    if [[ ${SST_TEST_WITH_NO_ELEMENTS_WRITE:+isSet} == isSet ]] ; then
        echo "#################################################### "
