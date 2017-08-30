@@ -283,6 +283,8 @@ dotests() {
        grep -c processor /proc/cpuinfo
    fi
    echo ' '
+   
+   ps -ef | grep omp | grep -v comp
 
    if [[ ${SST_TEST_WITH_NO_ELEMENTS_WRITE:+isSet} == isSet ]] ; then
        echo "#################################################### "
