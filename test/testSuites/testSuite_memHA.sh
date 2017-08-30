@@ -146,7 +146,7 @@ Match=$2    ##  Match criteron
                  else
                      fail "output does not match Reference"
 
-                     echo"   ---- Here is the sorted diff ---"
+                     echo "   ---- Here is the sorted diff ---"
                      cat ${SSTTESTTEMPFILES}/diff_sorted 
 
 ## ##   Follows complicated code to accept slight difference (original for Flush)

@@ -531,7 +531,6 @@ echo " #####################################################"
             ${SST_TEST_SUITES}/testSuite_openMP.sh
             ${SST_TEST_SUITES}/testSuite_diropenMP.sh
             ${SST_TEST_SUITES}/testSuite_dirSweepB.sh
-            ${SST_TEST_SUITES}/testSuite_dirSweepI.sh
             ${SST_TEST_SUITES}/testSuite_dirSweep.sh
         fi
         if [ $GROUP == 1 ] ; then 
@@ -539,6 +538,7 @@ echo " #####################################################"
         fi
         ${SST_TEST_SUITES}/testSuite_dirnoncacheable_openMP.sh
         ${SST_TEST_SUITES}/testSuite_noncacheable_openMP.sh
+        ${SST_TEST_SUITES}/testSuite_dirSweepI.sh
         ${SST_TEST_SUITES}/testSuite_Sweep_openMP.sh
         ${SST_TEST_SUITES}/testSuite_dir3LevelSweep.sh
         return
