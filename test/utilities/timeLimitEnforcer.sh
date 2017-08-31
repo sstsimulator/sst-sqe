@@ -141,6 +141,7 @@ if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] && [[ ${SST_PID:+isSET} == isSet ]] ;
     sleep 1
     kill -USR1 $SST_PID
     
+    touch $SST_ROOT/test/testOutputs/${CASE}dummy
     grep -i signal $SST_ROOT/test/testOutputs/${CASE}*
     grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
     echo " ###############################################################"
@@ -328,6 +329,7 @@ if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
     sleep 1
     kill -USR1 $SST_PID
     
+    touch $SST_ROOT/test/testOutputs/dummy
     grep -i signal $SST_ROOT/test/testOutputs/*
     grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/*
     echo " ###############################################################"
