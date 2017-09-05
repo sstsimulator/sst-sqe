@@ -381,6 +381,7 @@ countStreams() {
               fi
       done 3</tmp/$$_stream_list
    fi  
+   rm /tmp/$$_stream_list
    echo "               -----"
 }      
 
