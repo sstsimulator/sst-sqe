@@ -380,7 +380,8 @@ countStreams() {
                   kill -9 $_strEX
               fi
       done 3</tmp/$$_stream_list
-   fi  
+   fi 
+   chmod 777 /tmp/$$_stream_list
    rm /tmp/$$_stream_list
    echo "               -----"
 }      
