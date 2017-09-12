@@ -243,7 +243,7 @@ echo ' '
    echo "                                      STARTING PID $TL_CALLER"
    ps -fp $TL_CALLER
    pstree -p $TL_CALLER 
-   pstree -p $TL_CALLER | awk -F'- ' '{print $2}' > raw-list
+   pstree -p $TL_CALLER | sed 's/--=/-=-/' | awk -F'- ' '{print $2}' > raw-list
    cat raw-list | awk '{print $1, "/", $3}' | awk -F/ '{print $1 $NF}' > display-file
    echo " Display File "
    cat display-file
