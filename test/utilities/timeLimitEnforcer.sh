@@ -260,7 +260,14 @@ echo ' '
 echo   "this is for a Sanity check -- Not required(?)"
 
    pstree -p $TL_CALLER 
-echo   "this is for a Sanity check -- Not required(?)"
+echo   "This was for a Sanity check -- Not required"
+
+    MPIRUN_PID=`grep mpirun display-file | awk '{print $1}'`
+    ps -f -p $MPIRUN_PID > ttt ; grep mpirun ttt
+    if [ $? == 0 ] ; then
+       echo " the pid of the mpirun is $MPIRUN_PID "
+       kill -9 $MPIRUN_PID
+    fi 
 
 exit       #  END FOR NOW   ######################################
 
