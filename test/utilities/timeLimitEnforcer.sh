@@ -261,49 +261,8 @@ echo   "this is for a Sanity check -- Not required(?)"
 
    pstree -p $TL_CALLER 
 echo   "this is for a Sanity check -- Not required(?)"
-#
-#          Begin findChild() subroutine
-#
-findChild()
-{
-   SPID=$1
-       KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
 
-   if [ -z "$KILL_PID" ] ; then
-echo "------------------   Debug ------/$SPID is $SPID -------"
-   ps -ef | grep bin/sst
-echo "------------------   Debug -------------"
-       KILL_PID=`ps -ef | grep bin/sst  | grep $SPID | awk '{ print $2 }'`
-   fi
-      
-   if [ -z "$KILL_PID" ] ; then
-       echo I am $TL_MY_PID,  findChild invoked with $1, my parent PID is $TL_PPID
-       echo "No corresponding child named \"sst\" "
-       ps -f | grep $SPID
-       echo ' '
-       #   Is there a Python running from the Parent PID
-       echo " Look for a child named \"python\""
-       PY_PID=`ps -ef | grep 'python ' | grep $SPID | awk '{ print $2 }'`
-       if [ -z "$PY_PID" ] ; then
-           echo "No corresponding child named \"python\" "
-           echo ' '
-           #   Is there a Valgrind running from the Parent PID
-           echo " Look for a child named \"valgrind\""
-           VG_PID=`ps -ef | grep ' valgrind ' | grep $SPID | awk '{ print $2 }'`
-           if [ -z "$VG_PID" ] ; then
-               echo "No corresponding child named \"valgrind\" "
-               echo ' '
-           else
-               KILL_PID=$VG_PID
-           fi
-       else
-           KILL_PID=$PY_PID
-       fi
-   fi
-}   
-#
-#          End findChild() subroutine
-#
+exit       #  END FOR NOW   ######################################
 
 echo " ###############################################################"
 echo "  JOHNS sanity check"
@@ -335,30 +294,6 @@ if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
     echo " ###############################################################"
 fi
 
-findChild $TL_PPID
-
-
-if [ -z "$KILL_PID" ] ; then
-#
-#          Look for child of my siblings
-#
-   ps -ef > full_ps__
-    while read -u 3 _who _task _paren _rest
-    do
-       if [ $_paren != $TL_PPID ] ; then
-          continue
-       fi 
-       if [ $_task == $TL_MY_PID ] ; then
-          continue
-       fi 
-    
-       echo "Sibling is $_task"
-       findChild $_task
-       break
-    done 3< full_ps__
-fi
-
-echo Kill pid is $KILL_PID
 
 echo ' '
 #   -----          Invoke the traceback routine  ----- "
@@ -379,32 +314,4 @@ date
 echo "   Return to timeLimitEnforcer"
 echo ' '
 
-echo "  tLE ==== $LINENO   KILL_PID is $KILL_PID"
-kill $KILL_PID
-#                     Believe I remember that this always return zero
-if [ $? == 1 ] ; then
-    echo " Kill of $KILL_PID for TIME OUT   FAILED"
-    echo "     I am $TL_MY_PID,   my parent was $TL_PPID" 
-    ps -f -U $USER
-    echo " Try a \"kill -9\"  "
-    kill -9 $KILL_PID
-fi
-echo "  tLE ==== $LINENO   "
-ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
-if [ $? == 0 ] ; then
-    echo " It's still there!  ($KILL_PID)"
-echo "  tLE ==== $LINENO   "
-ps -ef | grep ompsievetest
-    echo " Try a \"kill -9\" "
-    kill -9 $KILL_PID
-echo "  tLE ==== $LINENO   "
-ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
-echo "  tLE ==== $LINENO   "
-ps -ef | grep ompsievetest
-echo "  tLE ==== $LINENO   "
-date
-    Remove_old_ompsievetest_task
-ps -ef | grep ompsievetest
-echo "  tLE ==== $LINENO   "
-fi
     fi ####   End of El Capitan  pstree path
