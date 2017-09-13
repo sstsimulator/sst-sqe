@@ -141,38 +141,46 @@ Match=$2    ##  Match criteron
                  diff ${referenceFile} ${outFile}
              else
                  if [ "lineWordCt" == "$Match" ] ; then
-                 ###########  [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
-                 ####  Do not understand why this was ever here.   5/30/17
+       ## Aug 22, 2017   Match is never available
                      echo "PASS: word/line count match $memHA_case"
                  else
-##   Follows complicated code to accept slight difference (original for Flush)
-                     cat ${SSTTESTTEMPFILES}/diff_sorted 
+##                  fail "output does not match Reference"
+##
+##                   echo "   ---- Here is the sorted diff ---"
+##                   cat ${SSTTESTTEMPFILES}/diff_sorted 
 
-                     wc_diff=`wc -l ${SSTTESTTEMPFILES}/diff_sorted |
-                                                              awk '{print $1}'`
-                     NUM_IDLE=$wc_diff
-                     IND=2
-echo NUM_IDLE=$NUM_IDLE
-                     while [ $IND -lt $NUM_IDLE ]
-                     do
-echo in loop
-                         R=$IND
-                         O=$((IND + 2))
-    echo $R and $O
-                         tmpds=${SSTTESTTEMPFILES}/diff_sorted
-                         CountO=`sed -n ${O},${O}p $tmpds | sed 's/.*=//'|sed 's/;//'`
-                         CountR=`sed -n ${R},${R}p $tmpds | sed 's/.*=//'|sed 's/;//'`
-echo CountO = $CountO
-echo CountR = $CountR
-                         CountDifference=$((CountR-CountO))
-                         echo "CountDifference is $CountDifference"
-                         IND=$((IND + 4))
-                         echo "Count difference is $CountDifference"
-                         if [ $CountDifference != 1 ] ; then
-                             fail "Special memHA Flush handling did NOT save it"
-                             break
-                         fi
-                     done
+## ##   Follows complicated code to accept slight difference (original for Flush)
+#      It was very specific code to accomodate one extra clock tick occasionally
+#      encountered with multi core processing. 
+#            - - - - -
+                      echo "   === #### Trying the special exception for Flush processing  "
+                      wc_diff=`wc -l ${SSTTESTTEMPFILES}/diff_sorted |
+                                                               awk '{print $1}'`
+                      NUM_IDLE=$wc_diff
+                      IND=2
+ echo NUM_IDLE=$NUM_IDLE
+                      while [ $IND -lt $NUM_IDLE ]
+                      do
+ echo in loop
+                          R=$IND
+                          O=$((IND + 2))
+     echo $R and $O
+                          tmpds=${SSTTESTTEMPFILES}/diff_sorted
+                          CountO=`sed -n ${O},${O}p $tmpds | sed 's/.*=//'|sed 's/;//'`
+                          CountR=`sed -n ${R},${R}p $tmpds | sed 's/.*=//'|sed 's/;//'`
+ echo CountO = $CountO
+ echo CountR = $CountR
+                          CountDifference=$((CountR-CountO))
+                          echo "CountDifference is $CountDifference"
+                          IND=$((IND + 4))
+                          echo "Count difference is $CountDifference"
+                          if [ $CountDifference != 1 ] ; then
+                              fail "Special memHA Flush handling did NOT save it"
+                              wc ${SSTTESTTEMPFILES}/diff_sorted
+                              cat ${SSTTESTTEMPFILES}/diff_sorted
+                              break
+                          fi
+                      done
                  fi
              fi
          fi
@@ -209,11 +217,11 @@ echo CountR = $CountR
 # Expected Results
 #     Match of output file against reference file
 # Caveats:
-#     For shunit2, the output files must match the reference file *exactly*,
-#     requiring that the command lines for creating both the output
-#     file and the reference file be exactly the same.
-# Does not use subroutine because it invokes the build of all test binaries.
+#
 #-------------------------------------------------------------------------------
+#             NOTE: the "M"s below do nothing if an "M" were replace with
+#                    "lineWordCt", then the output vs. Reference comparision
+#                     would only be of the line and the word count.
 
 test_memHA_BackendChaining () {
     memHA_Template BackendChaining "M"

@@ -44,9 +44,12 @@ echo ' '
 echo I am $TL_MY_PID,  I was called from $TL_CALLER, my parent PID is $TL_PPID
 ps -f -p ${1},${TL_PPID} ${TL_MY_PID}
 echo ' '
-
-date
-echo ' '
+   echo "  NODE NAME is $NODE_NAME"
+   touch ttt       # empty greps
+   if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then    ######   LINUX #####
+      echo "This is the non non-Mac path"
+      date
+      echo ' '
 #          Proceed to attempt the kill
 #
 #          Begin findChild() subroutine
@@ -54,11 +57,7 @@ echo ' '
 findChild()
 {
    SPID=$1
-   if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then              ## ps -ef
-       KILL_PID=`ps -ef | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
-   else
        KILL_PID=`ps -f | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
-   fi
 
    if [ -z "$KILL_PID" ] ; then
 echo "------------------   Debug ------/$SPID is $SPID -------"
@@ -95,7 +94,6 @@ echo "------------------   Debug -------------"
 #
 #          End findChild() subroutine
 #
-   echo ' ' ; echo "Should be undefined: SST = $SST_PID, MPI = $MPIRUN_PID, Kill = $KILL_PID"
 
 echo " ###############################################################"
 MY_TREE=`pwd | awk -F 'devel/trunk' '{print $1 }'`
@@ -103,19 +101,6 @@ echo  "DEBUG?   MY_TREE is $MY_TREE "
 echo "  JOHNS sanity check   --  all bin/sst"
 ps -ef | grep bin/sst | grep -v grep 
 echo " ----------- all  "
-if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
-    ps -ef | grep bin/sst | grep -v grep | grep -v mpirun 
-    ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
-    echo "      finding SST_PID and MPIRUN_PID"
-    ps -ef | grep -e bin/sst -e sstsim.x | grep -v grep | grep -v mpirun
-
-    SST_PID=`ps -ef | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
-                   grep -e bin/sst -e sstsim.x | grep -v grep | \
-                   grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $2 }'`
-    SSTPAR_PID=`ps -ef | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
-                   grep -e bin/sst -e sstsim.x | grep -v grep | \
-                   grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $3 }'`
-else       # - LINUX -
     ps -f | grep bin/sst | grep -v grep | grep -v mpirun 
     ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
     echo "      finding SST_PID and MPIRUN_PID"
@@ -127,13 +112,12 @@ else       # - LINUX -
     SSTPAR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
                    grep -e bin/sst -e sstsim.x | grep -v grep | \
                    grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $3 }'`
-fi
 echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
     if [ -z $SSTPAR_PID ] || [ "$SSTPAR_PID" == $TL_PPID ] ; then
        echo " No mpirun "
        MPIRUN_PID=0
     else
-       ps -f -p $SSTPAR_PID | grep mpirun
+       ps -f -p $SSTPAR_PID > ttt ; grep mpirun ttt
        if [ 0 == $? ] ; then
            MPIRUN_PID=$SSTPAR_PID
            echo " the pid of the mpirun is $MPIRUN_PID "
@@ -151,12 +135,13 @@ else
     KILL_PID=$MPIRUN_PID
 fi
 
-if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] && [[ ${SST_PID:+isSet} == isSet ]] ; then
     echo " Check for Dead Lock"
     kill -USR1 $SST_PID
     sleep 1
     kill -USR1 $SST_PID
     
+    touch $SST_ROOT/test/testOutputs/${CASE}dummy
     grep -i signal $SST_ROOT/test/testOutputs/${CASE}*
     grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
     echo " ###############################################################"
@@ -192,45 +177,52 @@ if [ -z "$KILL_PID" ] ; then
 fi
 
 echo Kill pid is $KILL_PID
+#                     The following code assumes Kill pid is set
+#                            and never sets it
 
-echo ' '
-#   -----          Invoke the traceback routine  ----- "
-    ps -f -p $KILL_PID | grep mpirun
-    if [ $? == 0 ] ; then
-        TRACEBACK_PARAM="--mpi $MPIRUN_PID"
-    else
-        TRACEBACK_PARAM=$KILL_PID
+if [ -z "$KILL_PID" ] ; then
+    echo ' '
+    #   -----          Invoke the traceback routine  ----- "
+        ps -f -p $KILL_PID > ttt ; grep mpirun ttt
+        if [ $? == 0 ] ; then
+            TRACEBACK_PARAM="--mpi $MPIRUN_PID"
+        else
+            TRACEBACK_PARAM=$KILL_PID
+        fi
+    #          Invoke the traceback routine
+    date
+    echo "   Invoke the traceback routine  ---- $CASE"
+    
+    echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
+    $SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
+    
+    echo ' '
+    date
+    echo "   Return to timeLimitEnforcer"
+    echo ' '
+    
+    echo "  tLE ==== $LINENO   KILL_PID is $KILL_PID"
+    kill $KILL_PID
+    #                     Believe I remember that this always return zero
+    if [ $? == 1 ] ; then
+        echo " Kill of $KILL_PID for TIME OUT   FAILED"
+        echo "     I am $TL_MY_PID,   my parent was $TL_PPID" 
+        ps -f -U $USER
+        echo " Try a \"kill -9\"  "
+        kill -9 $KILL_PID
     fi
-#          Invoke the traceback routine
-date
-echo "   Invoke the traceback routine  ---- $CASE"
-
-echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
-$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
-
-echo ' '
-date
-echo "   Return to timeLimitEnforcer"
-echo ' '
-
-kill $KILL_PID
-#                     Believe I remember that this always return zero
-if [ $? == 1 ] ; then
-    echo " Kill of $KILL_PID for TIME OUT   FAILED"
-    echo "     I am $TL_MY_PID,   my parent was $TL_PPID" 
-    ps -f -U $USER
-    echo " Try a \"kill -9\"  "
-    kill -9 $KILL_PID
+    echo "  tLE ==== $LINENO   "
+    ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
+    if [ $? == 0 ] ; then
+        echo " It's still there!  ($KILL_PID)"
+    echo "  tLE ==== $LINENO   "
+    ps -ef | grep ompsievetest | grep -v -e grep
+        echo " Try a \"kill -9\" "
+        kill -9 $KILL_PID
+    echo "  tLE ==== $LINENO   "
+    ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
 fi
-ps -f -p $KILL_PID | grep $KILL_PID
-if [ $? == 0 ] ; then
-    echo " It's still there!  ($KILL_PID)"
-echo "  tLE ==== $LINENO   "
-ps -ef | grep ompsievetest | grep -v -e grep
-    echo " Try a \"kill -9\" "
-    kill -9 $KILL_PID
-echo "  tLE ==== $LINENO   "
-ps -f -p $KILL_PID | grep $KILL_PID
+
 echo "  tLE ==== $LINENO   "
 ps -ef | grep ompsievetest | grep -v -e grep
 echo "  tLE ==== $LINENO   "
@@ -240,3 +232,93 @@ date
 ps -ef | grep ompsievetest | grep -v -e grep
 echo "  tLE ==== $LINENO   "
 fi
+
+    else    ###   This is the El Capitan  (pstree path)      ####    macOS 
+
+        echo "This is the MacOS (Darwin)  path with pstree "
+
+date
+echo ' '
+
+   echo "                                      STARTING PID $TL_CALLER"
+   ps -fp $TL_CALLER
+   pstree -p $TL_CALLER 
+   pstree -p $TL_CALLER | sed 's/--=/-=-/' | awk -F'- ' '{print $2}' > raw-list
+   cat raw-list | awk '{print $1, "/", $3}' | awk -F/ '{print $1 $NF}' > display-file
+   echo " Display File "
+   cat display-file
+
+   while read -u 3 _tokill _name _rest
+   do
+       echo $_name | grep -w -e sst -e pinbin -e ompsievetest
+       if [ $? == 0 ] ; then
+          echo Task to be killed $_tokill $_name 
+          kill -9 $_tokill
+       fi
+   done 3< display-file
+
+echo   "this is for a Sanity check -- Not required(?)"
+
+   pstree -p $TL_CALLER 
+echo   "This was for a Sanity check -- Not required"
+
+    MPIRUN_PID=`grep mpirun display-file | awk '{print $1}'`
+    ps -f -p $MPIRUN_PID > ttt ; grep mpirun ttt
+    if [ $? == 0 ] ; then
+       echo " the pid of the mpirun is $MPIRUN_PID "
+       kill -9 $MPIRUN_PID
+    fi 
+
+exit       #  END FOR NOW   ######################################
+
+echo " ###############################################################"
+echo "  JOHNS sanity check"
+ps -ef | grep bin/sst | grep -v grep 
+echo " ----------- first"
+ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q
+echo " ----------- all  "
+ps -ef | grep bin/sst | grep -v grep | grep -v mpirun 
+ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
+if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+    SST_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -ef | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+else       # - LINUX -
+    SST_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'`
+    MPIRUN_PID=`ps -f | grep -e bin/sst -e ' sst' -e sstsim.x | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $3 }'`
+fi
+echo " the pid of an sst is $SST_PID "
+echo " the pid of the mpirun is $MPIRUN_PID "
+
+if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+    echo " Check for Dead Lock"
+    kill -USR1 $SST_PID
+    sleep 1
+    kill -USR1 $SST_PID
+    
+    touch $SST_ROOT/test/testOutputs/dummy
+    grep -i signal $SST_ROOT/test/testOutputs/*
+    grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/*
+    echo " ###############################################################"
+fi
+
+
+echo ' '
+#   -----          Invoke the traceback routine  ----- "
+    ps -f -p $KILL_PID > ttt ; grep mpirun ttt
+    if [ $? == 0 ] ; then
+        TRACEBACK_PARAM="--mpi $MPIRUN_PID"
+    else
+        TRACEBACK_PARAM=$KILL_PID
+    fi
+#          Invoke the traceback routine
+echo "          Invoke the traceback routine "
+
+echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
+$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
+
+echo ' '
+date
+echo "   Return to timeLimitEnforcer"
+echo ' '
+
+    fi ####   End of El Capitan  pstree path
