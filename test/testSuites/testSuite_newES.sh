@@ -32,6 +32,11 @@ grep 'simulated time' outFile
     export startSeconds=$endSeconds
 }
 
+    if [ $SST_TEST_HOST_OS_KERNEL = "Darwin" ] ; then
+        do_md5="md5 -r"
+    else
+        do_md5="md5sum"
+    fi
 
 ln -s $SST_TEST_ROOT/testInputFiles/newES_List-of-Tests ./List-of-Tests
 rm SHU.in
@@ -44,12 +49,13 @@ do
        ind=$(( ind + 1 ))
        continue
    fi
-   hash=`md5sum _tmp_${ind} | awk '{print $1}'`
+   hash=`$do_md5 _tmp_${ind} | awk '{print $1}'`
+##   hash=`md5sum _tmp_${ind} | awk '{print $1}'`
    indx=$(printf "%03d" $ind)
    echo "test_ES2_${indx}_${hash} () {" >> SHU.in
    echo "L_TESTFILE+=testnewES_${indx}" >> SHU.in
    echo "cd $SST_TEST_ROOT/testSuites/newES_folder" >> SHU.in
-   echo "echo \"sut == \$sut \" " >> SHU.in
+##   echo "echo \"sut == \$sut \" " >> SHU.in
    sed -i'.x' 's/$/ > outFile/' _tmp_${ind}
    sed -i'.z' 's/sst/${sut}/' _tmp_${ind}
    cat _tmp_${ind} >> SHU.in
