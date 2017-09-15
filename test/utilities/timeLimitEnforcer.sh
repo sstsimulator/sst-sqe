@@ -43,8 +43,6 @@ echo "         Create Time Limit Flag file, $TIME_FLAG"
 echo ' '
 echo I am $TL_MY_PID,  I was called from $TL_CALLER, my parent PID is $TL_PPID
 ps -f -p ${TL_MY_PID},${TL_CALLER},${TL_PPID}
-ps -f -p ${TL_MY_PID}
-ps -f -p ${TL_MY_PID},${TL_CALLER}
 echo ' '
    echo "  NODE NAME is $NODE_NAME"
    touch ttt       # empty greps
@@ -86,10 +84,12 @@ echo "------------------   Debug -------------"
                echo "No corresponding child named \"valgrind\" "
                echo ' '
            else
-               echo "  New code $LINENO  kill Valgrind "
+               echo "  New code $LINENO  kill Valgrind $VG_PID"
                SST_PID=`ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $3 }'`
                kill -9 $VG_PID
+echo "kill issued,  SST_PID is $SST_PID"
                ps -f 
+echo "is there an SST to kill < $SST_PID >, going to issue "
                kill -9 $SST_PID
                echo "   -- Time Limit Processing is done"
                exit    
