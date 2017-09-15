@@ -42,7 +42,10 @@ echo "         Create Time Limit Flag file, $TIME_FLAG"
 
 echo ' '
 echo I am $TL_MY_PID,  I was called from $TL_CALLER, my parent PID is $TL_PPID
-ps -f -p ${TL_PPID}, ${TL_CALLER}, ${TL_MY_PID}
+ps -f -p ${TL_MY_PID}, ${TL_CALLER}, ${TL_PPID}
+ps -f -p ${TL_MY_PID}
+ps -f -p ${TL_MY_PID}, ${TL_CALLER}
+ps -f -p ${TL_MY_PID}, ${TL_CALLER}, ${TL_PPID}
 echo ' '
    echo "  NODE NAME is $NODE_NAME"
    touch ttt       # empty greps
