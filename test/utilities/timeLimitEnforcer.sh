@@ -84,14 +84,13 @@ echo "------------------   Debug -------------"
                echo "No corresponding child named \"valgrind\" "
                echo ' '
            else
-               echo "  New code $LINENO  kill Valgrind $VG_PID"
-ps -f 
-               SST_PID=`ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $3 }'`
-               kill -9 $VG_PID
-echo "kill issued,  SST_PID is $SST_PID"
+               echo "  at line $LINENO,  kill Valgrind $VG_PID"
                ps -f 
-echo "is there an SST to kill < $SST_PID >, going to issue "
-               kill -9 $SST_PID
+#              SST_PID=`ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $3 }'`
+	       ps -f | grep 'sstsim.x ' 
+               kill -9 $VG_PID
+               echo "kill issued"
+               ps -f 
                echo "   -- Time Limit Processing is done"
                exit    
            fi
