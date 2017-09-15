@@ -85,6 +85,7 @@ echo "------------------   Debug -------------"
                echo ' '
            else
                echo "  New code $LINENO  kill Valgrind $VG_PID"
+ps -f 
                SST_PID=`ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $3 }'`
                kill -9 $VG_PID
 echo "kill issued,  SST_PID is $SST_PID"
