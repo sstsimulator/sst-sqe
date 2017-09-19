@@ -44,9 +44,10 @@ echo ' '
 echo I am $TL_MY_PID,  I was called from $TL_CALLER, my parent PID is $TL_PPID
 ps -f -p ${TL_MY_PID},${TL_CALLER},${TL_PPID}
 echo ' '
-   echo "  NODE NAME is $NODE_NAME"
-   touch ttt       # empty greps
-   if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then    ######   LINUX #####
+echo "  NODE NAME is $NODE_NAME"
+touch ttt       # empty greps
+
+if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then    ######   LINUX #####
       echo "This is the non non-Mac path"
       date
       echo ' '
@@ -103,12 +104,12 @@ echo "------------------   Debug -------------"
 #          End findChild() subroutine
 #
 
-echo " ###############################################################"
-MY_TREE=`pwd | awk -F 'devel/trunk' '{print $1 }'`
-echo  "DEBUG?   MY_TREE is $MY_TREE "
-echo "  JOHNS sanity check   --  all bin/sst"
-ps -ef | grep bin/sst | grep -v grep 
-echo " ----------- all  "
+    echo " ###############################################################"
+    MY_TREE=`pwd | awk -F 'devel/trunk' '{print $1 }'`
+    echo  "DEBUG?   MY_TREE is $MY_TREE "
+    echo "  JOHNS sanity check   --  all bin/sst"
+    ps -ef | grep bin/sst | grep -v grep 
+    echo " ----------- all  "
     ps -f | grep bin/sst | grep -v grep | grep -v mpirun 
     ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
     echo "      finding SST_PID and MPIRUN_PID"
@@ -135,113 +136,123 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
            MPIRUN_PID=0
        fi
     fi
-echo " the pid of an sst is $SST_PID "
-
-if [ $MPIRUN_PID -eq 0 ] ; then
-    KILL_PID=$SST_PID
-else
-    KILL_PID=$MPIRUN_PID
-fi
-
-if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] && [[ ${SST_PID:+isSet} == isSet ]] ; then
-    echo " Check for Dead Lock"
-    kill -USR1 $SST_PID
-    sleep 1
-    kill -USR1 $SST_PID
+    echo " the pid of an sst is $SST_PID "
     
-    touch $SST_ROOT/test/testOutputs/${CASE}dummy
-    grep -i signal $SST_ROOT/test/testOutputs/${CASE}*
-    grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
-    echo " ###############################################################"
-fi
-
-if [ -z $KILL_PID ] ; then
-    findChild $TL_PPID
-    if [ ! -z $KILL_PID ] ; then
-        echo found KILL_PID $KILL_PID
-        ps -f $KILL_PID
+    if [ $MPIRUN_PID -eq 0 ] ; then
+        KILL_PID=$SST_PID
+    else
+        KILL_PID=$MPIRUN_PID
     fi
-fi 
-
-
-if [ -z "$KILL_PID" ] ; then
-#
-#          Look for child of my siblings
-#
-   ps -f > full_ps__
-    while read -u 3 _who _task _paren _rest
-    do
-       if [ $_paren != $TL_PPID ] ; then
-          continue
-       fi 
-       if [ $_task == $TL_MY_PID ] ; then
-          continue
-       fi 
     
-       echo "Sibling is $_task"
-       findChild $_task
-       break
-    done 3< full_ps__
-fi
-
-echo Kill pid is $KILL_PID
-#                     The following code assumes Kill pid is set
-#                            and never sets it
-
-if [ -z "$KILL_PID" ] ; then
-    echo ' '
-    #   -----          Invoke the traceback routine  ----- "
-        ps -f -p $KILL_PID > ttt ; grep mpirun ttt
-        if [ $? == 0 ] ; then
-            TRACEBACK_PARAM="--mpi $MPIRUN_PID"
-        else
-            TRACEBACK_PARAM=$KILL_PID
+    if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] && [[ ${SST_PID:+isSet} == isSet ]] ; then
+        echo " Check for Dead Lock"
+        kill -USR1 $SST_PID
+        sleep 1
+        kill -USR1 $SST_PID
+        
+        touch $SST_ROOT/test/testOutputs/${CASE}dummy
+        grep -i signal $SST_ROOT/test/testOutputs/${CASE}*
+        grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
+        echo " ###############################################################"
+    fi
+    
+    if [ -z $KILL_PID ] ; then
+        findChild $TL_PPID
+        if [ ! -z $KILL_PID ] ; then
+            echo found KILL_PID $KILL_PID
+            ps -f $KILL_PID
         fi
-    #          Invoke the traceback routine
-    date
-    echo "   Invoke the traceback routine  ---- $CASE"
+    fi 
     
-    echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
-    $SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
     
-    echo ' '
-    date
-    echo "   Return to timeLimitEnforcer"
-    echo ' '
-    
-    echo "  tLE ==== $LINENO   KILL_PID is $KILL_PID"
-    kill $KILL_PID
-    #                     Believe I remember that this always return zero
-    if [ $? == 1 ] ; then
-        echo " Kill of $KILL_PID for TIME OUT   FAILED"
-        echo "     I am $TL_MY_PID,   my parent was $TL_PPID" 
-        ps -f -U $USER
-        echo " Try a \"kill -9\"  "
-        kill -9 $KILL_PID
+    if [ -z "$KILL_PID" ] ; then
+    #
+    #          Look for child of my siblings
+    #
+       ps -f > full_ps__
+        while read -u 3 _who _task _paren _rest
+        do
+           if [ $_paren != $TL_PPID ] ; then
+              continue
+           fi 
+           if [ $_task == $TL_MY_PID ] ; then
+              continue
+           fi 
+        
+           echo "Sibling is $_task"
+           findChild $_task
+           break
+        done 3< full_ps__
     fi
-    echo "  tLE ==== $LINENO   "
-    ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
-    if [ $? == 0 ] ; then
-        echo " It's still there!  ($KILL_PID)"
+    
+    echo Kill pid is $KILL_PID
+    #                     The following code assumes Kill pid is set
+    #                            and never sets it
+    
+    if [ -z "$KILL_PID" ] ; then
+        echo ' '
+        #   -----          Invoke the traceback routine  ----- "
+            ps -f -p $KILL_PID > ttt ; grep mpirun ttt
+            if [ $? == 0 ] ; then
+                TRACEBACK_PARAM="--mpi $MPIRUN_PID"
+            else
+                TRACEBACK_PARAM=$KILL_PID
+            fi
+        #          Invoke the traceback routine
+        date
+        echo "   Invoke the traceback routine  ---- $CASE"
+        
+        echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
+        $SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
+        
+        echo ' '
+        date
+        echo "   Return to timeLimitEnforcer"
+        echo ' '
+        
+        echo "  tLE ==== $LINENO   KILL_PID is $KILL_PID"
+        kill $KILL_PID
+        #                     Believe I remember that this always return zero
+        if [ $? == 1 ] ; then
+            echo " Kill of $KILL_PID for TIME OUT   FAILED"
+            echo "     I am $TL_MY_PID,   my parent was $TL_PPID" 
+            ps -f -U $USER
+            echo " Try a \"kill -9\"  "
+            kill -9 $KILL_PID
+        fi
+        echo "  tLE ==== $LINENO   "
+        ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
+        if [ $? == 0 ] ; then
+            echo " It's still there!  ($KILL_PID)"
+            echo "  tLE ==== $LINENO   "
+            ps -ef | grep ompsievetest | grep -v -e grep
+            echo " Try a \"kill -9\" "
+            kill -9 $KILL_PID
+            echo "  tLE ==== $LINENO   "
+            ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
+        fi
+    
+        echo "  tLE ==== $LINENO   "
+        ps -ef | grep ompsievetest | grep -v -e grep
+        echo "  tLE ==== $LINENO   "
+        date
+        Remove_old_ompsievetest_task
+        date
+        ps -ef | grep ompsievetest | grep -v -e grep
+        echo "  tLE ==== $LINENO   "
+    fi
+    echo "  tLE ==== $LINENO   Issue the kill of $KILL_PID  "
+    kill -9 $KILL_PID
     echo "  tLE ==== $LINENO   "
     ps -ef | grep ompsievetest | grep -v -e grep
-        echo " Try a \"kill -9\" "
-        kill -9 $KILL_PID
     echo "  tLE ==== $LINENO   "
-    ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
-fi
-
-echo "  tLE ==== $LINENO   "
-ps -ef | grep ompsievetest | grep -v -e grep
-echo "  tLE ==== $LINENO   "
-date
+    date
     Remove_old_ompsievetest_task
-date
-ps -ef | grep ompsievetest | grep -v -e grep
-echo "  tLE ==== $LINENO   "
-fi
+    date
+    ps -ef | grep ompsievetest | grep -v -e grep
+    echo "  tLE ==== $LINENO   "
 
-    else    ###   This is the El Capitan  (pstree path)      ####    macOS 
+else    ###   This is the El Capitan  (pstree path)      ####    macOS 
 
         echo "This is the MacOS (Darwin)  path with pstree "
 
