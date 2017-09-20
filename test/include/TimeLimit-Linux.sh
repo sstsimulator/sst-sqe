@@ -140,7 +140,10 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
     #                            and never sets it
     
     if [ -z "$KILL_PID" ] ; then
-        echo ' '
+        echo "Failed to define a KILL_PID "
+        echo "   The timeLimitEnforcer has fail!   "
+        exit
+    else
         #   -----          Invoke the traceback routine  ----- "
             ps -f -p $KILL_PID > ttt ; grep mpirun ttt
             if [ $? == 0 ] ; then
