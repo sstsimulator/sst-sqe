@@ -612,7 +612,7 @@ echo " #####################################################"
     # ${SST_TEST_SUITES}/testSuite_shemp.sh
     # etc.
 
-    ${SST_TEST_SUITES}/testSuite_merlin.sh
+##    ${SST_TEST_SUITES}/testSuite_merlin.sh
     ${SST_TEST_SUITES}/testSuite_embernightly.sh
  
     ${SST_TEST_SUITES}/testSuite_simpleSimulation_CarWash.sh
