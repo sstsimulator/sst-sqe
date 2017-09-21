@@ -50,14 +50,14 @@ Tol=$2    ##  curTick tolerance
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
-    referenceFile="${SST_REFERENCE_ELEMENTS}/merlin/tests/refFiles/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/merlin/tests/refFiles/${merlin_case}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
         pyFileName=${merlin_case}.py
-        sutArgs="${SST_TEST_SDL_FILES}/merlinSdls/$pyFileName"
+        sutArgs="${SST_REFERENCE_ELEMENTS}/merlin/tests/$pyFileName"
         ls $sutArgs
         if [ $? != 0 ]
         then
@@ -167,45 +167,48 @@ Tol=$2    ##  curTick tolerance
 #     program may vary from that reported in the reference file checked into SVN.
 # Does not use subroutine because it invokes the build of all test binaries.
 #-------------------------------------------------------------------------------
-test_merlin_dragon_12() {          
-merlin_Template dragon_12 500
+test_merlin_dragon_128() {          
+merlin_Template dragon_128_test 500
 
 }
 
 test_merlin_dragon_72() {          
-merlin_Template dragon_72 500
+merlin_Template dragon_72_test 500
 
 }
 
-test_merlin_ft_r16() {          
-   echo "SST_BUILD_TYPE = $SST_BUILD_TYPE"
-
-   if [[ $SST_BUILD_TYPE == "sstmainline_config_valgrind" ]] ; then
-      skip_this_test
-      echo ' ' ; echo "   ---- Skip this test for Valgrind" ; echo ' '
-      return
-   fi
-
-merlin_Template ft_r16 500
+test_merlin_fattree_128() {          
+merlin_Template fattree_128_test 500
 
 }
 
-test_merlin_ft_r8() {          
-merlin_Template ft_r8 500
+test_merlin_fattree_256() {          
+merlin_Template fattree_256_test 500
 
 }
 
-test_merlin_torus_3x3x3() {          
-merlin_Template torus_3x3x3 500
+test_merlin_torus_128() {          
+merlin_Template torus_128_test 500
 
 }
 
-test_merlin_trafficgen_trivial() {
-merlin_Template trivialTrafficGen 500
+test_merlin_torus_5_trafficgen() {
+
+merlin_Template torus_5_trafficgen 500
 
 }
 
-export SST_TEST_ONE_TEST_TIMEOUT=3000         #  3000 seconds
+test_merlin_torus_64() {          
+merlin_Template torus_64_test 500
+
+}
+
+#  test_merlin_trafficgen_trivial() {
+#  merlin_Template trivialTrafficGen 500
+
+#  }
+
+export SST_TEST_ONE_TEST_TIMEOUT=300         #  3000 seconds
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
