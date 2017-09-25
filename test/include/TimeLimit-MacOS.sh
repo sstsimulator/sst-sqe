@@ -59,9 +59,9 @@ echo ' '
         sleep 1
         kill -USR1 $SST_PID
         
-        touch $SST_ROOT/test/testOutputs/dummy
-        grep -i signal $SST_ROOT/test/testOutputs/*
-        grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/*
+        touch $SST_ROOT/test/testOutputs/${CASE}dummy
+        grep -i signal $SST_ROOT/test/testOutputs/${CASE}*
+        grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
         echo " ###############################################################"
     fi
     
