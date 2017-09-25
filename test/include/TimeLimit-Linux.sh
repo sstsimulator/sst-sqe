@@ -110,7 +110,7 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
         findChild $TL_PPID
         if [ ! -z $KILL_PID ] ; then
             echo found KILL_PID $KILL_PID
-            ps -f $KILL_PID
+            ps -f -p $KILL_PID
         fi
     fi 
     
