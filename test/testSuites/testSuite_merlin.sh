@@ -97,7 +97,7 @@ Tol=$2    ##  curTick tolerance
         wc ${outFile} ${referenceFile} | awk -F/ '{print $1, $(NF-1) "/" $NF}'
 
 
-        diff ${referenceFile} ${outFile} > /dev/null;
+        compare_sorted ${referenceFile} ${outFile} 
         if [ $? -ne 0 ] ; then
 ##  Follows some bailing wire to allow serialization branch to work
 ##          with same reference files
