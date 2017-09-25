@@ -84,8 +84,7 @@ Tol=$2    ##  curTick tolerance
              rm $TIME_FLAG 
              return 
         fi 
-        if [ $RetVal != 0 ]  
-        then
+        if [ $RetVal != 0 ] ; then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
@@ -99,8 +98,7 @@ Tol=$2    ##  curTick tolerance
 
 
         diff ${referenceFile} ${outFile} > /dev/null;
-        if [ $? -ne 0 ]
-        then
+        if [ $? -ne 0 ] ; then
 ##  Follows some bailing wire to allow serialization branch to work
 ##          with same reference files
      sed s/' (.*)'// $referenceFile > $newRef
@@ -109,15 +107,16 @@ Tol=$2    ##  curTick tolerance
      sed s/' (.*)'// $outFile > $newOut
      new=`wc ${newOut} | awk '{print $1, $2}'`; 
      ##          new=`wc ${outFile}       | awk '{print $1, $2}'`;
-        wc $newOut       
-               if [ "$ref" == "$new" ];
-               then
+     wc $newOut       
+               fail " Output does not match exactly (Required)"
+               if [ "$ref" == "$new" ]; then
                    echo "outFile word/line count matches Reference"
                else
                    echo "$merlin_case test Fails"
                    echo "   tail of $outFile  ---- "
                    tail $outFile
-                   fail "outFile word/line count does NOT matches Reference"
+                   # fail "outFile word/line count does NOT matches Reference"
+                   echo "outFile word/line count does NOT matches Reference"
                    diff ${referenceFile} ${outFile} 
                fi
         else
