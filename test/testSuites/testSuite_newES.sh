@@ -21,6 +21,13 @@ cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/defaultParams.py .
 pwd ; ls -ltr  | tail -5
 
 ES_after() {
+        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
 grep 'simulated time' outFile
     if [ $? != 0 ] ; then
         fail "test failed"
