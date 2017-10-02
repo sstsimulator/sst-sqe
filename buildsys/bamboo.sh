@@ -603,7 +603,7 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_BadPort.sh
     ${SST_TEST_SUITES}/testSuite_scheduler.sh
     ${SST_TEST_SUITES}/testSuite_scheduler_DetailedNetwork.sh
-    ${SST_TEST_SUITES}/testSuite_newES.sh
+    ${SST_TEST_SUITES}/testSuite_ES2.sh
 
     # Add other test suites here, i.e.
     # ${SST_TEST_SUITES}/testSuite_moe.sh
