@@ -108,7 +108,7 @@ cd $SST_TEST_SUITES/testCramSim
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
     ls tests/test_txntrace.py
-    if [ $? -eq 0 ] then
+    if [ $? -eq 0 ] ; then
         sutArgs="tests/test_txntrace.py"
     else
         sutArgs="tests/test_txntrace4.py"
