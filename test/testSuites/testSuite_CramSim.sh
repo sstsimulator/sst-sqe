@@ -107,16 +107,19 @@ cd $SST_TEST_SUITES/testCramSim
     L_TESTFILE+=(${testDataFileBase})
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
+
+    ls -l tests/sst-CramSim-trace_verimem_${trc}.trc
+
     ls tests/test_txntrace.py
     if [ $? -eq 0 ] ; then
         sutArgs="tests/test_txntrace.py"
+        ${sut} --model-options="--configfile=ddr4_verimem.cfg traceFile=tests/sst-CramSim-trace_verimem_${trc}.trc" ${sutArgs} >$outFile   ## 
     else
         sutArgs="tests/test_txntrace4.py"
+        ${sut} --model-options="--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc" ${sutArgs} >$outFile   ## 
     fi
 
-        ls -l tests/sst-CramSim-trace_verimem_${trc}.trc
 #
-        ${sut} --model-options="--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc" ${sutArgs} >$outFile   ## 
         RetVal=$?
 
         echo " Running from `pwd`"
