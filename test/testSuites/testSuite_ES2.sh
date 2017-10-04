@@ -87,6 +87,39 @@ if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -g
 fi    
 wc SHU.in
 
+   #   This is the code to run just selected tests from the sweep
+   #        using the indices defined by SST_TEST_SE_LIST
+   #   An inclusive sub-list may be specified as "first-last"  (e.g. 7-10)
+
+     if [[ ${SST_TEST_SE2_LIST:+isSet} == isSet ]] ; then
+  echo " LIST is $SST_TEST_SE2_LIST"
+         mv SHU.in SH_orig.in
+         for IND in $SST_TEST_SE2_LIST
+         do
+  echo " IND is $IND "
+             echo $IND | grep -e '-' > /dev/null   
+             if [ $? != 0 ] ; then
+#                            Single
+                indx=$(printf "%03d" $IND)
+                grep -A 5 ES2_${indx}_ SH_orig.in >> SHU.in
+             else
+#                            Inclusive
+#     echo IND = $IND
+                INDF=`echo $IND | awk -F'-' '{print $1}'`
+                INDL=`echo $IND | awk -F'-' '{print $2}'`
+#     echo "$INDF to $INDL"
+                INDR=$INDF
+                while [ $INDR -le $INDL ]
+                do
+#     echo In the INDR loop INDR = $INDR
+                   indx=$(printf "%03d" $INDR)
+                   grep -A 5 ES2_${indx}_ SH_orig.in >> SHU.in
+                   INDR=$(($INDR+1))
+                done    
+             fi
+          done
+     fi
+
 cd $SST_ROOT
 export sut=${SST_TEST_INSTALL_BIN}/sst
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
