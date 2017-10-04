@@ -102,13 +102,7 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
         
         touch $SST_ROOT/test/testOutputs/${CASE}dummy
         grep -i signal $SST_ROOT/test/testOutputs/${CASE}*
-        RetV1=$?
         grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
-        RetV2=$?
-        if [ $RetV1 -ne 0 ] && [ $RetV2 -ne 0 ] ; then
-            echo "No output from Dead Lock test!   Hung? "
-            echo ' '
-        fi
         echo " ###############################################################"
     fi
     
