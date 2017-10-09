@@ -1582,7 +1582,7 @@ echo    "This is Sierra, Compiler is $compiler"
 ################################################################################
 
             10.13) # High Sierra
-echo    "This is Sierra, Compiler is $compiler"
+echo    "This is High Sierra, Compiler is $compiler"
                    ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode 
                    ;;
 
