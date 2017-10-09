@@ -1363,14 +1363,14 @@ fi
 
 
 #-------------------------------------------------------------------------
-# Function: ldModulesYosemiteClang
+# Function: ldModules_MacOS_Clang
 # Description:
 #   Purpose: Performs selection and loading of Boost and MPI and 
 #            other compiler specific modules for MacOS Yosemite
 #   Parameters:   name of Clang compiler such as (clang-700.1.76)
 #                 Also need $2 and $3 passed along
 
-ldModulesYosemiteClang() {
+ldModules_MacOS_Clang() {
     ClangVersion=$1            #   example "clang-700.0.72" $2 $3
                         ModuleEx avail
                         # Use Boost and MPI built with CLANG from Xcode
@@ -1553,7 +1553,7 @@ echo "  ******************* macosVersion= $macosVersion "
                         ;;
 
                     clang-700.1.76)
-                        ldModulesYosemiteClang clang-700.1.76 $2 $3   #  Xcode 7.1
+                        ldModules_MacOS_Clang clang-700.1.76 $2 $3   #  Xcode 7.1
                         ;;
                     *)
                         # unknown compiler, use default
@@ -1570,17 +1570,23 @@ echo "  ******************* macosVersion= $macosVersion "
 ################################################################################
             10.11) # El Capitan
 echo    "This is El Capitan, Compiler is $compiler"
-                   ldModulesYosemiteClang $compiler  $2 $3   # any Xcode 
+                   ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode 
                    ;;
 
 ################################################################################
             10.12) # Sierra
 echo    "This is Sierra, Compiler is $compiler"
-                   ldModulesYosemiteClang $compiler  $2 $3   # any Xcode 
+                   ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode 
                    ;;
 
 ################################################################################
 
+            10.13) # High Sierra
+echo    "This is High Sierra, Compiler is $compiler"
+                   ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode 
+                   ;;
+
+################################################################################
             *) # unknown
                  echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
                  echo ' '
