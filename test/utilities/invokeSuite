@@ -12,6 +12,8 @@
 #	         (A unique portion of the name is all that required.)
 #	         "all" may be specified if the fifth parameter is needed.
 #	    The optional fifth parameter is added text (char).
+#	    The Ember Sweep tests may be selected by index  ---
+#	    For EmberSweep, the form is SE=2:7:106  (or using "SE2")
 #	Jenkins does not report multiple runs of a Suite of the same 
 #	name, so the numbers are append to the name. If it is desired
 #	to run a configuration more than once, the fifth parameter
@@ -116,26 +118,40 @@
 #             
 ##   This section select tests to run from the Suite and it will populate tmpSuite,
 #       if needed  . . .
-#       ---  I don't know about this section ?????  it's COB.
+#                                        October 2017
+#    A section has seen add to process a SelectTests of the form "SE=1:7"
+#                where SE means EmberSweep and SE2 if the added tests in SE2.
+#                The number are test indices, colon separated.
+#
    if [ ! -z $SelectTests ] ; then
-       if [ ! -s $tmpSuite ] ; then                  #  -s means is NOT zero size
-           cp $theSuite $tmpSuite
-       fi
-       sed -i'.x' -e s/^test_/xxtest_/ $tmpSuite 
+      if [ ! -s $tmpSuite ] ; then                  #  -s means is NOT zero size
+          cp $theSuite $tmpSuite
+      fi
+      if [[ $SelectTests != *=* ]] ; then
+         sed -i'.x' -e s/^test_/xxtest_/ $tmpSuite 
+  
+         for _TEST in `echo $SelectTests | sed 's/:/ /g'`
+         do
+             sed -i'.x' -e /xxtest.*${_TEST}.*/s/^xxtest/test/ $tmpSuite
+             theSuite=$tmpSuite
+             chmod +x $theSuite
+         done
+  
+         grep ^test_ $theSuite
+         if [ $? != 0 ] ; then
+             echo ' ' ; echo " No runnable test";  echo " did not find $SelectTests among"
+             grep ^test_ $SST_TEST_SUITES/$theSuite | awk -F\( '{print $1}'
+             exit
+         fi
 
-       for _TEST in `echo $SelectTests | sed 's/:/ /g'`
-       do
-           sed -i'.x' -e /xxtest.*${_TEST}.*/s/^xxtest/test/ $tmpSuite
-           theSuite=$tmpSuite
-           chmod +x $theSuite
-       done
-
-        grep ^test_ $theSuite
-        if [ $? != 0 ] ; then
-            echo ' ' ; echo " No runnable test";  echo " did not find $SelectTests among"
-            grep ^test_ $SST_TEST_SUITES/$theSuite | awk -F\( '{print $1}'
-            exit
-        fi
+      else
+#          Sweep Tests by index
+        _ENV=`echo $SelectTest | awk -F'=' '{print $1}'`
+echo type is $_ENV
+         LIST=`echo $SelectTest | awk -F'=' '{print $2}' | sed -e 's/:/ /'`
+echo the LIST is $LIST
+         export SST_TEST_${_ENV}_LIST="$LIST"
+      fi
    fi
      
    popd
