@@ -88,13 +88,13 @@ fi
 wc SHU.in
 
    #   This is the code to run just selected tests from the sweep
-   #        using the indices defined by SST_TEST_SE_LIST
+   #        using the indices defined by SST_TEST_ES2_LIST
    #   An inclusive sub-list may be specified as "first-last"  (e.g. 7-10)
 
-     if [[ ${SST_TEST_SE2_LIST:+isSet} == isSet ]] ; then
-  echo " LIST is $SST_TEST_SE2_LIST"
+     if [[ ${SST_TEST_ES2_LIST:+isSet} == isSet ]] ; then
+  echo " LIST is $SST_TEST_ES2_LIST"
          mv SHU.in SH_orig.in
-         for IND in $SST_TEST_SE2_LIST
+         for IND in $SST_TEST_ES2_LIST
          do
   echo " IND is $IND "
              echo $IND | grep -e '-' > /dev/null   
