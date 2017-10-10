@@ -13,7 +13,7 @@
 #	         "all" may be specified if the fifth parameter is needed.
 #	    The optional fifth parameter is added text (char).
 #	    The Ember Sweep tests may be selected by index  ---
-#	    For EmberSweep, the form is SE=2:7:106  (or using "SE2")
+#	    For EmberSweep, the form is ES=2:7:106  (or using "ES2")
 #	Jenkins does not report multiple runs of a Suite of the same 
 #	name, so the numbers are append to the name. If it is desired
 #	to run a configuration more than once, the fifth parameter
@@ -119,8 +119,8 @@
 ##   This section select tests to run from the Suite and it will populate tmpSuite,
 #       if needed  . . .
 #                                        October 2017
-#    A section has seen add to process a SelectTests of the form "SE=1:7"
-#                where SE means EmberSweep and SE2 if the added tests in SE2.
+#    A section has seen add to process a SelectTests of the form "ES=1:7"
+#                where ES means EmberSweep and ES2 for the added tests in ES2.
 #                The number are test indices, colon separated.
 #
    if [ ! -z $SelectTests ] ; then
