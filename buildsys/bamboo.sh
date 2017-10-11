@@ -341,6 +341,14 @@ echo " #####################################################"
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
     
+#
+#        $SST_ROOT/../sqe/test/utilities/invokeSuite memHierarchy_sdl 2 2 all autotest_multirank_plus_multithread_2x2
+    PATH=${PATH}:${SST_ROOT}/../sqe/test/utilities
+    invokeSuite ES2     2 2 ES2=1:106
+    invokeSuite merlin  2 2 dragon_128
+    invokeSuite CramSim 2 2 4_W
+    return
+#
     # Do we run the Macro Tests    
     if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
        [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ; then
