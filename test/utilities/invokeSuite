@@ -146,9 +146,9 @@
 
       else
 #          Sweep Tests by index
-        _ENV=`echo $SelectTest | awk -F'=' '{print $1}'`
+        _ENV=`echo $SelectTests | awk -F'=' '{print $1}'`
 echo type is $_ENV
-         LIST=`echo $SelectTest | awk -F'=' '{print $2}' | sed -e 's/:/ /'`
+         LIST=`echo $SelectTests | awk -F'=' '{print $2}' | sed -e 's/:/ /'`
 echo the LIST is $LIST
          export SST_TEST_${_ENV}_LIST="$LIST"
       fi
