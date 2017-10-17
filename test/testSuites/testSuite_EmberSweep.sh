@@ -194,7 +194,7 @@ ES_fini() {
         sed '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" ${SST_TEST_INPUTS}/EmberSweepGenerator.py > EmberSweepGenerator.py
         chmod +x EmberSweepGenerator.py
     fi
-    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
         sed -i.x '/print..sst.*model/s/..sst/ "mpirun -np '"${SST_MULTI_RANK_COUNT} $NUMA_PARAM"' sst/' EmberSweepGenerator.py 
     fi
 

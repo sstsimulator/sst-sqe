@@ -79,17 +79,16 @@ Match=$2    ##  Match criteron
     ls $sutArgs
 
     echo " Running from `pwd`"
-    if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
-       ${sut} ${sutArgs} > ${outFile}
-       RetVal=$?
-    else
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
        mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
        RetVal=$?
        cat ${testOutFiles}* > $outFile
        myWC $outFile
        remove_DRAMSim_noise $outFile
        myWC $outFile
-
+    else
+       ${sut} ${sutArgs} > ${outFile}
+       RetVal=$?
     fi
 
     TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild}
