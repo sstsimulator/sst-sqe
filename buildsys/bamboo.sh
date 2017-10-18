@@ -340,7 +340,7 @@ echo " #####################################################"
     # Initialize directory to hold temporary test input files
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
-    
+   
     # Do we run the Macro Tests    
     if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
        [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ; then
@@ -574,13 +574,20 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_Ariel.sh
         return
     fi
-
+    
+    PATH=${PATH}:${SST_ROOT}/../sqe/test/utilities
     if [ $1 == "sstmainline_config_develautotester_linux" ] ; then
         $SST_ROOT/../sqe/test/utilities/invokeSuite memHierarchy_sdl 2 2 all autotest_multirank_plus_multithread_2x2
+        invokeSuite ES2     2 2 ES2=1:106  autotest_multirank_plus_multithread
+        invokeSuite merlin  2 2 dragon_128 autotest_multirank_plus_multithread
+        invokeSuite CramSim 2 2 4_         autotest_multirank_plus_multithread
     fi
     
     if [ $1 == "sstmainline_config_develautotester_mac" ] ; then
         $SST_ROOT/../sqe/test/utilities/invokeSuite memHierarchy_sdl 2 2 all autotest_multirank_plus_multithread_2x2
+        invokeSuite ES2     2 2 ES2=1:106  autotest_multirank_plus_multithread
+        invokeSuite merlin  2 2 dragon_128 autotest_multirank_plus_multithread
+        invokeSuite CramSim 2 2 4_         autotest_multirank_plus_multithread
     fi
     
     ${SST_TEST_SUITES}/testSuite_Ariel.sh
