@@ -21,7 +21,7 @@
 #    Note that this Suite runs in the ember elements sub-tree, not in test.
 #
 #    ------------------------------------------------------------------ 
-#       Env variable:    SST_TEST_SE_LIST   to run specific numbers only
+#       Env variable:    SST_TEST_ES_LIST   to run specific numbers only
 #######################################################################
 
 
@@ -97,11 +97,11 @@ FAILED="FALSE"
 PARAMS=""
  
 
-SE_start() {
+ES_start() {
     RUNNING_INDEX=$(($RUNNING_INDEX+1))
     echo " $RUNNING_INDEX run, $FAILED_TESTS have failed"
-    if [ $SE_SELECT == 1 ] ; then
-        TEST_INDEX=${SE_LIST[$RUNNING_INDEX]} 
+    if [ $ES_SELECT == 1 ] ; then
+        TEST_INDEX=${ES_LIST[$RUNNING_INDEX]} 
         echo " Running case #${TEST_INDEX}"
     else
         TEST_INDEX=$RUNNING_INDEX
@@ -116,12 +116,12 @@ SE_start() {
     pushd ${SST_TEST_SUITES}/emberSweep_folder
 }   
 ####################
-#    SE_fini()
+#    ES_fini()
 #          tmp_file is output from SST
 #          $TL is the "complete" line from SST (with time)
 #          $RL is the line from the Reference File
 #
-SE_fini() {
+ES_fini() {
    TL=`grep Simulation.is.complete tmp_file`
    RetVal=$?
    TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
@@ -182,7 +182,7 @@ SE_fini() {
    echo "${TEST_INDEX}: Wall Clock Time  $elapsedSeconds sec.  ${PARAMS}"
    echo " "
 
-}     #  - - - END OF Subroutine SE_fini()
+}     #  - - - END OF Subroutine ES_fini()
 
 ###          Begin MAIN
 
@@ -194,7 +194,7 @@ SE_fini() {
         sed '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" ${SST_TEST_INPUTS}/EmberSweepGenerator.py > EmberSweepGenerator.py
         chmod +x EmberSweepGenerator.py
     fi
-    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
         sed -i.x '/print..sst.*model/s/..sst/ "mpirun -np '"${SST_MULTI_RANK_COUNT} $NUMA_PARAM"' sst/' EmberSweepGenerator.py 
     fi
 
@@ -204,19 +204,19 @@ SE_fini() {
     fi
 
    #   This is the code to run just selected tests from the sweep
-   #        using the indices defined by SST_TEST_SE_LIST
+   #        using the indices defined by SST_TEST_ES_LIST
    #   An inclusive sub-list may be specified as "first-last"  (e.g. 7-10)
 
-     SE_SELECT=0
-     if [[ ${SST_TEST_SE_LIST:+isSet} == isSet ]] ; then
-         SE_SELECT=1
+     ES_SELECT=0
+     if [[ ${SST_TEST_ES_LIST:+isSet} == isSet ]] ; then
+         ES_SELECT=1
          mv ${SSTTESTTEMPFILES}/bashIN ${SSTTESTTEMPFILES}/bashIN0
          ICT=1
-         for IND in $SST_TEST_SE_LIST
+         for IND in $SST_TEST_ES_LIST
          do
              echo $IND | grep -e '-' > /dev/null   
              if [ $? != 0 ] ; then
-                SE_LIST[$ICT]=$IND
+                ES_LIST[$ICT]=$IND
                 ICT=$(($ICT+1))
                 S0=$(($IND-1))
                 S1=$(($S0*6))
@@ -236,7 +236,7 @@ SE_fini() {
                 while [ $INDR -le $INDL ]
                 do
 #     echo In the INDR loop INDR = $INDR
-                   SE_LIST[$ICT]=$INDR
+                   ES_LIST[$ICT]=$INDR
                    ICT=$(($ICT+1))
                    END=$(($END+6))
                    INDR=$(($INDR+1))
@@ -248,7 +248,7 @@ SE_fini() {
 # Check it
 echo Check the result
 wc ${SSTTESTTEMPFILES}/bashIN
-## for i in ${SE_LIST[@]}; do echo $i; done
+## for i in ${ES_LIST[@]}; do echo $i; done
 
      fi
 
