@@ -41,7 +41,23 @@ do
    sut=$SST_INSTALL_BIN/../libexec/sstsim.x
       ' $Suite
 
-      if [ $Suite != "testSuite_EmberSweep.sh" ] ; then
+   if [ $Suite == "testSuite_EmberSweep.sh" ] ; then
+##           This is the code for the EmberSweep Suite
+      sed -i'.x' '/PARAMS=""/ a \
+      VGout=""
+      ' $Suite
+
+      sed -i'.y' '/testDataFileBase=/i \
+      VGout="${SST_TEST_OUTPUTS}/testES_${TEST_INDEX}.VGout"
+      ' $Suite
+
+      sed -i'.z' -e '/MULTI_THREAD/,/fi/ s/^/#/' $Suite
+
+      DEST=${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+      sed '/ .sst/s/ "sst/ "valgrind --track-origins=yes --log-file=$VGout $sut/' ${SST_TEST_INPUTS}/EmberSweepGenerator.py > $DEST/EmberSweepGenerator.py
+          
+      chmod +x $DEST/EmberSweepGenerator.py 
+   else
 ##           This is the code for all Suites except EmberSweep
 
 #		Check if there is an outFile defined
@@ -69,22 +85,6 @@ do
 #		Add Valgrind, with parameters to sst execution line
       sed -i'.z' '/sut.*sutArgs/s/${sut} /valgrind --track-origins=yes --log-file=$VGout ${sut} /' $Suite
 
-   else
-
-##           This is the code for the EmberSweep Suite
-      sed -i'.x' '/PARAMS=""/ a \
-      VGout=""
-      ' $Suite
-
-      sed -i'.y' '/testDataFileBase=/i \
-      VGout="${SST_TEST_OUTPUTS}/testES_${TEST_INDEX}.VGout"
-      ' $Suite
-
-      sed -i'.z' -e '/MULTI_THREAD/,/fi/ s/^/#/' $Suite
-
-      DEST=${SST_ROOT}/sst-elements/src/sst/elements/ember/test
-      sed '/ .sst/s/ "sst/ "valgrind --track-origins=yes --log-file=$VGout $sut/' ${SST_TEST_INPUTS}/EmberSweepGenerator.py > $DEST/EmberSweepGenerator.py
-      chmod +x $DEST/EmberSweepGenerator.py 
    fi  
 
    rm ${Suite}.?
