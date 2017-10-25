@@ -77,8 +77,9 @@ do
       sed -i'.u' '/sst...sut/,+1 d' $Suite
 
       sed -i'.v' '/> outFile/ r _tmp2_in' $Suite 
- #     sed \'s/sst/valgrind --track-origins=yes --log-file=$VGout $sut/\' _tmp_${ind} >>SHU.in
-  #    ' $Suite
+
+#           correct the line count of the generated tests
+      sed -i'w' 's/A 5 ES2/A 6 ES2/' $Suite
 
    else
 ##           This is the code for all Suites except EmberSweep
