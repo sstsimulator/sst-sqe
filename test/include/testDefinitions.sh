@@ -279,7 +279,7 @@ multithread_multirank_patch_Suites() {
         export SST_MULTI_CORE=1
     
         sed -i.y '/Invoke shunit2/i \
-        export SST_TEST_ONE_TEST_TIMEOUT=200 \
+        export SST_TEST_ONE_TEST_TIMEOUT=400 \
          ' test/testSuites/testSuite_*
     fi
 }
