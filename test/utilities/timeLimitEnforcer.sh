@@ -49,10 +49,11 @@ touch ttt       # empty greps
 
 if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then    ######   LINUX #####
 
-. $SST_ROOT/test/include/TimeLimit-Linux.sh
+    . $SST_ROOT/test/include/TimeLimit-Linux.sh
 
 else    ###   This is the El Capitan  (pstree path)      ####    macOS 
 
-. $SST_ROOT/test/include/TimeLimit-MacOS.sh
+    . $SST_ROOT/test/include/TimeLimit-MacOS.sh
 
-    fi ####   End of El Capitan  pstree path
+fi ####   End of El Capitan  pstree path
+echo "        End of TL Enforcer   - - -  $CASE "
