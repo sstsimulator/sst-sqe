@@ -125,7 +125,7 @@ CP_case=$1
      fi
     endSeconds=`date +%s`
     elapsedSeconds=$(($endSeconds -$startSeconds))
-    echo "${memH_case}: Wall Clock Time  $elapsedSeconds seconds"
+    echo "Cassini_prefetch_${CP_case}: Wall Clock Time  $elapsedSeconds seconds"
     echo " "
 
 }
