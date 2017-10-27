@@ -63,6 +63,8 @@ CP_case=$1
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
+    startSeconds=`date +%s`
+
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
     sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/cassini/tests/streamcpu-${CP_case}.py"
@@ -121,6 +123,10 @@ CP_case=$1
         echo ' '
         echo " Statistics information matches exactly"
      fi
+    endSeconds=`date +%s`
+    elapsedSeconds=$(($endSeconds -$startSeconds))
+    echo "${memH_case}: Wall Clock Time  $elapsedSeconds seconds"
+    echo " "
 
 }
 
