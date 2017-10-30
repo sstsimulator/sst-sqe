@@ -267,6 +267,7 @@ popd
 #                In this position the local Time Out will override the multithread TL
 export SST_TEST_ONE_TEST_TIMEOUT=900
 cd $SST_ROOT
+date
 
 (. ${SHUNIT2_SRC}/shunit2 ${SSTTESTTEMPFILES}/bashIN)
 

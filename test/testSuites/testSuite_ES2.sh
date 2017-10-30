@@ -20,7 +20,9 @@ cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/networkConfig.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/defaultParams.py .
 pwd ; ls -ltr  | tail -5
 
-ES_after() {
+ES2_after() {
+        grep 'simulated time' outFile
+        RetVal=$?
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -28,8 +30,7 @@ ES_after() {
              rm $TIME_FLAG 
              return 
         fi 
-grep 'simulated time' outFile
-    if [ $? != 0 ] ; then
+    if [ $RetVal != 0 ] ; then
         fail "test failed"
         cat outFile
     fi
@@ -66,7 +67,7 @@ do
    sed -i'.x' 's/$/ > outFile/' _tmp_${ind}
    sed -i'.z' 's/sst/${sut}/' _tmp_${ind}
    cat _tmp_${ind} >> SHU.in
-   echo ES_after >> SHU.in
+   echo ES2_after >> SHU.in
    echo "}"  >> SHU.in
 
    ind=$(( ind + 1 ))
