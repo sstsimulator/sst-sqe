@@ -350,6 +350,9 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 cd $OPWD
 
 export SST_TEST_ONE_TEST_TIMEOUT=60
+if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+    export SST_TEST_ONE_TEST_TIMEOUT=100            # Bump MacOS time limit to 100 seconds
+fi
 
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
