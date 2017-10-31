@@ -32,6 +32,8 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+mkdir /tmp/$$VaultS
+cd /tmp/$$VaultS
 
 OPWD=`pwd`    # Save Original PWD
 

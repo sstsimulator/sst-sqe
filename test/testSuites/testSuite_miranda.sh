@@ -94,13 +94,13 @@ miranda_case=$1
 
         RemoveComponentWarning
         myWC $referenceFile $outFile
-        diff -b $referenceFile $outFile  > raw_diff
+        diff -b $referenceFile $outFile  > /tmp/$$raw_diff
         if [ $? != 0 ]
         then  
             compare_sorted $referenceFile $outFile
             if [ $? == 0 ] ; then
                echo " Sorted match with Reference File"
-               rm raw_diff
+               rm /tmp/$$raw_diff
             elif [ "lineWordCt" == "$2" ] ; then
                ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
                new=`wc ${outFile}       | awk '{print $1, $2}'`;
@@ -114,7 +114,7 @@ miranda_case=$1
             else
                echo "Output does not match Reference File"
                fail "Output does not match Reference File"
-               cat raw_diff
+               cat /tmp/$$raw_diff
             fi
         else
             echo " Exact match Output and Reference"

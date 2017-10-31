@@ -68,6 +68,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         echo "Ariel on Ubuntu not working on Sandy bridge and Ivy bridge tests"
     fi
    
+    mkdir /tmp/$$Ariel_run
+    cd /tmp/$$Ariel_run
 echo " First call to countStreams follow: "
     countStreams    
 

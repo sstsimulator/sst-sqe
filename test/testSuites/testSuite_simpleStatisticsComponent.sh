@@ -112,6 +112,9 @@ wc $referenceFile $outFile
 export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
+mkdir /tmp/$$simpleStat
+cd /tmp/$$simpleStat
+
 
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
