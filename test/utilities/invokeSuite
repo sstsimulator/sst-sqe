@@ -14,6 +14,7 @@
 #	    The optional fifth parameter is added text (char).
 #	    The Ember Sweep tests may be selected by index  ---
 #	    For EmberSweep, the form is ES=2:7:106  (or using "ES2")
+#           The inclusive option appears to also work, e.g. "ES=7-11" 
 #	Jenkins does not report multiple runs of a Suite of the same 
 #	name, so the numbers are append to the name. If it is desired
 #	to run a configuration more than once, the fifth parameter
