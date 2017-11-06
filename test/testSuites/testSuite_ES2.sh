@@ -21,7 +21,7 @@ cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/defaultParams.py .
 pwd ; ls -ltr  | tail -5
 
 ES2_after() {
-        grep 'simulated time' outFile
+        TL=`grep 'simulated time' outFile`
         RetVal=$?
         TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
@@ -33,6 +33,25 @@ ES2_after() {
     if [ $RetVal != 0 ] ; then
         fail "test failed"
         cat outFile
+    else
+       echo $TL
+# echo The first parameter is $1
+       echo $1   $TL >> $SST_TEST_OUTPUTS/ES2_cumulative.out
+# ls -l $SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES2_cumulative.out
+       RL=`grep $1 $SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES2_cumulative.out`
+       if [ $? != 0 ] ; then 
+          echo " Can't locate this test in Reference file "
+          fail " # $TEST_INDEX:  Can't locate this test in Reference file "
+          FAILED="TRUE"
+       else
+           if [[ "$RL" != *"$TL"* ]] ; then 
+               echo output does not match reference time
+               echo "Reference  $RL" | awk '{print $1, $3, $4, $5, $6, $7, $8, $9}'
+               echo "Out Put   $TL" 
+               fail " # $TEST_INDEX:  output does not match reference time"
+               FAILED="TRUE"
+           fi
+       fi
     fi
     endSeconds=`date +%s`
     elapsedSeconds=$(($endSeconds -$startSeconds))
@@ -67,7 +86,7 @@ do
    sed -i'.x' 's/$/ > outFile/' _tmp_${ind}
    sed -i'.z' 's/sst/${sut}/' _tmp_${ind}
    cat _tmp_${ind} >> SHU.in
-   echo ES2_after >> SHU.in
+   echo ES2_after ${hash} >> SHU.in
    echo "}"  >> SHU.in
 
    ind=$(( ind + 1 ))
