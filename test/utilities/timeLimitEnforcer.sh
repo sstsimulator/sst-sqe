@@ -15,6 +15,7 @@ if [[ ${SST_TEST_ONE_TEST_TIMEOUT:+isSet} != isSet ]] ; then
     SST_TEST_ONE_TEST_TIMEOUT=1800         # 30 minutes 1800 seconds
 fi
 CASE=$2
+    SST_TEST_ONE_TEST_TIMEOUT=5000         # Over an hour
 
 ####                    The OverRide
 if [[ ${SST_TEST_TIMEOUT_OVERRIDE:+isSet} == isSet ]] ; then
@@ -35,7 +36,7 @@ export TL_PPID=$PPID
 export TL_CALLER=$1
 
 ####                     The Time Limit flag
-TIME_FLAG=/tmp/TimeFlag_${1}_${TL_MY_PID}
+TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_${1}_${TL_MY_PID}
 echo $SST_TEST_ONE_TEST_TIMEOUT >> $TIME_FLAG
 chmod 777 $TIME_FLAG
 echo "         Create Time Limit Flag file, $TIME_FLAG"

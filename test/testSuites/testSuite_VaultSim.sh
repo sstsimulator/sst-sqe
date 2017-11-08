@@ -32,8 +32,8 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
-mkdir /tmp/$$VaultS
-cd /tmp/$$VaultS
+mkdir $SSTTESTTEMPFILES/$$VaultS
+cd $SSTTESTTEMPFILES/$$VaultS
 
 OPWD=`pwd`    # Save Original PWD
 
@@ -63,7 +63,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
 
     (${sut} ${sutArgs} > ${outFile})
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
