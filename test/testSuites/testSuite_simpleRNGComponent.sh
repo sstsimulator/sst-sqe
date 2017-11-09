@@ -59,7 +59,7 @@ RNG_case=$1
 #        ${su t} ${sutArgs} | grep Random | tail -5 > $outFile    ### space inserted ##
         ${sut} ${sutArgs} > $outFile
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
