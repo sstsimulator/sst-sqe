@@ -59,8 +59,6 @@ Match=$2    ##  Match criteron
     testDataFileBase="test_memHA_$memHA_case"
     memH_test_dir=$SST_REFERENCE_ELEMENTS/memHierarchy/tests
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-      VGout="${SST_TEST_OUTPUTS}/${testDataFileBase}.VGout" 
-      rm -f $VGout
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
@@ -75,7 +73,6 @@ Match=$2    ##  Match criteron
     pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
-   sut=$SST_INSTALL_BIN/../libexec/sstsim.x
 
     pyFileName=`echo test${memHA_case}.py | sed s/_/-/`
     sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/$pyFileName
@@ -83,17 +80,15 @@ Match=$2    ##  Match criteron
 
     echo " Running from `pwd`"
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
-       mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles valgrind --track-origins=yes --log-file=$VGout ${sut} ${sutArgs}
+       mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
        RetVal=$?
-   checkValgrindOutput $VGout 1 
        cat ${testOutFiles}* > $outFile
        myWC $outFile
        remove_DRAMSim_noise $outFile
        myWC $outFile
     else
-       valgrind --track-origins=yes --log-file=$VGout ${sut} ${sutArgs} > ${outFile}
+       ${sut} ${sutArgs} > ${outFile}
        RetVal=$?
-   checkValgrindOutput $VGout 1 
     fi
 
     TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
