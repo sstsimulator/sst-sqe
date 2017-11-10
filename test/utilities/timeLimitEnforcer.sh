@@ -15,7 +15,6 @@ if [[ ${SST_TEST_ONE_TEST_TIMEOUT:+isSet} != isSet ]] ; then
     SST_TEST_ONE_TEST_TIMEOUT=1800         # 30 minutes 1800 seconds
 fi
 CASE=$2
-    SST_TEST_ONE_TEST_TIMEOUT=5000         # Over an hour
 
 ####                    The OverRide
 if [[ ${SST_TEST_TIMEOUT_OVERRIDE:+isSet} == isSet ]] ; then
