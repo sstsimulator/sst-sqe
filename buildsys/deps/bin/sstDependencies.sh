@@ -329,6 +329,20 @@ sstDepsDoStaging ()
 
     fi
 
+    if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
+    then
+        #-----------------------------------------------------------------------
+        # GOBLIN_HMCSIM
+        #-----------------------------------------------------------------------
+        sstDepsStage_goblin_hmcsim
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: goblin_hmcsim code staging failure"
+            return $retval
+        fi
+    fi
 }
 
 #-------------------------------------------------------------------------------
@@ -855,6 +869,21 @@ sstDepsDeploy ()
         fi
     fi
 
+    if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
+    then
+        #-----------------------------------------------------------------------
+        # GOBLIN_HMCSIM
+        #-----------------------------------------------------------------------
+        sstDepsDeploy_goblin_hmcsim
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: goblin_hmcsim deployment failure"
+            return $retval
+        fi
+    fi
+    
     #     Put Gem5 Last, so no one else can be affected by gcc module hanky-panky
 
     if [ ! -z "${SST_BUILD_GEM5}" ]
@@ -1037,6 +1066,13 @@ sstDepsDoQuery ()
 	sstDepsQuery_chdl_module
     fi
 
+    if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
+    then
+        #-----------------------------------------------------------------------
+        # GOBLIN_HMCSIM
+        #-----------------------------------------------------------------------
+        sstDepsQuery_goblin_hmcsim
+    fi
 }
 
 #===============================================================================
@@ -1168,6 +1204,7 @@ sstDepsDoDependencies ()
 #   -z Zoltan version (default|3.2|3.83.8.3|none)
 #   -b Boost version (default|1.50|1.49|1.43|none)
 #   -g gem5 version (default|4.0|stabledevel|gcc-4.6.4|none)
+#   -G Goblim HMCSim (default|stabledevel|none)
 #   -m McPAT version (default|beta|none)
 #   -M macsim version (default|1.1|1.2_pre|1.2|2.0.3|2.0.4|2.1.0|2.2.0)
 #   -i IntSim version (default|static|none)
@@ -1193,7 +1230,7 @@ sstDepsDoDependencies ()
 # use getopts
 OPTIND=1 
 
-while getopts :k:d:p:z:b:g:m:M:i:o:h:s:q:e:4:I:N:a:c: opt
+while getopts :k:d:p:z:b:g:G:m:M:i:o:h:s:q:e:4:I:N:a:c: opt
 
 do
     case "$opt" in
@@ -1363,6 +1400,22 @@ do
                     ;;
                 *) # unknown gem5 argument
                     echo "# Unknown argument '$OPTARG', will not build gem5"
+                    ;;
+            esac
+            ;;
+        G) # Goblin_HMCSIM
+            echo "# found the -G (goblin_hmcsim) option, with value $OPTARG"
+            # process arg
+            case "$OPTARG" in
+                default|stabledevel) # build latest Goblin_HMCSIM from repository ("stable development")
+                    echo "# (default) stabledevel: build latest Goblin_HMCSIM from repository"
+                    . ${SST_DEPS_BIN}/sstDep_goblin_hmcsim_stabledevel.sh
+                    ;;
+                none) # do not build (explicit)
+                    echo "# none: will not build Goblin_HMCSIM"
+                    ;;
+                *) # unknown Goblin_HMCSIM argument
+                    echo "# Unknown argument '$OPTARG', will not build Goblin_HMCSIM"
                     ;;
             esac
             ;;

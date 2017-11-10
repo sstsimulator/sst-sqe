@@ -47,8 +47,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
       c_day_plus_2=$(($c_day+2))
  
       if [ $today -gt $c_day_plus_2 ] ; then
-         echo "Remove /tmp/$name"
-         rm /tmp/$name
+         echo "Remove $SSTTESTTEMPFILES/$name"
+         rm $SSTTESTTEMPFILES/$name
       fi
     
     done 3<__rmlist
@@ -68,6 +68,8 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         echo "Ariel on Ubuntu not working on Sandy bridge and Ivy bridge tests"
     fi
    
+    mkdir $SSTTESTTEMPFILES/$$Ariel_run
+    cd $SSTTESTTEMPFILES/$$Ariel_run
 echo " First call to countStreams follow: "
     countStreams    
 
@@ -193,7 +195,7 @@ Ariel_template() {
         # Run SUT
         ${sut} ${sutArgs} > $outFile
         RetVal=$?
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 

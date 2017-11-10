@@ -73,7 +73,7 @@ test_simpleStatisticsComponent() {
         # Run SUT
         (${sut} ${sutArgs} > $outFile)
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -111,6 +111,9 @@ wc $referenceFile $outFile
 
 export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
+
+mkdir $SSTTESTTEMPFILES/$$simpleStat
+cd $SSTTESTTEMPFILES/$$simpleStat
 
 
 # Invoke shunit2. Any function in this file whose name starts with

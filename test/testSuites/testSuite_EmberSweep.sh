@@ -84,7 +84,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     #     The Python script does not do this
 
 
-    mkdir ${SST_TEST_SUITES}/emberSweep_folder
+    mkdir -p ${SST_TEST_SUITES}/emberSweep_folder
     pushd ${SST_TEST_SUITES}/emberSweep_folder
     cp ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/* .
     chmod +w *
@@ -124,7 +124,7 @@ ES_start() {
 ES_fini() {
    TL=`grep Simulation.is.complete tmp_file`
    RetVal=$?
-   TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+   TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
    if [ -e $TIME_FLAG ] ; then 
         echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
         fail " Time Limit detected at `cat $TIME_FLAG` seconds" 

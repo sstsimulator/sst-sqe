@@ -81,7 +81,7 @@ test_BadPort() {
              script -a $outFile ${sut} ${sutArgs} 2>$errFile   #### this is MacOS version 
         fi
         retval=$?
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
