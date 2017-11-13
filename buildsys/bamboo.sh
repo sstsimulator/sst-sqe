@@ -1152,7 +1152,7 @@ getconfig() {
             elementsConfigStr="NOBUILD"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_HOME --disable-regex --with-sst-core=$SST_CORE_INSTALL"
             externalelementConfigStr="NOBUILD"
-            junoConfigStr="$junobaseoptions"
+            junoConfigStr="NOBUILD"
             ;;
    
         sst-macro_nosstcore_mac) 
@@ -1169,7 +1169,7 @@ getconfig() {
             elementsConfigStr="NOBUILD"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_HOME --disable-regex"
             externalelementConfigStr="NOBUILD"
-            junoConfigStr="$junobaseoptions"
+            junoConfigStr="NOBUILD"
             ;;
    
         sst-macro_withsstcore_linux) 
@@ -1186,7 +1186,7 @@ getconfig() {
             elementsConfigStr="NOBUILD"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
             externalelementConfigStr="NOBUILD"
-            junoConfigStr="$junobaseoptions"
+            junoConfigStr="NOBUILD"
             ;;
    
         sst-macro_nosstcore_linux) 
@@ -1203,7 +1203,7 @@ getconfig() {
             elementsConfigStr="NOBUILD"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers"
             externalelementConfigStr="NOBUILD"
-            junoConfigStr="$junobaseoptions"
+            junoConfigStr="NOBUILD"
             ;;
             
   ## perhaps do no more here
