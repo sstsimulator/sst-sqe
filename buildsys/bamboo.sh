@@ -409,9 +409,21 @@ echo " #####################################################"
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_BASE/local/sst-core/lib
         ##     Source the install location variables from the build
         . ../../SST_deps_env.sh
+echo ' ' ; echo " Insert debug code"
+grep -i goblin ../../SST_deps_env.sh
+echo ' '
+echo "$SST_DEPS_INSTALL_HYBRIDSIM"
+echo "$SST_DEPS_INSTALL_HYBRIDSIM/.."
+ls $SST_DEPS_INSTALL_HYBRIDSIM/..
+echo ' '
+env | grep SST_DEPS_INSTALL
+##
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_GEM5SST:$SST_DEPS_INSTALL_DRAMSIM:$SST_DEPS_INSTALL_QSIM:$SST_DEPS_INSTALL_QSIM/lib:$SST_DEPS_INSTALL_HYBRIDSIM:$SST_DEPS_INSTALL_NVDIMMSIM;$SST_DEPS_INSTALL_Goblin_HMCSIM
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_CHDL/lib
-        
+##
+echo ' '
+echo $LD_LIBRARY_PATH
+echo "       ------ END of Debug Code          ------"
         if [ `uname` == "Darwin" ] 
         then
            export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
