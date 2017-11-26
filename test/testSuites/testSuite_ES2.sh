@@ -18,13 +18,9 @@ cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/emberLoad.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/loadInfo.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/networkConfig.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/defaultParams.py .
-if [ -e $SST_ROOT/sst-elements/src/sst/elements/ember/test/ES-shmem_List-of-Tests ] ; then
-    ln -s $SST_ROOT/sst-elements/src/sst/elements/ember/test/ES-shmem_List-of-Tests ./List-of-Tests
-    referenceFile=$SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES-shmem_cumulative.out
-else
-    ln -s $SST_TEST_ROOT/testInputFiles/ES2_List-of-Tests ./List-of-Tests
-    referenceFile=$SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES2_cumulative.out
-fi
+
+referenceFile=$SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES-shmem_cumulative.out
+ln -s $SST_TEST_ROOT/testInputFiles/ES-shmem_List-of-Tests ./List-of-Tests
 
 pwd ; ls -ltr  | tail -5
 
