@@ -307,6 +307,28 @@ test_memHA_ThroughputThrottling () {
 }
 
 
+test_memHA_BackendGoblinHMC () {
+    memHA_Template BackendGoblinHMC "M"
+}
+
+
+test_memHA_CustomCmdGoblin_1 () {
+    memHA_Template CustomCmdGoblin_1 "M"
+}
+
+
+test_memHA_CustomCmdGoblin_2 () {
+    memHA_Template CustomCmdGoblin_2 "M"
+}
+
+
+test_memHA_CustomCmdGoblin_3 () {
+    memHA_Template CustomCmdGoblin_3 "M"
+}
+
+
+export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
+
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
