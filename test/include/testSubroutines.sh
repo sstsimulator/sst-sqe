@@ -352,6 +352,10 @@ fi
 if [ $contextNumber -gt 0 ] ; then
     echo ' '
     echo "Valgrind found $contextNumber issues"
+    echo ' '
+    wc $VGout
+    sed 200q $VGout
+    echo ' '
     fail " $testDataFileBase: Valgind found $contextNumber issues"
     echo ' '
 else
