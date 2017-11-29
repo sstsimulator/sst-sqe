@@ -25,6 +25,7 @@ ln -s $SST_TEST_ROOT/testInputFiles/ES-shmem_List-of-Tests ./List-of-Tests
 pwd ; ls -ltr  | tail -5
 
 ES2_after() {
+        TEST_INDEX=$2
         TL=`grep 'simulated time' outFile`
         RetVal=$?
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
@@ -60,7 +61,7 @@ ES2_after() {
     fi
     endSeconds=`date +%s`
     elapsedSeconds=$(($endSeconds -$startSeconds))
-    echo ": Wall Clock Time  $elapsedSeconds seconds"
+    echo "ES2_${TEST_INDEX}: Wall Clock Time  $elapsedSeconds seconds"
     export startSeconds=$endSeconds
 }
 
@@ -91,7 +92,7 @@ do
    sed -i'.x' 's/$/ > outFile/' _tmp_${ind}
    sed -i'.z' 's/sst/${sut}/' _tmp_${ind}
    cat _tmp_${ind} >> SHU.in
-   echo ES2_after ${hash} >> SHU.in
+   echo ES2_after ${hash} ${indx} >> SHU.in
    echo "}"  >> SHU.in
 
    ind=$(( ind + 1 ))
