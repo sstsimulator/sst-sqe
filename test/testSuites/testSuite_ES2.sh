@@ -18,9 +18,14 @@ cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/emberLoad.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/loadInfo.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/networkConfig.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/defaultParams.py .
+
+referenceFile=$SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES-shmem_cumulative.out
+ln -s $SST_TEST_ROOT/testInputFiles/ES-shmem_List-of-Tests ./List-of-Tests
+
 pwd ; ls -ltr  | tail -5
 
 ES2_after() {
+        TEST_INDEX=$2
         TL=`grep 'simulated time' outFile`
         RetVal=$?
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
@@ -38,7 +43,8 @@ ES2_after() {
 # echo The first parameter is $1
        echo $1   $TL >> $SST_TEST_OUTPUTS/ES2_cumulative.out
 # ls -l $SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES2_cumulative.out
-       RL=`grep $1 $SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES2_cumulative.out`
+#       RL=`grep $1 $SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES2_cumulative.out`
+       RL=`grep $1 $referenceFile`
        if [ $? != 0 ] ; then 
           echo " Can't locate this test in Reference file "
           fail " # $TEST_INDEX:  Can't locate this test in Reference file "
@@ -55,7 +61,7 @@ ES2_after() {
     fi
     endSeconds=`date +%s`
     elapsedSeconds=$(($endSeconds -$startSeconds))
-    echo ": Wall Clock Time  $elapsedSeconds seconds"
+    echo "ES2_${TEST_INDEX}: Wall Clock Time  $elapsedSeconds seconds"
     export startSeconds=$endSeconds
 }
 
@@ -65,7 +71,7 @@ ES2_after() {
         do_md5="md5sum"
     fi
 
-ln -s $SST_TEST_ROOT/testInputFiles/ES2_List-of-Tests ./List-of-Tests
+## ln -s $SST_TEST_ROOT/testInputFiles/ES2_List-of-Tests ./List-of-Tests
 rm SHU.in
 ind=1
 while [ $ind -lt 127 ] 
@@ -86,7 +92,7 @@ do
    sed -i'.x' 's/$/ > outFile/' _tmp_${ind}
    sed -i'.z' 's/sst/${sut}/' _tmp_${ind}
    cat _tmp_${ind} >> SHU.in
-   echo ES2_after ${hash} >> SHU.in
+   echo ES2_after ${hash} ${indx} >> SHU.in
    echo "}"  >> SHU.in
 
    ind=$(( ind + 1 ))
