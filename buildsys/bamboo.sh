@@ -662,7 +662,6 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_BadPort.sh
     ${SST_TEST_SUITES}/testSuite_scheduler.sh
     ${SST_TEST_SUITES}/testSuite_scheduler_DetailedNetwork.sh
-    ${SST_TEST_SUITES}/testSuite_ES2.sh
 
     # Add other test suites here, i.e.
     # ${SST_TEST_SUITES}/testSuite_moe.sh
@@ -681,6 +680,7 @@ echo " #####################################################"
     #    Valgrind on 180 test Suite takes 15 hours. (Aug. 2016)
     if [[ $1 != "sstmainline_config_valgrind" ]] ; then
        ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
+       ${SST_TEST_SUITES}/testSuite_ES2.sh
     fi
 
     if [ $1 != "sstmainline_config_no_mpi" ] && [[ $1 != "sstmainline_config_valgrind" ]] ; then
