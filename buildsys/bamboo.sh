@@ -642,6 +642,7 @@ echo " #####################################################"
     fi
     
     ${SST_TEST_SUITES}/testSuite_Ariel.sh
+    ${SST_TEST_SUITES}/testSuite_juno.sh
     ${SST_TEST_SUITES}/testSuite_Samba.sh
     ${SST_TEST_SUITES}/testSuite_Messier.sh
     ${SST_TEST_SUITES}/testSuite_CramSim.sh
