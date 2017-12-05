@@ -5,6 +5,9 @@
 
 # This Suite does minumum test on the juno element
 
+TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
+# Load test definitions
+. $TEST_SUITE_ROOT/../include/testDefinitions.sh
 #==========================================================================
 # Variables global to functions in this suite
 #===============================================================================
