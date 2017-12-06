@@ -86,7 +86,7 @@ do
 ##   hash=`md5sum _tmp_${ind} | awk '{print $1}'`
    indx=$(printf "%03d" $ind)
    echo "test_ESshmem_${indx}_${hash} () {" >> SHU.in
-   echo "L_TESTFILE+=testESshmem_${indx}" >> SHU.in
+   echo "L_TESTFILE+=testESshmem_${indx} ; testDataFileBase=testESshmem_${indx}" >> SHU.in
    echo "cd $SST_TEST_ROOT/testSuites/ESshmem_folder" >> SHU.in
 ##   echo "echo \"sut == \$sut \" " >> SHU.in
    sed -i'.x' 's/$/ > outFile/' _tmp_${ind}
