@@ -20,6 +20,7 @@ cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/networkConfig.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/defaultParams.py .
 
 referenceFile=$SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES-shmem_cumulative.out
+cksum $referenceFile
 ln -s $SST_TEST_ROOT/testInputFiles/ES-shmem_List-of-Tests ./List-of-Tests
 
 pwd ; ls -ltr  | tail -5
@@ -153,3 +154,5 @@ export SST_TEST_ONE_TEST_TIMEOUT=200
 export startSeconds=`date +%s`
 
 (. ${SHUNIT2_SRC}/shunit2 $SST_TEST_ROOT/testSuites/ES2_folder/SHU.in)
+
+cksum $SST_TEST_OUTPUTS/ES2_cumulative.out
