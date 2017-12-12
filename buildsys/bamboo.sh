@@ -3051,6 +3051,7 @@ then
         fi               #   End of sstmainline_config_dist_test  conditional
     fi
 fi
+date
 
 if [ $retval -eq 0 ]
 then
