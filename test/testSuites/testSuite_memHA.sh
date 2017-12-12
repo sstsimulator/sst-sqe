@@ -327,6 +327,23 @@ test_memHA_CustomCmdGoblin_3 () {
 }
 
 
+test_memHA_BackendTimingDRAM_1 () {
+    memHA_Template BackendTimingDRAM_1 "M"
+}
+
+test_memHA_BackendTimingDRAM_2 () {
+    memHA_Template BackendTimingDRAM_2 "M"
+}
+
+test_memHA_BackendTimingDRAM_3 () {
+    memHA_Template BackendTimingDRAM_3 "M"
+}
+
+test_memHA_BackendTimingDRAM_4 () {
+    memHA_Template BackendTimingDRAM_4 "M"
+}
+
+
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
