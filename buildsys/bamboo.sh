@@ -2862,6 +2862,8 @@ echo "bamboo.sh: Done sourcing deps/include/depsDefinitions.sh"
 # retain binaries after build
 #export SST_RETAIN_BIN=1
 
+echo "Repos are Cloned"
+exit 0
 
 echo "==============================INITIAL ENVIRONMENT DUMP================="
 env|sort
