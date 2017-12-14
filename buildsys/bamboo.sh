@@ -2846,6 +2846,8 @@ export SST_INSTALL_DEPS=${SST_BASE}/local
 # Initialize build type to null
 export SST_BUILD_TYPE=""
 
+unset SST_GIT_CLONE_DEPTH_PARAMETER
+
 cloneOtherRepos 
 
 # Load test definitions
