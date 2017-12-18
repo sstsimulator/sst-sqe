@@ -488,6 +488,11 @@ echo " #####################################################"
          return
     fi
 
+
+        ${SST_TEST_SUITES}/testSuite_memHA.sh
+        return
+
+
     if [ $1 == "sstmainline_config_no_gem5" ] ; then
         ${SST_TEST_SUITES}/testSuite_Ariel.sh
     fi
