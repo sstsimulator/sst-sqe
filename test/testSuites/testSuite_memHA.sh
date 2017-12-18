@@ -123,7 +123,7 @@ Match=$2    ##  Match criteron
     grep 'btl_tcp_endpoint' $outFile > /dev/null
     if [ $? == 0 ] ; then
         echo ' '; echo 'Removing mca_btl_tcp -- fail messages' ; echo ' '
-        sed -i.x 'btl_tcp_endpoint/d' $outFile
+        sed -i.x '/btl_tcp_endpoint/d' $outFile
         rm -f ${outFile}.x
     fi
 
