@@ -119,6 +119,17 @@ Match=$2    ##  Match criteron
 
     RemoveComponentWarning
 
+#    The following could/should be in test Subroutines
+    grep 'btl_tcp_endpoint' $outFile > /dev/null
+    if [ $? == 0 ] ; then
+        echo ' '; echo "$memHA_case: Removing mca_btl_tcp -- fail messages" ; echo ' '
+        sed -i.x '/btl_tcp_endpoint/d' $outFile
+        rm -f ${outFile}.x
+        myWC $outFile
+    else
+        echo " No mca btl tcp endpoint messages encountered"
+    fi
+
     pushd ${SSTTESTTEMPFILES}
 
     diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
