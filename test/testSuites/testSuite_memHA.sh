@@ -158,43 +158,43 @@ Match=$2    ##  Match criteron
        ## Aug 22, 2017   Match is never available
                      echo "PASS: word/line count match $memHA_case"
                  else
-##                  fail "output does not match Reference"
-##
-##                   echo "   ---- Here is the sorted diff ---"
-##                   cat ${SSTTESTTEMPFILES}/diff_sorted 
+                  fail "output does not match Reference"
+
+                   echo "   ---- Here is the sorted diff ---"
+                   cat ${SSTTESTTEMPFILES}/diff_sorted 
 
 ## ##   Follows complicated code to accept slight difference (original for Flush)
 #      It was very specific code to accomodate one extra clock tick occasionally
 #      encountered with multi core processing. 
 #            - - - - -
-                      echo "   === #### Trying the special exception for Flush processing  "
-                      wc_diff=`wc -l ${SSTTESTTEMPFILES}/diff_sorted |
-                                                               awk '{print $1}'`
-                      NUM_IDLE=$wc_diff
-                      IND=2
- echo NUM_IDLE=$NUM_IDLE
-                      while [ $IND -lt $NUM_IDLE ]
-                      do
- echo in loop
-                          R=$IND
-                          O=$((IND + 2))
-     echo $R and $O
-                          tmpds=${SSTTESTTEMPFILES}/diff_sorted
-                          CountO=`sed -n ${O},${O}p $tmpds | sed 's/.*=//'|sed 's/;//'`
-                          CountR=`sed -n ${R},${R}p $tmpds | sed 's/.*=//'|sed 's/;//'`
- echo CountO = $CountO
- echo CountR = $CountR
-                          CountDifference=$((CountR-CountO))
-                          echo "CountDifference is $CountDifference"
-                          IND=$((IND + 4))
-                          echo "Count difference is $CountDifference"
-                          if [ $CountDifference != 1 ] ; then
-                              fail "Special memHA Flush handling did NOT save it"
-                              wc ${SSTTESTTEMPFILES}/diff_sorted
-                              cat ${SSTTESTTEMPFILES}/diff_sorted
-                              break
-                          fi
-                      done
+##                      echo "   === #### Trying the special exception for Flush processing  "
+##                      wc_diff=`wc -l ${SSTTESTTEMPFILES}/diff_sorted |
+##                                                               awk '{print $1}'`
+##                      NUM_IDLE=$wc_diff
+##                      IND=2
+## echo NUM_IDLE=$NUM_IDLE
+##                      while [ $IND -lt $NUM_IDLE ]
+##                      do
+## echo in loop
+##                          R=$IND
+##                          O=$((IND + 2))
+##     echo $R and $O
+##                          tmpds=${SSTTESTTEMPFILES}/diff_sorted
+##                          CountO=`sed -n ${O},${O}p $tmpds | sed 's/.*=//'|sed 's/;//'`
+##                          CountR=`sed -n ${R},${R}p $tmpds | sed 's/.*=//'|sed 's/;//'`
+## echo CountO = $CountO
+## echo CountR = $CountR
+##                          CountDifference=$((CountR-CountO))
+##                          echo "CountDifference is $CountDifference"
+##                          IND=$((IND + 4))
+##                          echo "Count difference is $CountDifference"
+##                          if [ $CountDifference != 1 ] ; then
+##                              fail "Special memHA Flush handling did NOT save it"
+##                              wc ${SSTTESTTEMPFILES}/diff_sorted
+##                              cat ${SSTTESTTEMPFILES}/diff_sorted
+##                              break
+##                          fi
+##                      done
                  fi
              fi
          fi
