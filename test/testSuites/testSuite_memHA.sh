@@ -66,7 +66,11 @@ Match=$2    ##  Match criteron
         referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
     else
         #           This is multi-core case
-        referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MC.out"
+        if [ -e "$memH_test_dir/refFiles/${testDataFileBase}_MC.out" ] ; then
+            referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MC.out"
+        else
+            referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+        fi
     fi
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -324,6 +328,23 @@ test_memHA_CustomCmdGoblin_2 () {
 
 test_memHA_CustomCmdGoblin_3 () {
     memHA_Template CustomCmdGoblin_3 "M"
+}
+
+
+test_memHA_BackendTimingDRAM_1 () {
+    memHA_Template BackendTimingDRAM_1 "M"
+}
+
+test_memHA_BackendTimingDRAM_2 () {
+    memHA_Template BackendTimingDRAM_2 "M"
+}
+
+test_memHA_BackendTimingDRAM_3 () {
+    memHA_Template BackendTimingDRAM_3 "M"
+}
+
+test_memHA_BackendTimingDRAM_4 () {
+    memHA_Template BackendTimingDRAM_4 "M"
 }
 
 
