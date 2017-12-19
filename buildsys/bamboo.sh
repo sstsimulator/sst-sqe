@@ -2851,6 +2851,8 @@ export SST_INSTALL_DEPS=${SST_BASE}/local
 # Initialize build type to null
 export SST_BUILD_TYPE=""
 
+unset SST_GIT_CLONE_DEPTH_PARAMETER
+
 cloneOtherRepos 
 
 # Load test definitions
@@ -2867,6 +2869,8 @@ echo "bamboo.sh: Done sourcing deps/include/depsDefinitions.sh"
 # retain binaries after build
 #export SST_RETAIN_BIN=1
 
+echo "Repos are Cloned"
+exit 0
 
 echo "==============================INITIAL ENVIRONMENT DUMP================="
 env|sort
