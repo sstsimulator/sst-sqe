@@ -323,6 +323,20 @@ wq
 @@@
    fi
 }
+
+RemoveWarning_btl_tcp() {
+#    The following could/should be in test Subroutines
+    grep 'btl_tcp_endpoint' $outFile > /dev/null
+    if [ $? == 0 ] ; then
+        echo ' '; echo "$testDataFileBase: Removing mca_btl_tcp -- fail messages" ; echo ' '
+        sed -i.x '/btl_tcp_endpoint/d' $outFile
+        rm -f ${outFile}.x
+        myWC $outFile
+    else
+        echo "$testDataFileBase: No mca btl tcp endpoint messages encountered"
+    fi
+}
+
 # ----------------------------------------------------
 #    Do the check on Valgrind on a test
 # ----------------------------------------------------
