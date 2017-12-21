@@ -92,6 +92,8 @@ Tol=$2    ##  curTick tolerance
 
         RemoveComponentWarning
 
+        RemoveWarning_btl_tcp
+
         diff ${referenceFile} ${outFile} > /dev/null;
         if [ $? -ne 0 ]
         then
