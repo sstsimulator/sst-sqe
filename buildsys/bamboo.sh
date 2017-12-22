@@ -1766,6 +1766,35 @@ setUPforMakeDisttest() {
      echo "---   PWD  `pwd`"    
      mv $Package sst-elements
 
+#                     MACRO
+     cd $SST_ROOT/sstmacro${LOC_OF_TAR}
+     echo "---   PWD  `pwd`"    
+ls
+     Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
+     echo  PACKAGE is $Package
+     tarName=${Package}.tar.gz
+     ls $tarName
+     if [ $? != 0 ] ; then
+         ls
+         echo Can NOT find Tar File $Package .tar.gz
+         exit 1
+     fi
+     cd $SST_ROOT/distTestDir/trunk
+     mv $SST_ROOT/sst-elements${LOC_OF_TAR}/$tarName .
+     if [ $? -ne 0 ] ; then
+          echo "Move failed  \$SST_ROOT/$tarName to ."
+          exit 1
+     fi
+     echo "   Untar the created file, $tarName"
+     tar xzf $tarName
+     if [ $? -ne 0 ] ; then
+          echo "Untar of $tarName failed"
+          exit 1
+     fi
+     echo "---   PWD  `pwd`"    
+     mv $Package sst-elements
+
+
 echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO ====================="
 echo " PWD=`pwd` "
      mv $SST_ROOT/sst-external-element .
