@@ -621,7 +621,6 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-        ${SST_TEST_SUITES}/testSuite_macro.sh
         ${SST_TEST_SUITES}/testSuite_memHA.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
         ${SST_TEST_SUITES}/testSuite_CramSim.sh
@@ -844,7 +843,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
+            macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
@@ -860,7 +859,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-libphx=$LIBPHX_HOME/src --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME}   $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
@@ -1127,7 +1126,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions  --with-glpk=${GLPK_HOME} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
-            macroConfigStr="NOBUILD"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
@@ -2273,72 +2272,74 @@ echo "##################### END ######## DEBUG DATA ########################"
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
             ls -ltr | tail -5
-            return $retval        ##   This is in dobuild
+ ##           return $retval        ##   This is in dobuild
+ ##       fi
+        else    
+        
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make on SST-ELEMENTS"
+            echo ' '    
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    
+            # Compile SST-ELEMENTS
+            echo "=== Running make -j4 all ==="
+            make -j4 all
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                return $retval
+            fi
+    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make on SST-ELEMENTS complete without error"
+            echo ' '    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo " "
+            
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make install on SST-ELEMENTS"
+            echo ' '    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            
+            # Install SST-ELEMENTS
+            echo "=== Running make -j4 install ==="
+            make -j4 install
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                return $retval
+            fi
+    
+            echo
+            echo "=== DUMPING The SST-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
+            echo "cat $HOME/.sst/sstsimulator.conf"
+            cat $HOME/.sst/sstsimulator.conf
+            echo "=== DONE DUMPING ==="
+            echo
+            
+            echo
+            echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
+            echo "cat $SST_CONFIG_FILE_PATH"
+            cat $SST_CONFIG_FILE_PATH
+            echo "=== DONE DUMPING ==="
+            echo
+            
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make install on SST-ELEMENTS complete without error"
+            echo ' '    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo " "
+            
+            # Go back to devel/trunk
+            echo "popd"
+            popd
+            echo "Current Working Dir = `pwd`"
+            ls -l
         fi
-        
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo "bamboo.sh: make on SST-ELEMENTS"
-        echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Compile SST-ELEMENTS
-        echo "=== Running make -j4 all ==="
-        make -j4 all
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo "bamboo.sh: make on SST-ELEMENTS complete without error"
-        echo ' '    
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-        
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo "bamboo.sh: make install on SST-ELEMENTS"
-        echo ' '    
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        
-        # Install SST-ELEMENTS
-        echo "=== Running make -j4 install ==="
-        make -j4 install
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo
-        echo "=== DUMPING The SST-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
-        echo "cat $HOME/.sst/sstsimulator.conf"
-        cat $HOME/.sst/sstsimulator.conf
-        echo "=== DONE DUMPING ==="
-        echo
-        
-        echo
-        echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-        echo "cat $SST_CONFIG_FILE_PATH"
-        cat $SST_CONFIG_FILE_PATH
-        echo "=== DONE DUMPING ==="
-        echo
-        
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo "bamboo.sh: make install on SST-ELEMENTS complete without error"
-        echo ' '    
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-        
-        # Go back to devel/trunk
-        echo "popd"
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
     fi
 
     ### BUILDING THE SST-MACRO
@@ -2434,6 +2435,30 @@ echo "##################### END ######## DEBUG DATA ########################"
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
+        # Check to see if we are actually performing make dist 
+        echo "at this time \$buildtype is $buildtype"
+        if [[ $buildtype == *_dist_* ]] ; then
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            echo ' '    
+            echo "bamboo.sh: make dist on SST-ELEMENTS"
+            echo ' '    
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            make dist
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                return $retval
+            fi
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            echo ' '    
+            echo "bamboo.sh: make dist on SST-ELEMENTS is complete without error"
+            echo ' '    
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            echo " "
+            ls -ltr | tail -5
+            return $retval        ##   This is in dobuild
+        fi
+
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make on SST-MACRO"
