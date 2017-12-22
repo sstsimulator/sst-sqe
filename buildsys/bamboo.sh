@@ -1767,7 +1767,7 @@ setUPforMakeDisttest() {
      mv $Package sst-elements
 
 #                     MACRO
-     cd $SST_ROOT/sstmacro${LOC_OF_TAR}
+     cd $SST_ROOT/sst-macro${LOC_OF_TAR}
      echo "---   PWD  `pwd`"    
 ls
      Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
@@ -2469,7 +2469,7 @@ echo "##################### END ######## DEBUG DATA ########################"
         if [[ $buildtype == *_dist_* ]] ; then
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
-            echo "bamboo.sh: make dist on SST-ELEMENTS"
+            echo "bamboo.sh: make dist on SST-MACRO"
             echo ' '    
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             make dist
@@ -2480,7 +2480,7 @@ echo "##################### END ######## DEBUG DATA ########################"
             fi
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
-            echo "bamboo.sh: make dist on SST-ELEMENTS is complete without error"
+            echo "bamboo.sh: make dist on SST-MACRO is complete without error"
             echo ' '    
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
