@@ -2026,29 +2026,29 @@ dobuild() {
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
         if [[ $buildtype == *_dist_* ]] ; then
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST-CORE"
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             make dist
             retval=$?
             if [ $retval -ne 0 ]
             then
                 return $retval
             fi
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST_CORE is complete without error"
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
             ls -ltr | tail -5
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: After make dist on SST_CORE do the make install "
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
         fi
         
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
@@ -2255,22 +2255,22 @@ echo "##################### END ######## DEBUG DATA ########################"
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
         if [[ $buildtype == *_dist_* ]] ; then
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST-ELEMENTS"
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             make dist
             retval=$?
             if [ $retval -ne 0 ]
             then
                 return $retval
             fi
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST-ELEMENTS is complete without error"
             echo ' '    
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
             ls -ltr | tail -5
             return $retval        ##   This is in dobuild
