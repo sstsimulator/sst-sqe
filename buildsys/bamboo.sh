@@ -619,6 +619,7 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
         ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
+        ${SST_TEST_SUITES}/testSuite_macro.sh
         ${SST_TEST_SUITES}/testSuite_memHA.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
         ${SST_TEST_SUITES}/testSuite_CramSim.sh
@@ -841,7 +842,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
