@@ -19,6 +19,7 @@ pwd
 df -h .
 echo ' '
 
+export SST_BUILDOUTOFSOURCE=1
 #-------------------------------------------------------------------------
 # Function: TimeoutEx
 # Description:
@@ -1989,6 +1990,8 @@ dobuild() {
         fi
         
         echo "Done with Autogen"
+pwd
+ls -ltrd * | tail -20
         echo "popd"
         popd
         echo "Current Working Dir = `pwd`"
@@ -2211,6 +2214,8 @@ dobuild() {
         fi
 
         echo "Done with Autogen"
+pwd
+ls -ltrd * | tail -20
 
         popd
         echo "Current Working Dir = `pwd`"
