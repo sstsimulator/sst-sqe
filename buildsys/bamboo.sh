@@ -2034,6 +2034,8 @@ ls -ltrd * | tail -20
         
         # Configure SST-CORE
         echo "=== Running $coresourcedir/configure <config args> ==="
+echo "    PWD is `pwd` "
+echo " resourcedir is $coresourcedir"
         $coresourcedir/configure $SST_SELECTED_CORE_CONFIG
         retval=$?
         if [ $retval -ne 0 ]
@@ -2045,8 +2047,13 @@ ls -ltrd * | tail -20
             echo "--------------------dump of config.log--------------------"
             return $retval
         fi
-        
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "     ------------   After configura,e files at coresourced are:"
+ls -ltrd $coresourcedir/* | tail -14
+echo " Local files are ------------"
+ls -ltrd *
+echo  " ---------"
+
+
         echo ' '    
         echo "bamboo.sh: configure on SST-CORE complete without error"
         echo ' '    
