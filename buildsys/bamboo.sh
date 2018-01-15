@@ -2052,6 +2052,8 @@ ls -ltrd * | tail -20
         echo ' '    
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
+pwd
+ls -ltrd * | tail -20
         
         
         # Check to see if we are actually performing make dist 
@@ -2276,6 +2278,8 @@ ls -ltrd * | tail -20
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
+pwd
+ls -ltrd * | tail -20
         
 echo "################################## DEBUG DATA ########################"
 ls
@@ -2469,6 +2473,8 @@ echo "##################### END ######## DEBUG DATA ########################"
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
+pwd
+ls -ltrd * | tail -20
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
         if [[ $buildtype == *_dist_* ]] ; then
