@@ -1991,6 +1991,7 @@ dobuild() {
         
         echo "Done with Autogen"
 pwd
+echo "                                   LINE  $LINENO "
 ls -ltrd * | tail -20
         echo "popd"
         popd
@@ -2048,8 +2049,10 @@ echo " resourcedir is $coresourcedir"
             return $retval
         fi
 echo "     ------------   After configura,e files at coresourced are:"
+echo "                                   LINE  $LINENO "
 ls -ltrd $coresourcedir/* | tail -14
 echo " Local files are ------------"
+echo "                                   LINE  $LINENO "
 ls -ltrd *
 echo  " ---------"
 
@@ -2060,6 +2063,7 @@ echo  " ---------"
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
 pwd
+echo "                                   LINE  $LINENO "
 ls -ltrd * | tail -20
         
         
@@ -2224,7 +2228,7 @@ ls -ltrd * | tail -20
 
         echo "Done with Autogen"
 pwd
-ls -ltrd * | tail -20
+echo "                                   LINE  $LINENO "
 
         popd
         echo "Current Working Dir = `pwd`"
@@ -2286,6 +2290,7 @@ ls -ltrd * | tail -20
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
 pwd
+echo "                                   LINE  $LINENO "
 ls -ltrd * | tail -20
         
 echo "################################## DEBUG DATA ########################"
@@ -2481,6 +2486,7 @@ echo "##################### END ######## DEBUG DATA ########################"
         echo " "
         
 pwd
+echo "                                   LINE  $LINENO "
 ls -ltrd * | tail -20
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
