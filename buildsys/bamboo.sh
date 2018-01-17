@@ -19,7 +19,7 @@ pwd
 df -h .
 echo ' '
 
-export SST_BUILDOUTOFSOURCE=1
+## export SST_BUILDOUTOFSOURCE=1
 #-------------------------------------------------------------------------
 # Function: TimeoutEx
 # Description:
