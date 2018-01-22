@@ -389,7 +389,9 @@ echo " #####################################################"
    
     # Do we run the Macro Tests    
     if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
-       [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ; then
+       [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ||
+       [ $1 ==  sst_Macro_make_dist ] ; then
+
         ${SST_TEST_SUITES}/testSuite_macro.sh
         # We currently dont want to run any other tests
         return
@@ -1217,6 +1219,25 @@ getconfig() {
             junoConfigStr="NOBUILD"
             ;;
             
+        sst_Macro_make_dist)
+            #-----------------------------------------------------------------
+            # sstmainline_config_dist_test
+            # sst_Macro_make_dist
+            #      Do a "make dist"  (creating a tar file.)
+            #      Then,  untar the created tar-file.
+            #      Invoke bamboo.sh, (this file), to build sst from the tar.  
+            #            Yes, bamboo invoked from bamboo.
+            #      Finally, run tests to validate the created sst.
+            #-----------------------------------------------------------------
+            depsStr="-d none -g none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions"
+            elementsConfigStr="NOBUILD"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
+            externalelementConfigStr="NOBUILD"
+            junoConfigStr="NOBUILD"
+            ;;
+            
   ## perhaps do no more here
         default)
             #-----------------------------------------------------------------
@@ -1868,6 +1889,8 @@ echo  "   We are in distTestDir/trunk"
      echo SST_DEPS_USER_DIR= $SST_DEPS_USER_DIR
      if [ $buildtype == "sstmainline_config_dist_test" ] ; then
          distScenario="sstmainline_config_all"
+     elif [ $buildtype == "sstmainline_config_Macro_make_dist" ] ; then
+         distScenario="sst_macro_withsstcore_Linux"
      else
          distScenario="sstmainline_config_no_gem5"
      fi
