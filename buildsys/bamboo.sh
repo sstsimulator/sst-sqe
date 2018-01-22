@@ -1775,7 +1775,7 @@ setUPforMakeDisttest() {
      cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
 
 #        Move the REFERENCE File pointer
-     export SST_REFERENCE_ELEMENTS=$SST_ROOT/sst-elements/src/sst/elements
+     export SST_REFERENCE_ELEMENTS=$SST_ROOT/distTestDir/trunk/sst-elements/src/sst/elements
 
      rm -rf $SST_ROOT/sst-elements
      echo "   Untar the created file, $tarName"
