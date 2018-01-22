@@ -1756,6 +1756,18 @@ setUPforMakeDisttest() {
           echo "Move failed  \$SST_ROOT/$tarName to ."
           exit 1
      fi
+#       Copy in Reference Files.   They are not in the release
+#       Current location is (new) trunk        
+     pushd src/sst/elements
+
+     for __el in `ls`
+     do 
+         mkdir -p $__el/tests
+         cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+     done
+# there are 3 more to do that don't fit the mold
+#    memHSieve, ariel, zodiac/sirius
+
      rm -rf $SST_ROOT/sst-elements
      echo "   Untar the created file, $tarName"
      tar xzf $tarName
