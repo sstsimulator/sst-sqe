@@ -1727,6 +1727,7 @@ setUPforMakeDisttest() {
           echo "Move failed  \$SST_ROOT/$tarName to ."
           exit 1
      fi
+     rm -rf $SST_ROOT/sst-core
      echo "   Untar the created file, $tarName"
      echo "---   PWD  `pwd`"    
      tar xzf $tarName
@@ -1755,6 +1756,7 @@ setUPforMakeDisttest() {
           echo "Move failed  \$SST_ROOT/$tarName to ."
           exit 1
      fi
+     rm -rf $SST_ROOT/sst-elements
      echo "   Untar the created file, $tarName"
      tar xzf $tarName
      if [ $? -ne 0 ] ; then
