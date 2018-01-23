@@ -1758,8 +1758,13 @@ setUPforMakeDisttest() {
      fi
 #       Copy in Reference Files.   They are not in the release
 #       Current location is (new) trunk        
-     pushd sst-elements/src/sst/elements
+     mkdir -p sst-elements/src/sst/elements
 
+     pushd sst-elements/src/sst/elements
+if [ $? -ne 0 ] ; then
+    echo FAIL
+    exit
+fi
 pwd
      for __el in `ls`
      do 
