@@ -1758,7 +1758,7 @@ setUPforMakeDisttest() {
      fi
 #       Copy in Reference Files.   They are not in the release
 #       Current location is (new) trunk        
-     pushd src/sst/elements
+     pushd sst-elements/src/sst/elements
 
      for __el in `ls`
      do 
