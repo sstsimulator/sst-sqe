@@ -1851,8 +1851,17 @@ echo  "   We are in distTestDir/trunk"
      echo "  Why did we copy bamboo.sh and deps, but link test ????"?
      pushd ../../       # Back to orginal trunk
      ls | awk '{print "rm -rf " $1}' | grep -v -d deps -e distTestDir -e test > rm-extra
+echo using the d
+cat rm-extra
+echo "-------------------------------------------------"
+echo "   Replacing the d with an e"
+     ls | awk '{print "rm -rf " $1}' | grep -v -e deps -e distTestDir -e test > rm-extra
+cat rm-extra
+echo ' end of the new check ' ; echo ' ' ; echo ' '
      . ./rm-extra
      ls
+echo "       LIST THE EXTRA FILES"
+cat rm-extra
      popd
      echo "               extra Files removed ------------  "
 
