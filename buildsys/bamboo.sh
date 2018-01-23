@@ -1855,7 +1855,7 @@ echo using the d
 cat rm-extra
 echo "-------------------------------------------------"
 echo "   Replacing the d with an e"
-     ls | awk '{print "rm -rf " $1}' | grep -v -e deps -e distTestDir -e test > rm-extra
+     ls | awk '{print "rm -rf " $1}' | grep -v -e deps -e distTestDir -e test -e sstDeps > rm-extra
 cat rm-extra
 echo ' end of the new check ' ; echo ' ' ; echo ' '
      . ./rm-extra
