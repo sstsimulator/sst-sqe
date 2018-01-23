@@ -1760,10 +1760,14 @@ setUPforMakeDisttest() {
 #       Current location is (new) trunk        
      pushd sst-elements/src/sst/elements
 
+pwd
      for __el in `ls`
      do 
+echo "element in loop: $__el"
          mkdir -p $__el/tests
          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+ls -ld  SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+
      done
 # there are 3 more to do that don't fit the mold
 #    memHSieve, ariel, zodiac/sirius
