@@ -81,6 +81,11 @@ test_hybridsim() {
     memH_test_dir=${SST_REFERENCE_ELEMENTS}/memHierarchy/tests
     referenceFile="${memH_test_dir}/refFiles/${testDataFileBase}.out"
 ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
+ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
     return 

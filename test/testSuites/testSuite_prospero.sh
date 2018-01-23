@@ -145,6 +145,11 @@ template_prospero() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}_${TYPE}.out"
     referenceFile="${SST_REFERENCE_ELEMENTS}/prospero/tests/refFiles/${testDataFileBase}_${TYPE}.out"
 ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
+ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
     return 

@@ -69,6 +69,11 @@ test_macro_make_check() {
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
 ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
+ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
     return 
@@ -135,6 +140,11 @@ test_macro_make_installcheck() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
 ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 

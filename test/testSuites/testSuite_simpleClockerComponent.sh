@@ -139,6 +139,11 @@ test_simpleClockerComponent() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
 ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
+ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
     return 

@@ -54,11 +54,21 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     referenceFile="${SST_REFERENCE_ELEMENTS}/VaultSimC/tests/refFiles/${testDataFileBase}.out"
 ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
+ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
     return 
 fi 
 ##    referenceFile="./${VSim_case}.ref"
+ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
 ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 

@@ -65,6 +65,11 @@ Match=$2    ##  Match criteron
     if [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
         referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
 ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
+ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
     return 
@@ -74,12 +79,22 @@ fi
         if [ -e "$memH_test_dir/refFiles/${testDataFileBase}_MC.out" ] ; then
             referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MC.out"
 ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
+ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
     return 
 fi 
         else
             referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
 ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 

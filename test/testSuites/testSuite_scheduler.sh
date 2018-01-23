@@ -71,6 +71,11 @@ test_scheduler_0001() {
     # This is the expected name and location of the reference file
     referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
 ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
+ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
     return 
@@ -156,6 +161,11 @@ test_scheduler_0002() {
     errorLog="${SST_TEST_OUTPUTS}/${testDataFileBase}_errorlog.csv"
     # This is the expected name and location of the reference file
     referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
+ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
 ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
@@ -265,6 +275,11 @@ test_scheduler_0003() {
     # This is the expected name and location of the reference file
     referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
 ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
+ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
     return 
@@ -348,6 +363,11 @@ test_scheduler_0004() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
     referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
+ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
 ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
@@ -445,6 +465,11 @@ test_scheduler_0005() {
     # This is the expected name and location of the reference file
     referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
 ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
+ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
     return 
@@ -459,6 +484,11 @@ fi
         if [ $? == 0 ] ; then
             echo " Intel compiler special case"
             referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_Intel_comp.out"
+ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
 ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 

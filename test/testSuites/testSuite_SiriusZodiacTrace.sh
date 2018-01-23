@@ -85,6 +85,11 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     referenceFile="${SST_REFERENCE_ELEMENTS}/zodiac/sirius/tests/refFiles/${testDataFileBase}.out"
 ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
+ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
     return 

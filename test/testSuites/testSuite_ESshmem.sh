@@ -21,6 +21,11 @@ cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/defaultParams.py .
 
 referenceFile=$SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ESshmem_cumulative.out
 ls -l $referenceFile 
+if [ $? != 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
+ls -l $referenceFile 
 if [ $? .ne. 0 ] ; then 
     echo " " ; echo "  Ref File is not there" ; echo " " 
     return 
