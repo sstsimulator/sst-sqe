@@ -1800,6 +1800,7 @@ ls -ld  SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
 #        Move the REFERENCE File pointer
      export SST_REFERENCE_ELEMENTS=$SST_ROOT/distTestDir/trunk/sst-elements/src/sst/elements
 
+     popd
      rm -rf $SST_ROOT/sst-elements
 
 echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO ====================="
@@ -1823,7 +1824,7 @@ echo  "   We are in distTestDir/trunk"
         cp -r $SST_ROOT/deps .          ## the deps scripts
      fi
      if [ ! -e ./deps/bin ] ; then
-         echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
+echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
          echo SST_ROOT = $SST_ROOT
          ls $SST_ROOT/deps
          echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
@@ -2317,6 +2318,7 @@ echo "##################### END ######## DEBUG DATA ########################"
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo " "
             ls -ltr | tail -5
+            popd
             return $retval        ##   This is in dobuild
         fi
         
