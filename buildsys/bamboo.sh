@@ -1735,8 +1735,10 @@ setUPforMakeDisttest() {
           echo "Untar of $tarName failed"
           exit 1
      fi
+echo ' ' ; echo "--------   going to do the move"
+echo PWD is `PWD`
      mv $Package sst-core
-
+echo "             ---------------------- done with core ------"
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
      cd $SST_ROOT/sst-elements${LOC_OF_TAR}
@@ -1751,11 +1753,23 @@ setUPforMakeDisttest() {
          exit 1
      fi
      cd $SST_ROOT/distTestDir/trunk
+echo PWD is `PWD`
+echo going to more the elements tar to here.
+
      mv $SST_ROOT/sst-elements${LOC_OF_TAR}/$tarName .
      if [ $? -ne 0 ] ; then
           echo "Move failed  \$SST_ROOT/$tarName to ."
           exit 1
      fi
+     echo "   Untar the created file, $tarName"
+     tar xzf $tarName
+     if [ $? -ne 0 ] ; then
+          echo "Untar of $tarName failed"
+          exit 1
+     fi
+     echo "---   PWD  `pwd`"    
+     mv $Package sst-elements
+
 #       Copy in Reference Files.   They are not in the release
 #       Current location is (new) trunk        
      mkdir -p sst-elements/src/sst/elements
@@ -1787,14 +1801,6 @@ ls -ld  SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
      export SST_REFERENCE_ELEMENTS=$SST_ROOT/distTestDir/trunk/sst-elements/src/sst/elements
 
      rm -rf $SST_ROOT/sst-elements
-     echo "   Untar the created file, $tarName"
-     tar xzf $tarName
-     if [ $? -ne 0 ] ; then
-          echo "Untar of $tarName failed"
-          exit 1
-     fi
-     echo "---   PWD  `pwd`"    
-     mv $Package sst-elements
 
 echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO ====================="
 echo " PWD=`pwd` "
