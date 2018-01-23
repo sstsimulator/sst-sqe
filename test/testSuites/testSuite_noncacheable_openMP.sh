@@ -57,6 +57,11 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     wrkFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.wrk"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+ls -l $referenceFile 
+if [ $? .ne. 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

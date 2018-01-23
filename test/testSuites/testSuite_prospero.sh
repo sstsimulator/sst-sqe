@@ -144,6 +144,11 @@ template_prospero() {
     fi
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}_${TYPE}.out"
     referenceFile="${SST_REFERENCE_ELEMENTS}/prospero/tests/refFiles/${testDataFileBase}_${TYPE}.out"
+ls -l $referenceFile 
+if [ $? .ne. 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

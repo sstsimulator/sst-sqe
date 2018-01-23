@@ -167,6 +167,11 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
 
 ##  Common Reference file
 referenceFile="${SST_TEST_REFERENCE}/test_stream.out"
+ls -l $referenceFile 
+if [ $? .ne. 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
 
 
 #===============================================================================

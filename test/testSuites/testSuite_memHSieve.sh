@@ -104,6 +104,11 @@ test_memHSieve() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_memHSieve"
     referenceFile="${SST_REFERENCE_ELEMENTS}/memHierarchy/Sieve/tests/refFiles/${testDataFileBase}.out"
+ls -l $referenceFile 
+if [ $? .ne. 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
     csvFile="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput.csv"
     csvFileBase="${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/StatisticOutput"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"

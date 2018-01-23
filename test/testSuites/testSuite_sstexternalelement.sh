@@ -58,6 +58,11 @@ sstexternalelement_Template() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_ROOT}/sst-external-element/tests/refFiles/${testDataFileBase}.out"
+ls -l $referenceFile 
+if [ $? .ne. 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})

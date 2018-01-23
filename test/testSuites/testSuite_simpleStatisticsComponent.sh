@@ -61,6 +61,11 @@ test_simpleStatisticsComponent() {
     testDataFileBase="test_simpleStatisticsComponent"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
+ls -l $referenceFile 
+if [ $? .ne. 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

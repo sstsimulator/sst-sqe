@@ -290,6 +290,11 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     wrkFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.wrk"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+ls -l $referenceFile 
+if [ $? .ne. 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
 
     sutArgs=$TEST_SUITE_ROOT/testopenMP/sweepopenmp.py
 

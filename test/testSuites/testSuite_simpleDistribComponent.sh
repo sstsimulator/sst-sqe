@@ -48,6 +48,11 @@ Tol=$2    ##  curTick tolerance
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
+ls -l $referenceFile 
+if [ $? .ne. 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

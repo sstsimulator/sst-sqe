@@ -103,6 +103,11 @@ cd $SST_TEST_SUITES/testCramSim
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_REFERENCE_ELEMENTS}/CramSim/tests/refFiles/${testDataFileBase}.out"
+ls -l $referenceFile 
+if [ $? .ne. 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

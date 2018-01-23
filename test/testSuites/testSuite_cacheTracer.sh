@@ -62,6 +62,11 @@ test_cacheTracer_1() {
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
     referenceFile="${SST_REFERENCE_ELEMENTS}/cacheTracer/tests/refFiles/${testDataFileBase}.out"
+ls -l $referenceFile 
+if [ $? .ne. 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -130,6 +135,11 @@ test_cacheTracer_2() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     memRefFile="${SST_TEST_OUTPUTS}/${testDataFileBase}_memRef.out"
     referenceFile="${SST_REFERENCE_ELEMENTS}/cacheTracer/tests/refFiles/${testDataFileBase}_memRef.out"
+ls -l $referenceFile 
+if [ $? .ne. 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

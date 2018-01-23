@@ -327,6 +327,11 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     wrkFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.wrk"
     referenceFile="${SST_TEST_REFERENCE}/test_OMP_${OMP_case}.out"
+ls -l $referenceFile 
+if [ $? .ne. 0 ] ; then 
+    echo " " ; echo "  Ref File is not there" ; echo " " 
+    return 
+fi 
     # Add basename to list for XML processing later
 
     sutArgs=$SST_TEST_ROOT/testSuites/testopenMP/sweepdirectory-8cores-2nodes.py
