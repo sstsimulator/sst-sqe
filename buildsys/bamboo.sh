@@ -1735,8 +1735,8 @@ setUPforMakeDisttest() {
           echo "Untar of $tarName failed"
           exit 1
      fi
-echo ' ' ; echo "--------   going to do the move"
-echo PWD is `PWD`
+echo ' ' ; echo "--------   going to do the core move"
+echo PWD is `pwd`
      mv $Package sst-core
 echo "             ---------------------- done with core ------"
 #                          ELEMENTS
@@ -1753,8 +1753,8 @@ echo "             ---------------------- done with core ------"
          exit 1
      fi
      cd $SST_ROOT/distTestDir/trunk
-echo PWD is `PWD`
-echo going to more the elements tar to here.
+echo PWD is `pwd`
+echo going to move the elements tar to here.
 
      mv $SST_ROOT/sst-elements${LOC_OF_TAR}/$tarName .
      if [ $? -ne 0 ] ; then
@@ -1770,7 +1770,7 @@ echo going to more the elements tar to here.
      echo "---   PWD  `pwd`"    
      mv $Package sst-elements
 
-#       Copy in Reference Files.   They are not in the release
+     echo "Copy in Reference Files.   They are not in the release"
 #       Current location is (new) trunk        
      mkdir -p sst-elements/src/sst/elements
 
@@ -1785,10 +1785,10 @@ pwd
 echo "element in loop: $__el"
          mkdir -p $__el/tests
          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-ls -ld  SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
 
      done
-# there are 3 more to do that don't fit the mold
+     echo "There are 3 more to do that don't fit the mold"
 #    memHSieve, ariel, zodiac/sirius
      __el=memHierarchy/Sieve
      cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
