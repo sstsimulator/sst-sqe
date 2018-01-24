@@ -1783,7 +1783,7 @@ pwd
      for __el in `ls`
      do 
 echo "element in loop: $__el"
-         if [ -d $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ] ; then
+         if [ ! -d $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ] ; then
              echo "Loop entry $__el does not have a refFiles Directory"
              continue
          fi
