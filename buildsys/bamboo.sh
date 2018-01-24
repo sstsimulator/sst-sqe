@@ -1783,6 +1783,10 @@ pwd
      for __el in `ls`
      do 
 echo "element in loop: $__el"
+         if [ -d $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ] ; then
+             echo "Loop entry $__el does not have a refFiles Directory"
+             continue
+         fi
          mkdir -p $__el/tests
          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
 ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
@@ -1790,15 +1794,19 @@ ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
      done
      echo "There are 3 more to do that don't fit the mold"
 #    memHSieve, ariel, zodiac/sirius
+     
      __el=memHierarchy/Sieve
+     ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
      mkdir -p ./$__el/tests
      cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
 
      __el=ariel/frontend/simple/examples/stream
+     ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
      mkdir -p ./$__el/tests
      cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
 
      __el=zodiac/sirius
+     ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
      mkdir -p ./$__el/tests
      cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
 
