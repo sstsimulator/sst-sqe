@@ -1791,10 +1791,15 @@ ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
      echo "There are 3 more to do that don't fit the mold"
 #    memHSieve, ariel, zodiac/sirius
      __el=memHierarchy/Sieve
+     mkdir -p ./$__el/tests
      cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+
      __el=ariel/frontend/simple/examples/stream
+     mkdir -p ./$__el/tests
      cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+
      __el=zodiac/sirius
+     mkdir -p ./$__el/tests
      cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
 
 #        Move the REFERENCE File pointer
