@@ -44,15 +44,15 @@ mkdir -p $SST_TEST_SUITES/testCramSim
 cd $SST_TEST_SUITES/testCramSim
 pwd
 
-ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg .
-ls -l $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg  > /dev/null
+ln -s $SST_REFERENCE_ELEMENTS/CramSim/ddr4_verimem.cfg .
+ls -l $SST_REFERENCE_ELEMENTS/CramSim/ddr4_verimem.cfg  > /dev/null
 if [ $? != 0 ] ; then
-   ls $SST_ROOT/sst-elements/src/sst/elements/CramSim
+   ls $SST_REFERENCE_ELEMENTS/CramSim
    preFail "Can't find/access ddr4_verimem.cfg from sst-elements"
 fi
 mkdir tests
 
-ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/tests/* tests
+ln -s $SST_REFERENCE_ELEMENTS/CramSim/tests/* tests
 ls -l ddr4_verimem.cfg
 if [ $? != 0 ] ; then
    preFail "Can't find ddr4_verimem.cfg in SQE CramSim directory"
