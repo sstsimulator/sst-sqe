@@ -1789,6 +1789,7 @@ setUPforMakeDisttest() {
          echo "element in loop: $__el"
          if [ ! -d $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ] ; then
              echo "Loop entry $__el does not have a refFiles Directory"
+             echo ' '
              continue
          fi
          mkdir -p $__el/tests
