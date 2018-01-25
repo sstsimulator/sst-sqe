@@ -56,16 +56,6 @@ test_check_maxrss() {
     testDataFileBase="test_check_maxrss"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

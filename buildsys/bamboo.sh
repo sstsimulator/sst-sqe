@@ -1735,10 +1735,10 @@ setUPforMakeDisttest() {
           echo "Untar of $tarName failed"
           exit 1
      fi
-echo ' ' ; echo "--------   going to do the core move"
-echo PWD is `pwd`
+     echo ' ' ; echo "--------   going to do the core move"
+     echo PWD is `pwd`
      mv $Package sst-core
-echo "             ---------------------- done with core ------"
+     echo "             ---------------------- done with core ------"
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
      cd $SST_ROOT/sst-elements${LOC_OF_TAR}
@@ -1753,8 +1753,8 @@ echo "             ---------------------- done with core ------"
          exit 1
      fi
      cd $SST_ROOT/distTestDir/trunk
-echo PWD is `pwd`
-echo going to move the elements tar to here.
+     echo PWD is `pwd`
+     echo going to move the elements tar to here.
 
      mv $SST_ROOT/sst-elements${LOC_OF_TAR}/$tarName .
      if [ $? -ne 0 ] ; then
@@ -1775,49 +1775,63 @@ echo going to move the elements tar to here.
      mkdir -p sst-elements/src/sst/elements
 
      pushd sst-elements/src/sst/elements
-if [ $? -ne 0 ] ; then
-    echo FAIL
-    exit
-fi
-pwd
+     if [ $? -ne 0 ] ; then
+         echo FAIL
+         exit
+     fi
+     pwd
      for __el in `ls`
      do 
-echo "element in loop: $__el"
+         echo $__el | grep -e Makefile -e ariel -e zodiac > /dev/null
+         if [ $? -eq 0 ] ; then
+             continue
+         fi
+         echo "element in loop: $__el"
          if [ ! -d $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ] ; then
              echo "Loop entry $__el does not have a refFiles Directory"
              continue
          fi
          mkdir -p $__el/tests
          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-
+         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+         echo ' '
      done
      echo "There are 3 more to do that don't fit the mold"
 #    memHSieve, ariel, zodiac/sirius
      
      __el=memHierarchy/Sieve
+     echo "Another element : $__el"
      ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
      mkdir -p ./$__el/tests
      cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+     ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+     echo ' '
 
      __el=ariel/frontend/simple/examples/stream
+     echo "Another element : $__el"
      ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
      mkdir -p ./$__el/tests
      cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+     ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+     echo ' '
 
      __el=zodiac/sirius
+     echo "Another element : $__el"
      ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
      mkdir -p ./$__el/tests
      cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+     ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+     echo ' '
 
 #        Move the REFERENCE File pointer
      export SST_REFERENCE_ELEMENTS=$SST_ROOT/distTestDir/trunk/sst-elements/src/sst/elements
+     echo "SST_REFERENCE_ELEMENTS = $SST_REFERENCE_ELEMENTS"
 
      popd
      rm -rf $SST_ROOT/sst-elements
 
-echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO ====================="
-echo " PWD=`pwd` "
+     echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO ====================="
+     echo " PWD=`pwd` "
      mv $SST_ROOT/sst-external-element .
      mv $SST_ROOT/juno .
 
@@ -1837,7 +1851,7 @@ echo  "   We are in distTestDir/trunk"
         cp -r $SST_ROOT/deps .          ## the deps scripts
      fi
      if [ ! -e ./deps/bin ] ; then
-echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
+         echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
          echo SST_ROOT = $SST_ROOT
          ls $SST_ROOT/deps
          echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
@@ -1879,20 +1893,12 @@ echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
      #       Why did we copy bamboo.sh and deps, but link test ????
      echo "  Why did we copy bamboo.sh and deps, but link test ????"?
      pushd ../../       # Back to orginal trunk
-     ls | awk '{print "rm -rf " $1}' | grep -v -d deps -e distTestDir -e test > rm-extra
-echo using the d
-cat rm-extra
-echo "-------------------------------------------------"
-echo "   Replacing the d with an e"
      ls | awk '{print "rm -rf " $1}' | grep -v -e deps -e distTestDir -e test -e sstDeps > rm-extra
-cat rm-extra
-echo ' end of the new check ' ; echo ' ' ; echo ' '
+     echo "       LIST THE EXTRA FILES to be removed"
+     cat rm-extra
      . ./rm-extra
      ls
-echo "       LIST THE EXTRA FILES"
-cat rm-extra
      popd
-     echo "               extra Files removed ------------  "
 
      echo SST_DEPS_USER_DIR= $SST_DEPS_USER_DIR
      if [ $buildtype == "sstmainline_config_dist_test" ] ; then

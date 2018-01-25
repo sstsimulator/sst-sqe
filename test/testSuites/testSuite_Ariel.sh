@@ -162,16 +162,6 @@ Ariel_template() {
     testDataFileBase="test_Ariel_${Ariel_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     referenceFile="${SST_REFERENCE_ELEMENTS}/ariel/frontend/simple/examples/stream/tests/refFiles/${testDataFileBase}.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
     startSeconds=`date +%s`

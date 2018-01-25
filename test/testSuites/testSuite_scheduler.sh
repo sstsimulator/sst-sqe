@@ -70,16 +70,6 @@ test_scheduler_0001() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
     referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -161,16 +151,6 @@ test_scheduler_0002() {
     errorLog="${SST_TEST_OUTPUTS}/${testDataFileBase}_errorlog.csv"
     # This is the expected name and location of the reference file
     referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
     joblogReferenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_joblog.csv"
     faultlogReferenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_faultlog.csv"
     errorlogReferenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_errorlog.csv"
@@ -274,16 +254,6 @@ test_scheduler_0003() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
     referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -363,16 +333,6 @@ test_scheduler_0004() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
     referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -464,16 +424,6 @@ test_scheduler_0005() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
     referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
     ####################
     #      Intel compiler requires unique Reference file
     $CXX --version > check-comp 2>&1
@@ -484,16 +434,6 @@ fi
         if [ $? == 0 ] ; then
             echo " Intel compiler special case"
             referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_Intel_comp.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
         fi
     fi
     rm -f check-comp

@@ -20,16 +20,6 @@ cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/networkConfig.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/defaultParams.py .
 
 referenceFile=$SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ESshmem_cumulative.out
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
 ln -s $SST_TEST_ROOT/testInputFiles/ESshmem_List-of-Tests ./List-of-Tests
 
 pwd ; ls -ltr  | tail -5

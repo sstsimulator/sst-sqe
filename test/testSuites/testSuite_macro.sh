@@ -68,16 +68,6 @@ test_macro_make_check() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -140,16 +130,6 @@ test_macro_make_installcheck() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 

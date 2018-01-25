@@ -64,42 +64,12 @@ Match=$2    ##  Match criteron
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     if [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
         referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
     else
         #           This is multi-core case
         if [ -e "$memH_test_dir/refFiles/${testDataFileBase}_MC.out" ] ; then
             referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MC.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
         else
             referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
-ls -l $referenceFile 
-if [ $? != 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
-ls -l $referenceFile 
-if [ $? .ne. 0 ] ; then 
-    echo " " ; echo "  Ref File is not there" ; echo " " 
-    return 
-fi 
         fi
     fi
     # Add basename to list for XML processing later
