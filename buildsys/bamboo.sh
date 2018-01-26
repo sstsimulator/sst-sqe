@@ -1796,6 +1796,7 @@ setUPforMakeDisttest() {
      echo "---   PWD  `pwd`"    
      mv $Package sst-elements
 ############### JVD  ###################################################
+     else
 #                     MACRO
      cd $SST_ROOT/sst-macro${LOC_OF_TAR}
      echo "---   PWD  `pwd`"    
@@ -1824,6 +1825,7 @@ ls
      echo "---   PWD  `pwd`"    
      mv $Package sst-macro
      return
+     fi
 ############  JVD  ##################################################################
 
      echo "Copy in Reference Files.   They are not in the release"
