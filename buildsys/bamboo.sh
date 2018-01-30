@@ -600,7 +600,7 @@ echo " #####################################################"
         return
     fi
 
-        ${SST_TEST_SUITES}/testSuite_macro.sh    ################################################
+        ${SST_TEST_SUITES}/testSuite_macro.sh    ####################################
 
      #
      #   Suites that used MemHierarchy, but not openMP
@@ -1129,7 +1129,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions  --with-glpk=${GLPK_HOME} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
-            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
+            macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
@@ -1799,7 +1799,7 @@ echo "$LINENO test for MACRO "
 echo "$LINENO   END of Non Macro segment (else follows"
 ############### JVD  ###################################################
      else
-echo " LINENO -- Begin Macro section"
+echo "$LINENO -- Begin Macro section"
 #                     MACRO
      cd $SST_ROOT/sst-macro${LOC_OF_TAR}
      echo "---   PWD  `pwd`"    
