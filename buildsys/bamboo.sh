@@ -1702,7 +1702,7 @@ echo    "This is High Sierra, Compiler is $compiler"
 
 ################################################################################
             *) # unknown
-                 echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
+                echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
                  echo ' '
                  exit
                  ;;
@@ -1741,15 +1741,15 @@ setUPforMakeDisttest() {
      ls $tarName
      if [ $? != 0 ] ; then
          ls
-         echo Can NOT find Tar File $Package .tar.gz
-         exit 1
+         echo "Can NOT find CORE Tar File $Package .tar.gz"
+#         exit 1
      fi
      mkdir -p $SST_ROOT/distTestDir/trunk
      cd $SST_ROOT/distTestDir/trunk
      mv $SST_ROOT/sst-core${LOC_OF_TAR}/$tarName .
      if [ $? -ne 0 ] ; then
           echo "Move failed  \$SST_ROOT/$tarName to ."
-          exit 1
+#          exit 1
      fi
      rm -rf $SST_ROOT/sst-core
      echo "   Untar the created file, $tarName"
@@ -1757,7 +1757,7 @@ setUPforMakeDisttest() {
      tar xzf $tarName
      if [ $? -ne 0 ] ; then
           echo "Untar of $tarName failed"
-          exit 1
+#          exit 1
      fi
      echo ' ' ; echo "--------   going to do the core move"
      echo PWD is `pwd`
@@ -1776,8 +1776,8 @@ echo "$LINENO test for MACRO "
      ls $tarName
      if [ $? != 0 ] ; then
          ls
-         echo Can NOT find Tar File $Package .tar.gz
-         exit 1
+         echo "Can NOT find ELEMENTS Tar File $Package .tar.gz"
+#         exit 1
      fi
      cd $SST_ROOT/distTestDir/trunk
      echo PWD is `pwd`
@@ -1786,13 +1786,13 @@ echo "$LINENO test for MACRO "
      mv $SST_ROOT/sst-elements${LOC_OF_TAR}/$tarName .
      if [ $? -ne 0 ] ; then
           echo "Move failed  \$SST_ROOT/$tarName to ."
-          exit 1
+#          exit 1
      fi
      echo "   Untar the created file, $tarName"
      tar xzf $tarName
      if [ $? -ne 0 ] ; then
           echo "Untar of $tarName failed"
-          exit 1
+#          exit 1
      fi
      echo "---   PWD  `pwd`"    
      mv $Package sst-elements
@@ -1800,6 +1800,8 @@ echo "$LINENO   END of Non Macro segment (else follows"
 ############### JVD  ###################################################
      else
 echo "$LINENO -- Begin Macro section"
+echo PWD `pwd`
+ls
 #                     MACRO
      cd $SST_ROOT/sst-macro${LOC_OF_TAR}
      echo "---   PWD  `pwd`"    
