@@ -3209,7 +3209,7 @@ then
         # Build was successful, so run tests, providing command line args
         # as a convenience. SST binaries must be generated before testing.
 
-        if [[ $buildtype == *_dist_* ]] ; then  
+        if [[ $buildtype == *_dist* ]] ; then  
              setUPforMakeDisttest $1 $2 $3 $4
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
