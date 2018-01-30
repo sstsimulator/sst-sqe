@@ -122,6 +122,7 @@ ES_start() {
 #          $RL is the line from the Reference File
 #
 ES_fini() {
+   touch tmp_file
    TL=`grep Simulation.is.complete tmp_file`
    RetVal=$?
    TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
