@@ -2486,7 +2486,6 @@ echo "##################### END ######## DEBUG DATA ########################"
             popd
             echo "Current Working Dir = `pwd`"
             ls -l
-        fi
     fi
 
     ### BUILDING THE SST-MACRO
