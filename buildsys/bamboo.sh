@@ -1764,6 +1764,7 @@ setUPforMakeDisttest() {
      mv $Package sst-core
      echo "             ---------------------- done with core ------"
 ############## JVD ################################################
+echo "$LINENO test for MACRO "
      if  [ $1 !=  sst_Macro_make_dist ] ; then
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
@@ -1795,8 +1796,10 @@ setUPforMakeDisttest() {
      fi
      echo "---   PWD  `pwd`"    
      mv $Package sst-elements
+echo "$LINENO   END of Non Macro segment (else follows"
 ############### JVD  ###################################################
      else
+echo " LINENO -- Begin Macro section"
 #                     MACRO
      cd $SST_ROOT/sst-macro${LOC_OF_TAR}
      echo "---   PWD  `pwd`"    
@@ -1806,6 +1809,7 @@ ls
      tarName=${Package}.tar.gz
      ls $tarName
      if [ $? != 0 ] ; then
+         echo " PWD   `pwd`"
          ls
          echo Can NOT find Tar File $Package .tar.gz
          exit 1
