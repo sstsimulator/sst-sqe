@@ -1738,6 +1738,8 @@ echo "  Believe this should by a well placed popd"
          LOC_OF_TAR="-builddir" 
      fi 
      cd ${SST_ROOT}/sst-core${LOC_OF_TAR}
+echo "---   $LINENO  PWD  `pwd`"
+ls
      Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
      tarName=${Package}.tar.gz
@@ -1745,7 +1747,7 @@ echo "  Believe this should by a well placed popd"
      if [ $? != 0 ] ; then
          ls
          echo "Can NOT find CORE Tar File $Package .tar.gz"
-#         exit 1
+         exit 1
      fi
      mkdir -p $SST_ROOT/distTestDir/trunk
      cd $SST_ROOT/distTestDir/trunk
@@ -2189,6 +2191,8 @@ ls -ltrd * | tail -20
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST_CORE is complete without error"
+pwd
+ls tar
             echo ' '    
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
@@ -2423,6 +2427,8 @@ echo "##################### END ######## DEBUG DATA ########################"
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST-ELEMENTS is complete without error"
+pwd
+ls tar
             echo ' '    
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
@@ -2609,6 +2615,8 @@ ls -ltrd * | tail -20
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST-MACRO is complete without error"
+pwd
+ls tar
             echo ' '    
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
