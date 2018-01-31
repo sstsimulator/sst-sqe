@@ -1728,6 +1728,9 @@ echo    "This is High Sierra, Compiler is $compiler"
 setUPforMakeDisttest() {
      echo "Setting up to build from the tars created by make dist"
      echo "---   PWD  `pwd`"           ## Original trunk
+echo "  Believe this should by a well placed popd"
+     cd $SST_ROOT
+     echo "---   PWD  `pwd`"           ## Original trunk
 #                             CORE
 #            May 24th, 2016     file is: sstcore-6.0.0.tar.gz
      LOC_OF_TAR=""
@@ -2456,7 +2459,6 @@ echo "##################### END ######## DEBUG DATA ########################"
             echo "bamboo.sh: make install on SST-ELEMENTS"
             echo ' '    
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            
             # Install SST-ELEMENTS
             echo "=== Running make -j4 install ==="
             make -j4 install
@@ -2611,6 +2613,7 @@ ls -ltrd * | tail -20
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
             ls -ltr | tail -5
+echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
             return $retval        ##   This is in dobuild
         fi
 
@@ -3217,6 +3220,8 @@ then
 
         if [[ $buildtype == *_dist* ]] ; then  
              setUPforMakeDisttest $1 $2 $3 $4
+echo " About to exit from bamboo"
+
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
             #    ---  These are probably temporary, but let's line them up properly anyway
