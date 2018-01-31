@@ -2192,7 +2192,7 @@ ls -ltrd * | tail -20
             echo ' '    
             echo "bamboo.sh: make dist on SST_CORE is complete without error"
 pwd
-ls tar
+ls | grep tar
             echo ' '    
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
@@ -2428,7 +2428,7 @@ echo "##################### END ######## DEBUG DATA ########################"
             echo ' '    
             echo "bamboo.sh: make dist on SST-ELEMENTS is complete without error"
 pwd
-ls tar
+ls | grep tar
             echo ' '    
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
@@ -2616,7 +2616,7 @@ ls -ltrd * | tail -20
             echo ' '    
             echo "bamboo.sh: make dist on SST-MACRO is complete without error"
 pwd
-ls tar
+ls | grep tar
             echo ' '    
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
