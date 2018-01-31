@@ -1768,34 +1768,34 @@ echo "$LINENO test for MACRO "
      if  [ $1 !=  sst_Macro_make_dist ] ; then
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
-     cd $SST_ROOT/sst-elements${LOC_OF_TAR}
-     echo "---   PWD  `pwd`"    
-     Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
-     echo  PACKAGE is $Package
-     tarName=${Package}.tar.gz
-     ls $tarName
-     if [ $? != 0 ] ; then
-         ls
-         echo "Can NOT find ELEMENTS Tar File $Package .tar.gz"
+         cd $SST_ROOT/sst-elements${LOC_OF_TAR}
+         echo "---   PWD  `pwd`"    
+         Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
+         echo  PACKAGE is $Package
+         tarName=${Package}.tar.gz
+         ls $tarName
+         if [ $? != 0 ] ; then
+             ls
+             echo "Can NOT find ELEMENTS Tar File $Package .tar.gz"
 #         exit 1
-     fi
-     cd $SST_ROOT/distTestDir/trunk
-     echo PWD is `pwd`
-     echo going to move the elements tar to here.
+         fi
+         cd $SST_ROOT/distTestDir/trunk
+         echo PWD is `pwd`
+         echo going to move the elements tar to here.
 
-     mv $SST_ROOT/sst-elements${LOC_OF_TAR}/$tarName .
-     if [ $? -ne 0 ] ; then
-          echo "Move failed  \$SST_ROOT/$tarName to ."
+         mv $SST_ROOT/sst-elements${LOC_OF_TAR}/$tarName .
+         if [ $? -ne 0 ] ; then
+              echo "Move failed  \$SST_ROOT/$tarName to ."
 #          exit 1
-     fi
-     echo "   Untar the created file, $tarName"
-     tar xzf $tarName
-     if [ $? -ne 0 ] ; then
-          echo "Untar of $tarName failed"
+         fi
+         echo "   Untar the created file, $tarName"
+         tar xzf $tarName
+         if [ $? -ne 0 ] ; then
+              echo "Untar of $tarName failed"
 #          exit 1
-     fi
-     echo "---   PWD  `pwd`"    
-     mv $Package sst-elements
+         fi
+         echo "---   PWD  `pwd`"    
+         mv $Package sst-elements
 echo "$LINENO   END of Non Macro segment (else follows"
 ############### JVD  ###################################################
      else
@@ -1803,34 +1803,34 @@ echo "$LINENO -- Begin Macro section"
 echo PWD `pwd`
 ls
 #                     MACRO
-     cd $SST_ROOT/sst-macro${LOC_OF_TAR}
-     echo "---   PWD  `pwd`"    
+         cd $SST_ROOT/sst-macro${LOC_OF_TAR}
+         echo "---   PWD  `pwd`"    
 ls
-     Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
-     echo  PACKAGE is $Package
-     tarName=${Package}.tar.gz
-     ls $tarName
-     if [ $? != 0 ] ; then
-         echo " PWD   `pwd`"
-         ls
-         echo Can NOT find Tar File $Package .tar.gz
-         exit 1
-     fi
-     cd $SST_ROOT/distTestDir/trunk
-     mv $SST_ROOT/sst-macro${LOC_OF_TAR}/$tarName .
-     if [ $? -ne 0 ] ; then
-          echo "Move failed  \$SST_ROOT/$tarName to ."
-          exit 1
-     fi
-     echo "   Untar the created file, $tarName"
-     tar xzf $tarName
-     if [ $? -ne 0 ] ; then
-          echo "Untar of $tarName failed"
-          exit 1
-     fi
-     echo "---   PWD  `pwd`"    
-     mv $Package sst-macro
-     return
+         Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
+         echo  PACKAGE is $Package
+         tarName=${Package}.tar.gz
+         ls $tarName
+         if [ $? != 0 ] ; then
+             echo " PWD   `pwd`"
+             ls
+             echo Can NOT find Tar File $Package .tar.gz
+             exit 1
+         fi
+         cd $SST_ROOT/distTestDir/trunk
+         mv $SST_ROOT/sst-macro${LOC_OF_TAR}/$tarName .
+         if [ $? -ne 0 ] ; then
+              echo "Move failed  \$SST_ROOT/$tarName to ."
+              exit 1
+         fi
+         echo "   Untar the created file, $tarName"
+         tar xzf $tarName
+         if [ $? -ne 0 ] ; then
+              echo "Untar of $tarName failed"
+              exit 1
+         fi
+         echo "---   PWD  `pwd`"    
+         mv $Package sst-macro
+         return
      fi
 ############  JVD  ##################################################################
 
@@ -1968,7 +1968,7 @@ echo  "   We are in distTestDir/trunk"
      echo SST_DEPS_USER_DIR= $SST_DEPS_USER_DIR
      if [ $buildtype == "sstmainline_config_dist_test" ] ; then
          distScenario="sstmainline_config_all"
-     elif [ $buildtype == "sstmainline_config_Macro_make_dist" ] ; then
+     elif [ $buildtype == "sst_Macro_make_dist" ] ; then
          distScenario="sst_macro_withsstcore_Linux"
      else
          distScenario="sstmainline_config_no_gem5"
