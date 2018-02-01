@@ -600,8 +600,6 @@ echo " #####################################################"
         return
     fi
 
-        ${SST_TEST_SUITES}/testSuite_macro.sh    ####################################
-
      #
      #   Suites that used MemHierarchy, but not openMP
      #
@@ -1837,7 +1835,8 @@ ls
          mv $Package sst-macro
      fi
 ############  JVD  ##################################################################
-
+#         This is make dist code, but not for Macro
+     echo "  ---- This is make dist code, but not for Macro,  line = $LINENO"
      if  [ $1 !=  sst_Macro_make_dist ] ; then
      echo "Copy in Reference Files.   They are not in the release"
 #       Current location is (new) trunk        
@@ -1904,7 +1903,9 @@ ls
      echo " PWD $LINENO=`pwd` "
      mv $SST_ROOT/sst-external-element .
      mv $SST_ROOT/juno .
-fi
+     echo "---   PWD $LINENO  `pwd`"    
+fi   ############################################################# what does this go with
+     echo "---   PWD $LINENO  `pwd`"    
 
 echo "=============================="
      echo "Move in items not in the trunk, that are need for the bamboo build and test"
