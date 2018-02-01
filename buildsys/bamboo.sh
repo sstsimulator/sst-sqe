@@ -1928,11 +1928,16 @@ echo  "   We are in distTestDir/trunk"
          echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
          exit
      fi
-     echo "                   List the directories in sst-elements/src/sst/elements"
-     ls sst-elements/src/sst/elements
+     if [[ $buildtype == "sst_Macro_make_dist" ]] ; then
+         echo " Macro make dist:  There is no sst-elements directory "
+     else
+         echo "                   List the directories in sst-elements/src/sst/elements"
+         ls sst-elements/src/sst/elements
+     fi
      echo ' '
 
      ln -s ../../test              ## the subtree of tests
+     echo " ----  The subttees of test  --- "
      ls -l
      echo SST_INSTALL_DEPS =  $SST_INSTALL_DEPS
         ## pristine is not at the same relative depth on Jenkins as it is for me.
@@ -1965,6 +1970,7 @@ echo  "   We are in distTestDir/trunk"
      echo "  Why did we copy bamboo.sh and deps, but link test ????"?
      pushd ../../       # Back to orginal trunk
      ls | awk '{print "rm -rf " $1}' | grep -v -e deps -e distTestDir -e test -e sstDeps > rm-extra
+     echo "---   PWD $LINENO  `pwd`"    
      echo "       LIST THE EXTRA FILES to be removed"
      cat rm-extra
      . ./rm-extra
@@ -1975,7 +1981,7 @@ echo  "   We are in distTestDir/trunk"
      if [ $buildtype == "sstmainline_config_dist_test" ] ; then
          distScenario="sstmainline_config_all"
      elif [ $buildtype == "sst_Macro_make_dist" ] ; then
-         distScenario="sst_macro_withsstcore_Linux"
+         distScenario="sst-macro_withsstcore_linux"
      else
          distScenario="sstmainline_config_no_gem5"
      fi
@@ -2960,7 +2966,7 @@ export SST_ROOT=`pwd`
 echo " SST_ROOT = $SST_ROOT"
 
 echo "#############################################################"
-echo "  Version Oct 4 1330 hours "
+echo "  Version Feb 1 2018 0900 hours "
 echo ' '
 pwd
 ls -la
