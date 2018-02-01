@@ -669,7 +669,7 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_miranda.sh
     ${SST_TEST_SUITES}/testSuite_BadPort.sh
     ${SST_TEST_SUITES}/testSuite_scheduler.sh
-##    ${SST_TEST_SUITES}/testSuite_scheduler_DetailedNetwork.sh
+    ${SST_TEST_SUITES}/testSuite_scheduler_DetailedNetwork.sh
 
     # Add other test suites here, i.e.
     # ${SST_TEST_SUITES}/testSuite_moe.sh
@@ -1728,9 +1728,6 @@ echo    "This is High Sierra, Compiler is $compiler"
 setUPforMakeDisttest() {
      echo "Setting up to build from the tars created by make dist"
      echo "---   PWD $LINENO  `pwd`"           ## Original trunk
-echo "  Believe this should by a well placed popd"
-     cd $SST_ROOT
-     echo "---   PWD $LINENO  `pwd`"           ## Original trunk
 #                             CORE
 #            May 24th, 2016     file is: sstcore-6.0.0.tar.gz
      LOC_OF_TAR=""
@@ -1754,7 +1751,6 @@ ls
      mv $SST_ROOT/sst-core${LOC_OF_TAR}/$tarName .
      if [ $? -ne 0 ] ; then
           echo "Move failed  \$SST_ROOT/$tarName to ."
-#          exit 1
      fi
      rm -rf $SST_ROOT/sst-core
      echo "   Untar the created file, $tarName"
@@ -1762,7 +1758,6 @@ ls
      tar xzf $tarName
      if [ $? -ne 0 ] ; then
           echo "Untar of $tarName failed"
-#          exit 1
      fi
      echo ' ' ; echo "--------   going to do the core move"
      echo PWD $LINENO is `pwd`
@@ -1782,7 +1777,6 @@ echo "$LINENO test for MACRO "
          if [ $? != 0 ] ; then
              ls
              echo "Can NOT find ELEMENTS Tar File $Package .tar.gz"
-#         exit 1
          fi
          cd $SST_ROOT/distTestDir/trunk
          echo PWD $LINENO is `pwd`
@@ -1791,19 +1785,19 @@ echo "$LINENO test for MACRO "
          mv $SST_ROOT/sst-elements${LOC_OF_TAR}/$tarName .
          if [ $? -ne 0 ] ; then
               echo "Move failed  \$SST_ROOT/$tarName to ."
-#          exit 1
          fi
          echo "   Untar the created file, $tarName"
          tar xzf $tarName
          if [ $? -ne 0 ] ; then
               echo "Untar of $tarName failed"
-#          exit 1
          fi
          echo "---   PWD $LINENO  `pwd`"    
          mv $Package sst-elements
-echo "$LINENO   END of Non Macro segment (else follows"
+echo "$LINENO   END of Non Macro segment (else follows)"
 ############### JVD  ###################################################
+
      else
+
 echo "$LINENO -- Begin Macro section"
 echo PWD $LINENO `pwd`
 ls
@@ -1837,7 +1831,6 @@ ls
          mv $Package sst-macro
      fi
 ############  JVD  ##################################################################
-#         This is make dist code, but not for Macro
      echo "  ---- This is make dist code, but not for Macro,  line = $LINENO"
      if  [ $1 !=  sst_Macro_make_dist ] ; then
          echo "Copy in Reference Files.   They are not in the release"
@@ -1900,13 +1893,12 @@ ls
 
          popd
          rm -rf $SST_ROOT/sst-elements
-########### JVD   ###################################################################
-         echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO ====================="
+########### JVD   #############################################################
+         echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO =========="
          echo " PWD $LINENO=`pwd` "
          mv $SST_ROOT/sst-external-element .
          mv $SST_ROOT/juno .
-         echo "---   PWD $LINENO  `pwd`"    
-     fi   ############################################################# what does this go with
+     fi
      echo "---   PWD $LINENO  `pwd`"    
 
 echo "=============================="
@@ -2444,9 +2436,6 @@ ls | grep tar
             echo " "
             ls -ltr | tail -5
         else    
-#            popd
-#            return $retval        ##   This is in dobuild
-#        fi
         
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
@@ -3241,8 +3230,6 @@ then
 
         if [[ $buildtype == *_dist* ]] ; then  
              setUPforMakeDisttest $1 $2 $3 $4
-echo " About to exit from bamboo"
-
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
             #    ---  These are probably temporary, but let's line them up properly anyway
