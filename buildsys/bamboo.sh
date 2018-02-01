@@ -44,7 +44,7 @@ cloneOtherRepos() {
 
 if [ ! -d ../../distTestDir ] ; then
 ## if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
-    echo "PWD = `pwd`"
+    echo "PWD $LINENO = `pwd`"
 
 ## Set the clone depth parameter
    _DEPTH_="--depth 1"
@@ -1727,10 +1727,10 @@ echo    "This is High Sierra, Compiler is $compiler"
 #   Return value:
 setUPforMakeDisttest() {
      echo "Setting up to build from the tars created by make dist"
-     echo "---   PWD  `pwd`"           ## Original trunk
+     echo "---   PWD $LINENO  `pwd`"           ## Original trunk
 echo "  Believe this should by a well placed popd"
      cd $SST_ROOT
-     echo "---   PWD  `pwd`"           ## Original trunk
+     echo "---   PWD $LINENO  `pwd`"           ## Original trunk
 #                             CORE
 #            May 24th, 2016     file is: sstcore-6.0.0.tar.gz
      LOC_OF_TAR=""
@@ -1738,7 +1738,7 @@ echo "  Believe this should by a well placed popd"
          LOC_OF_TAR="-builddir" 
      fi 
      cd ${SST_ROOT}/sst-core${LOC_OF_TAR}
-echo "---   $LINENO  PWD  `pwd`"
+echo "---   $LINENO  PWD $LINENO  `pwd`"
 ls
      Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
@@ -1758,14 +1758,14 @@ ls
      fi
      rm -rf $SST_ROOT/sst-core
      echo "   Untar the created file, $tarName"
-     echo "---   PWD  `pwd`"    
+     echo "---   PWD $LINENO  `pwd`"    
      tar xzf $tarName
      if [ $? -ne 0 ] ; then
           echo "Untar of $tarName failed"
 #          exit 1
      fi
      echo ' ' ; echo "--------   going to do the core move"
-     echo PWD is `pwd`
+     echo PWD $LINENO is `pwd`
      mv $Package sst-core
      echo "             ---------------------- done with core ------"
 ############## JVD ################################################
@@ -1774,7 +1774,7 @@ echo "$LINENO test for MACRO "
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
          cd $SST_ROOT/sst-elements${LOC_OF_TAR}
-         echo "---   PWD  `pwd`"    
+         echo "---   PWD $LINENO  `pwd`"    
          Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
          echo  PACKAGE is $Package
          tarName=${Package}.tar.gz
@@ -1785,7 +1785,7 @@ echo "$LINENO test for MACRO "
 #         exit 1
          fi
          cd $SST_ROOT/distTestDir/trunk
-         echo PWD is `pwd`
+         echo PWD $LINENO is `pwd`
          echo going to move the elements tar to here.
 
          mv $SST_ROOT/sst-elements${LOC_OF_TAR}/$tarName .
@@ -1799,24 +1799,24 @@ echo "$LINENO test for MACRO "
               echo "Untar of $tarName failed"
 #          exit 1
          fi
-         echo "---   PWD  `pwd`"    
+         echo "---   PWD $LINENO  `pwd`"    
          mv $Package sst-elements
 echo "$LINENO   END of Non Macro segment (else follows"
 ############### JVD  ###################################################
      else
 echo "$LINENO -- Begin Macro section"
-echo PWD `pwd`
+echo PWD $LINENO `pwd`
 ls
 #                     MACRO
          cd $SST_ROOT/sst-macro${LOC_OF_TAR}
-         echo "---   PWD  `pwd`"    
+         echo "---   PWD $LINENO  `pwd`"    
 ls
          Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
          echo  PACKAGE is $Package
          tarName=${Package}.tar.gz
          ls $tarName
          if [ $? != 0 ] ; then
-             echo " PWD   `pwd`"
+             echo " PWD $LINENO   `pwd`"
              ls
              echo Can NOT find Tar File $Package .tar.gz
              exit 1
@@ -1833,12 +1833,12 @@ ls
               echo "Untar of $tarName failed"
               exit 1
          fi
-         echo "---   PWD  `pwd`"    
+         echo "---   PWD $LINENO  `pwd`"    
          mv $Package sst-macro
-         return
      fi
 ############  JVD  ##################################################################
 
+     if  [ $1 !=  sst_Macro_make_dist ] ; then
      echo "Copy in Reference Files.   They are not in the release"
 #       Current location is (new) trunk        
      mkdir -p sst-elements/src/sst/elements
@@ -1901,16 +1901,17 @@ ls
      rm -rf $SST_ROOT/sst-elements
 ########### JVD   ###################################################################
      echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO ====================="
-     echo " PWD=`pwd` "
+     echo " PWD $LINENO=`pwd` "
      mv $SST_ROOT/sst-external-element .
      mv $SST_ROOT/juno .
+fi
 
 echo "=============================="
      echo "Move in items not in the trunk, that are need for the bamboo build and test"
 
 echo "####################################################################"
 echo ' '
-     echo "---   PWD  `pwd`"    
+     echo "---   PWD $LINENO  `pwd`"    
 echo  "   We are in distTestDir/trunk"
      cp  $SST_ROOT/../sqe/buildsys/bamboo.sh .
      if [ -e ./deps ] ; then
@@ -1979,7 +1980,7 @@ echo  "   We are in distTestDir/trunk"
          distScenario="sstmainline_config_no_gem5"
      fi
 
-     echo "---   PWD  `pwd`"    
+     echo "---   PWD $LINENO  `pwd`"    
      cd $SST_ROOT/distTestDir/trunk  
      # unlike regular test, make dist does move bamboo to trunk
               ##  Here is the bamboo invocation within bamboo
@@ -2142,7 +2143,7 @@ ls -ltrd * | tail -20
         
         # Configure SST-CORE
         echo "=== Running $coresourcedir/configure <config args> ==="
-echo "    PWD is `pwd` "
+echo "    PWD $LINENO is `pwd` "
 echo " resourcedir is $coresourcedir"
         $coresourcedir/configure $SST_SELECTED_CORE_CONFIG
         retval=$?
@@ -2965,9 +2966,9 @@ pwd
 ls -la
    echo ' '
 if [ -d ${SST_BASE}/devel/sqe ] ; then
-   echo "PWD = `pwd`"
+   echo "PWD $LINENO = `pwd`"
    pushd ${SST_BASE}/devel/sqe
-   echo "PWD = `pwd`"
+   echo "PWD $LINENO = `pwd`"
    echo "               SQE branch"
    git branch
    echo ' '
