@@ -1838,73 +1838,73 @@ ls
 #         This is make dist code, but not for Macro
      echo "  ---- This is make dist code, but not for Macro,  line = $LINENO"
      if  [ $1 !=  sst_Macro_make_dist ] ; then
-     echo "Copy in Reference Files.   They are not in the release"
+         echo "Copy in Reference Files.   They are not in the release"
 #       Current location is (new) trunk        
-     mkdir -p sst-elements/src/sst/elements
+         mkdir -p sst-elements/src/sst/elements
 
-     pushd sst-elements/src/sst/elements
-     if [ $? -ne 0 ] ; then
-         echo FAIL
-         exit
-     fi
-     pwd
-     for __el in `ls`
-     do 
-         echo $__el | grep -e Makefile -e ariel -e zodiac > /dev/null
-         if [ $? -eq 0 ] ; then
-             continue
+         pushd sst-elements/src/sst/elements
+         if [ $? -ne 0 ] ; then
+             echo FAIL
+             exit
          fi
-         echo "element in loop: $__el"
-         if [ ! -d $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ] ; then
-             echo "Loop entry $__el does not have a refFiles Directory"
+         pwd
+         for __el in `ls`
+         do 
+             echo $__el | grep -e Makefile -e ariel -e zodiac > /dev/null
+             if [ $? -eq 0 ] ; then
+                 continue
+             fi
+             echo "element in loop: $__el"
+             if [ ! -d $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ] ; then
+                 echo "Loop entry $__el does not have a refFiles Directory"
+                 echo ' '
+                 continue
+             fi
+             mkdir -p $__el/tests
+             cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+             ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
              echo ' '
-             continue
-         fi
-         mkdir -p $__el/tests
+         done
+         echo "There are 3 more to do that don't fit the mold"
+#    memHSieve, ariel, zodiac/sirius
+         
+         __el=memHierarchy/Sieve
+         echo "Another element : $__el"
+         ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
+         mkdir -p ./$__el/tests
          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
          echo ' '
-     done
-     echo "There are 3 more to do that don't fit the mold"
-#    memHSieve, ariel, zodiac/sirius
-     
-     __el=memHierarchy/Sieve
-     echo "Another element : $__el"
-     ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
-     mkdir -p ./$__el/tests
-     cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-     ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-     echo ' '
 
-     __el=ariel/frontend/simple/examples/stream
-     echo "Another element : $__el"
-     ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
-     mkdir -p ./$__el/tests
-     cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-     ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-     echo ' '
+         __el=ariel/frontend/simple/examples/stream
+         echo "Another element : $__el"
+         ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
+         mkdir -p ./$__el/tests
+         cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+         echo ' '
 
-     __el=zodiac/sirius
-     echo "Another element : $__el"
-     ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
-     mkdir -p ./$__el/tests
-     cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-     ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-     echo ' '
+         __el=zodiac/sirius
+         echo "Another element : $__el"
+         ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
+         mkdir -p ./$__el/tests
+         cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+         echo ' '
 
 #        Move the REFERENCE File pointer
-     export SST_REFERENCE_ELEMENTS=$SST_ROOT/distTestDir/trunk/sst-elements/src/sst/elements
-     echo "SST_REFERENCE_ELEMENTS = $SST_REFERENCE_ELEMENTS"
+         export SST_REFERENCE_ELEMENTS=$SST_ROOT/distTestDir/trunk/sst-elements/src/sst/elements
+         echo "SST_REFERENCE_ELEMENTS = $SST_REFERENCE_ELEMENTS"
 
-     popd
-     rm -rf $SST_ROOT/sst-elements
+         popd
+         rm -rf $SST_ROOT/sst-elements
 ########### JVD   ###################################################################
-     echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO ====================="
-     echo " PWD $LINENO=`pwd` "
-     mv $SST_ROOT/sst-external-element .
-     mv $SST_ROOT/juno .
-     echo "---   PWD $LINENO  `pwd`"    
-fi   ############################################################# what does this go with
+         echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO ====================="
+         echo " PWD $LINENO=`pwd` "
+         mv $SST_ROOT/sst-external-element .
+         mv $SST_ROOT/juno .
+         echo "---   PWD $LINENO  `pwd`"    
+     fi   ############################################################# what does this go with
      echo "---   PWD $LINENO  `pwd`"    
 
 echo "=============================="
@@ -2163,7 +2163,7 @@ echo " resourcedir is $coresourcedir"
             echo "--------------------dump of config.log--------------------"
             return $retval
         fi
-echo "     ------------   After configura,e files at coresourced are:"
+echo "     ------------   After configure files at coresourcedir are:"
 echo "                                   LINE  $LINENO "
 ls -ltrd $coresourcedir/* | tail -14
 echo " Local files are ------------"
@@ -2212,11 +2212,11 @@ ls | grep tar
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
         fi
         
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '    
-            echo "bamboo.sh: make on SST-CORE"
-            echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make on SST-CORE"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     
         if [ $kernel == "Darwin" ]
         then
@@ -2265,55 +2265,55 @@ ls | grep tar
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
-            if [ $kernel == "Darwin" ]
-            then
-                # Mac OS X 
-                echo "$ otool -L $coresourcedir/src/sst/core/sstsim.x"
-                otool -L $coresourcedir/src/sst/core/sstsim.x
-            else
-                echo "$ ldd $coresourcedir/src/sst/core/sstsim.x"
-                ldd $coresourcedir/src/sst/core/sstsim.x
-            fi
-            echo "SST-CORE BUILD INFO============================================="
-                    
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '    
-            echo "bamboo.sh: make on SST-CORE complete without error"
-            echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo " "
-            
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '    
-            echo "bamboo.sh: make install on SST-CORE"
-            echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            
-            # Install SST-CORE
-            echo "=== Running make -j4 install ==="
-            make -j4 install
-            retval=$?
-            if [ $retval -ne 0 ]
-            then
-                return $retval
-            fi
-            
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '    
-            echo "bamboo.sh: make install on SST-CORE complete without error"
-            echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo " "
-            
-            # Go back to devel/trunk
-            echo "popd"
-            popd
-            echo "Current Working Dir = `pwd`"
-            ls -l
-    fi
+        if [ $kernel == "Darwin" ]
+        then
+            # Mac OS X 
+            echo "$ otool -L $coresourcedir/src/sst/core/sstsim.x"
+            otool -L $coresourcedir/src/sst/core/sstsim.x
+        else
+            echo "$ ldd $coresourcedir/src/sst/core/sstsim.x"
+            ldd $coresourcedir/src/sst/core/sstsim.x
+        fi
+        echo "SST-CORE BUILD INFO============================================="
+                
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make on SST-CORE complete without error"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install on SST-CORE"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
+        # Install SST-CORE
+        echo "=== Running make -j4 install ==="
+        make -j4 install
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install on SST-CORE complete without error"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        # Go back to devel/trunk
+        echo "popd"
+        popd
+        echo "Current Working Dir = `pwd`"
+        ls -l
+fi
 
-    ### BUILDING THE SST-ELEMENTS
-    if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
+### BUILDING THE SST-ELEMENTS
+if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
     then
         echo "============== SST ELEMENTS - NO BUILD REQUIRED ==============="
     else
