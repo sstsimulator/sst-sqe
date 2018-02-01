@@ -2513,6 +2513,7 @@ ls | grep tar
         fi
     fi
 
+    echo "PWD $LINENO = `pwd`   A Macro decision point -------------"
     ### BUILDING THE SST-MACRO
     if [[ $SST_SELECTED_MACRO_CONFIG == "NOBUILD" ]]
     then
@@ -2701,6 +2702,7 @@ echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
         ls -l
     fi
 
+    echo "PWD $LINENO = `pwd`    -------  BUILD EXTERNAL elements"
     ### BUILDING THE SST-EXTERNALELEMENT
     if [[ $SST_SELECTED_EXTERNALELEMENT_CONFIG == "NOBUILD" ]]
     then
