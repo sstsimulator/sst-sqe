@@ -2508,9 +2508,7 @@ ls | grep tar
             popd
             echo "Current Working Dir = `pwd`"
             ls -l
-#           popd
-            return $retval        ##   This is in dobuild
-        fi
+        fi   ###### end of make or make dist on Elements
     fi
 
     echo "PWD $LINENO = `pwd`   A Macro decision point -------------"
