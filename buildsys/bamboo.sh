@@ -2441,9 +2441,9 @@ ls | grep tar
             echo " "
             ls -ltr | tail -5
         else    
-            popd
-            return $retval        ##   This is in dobuild
-        fi
+#            popd
+#            return $retval        ##   This is in dobuild
+#        fi
         
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '    
@@ -2507,6 +2507,9 @@ ls | grep tar
             popd
             echo "Current Working Dir = `pwd`"
             ls -l
+#           popd
+            return $retval        ##   This is in dobuild
+        fi
     fi
 
     ### BUILDING THE SST-MACRO
