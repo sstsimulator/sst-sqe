@@ -46,9 +46,11 @@ if [ ! -d ../../distTestDir ] ; then
     echo "PWD = `pwd`"
 
 ## Set the clone depth parameter
+## For git clone operations in bamboo.sh, the depth is defaulted to 1"
+## Setting the environment variable to "none" omits depth limiting.
    _DEPTH_="--depth 1"
    if [[ ${SST_GIT_CLONE_DEPTH_PARAMETER:+isSet} == isSet ]] ; then
-       if [ ${SST_GIT_CLONE_DEPTH_PARAMETER} == "none" ] ; then
+       if [ "${SST_GIT_CLONE_DEPTH_PARAMETER}" == "none" ] ; then
            _DEPTH_=""
        else
            _DEPTH_="${SST_GIT_CLONE_DEPTH_PARAMETER}"
