@@ -3216,6 +3216,7 @@ else
                 fi
             fi
 
+    echo "PWD $LINENO = `pwd`"
             ;;
 
         *)
@@ -3225,6 +3226,7 @@ else
     esac
 fi
    
+    echo "PWD $LINENO = `pwd`"
 if [ $retval -eq 0 ]
 then
     if [ $SST_BUILD_TYPE = "documentation" ]
@@ -3238,7 +3240,8 @@ then
         # Build was successful, so run tests, providing command line args
         # as a convenience. SST binaries must be generated before testing.
 
-        if [[ $buildtype == "sst_Macro_make_dist" ]] ; then
+        if [ $buildtype == "sstmainline_config_dist_test" ] ||
+           [[ $buildtype == *make_dist* ]] ; then
              setUPforMakeDisttest $1 $2 $3 $4
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
