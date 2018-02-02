@@ -2443,6 +2443,8 @@ ls | grep tar
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
             ls -ltr | tail -5
+            popd
+            return $retval       ##  This is in dobuild
         else    
         
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
