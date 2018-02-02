@@ -1116,7 +1116,7 @@ getconfig() {
         # ====  Experimental/exploratory build configurations start here  ====
         # ====                                                            ====
         # ====================================================================
-        sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5)
+        sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|sstmainline_config_make_dist_test)
             #-----------------------------------------------------------------
             # sstmainline_config_dist_test
             #      Do a "make dist"  (creating a tar file.)
@@ -1221,7 +1221,6 @@ getconfig() {
             
         sst_Macro_make_dist)
             #-----------------------------------------------------------------
-            # sstmainline_config_dist_test
             # sst_Macro_make_dist
             #      Do a "make dist"  (creating a tar file.)
             #      Then,  untar the created tar-file.
@@ -1973,7 +1972,10 @@ echo  "   We are in distTestDir/trunk"
      popd
 
      echo SST_DEPS_USER_DIR= $SST_DEPS_USER_DIR
-     if [ $buildtype == "sstmainline_config_dist_test" ] ; then
+
+     if [ $buildtype == "sstmainline_config_make_dist_test" ] ; then
+         distScenario="sstmainline_config_all"
+     elif [ $buildtype == "sstmainline_config_dist_test" ] ; then
          distScenario="sstmainline_config_all"
      elif [ $buildtype == "sst_Macro_make_dist" ] ; then
          distScenario="sst-macro_withsstcore_linux"
@@ -2178,7 +2180,7 @@ ls -ltrd * | tail -20
         
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
-        if [[ $buildtype == *_dist* ]] ; then
+        if [[ $buildtype == "sst_Macro_make_dist" ]] ; then
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST-CORE"
@@ -2414,7 +2416,9 @@ echo "##################### END ######## DEBUG DATA ########################"
         
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
-        if [[ $buildtype == *_dist_* ]] ; then
+        if [ $buildtype == "sstmainline_config_dist_test" ] ||
+           [ $buildtype == "sstmainline_config_make_dist_no_gem5" ] ||
+           [ $buildtype == "sstmainline_config_make_dist_test" ] ; then
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST-ELEMENTS"
@@ -3102,7 +3106,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3 and $4 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
@@ -3228,7 +3232,7 @@ then
         # Build was successful, so run tests, providing command line args
         # as a convenience. SST binaries must be generated before testing.
 
-        if [[ $buildtype == *_dist* ]] ; then  
+        if [[ $buildtype == "sst_Macro_make_dist" ]] ; then
              setUPforMakeDisttest $1 $2 $3 $4
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
