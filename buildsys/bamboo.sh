@@ -2180,7 +2180,11 @@ ls -ltrd * | tail -20
         
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
-        if [[ $buildtype == "sst_Macro_make_dist" ]] ; then
+        if [ $buildtype == "sstmainline_config_dist_test" ] ||
+           [[ $buildtype == *make_dist* ]] ; then
+#           [ $buildtype == "sstmainline_config_make_dist_no_gem5" ] ||
+#           [ $buildtype == "sstmainline_config_make_dist_test" ] ||
+#           [ $buildtype == "sst_Macro_make_dist" ] ; then
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST-CORE"
