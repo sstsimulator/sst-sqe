@@ -19,6 +19,7 @@ pwd
 df -h .
 echo ' '
 
+## export SST_BUILDOUTOFSOURCE=1
 #-------------------------------------------------------------------------
 # Function: TimeoutEx
 # Description:
@@ -43,7 +44,7 @@ cloneOtherRepos() {
 
 if [ ! -d ../../distTestDir ] ; then
 ## if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
-    echo "PWD = `pwd`"
+    echo "PWD $LINENO = `pwd`"
 
 ## Set the clone depth parameter
 ## For git clone operations in bamboo.sh, the depth is defaulted to 1"
@@ -390,7 +391,9 @@ echo " #####################################################"
    
     # Do we run the Macro Tests    
     if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
-       [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ; then
+       [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ||
+       [ $1 ==  sst_Macro_make_dist ] ; then
+
         ${SST_TEST_SUITES}/testSuite_macro.sh
         # We currently dont want to run any other tests
         return
@@ -1113,7 +1116,7 @@ getconfig() {
         # ====  Experimental/exploratory build configurations start here  ====
         # ====                                                            ====
         # ====================================================================
-        sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5)
+        sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|sstmainline_config_make_dist_test)
             #-----------------------------------------------------------------
             # sstmainline_config_dist_test
             #      Do a "make dist"  (creating a tar file.)
@@ -1212,6 +1215,24 @@ getconfig() {
             coreConfigStr="NOBUILD"
             elementsConfigStr="NOBUILD"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers"
+            externalelementConfigStr="NOBUILD"
+            junoConfigStr="NOBUILD"
+            ;;
+            
+        sst_Macro_make_dist)
+            #-----------------------------------------------------------------
+            # sst_Macro_make_dist
+            #      Do a "make dist"  (creating a tar file.)
+            #      Then,  untar the created tar-file.
+            #      Invoke bamboo.sh, (this file), to build sst from the tar.  
+            #            Yes, bamboo invoked from bamboo.
+            #      Finally, run tests to validate the created sst.
+            #-----------------------------------------------------------------
+            depsStr="-d none -g none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions"
+            elementsConfigStr="NOBUILD"
+            macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
             externalelementConfigStr="NOBUILD"
             junoConfigStr="NOBUILD"
             ;;
@@ -1680,7 +1701,7 @@ echo    "This is High Sierra, Compiler is $compiler"
 
 ################################################################################
             *) # unknown
-                 echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
+                echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
                  echo ' '
                  exit
                  ;;
@@ -1705,7 +1726,7 @@ echo    "This is High Sierra, Compiler is $compiler"
 #   Return value:
 setUPforMakeDisttest() {
      echo "Setting up to build from the tars created by make dist"
-     echo "---   PWD  `pwd`"           ## Original trunk
+     echo "---   PWD $LINENO  `pwd`"           ## Original trunk
 #                             CORE
 #            May 24th, 2016     file is: sstcore-6.0.0.tar.gz
      LOC_OF_TAR=""
@@ -1713,13 +1734,15 @@ setUPforMakeDisttest() {
          LOC_OF_TAR="-builddir" 
      fi 
      cd ${SST_ROOT}/sst-core${LOC_OF_TAR}
+echo "---   $LINENO  PWD $LINENO  `pwd`"
+ls
      Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
      echo  PACKAGE is $Package
      tarName=${Package}.tar.gz
      ls $tarName
      if [ $? != 0 ] ; then
          ls
-         echo Can NOT find Tar File $Package .tar.gz
+         echo "Can NOT find CORE Tar File $Package .tar.gz"
          exit 1
      fi
      mkdir -p $SST_ROOT/distTestDir/trunk
@@ -1727,123 +1750,162 @@ setUPforMakeDisttest() {
      mv $SST_ROOT/sst-core${LOC_OF_TAR}/$tarName .
      if [ $? -ne 0 ] ; then
           echo "Move failed  \$SST_ROOT/$tarName to ."
-          exit 1
      fi
      rm -rf $SST_ROOT/sst-core
      echo "   Untar the created file, $tarName"
-     echo "---   PWD  `pwd`"    
+     echo "---   PWD $LINENO  `pwd`"    
      tar xzf $tarName
      if [ $? -ne 0 ] ; then
           echo "Untar of $tarName failed"
-          exit 1
      fi
      echo ' ' ; echo "--------   going to do the core move"
-     echo PWD is `pwd`
+     echo PWD $LINENO is `pwd`
      mv $Package sst-core
      echo "             ---------------------- done with core ------"
+############## JVD ################################################
+echo "$LINENO test for MACRO "
+     if  [ $1 !=  sst_Macro_make_dist ] ; then
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
-     cd $SST_ROOT/sst-elements${LOC_OF_TAR}
-     echo "---   PWD  `pwd`"    
-     Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
-     echo  PACKAGE is $Package
-     tarName=${Package}.tar.gz
-     ls $tarName
-     if [ $? != 0 ] ; then
-         ls
-         echo Can NOT find Tar File $Package .tar.gz
-         exit 1
-     fi
-     cd $SST_ROOT/distTestDir/trunk
-     echo PWD is `pwd`
-     echo going to move the elements tar to here.
+         cd $SST_ROOT/sst-elements${LOC_OF_TAR}
+         echo "---   PWD $LINENO  `pwd`"    
+         Package=`ls| grep 'sst-.*tar.gz' | awk -F'.tar' '{print $1}'`
+         echo  PACKAGE is $Package
+         tarName=${Package}.tar.gz
+         ls $tarName
+         if [ $? != 0 ] ; then
+             ls
+             echo "Can NOT find ELEMENTS Tar File $Package .tar.gz"
+         fi
+         cd $SST_ROOT/distTestDir/trunk
+         echo PWD $LINENO is `pwd`
+         echo going to move the elements tar to here.
 
-     mv $SST_ROOT/sst-elements${LOC_OF_TAR}/$tarName .
-     if [ $? -ne 0 ] ; then
-          echo "Move failed  \$SST_ROOT/$tarName to ."
-          exit 1
-     fi
-     echo "   Untar the created file, $tarName"
-     tar xzf $tarName
-     if [ $? -ne 0 ] ; then
-          echo "Untar of $tarName failed"
-          exit 1
-     fi
-     echo "---   PWD  `pwd`"    
-     mv $Package sst-elements
+         mv $SST_ROOT/sst-elements${LOC_OF_TAR}/$tarName .
+         if [ $? -ne 0 ] ; then
+              echo "Move failed  \$SST_ROOT/$tarName to ."
+         fi
+         echo "   Untar the created file, $tarName"
+         tar xzf $tarName
+         if [ $? -ne 0 ] ; then
+              echo "Untar of $tarName failed"
+         fi
+         echo "---   PWD $LINENO  `pwd`"    
+         mv $Package sst-elements
+echo "$LINENO   END of Non Macro segment (else follows)"
+############### JVD  ###################################################
 
-     echo "Copy in Reference Files.   They are not in the release"
+     else
+
+echo "$LINENO -- Begin Macro section"
+echo PWD $LINENO `pwd`
+ls
+#                     MACRO
+         cd $SST_ROOT/sst-macro${LOC_OF_TAR}
+         echo "---   PWD $LINENO  `pwd`"    
+ls
+         Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
+         echo  PACKAGE is $Package
+         tarName=${Package}.tar.gz
+         ls $tarName
+         if [ $? != 0 ] ; then
+             echo " PWD $LINENO   `pwd`"
+             ls
+             echo Can NOT find Tar File $Package .tar.gz
+             exit 1
+         fi
+         cd $SST_ROOT/distTestDir/trunk
+         mv $SST_ROOT/sst-macro${LOC_OF_TAR}/$tarName .
+         if [ $? -ne 0 ] ; then
+              echo "Move failed  \$SST_ROOT/$tarName to ."
+              exit 1
+         fi
+         echo "   Untar the created file, $tarName"
+         tar xzf $tarName
+         if [ $? -ne 0 ] ; then
+              echo "Untar of $tarName failed"
+              exit 1
+         fi
+         echo "---   PWD $LINENO  `pwd`"    
+         mv $Package sst-macro
+     fi
+############  JVD  ##################################################################
+     echo "  ---- This is make dist code, but not for Macro,  line = $LINENO"
+     if  [ $1 !=  sst_Macro_make_dist ] ; then
+         echo "Copy in Reference Files.   They are not in the release"
 #       Current location is (new) trunk        
-     mkdir -p sst-elements/src/sst/elements
+         mkdir -p sst-elements/src/sst/elements
 
-     pushd sst-elements/src/sst/elements
-     if [ $? -ne 0 ] ; then
-         echo FAIL
-         exit
-     fi
-     pwd
-     for __el in `ls`
-     do 
-         echo $__el | grep -e Makefile -e ariel -e zodiac > /dev/null
-         if [ $? -eq 0 ] ; then
-             continue
+         pushd sst-elements/src/sst/elements
+         if [ $? -ne 0 ] ; then
+             echo FAIL
+             exit
          fi
-         echo "element in loop: $__el"
-         if [ ! -d $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ] ; then
-             echo "Loop entry $__el does not have a refFiles Directory"
+         pwd
+         for __el in `ls`
+         do 
+             echo $__el | grep -e Makefile -e ariel -e zodiac > /dev/null
+             if [ $? -eq 0 ] ; then
+                 continue
+             fi
+             echo "element in loop: $__el"
+             if [ ! -d $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ] ; then
+                 echo "Loop entry $__el does not have a refFiles Directory"
+                 echo ' '
+                 continue
+             fi
+             mkdir -p $__el/tests
+             cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+             ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
              echo ' '
-             continue
-         fi
-         mkdir -p $__el/tests
+         done
+         echo "There are 3 more to do that don't fit the mold"
+#    memHSieve, ariel, zodiac/sirius
+         
+         __el=memHierarchy/Sieve
+         echo "Another element : $__el"
+         ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
+         mkdir -p ./$__el/tests
          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
          echo ' '
-     done
-     echo "There are 3 more to do that don't fit the mold"
-#    memHSieve, ariel, zodiac/sirius
-     
-     __el=memHierarchy/Sieve
-     echo "Another element : $__el"
-     ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
-     mkdir -p ./$__el/tests
-     cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-     ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-     echo ' '
 
-     __el=ariel/frontend/simple/examples/stream
-     echo "Another element : $__el"
-     ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
-     mkdir -p ./$__el/tests
-     cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-     ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-     echo ' '
+         __el=ariel/frontend/simple/examples/stream
+         echo "Another element : $__el"
+         ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
+         mkdir -p ./$__el/tests
+         cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+         echo ' '
 
-     __el=zodiac/sirius
-     echo "Another element : $__el"
-     ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
-     mkdir -p ./$__el/tests
-     cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-     ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-     echo ' '
+         __el=zodiac/sirius
+         echo "Another element : $__el"
+         ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
+         mkdir -p ./$__el/tests
+         cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+         echo ' '
 
 #        Move the REFERENCE File pointer
-     export SST_REFERENCE_ELEMENTS=$SST_ROOT/distTestDir/trunk/sst-elements/src/sst/elements
-     echo "SST_REFERENCE_ELEMENTS = $SST_REFERENCE_ELEMENTS"
+         export SST_REFERENCE_ELEMENTS=$SST_ROOT/distTestDir/trunk/sst-elements/src/sst/elements
+         echo "SST_REFERENCE_ELEMENTS = $SST_REFERENCE_ELEMENTS"
 
-     popd
-     rm -rf $SST_ROOT/sst-elements
-
-     echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO ====================="
-     echo " PWD=`pwd` "
-     mv $SST_ROOT/sst-external-element .
-     mv $SST_ROOT/juno .
+         popd
+         rm -rf $SST_ROOT/sst-elements
+########### JVD   #############################################################
+         echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO =========="
+         echo " PWD $LINENO=`pwd` "
+         mv $SST_ROOT/sst-external-element .
+         mv $SST_ROOT/juno .
+     fi
+     echo "---   PWD $LINENO  `pwd`"    
 
 echo "=============================="
      echo "Move in items not in the trunk, that are need for the bamboo build and test"
 
 echo "####################################################################"
 echo ' '
-     echo "---   PWD  `pwd`"    
+     echo "---   PWD $LINENO  `pwd`"    
 echo  "   We are in distTestDir/trunk"
      cp  $SST_ROOT/../sqe/buildsys/bamboo.sh .
      if [ -e ./deps ] ; then
@@ -1860,11 +1922,16 @@ echo  "   We are in distTestDir/trunk"
          echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
          exit
      fi
-     echo "                   List the directories in sst-elements/src/sst/elements"
-     ls sst-elements/src/sst/elements
+     if [[ $buildtype == "sst_Macro_make_dist" ]] ; then
+         echo " Macro make dist:  There is no sst-elements directory "
+     else
+         echo "                   List the directories in sst-elements/src/sst/elements"
+         ls sst-elements/src/sst/elements
+     fi
      echo ' '
 
      ln -s ../../test              ## the subtree of tests
+     echo " ----  The subttees of test  --- "
      ls -l
      echo SST_INSTALL_DEPS =  $SST_INSTALL_DEPS
         ## pristine is not at the same relative depth on Jenkins as it is for me.
@@ -1897,6 +1964,7 @@ echo  "   We are in distTestDir/trunk"
      echo "  Why did we copy bamboo.sh and deps, but link test ????"?
      pushd ../../       # Back to orginal trunk
      ls | awk '{print "rm -rf " $1}' | grep -v -e deps -e distTestDir -e test -e sstDeps > rm-extra
+     echo "---   PWD $LINENO  `pwd`"    
      echo "       LIST THE EXTRA FILES to be removed"
      cat rm-extra
      . ./rm-extra
@@ -1904,13 +1972,18 @@ echo  "   We are in distTestDir/trunk"
      popd
 
      echo SST_DEPS_USER_DIR= $SST_DEPS_USER_DIR
-     if [ $buildtype == "sstmainline_config_dist_test" ] ; then
+
+     if [ $buildtype == "sstmainline_config_make_dist_test" ] ; then
          distScenario="sstmainline_config_all"
+     elif [ $buildtype == "sstmainline_config_dist_test" ] ; then
+         distScenario="sstmainline_config_all"
+     elif [ $buildtype == "sst_Macro_make_dist" ] ; then
+         distScenario="sst-macro_withsstcore_linux"
      else
          distScenario="sstmainline_config_no_gem5"
      fi
 
-     echo "---   PWD  `pwd`"    
+     echo "---   PWD $LINENO  `pwd`"    
      cd $SST_ROOT/distTestDir/trunk  
      # unlike regular test, make dist does move bamboo to trunk
               ##  Here is the bamboo invocation within bamboo
@@ -2028,6 +2101,9 @@ dobuild() {
         fi
         
         echo "Done with Autogen"
+pwd
+echo "                                   LINE  $LINENO "
+ls -ltrd * | tail -20
         echo "popd"
         popd
         echo "Current Working Dir = `pwd`"
@@ -2070,6 +2146,8 @@ dobuild() {
         
         # Configure SST-CORE
         echo "=== Running $coresourcedir/configure <config args> ==="
+echo "    PWD $LINENO is `pwd` "
+echo " resourcedir is $coresourcedir"
         $coresourcedir/configure $SST_SELECTED_CORE_CONFIG
         retval=$?
         if [ $retval -ne 0 ]
@@ -2081,48 +2159,64 @@ dobuild() {
             echo "--------------------dump of config.log--------------------"
             return $retval
         fi
-        
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "     ------------   After configure files at coresourcedir are:"
+echo "                                   LINE  $LINENO "
+ls -ltrd $coresourcedir/* | tail -14
+echo " Local files are ------------"
+echo "                                   LINE  $LINENO "
+ls -ltrd *
+echo  " ---------"
+
+
         echo ' '    
         echo "bamboo.sh: configure on SST-CORE complete without error"
         echo ' '    
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
+pwd
+echo "                                   LINE  $LINENO "
+ls -ltrd * | tail -20
         
         
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
-        if [[ $buildtype == *_dist_* ]] ; then
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        if [ $buildtype == "sstmainline_config_dist_test" ] ||
+           [[ $buildtype == *make_dist* ]] ; then
+#           [ $buildtype == "sstmainline_config_make_dist_no_gem5" ] ||
+#           [ $buildtype == "sstmainline_config_make_dist_test" ] ||
+#           [ $buildtype == "sst_Macro_make_dist" ] ; then
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST-CORE"
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             make dist
             retval=$?
             if [ $retval -ne 0 ]
             then
                 return $retval
             fi
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST_CORE is complete without error"
+pwd
+ls | grep tar
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
             ls -ltr | tail -5
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: After make dist on SST_CORE do the make install "
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
         fi
         
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '    
-            echo "bamboo.sh: make on SST-CORE"
-            echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make on SST-CORE"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     
         if [ $kernel == "Darwin" ]
         then
@@ -2171,55 +2265,55 @@ dobuild() {
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
-            if [ $kernel == "Darwin" ]
-            then
-                # Mac OS X 
-                echo "$ otool -L $coresourcedir/src/sst/core/sstsim.x"
-                otool -L $coresourcedir/src/sst/core/sstsim.x
-            else
-                echo "$ ldd $coresourcedir/src/sst/core/sstsim.x"
-                ldd $coresourcedir/src/sst/core/sstsim.x
-            fi
-            echo "SST-CORE BUILD INFO============================================="
-                    
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '    
-            echo "bamboo.sh: make on SST-CORE complete without error"
-            echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo " "
-            
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '    
-            echo "bamboo.sh: make install on SST-CORE"
-            echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            
-            # Install SST-CORE
-            echo "=== Running make -j4 install ==="
-            make -j4 install
-            retval=$?
-            if [ $retval -ne 0 ]
-            then
-                return $retval
-            fi
-            
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '    
-            echo "bamboo.sh: make install on SST-CORE complete without error"
-            echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo " "
-            
-            # Go back to devel/trunk
-            echo "popd"
-            popd
-            echo "Current Working Dir = `pwd`"
-            ls -l
-    fi
+        if [ $kernel == "Darwin" ]
+        then
+            # Mac OS X 
+            echo "$ otool -L $coresourcedir/src/sst/core/sstsim.x"
+            otool -L $coresourcedir/src/sst/core/sstsim.x
+        else
+            echo "$ ldd $coresourcedir/src/sst/core/sstsim.x"
+            ldd $coresourcedir/src/sst/core/sstsim.x
+        fi
+        echo "SST-CORE BUILD INFO============================================="
+                
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make on SST-CORE complete without error"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install on SST-CORE"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        
+        # Install SST-CORE
+        echo "=== Running make -j4 install ==="
+        make -j4 install
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '    
+        echo "bamboo.sh: make install on SST-CORE complete without error"
+        echo ' '    
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        
+        # Go back to devel/trunk
+        echo "popd"
+        popd
+        echo "Current Working Dir = `pwd`"
+        ls -l
+fi
 
-    ### BUILDING THE SST-ELEMENTS
-    if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
+### BUILDING THE SST-ELEMENTS
+if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
     then
         echo "============== SST ELEMENTS - NO BUILD REQUIRED ==============="
     else
@@ -2250,6 +2344,8 @@ dobuild() {
         fi
 
         echo "Done with Autogen"
+pwd
+echo "                                   LINE  $LINENO "
 
         popd
         echo "Current Working Dir = `pwd`"
@@ -2310,6 +2406,9 @@ dobuild() {
         echo ' '    
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
+pwd
+echo "                                   LINE  $LINENO "
+ls -ltrd * | tail -20
         
 echo "################################## DEBUG DATA ########################"
 ls
@@ -2321,94 +2420,99 @@ echo "##################### END ######## DEBUG DATA ########################"
         
         # Check to see if we are actually performing make dist 
         echo "at this time \$buildtype is $buildtype"
-        if [[ $buildtype == *_dist_* ]] ; then
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        if [ $buildtype == "sstmainline_config_dist_test" ] ||
+           [ $buildtype == "sstmainline_config_make_dist_no_gem5" ] ||
+           [ $buildtype == "sstmainline_config_make_dist_test" ] ; then
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST-ELEMENTS"
             echo ' '    
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             make dist
             retval=$?
             if [ $retval -ne 0 ]
             then
                 return $retval
             fi
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '    
             echo "bamboo.sh: make dist on SST-ELEMENTS is complete without error"
+pwd
+ls | grep tar
             echo ' '    
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
             ls -ltr | tail -5
             popd
-            return $retval        ##   This is in dobuild
-        fi
+            return $retval       ##  This is in dobuild
+        else    
         
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo "bamboo.sh: make on SST-ELEMENTS"
-        echo ' '    
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Compile SST-ELEMENTS
-        echo "=== Running make -j4 all ==="
-        make -j4 all
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo "bamboo.sh: make on SST-ELEMENTS complete without error"
-        echo ' '    
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-        
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo "bamboo.sh: make install on SST-ELEMENTS"
-        echo ' '    
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        
-        # Install SST-ELEMENTS
-        echo "=== Running make -j4 install ==="
-        make -j4 install
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo
-        echo "=== DUMPING The SST-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
-        echo "cat $HOME/.sst/sstsimulator.conf"
-        cat $HOME/.sst/sstsimulator.conf
-        echo "=== DONE DUMPING ==="
-        echo
-        
-        echo
-        echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-        echo "cat $SST_CONFIG_FILE_PATH"
-        cat $SST_CONFIG_FILE_PATH
-        echo "=== DONE DUMPING ==="
-        echo
-        
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '    
-        echo "bamboo.sh: make install on SST-ELEMENTS complete without error"
-        echo ' '    
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-        
-        # Go back to devel/trunk
-        echo "popd"
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make on SST-ELEMENTS"
+            echo ' '    
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    
+            # Compile SST-ELEMENTS
+            echo "=== Running make -j4 all ==="
+            make -j4 all
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                return $retval
+            fi
+    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make on SST-ELEMENTS complete without error"
+            echo ' '    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo " "
+            
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make install on SST-ELEMENTS"
+            echo ' '    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            # Install SST-ELEMENTS
+            echo "=== Running make -j4 install ==="
+            make -j4 install
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                return $retval
+            fi
+    
+            echo
+            echo "=== DUMPING The SST-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
+            echo "cat $HOME/.sst/sstsimulator.conf"
+            cat $HOME/.sst/sstsimulator.conf
+            echo "=== DONE DUMPING ==="
+            echo
+            
+            echo
+            echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
+            echo "cat $SST_CONFIG_FILE_PATH"
+            cat $SST_CONFIG_FILE_PATH
+            echo "=== DONE DUMPING ==="
+            echo
+            
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '    
+            echo "bamboo.sh: make install on SST-ELEMENTS complete without error"
+            echo ' '    
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo " "
+            
+            # Go back to devel/trunk
+            echo "popd"
+            popd
+            echo "Current Working Dir = `pwd`"
+            ls -l
+        fi   ###### end of make or make dist on Elements
     fi
 
+    echo "PWD $LINENO = `pwd`   A Macro decision point -------------"
     ### BUILDING THE SST-MACRO
     if [[ $SST_SELECTED_MACRO_CONFIG == "NOBUILD" ]]
     then
@@ -2502,6 +2606,36 @@ echo "##################### END ######## DEBUG DATA ########################"
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         
+pwd
+echo "                                   LINE  $LINENO "
+ls -ltrd * | tail -20
+        # Check to see if we are actually performing make dist 
+        echo "at this time \$buildtype is $buildtype"
+        if [[ $buildtype == "sst_Macro_make_dist" ]] ; then
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            echo ' '    
+            echo "bamboo.sh: make dist on SST-MACRO"
+            echo ' '    
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            make dist
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                return $retval
+            fi
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            echo ' '    
+            echo "bamboo.sh: make dist on SST-MACRO is complete without error"
+pwd
+ls | grep tar
+            echo ' '    
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            echo " "
+            ls -ltr | tail -5
+echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
+            return $retval        ##   This is in dobuild
+        fi
+
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '    
         echo "bamboo.sh: make on SST-MACRO"
@@ -2567,6 +2701,7 @@ echo "##################### END ######## DEBUG DATA ########################"
         ls -l
     fi
 
+    echo "PWD $LINENO = `pwd`    -------  BUILD EXTERNAL elements"
     ### BUILDING THE SST-EXTERNALELEMENT
     if [[ $SST_SELECTED_EXTERNALELEMENT_CONFIG == "NOBUILD" ]]
     then
@@ -2836,15 +2971,15 @@ export SST_ROOT=`pwd`
 echo " SST_ROOT = $SST_ROOT"
 
 echo "#############################################################"
-echo "  Version Oct 4 1330 hours "
+echo "  Version Feb 1 2018 0900 hours "
 echo ' '
 pwd
 ls -la
    echo ' '
 if [ -d ${SST_BASE}/devel/sqe ] ; then
-   echo "PWD = `pwd`"
+   echo "PWD $LINENO = `pwd`"
    pushd ${SST_BASE}/devel/sqe
-   echo "PWD = `pwd`"
+   echo "PWD $LINENO = `pwd`"
    echo "               SQE branch"
    git branch
    echo ' '
@@ -2977,7 +3112,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux)
+        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3 and $4 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
@@ -3081,6 +3216,7 @@ else
                 fi
             fi
 
+    echo "PWD $LINENO = `pwd`"
             ;;
 
         *)
@@ -3090,6 +3226,7 @@ else
     esac
 fi
    
+    echo "PWD $LINENO = `pwd`"
 if [ $retval -eq 0 ]
 then
     if [ $SST_BUILD_TYPE = "documentation" ]
@@ -3103,7 +3240,8 @@ then
         # Build was successful, so run tests, providing command line args
         # as a convenience. SST binaries must be generated before testing.
 
-        if [[ $buildtype == *_dist_* ]] ; then  
+        if [ $buildtype == "sstmainline_config_dist_test" ] ||
+           [[ $buildtype == *make_dist* ]] ; then
              setUPforMakeDisttest $1 $2 $3 $4
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
