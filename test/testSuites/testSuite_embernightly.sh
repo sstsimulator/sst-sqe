@@ -36,7 +36,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
     ls -ld /tmp/openmpi-sessions*/* |grep $USER > __rmlist
     wc __rmlist
-    cat __rmlist | sed 10q
+#    cat __rmlist | sed 10q
 
     today=$(( 10#`date +%j` ))
     echo "today is $today"
@@ -46,11 +46,10 @@ if [ $SST_TEST_HOST_OS_KERNEL != "Darwin" ] ; then
     while read -u 3 r1 r2 r3 r4 r5 mo da r8 name
     do
       c_day=$(( 10#`date +%j -d "$mo $da"` ))
-      if [ "$mo" == "Dec" ] || [ $c_day -lt 360 ] ; then
+      if [ "$mo" == "Dec" ] && [ $c_day -lt 360 ] ; then
+         echo found Dec
          echo "Remove $name"
          rm -rf $name
-         echo found Dec
-    #     break
       fi 
       c_day_plus_2=$(($c_day+2))
       if [ $today -gt $c_day_plus_2 ] ; then
