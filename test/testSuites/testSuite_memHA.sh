@@ -204,6 +204,12 @@ Match=$2    ##  Match criteron
     popd
     popd
 
+    grep "Simulation is complete, simulated time:" $outFile
+    if [ $? != 0 ] ; then 
+        fail "Completion test message not found"
+        echo ' '; grep -i complet $outFile ; echo ' '
+    fi
+  
     endSeconds=`date +%s`
     echo " "
     elapsedSeconds=$(($endSeconds -$startSeconds))
