@@ -39,18 +39,19 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #    cat __rmlist | sed 10q
 
     today=$(( 10#`date +%j` ))
-    echo "today is $today"
+    echo "today is $today"              ## day of year
 if [ $SST_TEST_HOST_OS_KERNEL != "Darwin" ] ; then
 #   --This is Linux code and MacOS can't handle this date syntax--
     
     while read -u 3 r1 r2 r3 r4 r5 mo da r8 name
     do
-      c_day=$(( 10#`date +%j -d "$mo $da"` ))
-      if [ "$mo" == "Dec" ] && [ $c_day -lt 360 ] ; then
+      if [ "$mo" == "Dec" ] && [ $today -lt 300 ] ; then
          echo found Dec
          echo "Remove $name"
          rm -rf $name
       fi 
+          ##   c_day -   day of year for the file
+      c_day=$(( 10#`date +%j -d "$mo $da"` ))
       c_day_plus_2=$(($c_day+2))
       if [ $today -gt $c_day_plus_2 ] ; then
          echo "Remove $name"
