@@ -343,6 +343,36 @@ sstDepsDoStaging ()
             return $retval
         fi
     fi
+
+    if [ ! -z "${SST_BUILD_HBM_DRAMSIM2}" ]
+    then
+        #-----------------------------------------------------------------------
+        # HBM_DRAMSIM2
+        #-----------------------------------------------------------------------
+        sstDepsStage_hbm_dramsim2
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: hbm_dramsim2 code staging failure"
+            return $retval
+        fi
+    fi
+
+    if [ ! -z "${SST_BUILD_RAMULATOR}" ]
+    then
+        #-----------------------------------------------------------------------
+        # RAMULATOR
+        #-----------------------------------------------------------------------
+        sstDepsStage_ramulator
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: ramulator code staging failure"
+            return $retval
+        fi
+    fi
 }
 
 #-------------------------------------------------------------------------------
@@ -884,6 +914,36 @@ sstDepsDeploy ()
         fi
     fi
     
+    if [ ! -z "${SST_BUILD_HBM_DRAMSIM2}" ]
+    then
+        #-----------------------------------------------------------------------
+        # HBM_DRAMSIM2
+        #-----------------------------------------------------------------------
+        sstDepsDeploy_hbm_dramsim2
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: hbm_dramsim2 deployment failure"
+            return $retval
+        fi
+    fi
+    
+    if [ ! -z "${SST_BUILD_RAMULATOR}" ]
+    then
+        #-----------------------------------------------------------------------
+        # RAMULATOR
+        #-----------------------------------------------------------------------
+        sstDepsDeploy_ramulator
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: ramulator deployment failure"
+            return $retval
+        fi
+    fi
+    
     #     Put Gem5 Last, so no one else can be affected by gcc module hanky-panky
 
     if [ ! -z "${SST_BUILD_GEM5}" ]
@@ -1073,6 +1133,22 @@ sstDepsDoQuery ()
         #-----------------------------------------------------------------------
         sstDepsQuery_goblin_hmcsim
     fi
+
+    if [ ! -z "${SST_BUILD_HBM_DRAMSIM2}" ]
+    then
+        #-----------------------------------------------------------------------
+        # HBM_DRAMSIM2
+        #-----------------------------------------------------------------------
+        sstDepsQuery_hbm_dramsim2
+    fi
+
+    if [ ! -z "${SST_BUILD_RAMULATOR}" ]
+    then
+        #-----------------------------------------------------------------------
+        # RAMULATOR
+        #-----------------------------------------------------------------------
+        sstDepsQuery_ramulator
+    fi
 }
 
 #===============================================================================
@@ -1217,7 +1293,9 @@ sstDepsDoDependencies ()
 #   -I iris test version (default|none|stabledevel)
 #   -N nvdimmsim (default)
 #   -a Ariel Pintool (2.13-61206)
-#   -c chld (default)
+#   -c chdl (default)
+#   -H HBM_DRAMSim2 (default)
+#   -r Ramulator (default)
 #
 #   [buildtype] = (restageDeps|develBuild|cleanBuild)
 #
@@ -1230,7 +1308,7 @@ sstDepsDoDependencies ()
 # use getopts
 OPTIND=1 
 
-while getopts :k:d:p:z:b:g:G:m:M:i:o:h:s:q:e:4:I:N:a:c: opt
+while getopts :k:d:p:z:b:g:G:m:M:i:o:h:H:r:s:q:e:4:I:N:a:c: opt
 
 do
     case "$opt" in
@@ -1416,6 +1494,38 @@ do
                     ;;
                 *) # unknown Goblin_HMCSIM argument
                     echo "# Unknown argument '$OPTARG', will not build Goblin_HMCSIM"
+                    ;;
+            esac
+            ;;
+        H) # HBM_DRAMSim2
+            echo "# found the -H (hbm_dramsim2) option, with value $OPTARG"
+            # process arg
+            case "$OPTARG" in
+                default|stabledevel) # build latest HBM_DRAMSim2 from repository ("stable development")
+                    echo "# (default) stabledevel: build latest HBM_DRAMSim2 from repository"
+                    . ${SST_DEPS_BIN}/sstDep_hbm_dramsim2_stabledevel.sh
+                    ;;
+                none) # do not build (explicit)
+                    echo "# none: will not build HBM_DRAMSim2"
+                    ;;
+                *) # unknown HBM_DRAMSim2 argument
+                    echo "# Unknown argument '$OPTARG', will not build HBM_DRAMSim2"
+                    ;;
+            esac
+            ;;
+        r) # Ramulator
+            echo "# found the -r (ramulator) option, with value $OPTARG"
+            # process arg
+            case "$OPTARG" in
+                default|stabledevel) # build latest Ramulator from repository ("stable development")
+                    echo "# (default) stabledevel: build latest Ramulator from repository"
+                    . ${SST_DEPS_BIN}/sstDep_ramulator_stabledevel.sh
+                    ;;
+                none) # do not build (explicit)
+                    echo "# none: will not build Ramulator"
+                    ;;
+                *) # unknown Ramulator argument
+                    echo "# Unknown argument '$OPTARG', will not build Ramulator"
                     ;;
             esac
             ;;
