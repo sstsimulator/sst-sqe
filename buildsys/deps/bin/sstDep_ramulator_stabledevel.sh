@@ -83,7 +83,15 @@ sstDepsDeploy_ramulator ()
     pushd ${SST_DEPS_SRC_STAGED_RAMULATOR}
 
     # Build and install RAMULATOR
-    make libramulator.a 
+    if [ $SST_DEPS_OS_NAME = "Darwin" ]
+    then
+        # MacOS is special
+        make libramulator.a
+    else
+        # Linux
+        make CXX=g++
+    fi
+    
     retval=$?
     if [ $retval -ne 0 ]
     then
