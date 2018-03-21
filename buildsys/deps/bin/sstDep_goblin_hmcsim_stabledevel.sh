@@ -39,7 +39,8 @@ sstDepsStage_goblin_hmcsim ()
     
     pushd ${SST_DEPS_SRC_STAGING}
 
-    git clone -b sst-8.0.0-release https://github.com/tactcomplabs/gc64-hmcsim.git goblin_hmcsim
+#    git clone -b sst-8.0.0-release https://github.com/tactcomplabs/gc64-hmcsim.git goblin_hmcsim
+    git clone -b sst-7.2.0-release https://github.com/tactcomplabs/gc64-hmcsim.git goblin_hmcsim
     
     retval=$?
     if [ $retval -ne 0 ]
