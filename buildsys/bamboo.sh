@@ -1327,7 +1327,6 @@ linuxSetBoostMPI() {
    then
        desiredMPI="${2}"
        desiredBoost="${3}.0_${mpiStr}"
-       ModuleEx unload swig/swig-2.0.9
    else
        desiredMPI="${2}_${4}"
        desiredBoost="${3}.0_${mpiStr}_${4}"
@@ -1335,7 +1334,6 @@ linuxSetBoostMPI() {
        if   [[ "$4" =~ gcc.* ]]
        then
            ModuleEx load gcc/${4}
-           ModuleEx load swig/swig-2.0.9
            echo "LOADED gcc/${4} compiler"
        elif [[ "$4" =~ intel.* ]]
        then
