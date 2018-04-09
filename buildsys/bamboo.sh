@@ -1540,6 +1540,9 @@ ldModules_MacOS_Clang() {
                                 echo "Boost 1.61 selected"
                                 ModuleEx add boost/boost-1.61.0-nompi_$ClangVersion
                                 ;;
+                            none)
+                                echo  "No BOOST loaded as requested"
+                                ;;
                             *)
                                 echo "bamboo.sh: \"Default\" Boost selected"
                                 echo "Third argument was $3"
