@@ -1519,9 +1519,9 @@ ldModules_MacOS_Clang() {
                                 echo  "No MPI loaded as requested"
                                 ;;
                             *)
-                                echo "Unrecognized MPI request"
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_$ClangVersion 2>catch.err
+                                echo "User Defined MPI request"
+                                echo "Default MPI option, loading users mpi/$2"
+                                ModuleEx load mpi/$2_$ClangVersion 2>catch.err
                                 if [ -s catch.err ] 
                                 then
                                     cat catch.err
