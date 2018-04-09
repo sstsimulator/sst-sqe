@@ -1520,7 +1520,7 @@ ldModules_MacOS_Clang() {
                                 ;;
                             *)
                                 echo "User Defined MPI request"
-                                echo "Default MPI option, loading users mpi/$2"
+                                echo "MPI option, loading users mpi/$2"
                                 ModuleEx load mpi/$2_$ClangVersion 2>catch.err
                                 if [ -s catch.err ] 
                                 then
@@ -1544,10 +1544,9 @@ ldModules_MacOS_Clang() {
                                 echo  "No BOOST loaded as requested"
                                 ;;
                             *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx load boost/boost-1.56.0-nompi_$ClangVersion 2>catch.err
+                                echo "User Defined Boost request"
+                                echo "Boostoption, loading users boost/$3"
+                                ModuleEx load boost/$3_$ClangVersion 2>catch.err
                                 if [ -s catch.err ] 
                                 then
                                     cat catch.err
