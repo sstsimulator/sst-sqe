@@ -1544,8 +1544,8 @@ ldModules_MacOS_Clang() {
                                 echo  "No BOOST loaded as requested"
                                 ;;
                             *)
-                                echo "User Defined Boost request"
-                                echo "Boostoption, loading users boost/$3"
+                                echo "User Defined BOOST request"
+                                echo "BOOST option, loading users boost/$3"
                                 ModuleEx load boost/$3_$ClangVersion 2>catch.err
                                 if [ -s catch.err ] 
                                 then
