@@ -1412,6 +1412,9 @@ linuxSetBoostMPI() {
            ModuleEx unload boost
            ModuleEx load boost/${desiredBoost}
            ;;
+       none)
+           echo  "No BOOST loaded as requested"
+           ;;
        *)
            echo "bamboo.sh: \"Default\" Boost selected"
            echo "Third argument was $3"
