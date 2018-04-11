@@ -1327,7 +1327,6 @@ linuxSetBoostMPI() {
    then
        desiredMPI="${2}"
        desiredBoost="${3}.0_${mpiStr}"
-       ModuleEx unload swig/swig-2.0.9
    else
        desiredMPI="${2}_${4}"
        desiredBoost="${3}.0_${mpiStr}_${4}"
@@ -1335,7 +1334,6 @@ linuxSetBoostMPI() {
        if   [[ "$4" =~ gcc.* ]]
        then
            ModuleEx load gcc/${4}
-           ModuleEx load swig/swig-2.0.9
            echo "LOADED gcc/${4} compiler"
        elif [[ "$4" =~ intel.* ]]
        then
@@ -1413,6 +1411,9 @@ linuxSetBoostMPI() {
            echo "bamboo.sh: Boost 1.56 selected"
            ModuleEx unload boost
            ModuleEx load boost/${desiredBoost}
+           ;;
+       none)
+           echo  "No BOOST loaded as requested"
            ;;
        *)
            echo "bamboo.sh: \"Default\" Boost selected"
@@ -1521,9 +1522,9 @@ ldModules_MacOS_Clang() {
                                 echo  "No MPI loaded as requested"
                                 ;;
                             *)
-                                echo "Unrecognized MPI request"
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_$ClangVersion 2>catch.err
+                                echo "User Defined MPI request"
+                                echo "MPI option, loading users mpi/$2"
+                                ModuleEx load mpi/$2_$ClangVersion 2>catch.err
                                 if [ -s catch.err ] 
                                 then
                                     cat catch.err
@@ -1542,11 +1543,13 @@ ldModules_MacOS_Clang() {
                                 echo "Boost 1.61 selected"
                                 ModuleEx add boost/boost-1.61.0-nompi_$ClangVersion
                                 ;;
+                            none)
+                                echo  "No BOOST loaded as requested"
+                                ;;
                             *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx load boost/boost-1.56.0-nompi_$ClangVersion 2>catch.err
+                                echo "User Defined BOOST request"
+                                echo "BOOST option, loading users boost/$3"
+                                ModuleEx load boost/$3_$ClangVersion 2>catch.err
                                 if [ -s catch.err ] 
                                 then
                                     cat catch.err
