@@ -1412,6 +1412,9 @@ linuxSetBoostMPI() {
            ModuleEx unload boost
            ModuleEx load boost/${desiredBoost}
            ;;
+       none)
+           echo  "No BOOST loaded as requested"
+           ;;
        *)
            echo "bamboo.sh: \"Default\" Boost selected"
            echo "Third argument was $3"
@@ -1519,9 +1522,9 @@ ldModules_MacOS_Clang() {
                                 echo  "No MPI loaded as requested"
                                 ;;
                             *)
-                                echo "Unrecognized MPI request"
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_$ClangVersion 2>catch.err
+                                echo "User Defined MPI request"
+                                echo "MPI option, loading users mpi/$2"
+                                ModuleEx load mpi/$2_$ClangVersion 2>catch.err
                                 if [ -s catch.err ] 
                                 then
                                     cat catch.err
@@ -1540,11 +1543,13 @@ ldModules_MacOS_Clang() {
                                 echo "Boost 1.61 selected"
                                 ModuleEx add boost/boost-1.61.0-nompi_$ClangVersion
                                 ;;
+                            none)
+                                echo  "No BOOST loaded as requested"
+                                ;;
                             *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx load boost/boost-1.56.0-nompi_$ClangVersion 2>catch.err
+                                echo "User Defined BOOST request"
+                                echo "BOOST option, loading users boost/$3"
+                                ModuleEx load boost/$3_$ClangVersion 2>catch.err
                                 if [ -s catch.err ] 
                                 then
                                     cat catch.err
