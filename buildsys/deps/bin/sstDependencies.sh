@@ -591,6 +591,19 @@ sstDepsPatchSource ()
              patch -p0 -i ${SST_DEPS_PATCHFILES}/macsim_2.0.4.patch
     fi
 
+    if [ ! -z ${SST_BUILD_RAMULATOR_STABLEDEVEL} ]
+    then
+        #-----------------------------------------------------------------------
+        # Ramulator-stabledevel
+        #-----------------------------------------------------------------------
+
+             # Patch ramulator sha 7d2e72306c6079768e11a1867eb67b60cee34a1c
+             # Assumes pwd is SST_ROOT  (trunk)
+
+             cd $SST_ROOT
+             sstDepsAnnounce -h $FUNCNAME -m "Patching ramulator "
+             patch -p1 -i ${SST_DEPS_PATCHFILES}/ramulator_gcc48Patch.patch
+    fi
 }
 
 #-------------------------------------------------------------------------------
