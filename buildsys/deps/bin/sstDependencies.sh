@@ -601,7 +601,7 @@ sstDepsPatchSource ()
 
             # Patching to build static version for Linux
             sstDepsAnnounce -h $FUNCNAME -m "Patching ramulator "
-            pushd ${SST_DEPS_SRC_STAGING/ramulator}
+            pushd ${SST_DEPS_SRC_STAGING}/ramulator
             
             ls -lia
             
