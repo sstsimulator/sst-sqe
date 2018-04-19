@@ -57,6 +57,11 @@ sstDepsStage_ramulator ()
     git checkout 7d2e72306c6079768e11a1867eb67b60cee34a1c
     echo "ramulator.git" `git log HEAD | sed 4q` >&2
 
+    # NOTE: There are 2 patches to be applied to this sha = 7d2e72 to get 
+    #       ramulator library to build properly on gcc
+    #       ramulator_gcc48Patch.patch - Fixes compile for gcc 4.8
+    #       ramulator_libPatch.patch   - Adds library build for gcc
+    
     popd
     popd
 }
@@ -89,7 +94,7 @@ sstDepsDeploy_ramulator ()
         make libramulator.a
     else
         # Linux
-        make CXX=g++
+        make CXX=g++ libramulator.so
     fi
     
     retval=$?

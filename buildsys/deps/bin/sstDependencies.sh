@@ -597,12 +597,30 @@ sstDepsPatchSource ()
         # Ramulator-stabledevel
         #-----------------------------------------------------------------------
 
-             # Patch ramulator sha 7d2e72306c6079768e11a1867eb67b60cee34a1c
-             # Assumes pwd is SST_ROOT  (trunk)
+            # Patch ramulator sha 7d2e72306c6079768e11a1867eb67b60cee34a1c
 
-             cd $SST_ROOT
-             sstDepsAnnounce -h $FUNCNAME -m "Patching ramulator "
-             patch -p1 -i ${SST_DEPS_PATCHFILES}/ramulator_gcc48Patch.patch
+            # Patching to build static version for Linux
+            pushd ${SST_DEPS_SRC_STAGING/ramulator}
+            sstDepsAnnounce -h $FUNCNAME -m "Patching ramulator "
+            patch -p1 -i ${SST_DEPS_PATCHFILES}/ramulator_gcc48Patch.patch
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                # bail out on error
+                echo "ERROR: sstDependencies.sh:  DRAMSim (Linux) patch failure"
+                return $retval
+            fi
+
+            patch -p1 -i ${SST_DEPS_PATCHFILES}/ramulator_libPatch.patch
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                # bail out on error
+                echo "ERROR: sstDependencies.sh:  DRAMSim (Linux) patch failure"
+                return $retval
+            fi
+
+            popd
     fi
 }
 
