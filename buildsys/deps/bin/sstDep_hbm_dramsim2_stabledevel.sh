@@ -39,7 +39,7 @@ sstDepsStage_hbm_dramsim2 ()
     
     pushd ${SST_DEPS_SRC_STAGING}
 
-    git clone -b sst-8.0.0-release https://github.com/tactcomplabs/HBM.git hbm_dramsim2
+    git clone https://github.com/tactcomplabs/HBM.git hbm_dramsim2
     
     retval=$?
     if [ $retval -ne 0 ]
@@ -54,6 +54,9 @@ sstDepsStage_hbm_dramsim2 ()
     
     #  Move into the hbm_dramsim2 directory
     pushd ${SST_DEPS_SRC_STAGED_HBM_DRAMSIM2}
+    git checkout hbm-1.0.0-release
+
+    
     echo "HBM.git" `git log HEAD | sed 4q` >&2
 
     popd
