@@ -357,10 +357,10 @@ fi
     grep ERROR.SUMMARY $VGout | sed s/ERROR//
 contextNumber=`grep ERROR.SUMMARY $VGout | awk '{print $7}'`
 if [ $contextNumber -gt 0 ] ; then
-    sed -n '/ Invalid.read.of.size.4/{N;p;q}' $VGout  | grep opal_os_dirpath_create > /dev/null
+    sed -n '/Uninitialised value was created by a stack allocation/{N;p;q}' $VGout  | grep 'OpenMPI/openmpi-2.1.3/lib/libmpi.so.20.10.2)' > /dev/null
     if [ $? == 0 ] ;then
         contextNumber=$(($contextNumber-1))
-        echo "Ignoring MPI \"Invalid read of size 4\""
+        echo "Ignoring MPI \"Uninitialised value was created by a stack allocation\""
     fi
 fi
 if [ $contextNumber -gt 0 ] ; then
