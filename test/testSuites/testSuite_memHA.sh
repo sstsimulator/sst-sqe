@@ -366,6 +366,14 @@ test_memHA_BackendTimingDRAM_4 () {
     memHA_Template BackendTimingDRAM_4 "M"
 }
 
+test_memHA_BackendHBMDramdim () {
+    memHA_Template BackendHBMDramsim "M"
+}
+
+test_memHA_BackendHBMPagedMulti () {
+    memHA_Template BackendHBMPagedMulti "M"
+}
+
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
