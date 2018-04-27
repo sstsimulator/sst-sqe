@@ -367,6 +367,10 @@ test_memHA_BackendTimingDRAM_4 () {
 }
 
 test_memHA_BackendHBMDramsim () {
+    if [ $SST_MULTI_CORE == 1 ] ; then
+        echo "skipping test - mixed output from core"
+        skip_this_test
+    fi
     memHA_Template BackendHBMDramsim "M"
 }
 
