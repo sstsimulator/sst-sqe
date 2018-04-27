@@ -366,7 +366,7 @@ test_memHA_BackendTimingDRAM_4 () {
     memHA_Template BackendTimingDRAM_4 "M"
 }
 
-test_memHA_BackendHBMDramdim () {
+test_memHA_BackendHBMDramsim () {
     memHA_Template BackendHBMDramsim "M"
 }
 
