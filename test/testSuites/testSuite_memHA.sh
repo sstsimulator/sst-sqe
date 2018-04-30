@@ -72,9 +72,15 @@ Match=$2    ##  Match criteron
             referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
         fi
     fi
+
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
     pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
+
+echo "   "
+git branch
+cksum $referenceFile
+echo "   "
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
@@ -115,6 +121,10 @@ Match=$2    ##  Match criteron
          popd
          return
     fi
+
+echo ' '
+cksum $outFile
+echo ' '
     myWC ${outFile} ${referenceFile}
 
     RemoveComponentWarning
@@ -349,7 +359,6 @@ test_memHA_CustomCmdGoblin_3 () {
     memHA_Template CustomCmdGoblin_3 "M"
 }
 
-
 test_memHA_BackendTimingDRAM_1 () {
     memHA_Template BackendTimingDRAM_1 "M"
 }
@@ -366,8 +375,14 @@ test_memHA_BackendTimingDRAM_4 () {
     memHA_Template BackendTimingDRAM_4 "M"
 }
 
+test_memHA_BackendHBMDramsim () {
 
-export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
+    memHA_Template BackendHBMDramsim "M"
+}
+
+test_memHA_BackendHBMPagedMulti () {
+    memHA_Template BackendHBMPagedMulti "M"
+}
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
