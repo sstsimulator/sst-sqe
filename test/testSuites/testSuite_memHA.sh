@@ -375,12 +375,12 @@ test_memHA_BackendTimingDRAM_4 () {
     memHA_Template BackendTimingDRAM_4 "M"
 }
 
-test_memHA_BackendHBMDramsim () {
+xxtest_memHA_BackendHBMDramsim () {
 
     memHA_Template BackendHBMDramsim "M"
 }
 
-test_memHA_BackendHBMPagedMulti () {
+xxtest_memHA_BackendHBMPagedMulti () {
     memHA_Template BackendHBMPagedMulti "M"
 }
 
