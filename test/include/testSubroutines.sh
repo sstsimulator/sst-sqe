@@ -360,7 +360,7 @@ if [ $contextNumber -gt 0 ] ; then
     sed -n '/Uninitialised value was created by a stack allocation/{N;p;q}' $VGout  | grep 'OpenMPI/openmpi-2.1.3/lib/libmpi.so.20.10.2)' > /dev/null
     if [ $? == 0 ] ;then
         contextNumber=$(($contextNumber-1))
-        echo "Ignoring MPI \"Uninitialised value was created by a stack allocation\""
+        echo "Ignoring MPI \"Uninitialised value was created by a stack allocation\" in openmpi-2.1.3/lib/libmpi.so.20.10.2"
     fi
 fi
 if [ $contextNumber -gt 0 ] ; then
