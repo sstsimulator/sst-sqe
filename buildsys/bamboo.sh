@@ -661,6 +661,7 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
+    ${SST_TEST_SUITES}/testSuite_kingsley.sh
 
 
     ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
