@@ -340,6 +340,12 @@ memHierarchy_Template sdl9_2 500
 
 }
 
+
+test_memHierarchy_sdl4_2_ramulator() {          
+memHierarchy_Template sdl4-2-ramulator 500
+
+}
+
 test_print_DramSim_summary() {
 
     if [ $DRAMSIM_EXACT_MATCH_FAIL_COUNT != 0 ] ; then
