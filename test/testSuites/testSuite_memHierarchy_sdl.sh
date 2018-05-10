@@ -340,9 +340,15 @@ memHierarchy_Template sdl9_2 500
 
 }
 
-
 test_memHierarchy_sdl4_2_ramulator() {          
 memHierarchy_Template sdl4-2-ramulator 500
+
+}
+
+test_memHierarchy_sdl5_1_ramulator() {          
+pushd  $SST_REFERENCE_ELEMENTS/memHierarchy/tests
+memHierarchy_Template sdl5-1-ramulator 500
+popd
 
 }
 
