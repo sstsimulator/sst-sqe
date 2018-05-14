@@ -59,6 +59,19 @@ Tol=$2    ##  curTick tolerance
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+echo ' ' ; echo ' '
+echo  BEFORE
+echo  $referenceFile
+
+RF_TDFB=`echo ${testDataFileBase} | sed s/_/-/`
+echo ${testDataFileBase}
+echo $RF_TDFB
+
+referenceFile="$memH_test_dir/refFiles/${RF_TDBF}.out"
+
+echo ' ' ;  echo DEFINED
+echo  $referenceFile
+echo ' ' ; echo ' '
     # Add basename to list for processing later
     L_TESTFILE+=(${testDataFileBase})
     pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
@@ -141,13 +154,17 @@ Tol=$2    ##  curTick tolerance
     RemoveComponentWarning
     pushd ${SSTTESTTEMPFILES}
 #          Append errFile to outFile   w/o  Not Aligned messages
+echo "is this th diff $LINENO"
     diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
+echo "is this th diff $LINENO"
     if [ $? == 0 ] ; then
         fileSize=`wc -l $outFile | awk '{print $1}'`
         echo "            Exact Match of reduced Output  -- $fileSize lines"
+echo "is this th diff $LINENO"
         rm ${SSTTESTTEMPFILES}/_raw_diff
     else
         wc $referenceFile $outFile
+echo "is this th wc $LINENO"
         wc ${SSTTESTTEMPFILES}/_raw_diff
         rm diff_sorted
         compare_sorted $referenceFile $outFile
