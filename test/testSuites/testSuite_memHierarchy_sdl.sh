@@ -62,7 +62,7 @@ Tol=$2    ##  curTick tolerance
 
     RF_TDFB=`echo ${testDataFileBase} | sed s/_/-/`
 
-    referenceFile="$memH_test_dir/refFiles/${RF_TDBF}.out"
+    referenceFile="$memH_test_dir/refFiles/${RF_TDFB}.out"
 
     # Add basename to list for processing later
     L_TESTFILE+=(${testDataFileBase})
