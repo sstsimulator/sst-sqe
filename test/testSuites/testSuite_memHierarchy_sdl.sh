@@ -64,11 +64,6 @@ Tol=$2    ##  curTick tolerance
     echo "TDFB $RF_TDFB"
     referenceFile="$memH_test_dir/refFiles/${RF_TDFB}.out"
     outFile="${SST_TEST_OUTPUTS}/${RF_TDFB}.out"
-echo SST_MULTI_RANK = $SST_MULTI_RANK
-echo SST_MULTI_CORE = $SST_MULTI_CORE
-echo SST_MULTI_THREAD = $SST_MULTI_THREAD
-cksum $referenceFile
-echo OUT  $outFile
 
     # Add basename to list for processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -81,9 +76,6 @@ echo ' '; echo Find pyFileName
     pyFileName=`echo ${memH_case}.py | sed s/_/-/ | sed s/_MC// | sed s/-MC//`
 echo ' '; echo $pyFileName
 echo ' '
-echo "             input files are;"
-    ls ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/*sdl5*
-echo " --------------------------------------------------"
     sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/$pyFileName
     echo $sutArgs
     grep backend $sutArgs | grep dramsim > /dev/null
@@ -362,7 +354,6 @@ memHierarchy_Template sdl4-2-ramulator 500
 
 test_memHierarchy_sdl5_1_ramulator() {          
 pushd  $SST_REFERENCE_ELEMENTS/memHierarchy/tests
-#if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
 if [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
     memHierarchy_Template sdl5-1-ramulator 500
 else
