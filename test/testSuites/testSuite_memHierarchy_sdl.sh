@@ -362,7 +362,8 @@ memHierarchy_Template sdl4-2-ramulator 500
 
 test_memHierarchy_sdl5_1_ramulator() {          
 pushd  $SST_REFERENCE_ELEMENTS/memHierarchy/tests
-if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
+#if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
+if [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
     memHierarchy_Template sdl5-1-ramulator 500
 else
     memHierarchy_Template sdl5-1-ramulator_MC 500
