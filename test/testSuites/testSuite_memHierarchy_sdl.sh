@@ -59,6 +59,12 @@ Tol=$2    ##  curTick tolerance
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+
+    RF_TDFB=`echo ${testDataFileBase} | sed s/-/_/g`
+    echo "TDFB $RF_TDFB"
+    referenceFile="$memH_test_dir/refFiles/${RF_TDFB}.out"
+    outFile="${SST_TEST_OUTPUTS}/${RF_TDFB}.out"
+
     # Add basename to list for processing later
     L_TESTFILE+=(${testDataFileBase})
     pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
@@ -66,7 +72,10 @@ Tol=$2    ##  curTick tolerance
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-    pyFileName=`echo ${memH_case}.py | sed s/_/-/ | sed s/_MC//`
+echo ' '; echo Find pyFileName
+    pyFileName=`echo ${memH_case}.py | sed s/_/-/ | sed s/_MC// | sed s/-MC//`
+echo ' '; echo $pyFileName
+echo ' '
     sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/$pyFileName
     echo $sutArgs
     grep backend $sutArgs | grep dramsim > /dev/null
@@ -155,9 +164,7 @@ Tol=$2    ##  curTick tolerance
            echo " Sorted match with Reference File"
            rm ${SSTTESTTEMPFILES}/_raw_diff
         else
-echo "Preliminary ---------------"
 cat ${SSTTESTTEMPFILES}/diff_sorted
-echo " ----------------- "
            echo "`diff $referenceFile $outFile | wc` $memH_case" >> ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
    #                             --- Special case with-DramSim --- 
            if [ $usingDramSim == 0 ] ; then    ## usingDramSim is TRUE
@@ -337,6 +344,22 @@ fi
 
 test_memHierarchy_sdl9_2() {          
 memHierarchy_Template sdl9_2 500
+
+}
+
+test_memHierarchy_sdl4_2_ramulator() {          
+memHierarchy_Template sdl4-2-ramulator 500
+
+}
+
+test_memHierarchy_sdl5_1_ramulator() {          
+pushd  $SST_REFERENCE_ELEMENTS/memHierarchy/tests
+if [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
+    memHierarchy_Template sdl5-1-ramulator 500
+else
+    memHierarchy_Template sdl5-1-ramulator_MC 500
+fi
+popd
 
 }
 
