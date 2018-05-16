@@ -68,6 +68,9 @@ Match=$2    ##  Match criteron
         #           This is multi-core case
         if [ -e "$memH_test_dir/refFiles/${testDataFileBase}_MC.out" ] ; then
             referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MC.out"
+        elif [ -e "$memH_test_dir/refFiles/${testDataFileBase}_MR.out" ] &&
+           [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+            referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MR.out"
         else
             referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
         fi
