@@ -1453,6 +1453,7 @@ linuxSetBoostMPI() {
            ModuleEx load metis/metis-5.1.0-bundled
        else
            ModuleEx load metis/metis-5.1.0
+       fi
        echo "      This is what is loaded for METIS"
        ModuleEx list | grep metis
         
