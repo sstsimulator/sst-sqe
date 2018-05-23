@@ -1447,10 +1447,11 @@ linuxSetBoostMPI() {
 #       ModuleEx load systemc/systemc-2.3.0
        # METIS 5.1.0
        echo "bamboo.sh: Load METIS 5.1.0"
-       ModuleEx load metis/metis-5.1.0
+       ModuleEx load metis/metis-5.1.0-bundled
        # Other misc
 #       echo "bamboo.sh: Load libphx"
 #       ModuleEx load libphx/libphx-2014-MAY-08
+echo ' ' ; module avail ; echo ' ' ; module list ; echo ' '
 
    else # otherwise try to load compiler-specific tool variant
        # GNU Linear Programming Kit (GLPK)
