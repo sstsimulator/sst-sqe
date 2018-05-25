@@ -1447,7 +1447,16 @@ linuxSetBoostMPI() {
 #       ModuleEx load systemc/systemc-2.3.0
        # METIS 5.1.0
        echo "bamboo.sh: Load METIS 5.1.0"
-       ModuleEx load metis/metis-5.1.0
+       ModuleEx avail | grep bundled
+       if [ $? == 0 ] ; then
+           echo " Bingo ###################################################"
+           ModuleEx load metis/metis-5.1.0-bundled
+       else
+           ModuleEx load metis/metis-5.1.0
+       fi
+       echo "      This is what is loaded for METIS"
+       ModuleEx list | grep metis
+        
        # Other misc
 #       echo "bamboo.sh: Load libphx"
 #       ModuleEx load libphx/libphx-2014-MAY-08
