@@ -39,7 +39,28 @@ sstDepsStage_ramulator ()
     
     pushd ${SST_DEPS_SRC_STAGING}
 
-    git clone https://github.com/CMU-SAFARI/ramulator.git ramulator
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
+      echo " "
+      echo "git clone https://github.com/CMU-SAFARI/ramulator.git ramulator"
+      git clone https://github.com/CMU-SAFARI/ramulator.git ramulator
+
+      retVal=$?
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
+         echo "\"git clone of ramulato \" FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+         if [ $Num_Tries_remaing -gt 0 ] ; then
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             rm -rf sst-core
+             continue
+         fi
+         exit
+      fi
+   done
+   echo " "
     
     retval=$?
     if [ $retval -ne 0 ]
