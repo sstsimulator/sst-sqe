@@ -1,4 +1,4 @@
-      echo "This is the non non-Mac path"
+      echo "This is the non-Mac path"
       date
       echo ' '
 #          Proceed to attempt the kill
