@@ -43,10 +43,14 @@ sstDepsStage_ramulator ()
    while [ $Num_Tries_remaing -gt 0 ]
    do
       echo " "
+      date
+      echo ' '
       echo "git clone https://github.com/CMU-SAFARI/ramulator.git ramulator"
       git clone https://github.com/CMU-SAFARI/ramulator.git ramulator
-
       retVal=$?
+      echo ' '
+      date
+      echo ' '
       if [ $retVal == 0 ] ; then
          Num_Tries_remaing=-1
       else
