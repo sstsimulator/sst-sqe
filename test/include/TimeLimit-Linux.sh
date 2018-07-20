@@ -64,6 +64,8 @@ echo "------------------   Debug -------------"
     ps -f | grep 'bin/sst ' | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
     echo "      finding SST_PID and MPIRUN_PID"
     ps -f | grep -e 'bin/sst ' -e sstsim.x | grep -v grep | grep -v mpirun
+echo " one line ------------------------------"
+   ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' 
 echo " two lines ------------------------------"
    ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
                    grep -e 'bin/sst ' -e sstsim.x | grep -v grep 
