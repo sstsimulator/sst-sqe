@@ -65,18 +65,18 @@ echo "------------------   Debug -------------"
     echo "      finding SST_PID and MPIRUN_PID"
     ps -f | grep -e 'bin/sst ' -e sstsim.x | grep -v grep | grep -v mpirun
 echo " one line ------------------------------"
-   ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' 
+   ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8," "}' 
 echo " two lines ------------------------------"
-   ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
+   ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8," "}' | \
                    grep -e 'bin/sst ' -e sstsim.x | grep -v grep 
 echo " two.5 lines ------------------------------"
-    ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
+    ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8," "}' | \
                    grep -e 'bin/sst ' -e sstsim.x | grep -v grep | \
                    grep -v mpirun | grep $MY_TREE 
-    SST_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
+    SST_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8," "}' | \
                    grep -e 'bin/sst ' -e sstsim.x | grep -v grep | \
                    grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $2 }'`
-    SSTPAR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
+    SSTPAR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8," "}' | \
                    grep -e 'bin/sst ' -e sstsim.x | grep -v grep | \
                    grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $3 }'`
 echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
