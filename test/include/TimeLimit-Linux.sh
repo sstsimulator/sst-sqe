@@ -1,4 +1,4 @@
-      echo "This is the non non-Mac path"
+      echo "This is the non-Mac path"
       date
       echo ' '
 #          Proceed to attempt the kill
@@ -12,9 +12,9 @@ findChild()
 
    if [ -z "$KILL_PID" ] ; then
 echo "------------------   Debug ------/$SPID is $SPID -------"
-   ps -ef | grep bin/sst
+   ps -ef | grep 'bin/sst '
 echo "------------------   Debug -------------"
-       KILL_PID=`ps -f | grep bin/sst  | grep $SPID | awk '{ print $2 }'`
+       KILL_PID=`ps -f | grep 'bin/sst '  | grep $SPID | awk '{ print $2 }'`
    fi
       
    if [ -z "$KILL_PID" ] ; then
@@ -58,18 +58,17 @@ echo "------------------   Debug -------------"
     MY_TREE=`pwd | awk -F 'devel/trunk' '{print $1 }'`
     echo  "DEBUG?   MY_TREE is $MY_TREE "
     echo "  JOHNS sanity check   --  all bin/sst"
-    ps -ef | grep bin/sst | grep -v grep 
+    ps -ef | grep 'bin/sst ' | grep -v grep 
     echo " ----------- all  "
-    ps -f | grep bin/sst | grep -v grep | grep -v mpirun 
-    ps -f | grep bin/sst | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
+    ps -f | grep 'bin/sst ' | grep -v grep | grep -v mpirun 
+    ps -f | grep 'bin/sst ' | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
     echo "      finding SST_PID and MPIRUN_PID"
-    ps -f | grep -e bin/sst -e sstsim.x | grep -v grep | grep -v mpirun
-
-    SST_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
-                   grep -e bin/sst -e sstsim.x | grep -v grep | \
+    ps -f | grep -e 'bin/sst ' -e sstsim.x | grep -v grep | grep -v mpirun
+    SST_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8," "}' | \
+                   grep -e 'bin/sst ' -e sstsim.x | grep -v grep | \
                    grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $2 }'`
-    SSTPAR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | \
-                   grep -e bin/sst -e sstsim.x | grep -v grep | \
+    SSTPAR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8," "}' | \
+                   grep -e 'bin/sst ' -e sstsim.x | grep -v grep | \
                    grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $3 }'`
 echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
     if [ -z $SSTPAR_PID ] || [ "$SSTPAR_PID" == $TL_PPID ] ; then
