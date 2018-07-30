@@ -39,8 +39,28 @@ sstDepsStage_goblin_hmcsim ()
     
     pushd ${SST_DEPS_SRC_STAGING}
 
-    git clone -b sst-8.0.0-release https://github.com/tactcomplabs/gc64-hmcsim.git goblin_hmcsim
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
+      echo " "
+      echo " git clone -b sst-8.0.0-release https://github.com/tactcomplabs/gc64-hmcsim.git"
+      git clone -b sst-8.0.0-release https://github.com/tactcomplabs/gc64-hmcsim.git goblin_hmcsim
 #    git clone -b sst-7.2.0-release https://github.com/tactcomplabs/gc64-hmcsim.git goblin_hmcsim
+
+      retVal=$?
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
+         echo "\"git clone of goblin_hmcsim \" FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+         if [ $Num_Tries_remaing -gt 0 ] ; then
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             rm -rf sst-core
+             continue
+         fi
+         exit
+      fi
+   done
     
     retval=$?
     if [ $retval -ne 0 ]
