@@ -58,6 +58,8 @@ CP_case=$1
     # files. XML postprocessing requires this.
     testDataFileBase="test_cassini_prefetch_${CP_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
+    testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     referenceFile="${SST_REFERENCE_ELEMENTS}/cassini/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
@@ -72,8 +74,18 @@ CP_case=$1
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs}  > $outFile
-        RetVal=$? 
+        if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
+             ${sut} ${sutArgs} > ${outFile} 
+             RetVal=$? 
+             cat $errFile >> $outFile
+        else
+             #   This merges stderr with stdout
+             mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} 
+             RetVal=$?
+             wc ${testOutFiles}*
+             cat ${testOutFiles}* > $outFile
+        fi
+
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
