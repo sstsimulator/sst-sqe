@@ -1390,6 +1390,12 @@ linuxSetBoostMPI() {
            ModuleEx unload mpi # unload any default to avoid conflict error
            ModuleEx load mpi/${desiredMPI}
            ;;
+       johnsmpi)
+           echo "OpenMPI (johnsmpi) selected"
+           ModuleEx unload mpi # unload any default to avoid conflict error
+           export MPIHOME=/home/jpvandy/johnsmpi/openmpi-2.1.3
+           export LD_LIBRARY_PATH=$MPIHOME/lib:$LD_LIBRARY_PATH
+           ;;
        none)
            echo "MPI requested as \"none\".    No MPI loaded"
            ModuleEx unload mpi # unload any default 
