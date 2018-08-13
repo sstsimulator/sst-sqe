@@ -32,14 +32,15 @@ ps -p $SST_PID
           break
        fi
    done 3< display-file
-echo line $LINENO    MPIRUN_PID is $MPIRUN_PID
-ps -p $MPIRUN_PID
-    echo ' '
 #   -----          Invoke the traceback routine  ----- "
 ps -p $SST_PID
     if [ ! -z $MPIRUN_PID ] ; then
+        echo line $LINENO    MPIRUN_PID is $MPIRUN_PID
+        ps -p $MPIRUN_PID
+        echo ' '
         TRACEBACK_PARAM="--mpi $MPIRUN_PID"
     else
+        echo "no \"mpirun\" found"
         TRACEBACK_PARAM=$SST_PID
     fi
 #          Invoke the traceback routine
@@ -47,6 +48,7 @@ ps -p $SST_PID
 
     echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
     $SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
+    echo "Return code from Trace-Back is $?"
 
 echo ' '
 date
