@@ -1396,7 +1396,7 @@ echo "##########################################################################
 echo "###########################################     $LINENO  #################"
            ModuleEx unload mpi # unload any default to avoid conflict error
 echo "###########################################     $LINENO  #################"
-           _TOP_=`ls -ld /home/jpvandy/johnsmpi | grep ^d | awk '{print $NF}'` 
+           _TOP_=`ls -ld /home/jpvandy/johnsmpi/* | grep ^d | awk '{print $NF}'` 
 echo "###########################################     $LINENO  #################"
 echo $_TOP_
 echo "###########################################     $LINENO  #################"
