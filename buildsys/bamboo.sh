@@ -1393,7 +1393,9 @@ linuxSetBoostMPI() {
        johnsmpi)
            echo "OpenMPI (johnsmpi) selected"
            ModuleEx unload mpi # unload any default to avoid conflict error
-           export MPIHOME=/home/jpvandy/johnsmpi
+           _TOP_=`ls -ld /home/jpvandy/johnsmpi | grep ^d | awk 'print $NF}'` 
+echo $_TOP_
+           export MPIHOME=/home/jpvandy/johnsmpi/$_TOP_
            export LD_LIBRARY_PATH=$MPIHOME/lib:$LD_LIBRARY_PATH
            export PATH=$MPIHOME/bin:$PATH
            ;;
