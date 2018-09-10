@@ -55,7 +55,7 @@ sstDepsStage_goblin_hmcsim ()
          Num_Tries_remaing=$(($Num_Tries_remaing - 1))
          if [ $Num_Tries_remaing -gt 0 ] ; then
              echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf sst-core
+             rm -rf goblin_hmcsim
              continue
          fi
          exit

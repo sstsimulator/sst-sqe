@@ -54,11 +54,11 @@ sstDepsStage_ramulator ()
       if [ $retVal == 0 ] ; then
          Num_Tries_remaing=-1
       else
-         echo "\"git clone of ramulato \" FAILED.  retVal = $retVal"
+         echo "\"git clone of ramulator \" FAILED.  retVal = $retVal"
          Num_Tries_remaing=$(($Num_Tries_remaing - 1))
          if [ $Num_Tries_remaing -gt 0 ] ; then
              echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf sst-core
+             rm -rf ramulator
              continue
          fi
          exit
