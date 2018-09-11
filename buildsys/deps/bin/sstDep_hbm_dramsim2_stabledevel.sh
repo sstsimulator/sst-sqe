@@ -39,9 +39,27 @@ sstDepsStage_hbm_dramsim2 ()
     
     pushd ${SST_DEPS_SRC_STAGING}
 
-    git clone https://github.com/tactcomplabs/HBM.git hbm_dramsim2
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
+      echo " "
+      echo "git clone https://github.com/tactcomplabs/HBM.git hbm_dramsim2"
+      git clone https://github.com/tactcomplabs/HBM.git hbm_dramsim2
     
-    retval=$?
+      retVal=$?
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
+         echo "\"git clone of hbm_dramsim2 \" FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+         if [ $Num_Tries_remaing -gt 0 ] ; then
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             rm -rf hbm_dramsim2
+             continue
+         fi
+         return $retVal
+      fi
+   done
     if [ $retval -ne 0 ]
     then
         # bail out on error
