@@ -11,7 +11,7 @@ findChild()
        KILL_PID=`ps -f | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
 
    if [ -z "$KILL_PID" ] ; then
-echo "------------------   Debug ------/$SPID is $SPID -------"
+echo "------------------   Debug ------\$SPID is $SPID -------"
    ps -ef | grep 'bin/sst '
 echo "------------------   Debug -------------"
        KILL_PID=`ps -f | grep 'bin/sst '  | grep $SPID | awk '{ print $2 }'`
