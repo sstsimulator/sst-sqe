@@ -11,6 +11,7 @@
 ##      value directly in here, over riding the Suite.
 ##   The new environment variable, SST_TEST_TIMEOUT_OVERRIDE, trumps all. 
               
+ONET=${SST_TEST_ONE_TEST_TIMEOUT}
 if [[ ${SST_TEST_ONE_TEST_TIMEOUT:+isSet} != isSet ]] ; then
     SST_TEST_ONE_TEST_TIMEOUT=1800         # 30 minutes 1800 seconds
 fi
@@ -20,6 +21,7 @@ CASE=$2
 if [[ ${SST_TEST_TIMEOUT_OVERRIDE:+isSet} == isSet ]] ; then
     SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_TIMEOUT_OVERRIDE
 fi 
+echo "Time Limit is ${SST_TEST_ONE_TEST_TIMEOUT} , One T was $ONET, OVERRIDE is $SST_TEST_TIMEOUT_OVERRIDE"
 
 startSeconds=`date +%s`
 ####                    The Sleep
