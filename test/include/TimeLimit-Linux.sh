@@ -36,12 +36,12 @@ echo "$LINENO - ------------------   Debug -------------"
                echo ' '
            else
                echo "$LINENO -   at line $LINENO,  kill Valgrind $VG_PID"
-               echo "$LINENO - wc from \"ps -f\" `ps -f | wc` "
+               echo "$LINENO - wc from \"ps -fe\" `ps -fe | wc` "
 #              SST_PID=`ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $3 }'`
                ps -f | grep 'sstsim.x ' 
                kill -9 $VG_PID
                echo "$LINENO - kill issued"
-               echo "$LINENO - wc from \"ps -f\" `ps -f | wc` "
+               echo "$LINENO - wc from \"ps -fe\" `ps -fe | wc` "
                echo "$LINENO -    -- Time Limit Processing is done"
                exit    
            fi
