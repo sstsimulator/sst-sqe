@@ -38,6 +38,15 @@ echo "$LINENO - ------------------   Debug -------------"
                echo "$LINENO -   at line $LINENO,  kill Valgrind $VG_PID"
                echo "$LINENO - wc from \"ps -fe\" `ps -fe | wc` "
 #              SST_PID=`ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $3 }'`
+echo "$LINENO John's proof of concept"; echo ' '
+                       ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $2 , print $3  } `
+     echo "$LINENO \$2 is first"
+                   n2=`ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $2  }' `
+                   ps -e -p $n2
+               
+     echo "$LINENO \$3 is next"
+                    n3=`ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $3  }' `
+                   ps -e -p $n3
                ps -f | grep 'sstsim.x ' 
                kill -9 $VG_PID
                echo "$LINENO - kill issued"
