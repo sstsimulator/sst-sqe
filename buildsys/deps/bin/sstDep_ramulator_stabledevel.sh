@@ -54,27 +54,26 @@ sstDepsStage_ramulator ()
       if [ $retVal == 0 ] ; then
          Num_Tries_remaing=-1
       else
-         echo "\"git clone of ramulato \" FAILED.  retVal = $retVal"
+         echo "\"git clone of ramulator \" FAILED.  retVal = $retVal"
          Num_Tries_remaing=$(($Num_Tries_remaing - 1))
          if [ $Num_Tries_remaing -gt 0 ] ; then
              echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf sst-core
-             continue
+             rm -rf ramulator
+             continue                        ## Try another
          fi
-         exit
+         return $retVal
       fi
    done
    echo " "
     
-    retval=$?
-    if [ $retval -ne 0 ]
+    if [ $retVal -ne 0 ]                     ## retVal from git clone
     then
         # bail out on error
         echo "ERROR: sstDep_ramulator_stabledevel.sh: ramulator git fetch failure"
         sstDepsAnnounce -h $FUNCNAME -m \
           "Is http_proxy configured properly in $HOME/.wgetrc?"
         popd
-        return $retval
+        return $retVal
     fi
     
     #  Move into the ramulator directory

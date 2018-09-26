@@ -11,7 +11,7 @@ findChild()
        KILL_PID=`ps -f | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
 
    if [ -z "$KILL_PID" ] ; then
-echo "------------------   Debug ------/$SPID is $SPID -------"
+echo "------------------   Debug ------\$SPID is $SPID -------"
    ps -ef | grep 'bin/sst '
 echo "------------------   Debug -------------"
        KILL_PID=`ps -f | grep 'bin/sst '  | grep $SPID | awk '{ print $2 }'`
@@ -72,7 +72,7 @@ echo "------------------   Debug -------------"
                    grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $3 }'`
 echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
     if [ -z $SSTPAR_PID ] || [ "$SSTPAR_PID" == $TL_PPID ] ; then
-       echo " No mpirun "
+       echo " No mpirun as parent of sst"
        MPIRUN_PID=0
     else
        ps -f -p $SSTPAR_PID > ttt ; grep mpirun ttt
