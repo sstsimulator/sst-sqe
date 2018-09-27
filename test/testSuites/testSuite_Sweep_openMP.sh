@@ -86,7 +86,7 @@ DO_SP_LIST="no"
              if [ $? != 0 ] ; then
 #                            Single
                 indx=$(printf "%03d" $IND)
-                CASES="$CASES $indx"
+                CASES="$CASES $IND"
              else
 #                            Inclusive
 #     echo IND = $IND
@@ -98,14 +98,16 @@ DO_SP_LIST="no"
                 do
 #     echo In the INDR loop INDR = $INDR
                    indx=$(printf "%03d" $INDR)
-                   CASES="$CASES $indx"
+                   CASES="$CASES $INDR"
                    INDR=$(($INDR+1))
                 done    
              fi
           done
      fi
 
-    nCASES=`echo $CASES | wc`
+    nCASES=`echo $CASES | wc -l`
+echo "#############>>>  nCASES = $nCASES   This is John's"
+echo "CASES = $CASES ##########<<<<<<"
 
 echo "JND =  $JND" 
 
@@ -322,6 +324,7 @@ echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = $INDEX_RUNNING"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     wrkFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.wrk"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+echo " >>>>>>>>>>>>>>>>>... $outFile "
 
     sutArgs=$TEST_SUITE_ROOT/testopenMP/sweepopenmp.py
 
