@@ -78,7 +78,7 @@ DO_SP_LIST="no"
      if [[ ${OPENMP_SP_LIST:+isSet} == isSet ]] ; then
          DO_SP_LIST="yes"
   echo " LIST is $OPENMP_SP_LIST"
-         CASES=""
+         CASES=()
          for IND in $OPENMP_SP_LIST
          do
   echo " IND is $IND "
@@ -86,7 +86,7 @@ DO_SP_LIST="no"
              if [ $? != 0 ] ; then
 #                            Single
                 indx=$(printf "%03d" $IND)
-                CASES="$CASES $IND"
+                CASES+=($IND)
              else
 #                            Inclusive
 #     echo IND = $IND
@@ -98,14 +98,14 @@ DO_SP_LIST="no"
                 do
 #     echo In the INDR loop INDR = $INDR
                    indx=$(printf "%03d" $INDR)
-                   CASES="$CASES $INDR"
+                   CASES+=($INDR)
                    INDR=$(($INDR+1))
                 done    
              fi
           done
      fi
 
-    nCASES=`echo $CASES | wc -l`
+    nCASES=${#CASES[@]}
 echo "#############>>>  nCASES = $nCASES   This is John's"
 echo "CASES = $CASES ##########<<<<<<"
 
