@@ -273,7 +273,7 @@ if [ $DO_SP_LIST == "yes" ] ; then
     SWEEP_WIDTH=$nCASES
 else
     INDEX_RUNNING=0
-echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = $INDEX_RUNNING"
+echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = [$INDEX_RUNNING]"
     SWEEP_WIDTH=`do_sweep | grep SWEEP.INDEX | awk '{print $4}'`
 fi
 echo  SWEEP WIDTH $SWEEP_WIDTH
@@ -311,11 +311,11 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
 
     if [ $DO_SP_LIST == "yes" ] ; then
         INDEX_RUNNING=${CASES[$iCASE]}
-echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = $INDEX_RUNNING"
+echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = [$INDEX_RUNNING]"
         iCASE=$(($iCASE+1))
     else
         INDEX_RUNNING=$(($INDEX_RUNNING+1))
-echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = $INDEX_RUNNING"
+echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = [$INDEX_RUNNING]"
     fi
     echo INDEX_RUNNING is $INDEX_RUNNING
     startSeconds=`date +%s`
