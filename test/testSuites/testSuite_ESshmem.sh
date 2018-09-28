@@ -37,6 +37,7 @@ ESshmem_after() {
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
              rm $TIME_FLAG 
+             wc $SST_TEST_OUTPUTS/*VGout
              return 
         fi 
     if [ $RetVal != 0 ] ; then
