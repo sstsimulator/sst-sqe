@@ -106,8 +106,7 @@ DO_SP_LIST="no"
      fi
 
     nCASES=${#CASES[@]}
-echo "#############>>>  nCASES = $nCASES   This is John's"
-echo "CASES = $CASES ##########<<<<<<"
+echo " nCASES = $nCASES"
 
 echo "JND =  $JND" 
 
@@ -273,7 +272,6 @@ if [ $DO_SP_LIST == "yes" ] ; then
     SWEEP_WIDTH=$nCASES
 else
     INDEX_RUNNING=0
-echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = [$INDEX_RUNNING]"
     SWEEP_WIDTH=`do_sweep | grep SWEEP.INDEX | awk '{print $4}'`
 fi
 echo  SWEEP WIDTH $SWEEP_WIDTH
@@ -289,7 +287,7 @@ done
   wc $SST_TEST_SUITES/testopenMP/__testlist
 
 INDEX_RUNNING=0
-echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = $INDEX_RUNNING"
+
 iCASE=0
 
 #===============================================================================
@@ -311,7 +309,7 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
 
     if [ $DO_SP_LIST == "yes" ] ; then
         INDEX_RUNNING=${CASES[$iCASE]}
-echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = [$INDEX_RUNNING]"
+
         iCASE=$(($iCASE+1))
     else
         INDEX_RUNNING=$(($INDEX_RUNNING+1))
