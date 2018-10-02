@@ -1390,6 +1390,24 @@ linuxSetBoostMPI() {
            ModuleEx unload mpi # unload any default to avoid conflict error
            ModuleEx load mpi/${desiredMPI}
            ;;
+       johnsmpi)
+           echo "OpenMPI (johnsmpi) selected"
+echo "##########################################################################"
+echo "###########################################     $LINENO  #################"
+           ModuleEx unload mpi # unload any default to avoid conflict error
+echo "###########################################     $LINENO  #################"
+           _TOP_=`ls -ld /home/jpvandy/johnsmpi/* | grep ^d | awk -F/ '{print $NF}'` 
+echo "###########################################     $LINENO  #################"
+echo $_TOP_
+echo "###########################################     $LINENO  #################"
+           export MPIHOME=/home/jpvandy/johnsmpi/$_TOP_
+           export LD_LIBRARY_PATH=$MPIHOME/lib:$LD_LIBRARY_PATH
+           export PATH=$MPIHOME/bin:$PATH
+echo "###########################################     $LINENO  #################"
+ls $MPIHOME
+
+           ;;
+
        none)
            echo "MPI requested as \"none\".    No MPI loaded"
            ModuleEx unload mpi # unload any default 
