@@ -185,7 +185,7 @@ echo "$LINENO -  ################################ temporary    SSTPAR= $SSTPAR_P
         ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
         if [ $? == 0 ] ; then
  echo $LINENO       
-            echo "$LINENO -  It's still there!  ($KILL_PID)"
+            echo "$LINENO -  It is still there!  KILL_PID = $KILL_PID"
  echo $LINENO
             echo "$LINENO -   tLE ==== $LINENO   "
             ps -ef | grep ompsievetest | grep -v -e grep
