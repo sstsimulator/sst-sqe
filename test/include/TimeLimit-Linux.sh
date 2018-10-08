@@ -1,4 +1,4 @@
-      echo "This is the non-Mac path"
+      echo "$LINENO - This is TimeLimit-Linux"
       date
       echo ' '
 #          Proceed to attempt the kill
@@ -11,38 +11,39 @@ findChild()
        KILL_PID=`ps -f | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
 
    if [ -z "$KILL_PID" ] ; then
-echo "------------------   Debug ------\$SPID is $SPID -------"
+echo "$LINENO findChild -  - ------------------   Debug ------\$SPID is $SPID -------"
    ps -ef | grep 'bin/sst '
-echo "------------------   Debug -------------"
+echo "$LINENO findChild -  - ------------------   Debug -------------"
        KILL_PID=`ps -f | grep 'bin/sst '  | grep $SPID | awk '{ print $2 }'`
    fi
       
    if [ -z "$KILL_PID" ] ; then
-       echo I am $TL_MY_PID,  findChild invoked with $1, my parent PID is $TL_PPID
-       echo "No corresponding child named \"sst\" "
+       echo "$LINENO findChild -  - I am $TL_MY_PID,  findChild invoked with $1, my parent PID is $TL_PPID"
+       echo "$LINENO findChild -  - No corresponding child named \"sst\" "
        ps -f | grep $SPID
        echo ' '
        #   Is there a Python running from the Parent PID
-       echo " Look for a child named \"python\""
+       echo "$LINENO findChild -  -  Look for a child named \"python\""
        PY_PID=`ps -f | grep 'python ' | grep $SPID | awk '{ print $2 }'`
        if [ -z "$PY_PID" ] ; then
-           echo "No corresponding child named \"python\" "
+           echo "$LINENO findChild -  - No corresponding child named \"python\" "
            echo ' '
            #   Is there a Valgrind running from the Parent PID
-           echo " Look for a child named \"valgrind\""
+           echo "$LINENO findChild -  -  Look for a child named \"valgrind\""
            VG_PID=`ps -f | grep ' valgrind ' | grep $SPID | awk '{ print $2 }'`
            if [ -z "$VG_PID" ] ; then
-               echo "No corresponding child named \"valgrind\" "
+               echo "$LINENO findChild -  - No corresponding child named \"valgrind\" "
                echo ' '
            else
-               echo "  at line $LINENO,  kill Valgrind $VG_PID"
-               ps -f 
-#              SST_PID=`ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $3 }'`
-               ps -f | grep 'sstsim.x ' 
+               echo "$LINENO findChild -  - wc from \"ps -fe\" `ps -fe | wc` "
+               echo "$LINENO findChile -  - There is no pid for SST! !"
+               
+               echo "$LINENO findChild -  - at line $LINENO,  kill Valgrind $VG_PID"
                kill -9 $VG_PID
-               echo "kill issued"
-               ps -f 
-               echo "   -- Time Limit Processing is done"
+               echo "$LINENO findChild -  - kill issued"
+               echo "$LINENO findChild -  - wc from \"ps -fe\" `ps -fe | wc` "
+               echo ' '
+               echo "$LINENO findChild -  -    -- Time Limit Processing is done"
                exit    
            fi
        else
@@ -54,15 +55,15 @@ echo "------------------   Debug -------------"
 #          End findChild() subroutine
 #
 
-    echo " ###############################################################"
+    echo "$LINENO -  ###############################################################"
     MY_TREE=`pwd | awk -F 'devel/trunk' '{print $1 }'`
-    echo  "DEBUG?   MY_TREE is $MY_TREE "
-    echo "  JOHNS sanity check   --  all bin/sst"
+    echo "$LINENO - DEBUG?   MY_TREE is $MY_TREE "
+    echo "$LINENO -   JOHNS sanity check   --  all bin/sst"
     ps -ef | grep 'bin/sst ' | grep -v grep 
-    echo " ----------- all  "
+    echo "$LINENO -  ----------- all  "
     ps -f | grep 'bin/sst ' | grep -v grep | grep -v mpirun 
     ps -f | grep 'bin/sst ' | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
-    echo "      finding SST_PID and MPIRUN_PID"
+    echo "$LINENO -       finding SST_PID and MPIRUN_PID"
     ps -f | grep -e 'bin/sst ' -e sstsim.x | grep -v grep | grep -v mpirun
     SST_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8," "}' | \
                    grep -e 'bin/sst ' -e sstsim.x | grep -v grep | \
@@ -70,22 +71,22 @@ echo "------------------   Debug -------------"
     SSTPAR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8," "}' | \
                    grep -e 'bin/sst ' -e sstsim.x | grep -v grep | \
                    grep -v mpirun | grep $MY_TREE | sed 1q | awk '{ print $3 }'`
-echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
+echo "$LINENO -  ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPID= $TL_PPID"
     if [ -z $SSTPAR_PID ] || [ "$SSTPAR_PID" == $TL_PPID ] ; then
-       echo " No mpirun as parent of sst"
+       echo "$LINENO -  No mpirun as parent of sst"
        MPIRUN_PID=0
     else
        ps -f -p $SSTPAR_PID > ttt ; grep mpirun ttt
        if [ 0 == $? ] ; then
            MPIRUN_PID=$SSTPAR_PID
-           echo " the pid of the mpirun is $MPIRUN_PID "
+           echo "$LINENO -  the pid of the mpirun is $MPIRUN_PID "
        else 
-           echo "SST parent is not mpirun"
+           echo "$LINENO - SST parent is not mpirun"
            ps -f -p $SSTPAR_PID
            MPIRUN_PID=0
        fi
     fi
-    echo " the pid of an sst is $SST_PID "
+    echo "$LINENO -  the pid of an sst is $SST_PID "
     
     if [ $MPIRUN_PID -eq 0 ] ; then
         KILL_PID=$SST_PID
@@ -94,7 +95,7 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
     fi
     
     if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] && [[ ${SST_PID:+isSet} == isSet ]] ; then
-        echo " Check for Dead Lock"
+        echo "$LINENO -  Check for Dead Lock"
         kill -USR1 $SST_PID
         sleep 1
         kill -USR1 $SST_PID
@@ -102,7 +103,7 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
         touch $SST_ROOT/test/testOutputs/${CASE}dummy
         grep -i signal $SST_ROOT/test/testOutputs/${CASE}*
         grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
-        echo " ###############################################################"
+        echo "$LINENO -  ###############################################################"
     fi
     
     if [ -z $KILL_PID ] ; then
@@ -128,19 +129,19 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
               continue
            fi 
         
-           echo "Sibling is $_task"
+           echo "$LINENO - Sibling is $_task"
            findChild $_task
            break
         done 3< full_ps__
     fi
     
-    echo Kill pid is $KILL_PID
+    echo "$LINENO - Kill pid is $KILL_PID"
     #                     The following code assumes Kill pid is set
     #                            and never sets it
     
     if [ -z "$KILL_PID" ] ; then
-        echo "Failed to define a KILL_PID "
-        echo "   The timeLimitEnforcer has fail!   "
+        echo "$LINENO - Failed to define a KILL_PID "
+        echo "$LINENO -    The timeLimitEnforcer has fail!   "
         exit
     else
         #   -----          Invoke the traceback routine  ----- "
@@ -152,54 +153,56 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
             fi
         #          Invoke the traceback routine
         date
-        echo "   Invoke the traceback routine  ---- $CASE"
+        echo "$LINENO -    Invoke the traceback routine  ---- $CASE"
         
-        echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
+        echo "$LINENO - \$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
         $SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
         
         echo ' '
         date
-        echo "   Return to timeLimitEnforcer"
+        echo "$LINENO -    Return to timeLimitEnforcer"
         echo ' '
         
-        echo "  tLE ==== $LINENO   KILL_PID is $KILL_PID"
+        echo "$LINENO -   tLE ==== $LINENO   KILL_PID is $KILL_PID"
         kill $KILL_PID
         #                     Believe I remember that this always return zero
         if [ $? == 1 ] ; then
-            echo " Kill of $KILL_PID for TIME OUT   FAILED"
-            echo "     I am $TL_MY_PID,   my parent was $TL_PPID" 
+            echo "$LINENO -  Kill of $KILL_PID for TIME OUT   FAILED"
+            echo "$LINENO -      I am $TL_MY_PID,   my parent was $TL_PPID" 
             ps -f -U $USER
-            echo " Try a \"kill -9\"  "
+            echo "$LINENO -  Try a \"kill -9\"  "
             kill -9 $KILL_PID
         fi
-        echo "  tLE ==== $LINENO   "
+        echo "$LINENO -   tLE ==== $LINENO   "
         ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
         if [ $? == 0 ] ; then
-            echo " It's still there!  ($KILL_PID)"
-            echo "  tLE ==== $LINENO   "
+ echo $LINENO       
+            echo "$LINENO -  It is still there!  KILL_PID = $KILL_PID"
+ echo $LINENO
+            echo "$LINENO -   tLE ==== $LINENO   "
             ps -ef | grep ompsievetest | grep -v -e grep
-            echo " Try a \"kill -9\" "
+            echo "$LINENO -  Try a \"kill -9\" "
             kill -9 $KILL_PID
-            echo "  tLE ==== $LINENO   "
+            echo "$LINENO -   tLE ==== $LINENO   "
             ps -f -p $KILL_PID > ttt ; grep $KILL_PID ttt
         fi
     
-        echo "  tLE ==== $LINENO   "
+        echo "$LINENO -   tLE ==== $LINENO   "
         ps -ef | grep ompsievetest | grep -v -e grep
-        echo "  tLE ==== $LINENO   "
+        echo "$LINENO -   tLE ==== $LINENO   "
         date
         Remove_old_ompsievetest_task
         date
         ps -ef | grep ompsievetest | grep -v -e grep
-        echo "  tLE ==== $LINENO   "
+        echo "$LINENO -   tLE ==== $LINENO   "
     fi
-    echo "  tLE ==== $LINENO   Issue the kill of $KILL_PID  "
+    echo "$LINENO -   tLE ==== $LINENO   Issue the kill of $KILL_PID  "
     kill -9 $KILL_PID
-    echo "  tLE ==== $LINENO   "
+    echo "$LINENO -   tLE ==== $LINENO   "
     ps -ef | grep ompsievetest | grep -v -e grep
-    echo "  tLE ==== $LINENO   "
+    echo "$LINENO -   tLE ==== $LINENO   "
     date
     Remove_old_ompsievetest_task
     date
     ps -ef | grep ompsievetest | grep -v -e grep
-    echo "  tLE ==== $LINENO   "
+    echo "$LINENO -   tLE ==== $LINENO   "
