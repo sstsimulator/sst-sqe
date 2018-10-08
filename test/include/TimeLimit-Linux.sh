@@ -1,4 +1,4 @@
-      echo "$LINENO - This is the non-Mac path"
+      echo "$LINENO - This is TimeLimit-Linux"
       date
       echo ' '
 #          Proceed to attempt the kill
@@ -11,47 +11,39 @@ findChild()
        KILL_PID=`ps -f | grep 'sst ' | grep $SPID | awk '{ print $2 }'`
 
    if [ -z "$KILL_PID" ] ; then
-echo "$LINENO - ------------------   Debug ------\$SPID is $SPID -------"
+echo "$LINENO findChild -  - ------------------   Debug ------\$SPID is $SPID -------"
    ps -ef | grep 'bin/sst '
-echo "$LINENO - ------------------   Debug -------------"
+echo "$LINENO findChild -  - ------------------   Debug -------------"
        KILL_PID=`ps -f | grep 'bin/sst '  | grep $SPID | awk '{ print $2 }'`
    fi
       
    if [ -z "$KILL_PID" ] ; then
-       echo "$LINENO - I am $TL_MY_PID,  findChild invoked with $1, my parent PID is $TL_PPID"
-       echo "$LINENO - No corresponding child named \"sst\" "
+       echo "$LINENO findChild -  - I am $TL_MY_PID,  findChild invoked with $1, my parent PID is $TL_PPID"
+       echo "$LINENO findChild -  - No corresponding child named \"sst\" "
        ps -f | grep $SPID
        echo ' '
        #   Is there a Python running from the Parent PID
-       echo "$LINENO -  Look for a child named \"python\""
+       echo "$LINENO findChild -  -  Look for a child named \"python\""
        PY_PID=`ps -f | grep 'python ' | grep $SPID | awk '{ print $2 }'`
        if [ -z "$PY_PID" ] ; then
-           echo "$LINENO - No corresponding child named \"python\" "
+           echo "$LINENO findChild -  - No corresponding child named \"python\" "
            echo ' '
            #   Is there a Valgrind running from the Parent PID
-           echo "$LINENO -  Look for a child named \"valgrind\""
+           echo "$LINENO findChild -  -  Look for a child named \"valgrind\""
            VG_PID=`ps -f | grep ' valgrind ' | grep $SPID | awk '{ print $2 }'`
            if [ -z "$VG_PID" ] ; then
-               echo "$LINENO - No corresponding child named \"valgrind\" "
+               echo "$LINENO findChild -  - No corresponding child named \"valgrind\" "
                echo ' '
            else
-               echo "$LINENO -   at line $LINENO,  kill Valgrind $VG_PID"
-               echo "$LINENO - wc from \"ps -fe\" `ps -fe | wc` "
-#              SST_PID=`ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $3 }'`
-echo "$LINENO John proof of concept"; echo ' '
-                       ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $2 , print $3  }' 
-     echo "$LINENO \$2 is first"
-                   n2=`ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $2  }' `
-                   ps -e -p $n2
+               echo "$LINENO findChild -  - wc from \"ps -fe\" `ps -fe | wc` "
+               echo "$LINENO findChile -  - There is no pid for SST! !"
                
-     echo "$LINENO \$3 is next"
-                    n3=`ps -f | grep 'sstsim.x ' | grep $VG_PID | grep -v $SPID | awk '{ print $3  }' `
-                   ps -e -p $n3
-               ps -f | grep 'sstsim.x ' 
+               echo "$LINENO findChild -  - at line $LINENO,  kill Valgrind $VG_PID"
                kill -9 $VG_PID
-               echo "$LINENO - kill issued"
-               echo "$LINENO - wc from \"ps -fe\" `ps -fe | wc` "
-               echo "$LINENO -    -- Time Limit Processing is done"
+               echo "$LINENO findChild -  - kill issued"
+               echo "$LINENO findChild -  - wc from \"ps -fe\" `ps -fe | wc` "
+               echo ' '
+               echo "$LINENO findChild -  -    -- Time Limit Processing is done"
                exit    
            fi
        else
