@@ -94,7 +94,7 @@ echo "$LINENO -  ################################ temporary    SSTPAR= $SSTPAR_P
         KILL_PID=$MPIRUN_PID
     fi
     
-    if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] && [[ ${SST_PID:+isSet} == isSet ]] ; then
+    if  [[ ${SST_PID:+isSet} == isSet ]] ; then
         echo "$LINENO -  Check for Dead Lock"
         kill -USR1 $SST_PID
         sleep 1
