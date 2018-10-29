@@ -18,10 +18,7 @@ if [[ `uname -n` == sst-test* ]] ; then
 fi
 
 cd $SST_TEST_ROOT/testSuites/ESshmem_folder
-cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/emberLoad.py .
-cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/loadInfo.py .
-cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/networkConfig.py .
-cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/defaultParams.py .
+cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/*.py .
 
 referenceFile=$SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ESshmem_cumulative.out
 ln -sf $SST_TEST_ROOT/testInputFiles/ESshmem_List-of-Tests ./List-of-Tests
