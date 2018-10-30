@@ -92,6 +92,7 @@ test_embernightly() {
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 ##    pushd $SST_ROOT/sst-elements/src/sst/elements/ember/test
+    rm -rf ${SST_TEST_SUITES}/emberSweep_folder
     mkdir -p ${SST_TEST_SUITES}/emberSweep_folder
     pushd ${SST_TEST_SUITES}/emberSweep_folder
     cp ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/*py .
