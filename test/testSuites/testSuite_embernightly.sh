@@ -91,7 +91,10 @@ test_embernightly() {
     referenceFile="${SST_REFERENCE_ELEMENTS}/ember/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
-    pushd $SST_ROOT/sst-elements/src/sst/elements/ember/test
+##    pushd $SST_ROOT/sst-elements/src/sst/elements/ember/test
+    mkdir -p ${SST_TEST_SUITES}/emberSweep_folder
+    pushd ${SST_TEST_SUITES}/emberSweep_folder
+    cp ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/*py .
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
@@ -167,7 +170,8 @@ test_ember_params() {
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
-    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+##    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+    pushd ${SST_TEST_SUITES}/emberSweep_folder
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
