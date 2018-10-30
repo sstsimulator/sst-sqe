@@ -11,7 +11,7 @@
 ##########  ignore scheduler Detailed Network (for now?)
 ###########  It has it's own version of emberLoad.py
 
-preFail "Skip DNS for now - it needs change to ember interface"
+preFail "Skip DNS for now - it needs change to ember interface" "skip"
 
 ###################################33
 # 1) The SUT (software under test) must have built successfully.
