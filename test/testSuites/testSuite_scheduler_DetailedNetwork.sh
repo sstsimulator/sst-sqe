@@ -7,13 +7,6 @@
 # invoked by the Bamboo script.
 
 # Preconditions:
-#########################
-##########  ignore scheduler Detailed Network (for now?)
-###########  It has it's own version of emberLoad.py
-
-preFail "Skip DNS for now - it needs change to ember interface" "skip"
-
-###################################33
 # 1) The SUT (software under test) must have built successfully.
 # 2) A test success reference file is available.
 #  There is no sutArgs= statement.  SST is python wrapped.
@@ -23,6 +16,13 @@ TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 . $TEST_SUITE_ROOT/../include/testDefinitions.sh
 . $TEST_SUITE_ROOT/../include/testSubroutines.sh
 
+#########################
+##########  ignore scheduler Detailed Network (for now?)
+###########  It has it's own version of emberLoad.py
+
+preFail "Skip DNS for now - it needs change to ember interface" "skip"
+
+###################################
 #===============================================================================
 # Variables global to functions in this suite
 #===============================================================================
