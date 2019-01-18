@@ -81,7 +81,6 @@ Match=$2    ##  Match criteron
     pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
 
 echo "   "
-git branch
 cksum $referenceFile
 echo "   "
 
