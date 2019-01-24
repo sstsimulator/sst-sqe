@@ -85,6 +85,8 @@ miranda_case=$1
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
+	     date
+	     top -bH -n 1 | grep Thread
              RemoveComponentWarning
              return
         fi

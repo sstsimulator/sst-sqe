@@ -544,7 +544,6 @@ echo $LINENO   Ready to call shunit2
 
 ##   Time limit SST_TEST_ONE_TEST_TIMEOUT is set near line 65
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with

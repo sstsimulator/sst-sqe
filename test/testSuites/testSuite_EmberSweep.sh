@@ -122,9 +122,9 @@ ES_start() {
 #          $RL is the line from the Reference File
 #
 ES_fini() {
+   RetVal=$?
    touch tmp_file
    TL=`grep Simulation.is.complete tmp_file`
-   RetVal=$?
    TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
    if [ -e $TIME_FLAG ] ; then 
         echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -137,6 +137,8 @@ ES_fini() {
    if [ $RetVal != 0 ] ; then 
       echo "       SST run is incomplete, FATAL" 
       fail " # $TEST_INDEX: SST run is incomplete, FATAL" 
+      date
+      top -bH -n 1 | grep Thread
       FAILED="TRUE"
    else
        echo $TL

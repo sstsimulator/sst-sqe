@@ -116,6 +116,8 @@ echo "   "
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
          fail "WARNING: sst did not finish normally, RetVal=$RetVal"
+	 date
+	 top -bH -n 1 | grep Thread
          myWC $outFile
          echo " 20 line tail of \$outFile"
          tail -20 $outFile

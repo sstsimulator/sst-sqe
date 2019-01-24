@@ -35,7 +35,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 # Use the new shunit2 option only
 #===============================================================================
 
-        export SHUNIT_DISABLE_DIFFTOXML=1
         export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 #===============================================================================

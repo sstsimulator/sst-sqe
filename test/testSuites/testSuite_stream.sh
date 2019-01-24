@@ -228,7 +228,6 @@ OMP_Template $selectBin test5  $T5
 
 export SST_TEST_ONE_TEST_TIMEOUT=1800
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with

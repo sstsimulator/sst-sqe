@@ -180,7 +180,6 @@ ls $outFile
     fi
 }
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 

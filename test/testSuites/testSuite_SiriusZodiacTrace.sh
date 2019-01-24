@@ -98,9 +98,16 @@ echo sutArgs
 echo $sutArgs
 echo "------------------------------"
 
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
          ${sut} ${sutArgs} > ${outFile}  2>${errFile}
          RetVal=$? 
          cat $errFile >> $outFile
+    else
+         #   This merges stderr with stdout
+         mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
+         RetVal=$?
+         cat ${testOutFiles}* > $outFile
+    fi
 
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
@@ -243,7 +250,6 @@ allReduce_template 8x8x2 lineWordCt
 
 export SST_TEST_ONE_TEST_TIMEOUT=300         # 5 minutes 300 seconds
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
