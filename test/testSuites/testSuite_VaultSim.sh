@@ -175,7 +175,6 @@ VaultSim_Template sdl3 500
 
 export SST_TEST_ONE_TEST_TIMEOUT=90
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 cd $OPWD        # Restore entry PWD

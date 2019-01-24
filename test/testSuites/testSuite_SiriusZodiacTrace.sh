@@ -250,7 +250,6 @@ allReduce_template 8x8x2 lineWordCt
 
 export SST_TEST_ONE_TEST_TIMEOUT=300         # 5 minutes 300 seconds
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
