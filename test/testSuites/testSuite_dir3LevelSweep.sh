@@ -378,12 +378,14 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
         if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: No. $INDEX_RUNNING sst did not finish normally ; echo ' '
+             fail "WARNING: No. $INDEX_RUNNING sst did not finish normally, RetVal=$RetVal"
+	     date
+             top -bH -n 1 | grep Thread
              wc $outFile
              sed 15q $outFile
              echo '            . . . '
              tail -15 $outFile
              FAIL_COUNT=$(($FAIL_COUNT+1))
-             fail "WARNING: No. $INDEX_RUNNING sst did not finish normally, RetVal=$RetVal"
              barrier_checks
              endSeconds=`date +%s`
              echo " "
