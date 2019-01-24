@@ -99,7 +99,7 @@ PARAMS=""
 
 ES_start() {
     RUNNING_INDEX=$(($RUNNING_INDEX+1))
-    echo " $RUNNING_INDEX run, $FAILED_TESTS have failed"
+    echo " Running # $RUNNING_INDEX, $FAILED_TESTS have failed"
     if [ $ES_SELECT == 1 ] ; then
         TEST_INDEX=${ES_LIST[$RUNNING_INDEX]} 
         echo " Running case #${TEST_INDEX}"
