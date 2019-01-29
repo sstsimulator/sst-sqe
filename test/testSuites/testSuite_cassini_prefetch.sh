@@ -157,7 +157,6 @@ test_cassini_prefetcher_nextblock()
     cassini_prefetch_template "nbp"
 }
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with

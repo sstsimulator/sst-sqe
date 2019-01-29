@@ -313,7 +313,7 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
         iCASE=$(($iCASE+1))
     else
         INDEX_RUNNING=$(($INDEX_RUNNING+1))
-echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = [$INDEX_RUNNING]"
+## echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = [$INDEX_RUNNING]"
     fi
     echo INDEX_RUNNING is $INDEX_RUNNING
     startSeconds=`date +%s`
@@ -322,7 +322,7 @@ echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = [$INDEX_RUNNING]"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     wrkFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.wrk"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
-echo " >>>>>>>>>>>>>>>>>... $outFile "
+## echo " >>>>>>>>>>>>>>>>>... $outFile "
 
     sutArgs=$TEST_SUITE_ROOT/testopenMP/sweepopenmp.py
 
@@ -514,7 +514,6 @@ fi
 export SST_TEST_ONE_TEST_TIMEOUT=500
 
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with

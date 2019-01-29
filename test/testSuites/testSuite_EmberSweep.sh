@@ -99,7 +99,7 @@ PARAMS=""
 
 ES_start() {
     RUNNING_INDEX=$(($RUNNING_INDEX+1))
-    echo " $RUNNING_INDEX run, $FAILED_TESTS have failed"
+    echo " Running # $RUNNING_INDEX, $FAILED_TESTS have failed"
     if [ $ES_SELECT == 1 ] ; then
         TEST_INDEX=${ES_LIST[$RUNNING_INDEX]} 
         echo " Running case #${TEST_INDEX}"
@@ -122,9 +122,9 @@ ES_start() {
 #          $RL is the line from the Reference File
 #
 ES_fini() {
+   RetVal=$?
    touch tmp_file
    TL=`grep Simulation.is.complete tmp_file`
-   RetVal=$?
    TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
    if [ -e $TIME_FLAG ] ; then 
         echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -137,6 +137,8 @@ ES_fini() {
    if [ $RetVal != 0 ] ; then 
       echo "       SST run is incomplete, FATAL" 
       fail " # $TEST_INDEX: SST run is incomplete, FATAL" 
+      date
+      top -bH -n 1 | grep Thread
       FAILED="TRUE"
    else
        echo $TL

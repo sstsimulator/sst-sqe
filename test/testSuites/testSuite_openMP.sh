@@ -85,6 +85,9 @@ file $OMP_EXE
         if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal   $OMP_case"
+	     date
+	     top -bH -n 1 | grep Thread
              ls -l ${sut}
              wc $outFile
              echo "       THE outFile    first <= 15 lines "
@@ -92,7 +95,6 @@ file $OMP_EXE
              echo '                  . . . '; echo " tail last <= 15 lines "
              tail -15 $outFile
              echo '             - - - - - '
-             fail "WARNING: sst did not finish normally, RetVal=$RetVal   $OMP_case"
              return
         fi
 
@@ -341,7 +343,6 @@ OMP_Template omptriangle 9000
 
 export SST_TEST_ONE_TEST_TIMEOUT=1000
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with

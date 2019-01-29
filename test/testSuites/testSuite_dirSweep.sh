@@ -365,6 +365,8 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
              tail -15 $outFile
              FAIL_COUNT=$(($FAIL_COUNT+1))
              fail "WARNING: No. $INDEX_RUNNING sst did not finish normally, RetVal=$RetVal"
+             date
+             top -bH -n 1 | grep Thread
              barrier_checks
              endSeconds=`date +%s`
              echo " "
@@ -521,7 +523,6 @@ echo $LINENO   Ready to call shunit2
 
 ##   Time limit SST_TEST_ONE_TEST_TIMEOUT is set near line 65
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with
