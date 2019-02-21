@@ -13,10 +13,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 mkdir -p $SST_TEST_ROOT/testSuites/ESshmem_folder
 
-if [[ `uname -n` == sst-test* ]] ; then
-    ~jpvandy/loop-on-ps &
-fi
-
 cd $SST_TEST_ROOT/testSuites/ESshmem_folder
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/*.py .
 
