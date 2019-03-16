@@ -20,8 +20,13 @@ echo ' '
           break
        fi
    done 3< display-file
-echo line $LINENO    SST_PID is $SST_PID
-ps -p $SST_PID
+
+   if [ ! -z $SST_PID ] ; then
+       echo line $LINENO    SST_PID is $SST_PID
+       ps -p $SST_PID
+   else
+       echo "    No SST_PID found" ; echo ' '
+   fi 
 
 #   Look for mpirun  ##  MPIRUN_PID
    while read -u 3 _pid_  _name _rest
@@ -32,41 +37,42 @@ ps -p $SST_PID
           break
        fi
    done 3< display-file
-#   -----          Invoke the traceback routine  ----- "
-ps -p $SST_PID
-    if [ ! -z $MPIRUN_PID ] ; then
+
+   if [ ! -z $SST_MPIRUN ] ; then
         echo line $LINENO    MPIRUN_PID is $MPIRUN_PID
+#   -----          Invoke the traceback routine  ----- "
         ps -p $MPIRUN_PID
         echo ' '
         TRACEBACK_PARAM="--mpi $MPIRUN_PID"
-    else
+   elif [ ! -z $SST_PID ] ; then
         echo "no \"mpirun\" found"
         TRACEBACK_PARAM=$SST_PID
-    fi
+   fi
 #          Invoke the traceback routine
-    echo "          Invoke the traceback routine "
+     if [ ! -z $SST_PID ]  || [ -z $MPIRUN ]; then
+          echo "          Invoke the traceback routine "
 
-    echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
-    $SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
-    echo "Return code from Trace-Back is $?"
-
+          echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
+          $SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
+          echo "Return code from Trace-Back is $?"
+       fi   
 echo ' '
 date
 echo "   Return to timeLimitEnforcer"
 echo ' '
-
-    if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
-        echo " Check for Dead Lock"
-        kill -USR1 $SST_PID
-        sleep 1
-        kill -USR1 $SST_PID
+     if [ ! -z $SST_PID ] ; then
+          if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+              echo " Check for Dead Lock"
+               kill -USR1 $SST_PID
+              sleep 1
+               kill -USR1 $SST_PID
         
         touch $SST_ROOT/test/testOutputs/${CASE}dummy
         grep -i signal $SST_ROOT/test/testOutputs/${CASE}*
         grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
         echo " ###############################################################"
     fi
-    
+    fi
 
     while read -u 3 _tokill _name _rest
     do
@@ -77,8 +83,8 @@ echo ' '
        fi
     done 3< display-file
 
-echo   "this is for a Sanity check -- Not required(?)"
+echo   "the following is for a Sanity check -- Not required(?)"
 
     pstree -p $TL_CALLER 
-echo   "This was for a Sanity check -- Not required"
+echo   "Thie previous was for a Sanity check -- Not required"
 
