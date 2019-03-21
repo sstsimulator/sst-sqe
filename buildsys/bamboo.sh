@@ -1524,17 +1524,18 @@ ldModules_MacOS_Clang() {
                         # Use Boost and MPI built with CLANG from Xcode
                         ModuleEx unload mpi
                         ModuleEx unload boost
-
+#              total BAiling wire
+      ClangXersion=clang-900.0.39.2
                         # Load other modules for $ClangVersion
                         # GNU Linear Programming Kit (GLPK)
                         echo "bamboo.sh: Load GLPK"
-                        ModuleEx load glpk/glpk-4.54_$ClangVersion
+                        ModuleEx load glpk/glpk-4.54_$ClangXersion
                         # # System C
                         # echo "bamboo.sh: Load System C"
                         # ModuleEx load systemc/systemc-2.3.0_$ClangVersion
                         # METIS 5.1.0
                         echo "bamboo.sh: Load METIS 5.1.0"
-                        ModuleEx load metis/metis-5.1.0_$ClangVersion
+                        ModuleEx load metis/metis-5.1.0_$ClangXersion
                         
                         # PTH 2.0.7
                         echo "bamboo.sh: Load PTH 2.0.7"
@@ -1548,9 +1549,9 @@ ldModules_MacOS_Clang() {
                         echo " ****** Loading MPI ********"
                         echo "Request (\$2) is ${2}"
                         case $2 in
-                            ompi_default|openmpi-1.8)
-                                echo "OpenMPI 1.8 (openmpi-1.8) selected"
-                                ModuleEx add mpi/openmpi-1.8_$ClangVersion
+                            ompi_default|openmpi-2.1.3)
+                                echo "OpenMPI 2.1.3 (openmpi-1.8) selected"
+                                ModuleEx add mpi/openmpi-2.1.3_$ClangXersion
                                 ;;
                             none)
                                 echo  "No MPI loaded as requested"
