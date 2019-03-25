@@ -1738,6 +1738,13 @@ echo    "This is High Sierra, Compiler is $compiler"
                    ;;
 
 ################################################################################
+
+            10.14) # Mojave
+echo    "This is mojave, Compiler is $compiler"
+                   ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode 
+                   ;;
+
+################################################################################
             *) # unknown
                 echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
                  echo ' '
