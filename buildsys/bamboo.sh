@@ -1525,7 +1525,15 @@ ldModules_MacOS_Clang() {
                         ModuleEx unload mpi
                         ModuleEx unload boost
 #              total BAiling wire
-      ClangXersion=clang-900.0.39.2
+#         ClangXersion=clang-900.0.39.2
+       xc=`echo $1 | awk -F - '{print $2}' |awk -F. '{print $1}'`
+       if [ $xc -gt 899 ] ; then
+#          Xcode is greater than 8
+echo ' ' ; echo " Using X-code 9 modules."  ;   echo ''
+             ClangXersion=clang-900.0.39.2
+       else
+             ClangXersion=$1
+       fi
                         # Load other modules for $ClangVersion
                         # GNU Linear Programming Kit (GLPK)
                         echo "bamboo.sh: Load GLPK"
