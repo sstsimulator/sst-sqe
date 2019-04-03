@@ -54,6 +54,12 @@ shogun_case=$1
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     referenceFile="${SST_REFERENCE_ELEMENTS}/shogun/tests/refFiles/${testDataFileBase}.out"
+
+#bailing wire
+
+  referenceFile="${SST_ROOT}/test/tO_1522/${testDataFileBase}.out"
+
+#    -------
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
