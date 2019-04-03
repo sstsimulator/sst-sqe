@@ -1,5 +1,5 @@
 # !/bin/bash
-# testSuite_simpleRNGComponent.sh
+# testSuite_shogun.sh
 
 # Description:
 
@@ -15,7 +15,7 @@ TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 #===============================================================================
 # Variables global to functions in this suite
 #===============================================================================
-L_SUITENAME="SST_simpleRNGComponent_suite" # Name of this test suite; will be used to
+L_SUITENAME="SST_shogun_suite" # Name of this test suite; will be used to
                                            # identify this suite in XML file. This
                                            # should be a single string, no spaces
                                            # please.
@@ -33,25 +33,31 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   as the function name begins with "test...".
 #===============================================================================
 
+# this is tempory Bailing wire to postpone change to elements
+    pushd ${SST_ROOT}/sst-elements/src/sst/elements/shogun/tests/refFiles
+    if [ ! -f basic-miranda.py ] ; then
+        ln -sf basicMiranda.py basic_miranda.py
+    fi
+    popd
 #-------------------------------------------------------------------------------
 # Test:
-#     test_simpleRNGComponents
+#     test_shoguns
 #-------------------------------------------------------------------------------
-simpleRNG_Template() {
-RNG_case=$1
+shogun_Template() {
+shogun_case=$1
 
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
-    testDataFileBase="test_simpleRNGComponent_${RNG_case}"
+    testDataFileBase="test_shogun_${shogun_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
-    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/shogun/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleRNGComponent_${RNG_case}.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/shogun/tests/${shogun_case}.py"
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -95,16 +101,12 @@ RNG_case=$1
 
 }
 
-test_simpleRNGComponent_mersenne() {
-simpleRNG_Template mersenne
+test_shogun_basic_miranda() {
+shogun_Template basic_miranda
 }
 
-test_simpleRNGComponent_marsaglia() {
-simpleRNG_Template marsaglia
-}
-
-test_simpleRNGComponent_xorshift() {
-simpleRNG_Template xorshift 
+test_shogun_hierarchy_test() {
+shogun_Template hierarchy_test
 }
 
 
