@@ -35,8 +35,10 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 # this is tempory Bailing wire to postpone change to elements
     pushd ${SST_ROOT}/sst-elements/src/sst/elements/shogun/tests/refFiles
-    if [ ! -f basic-miranda.py ] ; then
-        ln -sf basicMiranda.py basic_miranda.py
+echo $LINENO ; ls
+    if [ ! -f test_shogun_basic_miranda.out ] ; then
+        ln -sf test_shogun_basicMiranda.out test_shogun_basic_miranda.out
+echo $LINENO ; ls
     fi
     popd
 #-------------------------------------------------------------------------------
@@ -62,7 +64,6 @@ shogun_case=$1
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-#        ${su t} ${sutArgs} | grep Random | tail -5 > $outFile    ### space inserted ##
         ${sut} ${sutArgs} > $outFile
         RetVal=$? 
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
@@ -80,16 +81,17 @@ shogun_case=$1
              wc $referenceFile $outFile
              return
         fi
-        grep Random $outFile > $tmpFile 
-        wc $outFile $tmpFile
-        tail -5 $tmpFile > $outFile
+        wc $outFile 
         myWC $outFile $referenceFile
 
-        diff ${referenceFile} ${outFile}
+        diff ${referenceFile} ${outFile} > $tmpFile
         if [ $? -ne 0 ]
         then
+            wc $tmpFile
             echo ' '; echo MATCH FAILED; echo ' '
             fail " MATCH FAILED"
+            echo 25 lines of diff
+            sed 25q $tmpFile
         fi        
     else
         # Problem encountered: can't find or can't run SUT (doesn't
