@@ -53,7 +53,9 @@ shogun_case=$1
     testDataFileBase="test_shogun_${shogun_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
+ tmpClay="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     referenceFile="${SST_REFERENCE_ELEMENTS}/shogun/tests/refFiles/${testDataFileBase}.out"
+ ClayreferenceFile="${SST_REFERENCE_ELEMENTS}/shogun/tests/refFiles/${testDataFileBase}.out"
 
 #bailing wire
 
@@ -99,6 +101,11 @@ shogun_case=$1
             echo 25 lines of diff
             sed 25q $tmpFile
         fi        
+echo  "----"
+myWC $ClayreferenceFile
+diff $ClayreferenceFile $outFile > $tmpClay
+wc $tmpClay
+
     else
         # Problem encountered: can't find or can't run SUT (doesn't
         # really do anything in Phase I)
