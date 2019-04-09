@@ -498,9 +498,6 @@ echo " #####################################################"
          return
     fi
 
-
-        ${SST_TEST_SUITES}/testSuite_shogun.sh
-
     if [ $1 == "sstmainline_config_no_gem5" ] ; then
         ${SST_TEST_SUITES}/testSuite_Ariel.sh
     fi
@@ -669,6 +666,7 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
     ${SST_TEST_SUITES}/testSuite_kingsley.sh
     ${SST_TEST_SUITES}/testSuite_sst_GNA.sh
+    ${SST_TEST_SUITES}/testSuite_shogun.sh
 
 
     ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
