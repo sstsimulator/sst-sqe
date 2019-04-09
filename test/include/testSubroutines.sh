@@ -322,6 +322,20 @@ g/WARNING: a request was made to bind a process/.-1,.+10d
 wq
 @@@
    fi
+
+   grep 'WARNING: Open MPI will create a shared memory backing file in a' $outFile > /dev/null
+   if [ $? == 0 ] ; then
+      echo "##############################################"
+      echo "#"
+      echo "#   ${testDataFileBase}: Removing 22 lines "
+      echo "#  Warning about MPI creating shared backing "
+      echo "#"
+      echo "##############################################"
+      vim -e - $outFile <<@@@
+g/WARNING: Open MPI will create a shared memory/.-1,.+20d
+wq
+@@@
+   fi
 }
 
 RemoveWarning_btl_tcp() {
