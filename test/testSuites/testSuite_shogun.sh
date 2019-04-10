@@ -90,17 +90,25 @@ shogun_case=$1
              return
         fi
         wc $outFile 
+        RemoveComponentWarning
         myWC $outFile $referenceFile
 
         diff ${referenceFile} ${outFile} > $tmpFile
         if [ $? -ne 0 ]
         then
             wc $tmpFile
-            echo ' '; echo MATCH FAILED; echo ' '
-            fail " MATCH FAILED"
-            echo 25 lines of diff
-            sed 25q $tmpFile
-        fi        
+           compare_sorted $referenceFile $outFile
+           if [ $? == 0 ] ; then
+              echo " Sorted match with Reference File"
+              rm $tmpFile
+              return
+           else
+              fail " Reference does not Match Output"
+              diff -b $referenceFile $outFile
+           fi
+        else
+           echo "Exact match with Reference File"
+        fi
 echo  "----"
 myWC $ClayreferenceFile
 diff $ClayreferenceFile $outFile > $tmpClay
