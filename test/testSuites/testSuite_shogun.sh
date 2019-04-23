@@ -33,14 +33,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   as the function name begins with "test...".
 #===============================================================================
 
-# this is tempory Bailing wire to postpone change to elements
-    pushd ${SST_ROOT}/sst-elements/src/sst/elements/shogun/tests/refFiles
-echo $LINENO ; ls
-    if [ ! -f test_shogun_basic_miranda.out ] ; then
-        ln -sf test_shogun_basicMiranda.out test_shogun_basic_miranda.out
-echo $LINENO ; ls
-    fi
-    popd
 #-------------------------------------------------------------------------------
 # Test:
 #     test_shoguns
@@ -53,15 +45,6 @@ shogun_case=$1
     testDataFileBase="test_shogun_${shogun_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
- tmpClay="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
-    referenceFile="${SST_REFERENCE_ELEMENTS}/shogun/tests/refFiles/${testDataFileBase}.out"
- ClayreferenceFile="${SST_REFERENCE_ELEMENTS}/shogun/tests/refFiles/${testDataFileBase}.out"
-
-#bailing wire
-
-  referenceFile="${SST_ROOT}/test/tO_1522/${testDataFileBase}.out"
-
-#    -------
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
