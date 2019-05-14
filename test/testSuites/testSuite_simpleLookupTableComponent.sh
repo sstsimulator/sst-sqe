@@ -61,7 +61,7 @@ test_simpleLookupTableComponent() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -79,14 +79,14 @@ test_simpleLookupTableComponent() {
              cat $errFile >> $outFile
         else
              #   This merges stderr with stdout
-             mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
+             mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
              RetVal=$?
              wc ${testOutFiles}*
              cat ${testOutFiles}* > $outFile
         fi
 
 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -99,22 +99,24 @@ test_simpleLookupTableComponent() {
              wc $referenceFile $outFile
              ls -l ${sut}
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
+             echo " 20 line tail of \$outFile"
+             tail -20 $outFile
+             echo "    --------------------"
              return
         fi
         RemoveComponentWarning
         wc $referenceFile $outFile
-        diff -b $referenceFile $outFile > _raw_diff
+        diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
         if [ $? != 0 ]
         then  
-           wc _raw_diff
+           wc ${SSTTESTTEMPFILES}/_raw_diff
            compare_sorted $referenceFile $outFile
            if [ $? == 0 ] ; then
               echo " Sorted match with Reference File"
-              rm _raw_diff
+              rm ${SSTTESTTEMPFILES}/_raw_diff
               return
            else
               fail " Reference does not Match Output"
-              # cat _raw_diff
               echo "Display up to 20 lines of Sorted Diff"
               cat diff_sorted| sed 20q  ; echo ' '
            fi
@@ -132,7 +134,6 @@ test_simpleLookupTableComponent() {
     fi
 }
 export SST_TEST_ONE_TEST_TIMEOUT=30
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 

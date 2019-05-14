@@ -82,7 +82,7 @@ Tol=$2    ##  curTick tolerance
 
     ${sut} ${sutArgs} > ${outFile}
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -247,7 +247,6 @@ xxtest_memHierarchy_matrix() {
 
 export SST_TEST_ONE_TEST_TIMEOUT=250         # 250 seconds
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 

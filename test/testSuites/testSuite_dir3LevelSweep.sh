@@ -368,7 +368,7 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
     then
         (${sut} ${sutArgs} --model-options "--L1cachesz=\"$s1\" --L2cachesz=\"$s2\" --L3cachesz=\"$s3\" --L1assoc=$a1 --L1Replacp=$r1 --L2Replacp=$r2 --L3Replacp=$r3 --L2assoc=$a2 --L3assoc=$a3 --L2MSHR=$ml2 L2MSHR=$ml2 --MSIMESI=$c"> ${outFile})
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -378,12 +378,14 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
         if [ $RetVal != 0 ]  
         then
              echo ' '; echo WARNING: No. $INDEX_RUNNING sst did not finish normally ; echo ' '
+             fail "WARNING: No. $INDEX_RUNNING sst did not finish normally, RetVal=$RetVal"
+	     date
+             top -bH -n 1 | grep Thread
              wc $outFile
              sed 15q $outFile
              echo '            . . . '
              tail -15 $outFile
              FAIL_COUNT=$(($FAIL_COUNT+1))
-             fail "WARNING: No. $INDEX_RUNNING sst did not finish normally, RetVal=$RetVal"
              barrier_checks
              endSeconds=`date +%s`
              echo " "

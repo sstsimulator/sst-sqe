@@ -58,10 +58,14 @@ CP_case=$1
     # files. XML postprocessing requires this.
     testDataFileBase="test_cassini_prefetch_${CP_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
+    testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/cassini/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
+
+    startSeconds=`date +%s`
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
@@ -70,9 +74,19 @@ CP_case=$1
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs}  > $outFile
-        RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
+             ${sut} ${sutArgs} > ${outFile} 
+             RetVal=$? 
+             cat $errFile >> $outFile
+        else
+             #   This merges stderr with stdout
+             mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} 
+             RetVal=$?
+             wc ${testOutFiles}*
+             cat ${testOutFiles}* > $outFile
+        fi
+
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -97,17 +111,17 @@ CP_case=$1
      RemoveComponentWarning
      grep "simulated.time" $outFile ; echo ' '
      wc  $outFile $referenceFile
-     diff -b $referenceFile $outFile > _raw_diff
+     diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
      if [ $? != 0 ] ; then
-        wc _raw_diff
+        wc ${SSTTESTTEMPFILES}/_raw_diff
         compare_sorted $referenceFile $outFile
         if [ $? == 0 ] ; then
            echo " Sorted match with Reference File"
-           rm _raw_diff
+           rm ${SSTTESTTEMPFILES}/_raw_diff
            return
         else
            echo "Output does not match Reference File"
-           cat _raw_diff
+           cat ${SSTTESTTEMPFILES}/_raw_diff
 #           echo " Reference File "
 #           cat $referenceFile
 #           echo "       ------  "
@@ -115,12 +129,16 @@ CP_case=$1
 #           cat $outFile
 #           echo "       ------  "
            fail "Output does not match Reference File"
-           rm _raw_diff
+           rm ${SSTTESTTEMPFILES}/_raw_diff
         fi
      else
         echo ' '
         echo " Statistics information matches exactly"
      fi
+    endSeconds=`date +%s`
+    elapsedSeconds=$(($endSeconds -$startSeconds))
+    echo "Cassini_prefetch_${CP_case}: Wall Clock Time  $elapsedSeconds seconds"
+    echo " "
 
 }
 
@@ -139,7 +157,6 @@ test_cassini_prefetcher_nextblock()
     cassini_prefetch_template "nbp"
 }
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with

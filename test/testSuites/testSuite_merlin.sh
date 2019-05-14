@@ -50,14 +50,14 @@ Tol=$2    ##  curTick tolerance
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/merlin/tests/refFiles/test_merlin_${merlin_case}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
         pyFileName=${merlin_case}.py
-        sutArgs="${SST_TEST_SDL_FILES}/merlinSdls/$pyFileName"
+        sutArgs="${SST_REFERENCE_ELEMENTS}/merlin/tests/$pyFileName"
         ls $sutArgs
         if [ $? != 0 ]
         then
@@ -68,39 +68,37 @@ Tol=$2    ##  curTick tolerance
         fi
 
         echo " Running from `pwd`"
-        if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
-           ${sut} ${sutArgs} > ${outFile}
-           RetVal=$? 
-        else
-           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs}
+        if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
            RetVal=$? 
            cat ${testOutFiles}* > $outFile
+        else
+           ${sut} ${sutArgs} > ${outFile}
+           RetVal=$? 
         fi
 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
              rm $TIME_FLAG 
              return 
         fi 
-        if [ $RetVal != 0 ]  
-        then
+        if [ $RetVal != 0 ] ; then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              wc $outFile
              echo " 20 line tail of \$outFile"
-             tail -20 $outfile
+             tail -20 $outFile
              echo "    --------------------"
              return
         fi
         wc ${outFile} ${referenceFile} | awk -F/ '{print $1, $(NF-1) "/" $NF}'
 
 
-        diff ${referenceFile} ${outFile} > /dev/null;
-        if [ $? -ne 0 ]
-        then
+        compare_sorted ${referenceFile} ${outFile} 
+        if [ $? -ne 0 ] ; then
 ##  Follows some bailing wire to allow serialization branch to work
 ##          with same reference files
      sed s/' (.*)'// $referenceFile > $newRef
@@ -109,15 +107,16 @@ Tol=$2    ##  curTick tolerance
      sed s/' (.*)'// $outFile > $newOut
      new=`wc ${newOut} | awk '{print $1, $2}'`; 
      ##          new=`wc ${outFile}       | awk '{print $1, $2}'`;
-        wc $newOut       
-               if [ "$ref" == "$new" ];
-               then
+     wc $newOut       
+               fail " Output does not match exactly (Required)"
+               if [ "$ref" == "$new" ]; then
                    echo "outFile word/line count matches Reference"
                else
                    echo "$merlin_case test Fails"
                    echo "   tail of $outFile  ---- "
                    tail $outFile
-                   fail "outFile word/line count does NOT matches Reference"
+                   # fail "outFile word/line count does NOT matches Reference"
+                   echo "outFile word/line count does NOT matches Reference"
                    diff ${referenceFile} ${outFile} 
                fi
         else
@@ -167,45 +166,48 @@ Tol=$2    ##  curTick tolerance
 #     program may vary from that reported in the reference file checked into SVN.
 # Does not use subroutine because it invokes the build of all test binaries.
 #-------------------------------------------------------------------------------
-test_merlin_dragon_12() {          
-merlin_Template dragon_12 500
+test_merlin_dragon_128() {          
+merlin_Template dragon_128_test 500
 
 }
 
 test_merlin_dragon_72() {          
-merlin_Template dragon_72 500
+merlin_Template dragon_72_test 500
 
 }
 
-test_merlin_ft_r16() {          
-   echo "SST_BUILD_TYPE = $SST_BUILD_TYPE"
-
-   if [[ $SST_BUILD_TYPE == "sstmainline_config_valgrind" ]] ; then
-      skip_this_test
-      echo ' ' ; echo "   ---- Skip this test for Valgrind" ; echo ' '
-      return
-   fi
-
-merlin_Template ft_r16 500
+test_merlin_fattree_128() {          
+merlin_Template fattree_128_test 500
 
 }
 
-test_merlin_ft_r8() {          
-merlin_Template ft_r8 500
+test_merlin_fattree_256() {          
+merlin_Template fattree_256_test 500
 
 }
 
-test_merlin_torus_3x3x3() {          
-merlin_Template torus_3x3x3 500
+test_merlin_torus_128() {          
+merlin_Template torus_128_test 500
 
 }
 
-test_merlin_trafficgen_trivial() {
-merlin_Template trivialTrafficGen 500
+test_merlin_torus_5_trafficgen() {
+
+merlin_Template torus_5_trafficgen 500
 
 }
 
-export SST_TEST_ONE_TEST_TIMEOUT=3000         #  3000 seconds
+test_merlin_torus_64() {          
+merlin_Template torus_64_test 500
+
+}
+
+#  test_merlin_trafficgen_trivial() {
+#  merlin_Template trivialTrafficGen 500
+
+#  }
+
+export SST_TEST_ONE_TEST_TIMEOUT=300         #  3000 seconds
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 

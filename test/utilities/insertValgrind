@@ -5,7 +5,13 @@ pushd $SST_TEST_ROOT/testSuites
       exit 1
    fi
 
-for Suite in  testSuite_Ariel.sh testSuite_EmberSweep.sh testSuite_cacheTracer.sh testSuite_cassini_prefetch.sh testSuite_chdlComponent.sh testSuite_check_maxrss.sh testSuite_CramSim.sh testSuite_embernightly.sh testSuite_hybridsim.sh testSuite_memHierarchy_sdl.sh testSuite_memHSieve.sh testSuite_merlin.sh testSuite_miranda.sh testSuite_partitioner.sh testSuite_prospero.sh testSuite_qsimComponent.sh testSuite_scheduler_DetailedNetwork.sh testSuite_scheduler.sh testSuite_simpleClockerComponent.sh testSuite_simpleComponent.sh testSuite_simpleDistribComponent.sh testSuite_simpleLookupTableComponent.sh testSuite_simpleMessageGeneratorComponent.sh testSuite_simpleRNGComponent.sh testSuite_simpleStatisticsComponent.sh testSuite_SiriusZodiacTrace.sh testSuite_VaultSim.sh testSuite_zoltan.sh
+if [ $# == 1 ] ; then
+   SST_ONE_VALGRIND="$1"
+fi
+echo "$SST_ONE_VALGRIND   DEBUG Verification."
+FOUND_ONE="NO"
+
+for Suite in  testSuite_Ariel.sh testSuite_EmberSweep.sh testSuite_ESshmem.sh testSuite_cacheTracer.sh testSuite_cassini_prefetch.sh testSuite_check_maxrss.sh testSuite_CramSim.sh testSuite_embernightly.sh testSuite_memHA.sh testSuite_memHierarchy_sdl.sh testSuite_memHSieve.sh testSuite_merlin.sh testSuite_Messier.sh testSuite_miranda.sh testSuite_partitioner.sh testSuite_prospero.sh testSuite_Samba.sh testSuite_scheduler_DetailedNetwork.sh testSuite_scheduler.sh testSuite_simpleClockerComponent.sh testSuite_simpleComponent.sh testSuite_simpleDistribComponent.sh testSuite_simpleLookupTableComponent.sh testSuite_simpleMessageGeneratorComponent.sh testSuite_simpleRNGComponent.sh testSuite_simpleSimulation_CarWash.sh testSuite_simpleStatisticsComponent.sh testSuite_SiriusZodiacTrace.sh testSuite_VaultSim.sh testSuite_zoltan.sh
 
 do
    if [[ ${SST_ONE_VALGRIND:+isSet} == isSet ]]
@@ -13,9 +19,12 @@ do
        SUITE=${SST_ONE_VALGRIND}
        if [[ $Suite == *${SUITE}* ]] ; then
            echo Doing $Suite
+           FOUND_ONE="YES"
        else
            continue
        fi
+   else
+       FOUND_ONE="YES"
    fi
 
 #		Reset the Suite
@@ -35,13 +44,53 @@ do
 .eol.
    
    sed -i'.w' '/RetVal=$?/ r _tmp_in' $Suite
+ #            Build the Suite line in insert Valgrind in ESshmem
+ #                This does not need to be in the loop.
+   cat > _tmp2_in << .eol.
+   sed 's/sst/valgrind --track-origins=yes --log-file=\$VGout \$sut/' _tmp_\${ind} >>SHU.in
+.eol.
 
 #		Use the unwrapped sst executable, sstsim.x
    sed -i'.z' /sut=/a' \
    sut=$SST_INSTALL_BIN/../libexec/sstsim.x
       ' $Suite
 
-      if [ $Suite != "testSuite_EmberSweep.sh" ] ; then
+   if [ $Suite == "testSuite_EmberSweep.sh" ] ; then
+##           This is the code for the EmberSweep Suite
+      sed -i'.x' '/PARAMS=""/ a \
+      VGout=""
+      ' $Suite
+
+      sed -i'.y' '/testDataFileBase=/i \
+      VGout="${SST_TEST_OUTPUTS}/testESshmem_${TEST_INDEX}.VGout"
+      ' $Suite
+
+      sed -i'.z' -e '/MULTI_THREAD/,/fi/ s/^/#/' $Suite
+
+      DEST=${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+      sed '/ .sst/s/ "sst/ "valgrind --track-origins=yes --log-file=$VGout $sut/' ${SST_TEST_INPUTS}/EmberSweepGenerator.py > $DEST/EmberSweepGenerator.py
+          
+      chmod +x $DEST/EmberSweepGenerator.py 
+
+   elif [ $Suite == "testSuite_ESshmem.sh" ] ; then
+##           This is the code for the ESshmem Suite
+      sed -i'.x' '/ESshmem_after()/ i \
+      VGout=""
+      ' $Suite
+
+      sed -i'.y' '/L_TESTFILE+=/a \
+      echo "VGout=\"${SST_TEST_OUTPUTS}/testESshmem_${indx}.VGout\"" >> SHU.in
+      ' $Suite
+      sed -i'.z' -e '/MULTI_THREAD/,/fi/ s/^/#/' $Suite
+
+      sed -i'.u' '/sst...sut/,+1 d' $Suite
+
+      sed -i'.v' '/> outFile/ r _tmp2_in' $Suite 
+
+#           correct the line count of the generated tests
+      sed -i'w' 's/A 5 ESshmem/A 6 ESshmem/' $Suite
+
+   else
 ##           This is the code for all Suites except EmberSweep
 
 #		Check if there is an outFile defined
@@ -69,26 +118,18 @@ do
 #		Add Valgrind, with parameters to sst execution line
       sed -i'.z' '/sut.*sutArgs/s/${sut} /valgrind --track-origins=yes --log-file=$VGout ${sut} /' $Suite
 
-   else
-
-##           This is the code for the EmberSweep Suite
-      sed -i'.x' '/PARAMS=""/ a \
-      VGout=""
-      ' $Suite
-
-      sed -i'.y' '/testDataFileBase=/i \
-      VGout="${SST_TEST_OUTPUTS}/testES_${TEST_INDEX}.VGout"
-      ' $Suite
-
-      sed -i'.z' -e '/MULTI_THREAD/,/fi/ s/^/#/' $Suite
-
-      DEST=${SST_ROOT}/sst-elements/src/sst/elements/ember/test
-      sed '/ .sst/s/ "sst/ "valgrind --track-origins=yes --log-file=$VGout $sut/' ${SST_TEST_INPUTS}/EmberSweepGenerator.py > $DEST/EmberSweepGenerator.py
-      chmod +x $DEST/EmberSweepGenerator.py 
    fi  
 
+   rm ${Suite}.?
 
 done
+
+if [ $FOUND_ONE == "NO" ] ; then
+    echo "Number of Args = $#, $1"
+    echo "Environment variable SST_ONE_VALGRIND = $SST_ONE_VALGRIND"
+    echo "Suite not found in list"
+    echo ' '
+fi
 #
 #		Jack the time limit way up
 echo "WARNING:  Time Limit Enforcer may not work!"
@@ -98,4 +139,3 @@ wc    ../utilities/timeLimitEnforcer.sh
    sed -i'.x' /CASE=/a' \
     SST_TEST_ONE_TEST_TIMEOUT=5000         # Over an hour
    ' ../utilities/timeLimitEnforcer.sh   
-

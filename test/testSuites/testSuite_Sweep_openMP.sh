@@ -71,13 +71,42 @@ fi
 
 
 DO_SP_LIST="no"
-if [[ ${OPENMP_SP_LIST:+isSet} == isSet ]]
-then 
-    DO_SP_LIST="yes"
-    CASES=($OPENMP_SP_LIST)
-    echo ${CASES}
-    nCASES=`echo $OPENMP_SP_LIST | wc -w`
-fi
+   #   This is the code to run just selected tests from the sweep
+   #        using the indices defined by OPENMP_SP_LIST
+   #   An inclusive sub-list may be specified as "first-last"  (e.g. 7-10)
+
+     if [[ ${OPENMP_SP_LIST:+isSet} == isSet ]] ; then
+         DO_SP_LIST="yes"
+  echo " LIST is $OPENMP_SP_LIST"
+         CASES=()
+         for IND in $OPENMP_SP_LIST
+         do
+  echo " IND is $IND "
+             echo $IND | grep -e '-' > /dev/null   
+             if [ $? != 0 ] ; then
+#                            Single
+                indx=$(printf "%03d" $IND)
+                CASES+=($IND)
+             else
+#                            Inclusive
+#     echo IND = $IND
+                INDF=`echo $IND | awk -F'-' '{print $1}'`
+                INDL=`echo $IND | awk -F'-' '{print $2}'`
+#     echo "$INDF to $INDL"
+                INDR=$INDF
+                while [ $INDR -le $INDL ]
+                do
+#     echo In the INDR loop INDR = $INDR
+                   indx=$(printf "%03d" $INDR)
+                   CASES+=($INDR)
+                   INDR=$(($INDR+1))
+                done    
+             fi
+          done
+     fi
+
+    nCASES=${#CASES[@]}
+echo " nCASES = $nCASES"
 
 echo "JND =  $JND" 
 
@@ -258,6 +287,7 @@ done
   wc $SST_TEST_SUITES/testopenMP/__testlist
 
 INDEX_RUNNING=0
+
 iCASE=0
 
 #===============================================================================
@@ -279,9 +309,11 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
 
     if [ $DO_SP_LIST == "yes" ] ; then
         INDEX_RUNNING=${CASES[$iCASE]}
+
         iCASE=$(($iCASE+1))
     else
         INDEX_RUNNING=$(($INDEX_RUNNING+1))
+## echo ">>>>>>>>>>>>>>>> INDEX_RUNNING = [$INDEX_RUNNING]"
     fi
     echo INDEX_RUNNING is $INDEX_RUNNING
     startSeconds=`date +%s`
@@ -290,6 +322,7 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     wrkFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.wrk"
     referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+## echo " >>>>>>>>>>>>>>>>>... $outFile "
 
     sutArgs=$TEST_SUITE_ROOT/testopenMP/sweepopenmp.py
 
@@ -312,7 +345,7 @@ Tol=9000    ##  curTick tolerance,  or  "lineWordCt"
 
         (${sut} ${sutArgs} --model-options "--L1cachesz=\"$s1\" --L2cachesz=\"$s2\" --L1assoc=$a1 --Replacp=$r --L2assoc=$a2 --L2MSHR=$ml2 --MSIMESI=$c --Pref=$pf"> ${outFile})
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -481,7 +514,6 @@ fi
 export SST_TEST_ONE_TEST_TIMEOUT=500
 
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with

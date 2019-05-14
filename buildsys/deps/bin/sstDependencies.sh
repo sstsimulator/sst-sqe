@@ -329,6 +329,50 @@ sstDepsDoStaging ()
 
     fi
 
+    if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
+    then
+        #-----------------------------------------------------------------------
+        # GOBLIN_HMCSIM
+        #-----------------------------------------------------------------------
+        sstDepsStage_goblin_hmcsim
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: goblin_hmcsim code staging failure"
+            return $retval
+        fi
+    fi
+
+    if [ ! -z "${SST_BUILD_HBM_DRAMSIM2}" ]
+    then
+        #-----------------------------------------------------------------------
+        # HBM_DRAMSIM2
+        #-----------------------------------------------------------------------
+        sstDepsStage_hbm_dramsim2
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: hbm_dramsim2 code staging failure"
+            return $retval
+        fi
+    fi
+
+    if [ ! -z "${SST_BUILD_RAMULATOR}" ]
+    then
+        #-----------------------------------------------------------------------
+        # RAMULATOR
+        #-----------------------------------------------------------------------
+        sstDepsStage_ramulator
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: ramulator code staging failure"
+            return $retval
+        fi
+    fi
 }
 
 #-------------------------------------------------------------------------------
@@ -547,6 +591,40 @@ sstDepsPatchSource ()
              patch -p0 -i ${SST_DEPS_PATCHFILES}/macsim_2.0.4.patch
     fi
 
+    if [ ! -z ${SST_BUILD_RAMULATOR_STABLEDEVEL} ]
+    then
+        #-----------------------------------------------------------------------
+        # Ramulator-stabledevel
+        #-----------------------------------------------------------------------
+
+            # Patch ramulator sha 7d2e72306c6079768e11a1867eb67b60cee34a1c
+
+            # Patching to build static version for Linux
+            sstDepsAnnounce -h $FUNCNAME -m "Patching ramulator "
+            pushd ${SST_DEPS_SRC_STAGING}/ramulator
+            
+            ls -lia
+            
+            patch -p1 -i ${SST_DEPS_PATCHFILES}/ramulator_gcc48Patch.patch
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                # bail out on error
+                echo "ERROR: sstDependencies.sh:  ramulator patch failure"
+                return $retval
+            fi
+
+            patch -p1 -i ${SST_DEPS_PATCHFILES}/ramulator_libPatch.patch
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                # bail out on error
+                echo "ERROR: sstDependencies.sh:  ramulator patch failure"
+                return $retval
+            fi
+
+            popd
+    fi
 }
 
 #-------------------------------------------------------------------------------
@@ -855,6 +933,51 @@ sstDepsDeploy ()
         fi
     fi
 
+    if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
+    then
+        #-----------------------------------------------------------------------
+        # GOBLIN_HMCSIM
+        #-----------------------------------------------------------------------
+        sstDepsDeploy_goblin_hmcsim
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: goblin_hmcsim deployment failure"
+            return $retval
+        fi
+    fi
+    
+    if [ ! -z "${SST_BUILD_HBM_DRAMSIM2}" ]
+    then
+        #-----------------------------------------------------------------------
+        # HBM_DRAMSIM2
+        #-----------------------------------------------------------------------
+        sstDepsDeploy_hbm_dramsim2
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: hbm_dramsim2 deployment failure"
+            return $retval
+        fi
+    fi
+    
+    if [ ! -z "${SST_BUILD_RAMULATOR}" ]
+    then
+        #-----------------------------------------------------------------------
+        # RAMULATOR
+        #-----------------------------------------------------------------------
+        sstDepsDeploy_ramulator
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: ramulator deployment failure"
+            return $retval
+        fi
+    fi
+    
     #     Put Gem5 Last, so no one else can be affected by gcc module hanky-panky
 
     if [ ! -z "${SST_BUILD_GEM5}" ]
@@ -1037,6 +1160,29 @@ sstDepsDoQuery ()
 	sstDepsQuery_chdl_module
     fi
 
+    if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
+    then
+        #-----------------------------------------------------------------------
+        # GOBLIN_HMCSIM
+        #-----------------------------------------------------------------------
+        sstDepsQuery_goblin_hmcsim
+    fi
+
+    if [ ! -z "${SST_BUILD_HBM_DRAMSIM2}" ]
+    then
+        #-----------------------------------------------------------------------
+        # HBM_DRAMSIM2
+        #-----------------------------------------------------------------------
+        sstDepsQuery_hbm_dramsim2
+    fi
+
+    if [ ! -z "${SST_BUILD_RAMULATOR}" ]
+    then
+        #-----------------------------------------------------------------------
+        # RAMULATOR
+        #-----------------------------------------------------------------------
+        sstDepsQuery_ramulator
+    fi
 }
 
 #===============================================================================
@@ -1168,6 +1314,7 @@ sstDepsDoDependencies ()
 #   -z Zoltan version (default|3.2|3.83.8.3|none)
 #   -b Boost version (default|1.50|1.49|1.43|none)
 #   -g gem5 version (default|4.0|stabledevel|gcc-4.6.4|none)
+#   -G Goblim HMCSim (default|stabledevel|none)
 #   -m McPAT version (default|beta|none)
 #   -M macsim version (default|1.1|1.2_pre|1.2|2.0.3|2.0.4|2.1.0|2.2.0)
 #   -i IntSim version (default|static|none)
@@ -1180,7 +1327,9 @@ sstDepsDoDependencies ()
 #   -I iris test version (default|none|stabledevel)
 #   -N nvdimmsim (default)
 #   -a Ariel Pintool (2.13-61206)
-#   -c chld (default)
+#   -c chdl (default)
+#   -H HBM_DRAMSim2 (default)
+#   -r Ramulator (default)
 #
 #   [buildtype] = (restageDeps|develBuild|cleanBuild)
 #
@@ -1193,7 +1342,7 @@ sstDepsDoDependencies ()
 # use getopts
 OPTIND=1 
 
-while getopts :k:d:p:z:b:g:m:M:i:o:h:s:q:e:4:I:N:a:c: opt
+while getopts :k:d:p:z:b:g:G:m:M:i:o:h:H:r:s:q:e:4:I:N:a:c: opt
 
 do
     case "$opt" in
@@ -1366,6 +1515,54 @@ do
                     ;;
             esac
             ;;
+        G) # Goblin_HMCSIM
+            echo "# found the -G (goblin_hmcsim) option, with value $OPTARG"
+            # process arg
+            case "$OPTARG" in
+                default|stabledevel) # build latest Goblin_HMCSIM from repository ("stable development")
+                    echo "# (default) stabledevel: build latest Goblin_HMCSIM from repository"
+                    . ${SST_DEPS_BIN}/sstDep_goblin_hmcsim_stabledevel.sh
+                    ;;
+                none) # do not build (explicit)
+                    echo "# none: will not build Goblin_HMCSIM"
+                    ;;
+                *) # unknown Goblin_HMCSIM argument
+                    echo "# Unknown argument '$OPTARG', will not build Goblin_HMCSIM"
+                    ;;
+            esac
+            ;;
+        H) # HBM_DRAMSim2
+            echo "# found the -H (hbm_dramsim2) option, with value $OPTARG"
+            # process arg
+            case "$OPTARG" in
+                default|stabledevel) # build latest HBM_DRAMSim2 from repository ("stable development")
+                    echo "# (default) stabledevel: build latest HBM_DRAMSim2 from repository"
+                    . ${SST_DEPS_BIN}/sstDep_hbm_dramsim2_stabledevel.sh
+                    ;;
+                none) # do not build (explicit)
+                    echo "# none: will not build HBM_DRAMSim2"
+                    ;;
+                *) # unknown HBM_DRAMSim2 argument
+                    echo "# Unknown argument '$OPTARG', will not build HBM_DRAMSim2"
+                    ;;
+            esac
+            ;;
+        r) # Ramulator
+            echo "# found the -r (ramulator) option, with value $OPTARG"
+            # process arg
+            case "$OPTARG" in
+                default|stabledevel) # build latest Ramulator from repository ("stable development")
+                    echo "# (default) stabledevel: build latest Ramulator from repository"
+                    . ${SST_DEPS_BIN}/sstDep_ramulator_stabledevel.sh
+                    ;;
+                none) # do not build (explicit)
+                    echo "# none: will not build Ramulator"
+                    ;;
+                *) # unknown Ramulator argument
+                    echo "# Unknown argument '$OPTARG', will not build Ramulator"
+                    ;;
+            esac
+            ;;
         m) # McPAT
             echo "# found the -m (Mcpat) option, with value $OPTARG"
             # process arg
@@ -1512,6 +1709,8 @@ do
             ;;
         q) # Qsim
             echo "# found the -q (Qsim) option, with value $OPTARG.   (Ignore on MacOS)"
+            echo "#  Option set to none"
+            OPTARG="none"
             # process arg
                   ##   Qsim currently doesn't run on MacOS because of 32/64 bit issues.
             ##if [ ! $SST_DEPS_OS_NAME = "Darwin" ]
@@ -1630,14 +1829,7 @@ do
             echo "# found the -c (chdl) option, with value $OPTARG"
             # process arg
             case "$OPTARG" in
-                default)   # Build CHDL
-
-                    echo "# default: will build CHDL"
-                    . ${SST_DEPS_BIN}/sstDep_chdl_dev.sh
-		    . ${SST_DEPS_BIN}/sstDep_chdl-stl_dev.sh
-		    . ${SST_DEPS_BIN}/sstDep_chdl-module_dev.sh
-                    ;;
-                none)  # Do not build CHDL
+                none|default)  # Do not build CHDL
                     echo "# none:  will not build CHDL"
                     ;;
             esac

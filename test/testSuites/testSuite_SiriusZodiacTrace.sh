@@ -43,17 +43,34 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 #       Download the tar file of traces   and untar it into the sst-elements/src/sst/elements tree
 #
-     pushd ${SST_ROOT}/sst-elements/src
+     mkdir ${SST_TEST_SUITES}/SiriusZ_folder
+     cd ${SST_TEST_SUITES}/SiriusZ_folder
+## wget of data file, with retries
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
      echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz --no-check-certificate"
-     wget "https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz"
-     if [ $? != 0 ] ; then
-        echo "wget failed"
-        preFail "wget failed"
-     fi
+     wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-Sirius-Allreduce-traces.tar.gz --no-check-certificate
+      retVal=$?
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
+         echo "    WGET FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+         if [ $Num_Tries_remaing -gt 0 ] ; then
+             echo "   Wait 5 minutes"
+             sleep 300        # Wait 5 minutes
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             continue
+         fi
+         preFail "wget failed"
+      fi
+   done
+   echo " "
+
      tar -xzf sst-Sirius-Allreduce-traces.tar.gz
      
      rm sst-Sirius-Allreduce-traces.tar.gz
-     popd 
 
 ##   Right now this feels to me like the "allreduce template", rather than "Sirius".
 allReduce_template() {
@@ -66,11 +83,12 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/zodiac/sirius/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
-    pushd $SST_ROOT/sst-elements/src/sst/elements/zodiac/test/allreduce
+    pushd ./sst/elements/zodiac/test/allreduce
+    pwd
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
@@ -81,17 +99,17 @@ echo $sutArgs
 echo "------------------------------"
 
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
-         ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
+         ${sut} ${sutArgs} > ${outFile}  2>${errFile}
          RetVal=$? 
-         cat $errFile >> $tmpFile
+         cat $errFile >> $outFile
     else
          #   This merges stderr with stdout
-         mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
+         mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
          RetVal=$?
-         cat ${testOutFiles}* > $tmpFile
+         cat ${testOutFiles}* > $outFile
     fi
 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -102,7 +120,7 @@ echo "------------------------------"
     then
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
          ls -l ${sut}
-         wc ${tmpFile} ${referenceFile}
+         wc ${outFile} ${referenceFile}
          fail " WARNING: sst did not finish normally, RetVal=$RetVal" 
          grep -v Warning:..Param $errFile
          return
@@ -120,8 +138,10 @@ echo "------------------------------"
         echo ' '
     fi
 
-    grep -e Total.Allreduce.Count -e Total.Allreduce.Bytes $tmpFile | awk -F: '{$1="";$6=""; print }' | sort -n > $outFile
-    wc ${outFile} ${referenceFile} $tmpFile
+    SIMReport=`grep Simulation $outFile`
+    grep -e Total.Allreduce.Count -e Total.Allreduce.Bytes $outFile > $tmpFile 
+    awk -F: '{$1="";$6=""; print }' $tmpFile | sort -n > $outFile
+    wc ${tmpFile} ${referenceFile} $outFile
     if [ -s $outFile ] ; then
         diff ${referenceFile} ${outFile}
         if [ $? -ne 0 ] ; then
@@ -136,7 +156,7 @@ echo "------------------------------"
     fi
 
     popd
-    grep Simulation $tmpFile
+    echo $SIMReport
 
     endSeconds=`date +%s`
     echo " "
@@ -230,7 +250,6 @@ allReduce_template 8x8x2 lineWordCt
 
 export SST_TEST_ONE_TEST_TIMEOUT=300         # 5 minutes 300 seconds
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 

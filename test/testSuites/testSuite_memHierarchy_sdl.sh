@@ -53,20 +53,29 @@ Tol=$2    ##  curTick tolerance
 
     startSeconds=`date +%s`
     testDataFileBase="test_memHierarchy_$memH_case"
+    memH_test_dir=${SST_REFERENCE_ELEMENTS}/memHierarchy/tests
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+
+    RF_TDFB=`echo ${testDataFileBase} | sed s/-/_/g`
+    echo "TDFB $RF_TDFB"
+    referenceFile="$memH_test_dir/refFiles/${RF_TDFB}.out"
+    outFile="${SST_TEST_OUTPUTS}/${RF_TDFB}.out"
+
     # Add basename to list for processing later
     L_TESTFILE+=(${testDataFileBase})
-    memH_sdl_dir=$SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
-    rm -f $memH_sdl_dir/dramsim*log
     pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
+    rm -f dramsim*.log
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-    pyFileName=`echo ${memH_case}.py | sed s/_/-/ | sed s/_MC//`
+echo ' '; echo Find pyFileName
+    pyFileName=`echo ${memH_case}.py | sed s/_/-/ | sed s/_MC// | sed s/-MC//`
+echo ' '; echo $pyFileName
+echo ' '
     sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/$pyFileName
     echo $sutArgs
     grep backend $sutArgs | grep dramsim > /dev/null
@@ -78,7 +87,7 @@ Tol=$2    ##  curTick tolerance
       ls $sutArgs
       echo ' FAILED to find Python file.'
       echo ' '
-      ls ${memH_sdl_dir}/*.py
+      ls *.py
       echo ' '
       fail ' FAILED to find Python file.'
       popd
@@ -86,20 +95,20 @@ Tol=$2    ##  curTick tolerance
     fi
 
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
-         ${sut} ${sutArgs} > ${tmpFile}  2>${errFile}
+         ${sut} ${sutArgs} > ${outFile}  2>${errFile}
          RetVal=$? 
          notAlignedCt=`grep -c 'not aligned to the request size' $errFile`
          #          Append errFile to outFile   w/o  Not Aligned messages
-         grep -v 'not aligned to the request size' $errFile >> $tmpFile
+         grep -v 'not aligned to the request size' $errFile >> $outFile
     else
          #   This merges stderr with stdout
-         mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
+         mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
          RetVal=$?
-         cat ${testOutFiles}* > $tmpFile
-         notAlignedCt=`grep -c 'not aligned to the request size' $tmpFile`
+         cat ${testOutFiles}* > $outFile
+         notAlignedCt=`grep -c 'not aligned to the request size' $outFile`
     fi
 
-    TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+    TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
     if [ -e $TIME_FLAG ] ; then 
          echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
          fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -136,27 +145,26 @@ Tol=$2    ##  curTick tolerance
         echo "         ----- end stderr"
     fi
 
-    grep -v ^cpu.*: $tmpFile | grep -v 'not aligned to the request size' > $outFile
+    grep -v ^cpu.*: $outFile > $tmpFile
+    grep -v 'not aligned to the request size' $tmpFile > $outFile
     RemoveComponentWarning
     pushd ${SSTTESTTEMPFILES}
 #          Append errFile to outFile   w/o  Not Aligned messages
-    diff -b $referenceFile $outFile > _raw_diff
+    diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
     if [ $? == 0 ] ; then
         fileSize=`wc -l $outFile | awk '{print $1}'`
         echo "            Exact Match of reduced Output  -- $fileSize lines"
-        rm _raw_diff
+        rm ${SSTTESTTEMPFILES}/_raw_diff
     else
         wc $referenceFile $outFile
-        wc _raw_diff
+        wc ${SSTTESTTEMPFILES}/_raw_diff
         rm diff_sorted
         compare_sorted $referenceFile $outFile
         if [ $? == 0 ] ; then
            echo " Sorted match with Reference File"
-           rm _raw_diff
+           rm ${SSTTESTTEMPFILES}/_raw_diff
         else
-echo "Preliminary ---------------"
 cat ${SSTTESTTEMPFILES}/diff_sorted
-echo " ----------------- "
            echo "`diff $referenceFile $outFile | wc` $memH_case" >> ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
    #                             --- Special case with-DramSim --- 
            if [ $usingDramSim == 0 ] ; then    ## usingDramSim is TRUE
@@ -339,6 +347,22 @@ memHierarchy_Template sdl9_2 500
 
 }
 
+test_memHierarchy_sdl4_2_ramulator() {          
+memHierarchy_Template sdl4-2-ramulator 500
+
+}
+
+test_memHierarchy_sdl5_1_ramulator() {          
+pushd  $SST_REFERENCE_ELEMENTS/memHierarchy/tests
+if [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
+    memHierarchy_Template sdl5-1-ramulator 500
+else
+    memHierarchy_Template sdl5-1-ramulator_MC 500
+fi
+popd
+
+}
+
 test_print_DramSim_summary() {
 
     if [ $DRAMSIM_EXACT_MATCH_FAIL_COUNT != 0 ] ; then
@@ -352,7 +376,6 @@ test_print_DramSim_summary() {
 }
 
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
@@ -363,6 +386,7 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 (. ${SHUNIT2_SRC}/shunit2)
 
 echo ' '
+touch $$_tmp
 cat $$_tmp
 echo ' '
 echo "   Summary of diff vs. Reference file"

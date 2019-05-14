@@ -50,7 +50,7 @@ Tol=$2    ##  curTick tolerance
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/Samba/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -61,16 +61,16 @@ Tol=$2    ##  curTick tolerance
         ls $sutArgs
 
         echo " Running from `pwd`"
-        if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
-           ${sut} ${sutArgs} > ${outFile}
-           RetVal=$? 
-        else
-           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs}
+        if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
            RetVal=$? 
            cat ${testOutFiles}* > $outFile
+        else
+           ${sut} ${sutArgs} > ${outFile}
+           RetVal=$? 
         fi
 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -84,7 +84,7 @@ Tol=$2    ##  curTick tolerance
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              wc $outFile
              echo " 20 line tail of \$outFile"
-             tail -20 $outfile
+             tail -20 $outFile
              echo "    --------------------"
              return
         fi
@@ -168,37 +168,29 @@ Tol=$2    ##  curTick tolerance
 ## -- test_streambench_mmu() {
 ## -- stats-snb-ariel-dram.csv
 #-------------------------------------------------------------------------------
-test_Samba_gupsgen() {
-Samba_Template gupsgen 500
 
-}
 
 test_Samba_gupsgen_mmu() {
-
-   if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
-       echo " November 15th, this test is not happpy with MULTI      OMIT"    
-       skip_this_test
-       return
-   fi
-
 Samba_Template gupsgen_mmu 500
 
 }
 
-test_Samba_stencil3dbench() {
-Samba_Template stencil3dbench 500
+test_Samba_gupsgen_mmu_4KB() {
+Samba_Template gupsgen_mmu_4KB 500
 
 }
+
+test_Samba_gupsgen_mmu_three_levels() {
+Samba_Template gupsgen_mmu_three_levels 500
+
+}
+
 
 test_Samba_stencil3dbench_mmu() {
 Samba_Template stencil3dbench_mmu 500
 
 }
 
-test_Samba_streambench() {
-Samba_Template streambench 500
-
-}
 
 test_Samba_streambench_mmu() {
 Samba_Template streambench_mmu 500

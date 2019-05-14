@@ -6,10 +6,6 @@
 # A shell script that defines a shunit2 test suite. This will be
 # invoked by the Bamboo script.
 
-# Preconditions:
-
-# 1) The SUT (software under test) must have built successfully.
-# 2) A test success reference file is available.
 
 TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 # Load test definitions
@@ -53,26 +49,37 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #     requiring that the command lines for creating both the output
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
-test_simpleComponent() {
+simpleComponent_Template() {
+simpleC_case=$1
+Match=$2
 
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
-    testDataFileBase="test_simpleComponent"
+    testDataFileBase="test_simple${simpleC_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
+
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simpleComponent.py"
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simple${simpleC_case}.py"
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        (${sut} ${sutArgs} > $outFile)
-        RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
+           RetVal=$? 
+           cat ${testOutFiles}* > $outFile
+        else
+           ${sut} ${sutArgs} > ${outFile}
+           RetVal=$? 
+        fi
+
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -86,15 +93,18 @@ test_simpleComponent() {
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              return
         fi
+
+        RemoveComponentWarning
+
         wc $referenceFile $outFile
-        diff -b $referenceFile $outFile > _raw_diff
+        diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
         if [ $? != 0 ]
         then  
-           wc _raw_diff
+           wc ${SSTTESTTEMPFILES}/_raw_diff
            compare_sorted $referenceFile $outFile
            if [ $? == 0 ] ; then
               echo " Sorted match with Reference File"
-              rm _raw_diff
+              rm ${SSTTESTTEMPFILES}/_raw_diff
               return
            else
               fail " Reference does not Match Output"
@@ -111,7 +121,18 @@ test_simpleComponent() {
     fi
 }
 
-export SHUNIT_DISABLE_DIFFTOXML=1
+test_simpleComponent() {
+
+simpleComponent_Template  Component
+
+}
+
+test_simpleSubComponent() {
+simpleComponent_Template  SubComponent
+
+}
+
+
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 

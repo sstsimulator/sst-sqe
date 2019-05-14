@@ -69,7 +69,7 @@ test_scheduler_0001() {
     testDataFileBase="test_scheduler_0001"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -91,7 +91,7 @@ test_scheduler_0001() {
         # Run SUT and capture its output
         (${sut} ${sutArgs} > ${outFile})
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -150,7 +150,7 @@ test_scheduler_0002() {
     faultLog="${SST_TEST_OUTPUTS}/${testDataFileBase}_faultlog.csv"
     errorLog="${SST_TEST_OUTPUTS}/${testDataFileBase}_errorlog.csv"
     # This is the expected name and location of the reference file
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
     joblogReferenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_joblog.csv"
     faultlogReferenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_faultlog.csv"
     errorlogReferenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_errorlog.csv"
@@ -170,7 +170,7 @@ test_scheduler_0002() {
         # Run SUT and capture its output
         (${sut} ${sutArgs} > ${outFile})
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -232,7 +232,7 @@ test_scheduler_0003() {
     testDataFileBase="test_scheduler_0003"
 
     # This test requires that sst be built with GLPK
-    grep "^#define.HAVE_GLPK.1" ${SST_ROOT}/sst-elements/config.log > /dev/null
+    grep "^#define.HAVE_GLPK.1" ${SST_ROOT}/sst-*/config.log > /dev/null
     if [ $? != 0 ] ; then
         echo "     SST NOT configured with GLPK,  skipping $testDataFileBase"
         skip_this_test     # Skip function in shunit2
@@ -253,7 +253,7 @@ test_scheduler_0003() {
 
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -274,7 +274,7 @@ echo ''
         # Run SUT and capture its output
         (${sut} ${sutArgs} > /dev/null)
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -332,7 +332,7 @@ test_scheduler_0004() {
     testDataFileBase="test_scheduler_0004"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -352,7 +352,7 @@ test_scheduler_0004() {
         # Run SUT and capture its output
         (${sut} ${sutArgs} > /dev/null)
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -411,7 +411,7 @@ test_scheduler_0005() {
     # files, and ".out" extension. XML postprocessing requires this.
     testDataFileBase="test_scheduler_0005"
     # This test requires that sst be built with METIS
-    grep "^#define.HAVE_METIS.1" ${SST_ROOT}/sst-elements/config.log > /dev/null
+    grep "^#define.HAVE_METIS.1" ${SST_ROOT}/sst-*/config.log > /dev/null
     retVal=$?
     if [ $retVal != 0 ] ; then
         echo "     SST NOT configured with METIS,  skipping $testDataFileBase"
@@ -423,7 +423,7 @@ test_scheduler_0005() {
     fi
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
     ####################
     #      Intel compiler requires unique Reference file
     $CXX --version > check-comp 2>&1
@@ -457,7 +457,7 @@ test_scheduler_0005() {
         # Run SUT and capture its output
         (${sut} ${sutArgs} > /dev/null)
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -497,7 +497,6 @@ test_scheduler_0005() {
 }
 
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with

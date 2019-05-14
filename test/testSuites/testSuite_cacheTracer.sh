@@ -61,7 +61,7 @@ test_cacheTracer_1() {
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFiles"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/cacheTracer/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -80,13 +80,13 @@ test_cacheTracer_1() {
              cat $errFile >> $outFile
         else
              #   This merges stderr with stdout
-             mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
+             mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
              RetVal=$?
              wc ${testOutFiles}*
              cat ${testOutFiles}* > $outFile
         fi
 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -101,14 +101,14 @@ test_cacheTracer_1() {
              return
         fi
         wc $referenceFile $outFile
-        diff -b $referenceFile $outFile > _raw_diff
+        diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
         if [ $? != 0 ]
         then  
-           wc _raw_diff
+           wc ${SSTTESTTEMPFILES}/_raw_diff
            compare_sorted $referenceFile $outFile
            if [ $? == 0 ] ; then
               echo " Sorted match with Reference File"
-              rm _raw_diff
+              rm ${SSTTESTTEMPFILES}/_raw_diff
               return
            else
               fail " Reference does not Match Output"
@@ -129,13 +129,14 @@ test_cacheTracer_2() {
     testDataFileBase="test_cacheTracer_2"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     memRefFile="${SST_TEST_OUTPUTS}/${testDataFileBase}_memRef.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_memRef.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/cacheTracer/tests/refFiles/${testDataFileBase}_memRef.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    cd ${SST_ROOT}/sst-elements/src/sst/elements/cacheTracer/tests
+    mkdir $SST_TEST_SUITES/cacheTracer_folder
+    pushd $SST_TEST_SUITES/cacheTracer_folder
 
     sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/cacheTracer/tests/test_cacheTracer_2.py"
 
@@ -144,9 +145,10 @@ ls $outFile
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
+pwd
         (${sut} ${sutArgs} > $outFile)
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -178,7 +180,6 @@ ls $outFile
     fi
 }
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 

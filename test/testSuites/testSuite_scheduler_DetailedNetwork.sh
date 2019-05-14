@@ -7,7 +7,6 @@
 # invoked by the Bamboo script.
 
 # Preconditions:
-
 # 1) The SUT (software under test) must have built successfully.
 # 2) A test success reference file is available.
 #  There is no sutArgs= statement.  SST is python wrapped.
@@ -17,6 +16,13 @@ TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 . $TEST_SUITE_ROOT/../include/testDefinitions.sh
 . $TEST_SUITE_ROOT/../include/testSubroutines.sh
 
+#########################
+##########  ignore scheduler Detailed Network (for now?)
+###########  It has it's own version of emberLoad.py
+
+preFail "Skip DNS for now - it needs change to ember interface" "skip"
+
+###################################
 #===============================================================================
 # Variables global to functions in this suite
 #===============================================================================
@@ -106,6 +112,7 @@ TEST_NAME=test_DetailedNetwork
 # OUTFILE=test.temp
 outFile=${SST_TEST_OUTPUTS}/${TEST_NAME}.out
 rm -f $outFile
+refFile=${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/test_scheduler_DetailedNetwork.out
 
 # copy all necessary files to run this test
 
@@ -168,14 +175,19 @@ tail -n +2 "$TEST_NAME.sim.time" >> $outFile
 
 # compare with reference
 
-diff -u $SST_TEST_REFERENCE/test_scheduler_DetailedNetwork.out $outFile > $TEST_NAME.tmp
+diff -u $refFile $outFile > $TEST_NAME.tmp
 
 if [ "`cat $TEST_NAME.tmp`x" == "x" ]
 then
     echo "Test 6 PASSED"
 else
-    wc $SST_TEST_REFERENCE/test_scheduler_DetailedNetwork.out $outFile
+    wc $refFile $outFile
     echo "Test 6 FAILED"
+    cksum $refFile
+    cksum $outFile
+    ls -l $refFile
+    ls -l $outFile
+    
     fail " Scheduler Test 6 FAILED"
     cat $TEST_NAME.tmp
     return
@@ -204,6 +216,6 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
-export SST_TEST_ONE_TEST_TIMEOUT=3000
+export SST_TEST_ONE_TEST_TIMEOUT=1500
 
 (. ${SHUNIT2_SRC}/shunit2)

@@ -35,7 +35,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 # Use the new shunit2 option only
 #===============================================================================
 
-        export SHUNIT_DISABLE_DIFFTOXML=1
         export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 ##       A local Subroutine
@@ -97,7 +96,7 @@ Clocker_template() {
     # Run SUT
     (${sut} --verbose  ${sutArgs} > $outFile)
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 

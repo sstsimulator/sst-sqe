@@ -35,7 +35,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #===============================================================================
 #                     Set up
 
-    ls -d $SST_TEST_SUITES/testCramSim > /dev/null
+    ls -d $SST_TEST_SUITES/testCramSim > /dev/null 2>&1
     Ret_Val=$?
     if [ $Ret_Val == 0 ] ; then
         rm -rf $SST_TEST_SUITES/testCramSim
@@ -44,20 +44,45 @@ mkdir -p $SST_TEST_SUITES/testCramSim
 cd $SST_TEST_SUITES/testCramSim
 pwd
 
-ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg .
-ls -l $SST_ROOT/sst-elements/src/sst/elements/CramSim/ddr4_verimem.cfg  > /dev/null
+ln -s $SST_REFERENCE_ELEMENTS/CramSim/ddr4_verimem.cfg .
+ls -l $SST_REFERENCE_ELEMENTS/CramSim/ddr4_verimem.cfg  > /dev/null
 if [ $? != 0 ] ; then
-   ls $SST_ROOT/sst-elements/src/sst/elements/CramSim
+   ls $SST_REFERENCE_ELEMENTS/CramSim
    preFail "Can't find/access ddr4_verimem.cfg from sst-elements"
 fi
 mkdir tests
 
-ln -s $SST_ROOT/sst-elements/src/sst/elements/CramSim/tests/* tests
+ln -s $SST_REFERENCE_ELEMENTS/CramSim/tests/* tests
 ls -l ddr4_verimem.cfg
 if [ $? != 0 ] ; then
    preFail "Can't find ddr4_verimem.cfg in SQE CramSim directory"
 fi
-cd tests
+
+cd $SST_TEST_SUITES/testCramSim/tests
+## wget of data file, with retries
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
+     echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim_trace_verimem_trace_files.tar.gz --no-check-certificate"
+     wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim_trace_verimem_trace_files.tar.gz --no-check-certificate
+      retVal=$?
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
+         echo "    WGET FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+         if [ $Num_Tries_remaing -gt 0 ] ; then
+             echo "   Wait 5 minutes"
+             sleep 300        # Wait 5 minutes
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             continue
+         fi
+         preFail "wget failed"
+      fi
+   done
+   echo " "
+
+     tar -xzf sst-CramSim_trace_verimem_trace_files.tar.gz
 
 #                       TEMPLATE
 #     Subroutine to run many similiar tests without reproducing the script.
@@ -77,36 +102,29 @@ cd $SST_TEST_SUITES/testCramSim
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/CramSim/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-pushd tests
-	wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/sst-CramSim-trace_verimem_${trc}.trc.gz >o${trc} 2>e${trc} 
-	if [ $? != 0 ] ; then
-            echo " Download of trace file failed for sst-CramSim-trace_verimem_${trc}.trc.gz "
-            fail " Download of trace file failed for sst-CramSim-trace_verimem_${trc}.trc.gz "
-            echo "           ----- stdout -----"
-            cat o${trc}
-            echo "           ----- stderr -----"
-            cat e${trc}
-            return
-        fi
-        gunzip sst-CramSim-trace_verimem_${trc}.trc.gz
-popd
+    ls -l tests/sst-CramSim-trace_verimem_${trc}.trc
 
-  ls -l tests/sst-CramSim-trace_verimem_${trc}.trc
+    ls tests/test_txntrace.py
+    if [ $? -eq 0 ] ; then
+        sutArgs="tests/test_txntrace.py"
+        ${sut} --model-options="--configfile=ddr4_verimem.cfg traceFile=tests/sst-CramSim-trace_verimem_${trc}.trc" ${sutArgs} >$outFile   ## 
+    else
+        sutArgs="tests/test_txntrace4.py"
+        ${sut} --model-options="--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc" ${sutArgs} >$outFile   ## 
+    fi
+
 #
-#          Warning the text appended to the next line after the ## is required for multiThread auto configuration.
-#
-      ${sut} tests/test_txntrace4.py --model-options="--configfile=ddr4_verimem.cfg --tracefile=tests/sst-CramSim-trace_verimem_${trc}.trc" >$outFile   ##  ${sutArgs
-      RetVal=$?
+        RetVal=$?
 
         echo " Running from `pwd`"
 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 

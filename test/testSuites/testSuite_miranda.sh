@@ -60,7 +60,7 @@ miranda_case=$1
     # Define a common basename for test output and reference files.
     testDataFileBase="test_miranda_${miranda_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/miranda/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -73,7 +73,7 @@ miranda_case=$1
         # Run SUT
         (${sut} ${sutArgs} > $outFile)
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -85,6 +85,8 @@ miranda_case=$1
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
+	     date
+	     top -bH -n 1 | grep Thread
              RemoveComponentWarning
              return
         fi
@@ -94,13 +96,13 @@ miranda_case=$1
 
         RemoveComponentWarning
         myWC $referenceFile $outFile
-        diff -b $referenceFile $outFile  > raw_diff
+        diff -b $referenceFile $outFile  > $SSTTESTTEMPFILES/$$raw_diff
         if [ $? != 0 ]
         then  
             compare_sorted $referenceFile $outFile
             if [ $? == 0 ] ; then
                echo " Sorted match with Reference File"
-               rm raw_diff
+               rm $SSTTESTTEMPFILES/$$raw_diff
             elif [ "lineWordCt" == "$2" ] ; then
                ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
                new=`wc ${outFile}       | awk '{print $1, $2}'`;
@@ -114,7 +116,7 @@ miranda_case=$1
             else
                echo "Output does not match Reference File"
                fail "Output does not match Reference File"
-               cat raw_diff
+               cat $SSTTESTTEMPFILES/$$raw_diff
             fi
         else
             echo " Exact match Output and Reference"
@@ -175,7 +177,7 @@ test_miranda_randomgen() {
              skip_this_test
              echo " skipping randomgen on multi-thread"   
 ##  Reset the Time Limit for reamainer of tests
-             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL
+             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL_TL
              return
        fi
     fi
@@ -187,7 +189,7 @@ test_miranda_randomgen() {
 miranda_Template randomgen
 
 ##  Reset the Time Limit for reamainer of tests
-             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL
+             export SST_TEST_ONE_TEST_TIMEOUT=$SST_TEST_MIRANDA_NORMAL_TL
 }
 
 test_miranda_stencil3dbench() {

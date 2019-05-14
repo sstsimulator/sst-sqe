@@ -78,6 +78,11 @@ export SHUNIT2_SRC=${SHUNIT2_ROOT}/src
 # Adjust path for Bamboo install preferences
 export PATH=${PATH}:/usr/local/bin
 
+# Define the path to the Elements Reference files
+if [[ ${SST_REFERENCE_ELEMENTS:+isSet} != isSet ]] ; then
+   export SST_REFERENCE_ELEMENTS=$SST_ROOT/sst-elements/src/sst/elements
+fi
+
 # Location of external test files
 export SST_TEST_EXTERNAL_INPUT_FILES=${HOME}/sstDeps/test/inputFiles
 # Location of external test input files for prospero
@@ -230,7 +235,7 @@ fi
 #        but testSubroutines is loaded only in Suites.
 #           testDefinitions is loaded in bamboo.sh
 #
-#     Revised  October 30, 2015
+#     Revised  October 30, 2015, Sept. 27, 2017
 ######################################
 multithread_multirank_patch_Suites() {
     SET_TL=0
@@ -239,11 +244,9 @@ multithread_multirank_patch_Suites() {
             echo " There is a zero -n count, Set to 1 "
             export SST_MULTI_THREAD_COUNT=1
        else
-            sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*.sh
-##              EmberSweep processing move to EmberSweep test Suite/
- ##         sed -i.x '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" test/testInputFiles/EmberSweepGenerator.py
             if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
                SET_TL=1
+               sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*.sh
             fi
        fi
     fi
@@ -255,28 +258,48 @@ multithread_multirank_patch_Suites() {
             echo " There is a zero rank count, Set to 1 "
             export SST_MULTI_RANK_COUNT=1
         fi 
-        pushd test/testSuites
-        for fn in `ls testSuite_*.sh`
-        do
-           grep 'sut}.*sutArgs' $fn | grep mpirun 
-           if [ $? == 0 ] ; then
-             echo "Do not change $fn, it already has mpirun"
-             continue
-           fi
-           sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' ${sut/' $fn
-        done
-        popd
         if [ $SST_MULTI_RANK_COUNT -gt 1 ] ; then
-           SET_TL=1
+            pushd test/testSuites
+            for fn in `ls testSuite_*.sh`
+            do
+               grep 'sut}.*sutArgs' $fn | grep mpirun 
+               if [ $? == 0 ] ; then
+                 echo "Do not change $fn, it already has mpirun"
+                 continue
+               fi
+               sed -i.x '/sut}.*sutArgs/s/..sut/mpirun -np '"${SST_MULTI_RANK_COUNT}"' $NUMA_PARAM ${sut/' $fn
+            done
+            popd
+            SET_TL=1
         fi
     fi
 
     if [ $SET_TL == 1 ] ; then
-    echo "multithread_multirank_patch_Suites: ########### Patch the test Suites"
-    export SST_MULTI_CORE=1
+        echo "multithread_multirank_patch_Suites: ########### Patch the test Suites"
+        export SST_MULTI_CORE=1
+    
+        sed -i.y '/Invoke shunit2/i \
+        export SST_TEST_ONE_TEST_TIMEOUT=400 \
+         ' test/testSuites/testSuite_*
+    fi
+}
 
-    sed -i.y '/Invoke shunit2/i \
-    export SST_TEST_ONE_TEST_TIMEOUT=200 \
-     ' test/testSuites/testSuite_*
-fi
+set_map-by_parameter() {
+    if [ $SST_TEST_HOST_OS_KERNEL = "Darwin" ] ; then
+        ncores=`sysctl -n hw.ncpu`
+    else
+        ncores=`cat /proc/cpuinfo |grep processor | wc -l`
+    fi
+
+    echo "  Number of cores = $ncores"
+
+    if [ $ncores == 1 ] ; then
+        NUMA_PARAM=" "
+    elif [ $ncores -ge 2 ] && [ $ncores -le 4 ] ; then
+        NUMA_PARAM="-map-by numa:pe=2 -oversubscribe"
+    elif [ $ncores -ge 4 ] ; then
+        NUMA_PARAM="-map-by numa:pe=2"
+    fi
+    export NUMA_PARAM
+    echo "   NUMA PARAM = $NUMA_PARAM"
 }

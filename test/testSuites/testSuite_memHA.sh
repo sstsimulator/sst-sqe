@@ -1,7 +1,7 @@
-#!/bin/bash 
+#!/bin/bash
 # testSuite_memHA.sh
 
-# Description: 
+# Description:
 
 # A shell script that defines a shunit2 test suite. This will be
 # invoked by the Bamboo script.
@@ -57,98 +57,177 @@ Match=$2    ##  Match criteron
 
     startSeconds=`date +%s`
     testDataFileBase="test_memHA_$memHA_case"
+    memH_test_dir=$SST_REFERENCE_ELEMENTS/memHierarchy/tests
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    if [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
+        referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+    else
+        #           This is multi-core case
+        if [ -e "$memH_test_dir/refFiles/${testDataFileBase}_MC.out" ] ; then
+            referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MC.out"
+        elif [ -e "$memH_test_dir/refFiles/${testDataFileBase}_MR.out" ] &&
+           [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+            referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MR.out"
+        else
+            referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+        fi
+    fi
+
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
     pushd $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/tests
+
+echo "   "
+cksum $referenceFile
+echo "   "
 
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
     pyFileName=`echo test${memHA_case}.py | sed s/_/-/`
     sutArgs=${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/$pyFileName
-        ls $sutArgs
+    ls $sutArgs
 
-        echo " Running from `pwd`"
-        if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
-           ${sut} ${sutArgs} > ${outFile}
-           RetVal=$? 
-        else
-           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs}
-           RetVal=$? 
-           cat ${testOutFiles}* > $outFile
-           wc $outFile
-           remove_DRAMSim_noise $outFile
-           wc $outFile
+    echo " Running from `pwd`"
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+       mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
+       RetVal=$?
+       cat ${testOutFiles}* > $outFile
+       myWC $outFile
+       remove_DRAMSim_noise $outFile
+       myWC $outFile
+    else
+       ${sut} ${sutArgs} > ${outFile}
+       RetVal=$?
+    fi
 
-        fi
+    TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
+    if [ -e $TIME_FLAG ] ; then
+         echo " Time Limit detected at `cat $TIME_FLAG` seconds"
+         fail " Time Limit detected at `cat $TIME_FLAG` seconds"
+         rm $TIME_FLAG
+         popd
+         return
+    fi
+    if [ $RetVal != 0 ]
+    then
+         echo ' '; echo WARNING: sst did not finish normally ; echo ' '
+         ls -l ${sut}
+         fail "WARNING: sst did not finish normally, RetVal=$RetVal"
+	 date
+	 top -bH -n 1 | grep Thread
+         myWC $outFile
+         echo " 20 line tail of \$outFile"
+         tail -20 $outFile
+         echo "    --------------------"
+         popd
+         return
+    fi
 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
-             popd
-             return 
-        fi 
-        if [ $RetVal != 0 ]  
-        then
-             echo ' '; echo WARNING: sst did not finish normally ; echo ' '
-             ls -l ${sut}
-             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
-             wc $outFile
-             echo " 20 line tail of \$outFile"
-             tail -20 $outFile
-             echo "    --------------------"
-             popd
-             return
-        fi
-        wc ${outFile} ${referenceFile} | awk -F/ '{print $1, $(NF-1) "/" $NF}'
+echo ' '
+cksum $outFile
+echo ' '
+    myWC ${outFile} ${referenceFile}
 
-        RemoveComponentWarning
+    RemoveComponentWarning
 
-        pushd ${SSTTESTTEMPFILES}
+    RemoveWarning_btl_tcp
 
-        diff -b $referenceFile $outFile > _raw_diff
-        if [ $? == 0 ] ; then
-             echo "PASS:  Exact match $memHA_case"
-             rm _raw_diff
-        else
-             wc $referenceFile $outFile
-             wc _raw_diff
-             rm diff_sorted
-             compare_sorted $referenceFile $outFile
-             if [ $? == 0 ] ; then
-                 echo "PASS:  Sorted match $memHA_case"
-                 rm _raw_diff
-             elif [ "lineWordCt" == "$Match" ] || [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
-                 ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
-                 new=`wc ${outFile}       | awk '{print $1, $2}'`;
-                 if [ "$ref" == "$new" ] ; then
+#    The following could/should be in test Subroutines
+##    grep 'btl_tcp_endpoint' $outFile > /dev/null
+##    if [ $? == 0 ] ; then
+##        echo ' '; echo "$memHA_case: Removing mca_btl_tcp -- fail messages" ; echo ' '
+##        sed -i.x '/btl_tcp_endpoint/d' $outFile
+##        rm -f ${outFile}.x
+##        myWC $outFile
+##    else
+##        echo " No mca btl tcp endpoint messages encountered"
+##    fi
+
+    pushd ${SSTTESTTEMPFILES}
+
+    diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
+    if [ $? == 0 ] ; then
+         echo "PASS:  Exact match $memHA_case"
+         rm ${SSTTESTTEMPFILES}/_raw_diff
+    else
+#  grep -n directory0.idle $referenceFile $outFile
+         myWC $referenceFile $outFile ${SSTTESTTEMPFILES}/_raw_diff
+         rm diff_sorted
+         compare_sorted $referenceFile $outFile
+         if [ $? == 0 ] ; then
+             echo "PASS:  Sorted match $memHA_case"
+             rm ${SSTTESTTEMPFILES}/_raw_diff
+         else
+             ref=`wc ${referenceFile} | awk '{print $1, $2}'`;
+             new=`wc ${outFile}       | awk '{print $1, $2}'`;
+             if [ "$ref" != "$new" ] ; then
+                 echo "$memHA_case test Fails"
+                 echo "   tail of $outFile  ---- "
+                 tail $outFile
+                 fail "outFile word/line count does NOT match Reference"
+                 diff ${referenceFile} ${outFile}
+             else
+                 if [ "lineWordCt" == "$Match" ] ; then
+       ## Aug 22, 2017   Match is never available
                      echo "PASS: word/line count match $memHA_case"
                  else
-                     echo "$memHA_case test Fails"
-                     echo "   tail of $outFile  ---- "
-                     tail $outFile
-                     fail "outFile word/line count does NOT match Reference"
-                     diff ${referenceFile} ${outFile} 
-                 fi
-             else
-                 fail "outFile does not match Reference"
-                 echo "              Sorted Diff"
-                 cat ${SSTTESTTEMPFILES}/diff_sorted
-             fi
-        fi
-        popd
-        popd
+                  fail "output does not match Reference"
 
-        endSeconds=`date +%s`
-        echo " "
-        elapsedSeconds=$(($endSeconds -$startSeconds))
-        echo "${memHA_case}: Wall Clock Time  $elapsedSeconds seconds"
+                   echo "   ---- Here is the sorted diff ---"
+                   cat ${SSTTESTTEMPFILES}/diff_sorted 
+
+## ##   Follows complicated code to accept slight difference (original for Flush)
+#      It was very specific code to accomodate one extra clock tick occasionally
+#      encountered with multi core processing. 
+#            - - - - -
+##                      echo "   === #### Trying the special exception for Flush processing  "
+##                      wc_diff=`wc -l ${SSTTESTTEMPFILES}/diff_sorted |
+##                                                               awk '{print $1}'`
+##                      NUM_IDLE=$wc_diff
+##                      IND=2
+## echo NUM_IDLE=$NUM_IDLE
+##                      while [ $IND -lt $NUM_IDLE ]
+##                      do
+## echo in loop
+##                          R=$IND
+##                          O=$((IND + 2))
+##     echo $R and $O
+##                          tmpds=${SSTTESTTEMPFILES}/diff_sorted
+##                          CountO=`sed -n ${O},${O}p $tmpds | sed 's/.*=//'|sed 's/;//'`
+##                          CountR=`sed -n ${R},${R}p $tmpds | sed 's/.*=//'|sed 's/;//'`
+## echo CountO = $CountO
+## echo CountR = $CountR
+##                          CountDifference=$((CountR-CountO))
+##                          echo "CountDifference is $CountDifference"
+##                          IND=$((IND + 4))
+##                          echo "Count difference is $CountDifference"
+##                          if [ $CountDifference != 1 ] ; then
+##                              fail "Special memHA Flush handling did NOT save it"
+##                              wc ${SSTTESTTEMPFILES}/diff_sorted
+##                              cat ${SSTTESTTEMPFILES}/diff_sorted
+##                              break
+##                          fi
+##                      done
+                 fi
+             fi
+         fi
+    fi
+    popd
+    popd
+
+    grep "Simulation is complete, simulated time:" $outFile
+    if [ $? != 0 ] ; then 
+        fail "Completion test message not found"
+        echo ' '; grep -i complet $outFile ; echo ' '
+    fi
+  
+    endSeconds=`date +%s`
+    echo " "
+    elapsedSeconds=$(($endSeconds -$startSeconds))
+    echo "${memHA_case}: Wall Clock Time  $elapsedSeconds seconds"
 
 }
 
@@ -174,11 +253,11 @@ Match=$2    ##  Match criteron
 # Expected Results
 #     Match of output file against reference file
 # Caveats:
-#     For shunit2, the output files must match the reference file *exactly*,
-#     requiring that the command lines for creating both the output
-#     file and the reference file be exactly the same.
-# Does not use subroutine because it invokes the build of all test binaries.
+#
 #-------------------------------------------------------------------------------
+#             NOTE: the "M"s below do nothing if an "M" were replace with
+#                    "lineWordCt", then the output vs. Reference comparision
+#                     would only be of the line and the word count.
 
 test_memHA_BackendChaining () {
     memHA_Template BackendChaining "M"
@@ -265,14 +344,63 @@ test_memHA_ThroughputThrottling () {
 }
 
 
+test_memHA_BackendGoblinHMC () {
+    memHA_Template BackendGoblinHMC "M"
+}
+
+
+test_memHA_CustomCmdGoblin_1 () {
+    memHA_Template CustomCmdGoblin_1 "M"
+}
+
+
+test_memHA_CustomCmdGoblin_2 () {
+    memHA_Template CustomCmdGoblin_2 "M"
+}
+
+
+test_memHA_CustomCmdGoblin_3 () {
+    memHA_Template CustomCmdGoblin_3 "M"
+}
+
+test_memHA_BackendTimingDRAM_1 () {
+    memHA_Template BackendTimingDRAM_1 "M"
+}
+
+test_memHA_BackendTimingDRAM_2 () {
+    memHA_Template BackendTimingDRAM_2 "M"
+}
+
+test_memHA_BackendTimingDRAM_3 () {
+    memHA_Template BackendTimingDRAM_3 "M"
+}
+
+test_memHA_BackendTimingDRAM_4 () {
+    memHA_Template BackendTimingDRAM_4 "M"
+}
+
+test_memHA_BackendHBMDramsim () {
+
+    memHA_Template BackendHBMDramsim "M"
+}
+
+test_memHA_BackendHBMPagedMulti () {
+    memHA_Template BackendHBMPagedMulti "M"
+}
+
+test_memHA_Kingsley () {
+    memHA_Template Kingsley  "M"
+} 
+    
+
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
-export SST_TEST_ONE_TEST_TIMEOUT=200 
- 
+
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 #         Located here this timeout will override the multithread value
+export SST_TEST_ONE_TEST_TIMEOUT=600
 
 (. ${SHUNIT2_SRC}/shunit2)
 

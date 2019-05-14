@@ -36,14 +36,21 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
     ls -ld /tmp/openmpi-sessions*/* |grep $USER > __rmlist
     wc __rmlist
+#    cat __rmlist | sed 10q
+
     today=$(( 10#`date +%j` ))
-    echo "today is $today"
+    echo "today is $today"              ## day of year
 if [ $SST_TEST_HOST_OS_KERNEL != "Darwin" ] ; then
 #   --This is Linux code and MacOS can't handle this date syntax--
     
     while read -u 3 r1 r2 r3 r4 r5 mo da r8 name
     do
-    
+      if [ "$mo" == "Dec" ] && [ $today -lt 300 ] ; then
+         echo found Dec
+         echo "Remove $name"
+         rm -rf $name
+      fi 
+          ##   c_day -   day of year for the file
       c_day=$(( 10#`date +%j -d "$mo $da"` ))
       c_day_plus_2=$(($c_day+2))
       if [ $today -gt $c_day_plus_2 ] ; then
@@ -80,10 +87,15 @@ test_embernightly() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_embernightly"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/ember/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
-    pushd $SST_ROOT/sst-elements/src/sst/elements/ember/test
+##    pushd $SST_ROOT/sst-elements/src/sst/elements/ember/test
+    rm -rf ${SST_TEST_SUITES}/emberSweep_folder
+    mkdir -p ${SST_TEST_SUITES}/emberSweep_folder
+    pushd ${SST_TEST_SUITES}/emberSweep_folder
+    cp ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/*py .
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
@@ -94,7 +106,7 @@ test_embernightly() {
         # Run SUT
         (${sut} ${sutArgs} > $outFile)
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -113,7 +125,10 @@ test_embernightly() {
              return
         fi
         wc $referenceFile $outFile
-        diff ${referenceFile} ${outFile} > full.diff 
+
+        RemoveComponentWarning
+
+        diff ${referenceFile} ${outFile} > ${SSTTESTTEMPFILES}/full.diff 
         if [ $? -ne 0 ]
         then
             ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
@@ -125,7 +140,7 @@ test_embernightly() {
                 echo "    Output Flunked  lineWordCt Count match"
                 fail "    Output Flunked  lineWordCt Count match"
             fi
-            wc full.diff
+            wc ${SSTTESTTEMPFILES}/full.diff
             lcr=`wc -l $referenceFile | awk '{print $1}'`
             lco=`wc -l $outFile | awk '{print $1}'`
             if [ $lco -gt $lcr ] ; then
@@ -134,7 +149,7 @@ test_embernightly() {
                 echo "     $(($lcr-$lco)) lines less in output"
             fi
             echo "            *** Tail of Diff ***"
-            tail -10 full.diff
+            tail -10 ${SSTTESTTEMPFILES}/full.diff
         else
             grep 'Simulation is complete' $outFile
             echo "    Output matches Reference File exactly"
@@ -156,7 +171,8 @@ test_ember_params() {
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
-    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+##    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+    pushd ${SST_TEST_SUITES}/emberSweep_folder
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
@@ -168,7 +184,7 @@ test_ember_params() {
         # Run SUT
         ${sut} --verbose --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -196,7 +212,6 @@ test_ember_params() {
 
 export SST_TEST_ONE_TEST_TIMEOUT=100
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 

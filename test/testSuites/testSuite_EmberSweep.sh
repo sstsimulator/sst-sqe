@@ -21,7 +21,7 @@
 #    Note that this Suite runs in the ember elements sub-tree, not in test.
 #
 #    ------------------------------------------------------------------ 
-#       Env variable:    SST_TEST_SE_LIST   to run specific numbers only
+#       Env variable:    SST_TEST_ES_LIST   to run specific numbers only
 #######################################################################
 
 
@@ -83,12 +83,12 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     #  Most test Suites explicitly define an environment variable sut to be full path SST
     #     The Python script does not do this
 
-pwd
 
-pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+    mkdir -p ${SST_TEST_SUITES}/emberSweep_folder
+    pushd ${SST_TEST_SUITES}/emberSweep_folder
+    cp ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/* .
+    chmod +w *
 
-pwd
-ls
 #      Initialize variables
 startSeconds=0
 RUNNING_INDEX=0
@@ -97,11 +97,11 @@ FAILED="FALSE"
 PARAMS=""
  
 
-SE_start() {
+ES_start() {
     RUNNING_INDEX=$(($RUNNING_INDEX+1))
-    echo " $RUNNING_INDEX run, $FAILED_TESTS have failed"
-    if [ $SE_SELECT == 1 ] ; then
-        TEST_INDEX=${SE_LIST[$RUNNING_INDEX]} 
+    echo " Running # $RUNNING_INDEX, $FAILED_TESTS have failed"
+    if [ $ES_SELECT == 1 ] ; then
+        TEST_INDEX=${ES_LIST[$RUNNING_INDEX]} 
         echo " Running case #${TEST_INDEX}"
     else
         TEST_INDEX=$RUNNING_INDEX
@@ -113,18 +113,19 @@ SE_start() {
     testDataFileBase="testES_${TEST_INDEX}"
     L_TESTFILE+=(${testDataFileBase})
 #             For Valgrind, sut= will be installed after this line.
-    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
-}
+    pushd ${SST_TEST_SUITES}/emberSweep_folder
+}   
 ####################
-#    SE_fini()
+#    ES_fini()
 #          tmp_file is output from SST
 #          $TL is the "complete" line from SST (with time)
 #          $RL is the line from the Reference File
 #
-SE_fini() {
-   TL=`grep Simulation.is.complete tmp_file`
+ES_fini() {
    RetVal=$?
-   TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+   touch tmp_file
+   TL=`grep Simulation.is.complete tmp_file`
+   TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
    if [ -e $TIME_FLAG ] ; then 
         echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
         fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -136,11 +137,13 @@ SE_fini() {
    if [ $RetVal != 0 ] ; then 
       echo "       SST run is incomplete, FATAL" 
       fail " # $TEST_INDEX: SST run is incomplete, FATAL" 
+      date
+      top -bH -n 1 | grep Thread
       FAILED="TRUE"
    else
        echo $TL
        echo $1   $TL >> $SST_TEST_OUTPUTS/EmberSweep_cumulative.out
-       RL=`grep $1 $SST_TEST_REFERENCE/test_EmberSweep.out`
+       RL=`grep $1 $SST_REFERENCE_ELEMENTS/ember/tests/refFiles/test_EmberSweep.out`
        if [ $? != 0 ] ; then 
           echo " Can't locate this test in Reference file "
           fail " # $TEST_INDEX:  Can't locate this test in Reference file "
@@ -158,19 +161,19 @@ SE_fini() {
    if [ $FAILED == "TRUE" ] ; then
        FAILED_TESTS=$(($FAILED_TESTS + 1))
        echo ' '
-       grep Ember_${1} -A 5 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/bashIN | grep sst
+       grep Ember_${1} -A 5 ${SSTTESTTEMPFILES}/bashIN | grep sst
        echo ' '
-       wc ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
-       len_tmp_file=`wc -l ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file | awk '{print $1}'`
+       wc tmp_file
+       len_tmp_file=`wc -l ./tmp_file | awk '{print $1}'`
        if [ $len_tmp_file -gt 25 ] ; then
            echo "      stdout from sst   first and last 25 lines"
-           Sed 25q ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
+           Sed 25q ./tmp_file
            echo "              . . ."      
-           tail -25 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
+           tail -25 ./tmp_file
            echo "    ----   end of stdout "
        else
            echo "    ----   stdout for sst:"
-           cat ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/tmp_file
+           cat ./tmp_file
            echo "    ----   end of stdout "
        fi
        echo ' '
@@ -182,7 +185,7 @@ SE_fini() {
    echo "${TEST_INDEX}: Wall Clock Time  $elapsedSeconds sec.  ${PARAMS}"
    echo " "
 
-}     #  - - - END OF Subroutine SE_fini()
+}     #  - - - END OF Subroutine ES_fini()
 
 ###          Begin MAIN
 
@@ -194,29 +197,29 @@ SE_fini() {
         sed '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" ${SST_TEST_INPUTS}/EmberSweepGenerator.py > EmberSweepGenerator.py
         chmod +x EmberSweepGenerator.py
     fi
-    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
-        sed -i.x '/print..sst.*model/s/..sst/ "mpirun -np '"${SST_MULTI_RANK_COUNT}"' sst/' EmberSweepGenerator.py 
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+        sed -i.x '/print..sst.*model/s/..sst/ "mpirun -np '"${SST_MULTI_RANK_COUNT} $NUMA_PARAM"' sst/' EmberSweepGenerator.py 
     fi
 
-    ./EmberSweepGenerator.py > bashIN
+    ./EmberSweepGenerator.py > ${SSTTESTTEMPFILES}/bashIN
     if [ $? -ne 0 ] ; then 
         preFail " Test Generation FAILED"
     fi
 
    #   This is the code to run just selected tests from the sweep
-   #        using the indices defined by SST_TEST_SE_LIST
+   #        using the indices defined by SST_TEST_ES_LIST
    #   An inclusive sub-list may be specified as "first-last"  (e.g. 7-10)
 
-     SE_SELECT=0
-     if [[ ${SST_TEST_SE_LIST:+isSet} == isSet ]] ; then
-         SE_SELECT=1
-         mv bashIN bashIN0
+     ES_SELECT=0
+     if [[ ${SST_TEST_ES_LIST:+isSet} == isSet ]] ; then
+         ES_SELECT=1
+         mv ${SSTTESTTEMPFILES}/bashIN ${SSTTESTTEMPFILES}/bashIN0
          ICT=1
-         for IND in $SST_TEST_SE_LIST
+         for IND in $SST_TEST_ES_LIST
          do
              echo $IND | grep -e '-' > /dev/null   
              if [ $? != 0 ] ; then
-                SE_LIST[$ICT]=$IND
+                ES_LIST[$ICT]=$IND
                 ICT=$(($ICT+1))
                 S0=$(($IND-1))
                 S1=$(($S0*6))
@@ -236,25 +239,25 @@ SE_fini() {
                 while [ $INDR -le $INDL ]
                 do
 #     echo In the INDR loop INDR = $INDR
-                   SE_LIST[$ICT]=$INDR
+                   ES_LIST[$ICT]=$INDR
                    ICT=$(($ICT+1))
                    END=$(($END+6))
                    INDR=$(($INDR+1))
                 done    
                fi
-               sed -n ${START},${END}p  bashIN0 >> bashIN
+               sed -n ${START},${END}p  ${SSTTESTTEMPFILES}/bashIN0 >> ${SSTTESTTEMPFILES}/bashIN
           done
 
 # Check it
 echo Check the result
-wc bashIN
-## for i in ${SE_LIST[@]}; do echo $i; done
+wc ${SSTTESTTEMPFILES}/bashIN
+## for i in ${ES_LIST[@]}; do echo $i; done
 
      fi
 
 #    Source the bash file
 
-    . bashIN
+    . ${SSTTESTTEMPFILES}/bashIN
 
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
@@ -267,6 +270,7 @@ popd
 #                In this position the local Time Out will override the multithread TL
 export SST_TEST_ONE_TEST_TIMEOUT=900
 cd $SST_ROOT
+date
 
-(. ${SHUNIT2_SRC}/shunit2 ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/bashIN)
+(. ${SHUNIT2_SRC}/shunit2 ${SSTTESTTEMPFILES}/bashIN)
 

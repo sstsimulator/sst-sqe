@@ -272,7 +272,7 @@ compare_sorted() {
    sort -o $xr $2
    diff -b $xo $xr > ${SSTTESTTEMPFILES}/diff_sorted
    if [ $? == 0 ] ; then
-      rm $xo $xr
+   ##   rm $xo $xr
       return 0
    fi
    wc ${SSTTESTTEMPFILES}/diff_sorted
@@ -308,11 +308,54 @@ RemoveComponentWarning() {
       sed -i.x '/Event queue empty/d' $outFile
       rm -f ${outFile}.x
    fi
+
+   grep 'usually is due to not having the required NUMA' $outFile > /dev/null
+   if [ $? == 0 ] ; then
+      echo "##############################################"
+      echo "#"
+      echo "#   ${testDataFileBase}: Removing 12 lines "
+      echo "#  Warning about not binding nodes per NUMA request "
+      echo "#"
+      echo "##############################################"
+      vim -e - $outFile <<@@@
+g/WARNING: a request was made to bind a process/.-1,.+10d
+wq
+@@@
+   fi
+
+   grep 'WARNING: Open MPI will create a shared memory backing file in a' $outFile > /dev/null
+   if [ $? == 0 ] ; then
+      echo "##############################################"
+      echo "#"
+      echo "#   ${testDataFileBase}: Removing 22 lines "
+      echo "#  Warning about MPI creating shared backing "
+      echo "#"
+      echo "##############################################"
+      vim -e - $outFile <<@@@
+g/WARNING: Open MPI will create a shared memory/.-1,.+20d
+wq
+@@@
+   fi
 }
+
+RemoveWarning_btl_tcp() {
+#    The following could/should be in test Subroutines
+    grep 'btl_tcp_endpoint' $outFile > /dev/null
+    if [ $? == 0 ] ; then
+        echo ' '; echo "$testDataFileBase: Removing mca_btl_tcp -- fail messages" ; echo ' '
+        sed -i.x '/btl_tcp_endpoint/d' $outFile
+        rm -f ${outFile}.x
+        myWC $outFile
+    else
+        echo "$testDataFileBase: No mca btl tcp endpoint messages encountered"
+    fi
+}
+
 # ----------------------------------------------------
 #    Do the check on Valgrind on a test
 # ----------------------------------------------------
 checkValgrindOutput() {
+
 VGout=$1        #the Valgrind output file
 grep ERROR.SUMMARY $VGout  > /dev/null
 if [ $? != 0 ] ; then 
@@ -328,15 +371,19 @@ fi
     grep ERROR.SUMMARY $VGout | sed s/ERROR//
 contextNumber=`grep ERROR.SUMMARY $VGout | awk '{print $7}'`
 if [ $contextNumber -gt 0 ] ; then
-    sed -n '/ Invalid.read.of.size.4/{N;p;q}' $VGout  | grep opal_os_dirpath_create > /dev/null
+    sed -n '/Uninitialised value was created by a stack allocation/{N;p;q}' $VGout  | grep 'OpenMPI/openmpi-2.1.3/lib/libmpi.so.20.10.2)' > /dev/null
     if [ $? == 0 ] ;then
         contextNumber=$(($contextNumber-1))
-        echo "Ignoring MPI \"Invalid read of size 4\""
+        echo "Ignoring MPI \"Uninitialised value was created by a stack allocation\" in openmpi-2.1.3/lib/libmpi.so.20.10.2"
     fi
 fi
 if [ $contextNumber -gt 0 ] ; then
     echo ' '
     echo "Valgrind found $contextNumber issues"
+    echo ' '
+    wc $VGout
+    sed 200q $VGout
+    echo ' '
     fail " $testDataFileBase: Valgind found $contextNumber issues"
     echo ' '
 else
@@ -347,3 +394,44 @@ fi
 
 }
 
+#    Routine from Ariel to count and optional delete
+#            stream executables
+
+countStreams() {    
+   echo "        Entering subroutine countStreams() $1 "
+   ps -ef | grep stream | grep -v -e grep | awk '{print $2, " ", $3}'
+   if [ "$1" == "Delete" ] ; then
+      ps -ef | grep stream| grep -v -e grep > /tmp/$$_stream_list
+      wc /tmp/$$_stream_list
+      
+      while read -u 3 _who _strEX _own _rest
+      do
+              
+              if [ $_own == 1 ] ; then
+                  echo " Attempt to remove $_strEX "
+                  kill -9 $_strEX
+              fi
+      done 3</tmp/$$_stream_list
+   fi 
+   chmod 777 /tmp/$$_stream_list
+   rm /tmp/$$_stream_list
+   echo "               -----"
+}      
+
+Remove_old_ompsievetest_task() {
+memHS_PID=$$
+   echo " Begin Remover -------------------"
+ps -ef | grep ompsievetest | grep -v -e grep
+echo "  remover  ==== $LINENO   "
+ps -ef | grep ompsievetest | grep -v -e grep > /tmp/${memHS_PID}_omps_list
+wc /tmp/${memHS_PID}_omps_list
+while read -u 3 _who _anOMP _own _rest
+do
+    if [ $_own == 1 ] ; then
+        echo " Attempt to remove $_anOMP "
+        kill -9 $_anOMP
+    fi
+done 3</tmp/${memHS_PID}_omps_list
+
+rm /tmp/${memHS_PID}_omps_list
+}

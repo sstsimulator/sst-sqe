@@ -35,7 +35,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 # Use the new shunit2 option only
 #===============================================================================
 
-        export SHUNIT_DISABLE_DIFFTOXML=1
         export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 #===============================================================================
@@ -58,9 +57,14 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 # Caveats:
 #    
 #-------------------------------------------------------------------------------
-    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_THREAD_COUNT} -gt 1 ] ; then
+##    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_THREAD_COUNT} -gt 1 ] ; then
+##         echo '           SKIP '
+##         preFail " Partition tests are multi-rank, hence, do not work with threading" "skip"
+##    fi     
+##
+    if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
          echo '           SKIP '
-         preFail " Partition tests are multi-rank, hence, do not work with threading" "skip"
+         preFail "Partition tests are inherently multi-rank, so omit in MULTI Projects" "skip"
     fi     
 
     if [ "`which mpirun | awk -F/ '{print $NF}'`" != "mpirun" ] ; then
@@ -96,7 +100,10 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         }
         #                     --- end of Subroutine
      echo ' '
-     grep 'sut.*sutArgs' $SST_TEST_SUITES/testSuite_partitioner.sh
+     ## The following ugliness is so the generate output config 
+     ##       script won't treat this line as an sst execution.
+     tA="tArgs"
+     grep 'sut.*su'${tA} $SST_TEST_SUITES/testSuite_partitioner.sh
      echo ' '
 ##            subroutine create_distResultFile() 
 #
@@ -172,7 +179,10 @@ PARTITIONER=$2
     distResultFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.dist"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
-    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+##    pushd ${SST_ROOT}/sst-elements/src/sst/elements/ember/test
+    mkdir -p ${SST_TEST_SUITES}/emberSweep_folder
+    pushd ${SST_TEST_SUITES}/emberSweep_folder
+    cp ${SST_ROOT}/sst-elements/src/sst/elements/ember/test/* .
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
@@ -182,9 +192,12 @@ PARTITIONER=$2
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        mpirun -np ${NUMRANKS} ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
+        echo ' '
+        echo "mpirun -np ${NUMRANKS} $NUMA_PARAM ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile"
+        echo ' '
+        mpirun -np ${NUMRANKS} $NUMA_PARAM ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         RetVal=$?
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -244,27 +257,27 @@ PARTITIONER=$2
             numComp=`grep found $outFile | grep in.partition.graph | awk -F'found' '{print $2}' | awk '{print $1 }'`
             
             #   Collect number rank 0 sends to each other rank
-            grep Export.to.rank $outFile | awk '{print "rank[" $8 "]=" $10 ";"}'> af
-            numranks=`wc -l af | awk '{print $1}'` ; ((numranks++))
+            grep Export.to.rank $outFile | awk '{print "rank[" $8 "]=" $10 ";"}'> ${SSTTESTTEMPFILES}/af
+            numranks=`wc -l ${SSTTESTTEMPFILES}/af | awk '{print $1}'` ; ((numranks++))
             echo " Total vertices: $numComp, numranks = $numranks "
 
             # Insert a sanity Check.   This has failed twice on Mavericks!
-            OtherRanks=`wc -l af | awk '{print $1}'`
+            OtherRanks=`wc -l ${SSTTESTTEMPFILES}/af | awk '{print $1}'`
             ((OtherRanks++))   # Include rank zero
             #               BAD USAGE   numranks and NUMRANKS
             #           Verify that output file is valid
             if [ $OtherRanks != $NUMRANKS ] ; then
                 echo "test assumptions not met"
     #            fail "test assumptions not met"
-                cat af
+                cat ${SSTTESTTEMPFILES}/af
                 wc $outFile
                 grep -e Export -e 'to.rank' -B 4 -A 4 $outFile
                 return
             fi
 
-            . af     #  Source the file (create array of components on node)
+            . ${SSTTESTTEMPFILES}/af     #  Source the file (create array of components on node)
 #
-#   LOGIC PROBLEM extracting as subroutine this requires prior source of af!
+#   LOGIC PROBLEM extracting as subroutine this requires prior source of ${SSTTESTTEMPFILES}/af!
 #            
             #     Find out how many left on rank 0
             rank[0]=$numComp
@@ -308,10 +321,10 @@ echo "DEBUG: numrank $numranks, was $was"
         wc $distResultFile
 
             #         Source $distResultFile (with the RANK array)
-            . $distResultFile 2>std.err
-            if [ -s std.err ] ; then
+            . $distResultFile 2>${SSTTESTTEMPFILES}/std.err
+            if [ -s ${SSTTESTTEMPFILES}/std.err ] ; then
                  echo "source of $distResultFile failed:"
-                 cat std.err
+                 cat ${SSTTESTTEMPFILES}/std.err
                  fail " Source of $distResultFile failed"
                  return
             fi

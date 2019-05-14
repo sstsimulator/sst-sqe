@@ -78,7 +78,8 @@ test_hybridsim() {
     testDataFileBase="test_hybridsim"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    memH_test_dir=${SST_REFERENCE_ELEMENTS}/memHierarchy/tests
+    referenceFile="${memH_test_dir}/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -89,9 +90,9 @@ test_hybridsim() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        (${sut} ${sutArgs} > $tmpFile)
+        (${sut} ${sutArgs} > $outFile)
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -112,13 +113,11 @@ test_hybridsim() {
         return
     fi
     ###################################
-    #                    Previous way to reduce file to check:
-    #   grep -A 50 -e "TrivialCPU.cpu" $tmpFile > $outFile
-    #         With C++11 there was a change in order of stdout from
-    #         different nodes.     (5/21/15)
-    #
-    grep -v 'cpu.:' $tmpFile > $outFile
+    grep -v 'cpu.:' $outFile > $tmpFile
     wc $referenceFile  $outFile $tmpFile
+    cp $tmpFile $outFile
+
+    RemoveComponentWarning
 
     diff ${outFile} ${referenceFile} > /dev/null;
     if [ $? -ne 0 ]
@@ -142,7 +141,6 @@ test_hybridsim() {
     fi 
 }
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 

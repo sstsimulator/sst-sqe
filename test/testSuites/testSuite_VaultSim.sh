@@ -32,6 +32,8 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
+mkdir $SSTTESTTEMPFILES/$$VaultS
+cd $SSTTESTTEMPFILES/$$VaultS
 
 OPWD=`pwd`    # Save Original PWD
 
@@ -50,7 +52,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
     startSeconds=`date +%s`
     testDataFileBase="test_VaultSim_$VSim_case"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/VaultSimC/tests/refFiles/${testDataFileBase}.out"
 ##    referenceFile="./${VSim_case}.ref"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -61,7 +63,7 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
 
     (${sut} ${sutArgs} > ${outFile})
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -79,6 +81,9 @@ Tol=$2    ##  curTick tolerance,  or  "lineWordCt"
          sed -i'.3sed' -e'/ nan$/d' $outFile        ## This is needed 11/21/13
          sed -i'.4sed' -e'/ -nan$/d' $outFile       ## This is needed 11/21/13
 
+         wc ${referenceFile} ${outFile} 
+         
+         RemoveComponentWarning
          diff ${referenceFile} ${outFile} > /dev/null;
          if [ $? -ne 0 ]
          then
@@ -170,7 +175,6 @@ VaultSim_Template sdl3 500
 
 export SST_TEST_ONE_TEST_TIMEOUT=90
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 cd $OPWD        # Restore entry PWD

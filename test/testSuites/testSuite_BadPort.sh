@@ -53,6 +53,9 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 # Caveats:
 #    
 #-------------------------------------------------------------------------------
+
+preFail " Skip BadPort test for now "  "skip"
+
 test_BadPort() {
 
     # Define a common basename for test output and reference
@@ -78,6 +81,13 @@ test_BadPort() {
              script -a $outFile ${sut} ${sutArgs} 2>$errFile   #### this is MacOS version 
         fi
         retval=$?
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
 
         if [ $retval != 0 ]
         then
@@ -132,6 +142,7 @@ test_BadPort() {
     fi
 }
 
+export SST_TEST_ONE_TEST_TIMEOUT=5
 
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)

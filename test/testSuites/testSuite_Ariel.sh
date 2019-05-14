@@ -47,15 +47,15 @@ L_TESTFILE=()  # Empty list, used to hold test file names
       c_day_plus_2=$(($c_day+2))
  
       if [ $today -gt $c_day_plus_2 ] ; then
-         echo "Remove /tmp/$name"
-         rm /tmp/$name
+         echo "Remove $SSTTESTTEMPFILES/$name"
+         rm $SSTTESTTEMPFILES/$name
       fi
     
     done 3<__rmlist
     rm __rmlist
 #=====================================================
 
-    
+ 
     echo "INTEL_PIN_DIRECTORY = $INTEL_PIN_DIRECTORY"
     if [ ! -d "$INTEL_PIN_DIRECTORY" ] ; then
         echo "Ariel tests requires PIN DIRECTORY"
@@ -66,7 +66,12 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
         echo " Temporary patch"
         echo "Ariel on Ubuntu not working on Sandy bridge and Ivy bridge tests"
-    fi    
+    fi
+   
+    mkdir $SSTTESTTEMPFILES/$$Ariel_run
+    cd $SSTTESTTEMPFILES/$$Ariel_run
+echo " First call to countStreams follow: "
+    countStreams    
 
     OPWD=`pwd`
     export PKG_CONFIG_PATH=${SST_ROOT}/../../local/lib/pkgconfig
@@ -106,7 +111,7 @@ ls -l
 #          This could be in subroutine library - for now only Ariel
 removeFreeIPCs() {
     #   Find and kill orphanned running binaries
-    ps -f > _running_bin
+    ps -f > ${SSTTESTTEMPFILES}/_running_bin
     while read -u 3 uid pid ppid p4 p5 p6 p7 cmd
     do
 ##        echo "          DEBUG ONLY $uid $pid $ppid $cmd"
@@ -118,11 +123,11 @@ removeFreeIPCs() {
                echo " Omitting kill of $uid $ppid $cmd"
            fi
         fi
-    done 3<_running_bin
+    done 3<${SSTTESTTEMPFILES}/_running_bin
   
     #  Find and remove no longer attached shared memory segments  
-    ipcs > _ipc_list
-    ##     echo "         DEBUG ONLY `wc _ipc_list`"
+    ipcs > ${SSTTESTTEMPFILES}/_ipc_list
+    ##     echo "         DEBUG ONLY `wc ${SSTTESTTEMPFILES}/_ipc_list`"
     while read -u 3 key shmid own perm size n_att rest
     do
          if [[ $key == "" ]] || [[ $n_att == "" ]] ; then
@@ -133,8 +138,8 @@ removeFreeIPCs() {
           echo " Removing an idle Shared Mem allocation"
           ipcrm -m $shmid
        fi
-    done 3<_ipc_list
-    rm _ipc_list  _running_bin
+    done 3<${SSTTESTTEMPFILES}/_ipc_list
+    rm ${SSTTESTTEMPFILES}/_ipc_list  ${SSTTESTTEMPFILES}/_running_bin
 }
 
 #-------------------------------------------------------------------------------
@@ -156,7 +161,7 @@ Ariel_template() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_Ariel_${Ariel_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/ariel/frontend/simple/examples/stream/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
     startSeconds=`date +%s`
@@ -190,11 +195,12 @@ Ariel_template() {
         # Run SUT
         ${sut} ${sutArgs} > $outFile
         RetVal=$?
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
+             rm $TIME_FLAG
+             removeFreeIPCs
              return 
         fi 
         if [ $RetVal != 0 ]
@@ -206,9 +212,15 @@ Ariel_template() {
         fi
 
         wc ${outFile} ${referenceFile} 
+        RemoveComponentWarning
 
         echo " "
 
+        grep FATAL ${outFile}
+        if [ $? == 0 ] ; then
+            fail "Fatal error detected"
+            return
+        fi
 ##########################################################################
 #     The following code besides being very wrong is doomed.
 #         Any such test being applied to Ariel fails because of
@@ -303,12 +315,6 @@ test_Ariel_memH_test() {
 }
 
 test_Ariel_test_ivb() {
-##     if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
-##         echo " Temporary patch"
-##         echo "Ariel on Ubuntu not working on Sandy and Ivy bridge"
-##         skip_this_test
-##         return
-##     fi
     if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
         echo "Open MP is not currently support on MacOS"
         skip_this_test
@@ -320,12 +326,6 @@ test_Ariel_test_ivb() {
 }
 
 test_Ariel_test_snb() {
-##     if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
-##         echo " Temporary patch"
-##         echo "Ariel on Ubuntu not working on Sandy and Ivy bridge"
-##         skip_this_test
-##         return
-##     fi
     if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
         echo "Open MP is not currently support on MacOS"
         skip_this_test
@@ -349,8 +349,19 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 cd $OPWD
 
-export SST_TEST_ONE_TEST_TIMEOUT=60
+## export SST_TEST_ONE_TEST_TIMEOUT=60
+## if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+##     export SST_TEST_ONE_TEST_TIMEOUT=100            # Bump MacOS time limit to 100 seconds
+## fi
 
 # Invoke shunit2. Any function in this file whose name starts with
+  export SST_TEST_ONE_TEST_TIMEOUT=600     
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
+
+echo " Test ENV VAR  $SST_TEST_HOST_OS_KERNEL"
+    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+
+echo " Call to countStreams \"Delete\"follows: "
+         countStreams "Delete"
+    fi

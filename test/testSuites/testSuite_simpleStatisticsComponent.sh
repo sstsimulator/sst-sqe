@@ -55,11 +55,12 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #-------------------------------------------------------------------------------
 test_simpleStatisticsComponent() {
 
+    startSeconds=`date +%s`
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
     testDataFileBase="test_simpleStatisticsComponent"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
@@ -72,7 +73,7 @@ test_simpleStatisticsComponent() {
         # Run SUT
         (${sut} ${sutArgs} > $outFile)
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -101,11 +102,17 @@ wc $referenceFile $outFile
         ls -l ${sut}
         fail "Problem with SUT: ${sut}"
     fi
+    endSeconds=`date +%s`
+    echo " "
+    elapsedSeconds=$(($endSeconds -$startSeconds))
+    echo "${testDataFileBase}: Wall Clock Time  $elapsedSeconds seconds"
 }
 
 
-export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
+
+mkdir $SSTTESTTEMPFILES/$$simpleStat
+cd $SSTTESTTEMPFILES/$$simpleStat
 
 
 # Invoke shunit2. Any function in this file whose name starts with
