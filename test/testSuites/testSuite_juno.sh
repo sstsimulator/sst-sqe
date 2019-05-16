@@ -42,7 +42,6 @@ echo '    ---  '
 
    export JUNO_EXE="../asm/${testname_case}.bin"
    ${sut} ${sutArgs} > $outFile 2>$errFile                  #8
-   cat $errFile | grep -v "PMIX" > $errFile
 
    retVal=$?
    if [ $retVal != 0 ] ; then
@@ -55,6 +54,8 @@ echo '    ---  '
        wc *csv
        return
    fi
+
+   cat $errFile | grep -v "PMIX" > $errFile
 
    if [ -s $errFile ] ; then
       cat $errFile
