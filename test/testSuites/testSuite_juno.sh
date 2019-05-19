@@ -21,7 +21,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
    cd juno/asm                 #2
    make
 echo "  the make is done -----------------"
-   
+
 sst_info_Template() {
    testname_case=$1    # "sum" or "modulo"
    testDataFileBase="juno_${testname_case}"
@@ -40,9 +40,9 @@ echo '    ---  '
     sut="${SST_TEST_INSTALL_BIN}/sst"
     sutArgs=${SST_ROOT}/juno/test/sst/juno-test.py
 
-   export JUNO_EXE="../asm/${testname_case}.bin" 
+   export JUNO_EXE="../asm/${testname_case}.bin"
    ${sut} ${sutArgs} > $outFile 2>$errFile                  #8
-   
+
    retVal=$?
    if [ $retVal != 0 ] ; then
        fail "Return Code is $retVal"
@@ -54,6 +54,8 @@ echo '    ---  '
        wc *csv
        return
    fi
+
+   cat $errFile | grep -v "PMIX" > $errFile
 
    if [ -s $errFile ] ; then
       cat $errFile
@@ -72,7 +74,7 @@ echo '    ---  '
        wc *csv
        return
    fi
- 
+
    RS=`grep "Simulation is complete" $refFile`
    if [ "$RS" == "$TS" ] ; then
       echo "    Exact Match"

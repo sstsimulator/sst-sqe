@@ -21,6 +21,8 @@ ariel_cpus.addParams({
     "pipetimeout"       : 0,
     "corecount"         : 8,
     "arielmode"         : 1,
+    "launchparamcount"  : 1,
+    "launchparam0"      : "-ifeellucky",
     "memmgr.memorylevels"      : 1,
     "memmgr.pagecount0"        : 262144,
     "memmgr.defaultlevel"      : 0,
