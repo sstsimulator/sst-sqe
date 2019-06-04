@@ -314,6 +314,7 @@ test_Ariel_memH_test() {
     Ariel_template memHstream
 }
 
+if [[ `uname -n ` != sst-test2 ]] ; then
 test_Ariel_test_ivb() {
     if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
         echo "Open MP is not currently support on MacOS"
@@ -343,7 +344,7 @@ test_Ariel_test_snb() {
     Ariel_template ariel_snb
 }
 
-
+fi
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
