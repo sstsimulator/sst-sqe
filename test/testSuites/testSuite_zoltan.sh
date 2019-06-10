@@ -31,11 +31,6 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
-    if [[ `uname -n` == ubuntu1804* ]] ; then
-        skip_this_test
-        echo " skipping Zoltan on Ubuntu-18.04"
-        return
-    fi 
 
     if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
            echo '           SKIP '
@@ -216,16 +211,30 @@ checkAndPrint() {
 
 test_zoltan_2()
 {
+    if [[ `uname -n` == ubuntu1804* ]] ; then
+        skip_this_test
+        echo " skipping Zoltan on Ubuntu-18.04"
+        return
+    fi 
+
    zoltan_template 2
 }
 
 test_zoltan_4()
 {
+    if [[ `uname -n` == ubuntu1804* ]] ; then
+        skip_this_test
+        echo " skipping Zoltan on Ubuntu-18.04"
+        return
+    fi 
    zoltan_template 4
 }
 
-xxtest_zoltan_8()
+xxtest_zoltan_8()   ##  nEVER lIVE!!
 {
+        skip_this_test
+        echo " skipping Zoltan on Ubuntu-18.04"
+        return
    zoltan_template 8
 }
 
