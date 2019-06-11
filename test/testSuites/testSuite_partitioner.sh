@@ -394,7 +394,7 @@ test_roundrobin_8()
 #################################################
 test_zoltan_2()
 {
-   if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] | 
+   if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ||
     [[ `uname -n` == ubuntu1804* ]] ; then
        skip_this_test
        echo '     skipping'
@@ -405,7 +405,7 @@ test_zoltan_2()
 
 test_zoltan_4()
 {
-   if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] |
+   if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ||
     [[ `uname -n` == ubuntu1804* ]] ; then
        skip_this_test
        echo '     skipping'
@@ -416,7 +416,7 @@ test_zoltan_4()
 
 test_zoltan_8()
 {
-   if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] |
+   if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ||
     [[ `uname -n` == ubuntu1804* ]] ; then
        skip_this_test
        echo '     skipping'
