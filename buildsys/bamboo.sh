@@ -889,11 +889,11 @@ getconfig() {
             #     This option used for configuring SST with supported stabledevel deps
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
+            coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
             depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -M none -N default"
             setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv"
+            coreConfigStr="$corebaseoptions $coreMiscEnv  --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
