@@ -889,7 +889,7 @@ getconfig() {
             #     This option used for configuring SST with supported stabledevel deps
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
+            coreMiscEnv="${cc_environment} ${mpi_environment} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsMiscEnv="${cc_environment}"
             depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -M none -N default"
             setConvenienceVars "$depsStr"
