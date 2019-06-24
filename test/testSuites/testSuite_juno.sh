@@ -55,8 +55,6 @@ echo '    ---  '
        return
    fi
 
-   cat $errFile | grep -v "PMIX" > $errFile
-
    if [ -s $errFile ] ; then
       cat $errFile
       fail " Non-empty Error File  $testname_case "
