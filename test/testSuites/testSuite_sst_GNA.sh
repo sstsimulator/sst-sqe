@@ -19,7 +19,6 @@ L_SUITENAME="SST_sst_GNA" # Name of this test suite;
 L_TESTFILE=()  # Empty list, used to hold test file names
 
 #===============================================================================
-echo " this is b4 template"
 
 template_sst_GNA() {
    testN="test${1}"
@@ -53,18 +52,13 @@ ls -l ${SST_REFERENCE_ELEMENTS}/GNA/tests
 
 }
 
-test_Sanity_check() {
-echo "this id Duumy test "
-}
 
 test_1() {
-echo  call first
 template_sst_GNA  1
 }
 
 
 test_2() {
-echo call second
 template_sst_GNA  2
 }
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
