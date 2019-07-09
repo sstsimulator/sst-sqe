@@ -89,11 +89,8 @@ else
     testDataFileBase="test_simple${simpleC_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
-################################
-############     These should be ".out"   not ".py"
-echo "###     These should be \".out\"   not \".py\""
 
-    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/subcomponent_tests/legacy/refFiles/test_${Type}.py"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/subcomponent_tests/legacy/refFiles/test_${Type}.out"
 
     sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/subcomponent_tests/legacy/test_${Type}.py"
     # Add basename to list for XML processing later
