@@ -33,9 +33,12 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   as the function name begins with "test...".
 #===============================================================================
 
-if [[ $SST_BUILD_TYPE == *ake*ist* ]] ; then
+echo "Build Typt is $SST_BUILD_TYPE"
+if [[ $SST_BUILD_TYPE == *make_dist* ]] || [[ $SST_BUILD_TYPE == *dist_test* ]]  ; then
+      echo "Did match"
    preFail  "Make Dist broken on Sub Component test"  "skip"
 fi
+echo " did not mstch"
 
 #-------------------------------------------------------------------------------
 # Test:
