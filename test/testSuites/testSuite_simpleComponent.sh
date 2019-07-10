@@ -33,7 +33,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   as the function name begins with "test...".
 #===============================================================================
 
-if [[ $SST_BUILD_TYPE == *make_dist* ]] ; then
+if [[ $SST_BUILD_TYPE == *ake*ist* ]] ; then
    preFail  "Make Dist broken on Sub Component test"  "skip"
 fi
 
