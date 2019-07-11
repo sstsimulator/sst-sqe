@@ -85,7 +85,7 @@ if [ ! -d ../../distTestDir ] ; then
    pushd sst-core
 
    # Test for override of the branch to some other SHA1
-   if [[ ${SST_CORE_RESET:+isSet} == isSet ]] ; then
+#    if [[ ${SST_CORE_RESET:+isSet} == isSet ]] ; then
        echo "     Desired sst-element SHA1 is ${SST_CORE_RESET}"
        git reset --hard ${SST_CORE_RESET}
        retVal=$?
@@ -968,6 +968,7 @@ getconfig() {
             #     Intel PIN, Ariel, and Cuda-9.1.85
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
+            export SST_WITH_CUDA=1
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
             depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default"
@@ -3298,7 +3299,7 @@ else
 
        ## Test if the host has Cuda
        ## May want to test multiple versions?
-       if [[  ${SST_WITHOUT_CUDA:+isSet} == isSet ]] ; then
+       if [[  ${SST_WITH_CUDA:+isSet} != isSet ]] ; then
             echo "  This run is forced to be without CUDA "
        else
             # ModuleEx puts the avail output on Stdout (where it belongs.)
