@@ -286,9 +286,9 @@ if [ ! -d ../../distTestDir ] ; then
    do
       date
       echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUREPO Gpgpusim "
+      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUREPO ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim "
       date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUREPO Gpgpusim
+      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUREPO ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim
       retVal=$?
       date
       if [ $retVal == 0 ] ; then
@@ -307,8 +307,8 @@ if [ ! -d ../../distTestDir ] ; then
    done
    echo " "
    echo " The Gpgpusim Repo has been cloned."
-   ls -l
-   pushd Gpgpusim
+   ls -l ${SST_ROOT}/sst-elements/src/sst/elements
+   pushd ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim
 
 #    # Test for override of the branch to some other SHA1
 #    if [[ ${SST_GPGPU_RESET:+isSet} == isSet ]] ; then
