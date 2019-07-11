@@ -1369,8 +1369,7 @@ getconfig() {
 #      $1 - Bamboo Project
 #      $2 - mpi request
 #      $3 - boost  request
-#      $4 - Cuda version
-#      $5   compiler (optional)
+#      $4   compiler (optional)
 #   Output:
 #   Return value:
 linuxSetBoostMPI() {
@@ -1421,14 +1420,14 @@ linuxSetBoostMPI() {
        desiredMPI="${2}_${4}"
        desiredBoost="${3}.0_${mpiStr}_${4}"
        # load non-default compiler
-       if   [[ "$5" =~ gcc.* ]]
+       if   [[ "$4" =~ gcc.* ]]
        then
            ModuleEx load gcc/${4}
            echo "LOADED gcc/${4} compiler"
-       elif [[ "$5" =~ intel.* ]]
+       elif [[ "$4" =~ intel.* ]]
        then
            ModuleEx load intel/${4}
-           if [[ "$5" == *intel-15* ]] ; then
+           if [[ "$4" == *intel-15* ]] ; then
                ModuleEx load gcc/gcc-4.8.1
                IntelExtraConfigStr="CXXFLAGS=-gxx-name=`which g++` CFLAGS=-gcc-name=`which gcc`"
            fi
@@ -1452,7 +1451,6 @@ linuxSetBoostMPI() {
    echo "CHECK:  \$2: ${2}"
    echo "CHECK:  \$3: ${3}"
    echo "CHECK:  \$4: ${4}"
-   echo "CHECK:  \$5: ${5}"
    echo "CHECK:  \$desiredMPI: ${desiredMPI}"
    echo "CHECK:  \$desiredBoost: ${desiredBoost}"
    gcc --version 2>&1 | grep ^g
@@ -1536,28 +1534,6 @@ ls $MPIHOME
                exit 1
            fi
            ;;
-   esac
-   echo "bamboo.sh: BOOST_HOME=${BOOST_HOME}"
-   export SST_DEPS_INSTALL_BOOST=${BOOST_HOME}
-   echo "bamboo.sh: SST_DEPS_INSTALL_BOOST=${SST_DEPS_INSTALL_BOOST}"
-
-   # load corresponding Cuda
-   case $4 in
-       cuda-8.0.44)
-           echo "bamboo.sh: cuda-8.0.44 selected"
-           ModuleEx unload cuda
-           ModuleEx load cuda/8.0.44
-           ;;
-       cuda-9.1.85)
-           echo "bamboo.sh: cuda-9.1.85 selected"
-           ModuleEx unload cuda
-           ModuleEx load cuda/9.1.85
-           ;;
-       none)
-           echo  "No Cuda loaded as requested"
-           ;;
-       *)
-
    esac
    echo "bamboo.sh: BOOST_HOME=${BOOST_HOME}"
    export SST_DEPS_INSTALL_BOOST=${BOOST_HOME}
@@ -3249,7 +3225,7 @@ env|sort
 echo "==============================INITIAL ENVIRONMENT DUMP================="
 
 retval=0
-echo  $0  $1 $2 $3 $4 $5
+echo  $0 $1 $2 $3 $4 $5
 echo `pwd`
 
 if [ $# -lt 3 ] || [ $# -gt 4 ]
@@ -3282,7 +3258,7 @@ else
 
     case $1 in
         default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda-9_1_85|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
-            #   Save Parameters $2, $3 and $5 in case they are need later
+            #   Save Parameters $2, $3, $4, and $5 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
             SST_DIST_CUDA=$4
@@ -3297,6 +3273,28 @@ else
 
                 darwinSetBoostMPI $1 $2 $3 $5
             fi
+
+            # Load Cuda Module
+            case $4 in
+               cuda-8.0.44)
+                  echo "bamboo.sh: cuda-8.0.44 selected"
+                  ModuleEx unload cuda
+                  ModuleEx load cuda/8.0.44
+                  ;;
+               cuda-9.1.85)
+                  echo "bamboo.sh: cuda-9.1.85 selected"
+                  ModuleEx unload cuda
+                  ModuleEx load cuda/9.1.85
+                  ;;
+               none)
+                  echo  "No Cuda loaded as requested"
+                  ;;
+               *) # unknown option
+                  echo  "No Cuda loaded as requested"
+                  ;;
+         esac
+
+
        if [[  ${SST_WITHOUT_PIN:+isSet} == isSet ]] ; then
             echo "  This run is forced to be without PIN "
        else
@@ -3329,6 +3327,24 @@ else
                 fi
             else
                 echo "Intel PIN environment module not found on this host."
+            fi
+       fi
+
+       ## Test if the host has Cuda
+       ## May want to test multiple versions?
+       if [[  ${SST_WITH_CUDA:+isSet} != isSet ]] ; then
+            echo "  This run is forced to be without CUDA "
+       else
+            # ModuleEx puts the avail output on Stdout (where it belongs.)
+            ModuleEx avail | egrep -q "cuda/9.1.85"
+            if [ $? == 0 ]
+            then
+               echo "using Cuda environment module  cuda/9.1.85"
+               ModuleEx load cuda/9.1.85
+               echo $CUDA_ROOT
+               ls $CUDA_ROOT
+            else
+                echo "Cuda environment module not found on this host."
             fi
        fi
 
@@ -3396,7 +3412,7 @@ then
 
         if [ $buildtype == "sstmainline_config_dist_test" ] ||
            [[ $buildtype == *make_dist* ]] ; then
-             setUPforMakeDisttest $1 $2 $3 $4 $5
+             setUPforMakeDisttest $1 $2 $3 $5
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
             #    ---  These are probably temporary, but let's line them up properly anyway
