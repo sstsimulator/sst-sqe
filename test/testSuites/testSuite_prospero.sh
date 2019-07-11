@@ -59,12 +59,12 @@ if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
    echo "## --------------------------- run the pin trace program"
    which sst-prospero-trace
 
-       sst-prospero-trace -t 1 -f compressed -o sstprospero -- ./array
+       sst-prospero-trace -ifeellucky -t 1 -f compressed -o sstprospero -- ./array
        echo " pin return flag is from compressed: $?"   
 
-       sst-prospero-trace -t 1 -f text  -o sstprospero -- ./array
+       sst-prospero-trace -ifeellucky -t 1 -f text  -o sstprospero -- ./array
    
-       sst-prospero-trace -t 1 -f binary -o sstprospero -- ./array
+       sst-prospero-trace -ifeellucky -t 1 -f binary -o sstprospero -- ./array
        PIN_TAR="Pin"
 else
    #  Download the trace files from sst-simulator.org

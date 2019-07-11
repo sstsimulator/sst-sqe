@@ -211,16 +211,30 @@ checkAndPrint() {
 
 test_zoltan_2()
 {
+    if [[ `uname -n` == ubuntu1804* ]] ; then
+        skip_this_test
+        echo " skipping Zoltan on Ubuntu-18.04"
+        return
+    fi 
+
    zoltan_template 2
 }
 
 test_zoltan_4()
 {
+    if [[ `uname -n` == ubuntu1804* ]] ; then
+        skip_this_test
+        echo " skipping Zoltan on Ubuntu-18.04"
+        return
+    fi 
    zoltan_template 4
 }
 
-xxtest_zoltan_8()
+xxtest_zoltan_8()   ##  nEVER lIVE!!
 {
+        skip_this_test
+        echo " skipping Zoltan on Ubuntu-18.04"
+        return
    zoltan_template 8
 }
 

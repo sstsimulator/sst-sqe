@@ -92,11 +92,9 @@ shogun_case=$1
            fi
         else
            echo "Exact match with Reference File"
+           return
         fi
 echo  "----"
-myWC $ClayreferenceFile
-diff $ClayreferenceFile $outFile > $tmpClay
-wc $tmpClay
 
     else
         # Problem encountered: can't find or can't run SUT (doesn't

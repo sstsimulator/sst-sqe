@@ -1,15 +1,6 @@
 # !/bin/bash
-# testSuite_Ariel.sh
+# testSuite_gpgpu.sh
 
-# Description:
-
-# A shell script that defines a shunit2 test suite. This will be
-# invoked by the Bamboo script.
-
-# Preconditions:
-
-# 1) The "SUT", sst,  must have built successfully.
-# 2) A test success reference file is available.
 
 TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 # Load test definitions
@@ -21,7 +12,7 @@ export PATH=$PATH:$SST_TEST_INSTALL_BIN
 #===============================================================================
 # Variables global to functions in this suite
 #===============================================================================
-L_SUITENAME="SST_Ariel" # Name of this test suite; will be used to
+L_SUITENAME="SST_GPU" # Name of this test suite; will be used to
                                 # identify this suite in XML file.  (no spaces)
 
 L_TESTFILE=()  # Empty list, used to hold test file names
@@ -32,80 +23,47 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   as the function name begins with "test...".
 #===============================================================================
 
-#=====================================================
-#  A bit of code to clear out old Ariel Shmem files from /tmp
-
-    ls -l /tmp | grep $USER | grep ariel_shmem > __rmlist
-    wc __rmlist
-    today=$(( 10#`date +%j` ))
-    echo "today is $today"
-    
-    while read -u 3 r1 r2 r3 r4 r5 mo da r8 name
-    do
-    
-      c_day=$(( 10#`date +%j -d "$mo $da"` ))
-      c_day_plus_2=$(($c_day+2))
- 
-      if [ $today -gt $c_day_plus_2 ] ; then
-         echo "Remove $SSTTESTTEMPFILES/$name"
-         rm $SSTTESTTEMPFILES/$name
-      fi
-    
-    done 3<__rmlist
-    rm __rmlist
-#=====================================================
-
- 
     echo "INTEL_PIN_DIRECTORY = $INTEL_PIN_DIRECTORY"
     if [ ! -d "$INTEL_PIN_DIRECTORY" ] ; then
         echo "Ariel tests requires PIN DIRECTORY"
         echo "        NOT  FOUND"
         echo " Environment Variable INTEL_PIN_DIRECTORY must be defined"
         preFail "Ariel tests requires PIN DIRECTORY" "skip"
-    fi 
+    fi
     if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
         echo " Temporary patch"
         echo "Ariel on Ubuntu not working on Sandy bridge and Ivy bridge tests"
     fi
-   
-    mkdir $SSTTESTTEMPFILES/$$Ariel_run
-    cd $SSTTESTTEMPFILES/$$Ariel_run
-echo " First call to countStreams follow: "
-    countStreams    
+
+    mkdir $SSTTESTTEMPFILES/$$gpu_run
+    cd $SSTTESTTEMPFILES/$$gpu_run
+
+    echo " First call to countStreams follow: "
+    countStreams
 
     OPWD=`pwd`
     export PKG_CONFIG_PATH=${SST_ROOT}/../../local/lib/pkgconfig
 
-    cd $SST_ROOT/sst-elements/src/sst/elements/ariel/frontend/simple
+    cd $SST_ROOT/sst-elements/src/sst/elements/Gpgpusim
 
-    pushd examples/stream
+    pushd tests/vectorAdd
 
     if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
        echo "  ### MacOS remove \"-fopenMP\" from the make "
        sed -i'.x' 's/-fopenmp//' Makefile
     fi
 
-    make 
+    make
     retval=$?
-    echo "    Make in examples/stream returned \"ok\" "
+    echo "    Make in tests/vecAdd returned \"ok\" "
     if [ $retval -ne 0 ]
     then
         # bail out on error
         pwd
-        echo "ERROR: examples/stream: make failure"
+        echo "ERROR: tests/vecAdd: make failure"
         export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
-        preFail "ERROR: examples/stream: make failure" "skip"
+        preFail "ERROR: tests/vecAdd: make failure" "skip"
     fi
-
-#
-#   Let's build the ompmybarrier binary
-#
-    pushd $TEST_SUITE_ROOT/testopenMP
-    cd ompmybarrier
-ls -l 
-    make -f newMakefile
-ls -l 
-    popd
 
 #     Subroutine to clean up shared memory ipc
 #          This could be in subroutine library - for now only Ariel
@@ -124,8 +82,8 @@ removeFreeIPCs() {
            fi
         fi
     done 3<${SSTTESTTEMPFILES}/_running_bin
-  
-    #  Find and remove no longer attached shared memory segments  
+
+    #  Find and remove no longer attached shared memory segments
     ipcs > ${SSTTESTTEMPFILES}/_ipc_list
     ##     echo "         DEBUG ONLY `wc ${SSTTESTTEMPFILES}/_ipc_list`"
     while read -u 3 key shmid own perm size n_att rest
@@ -144,48 +102,36 @@ removeFreeIPCs() {
 
 #-------------------------------------------------------------------------------
 # Test:
-#     test_Ariel
+#     test_gpgpu
 # Purpose:
-#     Exercise the Ariel
+#     Exercise the GPGPUSim component
 # Inputs:
 #     None
 # Outputs:
-#     test_Ariel.out file
+#     test_gpgpu.out file
 # Expected Results
 #     Match of output file against reference file.  Will need to be fuzzy.
 # Caveats:
 #-------------------------------------------------------------------------------
-Ariel_template() {
-    Ariel_case=$1
+GPGPU_template() {
+    GPGPU_case=$1
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
-    testDataFileBase="test_Ariel_${Ariel_case}"
+    testDataFileBase="test_gpgpu_${GPGPU_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_REFERENCE_ELEMENTS}/ariel/frontend/simple/examples/stream/tests/refFiles/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/Gpgpusim/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
     startSeconds=`date +%s`
 
- 
     echo " starting Directory `pwd`"
     saveDir=`pwd`
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/ariel/frontend/simple/examples/stream/${Ariel_case}.py"
+    sutArgs="--model-option=\"-c ariel-gpu-v100.cfg\" ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests/cuda-test.py"
     echo $sutArgs
-    if [[ ${USE_OPENMP_BINARY:+isSet} == isSet ]] ; then
-        export OMP_EXE=$SST_ROOT/test/testSuites/testopenMP/ompmybarrier/ompmybarrier
-        echo $OMP_EXE
-        ls -l $OMP_EXE
-    fi
-    if [[ ${USE_MEMH:+isSet} == isSet ]] ; then
-        cd $SST_ROOT/sst-elements/src/sst/elements/ariel/frontend/simple      ## This is redundent
-  
-        ln -sf ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/DDR3_micron_32M_8B_x4_sg125.ini .
-        ln -sf ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/system.ini .
-    fi 
 
     Tol=1            ##  Set tolerance at 0.1%
     rm -f ${outFile}
@@ -195,14 +141,14 @@ Ariel_template() {
         # Run SUT
         ${sut} ${sutArgs} > $outFile
         RetVal=$?
-        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
+        if [ -e $TIME_FLAG ] ; then
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds"
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds"
              rm $TIME_FLAG
              removeFreeIPCs
-             return 
-        fi 
+             return
+        fi
         if [ $RetVal != 0 ]
         then
              echo ' '; echo WARNING: sst did not finish normally, RetVal= $RetVal ; echo ' '
@@ -211,7 +157,7 @@ Ariel_template() {
              return
         fi
 
-        wc ${outFile} ${referenceFile} 
+        wc ${outFile} ${referenceFile}
         RemoveComponentWarning
 
         echo " "
@@ -229,16 +175,16 @@ Ariel_template() {
  #        diff ${outFile} ${referenceFile} > /dev/null;
  #        if [ $? -ne 0 ]
  #        then
- #             ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
+ #             ref=`wc ${referenceFile} | awk '{print $1, $2}'`;
  #             new=`wc ${outFile}       | awk '{print $1, $2}'`;
  #                 if [ "$ref" == "$new" ]
- #                 then 
+ #                 then
  #                     echo "    Output passed  LineWordCt match"
  #                 else
  #                     echo "    Output Flunked  lineWordCt Count match"
  #                     fail "Output Flunked  lineWordCt Count match"
  #                     compare_sorted ${outFile} ${referenceFile}
- #                     diff  ${outFile} ${referenceFile} 
+ #                     diff  ${outFile} ${referenceFile}
  #                 fi
  #            echo " Next is word count of the diff:"
  #            diff  ${outFile} ${referenceFile} | wc
@@ -253,15 +199,15 @@ Ariel_template() {
  #:
  ###############################################################################
 
-        lref=`wc ${referenceFile} | awk '{print $1 }'`; 
+        lref=`wc ${referenceFile} | awk '{print $1 }'`;
         lout=`wc ${outFile}       | awk '{print $1 }'`;
         line_diff=$(( $lref - $lout ));
         line_diff=${line_diff#-}              ## remove minus, if it exists
         if [ $line_diff -eq 0 ] ; then
-             echo " Ariel test ${Ariel_case}  -- Line count Match"
+             echo " gpgpu test ${GPGPU_case}  -- Line count Match"
         elif [ $line_diff -gt 15 ] ; then
-             echo "Ariel test ${Ariel_case} out varies from Ref by $line_diff lines"
-             fail "Ariel test ${Ariel_case} out varies from Ref by $line_diff lines"
+             echo "gpgpu test ${GPGPU_case} out varies from Ref by $line_diff lines"
+             fail "gpgpu test ${GPGPU_case} out varies from Ref by $line_diff lines"
              echo ' ' ; echo "---------------  tail of outFile -----"
              tail -20 $outFile
              echo "     -------------  "
@@ -286,65 +232,12 @@ Ariel_template() {
     echo "Ariel ${Ariel_case}: Wall Clock Time  $elapsedSeconds seconds"
 }
 
-ls -l ${SST_ROOT}/sst-elements/src/sst/elements/ariel/frontend/simple/examples/stream
+ls -l ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests
 
-test_Ariel_runstream() {
+test_gpgpu_runvecadd() {
     USE_OPENMP_BINARY=""
     USE_MEMH=""
-    Ariel_template runstream
-}
-    
-
-test_Ariel_testSt() {
-    USE_OPENMP_BINARY=""
-    USE_MEMH=""
-    Ariel_template runstreamSt
-}
-
-
-test_Ariel_testNB() {
-    USE_OPENMP_BINARY=""
-    USE_MEMH=""
-    Ariel_template runstreamNB
-}
-
-test_Ariel_memH_test() {
-    USE_OPENMP_BINARY=""
-    USE_MEMH="yes"
-    Ariel_template memHstream
-}
-
-test_Ariel_test_ivb() {
-
-    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
-        echo "Open MP is not currently support on MacOS"
-        skip_this_test
-        return
-    fi
-    USE_OPENMP_BINARY="yes"
-    USE_MEMH=""
-    Ariel_template ariel_ivb
-
-}
-
-test_Ariel_test_snb() {
-
-    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
-        echo "Open MP is not currently support on MacOS"
-        skip_this_test
-        return
-    fi
-
-    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
-        echo "Sandy Bridge test is incompatible with Multi-Rank"
-        skip_this_test
-        return
-    fi
-
-    USE_OPENMP_BINARY="yes"
-    USE_MEMH=""
-    Ariel_template ariel_snb
-
+    GPGPU_template vectorAdd.160k
 }
 
 
@@ -358,7 +251,7 @@ cd $OPWD
 ## fi
 
 # Invoke shunit2. Any function in this file whose name starts with
-  export SST_TEST_ONE_TEST_TIMEOUT=600     
+  export SST_TEST_ONE_TEST_TIMEOUT=600
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
 
