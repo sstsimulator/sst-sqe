@@ -85,7 +85,7 @@ if [ ! -d ../../distTestDir ] ; then
    pushd sst-core
 
    # Test for override of the branch to some other SHA1
-#    if [[ ${SST_CORE_RESET:+isSet} == isSet ]] ; then
+   if [[ ${SST_CORE_RESET:+isSet} == isSet ]] ; then
        echo "     Desired sst-element SHA1 is ${SST_CORE_RESET}"
        git reset --hard ${SST_CORE_RESET}
        retVal=$?
