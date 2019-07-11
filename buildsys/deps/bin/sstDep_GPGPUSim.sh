@@ -34,6 +34,8 @@ export SST_DEPS_SRC_STAGED_GPGPUSIM="${SST_ROOT}/sst-elements/src/sst/elements/G
 sstDepsStage_GPGPUSim-cuda ()
 {
 
+      sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/9.1.85"
+
       module add cuda/9.1.85
       module list
 
@@ -59,6 +61,8 @@ sstDepsDeploy_GPGPUSim-cuda ()
     sstDepsAnnounce -h $FUNCNAME -m "Deploying GPGPUSim"
 
     pushd $SST_DEPS_SRC_STAGED_GPGPUSIM
+
+    module li
 
     source setup_environment
     make
