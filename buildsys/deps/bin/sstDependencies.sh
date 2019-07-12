@@ -1879,7 +1879,7 @@ do
             case "$OPTARG" in
                 8.0.44|9.1.85)   # Build GPGPUSim
                     echo "# 8.0.44| Build GPGPUSim"
-                    . ${SST_DEPS_BIN}/sstDep_GPGPUSim.sh 
+                    . ${SST_DEPS_BIN}/sstDep_GPGPUSim.sh
                     ;;
                 none|default)  # Do not build GPGPUSim
                     echo "# default: will not build GPGPUSim"
