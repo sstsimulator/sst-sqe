@@ -106,6 +106,10 @@ GPGPU_template() {
     echo " starting Directory `pwd`"
     saveDir=`pwd`
 
+    # Setup GPGPUSim environment
+    echo "source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
+    source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
+
     # Copy relevant test files
     cp -r ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests/* .
     ls -l
@@ -131,10 +135,6 @@ GPGPU_template() {
     fi
 
     popd
-
-    # Setup GPGPUSim environment
-    echo "source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
-    source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
