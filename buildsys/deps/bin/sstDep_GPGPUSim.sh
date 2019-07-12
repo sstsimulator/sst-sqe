@@ -9,10 +9,11 @@
 PARENT_DIR="$( cd -P "$( dirname "$0" )"/.. && pwd )"
 . ${PARENT_DIR}/include/depsDefinitions.sh
 
+CUDA_VERS=$1
 # Environment variable unique to GPGPUSim
 export SST_BUILD_GPGPUSIM=1
 # Environment variable uniquely identifying this script
-case "$1" in
+case "$CUDA_VERS" in
       8.0.44)
          export SST_BUILD_GPGPUSIM_V_8_0_44=1
          ;;
@@ -20,7 +21,8 @@ case "$1" in
          export SST_BUILD_GPGPUSIM_V_9_1_85=1
          ;;
       none|default)  # Do not build GPGPUSim
-         echo "# default: will not build GPGPUSim"
+         export SST_BUILD_GPGPUSIM_V_9_1_85=1
+         CUDA_VERS=9.1.85
          ;;
 esac
 ;;
@@ -46,9 +48,9 @@ export SST_DEPS_SRC_STAGED_GPGPUSIM="${SST_ROOT}/sst-elements/src/sst/elements/G
 sstDepsStage_GPGPUSim-cuda ()
 {
 
-      sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/${1}"
+      sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/${CUDA_VERS}"
 
-      module add cuda/${1}
+      module add cuda/${CUDA_VERS}
       module list
 
 }
@@ -114,8 +116,8 @@ sstDepsDeploy_GPGPUSim-cuda ()
 sstDepsQuery_GPGPUSim-cuda ()
 {
     # provide version and installation location info
-   echo "export SST_DEPS_VERSION_GPGPUSIM_CUDA=\"${1}\""
-   export SST_DEPS_VERSION_GPGPUSIM_CUDA=${1}
+   echo "export SST_DEPS_VERSION_GPGPUSIM_CUDA=\"${CUDA_VERS}\""
+   export SST_DEPS_VERSION_GPGPUSIM_CUDA=${CUDA_VERS}
    echo "export SST_DEPS_INSTALL_GPGPUSIM=\"${SST_DEPS_SRC_STAGED_GPGPUSIM}\""
    export SST_DEPS_INSTALL_GPGPUSIM=${SST_DEPS_SRC_STAGED_GPGPUSIM}
 
