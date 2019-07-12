@@ -133,6 +133,7 @@ GPGPU_template() {
     popd
 
     # Setup GPGPUSim environment
+    echo "source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
     source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
 
     # Define Software Under Test (SUT) and its runtime arguments
@@ -141,11 +142,13 @@ GPGPU_template() {
 
     Tol=1            ##  Set tolerance at 0.1%
     rm -f ${outFile}
+    pwd
+    ls -l
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        echo "${sut} --model-options="-c ariel-gpu-v100.cfg" ${sutArgs}"
+        echo "${sut} --model-options=\"-c ariel-gpu-v100.cfg\" ${sutArgs}"
         ${sut} --model-options="-c ariel-gpu-v100.cfg" ${sutArgs} > $outFile
         RetVal=$?
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
