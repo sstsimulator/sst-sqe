@@ -310,17 +310,6 @@ if [ ! -d ../../distTestDir ] ; then
    ls -l ${SST_ROOT}/sst-elements/src/sst/elements
    pushd ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim
 
-#    # Test for override of the branch to some other SHA1
-#    if [[ ${SST_GPGPU_RESET:+isSet} == isSet ]] ; then
-#        echo "     Desired GPGPU SHA1 is ${SST_GPGPU_RESET}"
-#        git reset --hard ${SST_GPGPU_RESET}
-#        retVal=$?
-#        if [ $retVal != 0 ] ; then
-#           echo "\"git reset --hard ${SST_GPGPU_RESET} \" FAILED.  retVal = $retVal"
-#           exit
-#        fi
-#    fi
-
    git log -n 1 | grep commit
    ls -l
    popd
@@ -559,7 +548,7 @@ echo " #####################################################"
     #
     #  Run only GPU test only
     #
-    if [ $1 == "sstmainline_config_linux_with_cuda-9_1_85" ]
+    if [ $1 == "sstmainline_config_linux_with_cuda" ]
     then
         ${SST_TEST_SUITES}/testSuite_gpgpu.sh
         return
@@ -970,17 +959,17 @@ getconfig() {
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
-        sstmainline_config_linux_with_cuda-9_1_85)
+        sstmainline_config_linux_with_cuda)
             #-----------------------------------------------------------------
-            # sstmainline_config_linux_with_cuda-9_1_85
+            # sstmainline_config_linux_with_cuda
             #     This option used for configuring SST with supported stabledevel deps,
-            #     Intel PIN, Ariel, and Cuda-9.1.85
+            #     Intel PIN, Ariel, and Cuda
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             export SST_WITH_CUDA=1
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q none -M none -N none -A 9.1.85"
+            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q none -M none -N none -A ${SST_DIST_CUDA}"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
@@ -3257,11 +3246,11 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda-9_1_85|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3, $4, and $5 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
-            SST_DIST_CUDA=$4
+            SST_DIST_CUDA=`echo $4 | sed 's/cuda-//g'`
             SST_DIST_PARAM4=$5
 
             # Configure MPI, Boost, and Compiler (Linux only)
@@ -3276,15 +3265,10 @@ else
 
             # Load Cuda Module
             case $4 in
-               cuda-8.0.44)
-                  echo "bamboo.sh: cuda-8.0.44 selected"
+               cuda-8.0.44|cuda-9.1.85)
+                  echo "bamboo.sh: cuda-${SST_DIST_CUDA} selected"
                   ModuleEx unload cuda
-                  ModuleEx load cuda/8.0.44
-                  ;;
-               cuda-9.1.85)
-                  echo "bamboo.sh: cuda-9.1.85 selected"
-                  ModuleEx unload cuda
-                  ModuleEx load cuda/9.1.85
+                  ModuleEx load cuda/${SST_DIST_CUDA}
                   ;;
                none)
                   echo  "No Cuda loaded as requested"
@@ -3327,24 +3311,6 @@ else
                 fi
             else
                 echo "Intel PIN environment module not found on this host."
-            fi
-       fi
-
-       ## Test if the host has Cuda
-       ## May want to test multiple versions?
-       if [[  ${SST_WITH_CUDA:+isSet} != isSet ]] ; then
-            echo "  This run is forced to be without CUDA "
-       else
-            # ModuleEx puts the avail output on Stdout (where it belongs.)
-            ModuleEx avail | egrep -q "cuda/9.1.85"
-            if [ $? == 0 ]
-            then
-               echo "using Cuda environment module  cuda/9.1.85"
-               ModuleEx load cuda/9.1.85
-               echo $CUDA_ROOT
-               ls $CUDA_ROOT
-            else
-                echo "Cuda environment module not found on this host."
             fi
        fi
 
