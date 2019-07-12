@@ -146,7 +146,7 @@ GPGPU_template() {
     pwd
     ls -l
 
-    echo ""
+    echo "${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim"
     ls -l $SST_ROOT/sst-elements/src/sst/elements/Gpgpusim
 
     if [ -f ${sut} ] && [ -x ${sut} ]
