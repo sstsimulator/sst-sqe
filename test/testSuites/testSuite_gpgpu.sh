@@ -136,8 +136,8 @@ GPGPU_template() {
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
     ls -l
-    sutArgs="--model-option=\"-c ariel-gpu-v100.cfg\" cuda-test.py"
-    echo $sutArgs
+    sutArgs="cuda-test.py"
+    echo "${sut} ${sutArgs}"
 
     Tol=1            ##  Set tolerance at 0.1%
     rm -f ${outFile}
@@ -145,7 +145,7 @@ GPGPU_template() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs} > $outFile
+        ${sut} --model-options="-c ariel-gpu-v100.cfg" ${sutArgs} > $outFile
         RetVal=$?
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
         if [ -e $TIME_FLAG ] ; then
