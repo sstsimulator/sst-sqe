@@ -103,6 +103,8 @@ sstDepsQuery_GPGPUSim-cuda ()
 {
     # provide version and installation location info
    echo "export SST_DEPS_VERSION_GPGPUSIM_CUDA=\"9.1.85\""
+   export SST_DEPS_VERSION_GPGPUSIM_CUDA=9.1.85
    echo "export SST_DEPS_INSTALL_GPGPUSIM=\"${SST_DEPS_SRC_STAGED_GPGPUSIM}\""
+   export SST_DEPS_INSTALL_GPGPUSIM=${SST_DEPS_SRC_STAGED_GPGPUSIM}
 
 }
