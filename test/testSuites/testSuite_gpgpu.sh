@@ -44,27 +44,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
     OPWD=`pwd`
     export PKG_CONFIG_PATH=${SST_ROOT}/../../local/lib/pkgconfig
 
-    cd $SST_ROOT/sst-elements/src/sst/elements/Gpgpusim
-
-    pushd tests/vectorAdd
-
-    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
-       echo "  ### MacOS remove \"-fopenMP\" from the make "
-       sed -i'.x' 's/-fopenmp//' Makefile
-    fi
-
-    make
-    retval=$?
-    echo "    Make in tests/vecAdd returned \"ok\" "
-    if [ $retval -ne 0 ]
-    then
-        # bail out on error
-        pwd
-        echo "ERROR: tests/vecAdd: make failure"
-        export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
-        preFail "ERROR: tests/vecAdd: make failure" "skip"
-    fi
-
 #     Subroutine to clean up shared memory ipc
 #          This could be in subroutine library - for now only Ariel
 removeFreeIPCs() {
@@ -127,10 +106,35 @@ GPGPU_template() {
     echo " starting Directory `pwd`"
     saveDir=`pwd`
 
+    # Copy relevant test files
+    cp -r ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests/* .
+    ls -l
+
+    # Build target application
+    pushd vectorAdd
+
+    if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
+       echo "  ### MacOS remove \"-fopenMP\" from the make "
+       sed -i'.x' 's/-fopenmp//' Makefile
+    fi
+
+    make
+    retval=$?
+    echo "    Make in tests/vecAdd returned \"ok\" "
+    if [ $retval -ne 0 ]
+    then
+        # bail out on error
+        pwd
+        echo "ERROR: tests/vecAdd: make failure"
+        export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
+        preFail "ERROR: tests/vecAdd: make failure" "skip"
+    fi
+
+
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
-    sutArgs="--model-option=\"-c ariel-gpu-v100.cfg\" ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests/cuda-test.py"
+    sutArgs="--model-option=\"-c ariel-gpu-v100.cfg\" cuda-test.py"
     echo $sutArgs
 
     Tol=1            ##  Set tolerance at 0.1%
