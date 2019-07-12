@@ -149,6 +149,9 @@ GPGPU_template() {
     echo "${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim"
     ls -l $SST_ROOT/sst-elements/src/sst/elements/Gpgpusim
 
+    echo "GPGPUSIM_ROOT ${GPGPUSIM_ROOT}"
+    echo "PATH: ${PATH}"
+
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
