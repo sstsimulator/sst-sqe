@@ -142,8 +142,12 @@ GPGPU_template() {
 
     Tol=1            ##  Set tolerance at 0.1%
     rm -f ${outFile}
+
     pwd
     ls -l
+
+    echo "
+    ls -l $SST_ROOT/sst-elements/src/sst/elements/Gpgpusim
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then

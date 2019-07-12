@@ -12,7 +12,19 @@ PARENT_DIR="$( cd -P "$( dirname "$0" )"/.. && pwd )"
 # Environment variable unique to GPGPUSim
 export SST_BUILD_GPGPUSIM=1
 # Environment variable uniquely identifying this script
-export SST_BUILD_GPGPUSIM_V_9_1_85=1
+case "$1" in
+      8.0.44)
+         export SST_BUILD_GPGPUSIM_V_8_0_44=1
+         ;;
+      9.1.85)   # Build GPGPUSim
+         export SST_BUILD_GPGPUSIM_V_9_1_85=1
+         ;;
+      none|default)  # Do not build GPGPUSim
+         echo "# default: will not build GPGPUSim"
+         ;;
+esac
+;;
+
 #===============================================================================
 # GPGPUSim
 #===============================================================================
@@ -34,9 +46,9 @@ export SST_DEPS_SRC_STAGED_GPGPUSIM="${SST_ROOT}/sst-elements/src/sst/elements/G
 sstDepsStage_GPGPUSim-cuda ()
 {
 
-      sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/9.1.85"
+      sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/${1}"
 
-      module add cuda/9.1.85
+      module add cuda/${1}
       module list
 
 }
@@ -75,10 +87,10 @@ sstDepsDeploy_GPGPUSim-cuda ()
         return $retval
     fi
 
-    ls -l
-
     echo "Copying shared object to element directory ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim"
     cp --preserve=links lib/$GPGPUSIM_CONFIG/libcudart_mod.so ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim
+
+    ls -l ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim
 
     popd
 
@@ -102,8 +114,8 @@ sstDepsDeploy_GPGPUSim-cuda ()
 sstDepsQuery_GPGPUSim-cuda ()
 {
     # provide version and installation location info
-   echo "export SST_DEPS_VERSION_GPGPUSIM_CUDA=\"9.1.85\""
-   export SST_DEPS_VERSION_GPGPUSIM_CUDA=9.1.85
+   echo "export SST_DEPS_VERSION_GPGPUSIM_CUDA=\"${1}\""
+   export SST_DEPS_VERSION_GPGPUSIM_CUDA=${1}
    echo "export SST_DEPS_INSTALL_GPGPUSIM=\"${SST_DEPS_SRC_STAGED_GPGPUSIM}\""
    export SST_DEPS_INSTALL_GPGPUSIM=${SST_DEPS_SRC_STAGED_GPGPUSIM}
 
