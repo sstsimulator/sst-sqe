@@ -130,10 +130,12 @@ GPGPU_template() {
         preFail "ERROR: tests/vecAdd: make failure" "skip"
     fi
 
+    popd
 
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
 
+    ls -l
     sutArgs="--model-option=\"-c ariel-gpu-v100.cfg\" cuda-test.py"
     echo $sutArgs
 
@@ -235,8 +237,6 @@ GPGPU_template() {
     elapsedSeconds=$(($endSeconds -$startSeconds))
     echo "Ariel ${Ariel_case}: Wall Clock Time  $elapsedSeconds seconds"
 }
-
-ls -l ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests
 
 test_gpgpu_runvecadd() {
     USE_OPENMP_BINARY=""
