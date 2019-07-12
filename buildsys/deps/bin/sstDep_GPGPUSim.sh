@@ -78,7 +78,7 @@ sstDepsDeploy_GPGPUSim-cuda ()
     ls -l
 
     echo "Copying shared object to element directory ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim"
-    cp --preserve=links libcudart_mod.so ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim
+    cp --preserve=links lib/$GPGPUSIM_CONFIG/libcudart_mod.so ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim
 
     popd
 
