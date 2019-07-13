@@ -111,10 +111,12 @@ GPGPU_template() {
     source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
 
     # Copy relevant test files
+    echo "Copying configuration files from ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests"
     cp -r ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests/* .
     ls -l
 
     # Build target application
+    echo "Building application"
     pushd vectorAdd
 
     if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
@@ -149,8 +151,10 @@ GPGPU_template() {
     echo "${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim"
     ls -l $SST_ROOT/sst-elements/src/sst/elements/Gpgpusim
 
-    echo "GPGPUSIM_ROOT ${GPGPUSIM_ROOT}"
-    echo "PATH: ${PATH}"
+    echo -e "GPGPUSIM_ROOT ${GPGPUSIM_ROOT}"
+    echo -e "PATH: ${PATH}\n"
+
+    nm $SST_ELEMENTS_INSTALL/lib/sst-elements-library/libGpgpusim.so
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
