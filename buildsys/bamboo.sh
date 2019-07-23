@@ -1907,7 +1907,7 @@ ls
          pwd
          for __el in `ls`
          do 
-             echo $__el | grep -e Makefile -e ariel -e zodiac > /dev/null
+             echo $__el | grep -e Makefile -e ariel -e zodiac -e simpleElementE > /dev/null
              if [ $? -eq 0 ] ; then
                  continue
              fi
@@ -1942,6 +1942,17 @@ ls
          echo ' '
 
          __el=zodiac/sirius
+         echo "Another element : $__el"
+         ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
+         mkdir -p ./$__el/tests
+         cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+         echo ' '
+
+         echo "there are two more cases from subCompoents"
+
+         
+         __el=tests/simpleElementsExample
          echo "Another element : $__el"
          ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
          mkdir -p ./$__el/tests
