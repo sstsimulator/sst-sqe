@@ -1959,12 +1959,12 @@ find $SST_REFERENCE_ELEMENTS -name *2uu.out*
          ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles 
          mkdir -p ./$__el/tests/subcomponent_tests
          cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests
-         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests/subcomponent_tests
+         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
          echo ' '
 
 
 echo  "pause  ###########################################################################"
-sleep 300
+# sleep 300
 
 
 
