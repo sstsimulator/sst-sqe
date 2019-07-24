@@ -1955,9 +1955,9 @@ find $SST_REFERENCE_ELEMENTS -name *2uu.out*
          
          __el=tests/simpleElementsExample
          echo "Another element : $__el"
-         ls $SST_REFERENCE_ELEMENTS/$__el/tests/subcomponent_tests/refFiles 
+         ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles 
          mkdir -p ./$__el/tests/subcomponent_tests
-         cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/subcomponent_tests/refFiles ./$__el/tests
+         cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests
          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests/subcomponent_tests
          echo ' '
 
