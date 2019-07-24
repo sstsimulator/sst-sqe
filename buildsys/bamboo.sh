@@ -1952,8 +1952,9 @@ ls
          echo "there are two more cases from subCompoents"
 
 find $SST_REFERENCE_ELEMENTS -name *2uu.out*
+
          
-         __el=tests/simpleElementsExample
+         __el=simpleElementsExample
          echo "Another element : $__el"
          ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles 
          mkdir -p ./$__el/tests/subcomponent_tests
