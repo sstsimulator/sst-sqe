@@ -1954,7 +1954,7 @@ ls
 find $SST_REFERENCE_ELEMENTS -name *2uu.out*
 
          
-         __el=simpleElementsExample
+         __el=simpleElementsExample/tests
          echo "Another element : $__el"
          ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles 
          mkdir -p ./$__el/tests/subcomponent_tests
