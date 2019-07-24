@@ -1907,7 +1907,7 @@ ls
          pwd
          for __el in `ls`
          do 
-             echo $__el | grep -e Makefile -e ariel -e zodiac -e simpleElementE > /dev/null
+             echo $__el | grep -e Makefile -e ariel -e zodiac  > /dev/null
              if [ $? -eq 0 ] ; then
                  continue
              fi
@@ -1954,11 +1954,17 @@ ls
          
          __el=tests/simpleElementsExample
          echo "Another element : $__el"
-         ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles 
-         mkdir -p ./$__el/tests
-         cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+         ls $SST_REFERENCE_ELEMENTS/$__el/tests/subcomponent_tests/refFiles 
+         mkdir -p ./$__el/tests/subcomponent_tests
+         cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/subcomponent_tests/refFiles ./$__el/tests
+         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests/subcomponent_tests
          echo ' '
+
+
+echo  "pause  ###########################################################################"
+sleep 300
+
+
 
 #        Move the REFERENCE File pointer
          export SST_REFERENCE_ELEMENTS=$SST_ROOT/distTestDir/trunk/sst-elements/src/sst/elements
