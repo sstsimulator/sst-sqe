@@ -1951,6 +1951,7 @@ ls
 
          echo "there are two more cases from subCompoents"
 
+find $SST_REFERENCE_ELEMENTS -name *2uu.out*
          
          __el=tests/simpleElementsExample
          echo "Another element : $__el"
