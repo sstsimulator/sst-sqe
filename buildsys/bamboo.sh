@@ -1962,7 +1962,7 @@ find $SST_REFERENCE_ELEMENTS -name *2uu.out*
          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
          echo ' '
 echo "               this is after"
-find ~ -name '*2uu.out'
+find -L ~ -name '*2uu.out'
 
 echo  "pause  ###########################################################################"
 # sleep 300
