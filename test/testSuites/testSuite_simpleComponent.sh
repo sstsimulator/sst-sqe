@@ -58,7 +58,7 @@ echo "   BBBEGIN template    $1   $2   "
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
 if [ $simpleC_case == "Component" ] ; then
-            echoo "This is COMPONNT PATH"
+            echo "This is COMPONENT PATH"
     testDataFileBase="test_simple${simpleC_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
