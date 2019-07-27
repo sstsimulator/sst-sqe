@@ -401,6 +401,7 @@ echo " #####################################################"
 
 ### BAilingwir
 
+    ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
 
             ${SST_TEST_SUITES}/testSuite_zoltan.sh
             ${SST_TEST_SUITES}/testSuite_partitioner.sh
@@ -1951,7 +1952,8 @@ ls
 
          echo "there are two more cases from subCompoents"
 
-find $SST_REFERENCE_ELEMENTS -name *2uu.out*
+O
+find $SST_ROOT -name *2uu.out*
 
          
          __el=simpleElementExample/tests
@@ -1962,7 +1964,7 @@ find $SST_REFERENCE_ELEMENTS -name *2uu.out*
          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
          echo ' '
 echo "               this is after"
-find -L ~ -name '*2uu.out'
+find -L $SST_ROOT -name '*2uu.out'
 
 echo  "pause  ###########################################################################"
 # sleep 300
