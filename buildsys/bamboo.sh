@@ -1958,7 +1958,7 @@ find $SST_REFERENCE_ELEMENTS -name *2uu.out*
          echo "Another element : $__el"
          ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles 
          mkdir -p ./$__el/tests/subcomponent_tests
-         cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests
+         cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/subcomponent_ests
          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
          echo ' '
 echo "               this is after"
