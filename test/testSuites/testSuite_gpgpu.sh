@@ -159,7 +159,7 @@ GPGPU_template() {
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        echo "sut: ${sute}"
+        echo "sut: ${sut}"
         echo "Running:"
         echo "${sut} --model-options=\"-c ariel-gpu-v100.cfg\" ${sutArgs}"
         ${sut} --model-options="-c ariel-gpu-v100.cfg" ${sutArgs} > $outFile
