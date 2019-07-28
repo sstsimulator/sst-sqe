@@ -245,6 +245,7 @@ multithread_multirank_patch_Suites() {
             export SST_MULTI_THREAD_COUNT=1
        else
             if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+               echo "SST_MULTI_THREAD_COUNT = ${SST_MULTI_THREAD_COUNT}"
                SET_TL=1
                sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*.sh
             fi
@@ -259,6 +260,7 @@ multithread_multirank_patch_Suites() {
             export SST_MULTI_RANK_COUNT=1
         fi 
         if [ $SST_MULTI_RANK_COUNT -gt 1 ] ; then
+            echo "SST_MULTI_RANK_COUNT = ${SST_MULTI_RANK_COUNT}"
             pushd test/testSuites
             for fn in `ls testSuite_*.sh`
             do
