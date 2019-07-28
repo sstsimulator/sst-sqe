@@ -753,7 +753,7 @@ echo " #####################################################"
        ${SST_TEST_SUITES}/testSuite_ESshmem.sh
     fi
 
-    if [ $1 != "sstmainline_config_no_mpi" ] && [[ $1 != "sstmainline_config_valgrind" ]] ; then
+    if [ $1 != "sstmainline_config_no_mpi" ] && [[ $1 != "sstmainline_config_linux_with_cuda_no_mpi ]] && [[ $1 != "sstmainline_config_valgrind" ]] ; then
         #  Zoltan test requires MPI to execute.
         #  sstmainline_config_no_gem5 deliberately omits Zoltan, so must skip test.
         #  Valgrind test as inserted here is incompatible with partitioning tests.
@@ -972,6 +972,27 @@ getconfig() {
             depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q none -M none -N none -A ${SST_DIST_CUDA}"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
+            junoConfigStr="$junobaseoptions"
+            ;;
+        sstmainline_config_linux_with_cuda_no_mpi)
+            #-----------------------------------------------------------------
+            # sstmainline_config_linux_with_cuda_no_mpi
+            #     This option used for configuring SST with supported stabledevel deps,
+            #     Intel PIN, Ariel, and Cuda
+            #-----------------------------------------------------------------
+            if [[ ${MPIHOME:+isSet} == isSet ]] ; then
+                echo ' ' ; echo " Test is flawed!  MPI module is loaded!" ; echo ' '
+                exit 1
+            fi
+            export | egrep SST_DEPS_
+            coreMiscEnv="${cc_environment}"
+            elementsMiscEnv="${cc_environment}"
+            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q none -M none -N none -A ${SST_DIST_CUDA}"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
             elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
@@ -3246,7 +3267,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3, $4, and $5 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
