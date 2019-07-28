@@ -548,7 +548,7 @@ echo " #####################################################"
     #
     #  Run only GPU test only
     #
-    if [ $1 == "sstmainline_config_linux_with_cuda" ]
+    if [[ ($1 == "sstmainline_config_linux_with_cuda") || ($1 == "sstmainline_config_linux_with_cuda_no_mpi") ]]
     then
         ${SST_TEST_SUITES}/testSuite_gpgpu.sh
         return
