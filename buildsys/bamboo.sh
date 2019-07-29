@@ -1963,6 +1963,14 @@ find $SST_ROOT -name *2uu.out*
          cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/subcomponent_tests
          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
          echo ' '
+         
+         __el=simpleElementExample/tests
+         echo "Another element : $__el"
+         ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles 
+         mkdir -p ./$__el/tests/subcomponent_tests
+         cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/legacy/refFiles ./$__el/subcomponent_tests/legacy
+         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
+         echo ' '
 echo "               this is after"
 find -L $SST_ROOT -name '*2uu.out'
 
