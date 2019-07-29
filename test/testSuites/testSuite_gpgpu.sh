@@ -103,14 +103,17 @@ GPGPU_template() {
     L_TESTFILE+=(${testDataFileBase})
     startSeconds=`date +%s`
 
-    echo " starting Directory `pwd`"
+    echo ""
+    echo "Starting directory `pwd`"
     saveDir=`pwd`
 
     # Setup GPGPUSim environment
+    echo ""
     echo "source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
     source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
 
     # Copy relevant test files
+    echo ""
     echo "Copying configuration files from ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests"
     cp -r ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests/* .
     ls -l
@@ -154,7 +157,9 @@ GPGPU_template() {
     echo -e "GPGPUSIM_ROOT ${GPGPUSIM_ROOT}"
     echo -e "PATH: ${PATH}\n"
 
-    nm $SST_ELEMENTS_INSTALL/lib/sst-elements-library/libGpgpusim.so
+    ldd $SST_ELEMENTS_INSTALL/lib/sst-elements-library/libGpgpusim.so
+    echo ""
+    nm  $SST_ELEMENTS_INSTALL/lib/sst-elements-library/libGpgpusim.so
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
