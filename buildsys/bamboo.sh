@@ -3265,11 +3265,11 @@ retval=0
 echo  $0 $1 $2 $3 $4 $5
 echo `pwd`
 
-if [ $# -lt 3 ] || [ $# -gt 4 ]
+if [ $# -lt 3 ] || [ $# -gt 5 ]
 then
     # need build type and MPI type as argument
 
-    echo "Usage : $0 <buildtype> <mpitype> <boost type> <[compiler type (optional)]>"
+    echo "Usage : $0 <buildtype> <mpitype> <boost type> <[compiler type (optional)]> <[cuda version (optional)]>"
     exit 0
 
 else
