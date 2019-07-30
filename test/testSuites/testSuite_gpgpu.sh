@@ -170,7 +170,7 @@ GPGPU_template() {
         # Run SUT
         echo "Running:"
         echo "${sut} --model-options=\"-c ariel-gpu-v100.cfg -s ${SST_TEST_OUTPUTS}/${testDataFileBase}.csv\" ${sutArgs}"
-        ${sut} --model-options="-c ariel-gpu-v100.cfg" ${sutArgs} 
+        ${sut} --model-options="-c ariel-gpu-v100.cfg" ${sutArgs}
         RetVal=$?
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
         if [ -e $TIME_FLAG ] ; then
@@ -282,7 +282,7 @@ cd $OPWD
 ## fi
 
 # Invoke shunit2. Any function in this file whose name starts with
-  export SST_TEST_ONE_TEST_TIMEOUT=600
+  export SST_TEST_ONE_TEST_TIMEOUT=7200
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
 
