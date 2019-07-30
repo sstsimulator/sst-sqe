@@ -170,7 +170,7 @@ GPGPU_template() {
         # Run SUT
         echo "Running:"
         echo "${sut} --model-options=\"-c ariel-gpu-v100.cfg -s ${SST_TEST_OUTPUTS}/${testDataFileBase}.csv\" ${sutArgs}"
-        ${sut} --model-options="-c ariel-gpu-v100.cfg" ${sutArgs} > $outFile
+        ${sut} --model-options="-c ariel-gpu-v100.cfg" ${sutArgs} 
         RetVal=$?
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
         if [ -e $TIME_FLAG ] ; then
@@ -268,7 +268,7 @@ test_gpgpu_runvecadd() {
     USE_MEMH=""
 
     GPGPU_environment
-    GPGPU_template vectorAdd.524k
+    GPGPU_template vectorAdd
 }
 
 
