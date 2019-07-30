@@ -109,6 +109,8 @@ GPGPU_template() {
 
     # Setup GPGPUSim environment
     echo ""
+    module li
+    echo ""
     echo "source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
     source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
 
