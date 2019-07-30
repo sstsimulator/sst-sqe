@@ -158,10 +158,11 @@ GPGPU_template() {
 
     echo -e "GPGPUSIM_ROOT ${GPGPUSIM_ROOT}"
     echo -e "PATH: ${PATH}\n"
+    echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}"
 
     ldd $SST_ELEMENTS_INSTALL/lib/sst-elements-library/libGpgpusim.so
-    echo ""
-    nm  $SST_ELEMENTS_INSTALL/lib/sst-elements-library/libGpgpusim.so
+#     echo ""
+#     nm  $SST_ELEMENTS_INSTALL/lib/sst-elements-library/libGpgpusim.so
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then

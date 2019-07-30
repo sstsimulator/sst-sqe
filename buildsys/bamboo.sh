@@ -2215,6 +2215,13 @@ dobuild() {
     ModuleEx list
     echo "--------------------modules status--------------------"
 
+    if [ -z "$SST_DEPS_INSTALL_GPGPUSIM" ]
+    then
+         echo "GPGPUSim not required"
+    else
+         echo "GPGPUSim required"
+    fi
+
     ### BUILDING THE SST-CORE
     if [[ $SST_SELECTED_CORE_CONFIG == "NOBUILD" ]]
     then
