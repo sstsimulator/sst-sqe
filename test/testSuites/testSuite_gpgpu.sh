@@ -112,7 +112,11 @@ GPGPU_template() {
     module li
     echo ""
     echo "source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
-    source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
+    pushd ${SST_DEPS_INSTALL_GPGPUSIM}
+    source setup_environment
+    popd
+
+    echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
 
     # Copy relevant test files
     echo ""
@@ -156,9 +160,9 @@ GPGPU_template() {
     echo "${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim"
     ls -l $SST_ROOT/sst-elements/src/sst/elements/Gpgpusim
 
-    echo -e "GPGPUSIM_ROOT ${GPGPUSIM_ROOT}"
+    echo -e "GPGPUSIM_ROOT ${GPGPUSIM_ROOT}\n"
     echo -e "PATH: ${PATH}\n"
-    echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}"
+    echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
 
     ldd $SST_ELEMENTS_INSTALL/lib/sst-elements-library/libGpgpusim.so
 #     echo ""
