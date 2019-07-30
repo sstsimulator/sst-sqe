@@ -136,7 +136,7 @@ GPGPU_template() {
     ls -l
 
     # Build target application
-    echo "Building application"
+    echo "Building application $1"
     pushd vectorAdd
 
     if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then
@@ -165,18 +165,9 @@ GPGPU_template() {
     Tol=1            ##  Set tolerance at 0.1%
     rm -f ${outFile}
 
-    pwd
-    ls -l
-
-    echo "${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim"
-    ls -l $SST_ROOT/sst-elements/src/sst/elements/Gpgpusim
-
-    ldd $SST_ELEMENTS_INSTALL/lib/sst-elements-library/libGpgpusim.so
-
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        echo "sut: ${sut}"
         echo "Running:"
         echo "${sut} --model-options=\"-c ariel-gpu-v100.cfg\" ${sutArgs}"
         ${sut} --model-options="-c ariel-gpu-v100.cfg" ${sutArgs} > $outFile
