@@ -49,7 +49,6 @@ sstDepsStage_GPGPUSim-cuda ()
                echo "# default: will not build GPGPUSim"
                ;;
       esac
-      ;;
 
       module list
 
