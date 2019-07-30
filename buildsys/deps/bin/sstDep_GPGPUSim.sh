@@ -11,8 +11,8 @@ PARENT_DIR="$( cd -P "$( dirname "$0" )"/.. && pwd )"
 
 # Environment variable unique to GPGPUSim
 export SST_BUILD_GPGPUSIM=1
-# Environment variable uniquely identifying this script
-export SST_BUILD_GPGPUSIM_V_9_1_85=1
+
+CUDA_VERS=$1
 #===============================================================================
 # GPGPUSim
 #===============================================================================
@@ -34,9 +34,23 @@ export SST_DEPS_SRC_STAGED_GPGPUSIM="${SST_ROOT}/sst-elements/src/sst/elements/G
 sstDepsStage_GPGPUSim-cuda ()
 {
 
-      sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/9.1.85"
+      case "$CUDA_VERS" in
+            8.0.44)   # Build GPGPUSim
+               echo "# 8.0.44| Build GPGPUSim"
+               sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/8.0.44"
+               module add cuda/8.0.44
+               ;;
+            9.1.85)   # Build GPGPUSim
+               echo "# 9.1.85| Build GPGPUSim"
+               sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/9.1.85"
+               module add cuda/9.1.85
+               ;;
+            none|default)  # Do not build GPGPUSim
+               echo "# default: will not build GPGPUSim"
+               ;;
+      esac
+      ;;
 
-      module add cuda/9.1.85
       module list
 
 }
