@@ -93,7 +93,7 @@ removeFreeIPCs() {
 # Caveats:
 #-------------------------------------------------------------------------------
 GPGPU_template() {
-    GPGPU_case=$1
+    GPGPU_case="moo_cows"
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
     testDataFileBase="test_gpgpu_${GPGPU_case}"
