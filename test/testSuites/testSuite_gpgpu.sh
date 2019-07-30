@@ -115,6 +115,7 @@ GPGPU_template() {
     echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
     . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
 
+    echo -e "GPGPUSIM_CONFIG ${GPGPUSIM_CONFIG}\n"
     echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
 
     # Copy relevant test files
