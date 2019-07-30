@@ -108,12 +108,13 @@ GPGPU_template() {
     saveDir=`pwd`
 
     # Setup GPGPUSim environment
+    # Sourcing from within a function inheirits function arguments
     echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
     echo ""
     module li
     echo ""
     echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
-    . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
+    . "${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
 
     echo -e "GPGPUSIM_CONFIG ${GPGPUSIM_CONFIG}\n"
     echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
@@ -269,7 +270,7 @@ GPGPU_template() {
 test_gpgpu_runvecadd() {
     USE_OPENMP_BINARY=""
     USE_MEMH=""
-    GPGPU_template vectorAdd
+    GPGPU_template vectorAdd.160k
 }
 
 
