@@ -93,7 +93,7 @@ removeFreeIPCs() {
 # Caveats:
 #-------------------------------------------------------------------------------
 GPGPU_template() {
-    GPGPU_case="moo_cows"
+    GPGPU_case=$1
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
     testDataFileBase="test_gpgpu_${GPGPU_case}"
@@ -108,19 +108,17 @@ GPGPU_template() {
     saveDir=`pwd`
 
     # Setup GPGPUSim environment
+    echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
     echo ""
     module li
     echo ""
-    echo "source ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
-    pushd ${SST_DEPS_INSTALL_GPGPUSIM}
-    source setup_environment
-    popd
+    echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
+    . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
 
     echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
 
     # Copy relevant test files
-    echo ""
-    echo "Copying configuration files from ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests"
+    echo -e "Copying configuration files from ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests \n"
     cp -r ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests/* .
     ls -l
 
@@ -270,7 +268,7 @@ GPGPU_template() {
 test_gpgpu_runvecadd() {
     USE_OPENMP_BINARY=""
     USE_MEMH=""
-    GPGPU_template vectorAdd.160k
+    GPGPU_template vectorAdd
 }
 
 
