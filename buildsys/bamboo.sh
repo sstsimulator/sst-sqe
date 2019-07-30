@@ -3050,8 +3050,8 @@ function ExitOfScriptHandler {
 # $1 = build type
 # $2 = MPI type
 # $3 = boost type
-# $4 = Cuda version
-# $5 = compiler type
+# $4 = compiler type
+# $5 = Cuda version
 #=========================================================================
 trap ExitOfScriptHandler EXIT
 
@@ -3275,13 +3275,13 @@ then
 else
     # get desired compiler, if option provided
     compiler=""
-    if [ "x$5" = x ]
+    if [ "x$4" = x ]
     then
-        echo "bamboo.sh: \$5 is empty or null, setting compiler to default"
+        echo "bamboo.sh: \$4 is empty or null, setting compiler to default"
         compiler="default"
     else
-        echo "bamboo.sh: setting compiler to $5"
-        compiler="$5"
+        echo "bamboo.sh: setting compiler to $4"
+        compiler="$4"
     fi
 
     echo "bamboo.sh: compiler is set to $compiler"
@@ -3298,22 +3298,22 @@ else
             #   Save Parameters $2, $3, $4, and $5 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
-            SST_DIST_CUDA=`echo $4 | sed 's/cuda-//g'`
-            SST_DIST_PARAM4=$5
+            SST_DIST_PARAM4=$4
+            SST_DIST_CUDA=`echo $5 | sed 's/cuda-//g'`
 
             # Configure MPI, Boost, and Compiler (Linux only)
             if [ $kernel != "Darwin" ]
             then
-                linuxSetBoostMPI $1 $2 $3 $5
+                linuxSetBoostMPI $1 $2 $3 $4
 
             else  # kernel is "Darwin", so this is MacOS
 
-                darwinSetBoostMPI $1 $2 $3 $5
+                darwinSetBoostMPI $1 $2 $3 $4
             fi
 
             # Load Cuda Module
-            case $4 in
-               cuda-8.0.44|cuda-9.1.85)
+            case $5 in
+               cuda-8.0.44|cuda-8.0.61|cuda-9.1.85)
                   echo "bamboo.sh: cuda-${SST_DIST_CUDA} selected"
                   ModuleEx unload cuda
                   ModuleEx load cuda/${SST_DIST_CUDA}
@@ -3339,8 +3339,8 @@ else
                 if [ $kernel != "Darwin" ] ; then
 
                    echo "using Intel PIN environment module  pin-2.14-71313-gcc.4.4.7-linux"
-                    #    Compiler is $5
-                   if [[ "$5" != gcc-5* ]] ; then
+                    #    Compiler is $4
+                   if [[ "$4" != gcc-5* ]] ; then
                        echo "Loading Intel PIN environment module"
                        ModuleEx load pin/pin-2.14-71313-gcc.4.4.7-linux
                        echo  $INTEL_PIN_DIRECTORY
@@ -3426,7 +3426,7 @@ then
 
         if [ $buildtype == "sstmainline_config_dist_test" ] ||
            [[ $buildtype == *make_dist* ]] ; then
-             setUPforMakeDisttest $1 $2 $3 $5
+             setUPforMakeDisttest $1 $2 $3 $4
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
             #    ---  These are probably temporary, but let's line them up properly anyway
@@ -3444,7 +3444,7 @@ then
                 echo " #         ENTERING dotests  "
                 echo " #"
                 echo " ################################################################"
-                dotests $1 $5
+                dotests $1 $4
             fi
         fi               #   End of sstmainline_config_dist_test  conditional
     fi
