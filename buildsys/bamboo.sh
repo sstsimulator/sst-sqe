@@ -3275,14 +3275,17 @@ then
 else
     # get desired compiler, if option provided
     compiler=""
-    if [ "x$4" = x ]
-    then
-        echo "bamboo.sh: \$4 is empty or null, setting compiler to default"
-        compiler="default"
-    else
-        echo "bamboo.sh: setting compiler to $4"
-        compiler="$4"
-    fi
+
+    case $4 in
+       none|default|"")
+          echo "bamboo.sh: \$4 is empty, null or default; setting compiler to default"
+          compiler="default"
+          ;;
+       *) # unknown option
+          echo "bamboo.sh: setting compiler to $4"
+          compiler="$4"
+          ;;
+      esac
 
     echo "bamboo.sh: compiler is set to $compiler"
 
@@ -3324,7 +3327,7 @@ else
                *) # unknown option
                   echo  "No Cuda loaded as requested"
                   ;;
-         esac
+            esac
 
 
        if [[  ${SST_WITHOUT_PIN:+isSet} == isSet ]] ; then
