@@ -1877,8 +1877,8 @@ do
             echo "# found the -A (GPGPUSim) option, with value $OPTARG"
             # process arg
             case "$OPTARG" in
-                8.0.44|9.1.85)   # Build GPGPUSim
-                    echo "# 8.0.44| Build GPGPUSim"
+                8.0.44|8.0.61|9.1.85)   # Build GPGPUSim
+                    echo "# ${OPTARG}: Build GPGPUSim"
                     . ${SST_DEPS_BIN}/sstDep_GPGPUSim.sh $OPTARG
                     ;;
                 none|default)  # Do not build GPGPUSim

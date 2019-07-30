@@ -35,19 +35,24 @@ sstDepsStage_GPGPUSim-cuda ()
 {
 
       case "$CUDA_VERS" in
-            8.0.44)   # Build GPGPUSim
-               echo "# 8.0.44| Build GPGPUSim"
-               sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/8.0.44"
-               module add cuda/8.0.44
-               ;;
-            9.1.85)   # Build GPGPUSim
-               echo "# 9.1.85| Build GPGPUSim"
-               sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/9.1.85"
-               module add cuda/9.1.85
-               ;;
-            none|default)  # Do not build GPGPUSim
-               echo "# default: will not build GPGPUSim"
-               ;;
+         8.0.44)   # Build GPGPUSim
+            echo "# 8.0.44| Build GPGPUSim"
+            sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/8.0.44"
+            module add cuda/8.0.44
+            ;;
+         8.0.61)   # Build GPGPUSim
+            echo "# 8.0.61| Build GPGPUSim"
+            sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/8.0.61"
+            module add cuda/8.0.61
+            ;;
+         9.1.85)   # Build GPGPUSim
+            echo "# 9.1.85| Build GPGPUSim"
+            sstDepsAnnounce -h $FUNCNAME -m "Staging cuda/9.1.85"
+            module add cuda/9.1.85
+            ;;
+         none|default)  # Do not build GPGPUSim
+            echo "# default: will not build GPGPUSim"
+            ;;
       esac
 
       module list
