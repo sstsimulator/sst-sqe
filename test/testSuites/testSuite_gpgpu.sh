@@ -79,10 +79,13 @@ removeFreeIPCs() {
     rm ${SSTTESTTEMPFILES}/_ipc_list  ${SSTTESTTEMPFILES}/_running_bin
 }
 
-
+#===============================================================================
+# Function to source the GPGPUSim environment to set up
+# GPGPUSIM_ROOT, PATH, LD_LIBRARY_PATH, DYLD_LIBRARY_PATH
+# OPENCL_REMOTE_GPU_HOST, GPGPUSIM_POWER_MODEL, PTXAS_CUDA_INSTALL_PATH
+# CUDA_VERSION_NUMBER, GPGPUSIM_CONFIG, GPGPUSIM_SETUP_ENVIRONMENT_WAS_RUN
+#===============================================================================
 GPGPU_environment() {
-    # Setup GPGPUSim environment
-    # Sourcing from within a function inheirits function arguments
     echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
     echo ""
     module li
@@ -122,6 +125,10 @@ GPGPU_template() {
     echo ""
     echo "Starting directory `pwd`"
     saveDir=`pwd`
+
+    # Setup GPGPUSim environment
+    # Sourcing from within a function inheirits function arguments so need seperate call
+    GPGPU_environment
 
     # Copy relevant test files
     echo -e "Copying configuration files from ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests \n"
