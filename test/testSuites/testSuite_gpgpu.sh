@@ -79,6 +79,22 @@ removeFreeIPCs() {
     rm ${SSTTESTTEMPFILES}/_ipc_list  ${SSTTESTTEMPFILES}/_running_bin
 }
 
+
+GPGPU_environment() {
+    # Setup GPGPUSim environment
+    # Sourcing from within a function inheirits function arguments
+    echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
+    echo ""
+    module li
+    echo ""
+    echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
+    . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
+
+    echo -e "GPGPUSIM_CONFIG ${GPGPUSIM_CONFIG}\n"
+    echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
+}
+
+
 #-------------------------------------------------------------------------------
 # Test:
 #     test_gpgpu
@@ -106,18 +122,6 @@ GPGPU_template() {
     echo ""
     echo "Starting directory `pwd`"
     saveDir=`pwd`
-
-    # Setup GPGPUSim environment
-    # Sourcing from within a function inheirits function arguments
-    echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
-    echo ""
-    module li
-    echo ""
-    echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
-    . "${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
-
-    echo -e "GPGPUSIM_CONFIG ${GPGPUSIM_CONFIG}\n"
-    echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
 
     # Copy relevant test files
     echo -e "Copying configuration files from ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests \n"
@@ -160,13 +164,7 @@ GPGPU_template() {
     echo "${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim"
     ls -l $SST_ROOT/sst-elements/src/sst/elements/Gpgpusim
 
-    echo -e "GPGPUSIM_ROOT ${GPGPUSIM_ROOT}\n"
-    echo -e "PATH: ${PATH}\n"
-    echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
-
     ldd $SST_ELEMENTS_INSTALL/lib/sst-elements-library/libGpgpusim.so
-#     echo ""
-#     nm  $SST_ELEMENTS_INSTALL/lib/sst-elements-library/libGpgpusim.so
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -270,6 +268,8 @@ GPGPU_template() {
 test_gpgpu_runvecadd() {
     USE_OPENMP_BINARY=""
     USE_MEMH=""
+
+    GPGPU_environment
     GPGPU_template vectorAdd.160k
 }
 
