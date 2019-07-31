@@ -238,7 +238,7 @@ fi
 #     Revised  October 30, 2015, Sept. 27, 2017
 ######################################
 multithread_multirank_patch_Suites() {
-   echo "multithread_multirank_patch_Suites: "
+    echo "multithread_multirank_patch_Suites: "
     SET_TL=0
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
        if [ $SST_MULTI_THREAD_COUNT == 0 ] ; then
@@ -278,6 +278,7 @@ multithread_multirank_patch_Suites() {
     fi
 
     if [ $SET_TL == 1 ] ; then
+        echo "Running TL"
         export SST_MULTI_CORE=1
 
         sed -i.y '/Invoke shunit2/i \
