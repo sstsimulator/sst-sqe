@@ -282,7 +282,7 @@ cd $OPWD
 ## fi
 
 # Invoke shunit2. Any function in this file whose name starts with
-  export SST_TEST_ONE_TEST_TIMEOUT=7200
+  export SST_TEST_ONE_TEST_TIMEOUT=600
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
 
