@@ -33,6 +33,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   as the function name begins with "test...".
 #===============================================================================
 
+
 #-------------------------------------------------------------------------------
 # Test:
 #     test_simpleComponent
@@ -51,21 +52,55 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #-------------------------------------------------------------------------------
 simpleComponent_Template() {
 simpleC_case=$1
-Match=$2
+Type=$2
 
+echo "   BBBEGIN template    $1   $2   "
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
+if [ $simpleC_case == "Component" ] ; then
+            echo "This is COMPONENT PATH"
     testDataFileBase="test_simple${simpleC_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
 
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simple${simpleC_case}.py"
     # Add basename to list for XML processing later
+
+    L_TESTFILE+=(${testDataFileBase})
+elif [ $simpleC_case == "SubComponent" ] ; then
+             echo "  this is SUB COMPONNT PATH"
+    testDataFileBase="test_simple${simpleC_case}$type"
+    outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/subcomponent_tests/refFiles/test_${Type}.out"
+ls -l $referenceFile
+
+echo ' ' ; echo look at sutArgs
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/subcomponent_tests/test_${Type}.py"
+ls -l $sutArgs
+echo ' '
+    # Add basename to list for XML processing later
+
     L_TESTFILE+=(${testDataFileBase})
 
-    # Define Software Under Test (SUT) and its runtime arguments
+else 
+             echo "  THIS IS LEGACY PATH"
+##                 Legacy
+    testDataFileBase="test_simple${simpleC_case}"
+    outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
+
+    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/subcomponent_tests/legacy/refFiles/test_${Type}.out"
+
+    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/subcomponent_tests/legacy/test_${Type}.py"
+    # Add basename to list for XML processing later
+
+    L_TESTFILE+=(${testDataFileBase})
+fi
+
+#    Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
-    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/test_simple${simpleC_case}.py"
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
@@ -127,11 +162,81 @@ simpleComponent_Template  Component
 
 }
 
-test_simpleSubComponent() {
-simpleComponent_Template  SubComponent
 
+test_simpleSubComponent_sc_2a() {
+simpleComponent_Template SubComponent sc_2a
+}
+test_simpleSubComponent_sc_2u2u() {
+simpleComponent_Template SubComponent sc_2u2u
+}
+test_simpleSubComponent_sc_2u() {
+simpleComponent_Template SubComponent sc_2u
+}
+test_simpleSubComponent_sc_a() {
+simpleComponent_Template SubComponent sc_a
+}
+test_simpleSubComponent_sc_u2u() {
+simpleComponent_Template SubComponent sc_u2u
+}
+test_simpleSubComponent_sc_u() {
+simpleComponent_Template SubComponent sc_u
+}
+test_simpleSubComponent_sc_2u2a() {
+simpleComponent_Template SubComponent sc_2u2a
+}
+test_simpleSubComponent_sc_2ua() {
+simpleComponent_Template SubComponent sc_2ua
+}
+test_simpleSubComponent_sc_2uu() {
+simpleComponent_Template SubComponent sc_2uu
+}
+test_simpleSubComponent_sc_u2a() {
+simpleComponent_Template SubComponent sc_u2a
+}
+test_simpleSubComponent_sc_ua() {
+simpleComponent_Template SubComponent sc_ua
+}
+test_simpleSubComponent_sc_uu() {
+simpleComponent_Template SubComponent sc_uu
 }
 
+
+test_simpleSubComponent_sc_legacy_2nl() {
+simpleComponent_Template Legacy sc_legacy_2nl
+}
+test_simpleSubComponent_sc_legacy_n2l() {
+simpleComponent_Template Legacy sc_legacy_n2l
+}
+test_simpleSubComponent_sc_legacy_n() {
+simpleComponent_Template Legacy sc_legacy_n
+}
+test_simpleSubComponent_sc_legacy_2l() {
+simpleComponent_Template Legacy sc_legacy_2l
+}
+test_simpleSubComponent_sc_legacy_2nn() {
+simpleComponent_Template Legacy sc_legacy_2nn
+}
+test_simpleSubComponent_sc_legacy_n2n() {
+simpleComponent_Template Legacy sc_legacy_n2n
+}
+test_simpleSubComponent_sc_legacy_2n2l() {
+simpleComponent_Template Legacy sc_legacy_2n2l
+}
+test_simpleSubComponent_sc_legacy_2n() {
+simpleComponent_Template Legacy sc_legacy_2n
+}
+test_simpleSubComponent_sc_legacy_nl() {
+simpleComponent_Template Legacy sc_legacy_nl
+}
+test_simpleSubComponent_sc_legacy_2n2n() {
+simpleComponent_Template Legacy sc_legacy_2n2n
+}
+test_simpleSubComponent_sc_legacy_l() {
+simpleComponent_Template Legacy sc_legacy_l
+}
+test_simpleSubComponent_sc_legacy_nn() {
+simpleComponent_Template Legacy sc_legacy_nn
+}
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 

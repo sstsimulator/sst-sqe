@@ -399,9 +399,6 @@ echo " #####################################################"
         return
     fi    
 
-### BAilingwir
-
-
             ${SST_TEST_SUITES}/testSuite_zoltan.sh
             ${SST_TEST_SUITES}/testSuite_partitioner.sh
 
@@ -1907,7 +1904,7 @@ ls
          pwd
          for __el in `ls`
          do 
-             echo $__el | grep -e Makefile -e ariel -e zodiac > /dev/null
+             echo $__el | grep -e Makefile -e ariel -e zodiac  > /dev/null
              if [ $? -eq 0 ] ; then
                  continue
              fi
@@ -1948,6 +1945,35 @@ ls
          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
          echo ' '
+
+         echo "there are two more cases from subCompoents"
+
+O
+find $SST_ROOT -name *2uu.out*
+
+         
+         __el=simpleElementExample/tests
+         echo "Another element : $__el"
+         ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles 
+         mkdir -p ./$__el/tests/subcomponent_tests
+         cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/subcomponent_tests
+         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
+         echo ' '
+         
+         __el=simpleElementExample/tests
+         echo "Another element : $__el"
+         ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles 
+         mkdir -p ./$__el/tests/subcomponent_tests
+         cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/legacy/refFiles ./$__el/subcomponent_tests/legacy
+         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
+         echo ' '
+echo "               this is after"
+find -L $SST_ROOT -name '*2uu.out'
+
+echo  "pause  ###########################################################################"
+# sleep 300
+
+
 
 #        Move the REFERENCE File pointer
          export SST_REFERENCE_ELEMENTS=$SST_ROOT/distTestDir/trunk/sst-elements/src/sst/elements
