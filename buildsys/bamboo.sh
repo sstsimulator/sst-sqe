@@ -751,7 +751,7 @@ echo " #####################################################"
        ${SST_TEST_SUITES}/testSuite_ESshmem.sh
     fi
 
-    if [[ ($1 != "sstmainline_config_no_mpi") || ($1 != "sstmainline_config_linux_with_cuda_no_mpi") ]] && [[ $1 != "sstmainline_config_valgrind" ]] ; then
+    if [[ (`echo $1 | grep no_mpi` == "") ]] && [[ $1 != "sstmainline_config_valgrind" ]] ; then
         #  Zoltan test requires MPI to execute.
         #  sstmainline_config_no_gem5 deliberately omits Zoltan, so must skip test.
         #  Valgrind test as inserted here is incompatible with partitioning tests.
