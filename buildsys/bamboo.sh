@@ -2415,8 +2415,8 @@ ls | grep tar
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Install SST-CORE
-        echo "=== Running make -j4 install ==="
-        make -j4 install
+        echo "=== Running make -j16 install ==="
+        make -j16 install
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2462,8 +2462,8 @@ ls | grep tar
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Install SST-CORE
-        echo "=== Running make -j4 install ==="
-        make -j4 install
+        echo "=== Running make -j16 install ==="
+        make -j16 install
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2626,8 +2626,8 @@ ls | grep tar
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
             # Compile SST-ELEMENTS
-            echo "=== Running make -j4 all ==="
-            make -j4 all
+            echo "=== Running make -j16 all ==="
+            make -j16 all
             retval=$?
             if [ $retval -ne 0 ]
             then
@@ -2647,8 +2647,8 @@ ls | grep tar
             echo ' '
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             # Install SST-ELEMENTS
-            echo "=== Running make -j4 install ==="
-            make -j4 install
+            echo "=== Running make -j16 install ==="
+            make -j16 install
             retval=$?
             if [ $retval -ne 0 ]
             then
@@ -2815,8 +2815,8 @@ echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Compile SST-MACRO
-        echo "=== Running make -j4 ==="
-        make -j4
+        echo "=== Running make -j16 ==="
+        make -j16
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2837,8 +2837,8 @@ echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Install SST-MACRO
-        echo "=== Running make -j4 install ==="
-        make -j4 install
+        echo "=== Running make -j16 install ==="
+        make -j16 install
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2894,8 +2894,8 @@ echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Compile SST-EXTERNAL-ELEMENTS
-        echo "=== Running make -j4 ==="
-        make -j4
+        echo "=== Running make -j16 ==="
+        make -j16
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2916,8 +2916,8 @@ echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Install SST-EXTERNAL-ELEMENTS
-        echo "=== Running make -j4 install ==="
-        make -j4 install
+        echo "=== Running make -j16 install ==="
+        make -j16 install
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2972,8 +2972,8 @@ echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Compile JUNO
-        echo "=== Running make -j4 ==="
-        make -j4
+        echo "=== Running make -j16 ==="
+        make -j16
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -2994,8 +2994,8 @@ echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         # Install JUNO
-        echo "=== Running make -j4 install ==="
-        make -j4 install
+        echo "=== Running make -j16 install ==="
+        make -j16 install
         retval=$?
         if [ $retval -ne 0 ]
         then
