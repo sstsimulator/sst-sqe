@@ -195,8 +195,8 @@ GPGPU_template() {
         then
             for (( rankNum = 0; rankNum < $SST_MULTI_RANK_COUNT; rankNum++ ))
             do
+                  ls  ${SST_TEST_OUTPUTS}/${testDataFileBase}_${rankNum}.out
                   cat ${SST_TEST_OUTPUTS}/${testDataFileBase}_${rankNum}.out >> $statsFile
-                  cat $statsFile
             done
         fi
 
