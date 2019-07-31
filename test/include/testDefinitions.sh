@@ -246,6 +246,7 @@ multithread_multirank_patch_Suites() {
             export SST_MULTI_THREAD_COUNT=1
        else
             if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+               echo "      ########### Patch the test Suites for threads"
                SET_TL=1
                sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*.sh
             fi
@@ -260,6 +261,7 @@ multithread_multirank_patch_Suites() {
             export SST_MULTI_RANK_COUNT=1
         fi
         if [ $SST_MULTI_RANK_COUNT -gt 1 ] ; then
+            echo "      ########### Patch the test Suites for ranks"
             pushd test/testSuites
             for fn in `ls testSuite_*.sh`
             do
@@ -276,7 +278,6 @@ multithread_multirank_patch_Suites() {
     fi
 
     if [ $SET_TL == 1 ] ; then
-        echo "      ########### Patch the test Suites"
         export SST_MULTI_CORE=1
 
         sed -i.y '/Invoke shunit2/i \
