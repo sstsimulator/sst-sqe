@@ -117,6 +117,7 @@ GPGPU_template() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_gpgpu_${GPGPU_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    statsFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     referenceFile="${SST_REFERENCE_ELEMENTS}/Gpgpusim/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -164,13 +165,14 @@ GPGPU_template() {
 
     Tol=1            ##  Set tolerance at 0.1%
     rm -f ${outFile}
+    rm -f ${statsFile}
 
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
         echo "Running:"
-        echo "${sut} --model-options=\"-c ariel-gpu-v100.cfg -s ${SST_TEST_OUTPUTS}/${testDataFileBase}.csv\" ${sutArgs}"
-        ${sut} --model-options="-c ariel-gpu-v100.cfg" ${sutArgs}
+        echo "${sut} --model-options=\"-c ariel-gpu-v100.cfg -s ${statsFile}\" ${sutArgs}"
+        ${sut} --model-options="-c ariel-gpu-v100.cfg -s ${statsFile}" ${sutArgs} > $outFile
         RetVal=$?
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
         if [ -e $TIME_FLAG ] ; then
@@ -188,10 +190,22 @@ GPGPU_template() {
              return
         fi
 
-        wc ${outFile} ${referenceFile}
-        RemoveComponentWarning
+        # Fix-up multirank
+        if [[ $SST_MULTI_RANK_COUNT -gt 1 ]]
+        then
+            for (( rankNum = 0; rankNum < $SST_MULTI_RANK_COUNT; rankNum++ ))
+            do
+                  cat ${SST_TEST_OUTPUTS}/${testDataFileBase}_${rankNum}.out >> $statsFile
+                  cat $statsFile
+            done
+        fi
 
-        echo " "
+        compare_sorted ${referenceFile} ${statsFile}
+        if [ $? -ne 0 ] ; then
+            fail " Output does not match exactly (Required)"
+        else
+            echo ReferenceFile is an exact match of outFile
+        fi
 
         grep FATAL ${outFile}
         if [ $? == 0 ] ; then

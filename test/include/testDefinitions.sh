@@ -278,6 +278,7 @@ multithread_multirank_patch_Suites() {
     fi
 
     if [ $SET_TL == 1 ] ; then
+        echo "Set SST_MULTI_CORE=1"
         export SST_MULTI_CORE=1
 
         sed -i.y '/Invoke shunit2/i \
