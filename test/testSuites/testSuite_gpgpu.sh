@@ -116,7 +116,7 @@ GPGPU_template() {
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
     testDataFileBase="test_gpgpu_${GPGPU_case}"
-    outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.stdout"
     statsFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     referenceFile="${SST_REFERENCE_ELEMENTS}/Gpgpusim/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
@@ -182,6 +182,7 @@ GPGPU_template() {
              removeFreeIPCs
              return
         fi
+
         if [ $RetVal != 0 ]
         then
              echo ' '; echo WARNING: sst did not finish normally, RetVal= $RetVal ; echo ' '
@@ -193,6 +194,7 @@ GPGPU_template() {
         # Fix-up multirank
         if [[ $SST_MULTI_RANK_COUNT -gt 1 ]]
         then
+            echo "Cleaning up multi-rank results for ${SST_MULTI_RANK_COUNT} ranks..."
             for (( rankNum = 0; rankNum < $SST_MULTI_RANK_COUNT; rankNum++ ))
             do
                   ls  ${SST_TEST_OUTPUTS}/${testDataFileBase}_${rankNum}.out
