@@ -200,61 +200,28 @@ GPGPU_template() {
             done
         fi
 
-        compare_sorted ${referenceFile} ${statsFile}
-        if [ $? -ne 0 ] ; then
-            fail " Output does not match exactly (Required)"
-        else
-            echo ReferenceFile is an exact match of outFile
-        fi
+        wc ${statsFile} ${referenceFile}
+        RemoveComponentWarning
 
-        grep FATAL ${outFile}
+        echo " "
+
+        grep FATAL ${statsFile}
         if [ $? == 0 ] ; then
             fail "Fatal error detected"
             return
         fi
-##########################################################################
-#     The following code besides being very wrong is doomed.
-#         Any such test being applied to Ariel fails because of
-#            indeterminacy!
-#
- #        diff ${outFile} ${referenceFile} > /dev/null;
- #        if [ $? -ne 0 ]
- #        then
- #             ref=`wc ${referenceFile} | awk '{print $1, $2}'`;
- #             new=`wc ${outFile}       | awk '{print $1, $2}'`;
- #                 if [ "$ref" == "$new" ]
- #                 then
- #                     echo "    Output passed  LineWordCt match"
- #                 else
- #                     echo "    Output Flunked  lineWordCt Count match"
- #                     fail "Output Flunked  lineWordCt Count match"
- #                     compare_sorted ${outFile} ${referenceFile}
- #                     diff  ${outFile} ${referenceFile}
- #                 fi
- #            echo " Next is word count of the diff:"
- #            diff  ${outFile} ${referenceFile} | wc
- #            compare_sorted ${outFile} ${referenceFile}
- #            echo ' '
- #
- #        else
- #            echo oufFile is an exact match for Reference File
- #        fi
- #
- ##        diff -u ${outFile} ${referenceFile}
- #:
- ###############################################################################
 
-        lref=`wc ${referenceFile} | awk '{print $1 }'`;
-        lout=`wc ${outFile}       | awk '{print $1 }'`;
+        lref=`wc ${referenceFile}   | awk '{print $1 }'`;
+        lout=`wc ${statsFile}       | awk '{print $1 }'`;
         line_diff=$(( $lref - $lout ));
         line_diff=${line_diff#-}              ## remove minus, if it exists
         if [ $line_diff -eq 0 ] ; then
-             echo " gpgpu test ${GPGPU_case}  -- Line count Match"
+             echo " Ariel test ${Ariel_case}  -- Line count Match"
         elif [ $line_diff -gt 15 ] ; then
-             echo "gpgpu test ${GPGPU_case} out varies from Ref by $line_diff lines"
-             fail "gpgpu test ${GPGPU_case} out varies from Ref by $line_diff lines"
-             echo ' ' ; echo "---------------  tail of outFile -----"
-             tail -20 $outFile
+             echo "Ariel test ${Ariel_case} out varies from Ref by $line_diff lines"
+             fail "Ariel test ${Ariel_case} out varies from Ref by $line_diff lines"
+             echo ' ' ; echo "---------------  tail of statsFile -----"
+             tail -20 $statsFile
              echo "     -------------  "
         else
              echo "Output file within $line_diff lines of Reference File"
