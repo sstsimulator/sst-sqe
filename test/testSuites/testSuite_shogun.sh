@@ -87,6 +87,8 @@ shogun_case=$1
               rm $tmpFile
               return
            else
+              cat  ${SSTTESTTEMPFILES}/diff_sorted
+              echo ' '
               fail " Reference does not Match Output"
               diff -b $referenceFile $outFile
            fi
