@@ -44,6 +44,7 @@ shogun_case=$1
     # files. XML postprocessing requires this.
     testDataFileBase="test_shogun_${shogun_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     referenceFile="${SST_REFERENCE_ELEMENTS}/shogun/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
@@ -56,8 +57,14 @@ shogun_case=$1
     if [ -f ${sut} ] && [ -x ${sut} ]
     then
         # Run SUT
-        ${sut} ${sutArgs} > $outFile
-        RetVal=$? 
+        if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
+           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
+           RetVal=$? 
+           cat ${testOutFiles}* > $outFile
+        else
+           ${sut} ${sutArgs} > $outFile
+           RetVal=$? 
+        fi
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -87,6 +94,8 @@ shogun_case=$1
               rm $tmpFile
               return
            else
+              cat  ${SSTTESTTEMPFILES}/diff_sorted
+              echo ' '
               fail " Reference does not Match Output"
               diff -b $referenceFile $outFile
            fi
