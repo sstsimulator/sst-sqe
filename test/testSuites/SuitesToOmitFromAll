@@ -14,4 +14,5 @@ openMP             #  uses M5 binaries
 qsim               #  too out dated
 simpleClocker      #  not reproducible, uses Wall Clock   
 sst_mcopteron      #  mcOpteron has been moved to the attic
+gpgpu              #  requires cuda
 ENDofLIST          #  Put new entries before this line!
