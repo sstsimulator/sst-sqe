@@ -365,6 +365,7 @@ dotests() {
        grep -c processor /proc/cpuinfo
    fi
    echo ' '
+   echo "MR= $SST_MULTI_RANK_COUNT, MT= $SST_MULTI_THREAD_COUNT"
 
    ps -ef | grep omp | grep -v comp
 
