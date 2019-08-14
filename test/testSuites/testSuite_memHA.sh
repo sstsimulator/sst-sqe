@@ -381,9 +381,12 @@ test_memHA_BackendTimingDRAM_4 () {
 
 test_memHA_BackendHBMDramsim () {
 
+    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_THREAD_COUNT} -gt 1 ] ; then
+       echo "It appears that multi-thread can fail due to DramSim's use of static variables     OMIT"    
+       skip_this_test
+       return
+    fi
     memHA_Template BackendHBMDramsim "M"
-    echo "  MT= $SST_MULTI_THREAD_COUNT MR= $SST_MULTI_RANK_COUNT MC= $SST_MULTI_CORE"
-    md5sum ${SST_ROOT}/test/testOutputs/*dHBMD*
 }
 
 test_memHA_BackendHBMPagedMulti () {
