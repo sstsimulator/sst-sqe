@@ -435,9 +435,6 @@ echo " #####################################################"
         return
     fi
 
-            ${SST_TEST_SUITES}/testSuite_zoltan.sh
-            ${SST_TEST_SUITES}/testSuite_partitioner.sh
-
 ##########################################################################3
 
 
