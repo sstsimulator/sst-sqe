@@ -447,6 +447,13 @@ test_linear_4()
 }
 
 test_linear_8()
+
+if [[ `uname -n` == ubuntu* ]] ; then
+       skip_this_test
+       echo '     skipping'
+       return
+fi
+
 {
    partitioner_template 8 linear
 }
@@ -463,6 +470,12 @@ test_simple_4()
 
 test_simple_8()
 {
+if [[ `uname -n` == ubuntu* ]] ; then
+       skip_this_test
+       echo '     skipping'
+       return
+fi
+
    partitioner_template 8 simple
 }
 
@@ -478,8 +491,16 @@ test_single_4()
 
 test_single_8()
 {
+
+
+
    partitioner_template 8 single
 }
+if [[ `uname -n` == ubuntu* ]] ; then
+       skip_this_test
+       echo '     skipping'
+       return
+fi
 
 
 # "test"  will be automatically executed.
