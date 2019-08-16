@@ -388,6 +388,12 @@ test_roundrobin_4()
 
 test_roundrobin_8()
 {
+if [[ `uname -n` == ubuntu* ]] ; then
+       skip_this_test
+       echo '     skipping'
+       return
+fi       
+
    partitioner_template 8 roundrobin
 }
 
