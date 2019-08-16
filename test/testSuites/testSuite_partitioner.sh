@@ -422,7 +422,7 @@ test_zoltan_4()
 test_zoltan_8()
 {
    if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ||
-    [[ `uname -n` == ubuntu1804* ]] ; then
+    [[ `uname -n` == ubuntu* ]] ; then
        skip_this_test
        echo '     skipping'
        return
