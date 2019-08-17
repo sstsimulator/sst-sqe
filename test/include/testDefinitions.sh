@@ -44,7 +44,7 @@ fi
 # Find location of SST externals installation
     if [[ ${SST_TEST_INSTALL_PACKAGES:+isSet} != isSet ]] ; then
         SST_TEST_INSTALL_PACKAGES=$SST_TEST_INSTALL_BIN/../packages
-    fi 
+    fi
 
 # Location of test directory in SVN tree
 #    Honor alternate user defined location of SST_TEST_ROOT
@@ -238,6 +238,7 @@ fi
 #     Revised  October 30, 2015, Sept. 27, 2017
 ######################################
 multithread_multirank_patch_Suites() {
+    echo "multithread_multirank_patch_Suites: "
     SET_TL=0
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
        if [ $SST_MULTI_THREAD_COUNT == 0 ] ; then
@@ -245,6 +246,7 @@ multithread_multirank_patch_Suites() {
             export SST_MULTI_THREAD_COUNT=1
        else
             if [ $SST_MULTI_THREAD_COUNT -gt 1 ] ; then
+               echo "      ########### Patch the test Suites for threads"
                SET_TL=1
                sed -i.x '/sut}.*sutArgs/s/sut./sut} -n '"${SST_MULTI_THREAD_COUNT}/" test/testSuites/testSuite_*.sh
             fi
@@ -257,12 +259,13 @@ multithread_multirank_patch_Suites() {
         if [ $SST_MULTI_RANK_COUNT == 0 ] ; then
             echo " There is a zero rank count, Set to 1 "
             export SST_MULTI_RANK_COUNT=1
-        fi 
+        fi
         if [ $SST_MULTI_RANK_COUNT -gt 1 ] ; then
+            echo "      ########### Patch the test Suites for ranks"
             pushd test/testSuites
             for fn in `ls testSuite_*.sh`
             do
-               grep 'sut}.*sutArgs' $fn | grep mpirun 
+               grep 'sut}.*sutArgs' $fn | grep mpirun
                if [ $? == 0 ] ; then
                  echo "Do not change $fn, it already has mpirun"
                  continue
@@ -275,9 +278,9 @@ multithread_multirank_patch_Suites() {
     fi
 
     if [ $SET_TL == 1 ] ; then
-        echo "multithread_multirank_patch_Suites: ########### Patch the test Suites"
+        echo "Set SST_MULTI_CORE=1"
         export SST_MULTI_CORE=1
-    
+
         sed -i.y '/Invoke shunit2/i \
         export SST_TEST_ONE_TEST_TIMEOUT=400 \
          ' test/testSuites/testSuite_*

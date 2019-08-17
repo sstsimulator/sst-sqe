@@ -32,11 +32,17 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
 L_TESTFILE=()  # Empty list, used to hold test file names
 
 
-    if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
-           echo '           SKIP '
-           echo "This exclusion can be weakened when nrank=2 works with nthread=2"
-           preFail " Zoltan tests are multi rank.  Do not do added Multi" "skip"
-    fi     
+#     if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+#            echo '           SKIP '
+#            echo "This exclusion can be weakened when nrank=2 works with nthread=2"
+#            preFail " Zoltan tests are multi rank.  Do not do added Multi" "skip"
+#     fi
+
+   if [[ $SST_MULTI_RANK_COUNT -le 1 ]]; then
+         echo '           SKIP '
+         echo "This exclusion can be weakened when nrank=2 works with nthread=2"
+         preFail " Zoltan tests are multi rank.  Do not do added Multi" "skip"
+   fi
 
 #===============================================================================
 # Use the new shunit2 option only
@@ -62,7 +68,7 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 # Expected Results
 #     TBD
 # Caveats:
-#    
+#
 #-------------------------------------------------------------------------------
     if [ "`which mpirun | awk -F/ '{print $NF}'`" != "mpirun" ] ; then
         echo "    MPIRUN not FOUND "
@@ -76,7 +82,7 @@ NUMRANKS=$1
 
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
-    
+
     startSeconds=`date +%s`
     testDataFileBase="test_zoltan${NUMRANKS}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
@@ -99,13 +105,13 @@ NUMRANKS=$1
         echo ' '
         mpirun -np ${NUMRANKS} $NUMA_PARAM ${sut} --verbose --partitioner zoltan --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         RetVal=$?
-        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
-             return 
-        fi 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
+        if [ -e $TIME_FLAG ] ; then
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds"
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds"
+             rm $TIME_FLAG
+             return
+        fi
         if [ $RetVal != 0 ]
         then
              echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$RetVal" ; echo ' '
@@ -113,7 +119,7 @@ NUMRANKS=$1
         #     sed 10q $outFile
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              echo "And the Error File  (first 10 lines):"
-             cat $errFile | c++filt       
+             cat $errFile | c++filt
 #     sed 10q $errFile
  #            echo "       - - -    (and the last 10 line)"
   #           tail -10 $errFile
@@ -146,14 +152,14 @@ checkAndPrint() {
         echo ' '
         echo "                  Verify Partition Distribution "
         echo ' '
-        grep found $outFile | grep in.partition.graph 
+        grep found $outFile | grep in.partition.graph
         if [ $? == 0 ] ; then
             echo ' '
             grep Export.to.rank $outFile
-            
+
             af=${SSTTESTTEMPFILES}/af
             alln=`grep found $outFile | grep in.partition.graph | awk -F'found' '{print $2}' | awk '{print $1 }'`
-            
+
             grep 'rank .* (assigned .* components)' $outFile | awk -F'rank' '{print $2}' | awk '{print "rank[" $1 "]=" $3}' > ${af}
             numranks=`wc -l ${af} | awk '{print $1}'` ; ((numranks++))
             echo " Total vertices: $alln, numranks = $numranks "
@@ -171,21 +177,21 @@ checkAndPrint() {
             fi
 
             . ${af}
-            
+
             rank[0]=$alln
             ind=1
-            while [ $ind -lt $numranks ] 
-            do 
+            while [ $ind -lt $numranks ]
+            do
                 rank[0]=$((rank[0]-rank[$ind]))
                 ((ind++))
             done
-            
+
             DesiredPC=$((10000/$numranks))    ##  x 100
             echo ' '
             echo "              Per Cent"
             ind=0
-            while [ $ind -lt $numranks ] 
-            do 
+            while [ $ind -lt $numranks ]
+            do
                checkAndPrint ${rank[$ind]}  Rank${ind}
                 ((ind++))
             done
@@ -193,7 +199,7 @@ checkAndPrint() {
             echo " Did not find Partition Distribution Information in outFile"
             fail " Did not find Partition Distribution Information in outFile"
             echo " Looking for \"found <nnn> in partition graph\""
-            grep -e found -e in.partition.graph -A 2 -B 1 $outFile 
+            grep -e found -e in.partition.graph -A 2 -B 1 $outFile
             return
         fi
     else
@@ -215,7 +221,7 @@ test_zoltan_2()
         skip_this_test
         echo " skipping Zoltan on Ubuntu-18.04"
         return
-    fi 
+    fi
 
    zoltan_template 2
 }
@@ -226,7 +232,7 @@ test_zoltan_4()
         skip_this_test
         echo " skipping Zoltan on Ubuntu-18.04"
         return
-    fi 
+    fi
    zoltan_template 4
 }
 

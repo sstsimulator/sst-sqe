@@ -55,17 +55,22 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 # Expected Results
 #     TBD
 # Caveats:
-#    
+#
 #-------------------------------------------------------------------------------
 ##    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_THREAD_COUNT} -gt 1 ] ; then
 ##         echo '           SKIP '
 ##         preFail " Partition tests are multi-rank, hence, do not work with threading" "skip"
-##    fi     
+##    fi
 ##
-    if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+#     if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] ; then
+#          echo '           SKIP '
+#          preFail "Partition tests are inherently multi-rank, so omit in MULTI Projects" "skip"
+#     fi
+
+    if [[ $SST_MULTI_RANK_COUNT -le 1 ]]; then
          echo '           SKIP '
          preFail "Partition tests are inherently multi-rank, so omit in MULTI Projects" "skip"
-    fi     
+    fi
 
     if [ "`which mpirun | awk -F/ '{print $NF}'`" != "mpirun" ] ; then
         echo "    MPIRUN not FOUND "
@@ -100,15 +105,15 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         }
         #                     --- end of Subroutine
      echo ' '
-     ## The following ugliness is so the generate output config 
+     ## The following ugliness is so the generate output config
      ##       script won't treat this line as an sst execution.
      tA="tArgs"
      grep 'sut.*su'${tA} $SST_TEST_SUITES/testSuite_partitioner.sh
      echo ' '
-##            subroutine create_distResultFile() 
+##            subroutine create_distResultFile()
 #
 #     inputs - partition file
-#     Outputs 
+#     Outputs
 #              distResultFile - (source to populate array RANKP
 #              file $away_hold - debug log of processing
 #              return value - number of ranks found
@@ -119,13 +124,13 @@ create_distResultFile() {
         IICCT=0
         NICCT=0
         rm -f $distResultFile
-        
+
         while read -u 3 word rnk rest
-        do 
+        do
           if [ $word == "->" ] ; then
              continue
           fi
-        
+
           echo "/<$word/>"     >> $away_hold
           if [ $word == "Rank:" ] ; then
               echo "NICs in previous index $index : $IICCT"     >> $away_hold
@@ -139,7 +144,7 @@ create_distResultFile() {
                   threadis=`echo $rnk | awk -F. '{print $2}'`
                   echo  RANKID[${index}]=$rnk >> $distResultFile
                   echo Rank is $rankis, Thread is $threadis       >> $away_hold
-              else 
+              else
                   ((index++))
                   rankis=$rnk
                   echo  RANKID[${index}]=$rnk >> $distResultFile
@@ -150,7 +155,7 @@ create_distResultFile() {
               ((IICCT++))
           fi
         done 3<$partFile
- 
+
         echo  RANKP[${index}]=$IICCT >> $distResultFile
         NICCT=$(($NICCT+$IICCT))
         echo  numComp=$NICCT >> $distResultFile
@@ -158,7 +163,7 @@ create_distResultFile() {
         ((index++))
         #   return number of ranks
         echo "value is ${index}"  >> $away_hold
-        echo $index 
+        echo $index
 }
 #      end of Subroutine create_distResultFile()
 
@@ -171,7 +176,7 @@ PARTITIONER=$2
 
     # Define a common basename for test output and reference files
 
-    startSeconds=`date +%s` 
+    startSeconds=`date +%s`
     testDataFileBase="test_partitioner_${PARTITIONER}${NUMRANKS}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
@@ -197,13 +202,13 @@ PARTITIONER=$2
         echo ' '
         mpirun -np ${NUMRANKS} $NUMA_PARAM ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         RetVal=$?
-        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
-             return 
-        fi 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
+        if [ -e $TIME_FLAG ] ; then
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds"
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds"
+             rm $TIME_FLAG
+             return
+        fi
         touch $partFile
         if [ $RetVal != 0 ]
         then
@@ -218,8 +223,8 @@ PARTITIONER=$2
              echo ' '; echo "WARNING: sst did not finish normally, RETVAL=$RetVal" ; echo ' '
              ls -l ${sut}
              if [ -s $errFile ] ; then
-                echo "   ---  And the Error File:" 
-                cat $errFile | c++filt       
+                echo "   ---  And the Error File:"
+                cat $errFile | c++filt
                 echo "   ---"
              fi
              echo "outFile  first 15 and last 25 lines: "
@@ -235,7 +240,7 @@ PARTITIONER=$2
                  return
              fi
              echo ' ' ; echo "could exit here, but analyze even if partitioned run fails"
-             fail "WARNING: sst did not finish normally, RetVal=$RetVal, RETVAL=$RetVal" 
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal, RETVAL=$RetVal"
 #             return
         else
              wc $errFile $outFile $partFile
@@ -248,14 +253,14 @@ PARTITIONER=$2
         echo ' '
         echo "                  Verify Partition Distribution from verbose output"
         echo ' '
-        grep found $outFile | grep in.partition.graph 
+        grep found $outFile | grep in.partition.graph
         if [ $? == 0 ] ; then
             echo ' '
             grep Export.to.rank $outFile
-            
+
             #   Find total number of components to distrubute
             numComp=`grep found $outFile | grep in.partition.graph | awk -F'found' '{print $2}' | awk '{print $1 }'`
-            
+
             #   Collect number rank 0 sends to each other rank
             grep Export.to.rank $outFile | awk '{print "rank[" $8 "]=" $10 ";"}'> ${SSTTESTTEMPFILES}/af
             numranks=`wc -l ${SSTTESTTEMPFILES}/af | awk '{print $1}'` ; ((numranks++))
@@ -278,23 +283,23 @@ PARTITIONER=$2
             . ${SSTTESTTEMPFILES}/af     #  Source the file (create array of components on node)
 #
 #   LOGIC PROBLEM extracting as subroutine this requires prior source of ${SSTTESTTEMPFILES}/af!
-#            
+#
             #     Find out how many left on rank 0
             rank[0]=$numComp
             ind=1
-            while [ $ind -lt $numranks ] 
-            do 
+            while [ $ind -lt $numranks ]
+            do
                 rank[0]=$((rank[0]-rank[$ind]))
                 ((ind++))
             done
             #    Evaluate the Partition  (this is based on Output File)
             DesiredPC=$((10000/$numranks))    ##  x 100
             echo ' '
-            echo "              Per Cent from Verbose output $PARTITIONER $NUMRANKS" 
+            echo "              Per Cent from Verbose output $PARTITIONER $NUMRANKS"
             ind=0
             totalPC=0
-            while [ $ind -lt $numranks ] 
-            do 
+            while [ $ind -lt $numranks ]
+            do
                checkAndPrint ${rank[$ind]} rank${ind} $numComp
                 ((ind++))
             done
@@ -334,7 +339,7 @@ echo "DEBUG: numrank $numranks, was $was"
             ind=0
             _TOTAL=0
             totalPC=0
-            while [ $ind -lt $numranks ] 
+            while [ $ind -lt $numranks ]
             do
                checkAndPrint ${RANKP[$ind]} "${RANKID[${ind}]}" $numComp
                _TOTAL=$((${RANKP[$ind]}+${_TOTAL}))
@@ -373,16 +378,22 @@ echo "DEBUG: numrank $numranks, was $was"
 
 test_roundrobin_2()
 {
-   partitioner_template 2 "roundrobin" 
+   partitioner_template 2 "roundrobin"
 }
 
 test_roundrobin_4()
 {
-   partitioner_template 4 roundrobin 
+   partitioner_template 4 roundrobin
 }
 
 test_roundrobin_8()
 {
+if [[ `uname -n` == ubuntu* ]] ; then
+       skip_this_test
+       echo '     skipping'
+       return
+fi       
+
    partitioner_template 8 roundrobin
 }
 
@@ -400,7 +411,7 @@ test_zoltan_2()
        echo '     skipping'
        return
    fi
-   partitioner_template 2 zoltan   
+   partitioner_template 2 zoltan
 }
 
 test_zoltan_4()
@@ -411,64 +422,84 @@ test_zoltan_4()
        echo '     skipping'
        return
    fi
-   partitioner_template 4 zoltan  
+   partitioner_template 4 zoltan
 }
 
 test_zoltan_8()
 {
    if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ||
-    [[ `uname -n` == ubuntu1804* ]] ; then
+    [[ `uname -n` == ubuntu* ]] ; then
        skip_this_test
        echo '     skipping'
        return
    fi
-   partitioner_template 8 zoltan 
+   partitioner_template 8 zoltan
 }
 
 test_linear_2()
 {
-   partitioner_template 2 linear   
+   partitioner_template 2 linear
 }
 
 test_linear_4()
 {
-   partitioner_template 4 linear  
+   partitioner_template 4 linear
 }
 
 test_linear_8()
 {
-   partitioner_template 8 linear 
+
+if [[ `uname -n` == ubuntu* ]] ; then
+       skip_this_test
+       echo '     skipping'
+       return
+fi
+
+   partitioner_template 8 linear
 }
 
 test_simple_2()
 {
-   partitioner_template 2 simple   
+   partitioner_template 2 simple
 }
 
 test_simple_4()
 {
-   partitioner_template 4 simple  
+   partitioner_template 4 simple
 }
 
 test_simple_8()
 {
-   partitioner_template 8 simple 
+if [[ `uname -n` == ubuntu* ]] ; then
+       skip_this_test
+       echo '     skipping'
+       return
+fi
+
+   partitioner_template 8 simple
 }
 
 test_single_2()
 {
-   partitioner_template 2 single   
+   partitioner_template 2 single
 }
 
 test_single_4()
 {
-   partitioner_template 4 single  
+   partitioner_template 4 single
 }
 
 test_single_8()
 {
-   partitioner_template 8 single 
+if [[ `uname -n` == ubuntu* ]] ; then
+       skip_this_test
+       echo '     skipping'
+       return
+fi
+
+   partitioner_template 8 single
 }
+
 
 
 # "test"  will be automatically executed.

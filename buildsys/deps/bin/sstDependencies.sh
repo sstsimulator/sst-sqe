@@ -1,7 +1,7 @@
 #!/bin/bash
 # sstDependencies.sh
 
-# Description: 
+# Description:
 
 # A bash script to process the dependencies for SST, which includes
 # 1) Invoke each dependency's pre-patch preparation
@@ -73,6 +73,21 @@ sstDepsDoStaging ()
         then
             # bail out on error
             echo "ERROR: sstDependencies.sh: DRAMSim code staging failure"
+            return $retval
+        fi
+    fi
+
+    if [ ! -z "${SST_BUILD_GPGPUSIM}" ]
+    then
+        #-----------------------------------------------------------------------
+        # GPGPUSim
+        #-----------------------------------------------------------------------
+        sstDepsStage_GPGPUSim-cuda
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: GPGPUSim code staging failure"
             return $retval
         fi
     fi
@@ -245,7 +260,7 @@ sstDepsDoStaging ()
     if [ ! -z "${SST_BUILD_SSTMACRO}" ]
     then
         #-----------------------------------------------------------------------
-        # sstmacro 
+        # sstmacro
         #-----------------------------------------------------------------------
         sstDepsStage_sstmacro
         retval=$?
@@ -271,7 +286,7 @@ sstDepsDoStaging ()
             return $retval
         fi
     fi
-   
+
   if [ ! -z "${SST_BUILD_OMNET}" ]
     then
         #-----------------------------------------------------------------------
@@ -294,7 +309,7 @@ sstDepsDoStaging ()
         #-----------------------------------------------------------------------
         sstDepsAnnounce -h $FUNCNAME -m "No staging for Portals-4"
     fi
-   
+
   if [ ! -z "${SST_BUILD_CHDL}" ]
     then
         #-----------------------------------------------------------------------
@@ -496,7 +511,7 @@ sstDepsPatchSource ()
         fi
     fi
 
- 
+
     if [ ! -z ${SST_BUILD_OMNET} ]
     then
         #-----------------------------------------------------------------------
@@ -506,7 +521,7 @@ sstDepsPatchSource ()
         pushd ${SST_DEPS_SRC_STAGING}
         sstDepsAnnounce -h $FUNCNAME -m "Patching Omnet++"
         patch -p0 -i ${SST_DEPS_PATCHFILES}/omnet-4.1-diff.patch
-        popd   
+        popd
     fi
 
 ##     if [ ! -z "${SST_BUILD_PORTALS4}" ]
@@ -515,9 +530,9 @@ sstDepsPatchSource ()
 ##         # Portals4
 ##         #                 Gem5 is required
 ##         #-----------------------------------------------------------------------
-##         
+##
 ##         sstDepsAnnounce -h $FUNCNAME -m "Patching Gem5 SConscript for Portals 4"
-## 
+##
 ##         if [ -z "${SST_BUILD_GEM5}" ]
 ##         then
 ##             echo "ERROR: sstDependencies.sh:  gem5 is required for Portals 4"
@@ -533,7 +548,7 @@ sstDepsPatchSource ()
 ##                     echo "ERROR: sstDependencies.sh:  gem5 ( portals4 ) patch failure"
 ##                     return $retval
 ##                 fi
-## 
+##
 ##                 cd ..
 ##                 popd
 ##     fi
@@ -543,7 +558,7 @@ sstDepsPatchSource ()
         #-----------------------------------------------------------------------
         # Iris test
         #-----------------------------------------------------------------------
-        
+
         sstDepsAnnounce -h $FUNCNAME -m "Patching for Iris test case"
         # Patching to build for Iris
         echo "NO PATCH         No Patch       NO PATCH"
@@ -558,7 +573,7 @@ sstDepsPatchSource ()
 			pushd ${SST_DEPS_SRC_STAGING}/sstmacro-2.3.0
 			sstDepsAnnounce -h $FUNCNAME -m "Patching sstmacro"
 			patch -p0 -i ${SST_DEPS_PATCHFILES}/sstmacro-2.3.0.patch
-    			popd   
+    			popd
 	fi
 
 
@@ -602,9 +617,9 @@ sstDepsPatchSource ()
             # Patching to build static version for Linux
             sstDepsAnnounce -h $FUNCNAME -m "Patching ramulator "
             pushd ${SST_DEPS_SRC_STAGING}/ramulator
-            
+
             ls -lia
-            
+
             patch -p1 -i ${SST_DEPS_PATCHFILES}/ramulator_gcc48Patch.patch
             retval=$?
             if [ $retval -ne 0 ]
@@ -676,7 +691,22 @@ sstDepsDeploy ()
             echo "ERROR: sstDependencies.sh: DRAMSim deployment failure"
             return $retval
         fi
-    fi 
+    fi
+
+    if [ ! -z "${SST_BUILD_GPGPUSIM}" ]
+    then
+        #-----------------------------------------------------------------------
+        # GPGPUSim
+        #-----------------------------------------------------------------------
+        sstDepsDeploy_GPGPUSim-cuda
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: GPGPUSim code deployment failure"
+            return $retval
+        fi
+    fi
 
     if [ ! -z "${SST_BUILD_NVDIMMSIM}" ]
     then
@@ -691,7 +721,7 @@ sstDepsDeploy ()
             echo "ERROR: sstDependencies.sh: NVDIMMSim deployment failure"
             return $retval
         fi
-    fi 
+    fi
 
     if [ ! -z "${SST_BUILD_HYBRIDSIM}" ]
     then
@@ -706,7 +736,7 @@ sstDepsDeploy ()
             echo "ERROR: sstDependencies.sh: HybridSim deployment failure"
             return $retval
         fi
-    fi 
+    fi
 
 
     if [ ! -z "${SST_BUILD_PARMETIS}" ]
@@ -947,7 +977,7 @@ sstDepsDeploy ()
             return $retval
         fi
     fi
-    
+
     if [ ! -z "${SST_BUILD_HBM_DRAMSIM2}" ]
     then
         #-----------------------------------------------------------------------
@@ -962,7 +992,7 @@ sstDepsDeploy ()
             return $retval
         fi
     fi
-    
+
     if [ ! -z "${SST_BUILD_RAMULATOR}" ]
     then
         #-----------------------------------------------------------------------
@@ -977,7 +1007,7 @@ sstDepsDeploy ()
             return $retval
         fi
     fi
-    
+
     #     Put Gem5 Last, so no one else can be affected by gcc module hanky-panky
 
     if [ ! -z "${SST_BUILD_GEM5}" ]
@@ -996,7 +1026,7 @@ sstDepsDeploy ()
     fi
 
     #     Put Gem5 Last, so no one else can be affected by gcc module hanky-panky
-	
+
 }
 
 #-------------------------------------------------------------------------------
@@ -1034,8 +1064,15 @@ sstDepsDoQuery ()
         # DRAMSim
         #-----------------------------------------------------------------------
         sstDepsQuery_dramsim
-    fi 
+    fi
 
+    if [ ! -z "${SST_BUILD_GPGPUSIM}" ]
+    then
+        #-----------------------------------------------------------------------
+        # GPGPUSim
+        #-----------------------------------------------------------------------
+        sstDepsQuery_GPGPUSim-cuda
+    fi
 
     if [ ! -z "${SST_BUILD_NVDIMMSIM}" ]
     then
@@ -1043,7 +1080,7 @@ sstDepsDoQuery ()
         # NVDIMMSim
         #-----------------------------------------------------------------------
         sstDepsQuery_nvdimmsim
-    fi 
+    fi
 
 
     if [ ! -z "${SST_BUILD_HYBRIDSIM}" ]
@@ -1052,7 +1089,7 @@ sstDepsDoQuery ()
         # HybridSim
         #-----------------------------------------------------------------------
         sstDepsQuery_hybridsim
-    fi 
+    fi
 
 
     if [ ! -z "${SST_BUILD_PARMETIS}" ]
@@ -1129,7 +1166,7 @@ sstDepsDoQuery ()
     if [ ! -z "${SST_BUILD_SSTMACRO}" ]
     then
         #-----------------------------------------------------------------------
-        # sstmacro 
+        # sstmacro
         #-----------------------------------------------------------------------
         sstDepsQuery_sstmacro
     fi
@@ -1228,7 +1265,7 @@ sstDepsDoDependencies ()
             echo "ERROR: sstDependencies.sh: dependency code patch failure"
             return $retval
         fi
-        
+
     elif [ $# -eq 1 ] && [ $1 = "develBuild" ]
     then
         # Purge deps install area, leave staged area alone
@@ -1305,7 +1342,7 @@ sstDepsDoDependencies ()
 # main function
 # Usage:
 # $ sstDependencies.sh -k [arg1] -d [arg2] -p [arg3] -z [arg4] -b [arg5]
-#   -g [arg6] -m [arg7] -i [arg8] -o [arg9] -h [arg10] -s [arg11] 
+#   -g [arg6] -m [arg7] -i [arg8] -o [arg9] -h [arg10] -s [arg11]
 #   -q [arg12] [buildtype]
 # where
 #   -k DiskSim version (default|static|none)
@@ -1330,6 +1367,7 @@ sstDepsDoDependencies ()
 #   -c chdl (default)
 #   -H HBM_DRAMSim2 (default)
 #   -r Ramulator (default)
+#   -A GPGPUSim (8.0.44|9.1.85|none)
 #
 #   [buildtype] = (restageDeps|develBuild|cleanBuild)
 #
@@ -1340,9 +1378,9 @@ sstDepsDoDependencies ()
 #-----------------------------------------------------------------------
 
 # use getopts
-OPTIND=1 
+OPTIND=1
 
-while getopts :k:d:p:z:b:g:G:m:M:i:o:h:H:r:s:q:e:4:I:N:a:c: opt
+while getopts :k:d:p:z:b:g:G:m:M:i:o:h:H:r:s:q:e:4:I:N:a:c:A: opt
 
 do
     case "$opt" in
@@ -1496,7 +1534,7 @@ do
                     . ${SST_DEPS_BIN}/sstDep_gem5_stabledevel_static.sh
                     ;;
                 gcc-4.6.4) # build latest sst-gem5 using gcc-4.6.4
-                    echo "# gcc-4.6.4: will build latest repository sst-gem5 using gcc-4.6.4" 
+                    echo "# gcc-4.6.4: will build latest repository sst-gem5 using gcc-4.6.4"
                     . ${SST_DEPS_BIN}/sstDep_gem5_mixed_ompi_1.7.2_gcc_4.6.4.sh
                     ;;
                 default|004) # build default sst-gem5
@@ -1771,11 +1809,11 @@ do
                     echo "# stabledevel: will use Portals 4"
                     . ${SST_DEPS_BIN}/sstDep_portals4_stabledevel.sh
                     ;;
-                none|default)  # Do not do the Portals 4 test 
+                none|default)  # Do not do the Portals 4 test
                     echo "# default: will not test Portals 4"
                     ;;
             esac
-            ;; 
+            ;;
         I)  # Do Iris test
             echo "# found the -I (Iris) option, with value $OPTARG"
             # process arg
@@ -1789,7 +1827,7 @@ do
                     echo "# default: will not do the Iris test "
                     ;;
             esac
-            ;; 
+            ;;
 
         N)  # Do NVDIMMSIM
             echo "# found the -N (NVDIMMSIM) option, with value $OPTARG. (Ignore on MacOS.)"
@@ -1801,21 +1839,21 @@ do
                 default)
                     echo "# default will be built"
                     . ${SST_DEPS_BIN}/sstDep_nvdimmsim.sh
- 
+
                     echo "# HybridSim will be built"
                     . ${SST_DEPS_BIN}/sstDep_hybridsim.sh
                     ;;
                 none)  # Do not build NVDIMMSim
                     echo "# none: will not build NVDIMMSim"
                     ;;
-            esac   
+            esac
             ;;
 
-        a)  # Build Ariel Pin Tool 
+        a)  # Build Ariel Pin Tool
             echo "# found the -a (Ariel Pin Tool) option, with value $OPTARG"
             # process arg
             case "$OPTARG" in
-                2.13-61206)   # Build Ariel Pin Tool 
+                2.13-61206)   # Build Ariel Pin Tool
                     echo "# 2.13-61206: Build Ariel Pin Tool"
                     . ${SST_DEPS_BIN}/sstDep_ariel-pin-2.13-61206.sh
                     ;;
@@ -1823,7 +1861,7 @@ do
                     echo "# default: will not build Ariel Pin Tool"
                     ;;
             esac
-            ;; 
+            ;;
 
         c)  # Build CHDL
             echo "# found the -c (chdl) option, with value $OPTARG"
@@ -1833,7 +1871,21 @@ do
                     echo "# none:  will not build CHDL"
                     ;;
             esac
-            ;; 
+            ;;
+
+        A)  # Build GPGPUSim
+            echo "# found the -A (GPGPUSim) option, with value $OPTARG"
+            # process arg
+            case "$OPTARG" in
+                8.0.44|8.0.61|9.1.85)   # Build GPGPUSim
+                    echo "# ${OPTARG}: Build GPGPUSim"
+                    . ${SST_DEPS_BIN}/sstDep_GPGPUSim.sh $OPTARG
+                    ;;
+                none|default)  # Do not build GPGPUSim
+                    echo "# default: will not build GPGPUSim"
+                    ;;
+            esac
+            ;;
 
         *) echo "# unknown option: $opt"
             ;;
