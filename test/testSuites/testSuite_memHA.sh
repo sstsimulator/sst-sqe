@@ -393,6 +393,10 @@ test_memHA_BackendHBMPagedMulti () {
     memHA_Template BackendHBMPagedMulti "M"
 }
 
+test_memHA_MemoryCache () {
+    memHA_Template MemoryCache  "M"
+} 
+    
 test_memHA_Kingsley () {
     memHA_Template Kingsley  "M"
 } 
