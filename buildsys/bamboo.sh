@@ -1615,7 +1615,7 @@ ldModules_MacOS_Clang() {
 #              total BAiling wire
 #         ClangXersion=clang-900.0.39.2
        xc=`echo $1 | awk -F - '{print $2}' |awk -F. '{print $1}'`
-       if [ $xc -gt 899 ] ; then
+       if [ $xc -gt 899 ]  && [ $xc -lt 1100 ] ; then
 #          Xcode is greater than 8
 echo ' ' ; echo " Using X-code 9 modules."  ;   echo ''
              ClangXersion=clang-900.0.39.2
