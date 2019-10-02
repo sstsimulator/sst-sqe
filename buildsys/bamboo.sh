@@ -286,9 +286,9 @@ if [ ! -d ../../distTestDir ] ; then
    do
       date
       echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUREPO ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim "
+      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUREPO ${SST_ROOT}/sst-elements/src/sst/elements/balar "
       date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUREPO ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim
+      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUREPO ${SST_ROOT}/sst-elements/src/sst/elements/balar
       retVal=$?
       date
       if [ $retVal == 0 ] ; then
@@ -298,7 +298,7 @@ if [ ! -d ../../distTestDir ] ; then
          Num_Tries_remaing=$(($Num_Tries_remaing - 1))
          if [ $Num_Tries_remaing -gt 0 ] ; then
              echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf Gpgpusim
+             rm -rf balar
              continue
          fi
 
@@ -306,9 +306,9 @@ if [ ! -d ../../distTestDir ] ; then
       fi
    done
    echo " "
-   echo " The Gpgpusim Repo has been cloned."
+   echo " The balar Repo has been cloned."
    ls -l ${SST_ROOT}/sst-elements/src/sst/elements
-   pushd ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim
+   pushd ${SST_ROOT}/sst-elements/src/sst/elements/balar
 
    git log -n 1 | grep commit
    ls -l
@@ -3093,9 +3093,9 @@ if [[ ${SST_JUNOREPO:+isSet} != isSet ]] ; then
     SST_JUNOREPO=https://github.com/sstsimulator/juno
 fi
 
-# Which Repository to use for GPGPU (default is https://github.com/sstsimulator/sst-gpgpusim.git)
+# Which Repository to use for GPGPU (default is https://github.com/sstsimulator/sst-balar.git)
 if [[ ${SST_GPGPUREPO:+isSet} != isSet ]] ; then
-    SST_GPGPUREPO=https://github.com/sstsimulator/sst-gpgpusim.git
+    SST_GPGPUREPO=https://github.com/sstsimulator/sst-balar.git
 fi
 ###
 
