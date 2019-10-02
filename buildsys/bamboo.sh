@@ -1615,7 +1615,7 @@ ldModules_MacOS_Clang() {
 #              total BAiling wire
 #         ClangXersion=clang-900.0.39.2
        xc=`echo $1 | awk -F - '{print $2}' |awk -F. '{print $1}'`
-       if [ $xc -gt 899 ] ; then
+       if [ $xc -gt 899 ]  && [ $xc -lt 1100 ] ; then
 #          Xcode is greater than 8
 echo ' ' ; echo " Using X-code 9 modules."  ;   echo ''
              ClangXersion=clang-900.0.39.2
@@ -3260,6 +3260,12 @@ env|sort
 echo "==============================INITIAL ENVIRONMENT DUMP================="
 
 retval=0
+echo "@@@@@@  \$0 = $0 ######"
+echo "@@@@@@  \$1 = $1 ######"
+echo "@@@@@@  \$2 = $2 ######"
+echo "@@@@@@  \$3 = $3 ######"
+echo "@@@@@@  \$4 = $4 ######"
+echo "@@@@@@  \$5 = $5 ######"
 echo  $0 $1 $2 $3 $4 $5
 echo `pwd`
 
