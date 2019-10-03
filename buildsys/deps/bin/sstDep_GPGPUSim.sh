@@ -30,7 +30,7 @@ CUDA_VERS=$1
 # Caveats:
 #     No patching is anticipated!  Cuda library is from module.
 #-------------------------------------------------------------------------------
-export SST_DEPS_SRC_STAGED_GPGPUSIM="${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/sst-gpgpusim"
+export SST_DEPS_SRC_STAGED_GPGPUSIM="${SST_ROOT}/sst-elements/src/sst/elements/balar/sst-gpgpusim"
 sstDepsStage_GPGPUSim-cuda ()
 {
 
@@ -93,10 +93,10 @@ sstDepsDeploy_GPGPUSim-cuda ()
         return $retval
     fi
 
-    echo "Copying shared object to element directory ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim"
-    cp --preserve=links lib/$GPGPUSIM_CONFIG/libcudart_mod.so ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim
+    echo "Copying shared object to element directory ${SST_ROOT}/sst-elements/src/sst/elements/balar"
+    cp --preserve=links lib/$GPGPUSIM_CONFIG/libcudart_mod.so ${SST_ROOT}/sst-elements/src/sst/elements/balar
 
-    ls -l ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim
+    ls -l ${SST_ROOT}/sst-elements/src/sst/elements/balar
 
     popd
 
