@@ -118,7 +118,7 @@ GPGPU_template() {
     testDataFileBase="test_gpgpu_${GPGPU_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.stdout"
     statsFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    referenceFile="${SST_REFERENCE_ELEMENTS}/Gpgpusim/tests/refFiles/${testDataFileBase}.out"
+    referenceFile="${SST_REFERENCE_ELEMENTS}/balar/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
     startSeconds=`date +%s`
@@ -132,8 +132,8 @@ GPGPU_template() {
     GPGPU_environment
 
     # Copy relevant test files
-    echo -e "Copying configuration files from ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests \n"
-    cp -r ${SST_ROOT}/sst-elements/src/sst/elements/Gpgpusim/tests/* .
+    echo -e "Copying configuration files from ${SST_ROOT}/sst-elements/src/sst/elements/balar/tests \n"
+    cp -r ${SST_ROOT}/sst-elements/src/sst/elements/balar/tests/* .
     ls -l
 
     # Build target application
