@@ -280,7 +280,7 @@ if [ ! -d ../../distTestDir ] ; then
    ls -l
    popd
 
-## Cloning gpgpu into <path>/devel/trunk
+## Cloning balar into <path>/devel/trunk
    Num_Tries_remaing=3
    while [ $Num_Tries_remaing -gt 0 ]
    do
@@ -309,6 +309,40 @@ if [ ! -d ../../distTestDir ] ; then
    echo " The balar Repo has been cloned."
    ls -l ${SST_ROOT}/sst-elements/src/sst/elements
    pushd ${SST_ROOT}/sst-elements/src/sst/elements/balar
+
+   git log -n 1 | grep commit
+   ls -l
+   popd
+
+## Cloning gpgpu into <path>/devel/trunk
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
+      date
+      echo " "
+      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUSIM_REPO ${SST_ROOT}/sst-elements/src/sst/elements/balar/sst-gpgpusim "
+      date
+      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUSIM_REPO ${SST_ROOT}/sst-elements/src/sst/elements/balar/sst-gpgpusim
+      retVal=$?
+      date
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
+         echo "\"git clone of ${SST_GPGPUSIM_REPO} \" FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+         if [ $Num_Tries_remaing -gt 0 ] ; then
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             rm -rf balar/sst-gpgpusim
+             continue
+         fi
+
+         exit
+      fi
+   done
+   echo " "
+   echo " The sst-gpgpusim Repo has been cloned."
+   ls -l ${SST_ROOT}/sst-elements/src/sst/elements/balar
+   pushd ${SST_ROOT}/sst-elements/src/sst/elements/balar/sst-gpgpusim
 
    git log -n 1 | grep commit
    ls -l
