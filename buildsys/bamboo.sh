@@ -286,15 +286,15 @@ if [ ! -d ../../distTestDir ] ; then
    do
       date
       echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUREPO ${SST_ROOT}/sst-elements/src/sst/elements/balar "
+      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_BALAR_REPO ${SST_ROOT}/sst-elements/src/sst/elements/balar "
       date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUREPO ${SST_ROOT}/sst-elements/src/sst/elements/balar
+      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_BALAR_REPO ${SST_ROOT}/sst-elements/src/sst/elements/balar
       retVal=$?
       date
       if [ $retVal == 0 ] ; then
          Num_Tries_remaing=-1
       else
-         echo "\"git clone of ${SST_GPGPUREPO} \" FAILED.  retVal = $retVal"
+         echo "\"git clone of ${SST_BALAR_REPO} \" FAILED.  retVal = $retVal"
          Num_Tries_remaing=$(($Num_Tries_remaing - 1))
          if [ $Num_Tries_remaing -gt 0 ] ; then
              echo "    ------   RETRYING    $Num_Tries_remaing "
@@ -3093,9 +3093,15 @@ if [[ ${SST_JUNOREPO:+isSet} != isSet ]] ; then
     SST_JUNOREPO=https://github.com/sstsimulator/juno
 fi
 
-# Which Repository to use for GPGPU (default is https://github.com/sstsimulator/sst-balar.git)
-if [[ ${SST_GPGPUREPO:+isSet} != isSet ]] ; then
-    SST_GPGPUREPO=https://github.com/sstsimulator/sst-balar.git
+# Which Repository to use for Balar (default is https://github.com/sstsimulator/balar.git)
+if [[ ${SST_BALAR_REPO:+isSet} != isSet ]] ; then
+    SST_BALAR_REPO=https://github.com/sstsimulator/balar.git
+fi
+###
+
+# Which Repository to use for GPGPU-Sim (https://github.com/purdue-aalp/sst-gpgpusim-external.git)
+if [[ ${SST_GPGPUSIM_REPO:+isSet} != isSet ]] ; then
+    SST_GPGPUSIM_REPO=https://github.com/purdue-aalp/sst-gpgpusim-external.git
 fi
 ###
 
@@ -3143,7 +3149,7 @@ echo "  GitHub ELEMENTS Repository and Branch = $SST_ELEMENTSREPO $SST_ELEMENTSB
 echo "  GitHub MACRO Repository and Branch = $SST_MACROREPO $SST_MACROBRANCH"
 echo "  GitHub EXTERNAL-ELEMENT Repository and Branch = $SST_EXTERNALELEMENTREPO $SST_EXTERNALELEMENTBRANCH"
 echo "  GitHub JUNO Repository and Branch = $SST_JUNOREPO $SST_JUNOBRANCH"
-echo "  GitHub GPGPU Repository and Branch = $SST_GPGPUREPO $SST_GPGPUBRANCH"
+echo "  GitHub GPGPU Repository and Branch = $SST_BALAR_REPO $SST_GPGPUBRANCH"
 echo "#############################################################"
 
 
