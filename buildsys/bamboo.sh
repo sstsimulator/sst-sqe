@@ -344,6 +344,14 @@ if [ ! -d ../../distTestDir ] ; then
    ls -l ${SST_ROOT}/sst-elements/src/sst/elements/balar
    pushd ${SST_ROOT}/sst-elements/src/sst/elements/balar/sst-gpgpusim
 
+   echo "desired sha = b8b4b5ccd90cb9d0768b144d136fc3bf77887aa1"
+
+   git checkout b8b4b5ccd90cb9d0768b144d136fc3bf77887aa1
+
+   if [ $? -ne 0 ] ; then
+        echo "Required sha not found"
+        exit
+   fi
    git log -n 1 | grep commit
    ls -l
    popd
