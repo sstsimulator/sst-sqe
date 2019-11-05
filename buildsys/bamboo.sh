@@ -286,7 +286,7 @@ if [ ! -d ../../distTestDir ] ; then
    do
       date
       echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_BALAR_REPO ${SST_ROOT}/sst-elements/src/sst/elements/balar "
+      echo "     TimeoutEx -t 90 git clone $SST_BALAR_REPO ${SST_ROOT}/sst-elements/src/sst/elements/balar "
       date
       TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_BALAR_REPO ${SST_ROOT}/sst-elements/src/sst/elements/balar
       retVal=$?
