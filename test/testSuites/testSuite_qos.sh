@@ -51,7 +51,10 @@ qos_case=$1
     testDataFileBase="test_qos-${qos_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     referenceFile="${SST_REFERENCE_ELEMENTS}/ember/tests/refFiles/${testDataFileBase}.out"
+echo  "                                            vvvvvvvvvvvvvvvvvvvvv "
 wc $referenceFile
+ls -c -i -l  $referenceFile
+echo  "                                             ^^^^^^^^^^^^^^^^^^^"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
