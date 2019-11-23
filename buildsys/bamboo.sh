@@ -717,6 +717,7 @@ echo " #####################################################"
         ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
         ${SST_TEST_SUITES}/testSuite_prospero.sh
         ${SST_TEST_SUITES}/testSuite_Ariel.sh
+        ${SST_TEST_SUITES}/testSuite_qos.sh
         return
     fi
 
