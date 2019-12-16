@@ -547,6 +547,16 @@ echo " #####################################################"
 
     # DO NOT pass args to the test suite, it confuses
     # shunit. Use an environment variable instead.
+echo B4      $SST_SUITES_TO_RUN
+
+      if [[ ${SST_SUITES_TO_RUN:+isSet} == isSet ]] ; then
+         for S in $SST_SUITES_TO_RUN
+         do
+           ${SST_TEST_SUITES}/testSuite_${S}.sh
+         done
+         return
+      fi 
+
 
       if [ $1 == "sstmainline_config_all" ] ; then
 
