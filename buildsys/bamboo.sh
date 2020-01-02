@@ -1408,8 +1408,12 @@ getconfig() {
     export SST_SELECTED_MACRO_CONFIG="$macroConfigStr"
     export SST_SELECTED_EXTERNALELEMENT_CONFIG="$externalelementConfigStr"
     export SST_SELECTED_JUNO_CONFIG="$junoConfigStr"
-}
 
+
+   if [[ ${SST_CORE_PREVIEW:+isSet} == isSet ]] ; then
+      export SST_SELECTED_CORE_CONFIG="${SST_SELECTED_CORE_CONFIG} --enable-preview-build"
+   fi
+}
 
 #-------------------------------------------------------------------------
 # Function: linuxSetBoostMPI
