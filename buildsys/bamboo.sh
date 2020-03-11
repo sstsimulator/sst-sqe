@@ -1412,12 +1412,6 @@ getconfig() {
 
    if [[ ${SST_CORE_PREVIEW:+isSet} == isSet ]] ; then
       export SST_SELECTED_CORE_CONFIG="${SST_SELECTED_CORE_CONFIG} --enable-preview-build"
-#   This is bailiong wire to supppressesknown error (so can look for others
-
- #    echo " Ignore Opal
- #    echo " Ignore Opal > $SST_ROOT/sst-elements/src/sst/elements/Opal/.ignore
-
-######
    fi
 }
 
