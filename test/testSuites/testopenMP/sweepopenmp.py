@@ -1,6 +1,5 @@
 # Automatically generated SST Python input
 import sst
-from sst.merlin import *
 
 import os
 
@@ -30,7 +29,7 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "", ["L1cachesz=","L2cachesz=","L1assoc=","L2assoc=","Replacp=","L2MSHR=","MSIMESI=","Pref=","Executable="])
     except getopt.GetopError as err:
-        print str(err)
+        print (str(err))
         sys.exit(2)
     for o, a in opts:
         if o in ("--L1cachesz"):
@@ -53,9 +52,9 @@ def main():
         elif o in ("--Executable"):
             Executable = a
         else:
-            print o
+            print (o)
             assert False, "Unknown Options"
-    print L1cachesz, L2cachesz, L1assoc, L2assoc, Replacp, L2MSHR, MSIMESI, Pref, Executable
+    print (L1cachesz, L2cachesz, L1assoc, L2assoc, Replacp, L2MSHR, MSIMESI, Pref, Executable)
 
 main()
 # Define needed environment params
@@ -197,15 +196,16 @@ comp_l2cache.addParams({
       "mshr_num_entries" : L2MSHR,
       "prefetcher" : Pref
 })
-comp_memory = sst.Component("memory", "memHierarchy.MemController")
-comp_memory.addParams({
+comp_memctrl = sst.Component("memory", "memHierarchy.MemController")
+comp_memctrl.addParams({
       "debug" : "0",
-      "coherence_protocol" : MSIMESI,
-      "backend.mem_size" : "1024MiB",
-      "backend.access_time" : "25 ns",
       "clock" : "2GHz",
       "request_width" : "64",
-      "rangeStart" : "0"
+})
+comp_memory = comp_memctrl.setSubComponent("backend", "memHierarchy.simpleMem")
+comp_memory.addParams({
+      "mem_size" : "1024MiB",
+      "access_time" : "25 ns",
 })
 
 
@@ -245,5 +245,5 @@ link_c7dcache_bus_link.connect( (comp_c7_l1Dcache, "low_network_0", "100ps"), (c
 link_bus_l2cache = sst.Link("link_bus_l2cache")
 link_bus_l2cache.connect( (comp_bus, "low_network_0", "100ps"), (comp_l2cache, "high_network_0", "100ps") )
 link_mem_bus_link = sst.Link("link_mem_bus_link")
-link_mem_bus_link.connect( (comp_l2cache, "low_network_0", "100ps"), (comp_memory, "direct_link", "100ps") )
+link_mem_bus_link.connect( (comp_l2cache, "low_network_0", "100ps"), (comp_memctrl, "direct_link", "100ps") )
 # End of generated output.

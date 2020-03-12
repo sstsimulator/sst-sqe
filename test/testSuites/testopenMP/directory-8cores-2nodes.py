@@ -145,13 +145,16 @@ comp_n0_l2cache.addParams({
       "associativity" : """4""",
       "cache_line_size" : """64""",
       "debug_level" : """6""",
-      "L1" : """0""",
       "cache_size" : """64 KB""",
-      "network_address" : """2""",
-      "network_bw" : """25GB/s""",
       "mshr_num_entries" : """4096""",
-      "network_input_buffer_size" : "2KB",
-      "network_output_buffer_size" : "2KB",
+})
+cpulink_n0_l2cache = comp_n0_l2cache.setSubComponent("cpulink", "memHierarchy.MemLink")
+memlink_n0_l2cache = comp_n0_l2cache.setSubComponent("memlink", "memHierarchy.MemNIC")
+memlink_n0_l2cache.addParams({
+    "group" : 0,
+    "network_bw" : "25GB/s",
+    "network_input_buffer_size" : "2KB",
+    "network_output_buffer_size" : "2KB",
 })
 comp_n1_bus = sst.Component("n1.bus", "memHierarchy.Bus")
 comp_n1_bus.addParams({
@@ -167,72 +170,83 @@ comp_n1_l2cache.addParams({
       "associativity" : """4""",
       "cache_line_size" : """64""",
       "debug_level" : """6""",
-      "L1" : """0""",
       "cache_size" : """64 KB""",
-      "network_address" : """3""",
-      "network_bw" : """25GB/s""",
       "mshr_num_entries" : """4096""",
-      "network_input_buffer_size" : "2KB",
-      "network_output_buffer_size" : "2KB",
+})
+cpulink_n1_l2cache = comp_n1_l2cache.setSubComponent("cpulink", "memHierarchy.MemLink")
+memlink_n1_l2cache = comp_n1_l2cache.setSubComponent("memlink", "memHierarchy.MemNIC")
+memlink_n1_l2cache.addParams({
+    "group" : 0,
+    "network_bw" : "25GB/s",
+    "network_input_buffer_size" : "2KB",
+    "network_output_buffer_size" : "2KB",
 })
 comp_chipRtr = sst.Component("chipRtr", "merlin.hr_router")
 comp_chipRtr.addParams({
-      "input_buf_size" : """2KB""",
-      "num_ports" : """4""",
-      "id" : """0""",
-      "output_buf_size" : """2KB""",
-      "flit_size" : """64B""",
-      "xbar_bw" : """51.2 GB/s""",
-      "link_bw" : """25.6 GB/s""",
-      "topology" : """merlin.singlerouter"""
+      "input_buf_size" : "2KB",
+      "num_ports" : "4",
+      "id" : "0",
+      "output_buf_size" : "2KB",
+      "flit_size" : "64B",
+      "xbar_bw" : "51.2 GB/s""",
+      "link_bw" : "25.6 GB/s",
 })
+comp_chipRtr.setSubComponent("topology", "merlin.singlerouter")
+
 comp_dirctrl0 = sst.Component("dirctrl0", "memHierarchy.DirectoryController")
 comp_dirctrl0.addParams({
       "debug" : """0""",
       "coherence_protocol" : """MSI""",
-      "network_address" : """0""",
       "entry_cache_size" : """32768""",
-      "network_bw" : """25GB/s""",
       "addr_range_start" : """0x0""",
-      "backing_store_size" : """0""",
-      "printStats" : """""",
       "addr_range_end" : """0x000FFFFF""",
       "mshr_num_entries" : "2",
-      "network_input_buffer_size" : "2KB",
-      "network_output_buffer_size" : "2KB",
 })
-comp_memory0 = sst.Component("memory0", "memHierarchy.MemController")
-comp_memory0.addParams({
+cpulink_dirctrl0 = comp_dirctrl0.setSubComponent("cpulink", "memHierarchy.MemNIC")
+memlink_dirctrl0 = comp_dirctrl0.setSubComponent("memlink", "memHierarchy.MemLink")
+cpulink_dirctrl0.addParams({
+    "group" : 1,
+    "network_input_buffer_size" : "2KB",
+    "network_output_buffer_size" : "2KB",
+    "network_bw" : "25GB/s",
+})
+comp_memctrl0 = sst.Component("memory0", "memHierarchy.MemController")
+comp_memctrl0.addParams({
       "debug" : """0""",
-      "coherence_protocol" : """MSI""",
-      "backend.mem_size" : "512MiB",
       "clock" : """1.6GHz""",
-      "access_time" : """25 ns""",
-      "rangeStart" : """0"""
+})
+comp_memory0 = comp_memctrl0.setSubComponent("backend", "memHierarchy.simpleMem")
+comp_memory0.addParams({
+    "access_time" : "25ns",
+    "mem_size" : "512MiB"
 })
 comp_dirctrl1 = sst.Component("dirctrl1", "memHierarchy.DirectoryController")
 comp_dirctrl1.addParams({
       "debug" : """0""",
       "coherence_protocol" : """MSI""",
-      "network_address" : """1""",
       "entry_cache_size" : """32768""",
-      "network_bw" : """25GB/s""",
       "addr_range_start" : """0x00100000""",
-      "backing_store_size" : """0""",
-      "printStats" : """""",
       "addr_range_end" : """0x3FFFFFFF""",
       "mshr_num_entries" : "2",
 })
-comp_memory1 = sst.Component("memory1", "memHierarchy.MemController")
-comp_memory1.addParams({
-      "debug" : """0""",
-      "coherence_protocol" : """MSI""",
-      "backend.mem_size" : "512MiB",
-      "clock" : """1.6GHz""",
-      "access_time" : """25 ns""",
-      "rangeStart" : """0"""
+cpulink_dirctrl1 = comp_dirctrl1.setSubComponent("cpulink", "memHierarchy.MemNIC")
+memlink_dirctrl1 = comp_dirctrl1.setSubComponent("memlink", "memHierarchy.MemLink")
+cpulink_dirctrl1.addParams({
+    "group" : 1,
+    "network_input_buffer_size" : "2KB",
+    "network_output_buffer_size" : "2KB",
+    "network_bw" : "25GB/s",
 })
-
+comp_memctrl1 = sst.Component("memory1", "memHierarchy.MemController")
+comp_memctrl1.addParams({
+      "debug" : """0""",
+      "clock" : """1.6GHz""",
+})
+comp_memory1 = comp_memctrl1.setSubComponent("backend", "memHierarchy.simpleMem")
+comp_memory1.addParams({
+    "access_time" : "25ns",
+    "mem_size" : "512MiB"
+})
 
 # Define the simulation links
 link_core0_dcache = sst.Link("link_core0_dcache")
@@ -268,19 +282,19 @@ link_c6dcache_bus_link.connect( (comp_c6_l1Dcache, "low_network_0", "100ps"), (c
 link_c7dcache_bus_link = sst.Link("link_c7dcache_bus_link")
 link_c7dcache_bus_link.connect( (comp_c7_l1Dcache, "low_network_0", "100ps"), (comp_n1_bus, "high_network_3", "100ps") )
 link_n0bus_n0l2cache = sst.Link("link_n0bus_n0l2cache")
-link_n0bus_n0l2cache.connect( (comp_n0_bus, "low_network_0", "100ps"), (comp_n0_l2cache, "high_network_0", "100ps") )
+link_n0bus_n0l2cache.connect( (comp_n0_bus, "low_network_0", "100ps"), (cpulink_n0_l2cache, "port", "100ps") )
 link_n0bus_memory = sst.Link("link_n0bus_memory")
-link_n0bus_memory.connect( (comp_n0_l2cache, "directory", "100ps"), (comp_chipRtr, "port2", "1000ps") )
+link_n0bus_memory.connect( (memlink_n0_l2cache, "port", "100ps"), (comp_chipRtr, "port2", "1000ps") )
 link_n1bus_n1l2cache = sst.Link("link_n1bus_n1l2cache")
-link_n1bus_n1l2cache.connect( (comp_n1_bus, "low_network_0", "100ps"), (comp_n1_l2cache, "high_network_0", "100ps") )
+link_n1bus_n1l2cache.connect( (comp_n1_bus, "low_network_0", "100ps"), (cpulink_n1_l2cache, "port", "100ps") )
 link_n1bus_memory = sst.Link("link_n1bus_memory")
-link_n1bus_memory.connect( (comp_n1_l2cache, "directory", "100ps"), (comp_chipRtr, "port3", "1000ps") )
+link_n1bus_memory.connect( (memlink_n1_l2cache, "port", "100ps"), (comp_chipRtr, "port3", "1000ps") )
 link_dirctrl0_bus = sst.Link("link_dirctrl0_bus")
-link_dirctrl0_bus.connect( (comp_chipRtr, "port0", "1000ps"), (comp_dirctrl0, "network", "100ps") )
+link_dirctrl0_bus.connect( (comp_chipRtr, "port0", "1000ps"), (cpulink_dirctrl0, "port", "100ps") )
 link_dirctrl1_bus = sst.Link("link_dirctrl1_bus")
-link_dirctrl1_bus.connect( (comp_chipRtr, "port1", "1000ps"), (comp_dirctrl1, "network", "100ps") )
+link_dirctrl1_bus.connect( (comp_chipRtr, "port1", "1000ps"), (cpulink_dirctrl1, "port", "100ps") )
 link_dirctrl0_mem = sst.Link("link_dirctrl0_mem")
-link_dirctrl0_mem.connect( (comp_dirctrl0, "memory", "100ps"), (comp_memory0, "direct_link", "100ps") )
+link_dirctrl0_mem.connect( (memlink_dirctrl0, "port", "100ps"), (comp_memctrl0, "direct_link", "100ps") )
 link_dirctrl1_mem = sst.Link("link_dirctrl1_mem")
-link_dirctrl1_mem.connect( (comp_dirctrl1, "memory", "100ps"), (comp_memory1, "direct_link", "100ps") )
+link_dirctrl1_mem.connect( (memlink_dirctrl1, "port", "100ps"), (comp_memctrl1, "direct_link", "100ps") )
 # End of generated output.
