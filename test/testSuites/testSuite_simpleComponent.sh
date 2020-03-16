@@ -91,9 +91,6 @@ else
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
 
-    referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/subcomponent_tests/legacy/refFiles/test_${Type}.out"
-
-    sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/simpleElementExample/tests/subcomponent_tests/legacy/test_${Type}.py"
     # Add basename to list for XML processing later
 
     L_TESTFILE+=(${testDataFileBase})
@@ -198,44 +195,6 @@ simpleComponent_Template SubComponent sc_ua
 }
 test_simpleSubComponent_sc_uu() {
 simpleComponent_Template SubComponent sc_uu
-}
-
-
-test_simpleSubComponent_sc_legacy_2nl() {
-simpleComponent_Template Legacy sc_legacy_2nl
-}
-test_simpleSubComponent_sc_legacy_n2l() {
-simpleComponent_Template Legacy sc_legacy_n2l
-}
-test_simpleSubComponent_sc_legacy_n() {
-simpleComponent_Template Legacy sc_legacy_n
-}
-test_simpleSubComponent_sc_legacy_2l() {
-simpleComponent_Template Legacy sc_legacy_2l
-}
-test_simpleSubComponent_sc_legacy_2nn() {
-simpleComponent_Template Legacy sc_legacy_2nn
-}
-test_simpleSubComponent_sc_legacy_n2n() {
-simpleComponent_Template Legacy sc_legacy_n2n
-}
-test_simpleSubComponent_sc_legacy_2n2l() {
-simpleComponent_Template Legacy sc_legacy_2n2l
-}
-test_simpleSubComponent_sc_legacy_2n() {
-simpleComponent_Template Legacy sc_legacy_2n
-}
-test_simpleSubComponent_sc_legacy_nl() {
-simpleComponent_Template Legacy sc_legacy_nl
-}
-test_simpleSubComponent_sc_legacy_2n2n() {
-simpleComponent_Template Legacy sc_legacy_2n2n
-}
-test_simpleSubComponent_sc_legacy_l() {
-simpleComponent_Template Legacy sc_legacy_l
-}
-test_simpleSubComponent_sc_legacy_nn() {
-simpleComponent_Template Legacy sc_legacy_nn
 }
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
