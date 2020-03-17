@@ -3,7 +3,6 @@ import sst
 import os
 
 noncache = 0
-statistics = 0
 
 os.environ['OMP_NUM_THREADS']="8"
 Executable = os.getenv('OMP_EXE', "ompbarrier/ompbarrier.x")
@@ -33,7 +32,6 @@ ariel_cpus.addParams({
 comp_c0_l1Dcache = sst.Component("c0.l1Dcache", "memHierarchy.Cache")
 comp_c0_l1Dcache.addParams({
       "debug" : "0",
-      "statistics" : statistics,
       "force_noncacheable_reqs" : noncache,
       "access_latency_cycles" : "2",
       "cache_frequency" : "2 Ghz",
@@ -47,7 +45,6 @@ comp_c0_l1Dcache.addParams({
 comp_c1_l1Dcache = sst.Component("c1.l1Dcache", "memHierarchy.Cache")
 comp_c1_l1Dcache.addParams({
       "debug" : "0",
-      "statistics" : statistics,
       "force_noncacheable_reqs" : noncache,
       "access_latency_cycles" : "2",
       "cache_frequency" : "2 Ghz",
@@ -61,7 +58,6 @@ comp_c1_l1Dcache.addParams({
 comp_c2_l1Dcache = sst.Component("c2.l1Dcache", "memHierarchy.Cache")
 comp_c2_l1Dcache.addParams({
       "debug" : "0",
-      "statistics" : statistics,
       "force_noncacheable_reqs" : noncache,
       "access_latency_cycles" : "2",
       "cache_frequency" : "2 Ghz",
@@ -75,7 +71,6 @@ comp_c2_l1Dcache.addParams({
 comp_c3_l1Dcache = sst.Component("c3.l1Dcache", "memHierarchy.Cache")
 comp_c3_l1Dcache.addParams({
       "debug" : "0",
-      "statistics" : statistics,
       "force_noncacheable_reqs" : noncache,
       "access_latency_cycles" : "2",
       "cache_frequency" : "2 Ghz",
@@ -89,7 +84,6 @@ comp_c3_l1Dcache.addParams({
 comp_c4_l1Dcache = sst.Component("c4.l1Dcache", "memHierarchy.Cache")
 comp_c4_l1Dcache.addParams({
       "debug" : "0",
-      "statistics" : statistics,
       "force_noncacheable_reqs" : noncache,
       "access_latency_cycles" : "2",
       "cache_frequency" : "2 Ghz",
@@ -103,7 +97,6 @@ comp_c4_l1Dcache.addParams({
 comp_c5_l1Dcache = sst.Component("c5.l1Dcache", "memHierarchy.Cache")
 comp_c5_l1Dcache.addParams({
       "debug" : "0",
-      "statistics" : statistics,
       "force_noncacheable_reqs" : noncache,
       "access_latency_cycles" : "2",
       "cache_frequency" : "2 Ghz",
@@ -117,7 +110,6 @@ comp_c5_l1Dcache.addParams({
 comp_c6_l1Dcache = sst.Component("c6.l1Dcache", "memHierarchy.Cache")
 comp_c6_l1Dcache.addParams({
       "debug" : "0",
-      "statistics" : statistics,
       "force_noncacheable_reqs" : noncache,
       "access_latency_cycles" : "2",
       "cache_frequency" : "2 Ghz",
@@ -131,7 +123,6 @@ comp_c6_l1Dcache.addParams({
 comp_c7_l1Dcache = sst.Component("c7.l1Dcache", "memHierarchy.Cache")
 comp_c7_l1Dcache.addParams({
       "debug" : "0",
-      "statistics" : statistics,
       "force_noncacheable_reqs" : noncache,
       "access_latency_cycles" : "2",
       "cache_frequency" : "2 Ghz",
@@ -149,26 +140,25 @@ comp_bus.addParams({
 comp_l2cache = sst.Component("l2cache", "memHierarchy.Cache")
 comp_l2cache.addParams({
       "debug" : "0",
-      "statistics" : statistics,
       "access_latency_cycles" : "6",
       "cache_frequency" : "2.0 Ghz",
       "replacement_policy" : "lru",
       "coherence_protocol" : "MSI",
       "associativity" : "4",
       "cache_line_size" : "64",
-      "L1" : "0",
       "cache_size" : "64 KB",
       "mshr_num_entries" : "4096"
 })
-comp_memory = sst.Component("memory", "memHierarchy.MemController")
-comp_memory.addParams({
+comp_memctrl = sst.Component("memory", "memHierarchy.MemController")
+comp_memctrl.addParams({
       "debug" : "0",
-      "coherence_protocol" : "MSI",
-      "backend.mem_size" : "1024MiB",
-      "backend.access_time" : "25 ns",
       "clock" : "2GHz",
       "request_width" : "64",
-      "rangeStart" : "0"
+})
+comp_memory = comp_memctrl.setSubComponent("backend", "memHierarchy.simpleMem")
+comp_memory.addParams({
+    "mem_size" : "1024MiB",
+    "access_time" : "25 ns",
 })
 
 
@@ -208,5 +198,5 @@ link_c7dcache_bus_link.connect( (comp_c7_l1Dcache, "low_network_0", "100ps"), (c
 link_bus_l2cache = sst.Link("link_bus_l2cache")
 link_bus_l2cache.connect( (comp_bus, "low_network_0", "100ps"), (comp_l2cache, "high_network_0", "100ps") )
 link_mem_bus_link = sst.Link("link_mem_bus_link")
-link_mem_bus_link.connect( (comp_l2cache, "low_network_0", "100ps"), (comp_memory, "direct_link", "100ps") )
+link_mem_bus_link.connect( (comp_l2cache, "low_network_0", "100ps"), (comp_memctrl, "direct_link", "100ps") )
 # End of generated output.
