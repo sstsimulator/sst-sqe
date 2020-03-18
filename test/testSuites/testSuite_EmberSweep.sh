@@ -268,7 +268,7 @@ popd
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 #                In this position the local Time Out will override the multithread TL
-export SST_TEST_ONE_TEST_TIMEOUT=1200
+export SST_TEST_ONE_TEST_TIMEOUT=1400
 cd $SST_ROOT
 date
 
