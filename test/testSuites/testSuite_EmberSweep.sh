@@ -201,7 +201,12 @@ ES_fini() {
         sed -i.x '/print..sst.*model/s/..sst/ "mpirun -np '"${SST_MULTI_RANK_COUNT} $NUMA_PARAM"' sst/' EmberSweepGenerator.py 
     fi
 
-    ./EmberSweepGenerator.py > ${SSTTESTTEMPFILES}/bashIN
+    pyexec="python"
+    if [[ ${SST_SELECTED_PYTHON:+isSet} == isSet ]]; then
+        pyexec=${SST_SELECTED_PYTHON}
+    fi
+
+    ${pyexec} ./EmberSweepGenerator.py > ${SSTTESTTEMPFILES}/bashIN
     if [ $? -ne 0 ] ; then 
         preFail " Test Generation FAILED"
     fi

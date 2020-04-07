@@ -1402,13 +1402,24 @@ getconfig() {
             ;;
     esac
 
+    ## Figure out which python we have (2 or 3)
+    if [[ ! -v pyexec ]]; then
+        if command -v python &> /devel/null; then
+            sstpython="python"
+        else
+            ## No error checking, if 'python' doesn't exist, assume we've got python3.
+            sstpython="python3"
+        fi
+
+    fi
+
     export SST_SELECTED_DEPS="$depsStr"
     export SST_SELECTED_CORE_CONFIG="$coreConfigStr"
     export SST_SELECTED_ELEMENTS_CONFIG="$elementsConfigStr"
     export SST_SELECTED_MACRO_CONFIG="$macroConfigStr"
     export SST_SELECTED_EXTERNALELEMENT_CONFIG="$externalelementConfigStr"
     export SST_SELECTED_JUNO_CONFIG="$junoConfigStr"
-
+    export SST_SELECTED_PYTHON="$pyexec"
 
    if [[ ${SST_CORE_PREVIEW:+isSet} == isSet ]] ; then
       export SST_SELECTED_CORE_CONFIG="${SST_SELECTED_CORE_CONFIG} --enable-preview-build"
@@ -2260,6 +2271,7 @@ dobuild() {
     # $SST_SELECTED_MACRO_CONFIG now contains config line for the SST-MACRO
     # $SST_SELECTED_EXTERNALELEMENT_CONFIG now contains config line for the externalelement
     # $SST_SELECTED_JUNO_CONFIG now contains config line for the juno
+    # $SST_SELECTED_PYTHON now contains the name of the python interpreter
     # based on buildtype, configure and build dependencies
     # build, patch, and install dependencies
     $SST_DEPS_BIN/sstDependencies.sh $SST_SELECTED_DEPS cleanBuild

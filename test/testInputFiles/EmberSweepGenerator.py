@@ -1,5 +1,3 @@
-#! /usr/bin/env python
-
 #   
 #      This file is adapted from Tester.py in sst/elements/prospero/test.
 #      It wraps the output line with a bash subroutine to be sourced
