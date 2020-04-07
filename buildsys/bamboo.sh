@@ -1405,12 +1405,11 @@ getconfig() {
     ## Figure out which python we have (2 or 3)
     if [[ ! -v pyexec ]]; then
         if command -v python &> /devel/null; then
-            sstpython="python"
+            pyexec="python"
         else
             ## No error checking, if 'python' doesn't exist, assume we've got python3.
-            sstpython="python3"
+            pyexec="python3"
         fi
-
     fi
 
     export SST_SELECTED_DEPS="$depsStr"
