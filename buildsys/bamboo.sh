@@ -3434,7 +3434,7 @@ else
                   ;;
                 * | none)
                   # Perform a quick check to see if $6 is empty
-                  if [ $6 != "" ]; then
+                  if if [ -n "$6" ]; then
                       echo "ERROR: ILLEGAL PYTHON OPTION " $6
                       echo "       ONLY python2 | python3 ALLOWED"
                       exit 128
@@ -3487,10 +3487,11 @@ else
             echo "SST_PYTHON_EXEC =" $SST_PYTHON_EXEC
             echo "SST_PYTHON_HOME =" $SST_PYTHON_HOME
             if [[ ${SST_PYTHON_USER_SPECIFIED:+isSet} == isSet ]] ; then
-                echo "SST_PYTHON_USER_SPECIFIED = 1"
+                echo "SST_PYTHON_USER_SPECIFIED = 1 - BUILD CORE WITH SPECIFIED PYTHON"
             else
-                echo "SST_PYTHON_USER_SPECIFIED = <UNDEFINED>"
+                echo "SST_PYTHON_USER_SPECIFIED = <UNDEFINED> - ALLOW CORE TO FIND PYTHON TO BUILD WITH"
             fi
+            echo "=============================================================="
 
 
        if [[  ${SST_WITHOUT_PIN:+isSet} == isSet ]] ; then
