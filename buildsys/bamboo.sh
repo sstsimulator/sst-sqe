@@ -3434,7 +3434,7 @@ else
                   ;;
                 * | none)
                   # Perform a quick check to see if $6 is empty
-                  if if [ -n "$6" ]; then
+                  if [ -n "$6" ]; then
                       echo "ERROR: ILLEGAL PYTHON OPTION " $6
                       echo "       ONLY python2 | python3 ALLOWED"
                       exit 128
