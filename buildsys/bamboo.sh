@@ -3409,7 +3409,7 @@ else
             echo "=============================================================="
             echo "=== DETIRMINE WHAT PYTHON TO USE"
             echo "=============================================================="
-            case $5 in
+            case $6 in
                python2)
                   echo "BAMBOO PARAM INDICATES USER HAS SELECTED PYTHON2"
                   if command -v python2 > /dev/null 2>&1; then
@@ -3432,7 +3432,14 @@ else
                       exit 128
                   fi
                   ;;
-               none)
+                * | none)
+                  # Perform a quick check to see if $6 is empty
+                  if [ $6 != "" ]; then
+                      echo "ERROR: ILLEGAL PYTHON OPTION " $6
+                      echo "       ONLY python2 | python3 ALLOWED"
+                      exit 128
+                  fi
+
                   # NOTE: THIS CODE IS FOR SST Version 10 - When default search priority is Python2 first
                   echo "DEFAULT SYSTEM PYTHON SELECTED"
                   # Test to see if python command is avail
@@ -3472,11 +3479,6 @@ else
 #                      fi
 #                  fi
 #                  ;;
-               *) # unknown option
-                  echo "ERROR: ILLEGAL PYTHON OPTION " $5
-                  echo "       ONLY python2 | python3 ALLOWED"
-                  exit 128
-                  ;;
             esac
 
             echo "=============================================================="
