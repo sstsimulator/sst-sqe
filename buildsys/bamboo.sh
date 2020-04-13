@@ -3412,23 +3412,33 @@ else
             case $6 in
                python2)
                   echo "BAMBOO PARAM INDICATES USER HAS SELECTED PYTHON2"
+                  export SST_PYTHON_USER_SPECIFIED=1
                   if command -v python2 > /dev/null 2>&1; then
                       export SST_PYTHON_EXEC=`command -v python2`
-                      export SST_PYTHON_HOME=`python2-config --prefix`
-                      export SST_PYTHON_USER_SPECIFIED=1
                   else
-                      echo "ERROR: USER SELECTED PYTHON2 NOT FOUND - IS PYTHON2 ON THE SYSTEM?"
+                      echo "ERROR: USER SELECTED python2 NOT FOUND - IS python2 ON THE SYSTEM?"
+                      exit 128
+                  fi
+                  if python2-config --prefix > /dev/null 2>&1; then
+                      export SST_PYTHON_HOME=`python2-config --prefix`
+                  else
+                      echo "ERROR: USER SELECTED python2-config NOT FOUND - IS python2-devel ON THE SYSTEM?"
                       exit 128
                   fi
                   ;;
                python3)
                   echo "BAMBOO PARAM INDICATES USER HAS SELECTED PYTHON3"
+                  export SST_PYTHON_USER_SPECIFIED=1
                   if command -v python3 > /dev/null 2>&1; then
                       export SST_PYTHON_EXEC=`command -v python3`
-                      export SST_PYTHON_HOME=`python3-config --prefix`
-                      export SST_PYTHON_USER_SPECIFIED=1
                   else
-                      echo "ERROR: USER SELECTED PYTHON3 NOT FOUND - IS PYTHON3 ON THE SYSTEM?"
+                      echo "ERROR: USER SELECTED python3 NOT FOUND - IS python3 ON THE SYSTEM?"
+                      exit 128
+                  fi
+                  if python3-config --prefix > /dev/null 2>&1; then
+                      export SST_PYTHON_HOME=`python3-config --prefix`
+                  else
+                      echo "ERROR: USER SELECTED python3-config NOT FOUND - IS python3-devel ON THE SYSTEM?"
                       exit 128
                   fi
                   ;;
@@ -3446,15 +3456,25 @@ else
                   if command -v python > /dev/null 2>&1; then
                       # NOTE: This might be a python2 or python3, depending upon system
                       export SST_PYTHON_EXEC=`command -v python`
-                      export SST_PYTHON_HOME=`python-config --prefix`
+                      if python-config --prefix > /dev/null 2>&1; then
+                          export SST_PYTHON_HOME=`python-config --prefix`
+                      else
+                          echo "ERROR: Default python-config NOT FOUND - IS python-devel ON THE SYSTEM?"
+                          exit 128
+                      fi
                   else
                       ## if 'python' doesn't exist, assume we've got python3, but check for sure...
                       if command -v python3 > /dev/null 2>&1; then
                           export SST_PYTHON_EXEC=`command -v python3`
-                          export SST_PYTHON_HOME=`python3-config --prefix`
+                          if python3-config --prefix > /dev/null 2>&1; then
+                              export SST_PYTHON_HOME=`python3-config --prefix`
+                          else
+                              echo "ERROR: Python3 is detected to be Default on system, but python3-config NOT FOUND - IS python3-devel ON THE SYSTEM?"
+                              exit 128
+                          fi
                       else
                           ## No python or python3 found, this seems wrong
-                          echo "ERROR: NO DEFAULT PYTHON FOUND - Something wrong in the detection script"
+                          echo "ERROR: NO DEFAULT PYTHON FOUND - Is something wrong in the detection script?"
                           exit 128
                       fi
                   fi
@@ -3484,10 +3504,10 @@ else
             echo "=============================================================="
             echo "=== FINAL PYTHON DETECTED VARIABLES"
             echo "=============================================================="
+            export SST_PYTHON_VERSION=`$SST_PYTHON_EXEC --version 2>&1`
             echo "SST_PYTHON_EXEC =" $SST_PYTHON_EXEC
             echo "SST_PYTHON_HOME =" $SST_PYTHON_HOME
-            python_version = `$SST_PYTHON_EXEC --version`
-            echo "PYTHON VERSION =" $python_version
+            echo "PYTHON VERSION =" $SST_PYTHON_VERSION
             if [[ ${SST_PYTHON_USER_SPECIFIED:+isSet} == isSet ]] ; then
                 echo "SST_PYTHON_USER_SPECIFIED = 1 - BUILD CORE WITH SPECIFIED PYTHON"
             else
