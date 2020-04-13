@@ -3105,7 +3105,7 @@ function ExitOfScriptHandler {
 # $3 = boost type
 # $4 = compiler type
 # $5 = Cuda version
-# $6 = pythonX (x = 2 | 3)
+# $6 = pythonX (X = 2 | 3)
 #=========================================================================
 trap ExitOfScriptHandler EXIT
 
@@ -3484,6 +3484,7 @@ else
             echo "=============================================================="
             echo "=== FINAL PYTHON DETECTED VARIABLES"
             echo "=============================================================="
+            echo "PYTHON VERION =" `$SST_PYTHON_EXEC --version`
             echo "SST_PYTHON_EXEC =" $SST_PYTHON_EXEC
             echo "SST_PYTHON_HOME =" $SST_PYTHON_HOME
             if [[ ${SST_PYTHON_USER_SPECIFIED:+isSet} == isSet ]] ; then
