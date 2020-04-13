@@ -3484,7 +3484,8 @@ else
             echo "=============================================================="
             echo "=== FINAL PYTHON DETECTED VARIABLES"
             echo "=============================================================="
-            echo "PYTHON VERION =" `$SST_PYTHON_EXEC --version`
+            python_version = `$SST_PYTHON_EXEC --version`
+            echo "PYTHON VERSION =" $python_version
             echo "SST_PYTHON_EXEC =" $SST_PYTHON_EXEC
             echo "SST_PYTHON_HOME =" $SST_PYTHON_HOME
             if [[ ${SST_PYTHON_USER_SPECIFIED:+isSet} == isSet ]] ; then
