@@ -877,7 +877,12 @@ setConvenienceVars() {
 
     # Decide if we need to build core with a specific python
     if [[ ${SST_PYTHON_USER_SPECIFIED:+isSet} == isSet ]] ; then
-        corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL --with-python=$SST_PYTHON_HOME"
+        if [[ ${SST_PYTHON_USER_SELECTED_PYTHON2:+isSet} == isSet ]] ; then
+            corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL --with-python=$SST_PYTHON_HOME"
+        fi
+        if [[ ${SST_PYTHON_USER_SELECTED_PYTHON3:+isSet} == isSet ]] ; then
+            corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL --with-python3=$SST_PYTHON_HOME"
+        fi
     else
         corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL"
     fi
@@ -3413,6 +3418,7 @@ else
                python2)
                   echo "BAMBOO PARAM INDICATES USER HAS SELECTED PYTHON2"
                   export SST_PYTHON_USER_SPECIFIED=1
+                  export SST_PYTHON_USER_SELECTED_PYTHON2=1
                   if command -v python2 > /dev/null 2>&1; then
                       export SST_PYTHON_EXEC=`command -v python2`
                   else
@@ -3429,6 +3435,7 @@ else
                python3)
                   echo "BAMBOO PARAM INDICATES USER HAS SELECTED PYTHON3"
                   export SST_PYTHON_USER_SPECIFIED=1
+                  export SST_PYTHON_USER_SELECTED_PYTHON3=1
                   if command -v python3 > /dev/null 2>&1; then
                       export SST_PYTHON_EXEC=`command -v python3`
                   else
@@ -3510,6 +3517,12 @@ else
             echo "PYTHON VERSION =" $SST_PYTHON_VERSION
             if [[ ${SST_PYTHON_USER_SPECIFIED:+isSet} == isSet ]] ; then
                 echo "SST_PYTHON_USER_SPECIFIED = 1 - BUILD CORE WITH SPECIFIED PYTHON"
+                if [[ ${SST_PYTHON_USER_SELECTED_PYTHON2:+isSet} == isSet ]] ; then
+                    echo "SST_PYTHON_USER_SELECTED_PYTHON2 = 1 - BUILD SPECIFICALLY WITH PYTHON2"
+                fi
+                if [[ ${SST_PYTHON_USER_SELECTED_PYTHON3:+isSet} == isSet ]] ; then
+                    echo "SST_PYTHON_USER_SELECTED_PYTHON3 = 1 - BUILD SPECIFICALLY WITH PYTHON3"
+                fi
             else
                 echo "SST_PYTHON_USER_SPECIFIED = <UNDEFINED> - ALLOW CORE TO FIND PYTHON TO BUILD WITH"
             fi
