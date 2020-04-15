@@ -101,7 +101,8 @@ for network in networks :
         for x in CrossProduct( network['args'] ) :
             for y in CrossProduct( test['args'] ):
                 testi = testi + 1
-                hash_object  = hashlib.md5(b"sst --model-options=\"--topo={0} {1} --cmdLine=\\\"{2} {3}\\\"\" {4}".format(network['topo'], x, test['motif'], y, config))
+                hash_str = "sst --model-options=\"--topo={0} {1} --cmdLine=\\\"{2} {3}\\\"\" {4}".format(network['topo'], x, test['motif'], y, config)
+                hash_object  = hashlib.md5(hash_str.encode("UTF-8"))
                 hex_dig = hash_object.hexdigest()
                 print("test_EmberSweep_" + add_nulls(testi,3) + "_" + hex_dig + "() {")
 #                print("echo \"    \" {0} {1} {2} {3}".format(network['topo'], x, test['motif'], y))
