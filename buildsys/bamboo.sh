@@ -1432,6 +1432,8 @@ getconfig() {
 #      $2 - mpi request
 #      $3 - boost  request
 #      $4   compiler (optional)
+#      $5 = Cuda version
+#      $6 = pythonX (X = 2 | 3)
 #   Output:
 #   Return value:
 linuxSetBoostMPI() {
