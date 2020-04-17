@@ -198,7 +198,7 @@ ES_fini() {
         chmod +x EmberSweepGenerator.py
     fi
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
-        sed -i.x '/print..sst.*model/s/..sst/ "mpirun -np '"${SST_MULTI_RANK_COUNT} $NUMA_PARAM"' sst/' EmberSweepGenerator.py 
+        sed -i.x '/print..sst.*model/s/..sst/("mpirun -np '"${SST_MULTI_RANK_COUNT} $NUMA_PARAM"' sst/' EmberSweepGenerator.py
     fi
 
     pyexec=${SST_PYTHON_APP_EXE}
