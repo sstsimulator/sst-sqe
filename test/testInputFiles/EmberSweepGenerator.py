@@ -1,6 +1,4 @@
-#! /usr/bin/env python
-
-#   
+#
 #      This file is adapted from Tester.py in sst/elements/prospero/test.
 #      It wraps the output line with a bash subroutine to be sourced
 #           and used with shunit2
@@ -15,18 +13,18 @@ import binascii
 config = "emberLoad.py"
 
 tests = []
-networks = [] 
+networks = []
 
 net = { 'topo' : 'torus',
-        'args' : [ 
-                    [ '--shape', ['2','4x4x4','8x8x8','16x16x16'] ] 
+        'args' : [
+                    [ '--shape', ['2','4x4x4','8x8x8','16x16x16'] ]
                  ]
       }
 
 networks.append(net);
 
 net = { 'topo' : 'fattree',
-        'args' : [  
+        'args' : [
                     ['--shape',   ['9,9:9,9:18']]
                  ]
       }
@@ -34,7 +32,7 @@ net = { 'topo' : 'fattree',
 networks.append(net);
 
 net = { 'topo' : 'dragonfly2',
-        'args' : [  
+        'args' : [
                     ['--shape',   ['8:8:4:8']]
                  ]
       }
@@ -42,54 +40,54 @@ net = { 'topo' : 'dragonfly2',
 networks.append(net);
 
 test = { 'motif' : 'AllPingPong',
-         'args'  : [ 
+         'args'  : [
                         [ 'iterations'  , ['1','10']],
-                        [ 'messageSize' , ['0','1','10000','20000']] 
-                   ] 
+                        [ 'messageSize' , ['0','1','10000','20000']]
+                   ]
         }
 
 tests.append( test )
 
 test = { 'motif' : 'Allreduce',
-         'args'  : [  
+         'args'  : [
                         [ 'iterations'  , ['1','10']],
-                        [ 'count' , ['1']] 
-                   ] 
+                        [ 'count' , ['1']]
+                   ]
         }
 
 tests.append( test )
 
 test = { 'motif' : 'Barrier',
-         'args'  : [  
+         'args'  : [
                         [ 'iterations'  , ['1','10']]
-                   ] 
+                   ]
         }
 
 tests.append( test )
 
 test = { 'motif' : 'PingPong',
-         'args'  : [  
+         'args'  : [
                         [ 'iterations'  , ['1','10']],
-                        [ 'messageSize' , ['0','1','10000','20000']] 
-                   ] 
+                        [ 'messageSize' , ['0','1','10000','20000']]
+                   ]
         }
 
 tests.append( test )
 
 test = { 'motif' : 'Reduce',
-         'args'  : [  
+         'args'  : [
                         [ 'iterations'  , ['1','10']],
-                        [ 'count' , ['1']] 
-                   ] 
+                        [ 'count' , ['1']]
+                   ]
         }
 
 tests.append( test )
 
 test = { 'motif' : 'Ring',
-         'args'  : [  
+         'args'  : [
                         [ 'iterations'  , ['1','10']],
-                        [ 'messagesize' , ['0','1','10000','20000']] 
-                   ] 
+                        [ 'messagesize' , ['0','1','10000','20000']]
+                   ]
         }
 
 tests.append( test )
@@ -103,13 +101,14 @@ for network in networks :
         for x in CrossProduct( network['args'] ) :
             for y in CrossProduct( test['args'] ):
                 testi = testi + 1
-                hash_object  = hashlib.md5(b"sst --model-options=\"--topo={0} {1} --cmdLine=\\\"{2} {3}\\\"\" {4}".format(network['topo'], x, test['motif'], y, config))
+                hash_str = "sst --model-options=\"--topo={0} {1} --cmdLine=\\\"{2} {3}\\\"\" {4}".format(network['topo'], x, test['motif'], y, config)
+                hash_object  = hashlib.md5(hash_str.encode("UTF-8"))
                 hex_dig = hash_object.hexdigest()
-                print "test_EmberSweep_" + add_nulls(testi,3) + "_" + hex_dig + "() {"
-#                print "echo \"    \" {0} {1} {2} {3}".format(network['topo'], x, test['motif'], y)
-                print "ES_start \" {0} {1} {2} {3}\"".format(network['topo'], x, test['motif'], y)
-                print "sst --model-options=\"--topo={0} {1} --cmdLine=\\\"Init\\\" --cmdLine=\\\"{2} {3}\\\" --cmdLine=\\\"Fini\\\"\" {4} > tmp_file".format(network['topo'], x, test['motif'], y, config)
-                print "ES_fini " + hex_dig
-                print "popd"
-                print "}"
+                print("test_EmberSweep_" + add_nulls(testi,3) + "_" + hex_dig + "() {")
+#                print("echo \"    \" {0} {1} {2} {3}".format(network['topo'], x, test['motif'], y))
+                print("ES_start \" {0} {1} {2} {3}\"".format(network['topo'], x, test['motif'], y))
+                print("sst --model-options=\"--topo={0} {1} --cmdLine=\\\"Init\\\" --cmdLine=\\\"{2} {3}\\\" --cmdLine=\\\"Fini\\\"\" {4} > tmp_file".format(network['topo'], x, test['motif'], y, config))
+                print("ES_fini " + hex_dig)
+                print("popd")
+                print("}")
                 #call("sst --model-options=\"--topo={0} {1} --cmdLine=\\\"{2} {3}\\\"\" {4}".format(network['topo'], x, test['motif'], y, config), shell=True )

@@ -874,7 +874,14 @@ setConvenienceVars() {
     echo "endfile-------"
     echo "setConvenienceVars() : exported variables"
     export | egrep SST_DEPS_
-    corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL"
+
+    # Decide if we need to build core with a specific python
+    if [[ ${SST_PYTHON_USER_SPECIFIED:+isSet} == isSet ]] ; then
+        corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL --with-python=$SST_PYTHON_CFG_EXE"
+    else
+        corebaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL"
+    fi
+
     elementsbaseoptions="--disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL --with-sst-core=$SST_CORE_INSTALL"
     macrobaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL"
     externalelementbaseoptions=""
@@ -1425,6 +1432,8 @@ getconfig() {
 #      $2 - mpi request
 #      $3 - boost  request
 #      $4   compiler (optional)
+#      $5 = Cuda version
+#      $6 = pythonX (X = 2 | 3)
 #   Output:
 #   Return value:
 linuxSetBoostMPI() {
@@ -1509,7 +1518,6 @@ linuxSetBoostMPI() {
    echo "CHECK:  \$desiredMPI: ${desiredMPI}"
    echo "CHECK:  \$desiredBoost: ${desiredBoost}"
    gcc --version 2>&1 | grep ^g
-   python --version
 
    # load MPI
    case $2 in
@@ -2207,7 +2215,7 @@ echo  "   We are in distTestDir/trunk"
      # unlike regular test, make dist does move bamboo to trunk
               ##  Here is the bamboo invocation within bamboo
      echo "         INVOKE bamboo for the build from the dist tar"
-     ./bamboo.sh $distScenario $SST_DIST_MPI $SST_DIST_BOOST $SST_DIST_PARAM4
+     ./bamboo.sh $distScenario $SST_DIST_MPI $SST_DIST_BOOST $SST_DIST_PARAM4 $SST_DIST_CUDA $SST_DIST_PYTHON
      retval=$?
      echo "         Returned from bamboo.sh $retval"
      if [ $retval != 0 ] ; then
@@ -3099,6 +3107,7 @@ function ExitOfScriptHandler {
 # $3 = boost type
 # $4 = compiler type
 # $5 = Cuda version
+# $6 = pythonX (X = 2 | 3)
 #=========================================================================
 trap ExitOfScriptHandler EXIT
 
@@ -3321,14 +3330,15 @@ echo "@@@@@@  \$2 = $2 ######"
 echo "@@@@@@  \$3 = $3 ######"
 echo "@@@@@@  \$4 = $4 ######"
 echo "@@@@@@  \$5 = $5 ######"
-echo  $0 $1 $2 $3 $4 $5
+echo "@@@@@@  \$6 = $6 ######"
+echo  $0 $1 $2 $3 $4 $5 $6
 echo `pwd`
 
-if [ $# -lt 3 ] || [ $# -gt 5 ]
+if [ $# -lt 3 ] || [ $# -gt 6 ]
 then
     # need build type and MPI type as argument
 
-    echo "Usage : $0 <buildtype> <mpitype> <boost type> <[compiler type (optional)]> <[cuda version (optional)]>"
+    echo "Usage : $0 <buildtype> <mpitype> <boost type> <[compiler type (optional)]> <[cuda version (optional)]> <[python2|3 version (optional)]>"
     exit 0
 
 else
@@ -3357,11 +3367,12 @@ else
 
     case $1 in
         default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
-            #   Save Parameters $2, $3, $4, and $5 in case they are need later
+            #   Save Parameters $2, $3, $4, $5 and $6 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
             SST_DIST_PARAM4=$4
             SST_DIST_CUDA=`echo $5 | sed 's/cuda-//g'`
+            SST_DIST_PYTHON=$6
 
             # Configure MPI, Boost, and Compiler (Linux only)
             if [ $kernel != "Darwin" ]
@@ -3387,6 +3398,143 @@ else
                   echo  "No Cuda loaded as requested"
                   ;;
             esac
+
+            # Figure out Python Configuration
+            # Note: Selecting python is confusing as different system have different links
+            #       depending upon versions available.  We use "command -v python" to
+            #       find the executable, but "python" is usually symlinked to "python2"
+            #       Also on some systems like Ununtu 20.04, python does not exist, so we
+            #       must try "command -v python3".  After we find the correct python version
+            #       we can find the include and lib dirs related to it by using
+            #       python-config --prefix or pythonX-config --prefix
+            echo ""
+            echo "=============================================================="
+            echo "=== DETIRMINE WHAT PYTHON TO USE"
+            echo "=============================================================="
+            case $6 in
+               python2)
+                  echo "BAMBOO PARAM INDICATES USER HAS SELECTED PYTHON2"
+                  export SST_PYTHON_USER_SPECIFIED=1
+                  export SST_PYTHON_USER_SELECTED_PYTHON2=1
+                  if command -v python2 > /dev/null 2>&1; then
+                      export SST_PYTHON_APP_EXE=`command -v python2`
+                  else
+                      # python2 might not work, so try plain python
+                      if command -v python > /dev/null 2>&1; then
+                          export SST_PYTHON_APP_EXE=`command -v python`
+                      else
+                          echo "ERROR: USER SELECTED python2 (or python) NOT FOUND - IS python Version 2.x ON THE SYSTEM?"
+                          exit 128
+                      fi
+                  fi
+                  if python2-config --prefix > /dev/null 2>&1; then
+                      export SST_PYTHON_CFG_EXE=`command -v python2-config`
+                      export SST_PYTHON_HOME=`python2-config --prefix`
+                  else
+                      # python2-config might not work, so try plain python
+                      if python-config --prefix > /dev/null 2>&1; then
+                          export SST_PYTHON_CFG_EXE=`command -v python2-config`
+                          export SST_PYTHON_HOME=`python-config --prefix`
+                      else
+                          echo "ERROR: USER SELECTED python2-config (or python-config) NOT FOUND - IS python-devel ON THE SYSTEM?"
+                          exit 128
+                      fi
+                  fi
+                  ;;
+
+               python3)
+                  echo "BAMBOO PARAM INDICATES USER HAS SELECTED PYTHON3"
+                  export SST_PYTHON_USER_SPECIFIED=1
+                  export SST_PYTHON_USER_SELECTED_PYTHON3=1
+                  if command -v python3 > /dev/null 2>&1; then
+                      export SST_PYTHON_APP_EXE=`command -v python3`
+                  else
+                      echo "ERROR: USER SELECTED python3 NOT FOUND - IS python ver3.x ON THE SYSTEM?"
+                      exit 128
+                  fi
+                  if python3-config --prefix > /dev/null 2>&1; then
+                      export SST_PYTHON_CFG_EXE=`command -v python3-config`
+                      export SST_PYTHON_HOME=`python3-config --prefix`
+                  else
+                      echo "ERROR: USER SELECTED python3-config NOT FOUND - IS python3-devel ON THE SYSTEM?"
+                      exit 128
+                  fi
+                  ;;
+
+                * | none)
+                  # Perform a quick check to see if $6 is empty
+                  if [ -n "$6" ]; then
+                      if [[ $6 != "none" ]] ; then
+                          echo "ERROR: ILLEGAL PYTHON OPTION " $6
+                          echo "       ONLY none | python2 | python3 ALLOWED"
+                          exit 128
+                      fi
+                  fi
+
+                  # NOTE: THIS CODE IS FOR SST Version 10 - When default search priority is Python first
+                  echo "DEFAULT SYSTEM PYTHON SELECTED"
+                  # Test to see if python command is avail it should be for all Py2 installs
+                  if command -v python > /dev/null 2>&1; then
+                      # NOTE: This might be a python2 or python3, depending upon system
+                      export SST_PYTHON_APP_EXE=`command -v python`
+                      # Now check for python-config, NOTE: some systems call it python2-config, 
+                      # so we test for both
+                      if python-config --prefix > /dev/null 2>&1; then
+                          export SST_PYTHON_CFG_EXE=`command -v python-config`
+                          export SST_PYTHON_HOME=`python-config --prefix`
+                      else
+                          if python2-config --prefix > /dev/null 2>&1; then
+                              export SST_PYTHON_CFG_EXE=`command -v python2-config`
+                              export SST_PYTHON_HOME=`python2-config --prefix`
+                          else
+                              echo "ERROR: Default python-config or python2-config NOT FOUND - IS python-devel ON THE SYSTEM?"
+                              exit 128
+                          fi
+                      fi
+                  else
+                      ## if 'python' doesn't exist, assume we've got python3, but check for sure...
+                      if command -v python3 > /dev/null 2>&1; then
+                          export SST_PYTHON_APP_EXE=`command -v python3`
+                          if python3-config --prefix > /dev/null 2>&1; then
+                              export SST_PYTHON_CFG_EXE=`command -v python3-config`
+                              export SST_PYTHON_HOME=`python3-config --prefix`
+                          else
+                              echo "ERROR: Python3 is detected to be Default on system, but python3-config NOT FOUND - IS python3-devel ON THE SYSTEM?"
+                              exit 128
+                          fi
+                      else
+                          ## No python or python3 found, this seems wrong
+                          echo "ERROR: NO DEFAULT PYTHON FOUND - Is something wrong in the detection script?"
+                          exit 128
+                      fi
+                  fi
+                  ;;
+#                  # NOTE: FOR SST Version 11 - When default search priority is Python3 first
+#                  #       Replace the above code when we are switching to SST 11
+            esac
+
+            echo "=============================================================="
+            echo "=== FINAL PYTHON DETECTED VARIABLES"
+            echo "=============================================================="
+            export SST_PYTHON_VERSION=`$SST_PYTHON_APP_EXE --version 2>&1`
+            echo "SST_PYTHON_APP_EXE =" $SST_PYTHON_APP_EXE
+            echo "SST_PYTHON_CFG_EXE =" $SST_PYTHON_CFG_EXE
+            echo "SST_PYTHON_HOME =" $SST_PYTHON_HOME
+            echo "PYTHON VERSION =" $SST_PYTHON_VERSION
+            if [[ ${SST_PYTHON_USER_SPECIFIED:+isSet} == isSet ]] ; then
+                echo "SST_PYTHON_USER_SPECIFIED = 1 - BUILD CORE WITH SPECIFIED PYTHON"
+                if [[ ${SST_PYTHON_USER_SELECTED_PYTHON2:+isSet} == isSet ]] ; then
+                    echo "SST_PYTHON_USER_SELECTED_PYTHON2 = 1 - BUILD SPECIFICALLY WITH PYTHON2"
+                    echo "   USING PATH TO pythonX-config = " $SST_PYTHON_CFG_EXE
+                fi
+                if [[ ${SST_PYTHON_USER_SELECTED_PYTHON3:+isSet} == isSet ]] ; then
+                    echo "SST_PYTHON_USER_SELECTED_PYTHON3 = 1 - BUILD SPECIFICALLY WITH PYTHON3"
+                    echo "   USING PATH TO pythonX-config = " $SST_PYTHON_CFG_EXE
+                fi
+            else
+                echo "SST_PYTHON_USER_SPECIFIED = <UNDEFINED> - ALLOW CORE TO FIND PYTHON TO BUILD WITH"
+            fi
+            echo "=============================================================="
 
 
        if [[  ${SST_WITHOUT_PIN:+isSet} == isSet ]] ; then
