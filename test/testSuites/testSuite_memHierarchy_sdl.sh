@@ -91,7 +91,7 @@ echo ' '
       echo ' '
       fail ' FAILED to find Python file.'
       popd
-      return
+      exit
     fi
 
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] || [ ${SST_MULTI_RANK_COUNT} -lt 2 ] ; then
@@ -113,7 +113,7 @@ echo ' '
          echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
          fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
          rm $TIME_FLAG 
-         return 
+         exit 
     fi 
     if [ $RetVal != 0 ] ; then
          echo ' '; echo WARNING: sst did not finish normally ; echo ' '
@@ -127,7 +127,7 @@ echo ' '
              echo "          ----------"
          fi
          popd            #   Why popd here but not on Time Limit?
-         return
+         exit
     fi
 #                   --- It completed normally ---
 
