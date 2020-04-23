@@ -727,7 +727,6 @@ echo B4      $SST_SUITES_TO_RUN
         ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
         ${SST_TEST_SUITES}/testSuite_prospero.sh
         ${SST_TEST_SUITES}/testSuite_Ariel.sh
-        ${SST_TEST_SUITES}/testSuite_qos.sh
         return
     fi
 
@@ -780,6 +779,7 @@ echo B4      $SST_SUITES_TO_RUN
     # etc.
 
     ${SST_TEST_SUITES}/testSuite_merlin.sh
+    ${SST_TEST_SUITES}/testSuite_qos.sh
     ${SST_TEST_SUITES}/testSuite_embernightly.sh
 
     ${SST_TEST_SUITES}/testSuite_simpleSimulation_CarWash.sh
