@@ -3169,9 +3169,9 @@ if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
     SST_SQEBRANCH="detached"
 else
     echo ' ' ;  echo ' ' ; echo ' ' ; echo ' '
-    echo " Attempting to set SQE branch is a no op"
+    echo " Attempting to set SQE branch other than devel"
     echo " SQE branch is selected by configure in Jenkins"
-    echo "  Ignoring SST_SQEBRANCH =  ${SST_SQEBRANCH}"
+    echo "  SELECTED SST_SQEBRANCH =  ${SST_SQEBRANCH}"
     echo ' ' ;  echo ' ' ; echo ' ' ; echo ' '
 fi
 
