@@ -70,9 +70,11 @@ if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
     echo "## --------------------------- verify path to the sst-prospero-trace app"
     which sst-prospero-trace
 
-    echo "## --------------------------- run the pin trace program for each of 3 types"
-    sst-prospero-trace -ifeellucky -t 1 -f compressed -o sstprospero -- ./array
-    echo " pin return flag is from compressed trace build: $?"
+    echo "## --------------------------- run the pin trace program for each type"
+    if [[ ${SST_USING_PIN3:+isSet} != isSet ]] ; then
+        sst-prospero-trace -ifeellucky -t 1 -f compressed -o sstprospero -- ./array
+        echo " pin return flag is from compressed trace build: $?"
+    fi
 
     sst-prospero-trace -ifeellucky -t 1 -f text  -o sstprospero -- ./array
     echo " pin return flag is from text trace build: $?"
@@ -111,7 +113,7 @@ else
 fi
 
 # Now we need to verify that the 3 Trace files are found
-echo " ---------------  Three Trace files are expected: "
+echo " ---------------  Two or Three Trace files are expected (depending on run type): "
 cksum *.trace
 if [ $? != 0 ] ; then
    echo "No trace files found"
@@ -243,40 +245,46 @@ template_prospero() {
 mkdir -p $SST_TEST_INPUTS_TEMP
 script6=${SST_TEST_INPUTS_TEMP}/__prospero_tmp_${PIN_TAR}
 cat > $script6 << ..EOF.
-test_prospero_compressed_${PIN_TAR}() {
 
+
+test_prospero_compressed_${PIN_TAR}() {
+    # We can only test the compressed trace file on PIN2 or PIN3 With Downloaded traces
+    if [[ ${SST_USING_PIN3:+isSet} == isSet ]] && [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
+        skip_this_test
+        return
+    fi
     template_prospero compressed none
 }
 
 
 test_prospero_compressed_withdramsim_${PIN_TAR}() {
-
+    # We can only test the compressed trace file on PIN2 or PIN3 With Downloaded traces
+    if [[ ${SST_USING_PIN3:+isSet} == isSet ]] && [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
+        skip_this_test
+        return
+    fi
     template_prospero compressed DramSim
-
 }
 
-test_prospero_text_${PIN_TAR}(){
 
+test_prospero_text_${PIN_TAR}(){
     template_prospero text none
 }
 
 
 test_prospero_text_withdramsim_${PIN_TAR}() {
-
     template_prospero text DramSim
-
 }
 
 test_prospero_binary_${PIN_TAR}(){
-
     template_prospero binary none
 }
 
 
 test_prospero_binary_withdramsim_${PIN_TAR}() {
-
     template_prospero binary DramSim
 }
+
 ..EOF.
 
 export SST_TEST_ONE_TEST_TIMEOUT=30         #  30 seconds
