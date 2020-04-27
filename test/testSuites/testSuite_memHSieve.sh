@@ -145,9 +145,11 @@ test_memHSieve() {
         # all of the backtrace_*txt files have something in them.
         echo ""
         echo "---- 1 - Check the Backtrace files"
+        LOCALFAIL=0
         ls backtrace_*txt.gz > /dev/null
         if [ $? != 0 ] ; then
             FAIL=1
+            LOCALFAIL=1
         fi
 
         if [ $SST_WITH_OPENMP == 1 ] ; then
@@ -159,11 +161,12 @@ test_memHSieve() {
                 if [[ ! -s $fn ]] ; then
                     echo "$fn is empty, test fails"
                     FAIL=1
+                    LOCALFAIL=1
                 fi
             done
             wc *.txt
         fi
-        if [[ $FAIL == 1 ]]; then
+        if [[ $LOCALFAIL == 1 ]]; then
             echo "---- 1 - Check the Backtrace files ---- FAILED"
         else
             echo "---- 1 - Check the Backtrace files ---- PASSED"
@@ -174,6 +177,7 @@ test_memHSieve() {
         #  mallocRank.0 is not empty
         echo ""
         echo "---- 2 - Check mallockRank"
+        LOCALFAIL=0
         ls -l mallocRank*
         mR_len=`wc -w mallocRank.txt* | awk '{print $1}'`
         if [ $mR_len -ge 0 ] ; then
@@ -181,8 +185,9 @@ test_memHSieve() {
         else
             echo "mallocRank.txt-0 is empty, test fails"
             FAIL=1
+            LOCALFAIL=1
         fi
-        if [[ $FAIL == 1 ]]; then
+        if [[ $LOCALFAIL == 1 ]]; then
             echo "---- 2 - Check mallockRank ---- FAILED"
         else
             echo "---- 2 - Check mallockRank ---- PASSED"
@@ -193,12 +198,14 @@ test_memHSieve() {
         # the six sieve statics in StatisticOutput.csv are non zero
         echo ""
         echo "---- 3 - Check the stats"
+        LOCALFAIL=0
 
         SievecheckStats() {
             notz=`grep -w $1 StatisticOutput*.csv | awk '{print $NF*($NF-1)*$NF-2}'`
             if [ $notz == 0 ] ; then
-               echo "stat $1 has a zero"
-               FAIL=1
+                echo "stat $1 has a zero"
+                FAIL=1
+                LOCALFAIL=1
             fi
         }
 
@@ -208,7 +215,7 @@ test_memHSieve() {
         SievecheckStats "WriteMisses"
         SievecheckStats "UnassociatedReadMisses"
         SievecheckStats "UnassociatedWriteMisses"
-        if [[ $FAIL == 1 ]]; then
+        if [[ $LOCALFAIL == 1 ]]; then
             echo "---- 3 - Check the stats ---- FAILED"
         else
             echo "---- 3 - Check the stats ---- PASSED"
@@ -220,6 +227,7 @@ test_memHSieve() {
         #           Line numbers change slightly on Multi Rank.
         echo ""
         echo  "---- 4 - Look at StatisticOutput.csv"
+        LOCALFAIL=0
         wc $referenceFile $outFile
 
         grep -w -e '^.$' -e '^..$' $referenceFile  > ${SSTTESTTEMPFILES}/23_43.ref
@@ -230,8 +238,9 @@ test_memHSieve() {
         if [ $? != 0 ] ; then
             echo " lines 23 to 43 of csv gold did not match"
             FAIL=1
+            LOCALFAIL=1
         fi
-        if [[ $FAIL == 1 ]]; then
+        if [[ $LOCALFAIL == 1 ]]; then
             echo  "---- 4 - Look at StatisticOutput.csv ---- FAILED"
         else
             echo  "---- 4 - Look at StatisticOutput.csv ---- PASSED"
