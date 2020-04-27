@@ -36,11 +36,45 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   NOTE: These functions are invoked automatically by shunit2 as long
 #   as the function name begins with "test...".
 #===============================================================================
+
+# Looking for the Arial Library
 if [[ ! -s $SST_BASE/local/sst-elements/lib/sst-elements-library/libariel.so ]] ; then
     preFail "Skipping memHSieve, (no Ariel )"  "skip"
 else
-     echo "Found the Ariel file! "
+   echo "Found the Ariel file! "
 fi
+
+# Count the Streams
+echo " First call to countStreams follow: "
+countStreams
+
+# allows overriding Darwin as determination of OPENMP
+if [[ ${SST_WITH_OPENMP:+isSet} != isSet ]] ; then
+    SST_WITH_OPENMP=1;
+    if [ $SST_TEST_HOST_OS_KERNEL == "Darwin" ] ; then
+        SST_WITH_OPENMP=0;
+    fi
+fi
+
+#### Remove old ompsievetest task
+Remove_old_ompsievetest_task
+
+rm -fr $SST_TEST_SUITES/memHS_folder
+mkdir $SST_TEST_SUITES/memHS_folder
+pushd $SST_TEST_SUITES/memHS_folder
+#   Remove old files if any
+rm -f ompsievetest.o ompsievetest backtrace_* StatisticOutput.csv mallocRank.txt-0.txt ${SSTTESTTEMPFILES}/23_43.ref ${SSTTESTTEMPFILES}/23_43.out
+
+#   Build ompsievetest
+cp $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/Makefile .
+ln -sf $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/ompsievetest.c .
+#      Optionally remove openmp from the build
+if [ $SST_WITH_OPENMP == 0 ] ; then
+    echo "         ### Remove \"-fopenmp\" from the make"
+    sed -i'.x' 's/-fopenmp//' Makefile
+fi
+make
+ls -l ompsievetest
 
 #-------------------------------------------------------------------------------
 # Test:
@@ -58,38 +92,6 @@ fi
 #     requiring that the command lines for creating both the csvput
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
-
-
-echo " First call to countStreams follow: "
-    countStreams    
-
-#          allows overriding Darwin as determination of OPENMP
-    if [[ ${SST_WITH_OPENMP:+isSet} != isSet ]] ; then
-        SST_WITH_OPENMP=1;
-        if [ $SST_TEST_HOST_OS_KERNEL == "Darwin" ] ; then
-           SST_WITH_OPENMP=0;
-        fi
-    fi
-
-####                 Remove old ompsievetest task
-    Remove_old_ompsievetest_task
-
-rm -fr $SST_TEST_SUITES/memHS_folder        
-mkdir $SST_TEST_SUITES/memHS_folder        
-pushd $SST_TEST_SUITES/memHS_folder        
-#   Remove old files if any
-rm -f ompsievetest.o ompsievetest backtrace_* StatisticOutput.csv mallocRank.txt-0.txt ${SSTTESTTEMPFILES}/23_43.ref ${SSTTESTTEMPFILES}/23_43.out
-
-#   Build ompsievetest
-    cp $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/Makefile .
-    ln -sf $SST_ROOT/sst-elements/src/sst/elements/memHierarchy/Sieve/tests/ompsievetest.c .
-    #      Optionally remove openmp from the build
-    if [ $SST_WITH_OPENMP == 0 ] ; then
-        echo "         ### Remove \"-fopenmp\" from the make"
-        sed -i'.x' 's/-fopenmp//' Makefile
-    fi
-    make
-    ls -l ompsievetest
 
 test_memHSieve() {
 
@@ -113,103 +115,145 @@ test_memHSieve() {
     then
         # Run SUT
         (${sut}  ${sutArgs} | tee $outFile)
-        RetVal=$? 
-        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
-             return 
-        fi 
-        if [ $RetVal != 0 ]  
-        then
-             echo ' '; echo WARNING: sst did not finish normally ; echo ' '
-             wc $referenceFile $csvFileBase*.csv
-             ls -l ${sut}
-             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
-             popd
-             return
+        RetVal=$?
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
+        if [ -e $TIME_FLAG ] ; then
+            echo " Time Limit detected at `cat $TIME_FLAG` seconds"
+            fail " Time Limit detected at `cat $TIME_FLAG` seconds"
+            rm $TIME_FLAG
+            return
         fi
-#  Look at what we'e got
-echo "  Check the result"
-ls -ltr
+
+        if [ $RetVal != 0 ]
+        then
+            echo ' '; echo WARNING: sst did not finish normally ; echo ' '
+            wc $referenceFile $csvFileBase*.csv
+            ls -l ${sut}
+            fail "WARNING: sst did not finish normally, RetVal=$RetVal"
+            popd
+            return
+        fi
+
 ##########################  the very fuzzy pass criteria  (four)
+        #  Look at what we'e got
+        echo "---- Check the result"
+        ls -ltr
         FAIL=0
-# all of the backtrace_*txt files have something in them.
-        echo "         1 - Check the Backtrace files"
+
+        #####
+
+        # all of the backtrace_*txt files have something in them.
+        echo ""
+        echo "---- 1 - Check the Backtrace files"
         ls backtrace_*txt.gz > /dev/null
         if [ $? != 0 ] ; then
-           FAIL=1
+            FAIL=1
         fi
+
         if [ $SST_WITH_OPENMP == 1 ] ; then
-           for gzfn in `ls backtrace_*txt.gz`
-           do
-              fn=`echo $gzfn | awk -F'.gz' '{print $1}'`
-              gzip -d $gzfn
-              if [[ ! -s $fn ]] ; then
-                 echo "$fn is empty, test fails"
-                 FAIL=1
-              fi
-           done
-           wc *.txt
-         fi
+            echo "Checking backtrace files for SST_WITH_OPENMP"
+            for gzfn in `ls backtrace_*txt.gz`
+            do
+                fn=`echo $gzfn | awk -F'.gz' '{print $1}'`
+                gzip -d $gzfn
+                if [[ ! -s $fn ]] ; then
+                    echo "$fn is empty, test fails"
+                    FAIL=1
+                fi
+            done
+            wc *.txt
+        fi
+        if [[ $FAIL == 1 ]]; then
+            echo "---- 1 - Check the Backtrace files ---- FAILED"
+        else
+            echo "---- 1 - Check the Backtrace files ---- PASSED"
+        fi
 
-#  mallocRank.0 is not empty
-   echo "         2 - Check mallockRank"
-   ls -l mallocRank*
-       mR_len=`wc -w mallocRank.txt* | awk '{print $1}'`
-       if [ $mR_len -ge 0 ] ; then
-          echo "mallocRank.txt has $mR_len words"
-       else
-          echo "mallocRank.txt-0 is empty, test fails"
-          FAIL=1
-       fi
+        #####
 
-# the six sieve statics in StatisticOutput.csv are non zero
-       echo "         3 - Check the stats"
-       SievecheckStats() {
-       notz=`grep -w $1 StatisticOutput*.csv | awk '{print $NF*($NF-1)*$NF-2}'`
-       if [ $notz == 0 ] ; then
-          echo "stat $1 has a zero"
-          FAIL=1
-       fi
-       }
-       SievecheckStats "ReadHits"
-       SievecheckStats "ReadMisses"
-       SievecheckStats "WriteHits"
-       SievecheckStats "WriteMisses"
-       SievecheckStats "UnassociatedReadMisses"
-       SievecheckStats "UnassociatedWriteMisses"
+        #  mallocRank.0 is not empty
+        echo ""
+        echo "---- 2 - Check mallockRank"
+        ls -l mallocRank*
+        mR_len=`wc -w mallocRank.txt* | awk '{print $1}'`
+        if [ $mR_len -ge 0 ] ; then
+            echo "mallocRank.txt has $mR_len words"
+        else
+            echo "mallocRank.txt-0 is empty, test fails"
+            FAIL=1
+        fi
+        if [[ $FAIL == 1 ]]; then
+            echo "---- 2 - Check mallockRank ---- FAILED"
+        else
+            echo "---- 2 - Check mallockRank ---- PASSED"
+        fi
 
-#   Refeference file should be exact match lines 23 to 43 of StatisticOutput.csv.gold
-#           Line numbers change slightly on Multi Rank.
-   echo  "         4 - Look at StatisticOutput.csv"
+        #####
+
+        # the six sieve statics in StatisticOutput.csv are non zero
+        echo ""
+        echo "---- 3 - Check the stats"
+
+        SievecheckStats() {
+            notz=`grep -w $1 StatisticOutput*.csv | awk '{print $NF*($NF-1)*$NF-2}'`
+            if [ $notz == 0 ] ; then
+               echo "stat $1 has a zero"
+               FAIL=1
+            fi
+        }
+
+        SievecheckStats "ReadHits"
+        SievecheckStats "ReadMisses"
+        SievecheckStats "WriteHits"
+        SievecheckStats "WriteMisses"
+        SievecheckStats "UnassociatedReadMisses"
+        SievecheckStats "UnassociatedWriteMisses"
+        if [[ $FAIL == 1 ]]; then
+            echo "---- 3 - Check the stats ---- FAILED"
+        else
+            echo "---- 3 - Check the stats ---- PASSED"
+        fi
+
+        #####
+
+        #   Refeference file should be exact match lines 23 to 43 of StatisticOutput.csv.gold
+        #           Line numbers change slightly on Multi Rank.
+        echo ""
+        echo  "---- 4 - Look at StatisticOutput.csv"
         wc $referenceFile $outFile
 
         grep -w -e '^.$' -e '^..$' $referenceFile  > ${SSTTESTTEMPFILES}/23_43.ref
-        grep -w -e '^.$' -e '^..$' $outFile > ${SSTTESTTEMPFILES}/23_43.out 
+        grep -w -e '^.$' -e '^..$' $outFile > ${SSTTESTTEMPFILES}/23_43.out
         wc ${SSTTESTTEMPFILES}/23_43.???
 
         diff ${SSTTESTTEMPFILES}/23_43.ref ${SSTTESTTEMPFILES}/23_43.out
         if [ $? != 0 ] ; then
-           echo " lines 23 to 43 of csv gold did not match"
-           FAIL=1
+            echo " lines 23 to 43 of csv gold did not match"
+            FAIL=1
         fi
+        if [[ $FAIL == 1 ]]; then
+            echo  "---- 4 - Look at StatisticOutput.csv ---- FAILED"
+        else
+            echo  "---- 4 - Look at StatisticOutput.csv ---- PASSED"
+        fi
+
+        #######################################
 
         if [ $FAIL == 0 ] ; then
-           echo "Sieve test PASSED"
+            echo "Sieve test PASSED"
         else
-           fail " Sieve test did NOT meet required conditions"
+            fail " Sieve test FAILED - did NOT meet required conditions"
         fi
 
-            echo ' '
-            grep 'Simulation is complete' $outFile ; echo ' '
+        echo ' '
+        grep 'Simulation is complete' $outFile ; echo ' '
     else
         # Problem encountered: can't find or can't run SUT (doesn't
         # really do anything in Phase I)
         ls -l ${sut}
         fail "Problem with SUT: ${sut}"
     fi
+
     popd
 }
 
@@ -221,16 +265,17 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
 
-    Remove_old_ompsievetest_task
+Remove_old_ompsievetest_task
 echo "                --- returned from Remove_old_omps...   "
 echo " memHS $LINENO ----------------"
- 
+
 MY_TREE=`pwd | awk -F 'devel/trunk' '{print $1 }'`
 echo  "DEBUG?   MY_TREE is $MY_TREE "
 PAIR_PID=`ps -f | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' | grep -v -e grep | grep ompsievetest | awk '{print $2, $3}'`
 echo "$PAIR_PID ++++ PAIR_PID +++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 TREE_PID=`echo $PAIR_PID | awk '{print $2}'`
 OMP_PID=`echo $PAIR_PID | awk '{print $1}'`
+
 if [ ! -z $TREE_PID ] && [ ! -z $OMP_PID ] ; then
     ps -f -p $TREE_PID | grep $MY_TREE
     if [ $? == 0 ] ; then
@@ -247,4 +292,4 @@ echo ' '
 
 echo " Call to countStreams \"Delete\"follows: "
 
-         countStreams "Delete"
+countStreams "Delete"
