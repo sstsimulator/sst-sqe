@@ -146,26 +146,31 @@ test_memHSieve() {
         echo ""
         echo "---- 1 - Check the Backtrace files"
         LOCALFAIL=0
-        ls backtrace_*txt.gz > /dev/null
-        if [ $? != 0 ] ; then
-            FAIL=1
-            LOCALFAIL=1
+        if [[ ${SST_USING_PIN3:+isSet} == isSet ]] ; then
+            echo "NOTE: BACKTRACE FILES ARE NOT GENERATED WHEN USING PIN3 - THIS CHECK SKIPPED..."
+        else
+            ls backtrace_*txt.gz > /dev/null
+            if [ $? != 0 ] ; then
+                FAIL=1
+                LOCALFAIL=1
+            fi
+
+            if [ $SST_WITH_OPENMP == 1 ] ; then
+                echo "Checking backtrace files for SST_WITH_OPENMP"
+                for gzfn in `ls backtrace_*txt.gz`
+                do
+                    fn=`echo $gzfn | awk -F'.gz' '{print $1}'`
+                    gzip -d $gzfn
+                    if [[ ! -s $fn ]] ; then
+                        echo "$fn is empty, test fails"
+                        FAIL=1
+                        LOCALFAIL=1
+                    fi
+                done
+                wc *.txt
+            fi
         fi
 
-        if [ $SST_WITH_OPENMP == 1 ] ; then
-            echo "Checking backtrace files for SST_WITH_OPENMP"
-            for gzfn in `ls backtrace_*txt.gz`
-            do
-                fn=`echo $gzfn | awk -F'.gz' '{print $1}'`
-                gzip -d $gzfn
-                if [[ ! -s $fn ]] ; then
-                    echo "$fn is empty, test fails"
-                    FAIL=1
-                    LOCALFAIL=1
-                fi
-            done
-            wc *.txt
-        fi
         if [[ $LOCALFAIL == 1 ]]; then
             echo "---- 1 - Check the Backtrace files ---- FAILED"
         else
@@ -187,6 +192,7 @@ test_memHSieve() {
             FAIL=1
             LOCALFAIL=1
         fi
+
         if [[ $LOCALFAIL == 1 ]]; then
             echo "---- 2 - Check mallockRank ---- FAILED"
         else
@@ -215,6 +221,7 @@ test_memHSieve() {
         SievecheckStats "WriteMisses"
         SievecheckStats "UnassociatedReadMisses"
         SievecheckStats "UnassociatedWriteMisses"
+
         if [[ $LOCALFAIL == 1 ]]; then
             echo "---- 3 - Check the stats ---- FAILED"
         else
@@ -240,6 +247,7 @@ test_memHSieve() {
             FAIL=1
             LOCALFAIL=1
         fi
+
         if [[ $LOCALFAIL == 1 ]]; then
             echo  "---- 4 - Look at StatisticOutput.csv ---- FAILED"
         else
