@@ -147,7 +147,14 @@ test_memHSieve() {
         echo "---- 1 - Check the Backtrace files"
         LOCALFAIL=0
         if [[ ${SST_USING_PIN3:+isSet} == isSet ]] ; then
-            echo "NOTE: BACKTRACE FILES ARE NOT GENERATED WHEN USING PIN3 - THIS CHECK SKIPPED..."
+            echo "NOTE: BACKTRACE GZ FILES ARE NOT GENERATED WHEN USING PIN3..."
+            ls backtrace_*txt > /dev/null
+            if [ $? != 0 ] ; then
+                FAIL=1
+                LOCALFAIL=1
+            fi
+            ls backtrace_*txt
+            wc *.txt
         else
             ls backtrace_*txt.gz > /dev/null
             if [ $? != 0 ] ; then
