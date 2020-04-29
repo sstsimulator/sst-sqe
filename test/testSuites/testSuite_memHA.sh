@@ -59,6 +59,7 @@ Match=$2    ##  Match criteron
     testDataFileBase="test_memHA_$memHA_case"
     memH_test_dir=$SST_REFERENCE_ELEMENTS/memHierarchy/tests
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
@@ -92,9 +93,10 @@ echo "   "
 
     echo " Running from `pwd`"
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
-       mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
+       mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} > /dev/null 2>${errFile}
        RetVal=$?
-       cat ${testOutFiles}* > $outFile
+       # Call routine to cat the output together
+       cat_multirank_output
        myWC $outFile
        remove_DRAMSim_noise $outFile
        myWC $outFile
