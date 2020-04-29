@@ -83,7 +83,9 @@ test_cacheTracer_1() {
              mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} 2>${errFile}
              RetVal=$?
              wc ${testOutFiles}*
-             cat ${testOutFiles}* > $outFile
+             # Call routine to cat the output together
+             #cat ${testOutFiles}* > $outFile
+             cat_multirank_output
         fi
 
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 

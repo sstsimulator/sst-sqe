@@ -64,7 +64,9 @@ Tol=$2    ##  curTick tolerance
         if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
            mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
            RetVal=$? 
-           cat ${testOutFiles}* > $outFile
+           # Call routine to cat the output together
+           #cat ${testOutFiles}* > $outFile
+           cat_multirank_output
         else
            ${sut} ${sutArgs} > ${outFile}
            RetVal=$? 
