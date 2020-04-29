@@ -47,6 +47,7 @@ Tol=$2    ##  curTick tolerance
     startSeconds=`date +%s`
     testDataFileBase="test_merlin_$merlin_case"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
@@ -69,10 +70,9 @@ Tol=$2    ##  curTick tolerance
 
         echo " Running from `pwd`"
         if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
-           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
+           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} > /dev/null 2>${errFile}
            RetVal=$? 
            # Call routine to cat the output together
-           #cat ${testOutFiles}* > $outFile
            cat_multirank_output
         else
            ${sut} ${sutArgs} > ${outFile}

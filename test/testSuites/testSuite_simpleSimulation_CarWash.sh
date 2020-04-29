@@ -59,6 +59,7 @@ test_simpleSimulation_CarWash() {
     # files. XML postprocessing requires this.
     testDataFileBase="test_simpleSimulationCarWash"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_REFERENCE_ELEMENTS}/simpleSimulation/tests/refFiles/${testDataFileBase}.out"
     # Add basename to list for XML processing later
@@ -72,10 +73,9 @@ test_simpleSimulation_CarWash() {
     then
         # Run SUT
         if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
-           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
+           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} > /dev/null 2>${errFile}
            RetVal=$? 
            # Call routine to cat the output together
-           #cat ${testOutFiles}* > $outFile
            cat_multirank_output
         else
            ${sut} ${sutArgs} > ${outFile}
