@@ -260,6 +260,24 @@ exit
 }
 
 #   -----------------------------------------------
+#
+#    On multirank runs, OpenMPI 2.x outputs the data
+#    differently than OpenMPI 4.x.  We need to combine
+#    the outputs into one file for checking/
+#   -----------------------------------------------
+cat_multirank_output() {
+    rm -rf $outFile
+    if [[ -d ${testOutFiles}/1 ]];then
+        for rankdir in `ls $testOutFiles/1`
+        do
+            cat $testOutFiles/1/$rankdir/stdout >> $outFile
+        done
+    else
+        cat ${testOutFiles}* > $outFile
+    fi
+}
+
+#   -----------------------------------------------
 #    
 #    sort two input files and then compare sorted files
 #    exit code is 0 if sorted files match, else 1
