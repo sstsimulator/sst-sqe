@@ -61,6 +61,7 @@ if [ $simpleC_case == "Component" ] ; then
             echo "This is COMPONENT PATH"
     testDataFileBase="test_simple${simpleC_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/refFiles/${testDataFileBase}.out"
 
@@ -72,6 +73,7 @@ elif [ $simpleC_case == "SubComponent" ] ; then
              echo "  this is SUB COMPONNT PATH"
     testDataFileBase="test_simple${simpleC_case}$type"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_REFERENCE_ELEMENTS}/simpleElementExample/tests/subcomponent_tests/refFiles/test_${Type}.out"
 ls -l $referenceFile
