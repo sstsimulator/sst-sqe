@@ -555,7 +555,7 @@ echo B4      $SST_SUITES_TO_RUN
            ${SST_TEST_SUITES}/testSuite_${S}.sh
          done
          return
-      fi 
+      fi
 
 
       if [ $1 == "sstmainline_config_all" ] ; then
@@ -3169,9 +3169,9 @@ if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
     SST_SQEBRANCH="detached"
 else
     echo ' ' ;  echo ' ' ; echo ' ' ; echo ' '
-    echo " Attempting to set SQE branch is a no op"
+    echo " Attempting to set SQE branch other than devel"
     echo " SQE branch is selected by configure in Jenkins"
-    echo "  Ignoring SST_SQEBRANCH =  ${SST_SQEBRANCH}"
+    echo "  SELECTED SST_SQEBRANCH =  ${SST_SQEBRANCH}"
     echo ' ' ;  echo ' ' ; echo ' ' ; echo ' '
 fi
 
@@ -3477,7 +3477,7 @@ else
                   if command -v python > /dev/null 2>&1; then
                       # NOTE: This might be a python2 or python3, depending upon system
                       export SST_PYTHON_APP_EXE=`command -v python`
-                      # Now check for python-config, NOTE: some systems call it python2-config, 
+                      # Now check for python-config, NOTE: some systems call it python2-config,
                       # so we test for both
                       if python-config --prefix > /dev/null 2>&1; then
                           export SST_PYTHON_CFG_EXE=`command -v python-config`
@@ -3537,38 +3537,70 @@ else
             echo "=============================================================="
 
 
+       # Figure out PIN Configuration
        if [[  ${SST_WITHOUT_PIN:+isSet} == isSet ]] ; then
-            echo "  This run is forced to be without PIN "
+            echo "  PIN IS NOT ENABLED BY SST_WITHOUT_PIN flag"
        else
-            # if Intel PIN module is available, load 2.14 version
-            #           ModuleEx puts the avail output on Stdout (where it belongs.)
-            ModuleEx avail | egrep -q "pin/pin-2.14-71313"
-            if [ $? == 0 ]
-            then
-            # if `pin module is available, use 2.14.
-                if [ $kernel != "Darwin" ] ; then
-
-                   echo "using Intel PIN environment module  pin-2.14-71313-gcc.4.4.7-linux"
-                    #    Compiler is $4
-                   if [[ "$4" != gcc-5* ]] ; then
-                       echo "Loading Intel PIN environment module"
-                       ModuleEx load pin/pin-2.14-71313-gcc.4.4.7-linux
+           if [[  ${SST_FORCE_USING_PIN2:+isSet} == isSet ]] ; then
+                # if Intel PIN module is available, load 2.14 version
+                #           ModuleEx puts the avail output on Stdout (where it belongs.)
+                ModuleEx avail | egrep -q "pin/pin-2.14-71313"
+                if [ $? == 0 ]
+                then
+                    if [ $kernel != "Darwin" ] ; then
+                       echo "USING INTEL PIN ENVIRONMENT MODULE pin-2.14-71313-gcc.4.4.7-linux"
+                       #  Verify compilier is not TOO NEW! Compiler is located in $4
+                       if [[ "$4" != gcc-5* ]] ; then
+                           echo "LOADING INTEL PIN ENVIRONMENT MODULE"
+                           ModuleEx load pin/pin-2.14-71313-gcc.4.4.7-linux
+                           echo  $INTEL_PIN_DIRECTORY
+                           ls $INTEL_PIN_DIRECTORY
+                           export SST_USING_PIN2=1
+                       else
+                          echo " ################################################################"
+                          echo " #"
+                          echo " #  pin-2.14-71313-gcc.4.4.7-linux IS INCOMPATIBLE WITH GREATER THAN GCC-4.9"
+                          echo " #"
+                          echo " ################################################################"
+                       fi
+                    else        ##    MacOS   (Darwin)
+                       echo "USING INTEL PIN ENVIRONMENT MODULE  pin-2.14-71313-clang.5.1-mac"
+                       echo "LOADING INTEL PIN ENVIRONMENT MODULE"
+                       ModuleEx load pin/pin-2.14-71313-clang.5.1-mac
                        echo  $INTEL_PIN_DIRECTORY
                        ls $INTEL_PIN_DIRECTORY
-                   else
-                      echo " ################################################################"
-                      echo " #"
-                      echo " #  pin-2.14-71313-gcc.4.4.7-linux is incompatible with gcc-5.x"
-                      echo " #"
-                      echo " ################################################################"
-                   fi
-                else        ##    MacOS   (Darwin)
-                   echo "using Intel PIN environment module  pin-2.14-71313-clang.5.1-mac"
-                   echo "Loading Intel PIN environment module"
-                   ModuleEx load pin/pin-2.14-71313-clang.5.1-mac
+                       export SST_USING_PIN2=1
+                    fi
+                else
+                    echo "INTEL PIN VER 2 ENVIRONMENT MODULE NOT FOUND ON THIS HOST."
                 fi
             else
-                echo "Intel PIN environment module not found on this host."
+                # Check that the default Intel PIN module is available, load 3.13 version
+                # For Linux = pin/pin-3.13-98189-g60a6ef199-gcc-linux
+                # For OSX   = pin/pin-3.13-98189-g60a6ef199-clang-mac
+                #           ModuleEx puts the avail output on Stdout (where it belongs.)
+                ModuleEx avail | egrep -q "pin/pin-3.13"
+                if [ $? == 0 ]
+                then
+                # if `pin module is available, use pin/pin-3.13.
+                    if [ $kernel != "Darwin" ] ; then
+                       echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.13-98189-g60a6ef199-gcc-linux"
+                       echo "LOADING INTEL PIN ENVIRONMENT MODULE"
+                       ModuleEx load pin/pin-3.13-98189-g60a6ef199-gcc-linux
+                       echo  $INTEL_PIN_DIRECTORY
+                       ls $INTEL_PIN_DIRECTORY
+                       export SST_USING_PIN3=1
+                    else        ##    MacOS   (Darwin)
+                       echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.13-98189-g60a6ef199-clang-mac"
+                       echo "LOADING INTEL PIN ENVIRONMENT MODULE"
+                       ModuleEx load pin/pin-3.13-98189-g60a6ef199-clang-mac
+                       echo  $INTEL_PIN_DIRECTORY
+                       ls $INTEL_PIN_DIRECTORY
+                       export SST_USING_PIN3=1
+                    fi
+                else
+                    echo "INTEL PIN VER 3 ENVIRONMENT MODULE NOT FOUND ON THIS HOST."
+                fi
             fi
        fi
 
