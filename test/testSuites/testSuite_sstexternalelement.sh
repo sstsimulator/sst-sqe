@@ -56,6 +56,7 @@ sstexternalelement_Template() {
     # files. XML postprocessing requires this.
     testDataFileBase="$test_name"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     referenceFile="${SST_ROOT}/sst-external-element/tests/refFiles/${testDataFileBase}.out"
 
@@ -70,9 +71,10 @@ sstexternalelement_Template() {
     then
         # Run SUT
         if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
-           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
+           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} > /dev/null 2>${errFile}
            RetVal=$? 
-           cat ${testOutFiles}* > $outFile
+           # Call routine to cat the output together
+           cat_multirank_output
         else
            ${sut} ${sutArgs} > ${outFile}
            RetVal=$? 

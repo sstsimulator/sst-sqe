@@ -44,6 +44,7 @@ shogun_case=$1
     # files. XML postprocessing requires this.
     testDataFileBase="test_shogun_${shogun_case}"
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     referenceFile="${SST_REFERENCE_ELEMENTS}/shogun/tests/refFiles/${testDataFileBase}.out"
@@ -58,9 +59,10 @@ shogun_case=$1
     then
         # Run SUT
         if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
-           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
+           mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} > /dev/null 2>${errFile}
            RetVal=$? 
-           cat ${testOutFiles}* > $outFile
+           # Call routine to cat the output together
+           cat_multirank_output
         else
            ${sut} ${sutArgs} > $outFile
            RetVal=$? 
