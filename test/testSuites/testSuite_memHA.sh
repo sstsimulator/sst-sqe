@@ -18,6 +18,8 @@ TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 
 remove_DRAMSim_noise() {
  grep -v -e '== Loading device model file .DDR3_micron_32M_8B_x4_sg125.ini. ==' \
+   -e  '== Loading device model file .ddr_device.ini. ==' \
+   -e  '== Loading system model file .ddr_system.ini. ==' \
    -e  '== Loading system model file .system.ini. ==' \
    -e  'WARNING: UNKNOWN KEY .DEBUG_TRANS_FLOW. IN INI FILE' \
    -e  '===== MemorySystem 0 =====' \
@@ -99,6 +101,12 @@ echo "   "
        cat_multirank_output
        myWC $outFile
        remove_DRAMSim_noise $outFile
+
+       # Clean up DRAMSim noise from the ref file (make a modified ref file)
+       cat $referenceFile > $newRef
+       remove_DRAMSim_noise $newRef
+       referenceFile=$newRef
+
        myWC $outFile
     else
        ${sut} ${sutArgs} > ${outFile}
