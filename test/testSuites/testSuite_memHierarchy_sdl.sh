@@ -59,6 +59,7 @@ Tol=$2    ##  curTick tolerance
     tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
     errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+    fixedRefFile="${SST_TEST_OUTPUTS}/${testDataFileBase}_fixedRefFile.out"
 
     RF_TDFB=`echo ${testDataFileBase} | sed s/-/_/g`
     echo "TDFB $RF_TDFB"
@@ -148,31 +149,46 @@ echo ' '
 
     grep -v ^cpu.*: $outFile > $tmpFile
     grep -v 'not aligned to the request size' $tmpFile > $outFile
+
+    # Cleanup any DRAMSIM Debug messages; from both the output file and ref file
+    # (this is a bit of hammer, but it works)
+    cat $referenceFile > $fixedRefFile
+    grep -v "===== MemorySystem" $outFile > $tmpFile; cat $tmpFile > $outFile
+    grep -v "===== MemorySystem" $fixedRefFile > $tmpFile; cat $tmpFile > $fixedRefFile
+    grep -v "TOTAL_STORAGE : 2048MB | 1 Ranks | 16 Devices per rank" $outFile > $tmpFile; cat $tmpFile > $outFile
+    grep -v "TOTAL_STORAGE : 2048MB | 1 Ranks | 16 Devices per rank" $fixedRefFile > $tmpFile; cat $tmpFile > $fixedRefFile
+    grep -v "== Loading" $outFile > $tmpFile; cat $tmpFile > $outFile
+    grep -v "== Loading" $fixedRefFile > $tmpFile; cat $tmpFile > $fixedRefFile
+    grep -v "DRAMSim2 Clock Frequency =1Hz, CPU Clock Frequency=1Hz" $outFile > $tmpFile; cat $tmpFile > $outFile
+    grep -v "DRAMSim2 Clock Frequency =1Hz, CPU Clock Frequency=1Hz" $fixedRefFile > $tmpFile; cat $tmpFile > $fixedRefFile
+    grep -v "WARNING: UNKNOWN KEY 'DEBUG_TRANS_FLOW' IN INI FILE" $outFile > $tmpFile; cat $tmpFile > $outFile
+    grep -v "WARNING: UNKNOWN KEY 'DEBUG_TRANS_FLOW' IN INI FILE" $fixedRefFile > $tmpFile; cat $tmpFile > $fixedRefFile
+
     RemoveComponentWarning
     pushd ${SSTTESTTEMPFILES}
 #          Append errFile to outFile   w/o  Not Aligned messages
-    diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
+    diff -b $fixedRefFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
     if [ $? == 0 ] ; then
         fileSize=`wc -l $outFile | awk '{print $1}'`
         echo "            Exact Match of reduced Output  -- $fileSize lines"
         rm ${SSTTESTTEMPFILES}/_raw_diff
     else
-        wc $referenceFile $outFile
+        wc $fixedRefFile $outFile
         wc ${SSTTESTTEMPFILES}/_raw_diff
         rm diff_sorted
-        compare_sorted $referenceFile $outFile
+        compare_sorted $fixedRefFile $outFile
         if [ $? == 0 ] ; then
            echo " Sorted match with Reference File"
            rm ${SSTTESTTEMPFILES}/_raw_diff
         else
 cat ${SSTTESTTEMPFILES}/diff_sorted
-           echo "`diff $referenceFile $outFile | wc` $memH_case" >> ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
+           echo "`diff $fixedRefFile $outFile | wc` $memH_case" >> ${SST_TEST_INPUTS_TEMP}/$$_diffSummary
    #                             --- Special case with-DramSim --- 
            if [ $usingDramSim == 0 ] ; then    ## usingDramSim is TRUE
               echo "            wc the diff"
-              diff ${outFile} ${referenceFile} | wc; echo ' '
+              diff ${outFile} ${fixedRefFile} | wc; echo ' '
               echo " Remove the histogram"
-              ref=`grep -v '\[.*\]' ${referenceFile} | wc | awk '{print $1, $2}'`; 
+              ref=`grep -v '\[.*\]' ${fixedRefFile} | wc | awk '{print $1, $2}'`; 
               new=`grep -v '\[.*\]' ${outFile}       | wc | awk '{print $1, $2}'`;
               if [ "$ref" == "$new" ];
               then
