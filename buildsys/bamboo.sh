@@ -426,7 +426,7 @@ echo " #####################################################"
    echo "parameter \$2 is $2  "
 echo " #####################################################"
    echo "SST_MULTI_THREAD_COUNT: ${SST_MULTI_THREAD_COUNT}"
-   echo "SST_MULTI_RANK_COUNT: ${SST_MULTI_THREAD_COUNT}"
+   echo "SST_MULTI_RANK_COUNT: ${SST_MULTI_RANK_COUNT}"
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ||
        [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
     #    This subroutine is in test/include/testDefinitions.sh
