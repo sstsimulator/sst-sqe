@@ -18,6 +18,8 @@ TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 
 remove_DRAMSim_noise() {
  grep -v -e '== Loading device model file .DDR3_micron_32M_8B_x4_sg125.ini. ==' \
+   -e  '== Loading device model file .ddr_device.ini. ==' \
+   -e  '== Loading system model file .ddr_system.ini. ==' \
    -e  '== Loading system model file .system.ini. ==' \
    -e  'WARNING: UNKNOWN KEY .DEBUG_TRANS_FLOW. IN INI FILE' \
    -e  '===== MemorySystem 0 =====' \
@@ -59,6 +61,7 @@ Match=$2    ##  Match criteron
     testDataFileBase="test_memHA_$memHA_case"
     memH_test_dir=$SST_REFERENCE_ELEMENTS/memHierarchy/tests
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
+    errFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.err"
     newOut="${SST_TEST_OUTPUTS}/${testDataFileBase}.newout"
     newRef="${SST_TEST_OUTPUTS}/${testDataFileBase}.newref"
     testOutFiles="${SST_TEST_OUTPUTS}/${testDataFileBase}.testFile"
@@ -92,11 +95,18 @@ echo "   "
 
     echo " Running from `pwd`"
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
-       mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
+       mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} > /dev/null 2>${errFile}
        RetVal=$?
-       cat ${testOutFiles}* > $outFile
+       # Call routine to cat the output together
+       cat_multirank_output
        myWC $outFile
        remove_DRAMSim_noise $outFile
+
+       # Clean up DRAMSim noise from the ref file (make a modified ref file)
+       cat $referenceFile > $newRef
+       remove_DRAMSim_noise $newRef
+       referenceFile=$newRef
+
        myWC $outFile
     else
        ${sut} ${sutArgs} > ${outFile}

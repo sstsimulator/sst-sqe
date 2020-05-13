@@ -32,69 +32,88 @@ L_BUILDTYPE=$1 # Build type, passed in from bamboo.sh as a convenience
                # that bamboo.sh defines it if you wish to use it.
 
 L_TESTFILE=()  # Empty list, used to hold test file names
- 
+
+
+### INITIAL SETUP OF THE PROSPERO ENVIRONMENT
 rm -rf ${SST_TEST_SUITES}/Prospero_folder
 mkdir ${SST_TEST_SUITES}/Prospero_folder
 cd ${SST_TEST_SUITES}/Prospero_folder
+
+# Check if we want to build the prospero trace files
 if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
+    # Is this a Yosemite build, we cannot run PIN on Yosemite
     if [[ $SST_TEST_HOST_OS_DISTRIB_VERSION == *10.10* ]] ; then
       preFail "SKIP: Prospero Pin does not work on Yosemite - July 2016"  "skip"
-    fi  
-   # ==================  Create program "array"
+    fi
+    # ==================  Create program "array"
 
-   # ----------------- compile the file array     
-   echo "## ----------------- compile the file array   "
-       ln -s ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/Makefile .
-       ln -s ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/array.c .
-       ln -s ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/*.py .
+    # ----------------- compile the file array
+    echo "## ----------------- compile the file array   "
+    # Make symlinks to the files we need to compile
+    ln -s ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/Makefile .
+    ln -s ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/array.c .
+    ln -s ${SST_ROOT}/sst-elements/src/sst/elements/prospero/tests/array/*.py .
+    # Build it
+    make clean
+    make
 
-       make clean
-       make
-   ls -l 
-   echo "target file follows"
-   ls -l array
-   # --------------------------- run the pin trace program
-   #    Build the compress, uncompressed and binary
-   rm -f *.trace
-   echo "## --------------------------- run the pin trace program"
-   which sst-prospero-trace
+    echo "## ----------------- Files in the Array directory"
+    ls -l
 
-       sst-prospero-trace -ifeellucky -t 1 -f compressed -o sstprospero -- ./array
-       echo " pin return flag is from compressed: $?"   
+    echo "## ----------------- List the target file (array)"
+    ls -l array
 
-       sst-prospero-trace -ifeellucky -t 1 -f text  -o sstprospero -- ./array
-   
-       sst-prospero-trace -ifeellucky -t 1 -f binary -o sstprospero -- ./array
-       PIN_TAR="Pin"
+    # Now run the pin trace program
+    #    Build the compress, uncompressed and binary
+    rm -f *.trace
+
+    echo "## --------------------------- verify path to the sst-prospero-trace app"
+    which sst-prospero-trace
+
+    echo "## --------------------------- run the pin trace program for each type"
+    if [[ ${SST_USING_PIN3:+isSet} != isSet ]] ; then
+        sst-prospero-trace -ifeellucky -t 1 -f compressed -o sstprospero -- ./array
+        echo " pin return flag is from compressed trace build: $?"
+    fi
+
+    sst-prospero-trace -ifeellucky -t 1 -f text  -o sstprospero -- ./array
+    echo " pin return flag is from text trace build: $?"
+
+    sst-prospero-trace -ifeellucky -t 1 -f binary -o sstprospero -- ./array
+    echo " pin return flag is from binary trace build: $?"
+
+    PIN_TAR="Pin"
 else
-   #  Download the trace files from sst-simulator.org
-## wget of data file, with retries
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-       echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz --no-check-certificate"
-       wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz --no-check-certificate
-      retVal=$?
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "    WGET FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "   Wait 5 minutes"
-             sleep 300        # Wait 5 minutes
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             continue
-         fi
-         preFail "wget failed"
-      fi
+    #  Download the trace files from sst-simulator.org
+    ## wget of data file, with retries
+    Num_Tries_remaing=3
+    while [ $Num_Tries_remaing -gt 0 ]
+    do
+        echo "wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz --no-check-certificate"
+        wget https://github.com/sstsimulator/sst-downloads/releases/download/TestFiles/Prospero-trace-files.tar.gz --no-check-certificate
+        retVal=$?
+        if [ $retVal == 0 ] ; then
+            Num_Tries_remaing=-1
+        else
+            echo "    WGET FAILED.  retVal = $retVal"
+            Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+            if [ $Num_Tries_remaing -gt 0 ] ; then
+                echo "   Wait 5 minutes"
+                sleep 300        # Wait 5 minutes
+                echo "    ------   RETRYING    $Num_Tries_remaing "
+                continue
+            fi
+            preFail "wget failed"
+        fi
    done
    echo " "
 
-       tar -xzf Prospero-trace-files.tar.gz
-       PIN_TAR="Tar"
-fi   
-echo " ---------------  Three files are expected: "
+   tar -xzf Prospero-trace-files.tar.gz
+   PIN_TAR="Tar"
+fi
+
+# Now we need to verify that the 3 Trace files are found
+echo " ---------------  Two or Three Trace files are expected (depending on run type): "
 cksum *.trace
 if [ $? != 0 ] ; then
    echo "No trace files found"
@@ -102,6 +121,7 @@ if [ $? != 0 ] ; then
 fi
 echo ' '
 
+# Create sym links to some memHierarchy files
 ln -sf ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/DDR3_micron_32M_8B_x4_sg125.ini
 ln -sf ${SST_ROOT}/sst-elements/src/sst/elements/memHierarchy/tests/system.ini
 
@@ -119,19 +139,23 @@ wcomma() {
 #===============================================================================
 
 #-------------------------------------------------------------------------------
-#           Parameters are 
+#           Parameters are
 #              trace file type:  (text, binary, compressed)
 #              with or without DramSim  ("DramSim" or other, "none", blank)
 template_prospero() {
     cd ${SST_TEST_SUITES}/Prospero_folder
+
+    # Check that trace files exist
     ls ${SST_TEST_SUITES}/Prospero_folder/*.trace > /dev/null 2>&1
     rt=$?
     if [ 0 != $rt ] ; then
         fail "No trace file found (rt = $rt)"
         return
     fi
+
     TYPE=$1
     startSeconds=`date +%s`
+
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
     if [ "$2" != "DramSim" ] ; then
@@ -156,15 +180,15 @@ template_prospero() {
         # Run SUT
         ${sut}  --model-options "--TraceType=$TYPE --UseDramSim=$useDRAMSIM" ${sutArgs} > $outFile
         RetVal=$?
-        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
-             return 
-        fi 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
+        if [ -e $TIME_FLAG ] ; then
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds"
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds"
+             rm $TIME_FLAG
+             return
+        fi
         echo ' ' ; grep simulated $outFile   ; echo ' '
-        
+
         if [ $RetVal != 0 ]
         then
              echo ' '; echo ERROR: sst did not finish normally ; echo ' '
@@ -183,8 +207,8 @@ template_prospero() {
     fi
     diff -w $referenceFile $outFile > /dev/null
     if [ $? != 0 ]
-    then 
-        #   Exact match is only expected from tar, i.e., identical input to SST 
+    then
+        #   Exact match is only expected from tar, i.e., identical input to SST
         if [ $PIN_TAR == "Tar" ] ; then
             lref=`cat ${referenceFile} | grep Cycles.with.no.ops.issued | awk '{print $9}'`
             lout=`cat ${outFile} | grep Cycles.with.no.ops.issued | awk '{print $9}'`
@@ -198,7 +222,7 @@ template_prospero() {
         fi
 
         wc $outFile $referenceFile
-        ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
+        ref=`wc ${referenceFile} | awk '{print $1, $2}'`;
         new=`wc ${outFile}       | awk '{print $1, $2}'`;
         if [ "$ref" == "$new" ];
         then
@@ -221,46 +245,52 @@ template_prospero() {
 mkdir -p $SST_TEST_INPUTS_TEMP
 script6=${SST_TEST_INPUTS_TEMP}/__prospero_tmp_${PIN_TAR}
 cat > $script6 << ..EOF.
-test_prospero_compressed_${PIN_TAR}() {
 
+
+test_prospero_compressed_${PIN_TAR}() {
+    # We can only test the compressed trace file on PIN2 or PIN3 With Downloaded traces
+    if [[ ${SST_USING_PIN3:+isSet} == isSet ]] && [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
+        skip_this_test
+        return
+    fi
     template_prospero compressed none
 }
 
 
 test_prospero_compressed_withdramsim_${PIN_TAR}() {
-
+    # We can only test the compressed trace file on PIN2 or PIN3 With Downloaded traces
+    if [[ ${SST_USING_PIN3:+isSet} == isSet ]] && [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
+        skip_this_test
+        return
+    fi
     template_prospero compressed DramSim
+}
 
-} 
 
 test_prospero_text_${PIN_TAR}(){
-
     template_prospero text none
 }
 
 
 test_prospero_text_withdramsim_${PIN_TAR}() {
-
     template_prospero text DramSim
-
 }
 
 test_prospero_binary_${PIN_TAR}(){
-
     template_prospero binary none
 }
 
 
 test_prospero_binary_withdramsim_${PIN_TAR}() {
- 
     template_prospero binary DramSim
 }
+
 ..EOF.
 
 export SST_TEST_ONE_TEST_TIMEOUT=30         #  30 seconds
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
- 
+
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 cd $OPWD      #  Restore Original PWD for shunit2
