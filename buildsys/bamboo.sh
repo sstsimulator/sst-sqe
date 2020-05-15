@@ -286,15 +286,15 @@ if [ ! -d ../../distTestDir ] ; then
    do
       date
       echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_BALAR_REPO ${SST_ROOT}/sst-elements/src/sst/elements/balar "
+      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_BALARBRANCH $SST_BALARREPO ${SST_ROOT}/sst-elements/src/sst/elements/balar "
       date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_BALAR_REPO ${SST_ROOT}/sst-elements/src/sst/elements/balar
+      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_BALARBRANCH $SST_BALARREPO ${SST_ROOT}/sst-elements/src/sst/elements/balar
       retVal=$?
       date
       if [ $retVal == 0 ] ; then
          Num_Tries_remaing=-1
       else
-         echo "\"git clone of ${SST_BALAR_REPO} \" FAILED.  retVal = $retVal"
+         echo "\"git clone of ${SST_BALARREPO} \" FAILED.  retVal = $retVal"
          Num_Tries_remaing=$(($Num_Tries_remaing - 1))
          if [ $Num_Tries_remaing -gt 0 ] ; then
              echo "    ------   RETRYING    $Num_Tries_remaing "
@@ -320,15 +320,15 @@ if [ ! -d ../../distTestDir ] ; then
    do
       date
       echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUSIM_REPO ${SST_ROOT}/sst-elements/src/sst/elements/balar/sst-gpgpusim "
+      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUSIMBRANCH $SST_GPGPUSIMREPO ${SST_ROOT}/sst-elements/src/sst/elements/balar/sst-gpgpusim "
       date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUBRANCH $SST_GPGPUSIM_REPO ${SST_ROOT}/sst-elements/src/sst/elements/balar/sst-gpgpusim
+      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUSIMBRANCH $SST_GPGPUSIMREPO ${SST_ROOT}/sst-elements/src/sst/elements/balar/sst-gpgpusim
       retVal=$?
       date
       if [ $retVal == 0 ] ; then
          Num_Tries_remaing=-1
       else
-         echo "\"git clone of ${SST_GPGPUSIM_REPO} \" FAILED.  retVal = $retVal"
+         echo "\"git clone of ${SST_GPGPUSIMREPO} \" FAILED.  retVal = $retVal"
          Num_Tries_remaing=$(($Num_Tries_remaing - 1))
          if [ $Num_Tries_remaing -gt 0 ] ; then
              echo "    ------   RETRYING    $Num_Tries_remaing "
@@ -3152,14 +3152,14 @@ if [[ ${SST_JUNOREPO:+isSet} != isSet ]] ; then
 fi
 
 # Which Repository to use for Balar (default is https://github.com/sstsimulator/balar.git)
-if [[ ${SST_BALAR_REPO:+isSet} != isSet ]] ; then
-    SST_BALAR_REPO=https://github.com/sstsimulator/balar.git
+if [[ ${SST_BALARREPO:+isSet} != isSet ]] ; then
+    SST_BALARREPO=https://github.com/sstsimulator/balar.git
 fi
 ###
 
 # Which Repository to use for GPGPU-Sim (https://github.com/purdue-aalp/sst-gpgpusim-external.git)
-if [[ ${SST_GPGPUSIM_REPO:+isSet} != isSet ]] ; then
-    SST_GPGPUSIM_REPO=https://github.com/purdue-aalp/sst-gpgpusim-external.git
+if [[ ${SST_GPGPUSIMREPO:+isSet} != isSet ]] ; then
+    SST_GPGPUSIMREPO=https://github.com/purdue-aalp/sst-gpgpusim-external.git
 fi
 ###
 
@@ -3195,8 +3195,12 @@ if [[ ${SST_JUNOBRANCH:+isSet} != isSet ]] ; then
     SST_JUNOBRANCH=master
 fi
 
-if [[ ${SST_GPGPUBRANCH:+isSet} != isSet ]] ; then
-    SST_GPGPUBRANCH=master
+if [[ ${SST_BALARBRANCH:+isSet} != isSet ]] ; then
+    SST_BALARBRANCH=master
+fi
+
+if [[ ${SST_GPGPUSIMBRANCH:+isSet} != isSet ]] ; then
+    SST_GPGPUSIMBRANCH=master
 fi
 
 echo "#############################################################"
@@ -3207,7 +3211,8 @@ echo "  GitHub ELEMENTS Repository and Branch = $SST_ELEMENTSREPO $SST_ELEMENTSB
 echo "  GitHub MACRO Repository and Branch = $SST_MACROREPO $SST_MACROBRANCH"
 echo "  GitHub EXTERNAL-ELEMENT Repository and Branch = $SST_EXTERNALELEMENTREPO $SST_EXTERNALELEMENTBRANCH"
 echo "  GitHub JUNO Repository and Branch = $SST_JUNOREPO $SST_JUNOBRANCH"
-echo "  GitHub GPGPU Repository and Branch = $SST_BALAR_REPO $SST_GPGPUBRANCH"
+echo "  GitHub BALAR Repository and Branch = $SST_BALARREPO $SST_BALARBRANCH"
+echo "  GitHub GPGPU Repository and Branch = $SST_GPGPUSIMREPO $SST_GPGPUSIMBRANCH"
 echo "#############################################################"
 
 
