@@ -757,7 +757,7 @@ echo B4      $SST_SUITES_TO_RUN
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
     ${SST_TEST_SUITES}/testSuite_kingsley.sh
-    ${SST_TEST_SUITES}/testSuite_sst_GNA.sh
+#    ${SST_TEST_SUITES}/testSuite_sst_GNA.sh   # Removed for SST v10.0.0 Release
     ${SST_TEST_SUITES}/testSuite_shogun.sh
 
 
