@@ -3166,7 +3166,7 @@ fi
 # Which branches to use for each repo (default is devel)
 if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
     SST_SQEBRANCH=v10.0.0_beta
-    SST_SQEBRANCH="detached"
+#    SST_SQEBRANCH="detached"  # removed from SST-10
 else
     echo ' ' ;  echo ' ' ; echo ' ' ; echo ' '
     echo " Attempting to set SQE branch other than devel"
