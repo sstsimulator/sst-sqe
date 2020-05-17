@@ -3222,8 +3222,8 @@ echo " SST_ROOT = $SST_ROOT"
 
 #
 echo "--- DEBUG DEBUG START DEBUG DEBUG---"
-echo " SST_BASE = $SST_BASE"
-pushd ${SST_BASE}/devel/sqe
+echo "TRYING TO FIND SQE DIRECTORY FROM SST_ROOT..."
+pushd ${SST_ROOT}/../sqe
 git branch
 git log -n 1 | grep commit
 popd
