@@ -3220,6 +3220,15 @@ echo "#############################################################"
 export SST_ROOT=`pwd`
 echo " SST_ROOT = $SST_ROOT"
 
+#
+echo "--- DEBUG DEBUG START DEBUG DEBUG---"
+echo " SST_BASE = $SST_BASE"
+pushd ${SST_BASE}/devel/sqe
+git branch
+git log -n 1 | grep commit
+popd
+echo "--- DEBUG DEBUG END DEBUG DEBUG---"
+
 echo "#############################################################"
 echo "  Version Feb 1 2018 0900 hours "
 echo ' '
