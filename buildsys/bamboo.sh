@@ -883,7 +883,6 @@ setConvenienceVars() {
     fi
 
     elementsbaseoptions="--disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL --with-sst-core=$SST_CORE_INSTALL"
-    macrobaseoptions="--disable-silent-rules --prefix=$SST_CORE_INSTALL"
     externalelementbaseoptions=""
     junobaseoptions=""
     echo "setConvenienceVars() : "
@@ -1308,7 +1307,7 @@ getconfig() {
             miscEnv="${cc_environment} ${mpi_environment}"
             depsStr="-r default -H default -G default -k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
-            coreConfigStr="$macrobaseoptions"
+            coreConfigStr="$corebaseoptions"
             elementsConfigStr="NOBUILD"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_HOME --disable-regex --with-sst-core=$SST_CORE_INSTALL"
             externalelementConfigStr="NOBUILD"
@@ -1342,7 +1341,7 @@ getconfig() {
             miscEnv="${cc_environment} ${mpi_environment}"
             depsStr="-r default -H default -G default -k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
-            coreConfigStr="$macrobaseoptions"
+            coreConfigStr="$corebaseoptions"
             elementsConfigStr="NOBUILD"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
             externalelementConfigStr="NOBUILD"
