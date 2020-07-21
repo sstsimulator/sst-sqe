@@ -37,12 +37,14 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #   as the function name begins with "test...".
 #===============================================================================
 
-# Looking for the Arial Library
-if [[ ! -s $SST_BASE/local/sst-elements/lib/sst-elements-library/libariel.so ]] ; then
-    preFail "Skipping memHSieve, (no Ariel )"  "skip"
-else
-   echo "Found the Ariel file! "
-fi
+# Looking for the Ariel/Pin Library
+echo "INTEL_PIN_DIRECTORY = $INTEL_PIN_DIRECTORY"
+if [ ! -d "$INTEL_PIN_DIRECTORY" ] ; then
+    echo "MemHSieve tests requires PIN DIRECTORY"
+    echo "        NOT  FOUND"
+    echo " Environment Variable INTEL_PIN_DIRECTORY must be defined"
+    preFail "MemHSieve tests requires PIN DIRECTORY" "skip"
+fi 
 
 # Count the Streams
 echo " First call to countStreams follow: "
