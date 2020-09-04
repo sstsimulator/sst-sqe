@@ -31,7 +31,7 @@ net = { 'topo' : 'fattree',
 
 networks.append(net);
 
-net = { 'topo' : 'dragonfly2',
+net = { 'topo' : 'dragonfly',
         'args' : [
                     ['--shape',   ['8:8:4:8']]
                  ]

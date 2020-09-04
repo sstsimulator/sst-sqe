@@ -1,7 +1,7 @@
-#!/bin/bash 
+#!/bin/bash
 # testSuite_merlin.sh
 
-# Description: 
+# Description:
 
 # A shell script that defines a shunit2 test suite. This will be
 # invoked by the Bamboo script.
@@ -71,21 +71,21 @@ Tol=$2    ##  curTick tolerance
         echo " Running from `pwd`"
         if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
            mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs} > /dev/null 2>${errFile}
-           RetVal=$? 
+           RetVal=$?
            # Call routine to cat the output together
            cat_multirank_output
         else
            ${sut} ${sutArgs} > ${outFile}
-           RetVal=$? 
+           RetVal=$?
         fi
 
-        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
-             return 
-        fi 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
+        if [ -e $TIME_FLAG ] ; then
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds"
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds"
+             rm $TIME_FLAG
+             return
+        fi
         if [ $RetVal != 0 ] ; then
              echo ' '; echo WARNING: sst did not finish normally ; echo ' '
              ls -l ${sut}
@@ -99,17 +99,17 @@ Tol=$2    ##  curTick tolerance
         wc ${outFile} ${referenceFile} | awk -F/ '{print $1, $(NF-1) "/" $NF}'
 
 
-        compare_sorted ${referenceFile} ${outFile} 
+        compare_sorted ${referenceFile} ${outFile}
         if [ $? -ne 0 ] ; then
 ##  Follows some bailing wire to allow serialization branch to work
 ##          with same reference files
      sed s/' (.*)'// $referenceFile > $newRef
-     ref=`wc ${newRef} | awk '{print $1, $2}'`; 
-     ##        ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
+     ref=`wc ${newRef} | awk '{print $1, $2}'`;
+     ##        ref=`wc ${referenceFile} | awk '{print $1, $2}'`;
      sed s/' (.*)'// $outFile > $newOut
-     new=`wc ${newOut} | awk '{print $1, $2}'`; 
+     new=`wc ${newOut} | awk '{print $1, $2}'`;
      ##          new=`wc ${outFile}       | awk '{print $1, $2}'`;
-     wc $newOut       
+     wc $newOut
                fail " Output does not match exactly (Required)"
                if [ "$ref" == "$new" ]; then
                    echo "outFile word/line count matches Reference"
@@ -119,7 +119,7 @@ Tol=$2    ##  curTick tolerance
                    tail $outFile
                    # fail "outFile word/line count does NOT matches Reference"
                    echo "outFile word/line count does NOT matches Reference"
-                   diff ${referenceFile} ${outFile} 
+                   diff ${referenceFile} ${outFile}
                fi
         else
                 echo ReferenceFile is an exact match of outFile
@@ -129,15 +129,15 @@ Tol=$2    ##  curTick tolerance
         echo " "
         elapsedSeconds=$(($endSeconds -$startSeconds))
         echo "${merlin_case}: Wall Clock Time  $elapsedSeconds seconds"
-         
+
 
 }
 
 
 # Build Test app
 ##    The following code already explictly assume we are at trunk
-  
-   
+
+
 
 #===============================================================================
 # Test functions
@@ -162,33 +162,33 @@ Tol=$2    ##  curTick tolerance
 #     file and the reference file be exactly the same.
 # Exception for merlin tests:
 #     A fuzzy compare has been inserted here.   The only thing that varies is
-#     the value of the total Ticks simulated.  With binaries shared from SVN, 
+#     the value of the total Ticks simulated.  With binaries shared from SVN,
 #     there should be no need for fuzziness.  When the static binary is build
-#     using compiler and libraries on the host, the exact number of Ticks in the 
+#     using compiler and libraries on the host, the exact number of Ticks in the
 #     program may vary from that reported in the reference file checked into SVN.
 # Does not use subroutine because it invokes the build of all test binaries.
 #-------------------------------------------------------------------------------
-test_merlin_dragon_128() {          
+test_merlin_dragon_128() {
 merlin_Template dragon_128_test 500
 
 }
 
-test_merlin_dragon_72() {          
+test_merlin_dragon_72() {
 merlin_Template dragon_72_test 500
 
 }
 
-test_merlin_fattree_128() {          
+test_merlin_fattree_128() {
 merlin_Template fattree_128_test 500
 
 }
 
-test_merlin_fattree_256() {          
+test_merlin_fattree_256() {
 merlin_Template fattree_256_test 500
 
 }
 
-test_merlin_torus_128() {          
+test_merlin_torus_128() {
 merlin_Template torus_128_test 500
 
 }
@@ -199,9 +199,13 @@ merlin_Template torus_5_trafficgen 500
 
 }
 
-test_merlin_torus_64() {          
+test_merlin_torus_64() {
 merlin_Template torus_64_test 500
 
+}
+
+test_merlin_hyperx_128() {
+merlin_Template hyperx_128_test 500
 }
 
 #  test_merlin_trafficgen_trivial() {
@@ -214,8 +218,8 @@ export SST_TEST_ONE_TEST_TIMEOUT=300         #  3000 seconds
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 
-export SST_TEST_ONE_TEST_TIMEOUT=200 
- 
+export SST_TEST_ONE_TEST_TIMEOUT=200
+
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 #         Located here this timeout will override the multithread value
