@@ -1897,6 +1897,13 @@ echo    "This is mojave, Compiler is $compiler"
                    ;;
 
 ################################################################################
+
+            10.15) # Catalina
+echo    "This is Catalina, Compiler is $compiler"
+                   ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode
+                   ;;
+
+################################################################################
             *) # unknown
                 echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
                  echo ' '
@@ -1907,6 +1914,9 @@ echo    "This is mojave, Compiler is $compiler"
         echo "bamboo.sh: BOOST_HOME=${BOOST_HOME}"
         export SST_DEPS_INSTALL_BOOST=${BOOST_HOME}
 
+    else
+        echo "ERROR: unable to locate /etc/profile.modules - cannot load modules"
+        exit
     fi
 
     echo "bamboo.sh: MacOS build."
