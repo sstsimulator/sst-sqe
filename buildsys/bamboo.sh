@@ -512,7 +512,7 @@ echo " #####################################################"
      #   Only run EmberSweep in Valgrind if explict request.
      #       In that case run only EmberSweep Suite.
         if [[ $1 == "sstmainline_config_valgrind_ES" ]] ; then
-            ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
+### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
             return
         fi
         if [[ $1 == "sstmainline_config_valgrind_ESshmem" ]] ; then
@@ -716,15 +716,15 @@ echo B4      $SST_SUITES_TO_RUN
           unset SST_BUILD_PROSPERO_TRACE_FILE
         popd
         ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
-        ${SST_TEST_SUITES}/testSuite_embernightly.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
-        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
         ${SST_TEST_SUITES}/testSuite_memHA.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-        ${SST_TEST_SUITES}/testSuite_CramSim.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_CramSim.sh
         ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-        ${SST_TEST_SUITES}/testSuite_miranda.sh
-        ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_miranda.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
         ${SST_TEST_SUITES}/testSuite_prospero.sh
         ${SST_TEST_SUITES}/testSuite_Ariel.sh
         return
@@ -748,25 +748,25 @@ echo B4      $SST_SUITES_TO_RUN
     fi
 
     ${SST_TEST_SUITES}/testSuite_Ariel.sh
-    ${SST_TEST_SUITES}/testSuite_juno.sh
-    ${SST_TEST_SUITES}/testSuite_Samba.sh
-    ${SST_TEST_SUITES}/testSuite_Messier.sh
-    ${SST_TEST_SUITES}/testSuite_CramSim.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_juno.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_Samba.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_MesstestSuite_Messierier.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_CramSim.sh
     ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
-    ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-    ${SST_TEST_SUITES}/testSuite_kingsley.sh
-    ${SST_TEST_SUITES}/testSuite_sst_GNA.sh
-    ${SST_TEST_SUITES}/testSuite_shogun.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_kingsley.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_sst_GNA.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_shogun.sh
 
 
     ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
     ${SST_TEST_SUITES}/testSuite_sstexternalelement.sh
     ${SST_TEST_SUITES}/testSuite_sst_info_test.sh
     ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
-    ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
-    ${SST_TEST_SUITES}/testSuite_miranda.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_miranda.sh
     ${SST_TEST_SUITES}/testSuite_BadPort.sh
     ${SST_TEST_SUITES}/testSuite_scheduler.sh
     ${SST_TEST_SUITES}/testSuite_scheduler_DetailedNetwork.sh
@@ -778,9 +778,9 @@ echo B4      $SST_SUITES_TO_RUN
     # ${SST_TEST_SUITES}/testSuite_shemp.sh
     # etc.
 
-    ${SST_TEST_SUITES}/testSuite_merlin.sh
-    ${SST_TEST_SUITES}/testSuite_qos.sh
-    ${SST_TEST_SUITES}/testSuite_embernightly.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_merlin.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuitetestSuite_qos_qos.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_embernightly.sh
 
     ${SST_TEST_SUITES}/testSuite_simpleSimulation_CarWash.sh
     ${SST_TEST_SUITES}/testSuite_simpleDistribComponent.sh
@@ -790,7 +790,7 @@ echo B4      $SST_SUITES_TO_RUN
     #    memHA add to the separate list Dec. 2017
     if [[ $1 != "sstmainline_config_valgrind" ]] ; then
        ${SST_TEST_SUITES}/testSuite_memHA.sh
-       ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
+### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
        ${SST_TEST_SUITES}/testSuite_ESshmem.sh
     fi
 
@@ -803,7 +803,7 @@ echo B4      $SST_SUITES_TO_RUN
             ${SST_TEST_SUITES}/testSuite_partitioner.sh
         fi
     fi
-    ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
     ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
 
     if [[ ${INTEL_PIN_DIRECTORY:+isSet} == isSet ]] ; then
@@ -817,15 +817,16 @@ echo B4      $SST_SUITES_TO_RUN
     ${SST_TEST_SUITES}/testSuite_prospero.sh
 #
     ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
-    ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
     ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
-    ${SST_TEST_SUITES}/testSuite_VaultSim.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_VaultSim.sh
 
-    # Purge SST installation
-    if [[ ${SST_RETAIN_BIN:+isSet} != isSet ]]
-    then
-        rm -Rf ${SST_INSTALL}
-    fi
+# For New Test Frameworks, we must not delete the SST installation
+#    # Purge SST installation
+#    if [[ ${SST_RETAIN_BIN:+isSet} != isSet ]]
+#    then
+#        rm -Rf ${SST_INSTALL}
+#    fi
 
 }
 ###-END-DOTESTS
