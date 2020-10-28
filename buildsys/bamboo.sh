@@ -3209,7 +3209,7 @@ if [[ ${SST_BALARBRANCH:+isSet} != isSet ]] ; then
 fi
 
 if [[ ${SST_GPGPUSIMBRANCH:+isSet} != isSet ]] ; then
-    SST_GPGPUSIMBRANCH=master
+    SST_GPGPUSIMBRANCH=v1.1
 fi
 
 echo "#############################################################"
