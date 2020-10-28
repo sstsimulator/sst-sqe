@@ -3174,7 +3174,7 @@ fi
 
 # Which branches to use for each repo (default is devel)
 if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
-    SST_SQEBRANCH=devel
+    SST_SQEBRANCH=v10.1.0_beta
     SST_SQEBRANCH="detached"
 else
     echo ' ' ;  echo ' ' ; echo ' ' ; echo ' '
@@ -3185,27 +3185,27 @@ else
 fi
 
 if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
-    SST_COREBRANCH=devel
+    SST_COREBRANCH=v10.1.0_beta
 fi
 
 if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
-    SST_ELEMENTSBRANCH=devel
+    SST_ELEMENTSBRANCH=v10.1.0_beta
 fi
 
 if [[ ${SST_MACROBRANCH:+isSet} != isSet ]] ; then
-    SST_MACROBRANCH=devel
+    SST_MACROBRANCH=v10.1.0_beta
 fi
 
 if [[ ${SST_EXTERNALELEMENTBRANCH:+isSet} != isSet ]] ; then
-    SST_EXTERNALELEMENTBRANCH=master
+    SST_EXTERNALELEMENTBRANCH=v10.1.0_beta
 fi
 
 if [[ ${SST_JUNOBRANCH:+isSet} != isSet ]] ; then
-    SST_JUNOBRANCH=master
+    SST_JUNOBRANCH=v10.1.0_beta
 fi
 
 if [[ ${SST_BALARBRANCH:+isSet} != isSet ]] ; then
-    SST_BALARBRANCH=master
+    SST_BALARBRANCH=v10.1.0_beta
 fi
 
 if [[ ${SST_GPGPUSIMBRANCH:+isSet} != isSet ]] ; then
