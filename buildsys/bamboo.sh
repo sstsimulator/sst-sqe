@@ -757,7 +757,7 @@ echo B4      $SST_SUITES_TO_RUN
     ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
     ${SST_TEST_SUITES}/testSuite_kingsley.sh
-    ${SST_TEST_SUITES}/testSuite_sst_GNA.sh
+# REMOVED FOR 10.1.0 release    ${SST_TEST_SUITES}/testSuite_sst_GNA.sh
     ${SST_TEST_SUITES}/testSuite_shogun.sh
 
 
