@@ -521,7 +521,7 @@ echo " #####################################################"
         fi
     fi
         if [[ $1 == "sstmainline_config_valgrind_memHA" ]] ; then
-            ${SST_TEST_SUITES}/testSuite_memHA.sh
+### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_memHA.sh
             return
         fi
 
@@ -719,10 +719,10 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-        ${SST_TEST_SUITES}/testSuite_memHA.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHA.sh
         ${SST_TEST_SUITES}/testSuite_memHSieve.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_CramSim.sh
-        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_miranda.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
         ${SST_TEST_SUITES}/testSuite_prospero.sh
@@ -752,7 +752,7 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_Samba.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_MesstestSuite_Messierier.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_CramSim.sh
-    ${SST_TEST_SUITES}/testSuite_hybridsim.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
     ${SST_TEST_SUITES}/testSuite_memHSieve.sh
@@ -789,7 +789,7 @@ echo B4      $SST_SUITES_TO_RUN
     #    Valgrind on 180 test Suite takes 15 hours. (Aug. 2016)
     #    memHA add to the separate list Dec. 2017
     if [[ $1 != "sstmainline_config_valgrind" ]] ; then
-       ${SST_TEST_SUITES}/testSuite_memHA.sh
+### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_memHA.sh
 ### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
        ${SST_TEST_SUITES}/testSuite_ESshmem.sh
     fi
@@ -3696,12 +3696,70 @@ then
             #    ---
             if [ -d "test" ] ; then
                 echo " \"test\" is a directory"
-                echo " ################################################################"
-                echo " #"
-                echo " #         ENTERING dotests  "
-                echo " #"
-                echo " ################################################################"
-                dotests $1 $4
+
+                #############################################################################
+                # ADDING THE NEW TEST FRAMEWORKS INTO THE TEST SYSTEM
+                # NOTE: We need to do this because the bamboo.sh script is exec'ed not sourced,
+                #       and therefore loads the desired modules and sets up the environment
+                #       variables as necessary.  If we dont do it here, then when bamboo.sh
+                #       exits, the environment (and loaded modules) are reset, and we would
+                #       need to reset these items in the Jenkins script.
+                #############################################################################
+
+                # Get the Paths to the test frameworks applications
+                if command -v sst-test-core > /dev/null 2>&1; then
+                    export SST_TEST_FRAMEWORKS_CORE_APP_EXE=`command -v sst-test-core`
+                else
+                    echo "ERROR: Cannot Find sst-test-core on system"
+                    exit 128
+                fi
+
+                if command -v sst-test-elements > /dev/null 2>&1; then
+                    export SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE=`command -v sst-test-elements`
+                else
+                    echo "ERROR: Cannot Find sst-test-elements on system"
+                    exit 128
+                fi
+                echo "=============================================================="
+                echo "=== FOUND FRAMEWORKS APPS"
+                echo "=============================================================="
+                echo "SST_TEST_FRAMEWORKS_CORE_APP_EXE =" $SST_TEST_FRAMEWORKS_CORE_APP_EXE
+                echo "SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE =" $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE
+
+
+                if [[ ${SST_TEST_FRAMEWORKS_CORE_ONLY:+isSet} == isSet ]] ; then
+                    echo "**************************************************************************"
+                    echo "***                                                                    ***"
+                    echo "*** RUNING NEW TEST FRAMEWORKS CORE TESTS RUNNING INSIDE OF BAMBOO     ***"
+                    echo "***                                                                    ***"
+                    echo "**************************************************************************"
+                    cd $SST_ROOT
+                    $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_CORE_APP_EXE -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
+                    retval=$?
+                else
+                    echo " ################################################################"
+                    echo " #"
+                    echo " #         ENTERING BAMBOO'S dotests() Function  "
+                    echo " #"
+                    echo " ################################################################"
+                    dotests $1 $4
+                    retval=$?
+
+                    echo "**************************************************************************"
+                    echo "***                                                                    ***"
+                    echo "*** RUNING NEW TEST FRAMEWORKS ELEMENTS TESTS RUNNING INSIDE OF BAMBOO ***"
+                    echo "***                                                                    ***"
+                    echo "**************************************************************************"
+                    cd $SST_ROOT
+                    $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
+                    frameworks_retval=$?
+
+                    if [ $retval -eq 0 ]; then
+                        # Did the dotests pass, if so, then return the results
+                        # from the frameworks tests
+                        retval=$frameworks_retval
+                    fi
+                fi
             fi
         fi               #   End of sstmainline_config_dist_test  conditional
     fi
