@@ -459,12 +459,28 @@ echo " #####################################################"
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
 
+### Testing changed by New Test Frameworks
+#    # Do we run the Macro Tests
+#    if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
+#       [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ||
+#       [ $1 ==  sst_Macro_make_dist ] ; then
+
+    # FOR TESTS WITHOUT CORE, WE USE THE ORIG BAMBOO TESTSUITE; OTHERWISE
+    # LET THE NEW TESTFRAMEWORKS RUN, NORMALLY
     # Do we run the Macro Tests
-    if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
-       [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ||
+    if [ $1 == "sst-macro_nosstcore_mac" ] ||
+       [ $1 == "sst-macro_nosstcore_linux" ] ||
        [ $1 ==  sst_Macro_make_dist ] ; then
 
         ${SST_TEST_SUITES}/testSuite_macro.sh
+        # We currently dont want to run any other tests
+        return
+    fi
+    # FOR TESTS WITH CORE, WE SKIP ALL OTHER TESTS AND
+    # LET THE NEW TESTFRAMEWORKS RUN
+    if [ $1 == "sst-macro_withsstcore_mac" ] ||
+       [ $1 == "sst-macro_withsstcore_linux" ] ; then
+
         # We currently dont want to run any other tests
         return
     fi
