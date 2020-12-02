@@ -482,6 +482,8 @@ echo " #####################################################"
        [ $1 == "sst-macro_withsstcore_linux" ] ; then
 
         # We currently dont want to run any other tests
+        export SST_MULTI_RANK_COUNT=1
+        export $SST_MULTI_THREAD_COUNT=1
         return
     fi
 
@@ -3722,58 +3724,68 @@ then
                 #       need to reset these items in the Jenkins script.
                 #############################################################################
 
-                # Get the Paths to the test frameworks applications
-                if command -v sst-test-core > /dev/null 2>&1; then
-                    export SST_TEST_FRAMEWORKS_CORE_APP_EXE=`command -v sst-test-core`
-                else
-                    echo "ERROR: Cannot Find sst-test-core on system"
-                    exit 128
-                fi
-
-                if command -v sst-test-elements > /dev/null 2>&1; then
-                    export SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE=`command -v sst-test-elements`
-                else
-                    echo "ERROR: Cannot Find sst-test-elements on system"
-                    exit 128
-                fi
-                echo "=============================================================="
-                echo "=== FOUND FRAMEWORKS APPS"
-                echo "=============================================================="
-                echo "SST_TEST_FRAMEWORKS_CORE_APP_EXE =" $SST_TEST_FRAMEWORKS_CORE_APP_EXE
-                echo "SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE =" $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE
-
-
-                if [[ ${SST_TEST_FRAMEWORKS_CORE_ONLY:+isSet} == isSet ]] ; then
+                if [[ ${SST_TEST_FRAMEWORKS_SST_MACRO_NO_CORE:+isSet} == isSet ]] ; then
                     echo "**************************************************************************"
                     echo "***                                                                    ***"
-                    echo "*** RUNING NEW TEST FRAMEWORKS CORE TESTS RUNNING INSIDE OF BAMBOO     ***"
+                    echo "*** RUNING BAMBOO'S dotests() for SST-MACRO WITH NO CORE               ***"
                     echo "***                                                                    ***"
                     echo "**************************************************************************"
-                    cd $SST_ROOT
-                    $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_CORE_APP_EXE -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
-                    retval=$?
-                else
-                    echo " ################################################################"
-                    echo " #"
-                    echo " #         ENTERING BAMBOO'S dotests() Function  "
-                    echo " #"
-                    echo " ################################################################"
                     dotests $1 $4
                     retval=$?
+                else
+                    # Running Core or Elements testing using the New Frameworks
+                    # Get the Paths to the test frameworks applications
+                    if command -v sst-test-core > /dev/null 2>&1; then
+                        export SST_TEST_FRAMEWORKS_CORE_APP_EXE=`command -v sst-test-core`
+                    else
+                        echo "ERROR: Cannot Find sst-test-core on system"
+                        exit 128
+                    fi
 
-                    echo "**************************************************************************"
-                    echo "***                                                                    ***"
-                    echo "*** RUNING NEW TEST FRAMEWORKS ELEMENTS TESTS RUNNING INSIDE OF BAMBOO ***"
-                    echo "***                                                                    ***"
-                    echo "**************************************************************************"
-                    cd $SST_ROOT
-                    $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
-                    frameworks_retval=$?
+                    if command -v sst-test-elements > /dev/null 2>&1; then
+                        export SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE=`command -v sst-test-elements`
+                    else
+                        echo "ERROR: Cannot Find sst-test-elements on system"
+                        exit 128
+                    fi
+                    echo "=============================================================="
+                    echo "=== FOUND FRAMEWORKS APPS"
+                    echo "=============================================================="
+                    echo "SST_TEST_FRAMEWORKS_CORE_APP_EXE =" $SST_TEST_FRAMEWORKS_CORE_APP_EXE
+                    echo "SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE =" $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE
 
-                    if [ $retval -eq 0 ]; then
-                        # Did the dotests pass, if so, then return the results
-                        # from the frameworks tests
-                        retval=$frameworks_retval
+                    if [[ ${SST_TEST_FRAMEWORKS_CORE_ONLY:+isSet} == isSet ]] ; then
+                        echo "**************************************************************************"
+                        echo "***                                                                    ***"
+                        echo "*** RUNING NEW TEST FRAMEWORKS CORE TESTS RUNNING INSIDE OF BAMBOO     ***"
+                        echo "***                                                                    ***"
+                        echo "**************************************************************************"
+                        cd $SST_ROOT
+                        $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_CORE_APP_EXE -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
+                        retval=$?
+                    else
+                        echo " ################################################################"
+                        echo " #"
+                        echo " #         ENTERING BAMBOO'S dotests() Function  "
+                        echo " #"
+                        echo " ################################################################"
+                        dotests $1 $4
+                        retval=$?
+
+                        echo "**************************************************************************"
+                        echo "***                                                                    ***"
+                        echo "*** RUNING NEW TEST FRAMEWORKS ELEMENTS TESTS RUNNING INSIDE OF BAMBOO ***"
+                        echo "***                                                                    ***"
+                        echo "**************************************************************************"
+                        cd $SST_ROOT
+                        $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
+                        frameworks_retval=$?
+
+                        if [ $retval -eq 0 ]; then
+                            # Did the dotests pass, if so, then return the results
+                            # from the frameworks tests
+                            retval=$frameworks_retval
+                        fi
                     fi
                 fi
             fi
