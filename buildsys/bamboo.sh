@@ -483,7 +483,7 @@ echo " #####################################################"
 
         # We currently dont want to run any other tests
         export SST_MULTI_RANK_COUNT=1
-        export $SST_MULTI_THREAD_COUNT=1
+        export SST_MULTI_THREAD_COUNT=1
         return
     fi
 
@@ -3771,6 +3771,15 @@ then
                         echo " ################################################################"
                         dotests $1 $4
                         retval=$?
+
+                        echo "**************************************************************************"
+                        echo "***                                                                    ***"
+                        echo "*** TEST FRAMEWORKS DEBUG FOR MACRO                                    ***"
+                        echo "***                                                                    ***"
+                        echo "**************************************************************************"
+                        echo "Running sst-config"
+                        cd $SST_ROOT
+                        sst-config
 
                         echo "**************************************************************************"
                         echo "***                                                                    ***"
