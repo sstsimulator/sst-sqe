@@ -3754,6 +3754,15 @@ then
                     echo "SST_TEST_FRAMEWORKS_CORE_APP_EXE =" $SST_TEST_FRAMEWORKS_CORE_APP_EXE
                     echo "SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE =" $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE
 
+                    echo "**************************************************************************"
+                    echo "***                                                                    ***"
+                    echo "*** SST CONFIGURATION DUMP                                             ***"
+                    echo "***                                                                    ***"
+                    echo "**************************************************************************"
+                    echo "Running sst-config"
+                    cd $SST_ROOT
+                    sst-config
+
                     if [[ ${SST_TEST_FRAMEWORKS_CORE_ONLY:+isSet} == isSet ]] ; then
                         echo "**************************************************************************"
                         echo "***                                                                    ***"
@@ -3771,15 +3780,6 @@ then
                         echo " ################################################################"
                         dotests $1 $4
                         retval=$?
-
-                        echo "**************************************************************************"
-                        echo "***                                                                    ***"
-                        echo "*** TEST FRAMEWORKS DEBUG FOR MACRO                                    ***"
-                        echo "***                                                                    ***"
-                        echo "**************************************************************************"
-                        echo "Running sst-config"
-                        cd $SST_ROOT
-                        sst-config
 
                         echo "**************************************************************************"
                         echo "***                                                                    ***"
