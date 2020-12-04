@@ -779,10 +779,10 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_shogun.sh
 
 
-    ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
     ${SST_TEST_SUITES}/testSuite_sstexternalelement.sh
     ${SST_TEST_SUITES}/testSuite_sst_info_test.sh
-    ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_miranda.sh
     ${SST_TEST_SUITES}/testSuite_BadPort.sh
@@ -798,8 +798,8 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuitetestSuite_qos_qos.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_embernightly.sh
 
-    ${SST_TEST_SUITES}/testSuite_simpleSimulation_CarWash.sh
-    ${SST_TEST_SUITES}/testSuite_simpleDistribComponent.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleSimulation_CarWash.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleDistribComponent.sh
 
     # Only run EmberSweep with valgrind with explict request.
     #    Valgrind on 180 test Suite takes 15 hours. (Aug. 2016)
@@ -820,7 +820,7 @@ echo B4      $SST_SUITES_TO_RUN
         fi
     fi
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
-    ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
 
     if [[ ${INTEL_PIN_DIRECTORY:+isSet} == isSet ]] ; then
         export SST_BUILD_PROSPERO_TRACE_FILE=1
@@ -834,7 +834,7 @@ echo B4      $SST_SUITES_TO_RUN
 #
     ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
-    ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_VaultSim.sh
 
 # For New Test Frameworks, we must not delete the SST installation
