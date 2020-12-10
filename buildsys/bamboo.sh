@@ -738,7 +738,7 @@ echo B4      $SST_SUITES_TO_RUN
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHA.sh
-        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_CramSim.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_miranda.sh
@@ -773,7 +773,7 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_hybridsim.sh
     ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-    ${SST_TEST_SUITES}/testSuite_memHSieve.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_memHSieve.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_kingsley.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_sst_GNA.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_shogun.sh
