@@ -768,8 +768,6 @@ echo B4      $SST_SUITES_TO_RUN
     ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
     ${SST_TEST_SUITES}/testSuite_miranda.sh
     ${SST_TEST_SUITES}/testSuite_BadPort.sh
-    ${SST_TEST_SUITES}/testSuite_scheduler.sh
-    ${SST_TEST_SUITES}/testSuite_scheduler_DetailedNetwork.sh
 
     # Add other test suites here, i.e.
     # ${SST_TEST_SUITES}/testSuite_moe.sh
@@ -1204,10 +1202,8 @@ getconfig() {
             # sstmainline_config_memH_wo_openMP
             #     This option used for configuring SST with memHierarchy, but with out open MP
             #     with Intel PIN, and Ariel
-            #     (Might as well skip building scheduler)
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
-            touch sst-elements/src/sst/elements/scheduler/.ignore
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
             depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -m none -o none -h none -s none -q none -M none -N default -A none"
