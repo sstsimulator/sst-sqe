@@ -780,7 +780,7 @@ echo B4      $SST_SUITES_TO_RUN
 
 
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
-    ${SST_TEST_SUITES}/testSuite_sstexternalelement.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_sstexternalelement.sh
     ${SST_TEST_SUITES}/testSuite_sst_info_test.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
