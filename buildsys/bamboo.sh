@@ -733,7 +733,7 @@ echo B4      $SST_SUITES_TO_RUN
           ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
           unset SST_BUILD_PROSPERO_TRACE_FILE
         popd
-        ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
@@ -771,7 +771,7 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_MesstestSuite_Messierier.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_CramSim.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-    ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_memHSieve.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_kingsley.sh
