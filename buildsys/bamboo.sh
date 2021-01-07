@@ -599,9 +599,9 @@ echo B4      $SST_SUITES_TO_RUN
          return
     fi
 
-    if [ $1 == "sstmainline_config_no_gem5" ] ; then
-        ${SST_TEST_SUITES}/testSuite_Ariel.sh
-    fi
+### Tested by New Test Frameworks    if [ $1 == "sstmainline_config_no_gem5" ] ; then
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_Ariel.sh
+### Tested by New Test Frameworks    fi
 
     #
     #  Run only GPU test only
@@ -721,12 +721,12 @@ echo B4      $SST_SUITES_TO_RUN
 
     if [ $1 == "sstmainline_config_memH_wo_openMP" ]
     then
-        if [[ $SST_ROOT == *Ariel* ]] ; then
-            pushd ${SST_TEST_SUITES}
-            ln -s ${SST_TEST_SUITES}/testSuite_Ariel.sh testSuite_Ariel_extra.sh
-            ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
-            popd
-        fi
+### Tested by New Test Frameworks        if [[ $SST_ROOT == *Ariel* ]] ; then
+### Tested by New Test Frameworks            pushd ${SST_TEST_SUITES}
+### Tested by New Test Frameworks            ln -s ${SST_TEST_SUITES}/testSuite_Ariel.sh testSuite_Ariel_extra.sh
+### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
+### Tested by New Test Frameworks            popd
+### Tested by New Test Frameworks        fi
         export SST_BUILD_PROSPERO_TRACE_FILE=1
         pushd ${SST_TEST_SUITES}
           ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
@@ -744,7 +744,7 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_miranda.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
         ${SST_TEST_SUITES}/testSuite_prospero.sh
-        ${SST_TEST_SUITES}/testSuite_Ariel.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_Ariel.sh
         return
     fi
 
@@ -765,7 +765,7 @@ echo B4      $SST_SUITES_TO_RUN
         invokeSuite memHA   2 2 Distrib    autotest_multirank_plus_multithread
     fi
 
-    ${SST_TEST_SUITES}/testSuite_Ariel.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_Ariel.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_juno.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_Samba.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_MesstestSuite_Messierier.sh
@@ -832,7 +832,7 @@ echo B4      $SST_SUITES_TO_RUN
     fi
     ${SST_TEST_SUITES}/testSuite_prospero.sh
 #
-    ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_VaultSim.sh
