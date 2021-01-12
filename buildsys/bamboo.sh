@@ -727,12 +727,12 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
 ### Tested by New Test Frameworks            popd
 ### Tested by New Test Frameworks        fi
-        export SST_BUILD_PROSPERO_TRACE_FILE=1
-        pushd ${SST_TEST_SUITES}
-          ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
-          ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
-          unset SST_BUILD_PROSPERO_TRACE_FILE
-        popd
+### Tested by New Test Frameworks                export SST_BUILD_PROSPERO_TRACE_FILE=1
+### Tested by New Test Frameworks                pushd ${SST_TEST_SUITES}
+### Tested by New Test Frameworks                  ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
+### Tested by New Test Frameworks                  ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
+### Tested by New Test Frameworks                  unset SST_BUILD_PROSPERO_TRACE_FILE
+### Tested by New Test Frameworks                popd
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
@@ -743,7 +743,7 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_miranda.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
-        ${SST_TEST_SUITES}/testSuite_prospero.sh
+### Tested by New Test Frameworks                ${SST_TEST_SUITES}/testSuite_prospero.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_Ariel.sh
         return
     fi
@@ -822,15 +822,15 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
 
-    if [[ ${INTEL_PIN_DIRECTORY:+isSet} == isSet ]] ; then
-        export SST_BUILD_PROSPERO_TRACE_FILE=1
-        pushd ${SST_TEST_SUITES}
-          ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
-          ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
-          unset SST_BUILD_PROSPERO_TRACE_FILE
-        popd
-    fi
-    ${SST_TEST_SUITES}/testSuite_prospero.sh
+### Tested by New Test Frameworks            if [[ ${INTEL_PIN_DIRECTORY:+isSet} == isSet ]] ; then
+### Tested by New Test Frameworks                export SST_BUILD_PROSPERO_TRACE_FILE=1
+### Tested by New Test Frameworks                pushd ${SST_TEST_SUITES}
+### Tested by New Test Frameworks                  ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
+### Tested by New Test Frameworks                  ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
+### Tested by New Test Frameworks                  unset SST_BUILD_PROSPERO_TRACE_FILE
+### Tested by New Test Frameworks                popd
+### Tested by New Test Frameworks            fi
+### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_prospero.sh
 #
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
