@@ -575,29 +575,30 @@ echo B4      $SST_SUITES_TO_RUN
          return
       fi
 
-
-      if [ $1 == "sstmainline_config_all" ] ; then
-
-         pushd ${SST_ROOT}/test/testSuites
-         echo \$SST_TEST_SUITES = $SST_TEST_SUITES
-         echo "     Content of file, SuitesToOmitFromAll"
-         cat SuitesToOmitFromAll
-         echo ' '
-         ## strip any comment off
-         cat SuitesToOmitFromAll | awk  '{print $1}' > __omitlist__
-         echo "      Suites to explictly OMIT from the \"all\" scenario:"
-         ls testSuite_*sh | grep  -f __omitlist__
-         echo ' '
-         #   Build the Suite list for the "All" scenario
-         ls testSuite_*sh | grep -v -f __omitlist__ > Suite.list
-         echo "all() {" > files.for.all
-         sed  s\%^%\${SST_TEST_SUITES}/% Suite.list >> files.for.all
-         echo "}" >> files.for.all
-         . files.for.all               # Source the subroutine including list
-         popd
-         all
-         return
-    fi
+### NOTE: $1 is set to sstmainline_config_all is set when doing a make dist test, we want to avoid this
+###
+### Tested by New Test Frameworks          if [ $1 == "sstmainline_config_all" ] ; then
+### Tested by New Test Frameworks
+### Tested by New Test Frameworks             pushd ${SST_ROOT}/test/testSuites
+### Tested by New Test Frameworks             echo \$SST_TEST_SUITES = $SST_TEST_SUITES
+### Tested by New Test Frameworks             echo "     Content of file, SuitesToOmitFromAll"
+### Tested by New Test Frameworks             cat SuitesToOmitFromAll
+### Tested by New Test Frameworks             echo ' '
+### Tested by New Test Frameworks             ## strip any comment off
+### Tested by New Test Frameworks             cat SuitesToOmitFromAll | awk  '{print $1}' > __omitlist__
+### Tested by New Test Frameworks             echo "      Suites to explictly OMIT from the \"all\" scenario:"
+### Tested by New Test Frameworks             ls testSuite_*sh | grep  -f __omitlist__
+### Tested by New Test Frameworks             echo ' '
+### Tested by New Test Frameworks             #   Build the Suite list for the "All" scenario
+### Tested by New Test Frameworks             ls testSuite_*sh | grep -v -f __omitlist__ > Suite.list
+### Tested by New Test Frameworks             echo "all() {" > files.for.all
+### Tested by New Test Frameworks             sed  s\%^%\${SST_TEST_SUITES}/% Suite.list >> files.for.all
+### Tested by New Test Frameworks             echo "}" >> files.for.all
+### Tested by New Test Frameworks             . files.for.all               # Source the subroutine including list
+### Tested by New Test Frameworks             popd
+### Tested by New Test Frameworks             all
+### Tested by New Test Frameworks             return
+### Tested by New Test Frameworks        fi
 
 ### Tested by New Test Frameworks    if [ $1 == "sstmainline_config_no_gem5" ] ; then
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_Ariel.sh
