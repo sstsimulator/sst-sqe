@@ -534,7 +534,7 @@ echo " #####################################################"
             return
         fi
         if [[ $1 == "sstmainline_config_valgrind_ESshmem" ]] ; then
-            ${SST_TEST_SUITES}/testSuite_ESshmem.sh
+### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_ESshmem.sh
             return
         fi
     fi
@@ -808,7 +808,7 @@ echo B4      $SST_SUITES_TO_RUN
     if [[ $1 != "sstmainline_config_valgrind" ]] ; then
 ### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_memHA.sh
 ### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
-       ${SST_TEST_SUITES}/testSuite_ESshmem.sh
+### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_ESshmem.sh
     fi
 
     if [[ (`echo $1 | grep no_mpi` == "") ]] && [[ $1 != "sstmainline_config_valgrind" ]] ; then
