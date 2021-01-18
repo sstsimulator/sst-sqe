@@ -809,6 +809,7 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_memHA.sh
 ### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
 ### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_ESshmem.sh
+        echo ""
     fi
 
     if [[ (`echo $1 | grep no_mpi` == "") ]] && [[ $1 != "sstmainline_config_valgrind" ]] ; then
