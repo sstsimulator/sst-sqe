@@ -3599,7 +3599,7 @@ else
             echo "SST_PYTHON_APP_EXE =" $SST_PYTHON_APP_EXE
             echo "SST_PYTHON_CFG_EXE =" $SST_PYTHON_CFG_EXE
             echo "SST_PYTHON_HOME =" $SST_PYTHON_HOME
-            echo "PYTHON VERSION =" $SST_PYTHON_VERSION
+            echo "FOUND PYTHON VERSION =" $SST_PYTHON_VERSION
             if [[ ${SST_PYTHON_USER_SPECIFIED:+isSet} == isSet ]] ; then
                 echo "SST_PYTHON_USER_SPECIFIED = 1 - BUILD CORE WITH SPECIFIED PYTHON"
                 if [[ ${SST_PYTHON_USER_SELECTED_PYTHON2:+isSet} == isSet ]] ; then
