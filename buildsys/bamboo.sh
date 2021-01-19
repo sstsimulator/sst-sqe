@@ -3118,12 +3118,6 @@ echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
 # Trap the exit command and perform end of script processing.
 function ExitOfScriptHandler {
     echo "EXIT COMMAND TRAPPED...."
-    echo
-    echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file ==="
-    echo "cat $HOME/.sst/sstsimulator.conf"
-    cat $HOME/.sst/sstsimulator.conf
-    echo "=== DONE DUMPING ==="
-    echo
 }
 
 #=========================================================================
@@ -3882,4 +3876,5 @@ else
     echo "$0 : exit failure."
 fi
 
+echo "BAMBOO: JUST BEFORE EXIT = $retval"
 exit $retval
