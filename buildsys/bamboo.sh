@@ -3423,7 +3423,7 @@ else
             echo "=============================================================="
             case $6 in
                python2)
-                  echo "BAMBOO PARAM INDICATES USER HAS SELECTED PYTHON2"
+                  echo "BAMBOO PARAM INDICATES SCENARIO NEEDS PYTHON2"
                   export SST_PYTHON_USER_SPECIFIED=1
                   export SST_PYTHON_USER_SELECTED_PYTHON2=1
                   if command -v python2 > /dev/null 2>&1; then
@@ -3453,7 +3453,7 @@ else
                   ;;
 
                python3)
-                  echo "BAMBOO PARAM INDICATES USER HAS SELECTED PYTHON3"
+                  echo "BAMBOO PARAM INDICATES SCENARIO NEEDS PYTHON3"
                   export SST_PYTHON_USER_SPECIFIED=1
                   export SST_PYTHON_USER_SELECTED_PYTHON3=1
                   if command -v python3 > /dev/null 2>&1; then
@@ -3481,41 +3481,74 @@ else
                       fi
                   fi
 
-                  # NOTE: THIS CODE IS FOR SST Version 11 - When default search priority is Python3 first
-                  echo "DEFAULT SYSTEM PYTHON SELECTED"
-                  # Test to see if python3 command is avail it should be for all Py3 installs
-                  if command -v python3 > /dev/null 2>&1; then
-                      export SST_PYTHON_APP_EXE=`command -v python3`
-                      if python3-config --prefix > /dev/null 2>&1; then
-                          export SST_PYTHON_CFG_EXE=`command -v python3-config`
-                          export SST_PYTHON_HOME=`python3-config --prefix`
+                  ## NOTE: This code is for SST Version 11 - When default search priority is Python3 first
+                  ##       it follows a similar process as the Version 11 SST-Core
+                  echo "NO BAMBOO PARAM EXISTS FOR PICKING A PYTHON VERSION - DETECT AND USE THE DEFAULT SYSTEM PYTHON"
+
+                  # Test to see if python3-config command is avail it should be for all Py3 installs
+                  if python3-config --prefix > /dev/null 2>&1; then
+                      export SST_PYTHON_CFG_EXE=`command -v python3-config`
+                      export SST_PYTHON_HOME=`python3-config --prefix`
+                      echo "--- FOUND PYTHON3 via python3-config..."
+
+                      if command -v python3 > /dev/null 2>&1; then
+                          export SST_PYTHON_APP_EXE=`command -v python3`
                       else
-                          echo "ERROR: Python3 is detected to be Default on system, but python3-config NOT FOUND - IS python3-devel ON THE SYSTEM?"
+                          echo "ERROR: Python3 is detected to be Default on system (via python3-config), but python3 app IS NOT FOUND - IS python3 configured properly ON THE SYSTEM?"
                           exit 128
                       fi
                   else
-                      ## if 'python3' doesn't exist, assume we've got python, but check for sure...
-                      if command -v python > /dev/null 2>&1; then
-                          # NOTE: This might be a python2 or python3, depending upon system
-                          export SST_PYTHON_APP_EXE=`command -v python`
-                          # Now check for python-config, NOTE: some systems call it python2-config,
-                          # so we test for both
-                          if python-config --prefix > /dev/null 2>&1; then
-                              export SST_PYTHON_CFG_EXE=`command -v python-config`
-                              export SST_PYTHON_HOME=`python-config --prefix`
+                      ## NOTE: 'python3' doesn't exist, assume we've got a
+                      ##       python version 2, but we check to be sure...
+                      echo "--- DID NOT FIND python3-config, SEARCHING FOR python2-config..."
+
+                      # Test to see if python2-config command is avail
+                      if python2-config --prefix > /dev/null 2>&1; then
+                          export SST_PYTHON_CFG_EXE=`command -v python2-config`
+                          export SST_PYTHON_HOME=`python2-config --prefix`
+                          echo "--- FOUND PYTHON2 via python2-config..."
+
+                          # Now check for python2 app is avail
+                          if command -v python2 > /dev/null 2>&1; then
+                              export SST_PYTHON_APP_EXE=`command -v python2`
                           else
-                              if python2-config --prefix > /dev/null 2>&1; then
-                                  export SST_PYTHON_CFG_EXE=`command -v python2-config`
-                                  export SST_PYTHON_HOME=`python2-config --prefix`
+                              # python2 might not work, so try plain python
+                              if command -v python > /dev/null 2>&1; then
+                                  export SST_PYTHON_APP_EXE=`command -v python`
                               else
-                                  echo "ERROR: Default python-config or python2-config NOT FOUND - IS python-devel ON THE SYSTEM?"
+                                  echo "ERROR: Python2 is detected to be default on system (via python2-config) but python2 or python apps ARE NOT FOUND - IS Python Version 2.x ON THE SYSTEM?"
                                   exit 128
                               fi
                           fi
                       else
-                          ## No python or python3 found, this seems wrong
-                          echo "ERROR: NO DEFAULT PYTHON FOUND - Is something wrong in the detection script?"
-                          exit 128
+                          ## NOTE: This is the last chance...
+                          ##       If 'python2-config' doesn't exist,
+                          ##       try finding 'python-config'
+                          echo "--- DID NOT FIND python2-config, SEARCHING FOR python-config..."
+
+                          # Test to see if python-config command is avail
+                          if python-config --prefix > /dev/null 2>&1; then
+                              export SST_PYTHON_CFG_EXE=`command -v python-config`
+                              export SST_PYTHON_HOME=`python-config --prefix`
+                              echo "--- FOUND PYTHON2 via python-config..."
+
+                              # Now check for python2 app is avail (we check this before 'python' on purpose)
+                              if command -v python2 > /dev/null 2>&1; then
+                                  export SST_PYTHON_APP_EXE=`command -v python2`
+                              else
+                                  # python2 might not work, so try plain python
+                                  if command -v python > /dev/null 2>&1; then
+                                      export SST_PYTHON_APP_EXE=`command -v python`
+                                  else
+                                      echo "ERROR: Python2 is detected to be default on system (via python-config) but python2 or python apps ARE NOT FOUND - IS Python Version 2.x ON THE SYSTEM?"
+                                      exit 128
+                                  fi
+                              fi
+                          else
+                              ## No Python3 or Python2 found, this seems quite wrong...
+                              echo "ERROR: NO DEFAULT PYTHON3 OR PYTHON2 FOUND ON SYSTEM - Is something wrong in the detection script?"
+                              exit 128
+                          fi
                       fi
                   fi
 
