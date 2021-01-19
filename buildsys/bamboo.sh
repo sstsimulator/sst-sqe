@@ -3647,6 +3647,9 @@ else
                 echo "*** RUNING NEW TEST FRAMEWORKS ON WILDCARD SET ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS}  ***"
                 echo "***                                                                    ***"
                 echo "**************************************************************************"
+            else
+                echo "SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS = <UNDEFINED> - RUNNING DEFAULT SET OF TESTS"
+            fi
             echo "=============================================================="
             echo "=== DEBUG DONE"
             echo "=============================================================="
