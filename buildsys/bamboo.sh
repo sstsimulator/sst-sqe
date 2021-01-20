@@ -3646,25 +3646,6 @@ else
             fi
             echo "=============================================================="
 
-
-
-            echo "=============================================================="
-            echo "=== DEBUG CODE FOR SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS"
-            echo "=============================================================="
-            if [[ ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS:+isSet} == isSet ]] ; then
-                echo "**************************************************************************"
-                echo "***                                                                    ***"
-                echo "*** RUNING NEW TEST FRAMEWORKS ON WILDCARD SET ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS}  ***"
-                echo "***                                                                    ***"
-                echo "**************************************************************************"
-            else
-                echo "SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS = <UNDEFINED> - RUNNING DEFAULT SET OF TESTS"
-            fi
-            echo "=============================================================="
-            echo "=== DEBUG DONE"
-            echo "=============================================================="
-
-
        # Figure out PIN Configuration
        if [[  ${SST_WITHOUT_PIN:+isSet} == isSet ]] ; then
             echo "  PIN IS NOT ENABLED BY SST_WITHOUT_PIN flag"
