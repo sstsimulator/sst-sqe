@@ -3876,5 +3876,5 @@ else
     echo "$0 : exit failure."
 fi
 
-echo "BAMBOO: JUST BEFORE EXIT = $retval"
+echo "BAMBOO: JUST BEFORE EXIT retval = $retval"
 exit $retval
