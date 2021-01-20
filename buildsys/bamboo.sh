@@ -3784,12 +3784,20 @@ then
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
             #    ---  These are probably temporary, but let's line them up properly anyway
+            echo "===================================================================================="
+            echo "===================================================================================="
+            echo "===================================================================================="
+            echo "============================== BEFORE TESTING START ================================"
+            echo "===================================================================================="
+            echo "===================================================================================="
+            echo "===================================================================================="
+            echo "=== pwd results:"
             pwd
-            echo "            CHECK ENVIRONMENT VARIABLES "
-            env | grep SST
-            echo "            End of SST Environs"
-            pwd
+            echo "=== ls results:"
             ls
+            echo "==============================ENVIRONMENT DUMP BEFORE TESTING START================="
+            env|sort
+            echo "==============================ENVIRONMENT DUMP BEFORE TESTING END================="
             #    ---
             if [ -d "test" ] ; then
                 echo " \"test\" is a directory"
