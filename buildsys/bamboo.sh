@@ -3118,12 +3118,6 @@ echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
 # Trap the exit command and perform end of script processing.
 function ExitOfScriptHandler {
     echo "EXIT COMMAND TRAPPED...."
-    echo
-    echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file ==="
-    echo "cat $HOME/.sst/sstsimulator.conf"
-    cat $HOME/.sst/sstsimulator.conf
-    echo "=== DONE DUMPING ==="
-    echo
 }
 
 #=========================================================================
@@ -3857,6 +3851,7 @@ then
                         cd $SST_ROOT
                         $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_CORE_APP_EXE -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
                         retval=$?
+                        echo "BAMBOO: SST Frameworks Core Test retval = $retval"
                     else
                         echo " ################################################################"
                         echo " #"
@@ -3865,6 +3860,7 @@ then
                         echo " ################################################################"
                         dotests $1 $4
                         retval=$?
+                        echo "BAMBOO: SST original dotests retval = $retval"
 
                         echo "**************************************************************************"
                         echo "***                                                                    ***"
@@ -3874,13 +3870,16 @@ then
                         cd $SST_ROOT
                         $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
                         frameworks_retval=$?
+                        echo "BAMBOO: SST Frameworks Elements Test retval = $frameworks_retval"
 
                         if [ $retval -eq 0 ]; then
                             # Did the dotests pass, if so, then return the results
                             # from the frameworks tests
                             retval=$frameworks_retval
                         fi
+                        echo "BAMBOO: Combined Frameworks + dotests retval = $retval"
                     fi
+                    echo "BAMBOO: FINAL TESTING RESULTS retval = $retval"
                 fi
             fi
         fi               #   End of sstmainline_config_dist_test  conditional
@@ -3895,4 +3894,5 @@ else
     echo "$0 : exit failure."
 fi
 
+echo "BAMBOO: JUST BEFORE EXIT retval = $retval"
 exit $retval
