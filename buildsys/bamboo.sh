@@ -3848,6 +3848,7 @@ then
                         echo "*** RUNING NEW TEST FRAMEWORKS CORE TESTS RUNNING INSIDE OF BAMBOO     ***"
                         echo "***                                                                    ***"
                         echo "**************************************************************************"
+                        # WE ARE RUNNING THE FRAMEWORKS CORE SET OF TESTS ONLY
                         cd $SST_ROOT
                         $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_CORE_APP_EXE -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
                         retval=$?
@@ -3858,20 +3859,37 @@ then
                         echo " #         ENTERING BAMBOO'S dotests() Function  "
                         echo " #"
                         echo " ################################################################"
+                        # WE ARE RUNNING THE ORIGINAL SET OF BAMBOO TESTS FIRST
                         dotests $1 $4
                         retval=$?
                         echo "BAMBOO: SST original dotests retval = $retval"
 
-                        echo "**************************************************************************"
-                        echo "***                                                                    ***"
-                        echo "*** RUNING NEW TEST FRAMEWORKS ELEMENTS TESTS RUNNING INSIDE OF BAMBOO ***"
-                        echo "***                                                                    ***"
-                        echo "**************************************************************************"
-                        cd $SST_ROOT
-                        $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
-                        frameworks_retval=$?
-                        echo "BAMBOO: SST Frameworks Elements Test retval = $frameworks_retval"
+                        # NOW RUN THE FRAMEWORKS ELEMENTS TESTS
+                        if [[ ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS:+isSet} == isSet ]] ; then
+                            echo "**************************************************************************"
+                            echo "***                                                                    "
+                            echo "*** RUNING NEW TEST FRAMEWORKS ELEMENTS - SUBSET OF TESTS : ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS}"
+                            echo "***                                                                    "
+                            echo "**************************************************************************"
+                            # WE ARE RUNNING THE FRAMEWORKS ELEMENTS SUBSET OF TESTS (Set by wildcard) AFTER DOTESTS() HAVE RUN
+                            cd $SST_ROOT
+                            $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT -w $SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS
+                            frameworks_retval=$?
+                            echo "BAMBOO: SST Frameworks Elements Test retval = $frameworks_retval"
+                        else
+                            echo "**************************************************************************"
+                            echo "***                                                                    "
+                            echo "*** RUNING NEW TEST FRAMEWORKS ELEMENTS - FULL SET OF TESTS"
+                            echo "***                                                                    "
+                            echo "**************************************************************************"
+                            # WE ARE RUNNING THE FRAMEWORKS ELEMENTS FULL SET OF TESTS AFTER DOTESTS() HAVE RUN
+                            cd $SST_ROOT
+                            $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
+                            frameworks_retval=$?
+                            echo "BAMBOO: SST Frameworks Elements Test retval = $frameworks_retval"
+                        fi
 
+                        # Check the retval result from the bamboo dotests then check the frameworks_retval results with the frameworks run
                         if [ $retval -eq 0 ]; then
                             # Did the dotests pass, if so, then return the results
                             # from the frameworks tests
