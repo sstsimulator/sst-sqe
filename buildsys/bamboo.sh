@@ -736,7 +736,7 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks                popd
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_embernightly.sh
-        ${SST_TEST_SUITES}/testSuite_BadPort.sh
+### NOTE: NORMALLY SKIPPED               ${SST_TEST_SUITES}/testSuite_BadPort.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHA.sh
 ### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
@@ -786,7 +786,7 @@ echo B4      $SST_SUITES_TO_RUN
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_miranda.sh
-    ${SST_TEST_SUITES}/testSuite_BadPort.sh
+### NOTE: NORMALLY SKIPPED           ${SST_TEST_SUITES}/testSuite_BadPort.sh
 
     # Add other test suites here, i.e.
     # ${SST_TEST_SUITES}/testSuite_moe.sh
