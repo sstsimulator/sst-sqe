@@ -1937,6 +1937,13 @@ echo    "This is Catalina, Compiler is $compiler"
                    ;;
 
 ################################################################################
+
+            11.2) # Big Sur
+echo    "This is Big Sur, Compiler is $compiler"
+                   ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode
+                   ;;
+
+################################################################################
             *) # unknown
                 echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
                  echo ' '
