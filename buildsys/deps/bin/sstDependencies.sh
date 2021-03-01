@@ -82,7 +82,7 @@ sstDepsDoStaging ()
         #-----------------------------------------------------------------------
         # GPGPUSim
         #-----------------------------------------------------------------------
-        sstDepsStage_GPGPUSim-cuda
+        sstDepsStage_GPGPUSim
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -698,7 +698,7 @@ sstDepsDeploy ()
         #-----------------------------------------------------------------------
         # GPGPUSim
         #-----------------------------------------------------------------------
-        sstDepsDeploy_GPGPUSim-cuda
+        sstDepsDeploy_GPGPUSim
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -1071,7 +1071,7 @@ sstDepsDoQuery ()
         #-----------------------------------------------------------------------
         # GPGPUSim
         #-----------------------------------------------------------------------
-        sstDepsQuery_GPGPUSim-cuda
+        sstDepsQuery_GPGPUSim
     fi
 
     if [ ! -z "${SST_BUILD_NVDIMMSIM}" ]
@@ -1367,7 +1367,7 @@ sstDepsDoDependencies ()
 #   -c chdl (default)
 #   -H HBM_DRAMSim2 (default)
 #   -r Ramulator (default)
-#   -A GPGPUSim (8.0.44|9.1.85|none)
+#   -A GPGPUSim (stabledevel|1.1|master|default|none)
 #
 #   [buildtype] = (restageDeps|develBuild|cleanBuild)
 #
@@ -1877,9 +1877,13 @@ do
             echo "# found the -A (GPGPUSim) option, with value $OPTARG"
             # process arg
             case "$OPTARG" in
-                8.0.44|8.0.61|9.1.85)   # Build GPGPUSim
-                    echo "# ${OPTARG}: Build GPGPUSim"
-                    . ${SST_DEPS_BIN}/sstDep_GPGPUSim.sh $OPTARG
+                1.1|stabledevel)   # Build GPGPUSim
+                    echo "# ${OPTARG}: Build GPGPUSim 1.1 tag"
+                    . ${SST_DEPS_BIN}/sstDep_GPGPUSim.sh 1.1
+                    ;;
+                master)   # Build GPGPUSim
+                    echo "# ${OPTARG}: Build GPGPUSim master branch"
+                    . ${SST_DEPS_BIN}/sstDep_GPGPUSim.sh master
                     ;;
                 none|default)  # Do not build GPGPUSim
                     echo "# default: will not build GPGPUSim"
