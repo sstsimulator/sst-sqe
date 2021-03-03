@@ -1059,12 +1059,12 @@ getconfig() {
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             # Must Setup the GPGPUSIM Environment
-            echo "SETUP THE GPGPUSIME ENVIRONMENT"
-            echo "==== ENV BEFORE ==="
+            echo "SETUP THE GPGPUSIM ENVIRONMENT"
+            echo "==== ENV BEFORE GPGPUSIM ENV SETUP ==="
             env|sort
             echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
             . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
-            echo "==== ENV AFTER ==="
+            echo "==== ENV AFTER  GPGPUSIM ENV SETUP ==="
             env|sort
             ;;
         sstmainline_config_linux_with_cuda_no_mpi)
@@ -1088,12 +1088,12 @@ getconfig() {
             externalelementConfigStr="NOBUILD"
             junoConfigStr="NOBUILD"
             # Must Setup the GPGPUSIM Environment
-            echo "SETUP THE GPGPUSIME ENVIRONMENT"
-            echo "==== ENV BEFORE ==="
+            echo "SETUP THE GPGPUSIM ENVIRONMENT"
+            echo "==== ENV BEFORE GPGPUSIM ENV SETUP ==="
             env|sort
             echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
             . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
-            echo "==== ENV AFTER ==="
+            echo "==== ENV AFTER  GPGPUSIM ENV SETUP ==="
             env|sort
             ;;
         sstmainline_config_no_gem5)
