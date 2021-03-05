@@ -280,74 +280,6 @@ if [ ! -d ../../distTestDir ] ; then
    ls -l
    popd
 
-## Cloning balar into <path>/devel/trunk
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-      date
-      echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_BALARBRANCH $SST_BALARREPO ${SST_ROOT}/sst-elements/src/sst/elements/balar "
-      date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_BALARBRANCH $SST_BALARREPO ${SST_ROOT}/sst-elements/src/sst/elements/balar
-      retVal=$?
-      date
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "\"git clone of ${SST_BALARREPO} \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf balar
-             continue
-         fi
-
-         exit
-      fi
-   done
-   echo " "
-   echo " The balar Repo has been cloned."
-   ls -l ${SST_ROOT}/sst-elements/src/sst/elements
-   pushd ${SST_ROOT}/sst-elements/src/sst/elements/balar
-
-   git log -n 1 | grep commit
-   ls -l
-   popd
-
-## Cloning gpgpu into <path>/devel/trunk
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-      date
-      echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUSIMBRANCH $SST_GPGPUSIMREPO ${SST_ROOT}/sst-elements/src/sst/elements/balar/sst-gpgpusim "
-      date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_GPGPUSIMBRANCH $SST_GPGPUSIMREPO ${SST_ROOT}/sst-elements/src/sst/elements/balar/sst-gpgpusim
-      retVal=$?
-      date
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "\"git clone of ${SST_GPGPUSIMREPO} \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf balar/sst-gpgpusim
-             continue
-         fi
-
-         exit
-      fi
-   done
-   echo " "
-   echo " The sst-gpgpusim Repo has been cloned."
-   ls -l ${SST_ROOT}/sst-elements/src/sst/elements/balar
-   pushd ${SST_ROOT}/sst-elements/src/sst/elements/balar/sst-gpgpusim
-
-   git log -n 1 | grep commit
-   ls -l
-   popd
-
 # Link the deps and test directories to the trunk
    echo " Creating Symbolic Links to the sqe directories (deps & test)"
    ls -l
@@ -1051,7 +983,7 @@ getconfig() {
             export SST_WITH_CUDA=1
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q none -M none -N none -A ${SST_DIST_CUDA}"
+            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q none -M none -N none -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv --disable-mem-pools"
             elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
@@ -1080,7 +1012,7 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none -M none -N none -A ${SST_DIST_CUDA}"
+            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none -M none -N none -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools --disable-mpi"
             elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
@@ -3210,18 +3142,6 @@ if [[ ${SST_JUNOREPO:+isSet} != isSet ]] ; then
     SST_JUNOREPO=https://github.com/sstsimulator/juno
 fi
 
-# Which Repository to use for Balar (default is https://github.com/sstsimulator/balar.git)
-if [[ ${SST_BALARREPO:+isSet} != isSet ]] ; then
-    SST_BALARREPO=https://github.com/sstsimulator/balar.git
-fi
-###
-
-# Which Repository to use for GPGPU-Sim (https://github.com/purdue-aalp/sst-gpgpusim-external.git)
-if [[ ${SST_GPGPUSIMREPO:+isSet} != isSet ]] ; then
-    SST_GPGPUSIMREPO=https://github.com/purdue-aalp/sst-gpgpusim-external.git
-fi
-###
-
 # Which branches to use for each repo (default is devel)
 if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
     SST_SQEBRANCH=devel
@@ -3254,14 +3174,6 @@ if [[ ${SST_JUNOBRANCH:+isSet} != isSet ]] ; then
     SST_JUNOBRANCH=master
 fi
 
-if [[ ${SST_BALARBRANCH:+isSet} != isSet ]] ; then
-    SST_BALARBRANCH=master
-fi
-
-if [[ ${SST_GPGPUSIMBRANCH:+isSet} != isSet ]] ; then
-    SST_GPGPUSIMBRANCH=master
-fi
-
 echo "#############################################################"
 echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
 echo "  GitHub SQE Repository and Branch = $SST_SQEREPO $SST_SQEBRANCH"
@@ -3270,8 +3182,6 @@ echo "  GitHub ELEMENTS Repository and Branch = $SST_ELEMENTSREPO $SST_ELEMENTSB
 echo "  GitHub MACRO Repository and Branch = $SST_MACROREPO $SST_MACROBRANCH"
 echo "  GitHub EXTERNAL-ELEMENT Repository and Branch = $SST_EXTERNALELEMENTREPO $SST_EXTERNALELEMENTBRANCH"
 echo "  GitHub JUNO Repository and Branch = $SST_JUNOREPO $SST_JUNOBRANCH"
-echo "  GitHub BALAR Repository and Branch = $SST_BALARREPO $SST_BALARBRANCH"
-echo "  GitHub GPGPU Repository and Branch = $SST_GPGPUSIMREPO $SST_GPGPUSIMBRANCH"
 echo "#############################################################"
 
 
