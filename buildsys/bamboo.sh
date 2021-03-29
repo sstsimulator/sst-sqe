@@ -1261,6 +1261,24 @@ getconfig() {
             junoConfigStr="$junobaseoptions"
             ;;
 
+        sstmainline_config_core_make_dist_test)
+            #-----------------------------------------------------------------
+            # sstmainline_config_core_make_dist_test
+            #      Do a "make dist"  (creating a tar file.)
+            #      Then,  untar the created tar-file.
+            #      Invoke bamboo.sh, (this file), to build sst from the tar.
+            #            Yes, bamboo invoked from bamboo.
+            #      Finally, run tests to validate the created sst.
+            #-----------------------------------------------------------------
+            depsStr="-d none -g none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions"
+            elementsConfigStr="NOBUILD"
+            macroConfigStr="NOBUILD"
+            externalelementConfigStr="NOBUILD"
+            junoConfigStr="NOBUILD"
+            ;;
+
         sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA)
             #-----------------------------------------------------------------
             # sstmainline_config_valgrind
@@ -1958,8 +1976,8 @@ ls
      mv $Package sst-core
      echo "             ---------------------- done with core ------"
 ############## JVD ################################################
-echo "$LINENO test for MACRO "
-     if  [ $1 !=  sst_Macro_make_dist ] ; then
+echo "$LINENO test for sstmainline_config_make_dist_test "
+     if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
          cd $SST_ROOT/sst-elements${LOC_OF_TAR}
@@ -1990,7 +2008,9 @@ echo "$LINENO test for MACRO "
 echo "$LINENO   END of Non Macro segment (else follows)"
 ############### JVD  ###################################################
 
-     else
+     fi
+
+     if  [ $1 ==  sst_Macro_make_dist ] ; then
 
 echo "$LINENO -- Begin Macro section"
 echo PWD $LINENO `pwd`
@@ -2026,7 +2046,7 @@ ls
      fi
 ############  JVD  ##################################################################
      echo "  ---- This is make dist code, but not for Macro,  line = $LINENO"
-     if  [ $1 !=  sst_Macro_make_dist ] ; then
+     if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
          echo "Copy in Reference Files.   They are not in the release"
 #       Current location is (new) trunk
          mkdir -p sst-elements/src/sst/elements
@@ -2199,6 +2219,8 @@ echo  "   We are in distTestDir/trunk"
 
      if [ $buildtype == "sstmainline_config_make_dist_test" ] ; then
          distScenario="sstmainline_config_all"
+     elif [ $buildtype == "sstmainline_config_core_make_dist_test" ] ; then
+         distScenario="sstmainline_coreonly_config"
      elif [ $buildtype == "sstmainline_config_dist_test" ] ; then
          distScenario="sstmainline_config_all"
      elif [ $buildtype == "sst_Macro_make_dist" ] ; then
@@ -3340,7 +3362,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3, $4, $5 and $6 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
