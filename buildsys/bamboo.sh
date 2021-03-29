@@ -1976,8 +1976,7 @@ ls
      mv $Package sst-core
      echo "             ---------------------- done with core ------"
 ############## JVD ################################################
-echo "$LINENO test for MACRO "
-#     if  [ $1 !=  sst_Macro_make_dist ] ; then
+echo "$LINENO test for sstmainline_config_make_dist_test "
      if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
@@ -2009,7 +2008,9 @@ echo "$LINENO test for MACRO "
 echo "$LINENO   END of Non Macro segment (else follows)"
 ############### JVD  ###################################################
 
-     else
+     fi
+
+     if  [ $1 ==  sst_Macro_make_dist ] ; then
 
 echo "$LINENO -- Begin Macro section"
 echo PWD $LINENO `pwd`
@@ -2045,7 +2046,6 @@ ls
      fi
 ############  JVD  ##################################################################
      echo "  ---- This is make dist code, but not for Macro,  line = $LINENO"
-#     if  [ $1 !=  sst_Macro_make_dist ] ; then
      if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
          echo "Copy in Reference Files.   They are not in the release"
 #       Current location is (new) trunk
