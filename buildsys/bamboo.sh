@@ -2220,7 +2220,7 @@ echo  "   We are in distTestDir/trunk"
      if [ $buildtype == "sstmainline_config_make_dist_test" ] ; then
          distScenario="sstmainline_config_all"
      elif [ $buildtype == "sstmainline_config_core_make_dist_test" ] ; then
-         distScenario="sstmainline_config_all"
+         distScenario="sstmainline_coreonly_config"
      elif [ $buildtype == "sstmainline_config_dist_test" ] ; then
          distScenario="sstmainline_config_all"
      elif [ $buildtype == "sst_Macro_make_dist" ] ; then
