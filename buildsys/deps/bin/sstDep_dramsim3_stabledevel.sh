@@ -115,12 +115,14 @@ sstDepsDeploy_dramsim3 ()
     ls -lia
     mkdir build
     cd build
+    pwd
 
     cmake ..   # NOTE: CMake version 3 or greater required
     retval=$?
     if [ $retval -ne 0 ]
     then
         # bail out on error
+        cmake --version
         echo "ERROR: sstDep_dramsim3_stabledevel.sh: cmake failure - is CMake Ver3 or greater???"
         popd
         return $retval
@@ -170,5 +172,5 @@ sstDepsQuery_dramsim3 ()
 {
     # provide version and installation location info
     echo "export SST_DEPS_VERSION_DRAMSIM3=\"REPOSITORY\""
-    echo "export SST_DEPS_INSTALL_DRAMSIM3=\"${SST_DEPS_INSTALL_DRAMSIM3\""
+    echo "export SST_DEPS_INSTALL_DRAMSIM3=\"${SST_DEPS_INSTALL_DRAMSIM3}\""
 }
