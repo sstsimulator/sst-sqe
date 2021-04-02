@@ -859,7 +859,7 @@ setConvenienceVars() {
 getconfig() {
 
     # Configure default dependencies to use if nothing is explicitly specified
-    local defaultDeps="-k default -d default -p default -z default -b default -g default -m default -i default -o default -h default -s none -q none"
+    local defaultDeps="-k default -D default -d default -p default -z default -b default -g default -m default -i default -o default -h default -s none -q none"
 
     local depsStr=""
 
@@ -900,10 +900,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -916,7 +916,7 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             elementsConfigStr="NOBUILD"
@@ -932,10 +932,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -A none -z 3.83 -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -A none -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-libphx=$LIBPHX_HOME/src --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME}   $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM  --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-libphx=$LIBPHX_HOME/src --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME}   $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -948,10 +948,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -M none -N default -A none"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -M none -N default -A none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv  --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -965,10 +965,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -983,10 +983,10 @@ getconfig() {
             export SST_WITH_CUDA=1
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q none -M none -N none -A 1.1"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q none -M none -N none -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv --disable-mem-pools"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1012,10 +1012,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none -M none -N none -A 1.1"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none -M none -N none -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="NOBUILD"
             junoConfigStr="NOBUILD"
@@ -1041,10 +1041,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1062,10 +1062,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none  -M none -N default -A none"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none  -M none -N default -A none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1079,10 +1079,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -A none -z 3.83"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -A none -z 3.83"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1096,10 +1096,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -A none -z 3.83"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -A none -z 3.83"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM  --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1110,10 +1110,10 @@ getconfig() {
             # sstmainline_config_clang_core_only
             #     This option used for configuring SST with no deps to build the core with clang
             #-----------------------------------------------------------------
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1126,10 +1126,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -A none -M 2.2.0"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -A none -M 2.2.0"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1142,10 +1142,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83  -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z 3.83  -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions ${MTNLION_FLAG} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM ${MTNLION_FLAG} --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1158,10 +1158,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -A none -M 2.2.0"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -A none -M 2.2.0"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions  --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1174,10 +1174,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1191,10 +1191,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -m none -o none -h none -s none -q none -M none -N default -A none"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z 3.83 -m none -o none -h none -s none -q none -M none -N default -A none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv  --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1210,10 +1210,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1229,10 +1229,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83  -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z 3.83  -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions ${MTNLION_FLAG} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM ${MTNLION_FLAG} --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1252,10 +1252,10 @@ getconfig() {
             #            Yes, bamboo invoked from bamboo.
             #      Finally, run tests to validate the created sst.
             #-----------------------------------------------------------------
-            depsStr="-d none -g none"
+            depsStr="-D none -d none -g none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
-            elementsConfigStr="$elementsbaseoptions  --with-glpk=${GLPK_HOME} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
+            elementsConfigStr="$elementsbaseoptions  --with-glpk=${GLPK_HOME} --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1269,10 +1269,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1286,7 +1286,7 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${cc_environment} ${mpi_environment}"
-            depsStr="-r default -H default -G default -k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
+            depsStr="-r default -H default -G default -k none -D none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="NOBUILD"
@@ -1303,7 +1303,7 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${cc_environment} ${mpi_environment}"
-            depsStr="-r default -H default -G default -k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
+            depsStr="-r default -H default -G default -k none -D none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
             coreConfigStr="NOBUILD"
             elementsConfigStr="NOBUILD"
@@ -1320,7 +1320,7 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${cc_environment} ${mpi_environment}"
-            depsStr="-r default -H default -G default -k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
+            depsStr="-r default -H default -G default -k none -D none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="NOBUILD"
@@ -1337,7 +1337,7 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${cc_environment} ${mpi_environment}"
-            depsStr="-r default -H default -G default -k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
+            depsStr="-r default -H default -G default -k none -D none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
             coreConfigStr="NOBUILD"
             elementsConfigStr="NOBUILD"
@@ -1355,7 +1355,7 @@ getconfig() {
             #            Yes, bamboo invoked from bamboo.
             #      Finally, run tests to validate the created sst.
             #-----------------------------------------------------------------
-            depsStr="-d none -g none"
+            depsStr="-D none -d none -g none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="NOBUILD"
