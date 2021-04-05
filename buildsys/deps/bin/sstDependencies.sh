@@ -1481,7 +1481,11 @@ do
             case "$OPTARG" in
                 default|stabledevel) # build latest DRAMsim3 from repository ("stable development")
                     echo "# (default) stabledevel: build latest DRAMsim3 from repository"
-                    . ${SST_DEPS_BIN}/sstDep_dramsim3_stabledevel.sh
+                    if [[  ${SST_WITHOUT_DRAMSIM3:+isSet} == isSet ]] ; then
+                        echo "  DRAMSIM3 IS NOT ENABLED BY SST_WITHOUT_DRAMSIM3 flag"
+                    else
+                        . ${SST_DEPS_BIN}/sstDep_dramsim3_stabledevel.sh
+                    fi
                     ;;
                 none) # do not build (explicit)
                     echo "# none: will not build DRAMsim3"
