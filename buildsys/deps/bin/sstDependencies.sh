@@ -77,6 +77,21 @@ sstDepsDoStaging ()
         fi
     fi
 
+    if [ ! -z "${SST_BUILD_DRAMSIM3}" ]
+    then
+        #-----------------------------------------------------------------------
+        # DRAMsim3
+        #-----------------------------------------------------------------------
+        sstDepsStage_dramsim3
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: DRAMsim3 code staging failure"
+            return $retval
+        fi
+    fi
+
     if [ ! -z "${SST_BUILD_GPGPUSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -693,6 +708,21 @@ sstDepsDeploy ()
         fi
     fi
 
+    if [ ! -z "${SST_BUILD_DRAMSIM3}" ]
+    then
+        #-----------------------------------------------------------------------
+        # DRAMsim3
+        #-----------------------------------------------------------------------
+        sstDepsDeploy_dramsim3
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: DRAMsim3 deployment failure"
+            return $retval
+        fi
+    fi
+
     if [ ! -z "${SST_BUILD_GPGPUSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -1066,6 +1096,14 @@ sstDepsDoQuery ()
         sstDepsQuery_dramsim
     fi
 
+    if [ ! -z "${SST_BUILD_DRAMSIM3}" ]
+    then
+        #-----------------------------------------------------------------------
+        # DRAMsim3
+        #-----------------------------------------------------------------------
+        sstDepsQuery_dramsim3
+    fi
+
     if [ ! -z "${SST_BUILD_GPGPUSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -1346,7 +1384,8 @@ sstDepsDoDependencies ()
 #   -q [arg12] [buildtype]
 # where
 #   -k DiskSim version (default|static|none)
-#   -d DRAMSim version (default|stabledevel|2.2|r4b00b22|none)
+#   -d DRAMSim version (default|stabledevel|2.2|2.2.2|r4b00b22|none)
+#   -D DRAMsim3 version (default|stabledevel|none)
 #   -p ParMETIS version (default|3.1.1|none)
 #   -z Zoltan version (default|3.2|3.83.8.3|none)
 #   -b Boost version (default|1.50|1.49|1.43|none)
@@ -1380,7 +1419,7 @@ sstDepsDoDependencies ()
 # use getopts
 OPTIND=1
 
-while getopts :k:d:p:z:b:g:G:m:M:i:o:h:H:r:s:q:e:4:I:N:a:c:A: opt
+while getopts :k:D:d:p:z:b:g:G:m:M:i:o:h:H:r:s:q:e:4:I:N:a:c:A: opt
 
 do
     case "$opt" in
@@ -1433,6 +1472,26 @@ do
                     ;;
                 *) # unknown DRAMSim argument
                     echo "# Unknown argument '$OPTARG', will not build DRAMSim"
+                    ;;
+            esac
+            ;;
+        D) # DRAMsim3
+            echo "# found the -D (DRAMsim3) option, with value $OPTARG"
+            # process arg
+            case "$OPTARG" in
+                default|stabledevel) # build latest DRAMsim3 from repository ("stable development")
+                    echo "# (default) stabledevel: build latest DRAMsim3 from repository"
+                    if [[  ${SST_WITHOUT_DRAMSIM3:+isSet} == isSet ]] ; then
+                        echo "  DRAMSIM3 IS NOT ENABLED BY SST_WITHOUT_DRAMSIM3 flag"
+                    else
+                        . ${SST_DEPS_BIN}/sstDep_dramsim3_stabledevel.sh
+                    fi
+                    ;;
+                none) # do not build (explicit)
+                    echo "# none: will not build DRAMsim3"
+                    ;;
+                *) # unknown DRAMSim argument
+                    echo "# Unknown argument '$OPTARG', will not build DRAMsim3"
                     ;;
             esac
             ;;
