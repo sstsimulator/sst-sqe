@@ -83,7 +83,8 @@ sstDepsStage_dramsim3 ()
 
     #  Move into the DRAMsim3 directory and checkout a specific SHA or TAG
     pushd ${SST_DEPS_SRC_STAGED_DRAMSIM3}
-    git checkout 47dad81c66de45c235eacc9fd9391bbca7a84196
+#    git checkout 29817593b3389f1337235d63cac515024ab8fd6e
+    git checkout 1.0.0
     echo "DRAMsim3.git" `git log HEAD | sed 4q` >&2
 
     popd
