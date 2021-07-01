@@ -391,13 +391,31 @@ echo " #####################################################"
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
 
+### Testing changed by New Test Frameworks
+#    # Do we run the Macro Tests
+#    if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
+#       [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ||
+#       [ $1 ==  sst_Macro_make_dist ] ; then
+
+    # FOR TESTS WITHOUT CORE, WE USE THE ORIG BAMBOO TESTSUITE; OTHERWISE
+    # LET THE NEW TESTFRAMEWORKS RUN, NORMALLY
     # Do we run the Macro Tests
-    if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
-       [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ||
+    if [ $1 == "sst-macro_nosstcore_mac" ] ||
+       [ $1 == "sst-macro_nosstcore_linux" ] ||
        [ $1 ==  sst_Macro_make_dist ] ; then
 
         ${SST_TEST_SUITES}/testSuite_macro.sh
         # We currently dont want to run any other tests
+        return
+    fi
+    # FOR TESTS WITH CORE, WE SKIP ALL OTHER TESTS AND
+    # LET THE NEW TESTFRAMEWORKS RUN
+    if [ $1 == "sst-macro_withsstcore_mac" ] ||
+       [ $1 == "sst-macro_withsstcore_linux" ] ; then
+
+        # We currently dont want to run any other tests
+        export SST_MULTI_RANK_COUNT=1
+        export SST_MULTI_THREAD_COUNT=1
         return
     fi
 
@@ -444,16 +462,16 @@ echo " #####################################################"
      #   Only run EmberSweep in Valgrind if explict request.
      #       In that case run only EmberSweep Suite.
         if [[ $1 == "sstmainline_config_valgrind_ES" ]] ; then
-            ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
+### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
             return
         fi
         if [[ $1 == "sstmainline_config_valgrind_ESshmem" ]] ; then
-            ${SST_TEST_SUITES}/testSuite_ESshmem.sh
+### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_ESshmem.sh
             return
         fi
     fi
         if [[ $1 == "sstmainline_config_valgrind_memHA" ]] ; then
-            ${SST_TEST_SUITES}/testSuite_memHA.sh
+### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_memHA.sh
             return
         fi
 
@@ -489,33 +507,34 @@ echo B4      $SST_SUITES_TO_RUN
          return
       fi
 
+### NOTE: $1 is set to sstmainline_config_all is set when doing a make dist test, we want to avoid this
+###
+### Tested by New Test Frameworks          if [ $1 == "sstmainline_config_all" ] ; then
+### Tested by New Test Frameworks
+### Tested by New Test Frameworks             pushd ${SST_ROOT}/test/testSuites
+### Tested by New Test Frameworks             echo \$SST_TEST_SUITES = $SST_TEST_SUITES
+### Tested by New Test Frameworks             echo "     Content of file, SuitesToOmitFromAll"
+### Tested by New Test Frameworks             cat SuitesToOmitFromAll
+### Tested by New Test Frameworks             echo ' '
+### Tested by New Test Frameworks             ## strip any comment off
+### Tested by New Test Frameworks             cat SuitesToOmitFromAll | awk  '{print $1}' > __omitlist__
+### Tested by New Test Frameworks             echo "      Suites to explictly OMIT from the \"all\" scenario:"
+### Tested by New Test Frameworks             ls testSuite_*sh | grep  -f __omitlist__
+### Tested by New Test Frameworks             echo ' '
+### Tested by New Test Frameworks             #   Build the Suite list for the "All" scenario
+### Tested by New Test Frameworks             ls testSuite_*sh | grep -v -f __omitlist__ > Suite.list
+### Tested by New Test Frameworks             echo "all() {" > files.for.all
+### Tested by New Test Frameworks             sed  s\%^%\${SST_TEST_SUITES}/% Suite.list >> files.for.all
+### Tested by New Test Frameworks             echo "}" >> files.for.all
+### Tested by New Test Frameworks             . files.for.all               # Source the subroutine including list
+### Tested by New Test Frameworks             popd
+### Tested by New Test Frameworks             all
+### Tested by New Test Frameworks             return
+### Tested by New Test Frameworks        fi
 
-      if [ $1 == "sstmainline_config_all" ] ; then
-
-         pushd ${SST_ROOT}/test/testSuites
-         echo \$SST_TEST_SUITES = $SST_TEST_SUITES
-         echo "     Content of file, SuitesToOmitFromAll"
-         cat SuitesToOmitFromAll
-         echo ' '
-         ## strip any comment off
-         cat SuitesToOmitFromAll | awk  '{print $1}' > __omitlist__
-         echo "      Suites to explictly OMIT from the \"all\" scenario:"
-         ls testSuite_*sh | grep  -f __omitlist__
-         echo ' '
-         #   Build the Suite list for the "All" scenario
-         ls testSuite_*sh | grep -v -f __omitlist__ > Suite.list
-         echo "all() {" > files.for.all
-         sed  s\%^%\${SST_TEST_SUITES}/% Suite.list >> files.for.all
-         echo "}" >> files.for.all
-         . files.for.all               # Source the subroutine including list
-         popd
-         all
-         return
-    fi
-
-    if [ $1 == "sstmainline_config_no_gem5" ] ; then
-        ${SST_TEST_SUITES}/testSuite_Ariel.sh
-    fi
+### Tested by New Test Frameworks    if [ $1 == "sstmainline_config_no_gem5" ] ; then
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_Ariel.sh
+### Tested by New Test Frameworks    fi
 
     #
     #  Run only GPU test only
@@ -635,30 +654,30 @@ echo B4      $SST_SUITES_TO_RUN
 
     if [ $1 == "sstmainline_config_memH_wo_openMP" ]
     then
-        if [[ $SST_ROOT == *Ariel* ]] ; then
-            pushd ${SST_TEST_SUITES}
-            ln -s ${SST_TEST_SUITES}/testSuite_Ariel.sh testSuite_Ariel_extra.sh
-            ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
-            popd
-        fi
-        export SST_BUILD_PROSPERO_TRACE_FILE=1
-        pushd ${SST_TEST_SUITES}
-          ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
-          ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
-          unset SST_BUILD_PROSPERO_TRACE_FILE
-        popd
-        ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
-        ${SST_TEST_SUITES}/testSuite_embernightly.sh
-        ${SST_TEST_SUITES}/testSuite_BadPort.sh
-        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-        ${SST_TEST_SUITES}/testSuite_memHA.sh
-        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-        ${SST_TEST_SUITES}/testSuite_CramSim.sh
-        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-        ${SST_TEST_SUITES}/testSuite_miranda.sh
-        ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
-        ${SST_TEST_SUITES}/testSuite_prospero.sh
-        ${SST_TEST_SUITES}/testSuite_Ariel.sh
+### Tested by New Test Frameworks        if [[ $SST_ROOT == *Ariel* ]] ; then
+### Tested by New Test Frameworks            pushd ${SST_TEST_SUITES}
+### Tested by New Test Frameworks            ln -s ${SST_TEST_SUITES}/testSuite_Ariel.sh testSuite_Ariel_extra.sh
+### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
+### Tested by New Test Frameworks            popd
+### Tested by New Test Frameworks        fi
+### Tested by New Test Frameworks                export SST_BUILD_PROSPERO_TRACE_FILE=1
+### Tested by New Test Frameworks                pushd ${SST_TEST_SUITES}
+### Tested by New Test Frameworks                  ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
+### Tested by New Test Frameworks                  ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
+### Tested by New Test Frameworks                  unset SST_BUILD_PROSPERO_TRACE_FILE
+### Tested by New Test Frameworks                popd
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_embernightly.sh
+### NOTE: NORMALLY SKIPPED               ${SST_TEST_SUITES}/testSuite_BadPort.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHA.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_CramSim.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_miranda.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
+### Tested by New Test Frameworks                ${SST_TEST_SUITES}/testSuite_prospero.sh
+### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_Ariel.sh
         return
     fi
 
@@ -679,27 +698,27 @@ echo B4      $SST_SUITES_TO_RUN
         invokeSuite memHA   2 2 Distrib    autotest_multirank_plus_multithread
     fi
 
-    ${SST_TEST_SUITES}/testSuite_Ariel.sh
-    ${SST_TEST_SUITES}/testSuite_juno.sh
-    ${SST_TEST_SUITES}/testSuite_Samba.sh
-    ${SST_TEST_SUITES}/testSuite_Messier.sh
-    ${SST_TEST_SUITES}/testSuite_CramSim.sh
-    ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-    ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
-    ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-    ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-    ${SST_TEST_SUITES}/testSuite_kingsley.sh
-    ${SST_TEST_SUITES}/testSuite_sst_GNA.sh
-    ${SST_TEST_SUITES}/testSuite_shogun.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_Ariel.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_juno.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_Samba.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_MesstestSuite_Messierier.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_CramSim.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_hybridsim.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_memHSieve.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_kingsley.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_sst_GNA.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_shogun.sh
 
 
-    ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
-    ${SST_TEST_SUITES}/testSuite_sstexternalelement.sh
-    ${SST_TEST_SUITES}/testSuite_sst_info_test.sh
-    ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
-    ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
-    ${SST_TEST_SUITES}/testSuite_miranda.sh
-    ${SST_TEST_SUITES}/testSuite_BadPort.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_sstexternalelement.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_sst_info_test.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_miranda.sh
+### NOTE: NORMALLY SKIPPED           ${SST_TEST_SUITES}/testSuite_BadPort.sh
 
     # Add other test suites here, i.e.
     # ${SST_TEST_SUITES}/testSuite_moe.sh
@@ -708,20 +727,21 @@ echo B4      $SST_SUITES_TO_RUN
     # ${SST_TEST_SUITES}/testSuite_shemp.sh
     # etc.
 
-    ${SST_TEST_SUITES}/testSuite_merlin.sh
-    ${SST_TEST_SUITES}/testSuite_qos.sh
-    ${SST_TEST_SUITES}/testSuite_embernightly.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_merlin.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuitetestSuite_qos_qos.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_embernightly.sh
 
-    ${SST_TEST_SUITES}/testSuite_simpleSimulation_CarWash.sh
-    ${SST_TEST_SUITES}/testSuite_simpleDistribComponent.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleSimulation_CarWash.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleDistribComponent.sh
 
     # Only run EmberSweep with valgrind with explict request.
     #    Valgrind on 180 test Suite takes 15 hours. (Aug. 2016)
     #    memHA add to the separate list Dec. 2017
     if [[ $1 != "sstmainline_config_valgrind" ]] ; then
-       ${SST_TEST_SUITES}/testSuite_memHA.sh
-       ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
-       ${SST_TEST_SUITES}/testSuite_ESshmem.sh
+### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_memHA.sh
+### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
+### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_ESshmem.sh
+        echo ""
     fi
 
     if [[ (`echo $1 | grep no_mpi` == "") ]] && [[ $1 != "sstmainline_config_valgrind" ]] ; then
@@ -733,29 +753,30 @@ echo B4      $SST_SUITES_TO_RUN
             ${SST_TEST_SUITES}/testSuite_partitioner.sh
         fi
     fi
-    ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
-    ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
 
-    if [[ ${INTEL_PIN_DIRECTORY:+isSet} == isSet ]] ; then
-        export SST_BUILD_PROSPERO_TRACE_FILE=1
-        pushd ${SST_TEST_SUITES}
-          ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
-          ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
-          unset SST_BUILD_PROSPERO_TRACE_FILE
-        popd
-    fi
-    ${SST_TEST_SUITES}/testSuite_prospero.sh
+### Tested by New Test Frameworks            if [[ ${INTEL_PIN_DIRECTORY:+isSet} == isSet ]] ; then
+### Tested by New Test Frameworks                export SST_BUILD_PROSPERO_TRACE_FILE=1
+### Tested by New Test Frameworks                pushd ${SST_TEST_SUITES}
+### Tested by New Test Frameworks                  ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
+### Tested by New Test Frameworks                  ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
+### Tested by New Test Frameworks                  unset SST_BUILD_PROSPERO_TRACE_FILE
+### Tested by New Test Frameworks                popd
+### Tested by New Test Frameworks            fi
+### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_prospero.sh
 #
-    ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
-    ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
-    ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
-    ${SST_TEST_SUITES}/testSuite_VaultSim.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
+### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_VaultSim.sh
 
-    # Purge SST installation
-    if [[ ${SST_RETAIN_BIN:+isSet} != isSet ]]
-    then
-        rm -Rf ${SST_INSTALL}
-    fi
+# For New Test Frameworks, we must not delete the SST installation
+#    # Purge SST installation
+#    if [[ ${SST_RETAIN_BIN:+isSet} != isSet ]]
+#    then
+#        rm -Rf ${SST_INSTALL}
+#    fi
 
 }
 ###-END-DOTESTS
@@ -838,7 +859,7 @@ setConvenienceVars() {
 getconfig() {
 
     # Configure default dependencies to use if nothing is explicitly specified
-    local defaultDeps="-k default -d default -p default -z default -b default -g default -m default -i default -o default -h default -s none -q none"
+    local defaultDeps="-k default -D default -d default -p default -z default -b default -g default -m default -i default -o default -h default -s none -q none"
 
     local depsStr=""
 
@@ -879,13 +900,29 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
+            ;;
+        sstmainline_coreonly_config)
+            #-----------------------------------------------------------------
+            # sstmainline_coreonly_config
+            #     This option used for configuring SST with supported stabledevel deps
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            coreMiscEnv="${cc_environment} ${mpi_environment}"
+            elementsMiscEnv="${cc_environment}"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
+            elementsConfigStr="NOBUILD"
+            macroConfigStr="NOBUILD"
+            externalelementConfigStr="NOBUILD"
+            junoConfigStr="NOBUILD"
             ;;
         sstmainline_config_all)
             #-----------------------------------------------------------------
@@ -895,10 +932,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -A none -z 3.83 -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -A none -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-libphx=$LIBPHX_HOME/src --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME}   $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM  --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-libphx=$LIBPHX_HOME/src --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME}   $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -911,10 +948,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -M none -N default -A none"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -M none -N default -A none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv  --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -928,10 +965,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -946,13 +983,21 @@ getconfig() {
             export SST_WITH_CUDA=1
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q none -M none -N none -A 1.1"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z 3.83 -g none -m none -i none -o none -h none -s none -q none -M none -N none -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv --disable-mem-pools"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
+            # Must Setup the GPGPUSIM Environment
+            echo "SETUP THE GPGPUSIM ENVIRONMENT"
+            echo "==== ENV BEFORE GPGPUSIM ENV SETUP ==="
+            env|sort
+            echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
+            . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
+            echo "==== ENV AFTER  GPGPUSIM ENV SETUP ==="
+            env|sort
             ;;
         sstmainline_config_linux_with_cuda_no_mpi)
             #-----------------------------------------------------------------
@@ -967,13 +1012,21 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none -M none -N none -A 1.1"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none -M none -N none -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
+            externalelementConfigStr="NOBUILD"
+            junoConfigStr="NOBUILD"
+            # Must Setup the GPGPUSIM Environment
+            echo "SETUP THE GPGPUSIM ENVIRONMENT"
+            echo "==== ENV BEFORE GPGPUSIM ENV SETUP ==="
+            env|sort
+            echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
+            . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
+            echo "==== ENV AFTER  GPGPUSIM ENV SETUP ==="
+            env|sort
             ;;
         sstmainline_config_no_gem5)
             #-----------------------------------------------------------------
@@ -988,10 +1041,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1009,10 +1062,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none  -M none -N default -A none"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none  -M none -N default -A none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1026,10 +1079,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -A none -z 3.83"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -A none -z 3.83"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1043,10 +1096,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -A none -z 3.83"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M 2.2.0 -N default -A none -z 3.83"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM  --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1057,10 +1110,10 @@ getconfig() {
             # sstmainline_config_clang_core_only
             #     This option used for configuring SST with no deps to build the core with clang
             #-----------------------------------------------------------------
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1073,10 +1126,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -A none -M 2.2.0"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -A none -M 2.2.0"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1089,10 +1142,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83  -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z 3.83  -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions ${MTNLION_FLAG} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM ${MTNLION_FLAG} --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1105,10 +1158,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -A none -M 2.2.0"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q none -z 3.83 -N default -A none -M 2.2.0"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions  --enable-static --disable-shared --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --enable-static --disable-shared --with-metis=${METIS_HOME} $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1121,10 +1174,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1138,10 +1191,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83 -m none -o none -h none -s none -q none -M none -N default -A none"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z 3.83 -m none -o none -h none -s none -q none -M none -N default -A none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv  --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1157,10 +1210,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1176,10 +1229,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -z 3.83  -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z 3.83  -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions ${MTNLION_FLAG} --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM ${MTNLION_FLAG} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM ${MTNLION_FLAG} --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1199,13 +1252,31 @@ getconfig() {
             #            Yes, bamboo invoked from bamboo.
             #      Finally, run tests to validate the created sst.
             #-----------------------------------------------------------------
-            depsStr="-d none -g none"
+            depsStr="-D none -d none -g none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
-            elementsConfigStr="$elementsbaseoptions  --with-glpk=${GLPK_HOME} --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
+            elementsConfigStr="$elementsbaseoptions  --with-glpk=${GLPK_HOME} --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-metis=${METIS_HOME}"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
+            ;;
+
+        sstmainline_config_core_make_dist_test)
+            #-----------------------------------------------------------------
+            # sstmainline_config_core_make_dist_test
+            #      Do a "make dist"  (creating a tar file.)
+            #      Then,  untar the created tar-file.
+            #      Invoke bamboo.sh, (this file), to build sst from the tar.
+            #            Yes, bamboo invoked from bamboo.
+            #      Finally, run tests to validate the created sst.
+            #-----------------------------------------------------------------
+            depsStr="-d none -g none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions"
+            elementsConfigStr="NOBUILD"
+            macroConfigStr="NOBUILD"
+            externalelementConfigStr="NOBUILD"
+            junoConfigStr="NOBUILD"
             ;;
 
         sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA)
@@ -1216,10 +1287,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
+            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z 3.83 -c default"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --with-zoltan=$SST_DEPS_INSTALL_ZOLTAN $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1233,7 +1304,7 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${cc_environment} ${mpi_environment}"
-            depsStr="-r default -H default -G default -k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
+            depsStr="-r default -H default -G default -k none -D none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="NOBUILD"
@@ -1250,7 +1321,7 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${cc_environment} ${mpi_environment}"
-            depsStr="-r default -H default -G default -k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
+            depsStr="-r default -H default -G default -k none -D none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
             coreConfigStr="NOBUILD"
             elementsConfigStr="NOBUILD"
@@ -1267,7 +1338,7 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${cc_environment} ${mpi_environment}"
-            depsStr="-r default -H default -G default -k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
+            depsStr="-r default -H default -G default -k none -D none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="NOBUILD"
@@ -1284,7 +1355,7 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${cc_environment} ${mpi_environment}"
-            depsStr="-r default -H default -G default -k none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
+            depsStr="-r default -H default -G default -k none -D none -d none -p none -g none -m none -i none -o none -h none -s none -q none -M none -N one -z none -c none"
             setConvenienceVars "$depsStr"
             coreConfigStr="NOBUILD"
             elementsConfigStr="NOBUILD"
@@ -1302,7 +1373,7 @@ getconfig() {
             #            Yes, bamboo invoked from bamboo.
             #      Finally, run tests to validate the created sst.
             #-----------------------------------------------------------------
-            depsStr="-d none -g none"
+            depsStr="-D none -d none -g none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="NOBUILD"
@@ -1832,6 +1903,13 @@ echo    "This is Catalina, Compiler is $compiler"
                    ;;
 
 ################################################################################
+
+            11.2) # Big Sur
+echo    "This is Big Sur, Compiler is $compiler"
+                   ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode
+                   ;;
+
+################################################################################
             *) # unknown
                 echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
                  echo ' '
@@ -1898,8 +1976,8 @@ ls
      mv $Package sst-core
      echo "             ---------------------- done with core ------"
 ############## JVD ################################################
-echo "$LINENO test for MACRO "
-     if  [ $1 !=  sst_Macro_make_dist ] ; then
+echo "$LINENO test for sstmainline_config_make_dist_test "
+     if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
          cd $SST_ROOT/sst-elements${LOC_OF_TAR}
@@ -1930,7 +2008,9 @@ echo "$LINENO test for MACRO "
 echo "$LINENO   END of Non Macro segment (else follows)"
 ############### JVD  ###################################################
 
-     else
+     fi
+
+     if  [ $1 ==  sst_Macro_make_dist ] ; then
 
 echo "$LINENO -- Begin Macro section"
 echo PWD $LINENO `pwd`
@@ -1966,7 +2046,7 @@ ls
      fi
 ############  JVD  ##################################################################
      echo "  ---- This is make dist code, but not for Macro,  line = $LINENO"
-     if  [ $1 !=  sst_Macro_make_dist ] ; then
+     if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
          echo "Copy in Reference Files.   They are not in the release"
 #       Current location is (new) trunk
          mkdir -p sst-elements/src/sst/elements
@@ -2139,6 +2219,8 @@ echo  "   We are in distTestDir/trunk"
 
      if [ $buildtype == "sstmainline_config_make_dist_test" ] ; then
          distScenario="sstmainline_config_all"
+     elif [ $buildtype == "sstmainline_config_core_make_dist_test" ] ; then
+         distScenario="sstmainline_coreonly_config"
      elif [ $buildtype == "sstmainline_config_dist_test" ] ; then
          distScenario="sstmainline_config_all"
      elif [ $buildtype == "sst_Macro_make_dist" ] ; then
@@ -3029,12 +3111,6 @@ echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
 # Trap the exit command and perform end of script processing.
 function ExitOfScriptHandler {
     echo "EXIT COMMAND TRAPPED...."
-    echo
-    echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file ==="
-    echo "cat $HOME/.sst/sstsimulator.conf"
-    cat $HOME/.sst/sstsimulator.conf
-    echo "=== DONE DUMPING ==="
-    echo
 }
 
 #=========================================================================
@@ -3286,7 +3362,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3, $4, $5 and $6 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
@@ -3525,7 +3601,6 @@ else
             fi
             echo "=============================================================="
 
-
        # Figure out PIN Configuration
        if [[  ${SST_WITHOUT_PIN:+isSet} == isSet ]] ; then
             echo "  PIN IS NOT ENABLED BY SST_WITHOUT_PIN flag"
@@ -3565,24 +3640,24 @@ else
                 fi
             else
                 # Check that the default Intel PIN module is available, load 3.13 version
-                # For Linux = pin/pin-3.13-98189-g60a6ef199-gcc-linux
-                # For OSX   = pin/pin-3.13-98189-g60a6ef199-clang-mac
+                # For Linux = pin/pin-3.17-98314-g0c048d619-gcc-linux
+                # For OSX   = pin/pin-3.17-98314-g0c048d619-clang-mac
                 #           ModuleEx puts the avail output on Stdout (where it belongs.)
-                ModuleEx avail | egrep -q "pin/pin-3.13"
+                ModuleEx avail | egrep -q "pin/pin-3.17"
                 if [ $? == 0 ]
                 then
-                # if `pin module is available, use pin/pin-3.13.
+                # if `pin module is available, use pin/pin-3.17.
                     if [ $kernel != "Darwin" ] ; then
-                       echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.13-98189-g60a6ef199-gcc-linux"
+                       echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.17-98314-g0c048d619-gcc-linux"
                        echo "LOADING INTEL PIN ENVIRONMENT MODULE"
-                       ModuleEx load pin/pin-3.13-98189-g60a6ef199-gcc-linux
+                       ModuleEx load pin/pin-3.17-98314-g0c048d619-gcc-linux
                        echo  $INTEL_PIN_DIRECTORY
                        ls $INTEL_PIN_DIRECTORY
                        export SST_USING_PIN3=1
                     else        ##    MacOS   (Darwin)
-                       echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.13-98189-g60a6ef199-clang-mac"
+                       echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.17-98314-g0c048d619-clang-mac"
                        echo "LOADING INTEL PIN ENVIRONMENT MODULE"
-                       ModuleEx load pin/pin-3.13-98189-g60a6ef199-clang-mac
+                       ModuleEx load pin/pin-3.17-98314-g0c048d619-clang-mac
                        echo  $INTEL_PIN_DIRECTORY
                        ls $INTEL_PIN_DIRECTORY
                        export SST_USING_PIN3=1
@@ -3661,32 +3736,141 @@ then
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
             #    ---  These are probably temporary, but let's line them up properly anyway
+            echo "===================================================================================="
+            echo "===================================================================================="
+            echo "===================================================================================="
+            echo "============================== BEFORE TESTING START ================================"
+            echo "===================================================================================="
+            echo "===================================================================================="
+            echo "===================================================================================="
+            echo "=== pwd results:"
             pwd
-            echo "            CHECK ENVIRONMENT VARIABLES "
-            env | grep SST
-            echo "            End of SST Environs"
-            pwd
+            echo "=== ls results:"
             ls
+            echo "==============================ENVIRONMENT DUMP BEFORE TESTING START================="
+            env|sort
+            echo "==============================ENVIRONMENT DUMP BEFORE TESTING END================="
             #    ---
             if [ -d "test" ] ; then
                 echo " \"test\" is a directory"
-                echo " ################################################################"
-                echo " #"
-                echo " #         ENTERING dotests  "
-                echo " #"
-                echo " ################################################################"
-                dotests $1 $4
+
+                #############################################################################
+                # ADDING THE NEW TEST FRAMEWORKS INTO THE TEST SYSTEM
+                # NOTE: We need to do this because the bamboo.sh script is exec'ed not sourced,
+                #       and therefore loads the desired modules and sets up the environment
+                #       variables as necessary.  If we dont do it here, then when bamboo.sh
+                #       exits, the environment (and loaded modules) are reset, and we would
+                #       need to reset these items in the Jenkins script.
+                #############################################################################
+
+                if [[ ${SST_TEST_FRAMEWORKS_SST_MACRO_NO_CORE:+isSet} == isSet ]] ; then
+                    echo "**************************************************************************"
+                    echo "***                                                                    ***"
+                    echo "*** RUNING BAMBOO'S dotests() for SST-MACRO WITH NO CORE               ***"
+                    echo "***                                                                    ***"
+                    echo "**************************************************************************"
+                    dotests $1 $4
+                    retval=$?
+                else
+                    # Running Core or Elements testing using the New Frameworks
+                    # Get the Paths to the test frameworks applications
+                    if command -v sst-test-core > /dev/null 2>&1; then
+                        export SST_TEST_FRAMEWORKS_CORE_APP_EXE=`command -v sst-test-core`
+                    else
+                        echo "ERROR: Cannot Find sst-test-core on system"
+                        exit 128
+                    fi
+
+                    if command -v sst-test-elements > /dev/null 2>&1; then
+                        export SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE=`command -v sst-test-elements`
+                    else
+                        echo "ERROR: Cannot Find sst-test-elements on system"
+                        exit 128
+                    fi
+                    echo "=============================================================="
+                    echo "=== FOUND FRAMEWORKS APPS"
+                    echo "=============================================================="
+                    echo "SST_TEST_FRAMEWORKS_CORE_APP_EXE =" $SST_TEST_FRAMEWORKS_CORE_APP_EXE
+                    echo "SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE =" $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE
+
+                    echo "**************************************************************************"
+                    echo "***                                                                    ***"
+                    echo "*** SST CONFIGURATION DUMP                                             ***"
+                    echo "***                                                                    ***"
+                    echo "**************************************************************************"
+                    echo "Running sst-config"
+                    cd $SST_ROOT
+                    sst-config
+
+                    if [[ ${SST_TEST_FRAMEWORKS_CORE_ONLY:+isSet} == isSet ]] ; then
+                        echo "**************************************************************************"
+                        echo "***                                                                    ***"
+                        echo "*** RUNING NEW TEST FRAMEWORKS CORE TESTS RUNNING INSIDE OF BAMBOO     ***"
+                        echo "***                                                                    ***"
+                        echo "**************************************************************************"
+                        # WE ARE RUNNING THE FRAMEWORKS CORE SET OF TESTS ONLY
+                        cd $SST_ROOT
+                        $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_CORE_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
+                        retval=$?
+                        echo "BAMBOO: SST Frameworks Core Test retval = $retval"
+                    else
+                        echo " ################################################################"
+                        echo " #"
+                        echo " #         ENTERING BAMBOO'S dotests() Function  "
+                        echo " #"
+                        echo " ################################################################"
+                        # WE ARE RUNNING THE ORIGINAL SET OF BAMBOO TESTS FIRST
+                        dotests $1 $4
+                        retval=$?
+                        echo "BAMBOO: SST original dotests retval = $retval"
+
+                        # NOW RUN THE FRAMEWORKS ELEMENTS TESTS
+                        if [[ ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS:+isSet} == isSet ]] ; then
+                            echo "**************************************************************************"
+                            echo "***                                                                    "
+                            echo "*** RUNING NEW TEST FRAMEWORKS ELEMENTS - SUBSET OF TESTS : ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS}"
+                            echo "***                                                                    "
+                            echo "**************************************************************************"
+                            # WE ARE RUNNING THE FRAMEWORKS ELEMENTS SUBSET OF TESTS (Set by wildcard) AFTER DOTESTS() HAVE RUN
+                            cd $SST_ROOT
+                            $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT -w $SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS
+                            frameworks_retval=$?
+                            echo "BAMBOO: SST Frameworks Elements Test retval = $frameworks_retval"
+                        else
+                            echo "**************************************************************************"
+                            echo "***                                                                    "
+                            echo "*** RUNING NEW TEST FRAMEWORKS ELEMENTS - FULL SET OF TESTS"
+                            echo "***                                                                    "
+                            echo "**************************************************************************"
+                            # WE ARE RUNNING THE FRAMEWORKS ELEMENTS FULL SET OF TESTS AFTER DOTESTS() HAVE RUN
+                            cd $SST_ROOT
+                            $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
+                            frameworks_retval=$?
+                            echo "BAMBOO: SST Frameworks Elements Test retval = $frameworks_retval"
+                        fi
+
+                        # Check the retval result from the bamboo dotests then check the frameworks_retval results with the frameworks run
+                        if [ $retval -eq 0 ]; then
+                            # Did the dotests pass, if so, then return the results
+                            # from the frameworks tests
+                            retval=$frameworks_retval
+                        fi
+                        echo "BAMBOO: Combined Frameworks + dotests retval = $retval"
+                    fi
+                    echo "BAMBOO: FINAL TESTING RESULTS retval = $retval"
+                fi
             fi
-        fi               #   End of sstmainline_config_dist_test  conditional
+        fi
     fi
 fi
 date
 
 if [ $retval -eq 0 ]
 then
-    echo "$0 : exit success."
+    echo "$0 : BAMBOO: Exit Success."
 else
-    echo "$0 : exit failure."
+    echo "$0 : BAMBOO: Exit Failure."
 fi
 
+echo "BAMBOO: JUST BEFORE EXIT retval = $retval"
 exit $retval
