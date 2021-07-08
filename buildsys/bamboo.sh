@@ -2048,85 +2048,85 @@ ls
      echo "  ---- This is make dist code, but not for Macro,  line = $LINENO"
      if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
          echo "Copy in Reference Files.   They are not in the release"
-#       Current location is (new) trunk
-         mkdir -p sst-elements/src/sst/elements
-
-         pushd sst-elements/src/sst/elements
-         if [ $? -ne 0 ] ; then
-             echo FAIL
-             exit
-         fi
-         pwd
-         for __el in `ls`
-         do
-             echo $__el | grep -e Makefile -e ariel -e zodiac  > /dev/null
-             if [ $? -eq 0 ] ; then
-                 continue
-             fi
-             echo "element in loop: $__el"
-             if [ ! -d $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ] ; then
-                 echo "Loop entry $__el does not have a refFiles Directory"
-                 echo ' '
-                 continue
-             fi
-             mkdir -p $__el/tests
-             cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-             ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-             echo ' '
-         done
-         echo "There are 3 more to do that don't fit the mold"
-#    memHSieve, ariel, zodiac/sirius
-
-         __el=memHierarchy/Sieve
-         echo "Another element : $__el"
-         ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles
-         mkdir -p ./$__el/tests
-         cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-         echo ' '
-
-         __el=ariel/frontend/simple/examples/stream
-         echo "Another element : $__el"
-         ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles
-         mkdir -p ./$__el/tests
-         cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-         echo ' '
-
-         __el=zodiac/sirius
-         echo "Another element : $__el"
-         ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles
-         mkdir -p ./$__el/tests
-         cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-         echo ' '
-
-         echo "there are two more cases from subCompoents"
-
-O
-find $SST_ROOT -name *2uu.out*
-
-
-         __el=simpleElementExample/tests
-         echo "Another element : $__el"
-         ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles
-         mkdir -p ./$__el/tests/subcomponent_tests
-         cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/subcomponent_tests
-         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
-         echo ' '
-
-         __el=simpleElementExample/tests
-         echo "Another element : $__el"
-         ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles
-         mkdir -p ./$__el/tests/subcomponent_tests
-         cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/legacy/refFiles ./$__el/subcomponent_tests/legacy
-         ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
-         echo ' '
-echo "               this is after"
-find -L $SST_ROOT -name '*2uu.out'
-
-echo  "pause  ###########################################################################"
-# sleep 300
+### #       Current location is (new) trunk
+###          mkdir -p sst-elements/src/sst/elements
+###
+###          pushd sst-elements/src/sst/elements
+###          if [ $? -ne 0 ] ; then
+###              echo FAIL
+###              exit
+###          fi
+###          pwd
+###          for __el in `ls`
+###          do
+###              echo $__el | grep -e Makefile -e ariel -e zodiac  > /dev/null
+###              if [ $? -eq 0 ] ; then
+###                  continue
+###              fi
+###              echo "element in loop: $__el"
+###              if [ ! -d $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ] ; then
+###                  echo "Loop entry $__el does not have a refFiles Directory"
+###                  echo ' '
+###                  continue
+###              fi
+###              mkdir -p $__el/tests
+###              cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+###              ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+###              echo ' '
+###          done
+###          echo "There are 3 more to do that don't fit the mold"
+### #    memHSieve, ariel, zodiac/sirius
+###
+###          __el=memHierarchy/Sieve
+###          echo "Another element : $__el"
+###          ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles
+###          mkdir -p ./$__el/tests
+###          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+###          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+###          echo ' '
+###
+###          __el=ariel/frontend/simple/examples/stream
+###          echo "Another element : $__el"
+###          ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles
+###          mkdir -p ./$__el/tests
+###          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+###          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+###          echo ' '
+###
+###          __el=zodiac/sirius
+###          echo "Another element : $__el"
+###          ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles
+###          mkdir -p ./$__el/tests
+###          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+###          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
+###          echo ' '
+###
+###          echo "there are two more cases from subCompoents"
+###
+### O
+### find $SST_ROOT -name *2uu.out*
+###
+###
+###          __el=simpleElementExample/tests
+###          echo "Another element : $__el"
+###          ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles
+###          mkdir -p ./$__el/tests/subcomponent_tests
+###          cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/subcomponent_tests
+###          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
+###          echo ' '
+###
+###          __el=simpleElementExample/tests
+###          echo "Another element : $__el"
+###          ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles
+###          mkdir -p ./$__el/tests/subcomponent_tests
+###          cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/legacy/refFiles ./$__el/subcomponent_tests/legacy
+###          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
+###          echo ' '
+### echo "               this is after"
+### find -L $SST_ROOT -name '*2uu.out'
+###
+### echo  "pause  ###########################################################################"
+### # sleep 300
 
 
 
