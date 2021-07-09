@@ -2047,7 +2047,9 @@ ls
 ############  JVD  ##################################################################
      echo "  ---- This is make dist code, but not for Macro,  line = $LINENO"
      if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
-         echo "Copy in Reference Files.   They are not in the release"
+### NOTE: WITH NEW TEST FRAMEWORKS, WE SHOULD NOT COPY ANY REF FILES AS THEY
+###       SHOULD BE DISTRIBUTED WITH THE PACKAGE
+###         echo "Copy in Reference Files.   They are not in the release"
 ### #       Current location is (new) trunk
 ###          mkdir -p sst-elements/src/sst/elements
 ###
@@ -2217,6 +2219,8 @@ echo  "   We are in distTestDir/trunk"
 
      echo SST_DEPS_USER_DIR= $SST_DEPS_USER_DIR
 
+     ### RENAME THE CONFIG TEST TO SOMETHING ELSE SO WHEN BAMBOO IS CALLED AGAIN,
+     ### IT BUILDS THE EXTRACTED DISTRIBTUION AND TESTS NORMALLY.
      if [ $buildtype == "sstmainline_config_make_dist_test" ] ; then
          distScenario="sstmainline_config_all"
      elif [ $buildtype == "sstmainline_config_core_make_dist_test" ] ; then
