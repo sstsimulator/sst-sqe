@@ -1790,105 +1790,6 @@ echo "  ******************* macosVersion= $macosVersion "
         # Do things specific to the MacOS version
         case $macosVersion in
 ################################################################################
-            10.10) # Yosemite
-                ModuleEx avail
-                # Depending on specified compiler, load Boost and MPI
-                case $compiler in
-
-                    clang-700.0.72)
-                        # Use Boost and MPI built with CLANG from Xcode 6.3
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
-
-                        # Load other modules for clang-700.0.72
-                        # GNU Linear Programming Kit (GLPK)
-                        echo "bamboo.sh: Load GLPK"
-                        ModuleEx load glpk/glpk-4.54_clang-700.0.72
-                        # # System C
-                        # echo "bamboo.sh: Load System C"
-                        # ModuleEx load systemc/systemc-2.3.0_clang-700.0.72
-                        # METIS 5.1.0
-                        echo "bamboo.sh: Load METIS 5.1.0"
-                        ModuleEx load metis/metis-5.1.0_clang-700.0.72
-                        # Other misc
-#                        echo "bamboo.sh: Load libphx"
-#                        ModuleEx load libphx/libphx-2014-MAY-08_clang-700.0.72
-
-                        # load MPI
-                        case $2 in
-                            ompi_default|openmpi-1.8)
-                                echo "OpenMPI 1.8 (openmpi-1.8) selected"
-                                ModuleEx add mpi/openmpi-1.8_clang-700.0.72
-                                ;;
-                            *)
-                                echo "Default MPI option, loading mpi/openmpi-1.8"
-                                ModuleEx load mpi/openmpi-1.8_clang-700.0.72 2>catch.err
-                                if [ -s catch.err ]
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-
-                        # load corresponding Boost
-                        case $3 in
-                            boost_default|boost-1.56)
-                                echo "Boost 1.56 selected"
-                                ModuleEx add boost/boost-1.56.0-nompi_clang-700.0.72
-                                ;;
-                            *)
-                                echo "bamboo.sh: \"Default\" Boost selected"
-                                echo "Third argument was $3"
-                                echo "Loading boost/Boost 1.56"
-                                ModuleEx load boost/boost-1.56.0-nompi_clang-700.0.72 2>catch.err
-                                if [ -s catch.err ]
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which clang`
-                        export CXX=`which clang++`
-                        ModuleEx list
-                        ;;
-
-                    clang-700.1.76)
-                        ldModules_MacOS_Clang clang-700.1.76 $2 $3   #  Xcode 7.1
-                        ;;
-                    *)
-                        # unknown compiler, use default
-                        echo "bamboo.sh: Unknown compiler selection. Assuming clang."
-                        ModuleEx unload boost
-                        ModuleEx unload mpi
-                        ModuleEx add mpi/openmpi-1.8_$compiler
-                        ModuleEx add boost/boost-1.56.0-nompi_$compiler
-                        ModuleEx list
-                        ;;
-                esac
-                ;;
-
-################################################################################
-            10.11) # El Capitan
-echo    "This is El Capitan, Compiler is $compiler"
-                   ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode
-                   ;;
-
-################################################################################
-            10.12) # Sierra
-echo    "This is Sierra, Compiler is $compiler"
-                   ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode
-                   ;;
-
-################################################################################
-
-            10.13) # High Sierra
-echo    "This is High Sierra, Compiler is $compiler"
-                   ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode
-                   ;;
-
-################################################################################
 
             10.14) # Mojave
 echo    "This is mojave, Compiler is $compiler"
@@ -1904,7 +1805,7 @@ echo    "This is Catalina, Compiler is $compiler"
 
 ################################################################################
 
-            11.2) # Big Sur
+            11.6) # Big Sur
 echo    "This is Big Sur, Compiler is $compiler"
                    ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode
                    ;;
