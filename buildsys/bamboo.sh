@@ -3082,23 +3082,23 @@ else
 fi
 
 if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
-    SST_COREBRANCH=devel
+    SST_COREBRANCH=v11.1.0_beta
 fi
 
 if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
-    SST_ELEMENTSBRANCH=devel
+    SST_ELEMENTSBRANCH=v11.1.0_beta
 fi
 
 if [[ ${SST_MACROBRANCH:+isSet} != isSet ]] ; then
-    SST_MACROBRANCH=devel
+    SST_MACROBRANCH=v11.1.0_beta
 fi
 
 if [[ ${SST_EXTERNALELEMENTBRANCH:+isSet} != isSet ]] ; then
-    SST_EXTERNALELEMENTBRANCH=master
+    SST_EXTERNALELEMENTBRANCH=v11.1.0_beta
 fi
 
 if [[ ${SST_JUNOBRANCH:+isSet} != isSet ]] ; then
-    SST_JUNOBRANCH=master
+    SST_JUNOBRANCH=v11.1.0_beta
 fi
 
 echo "#############################################################"
