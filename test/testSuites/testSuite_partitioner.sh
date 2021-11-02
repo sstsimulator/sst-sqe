@@ -198,9 +198,9 @@ PARTITIONER=$2
     then
         # Run SUT
         echo ' '
-        echo "mpirun -np ${NUMRANKS} $NUMA_PARAM -oversubscribe ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile"
+        echo "mpirun -np ${NUMRANKS} $NUMA_PARAM -oversubscribe ${sut} --verbose --partitioner $PARTITIONER --output-partition=$partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile"
         echo ' '
-        mpirun -np ${NUMRANKS} $NUMA_PARAM -oversubscribe ${sut} --verbose --partitioner $PARTITIONER --output-partition $partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
+        mpirun -np ${NUMRANKS} $NUMA_PARAM -oversubscribe ${sut} --verbose --partitioner $PARTITIONER --output-partition=$partFile --model-options "--topo=torus --shape=4x4x4 --cmdLine=\"Init\" --cmdLine=\"Allreduce\" --cmdLine=\"Fini\"" ${sutArgs} > $outFile 2>$errFile
         RetVal=$?
         TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
         if [ -e $TIME_FLAG ] ; then
