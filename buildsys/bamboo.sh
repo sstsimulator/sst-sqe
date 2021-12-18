@@ -744,15 +744,15 @@ echo B4      $SST_SUITES_TO_RUN
         echo ""
     fi
 
-    if [[ (`echo $1 | grep no_mpi` == "") ]] && [[ $1 != "sstmainline_config_valgrind" ]] ; then
+    # if [[ (`echo $1 | grep no_mpi` == "") ]] && [[ $1 != "sstmainline_config_valgrind" ]] ; then
         #  Zoltan test requires MPI to execute.
         #  sstmainline_config_no_gem5 deliberately omits Zoltan, so must skip test.
         #  Valgrind test as inserted here is incompatible with partitioning tests.
-        if [ $1 != "sstmainline_config_linux_with_ariel" ] ; then
+        # if [ $1 != "sstmainline_config_linux_with_ariel" ] ; then
             # ${SST_TEST_SUITES}/testSuite_zoltan.sh    # Disabling zoltan test ahead of removal in SST 12
-            ${SST_TEST_SUITES}/testSuite_partitioner.sh
-        fi
-    fi
+            # ${SST_TEST_SUITES}/testSuite_partitioner.sh # Disable since partitioning is now tested through new frameworks
+        # fi
+    # fi
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
 ### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
 
