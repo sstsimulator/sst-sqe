@@ -1812,7 +1812,7 @@ echo    "This is Big Sur, Compiler is $compiler"
 
 ################################################################################
 
-            12.3) # Monterey
+            12.3.1) # Monterey
 echo    "This is Monterey, Compiler is $compiler"
                    ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode
                    ;;
