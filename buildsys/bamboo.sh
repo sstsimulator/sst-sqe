@@ -3552,17 +3552,17 @@ else
                 fi
             else
                 # Check that the default Intel PIN module is available, load 3.13 version
-                # For Linux = pin/pin-3.17-98314-g0c048d619-gcc-linux
+                # For Linux = pin/pin-3.22-98547-g7a303a835-gcc-linux
                 # For OSX   = pin/pin-3.17-98314-g0c048d619-clang-mac
                 #           ModuleEx puts the avail output on Stdout (where it belongs.)
-                ModuleEx avail | egrep -q "pin/pin-3.17"
+                ModuleEx avail | egrep -q "pin/pin-3.22"
                 if [ $? == 0 ]
                 then
-                # if `pin module is available, use pin/pin-3.17.
+                # if `pin module is available, use pin/pin-3.22 on linux.
                     if [ $kernel != "Darwin" ] ; then
-                       echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.17-98314-g0c048d619-gcc-linux"
+                       echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.22-98547-g7a303a835-gcc-linux"
                        echo "LOADING INTEL PIN ENVIRONMENT MODULE"
-                       ModuleEx load pin/pin-3.17-98314-g0c048d619-gcc-linux
+                       ModuleEx load pin/pin-3.22-98547-g7a303a835-gcc-linux
                        echo  $INTEL_PIN_DIRECTORY
                        ls $INTEL_PIN_DIRECTORY
                        export SST_USING_PIN3=1
