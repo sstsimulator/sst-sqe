@@ -2409,6 +2409,13 @@ ls | grep tar
             return $retval
         fi
 
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make clean on SST-CORE"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"        
+        make clean
+
         echo
         echo "=== DUMPING The SST-CORE installed sstsimulator.conf file ==="
         echo "cat $SST_CORE_INSTALL/etc/sst/sstsimulator.conf"
@@ -2455,6 +2462,13 @@ ls | grep tar
         then
             return $retval
         fi
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make clean on SST-CORE"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"        
+        make clean
 
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '
@@ -2627,6 +2641,7 @@ ls | grep tar
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo " "
 
+
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo ' '
             echo "bamboo.sh: make install on SST-ELEMENTS"
@@ -2641,6 +2656,13 @@ ls | grep tar
                 return $retval
             fi
 
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '
+            echo "bamboo.sh: make clean on SST-ELEMENTS"
+            echo ' '
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            make clean
+            
             echo
             echo "=== DUMPING The SST-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
             echo "cat $HOME/.sst/sstsimulator.conf"
