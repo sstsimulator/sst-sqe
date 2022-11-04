@@ -1884,7 +1884,7 @@ ls
      mv $Package sst-core
      echo "             ---------------------- done with core ------"
 ############## JVD ################################################
-echo "$LINENO test for sstmainline_config_make_dist_test "
+    echo "$LINENO test for sstmainline_config_make_dist_test "
      if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
@@ -1913,154 +1913,69 @@ echo "$LINENO test for sstmainline_config_make_dist_test "
          fi
          echo "---   PWD $LINENO  `pwd`"
          mv $Package sst-elements
-echo "$LINENO   END of Non Macro segment (else follows)"
+    echo "$LINENO   END of Non Macro segment (else follows)"
 ############### JVD  ###################################################
 
      fi
 
      if  [ $1 ==  sst_Macro_make_dist ] ; then
 
-echo "$LINENO -- Begin Macro section"
-echo PWD $LINENO `pwd`
-ls
-#                     MACRO
-         cd $SST_ROOT/sst-macro${LOC_OF_TAR}
-         echo "---   PWD $LINENO  `pwd`"
-ls
-         Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
-         echo  PACKAGE is $Package
-         tarName=${Package}.tar.gz
-         ls $tarName
-         if [ $? != 0 ] ; then
-             echo " PWD $LINENO   `pwd`"
-             ls
-             echo Can NOT find Tar File $Package .tar.gz
-             exit 1
-         fi
-         cd $SST_ROOT/distTestDir/trunk
-         mv $SST_ROOT/sst-macro${LOC_OF_TAR}/$tarName .
-         if [ $? -ne 0 ] ; then
-              echo "Move failed  \$SST_ROOT/$tarName to ."
-              exit 1
-         fi
-         echo "   Untar the created file, $tarName"
-         tar xzf $tarName
-         if [ $? -ne 0 ] ; then
-              echo "Untar of $tarName failed"
-              exit 1
-         fi
-         echo "---   PWD $LINENO  `pwd`"
-         mv $Package sst-macro
-     fi
+        echo "$LINENO -- Begin Macro section"
+        echo PWD $LINENO `pwd`
+        ls
+        # MACRO
+        cd $SST_ROOT/sst-macro${LOC_OF_TAR}
+        echo "---   PWD $LINENO  `pwd`"
+        ls
+        Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
+        echo  PACKAGE is $Package
+        tarName=${Package}.tar.gz
+        ls $tarName
+        if [ $? != 0 ] ; then
+            echo " PWD $LINENO   `pwd`"
+            ls
+            echo Can NOT find Tar File $Package .tar.gz
+            exit 1
+        fi
+        cd $SST_ROOT/distTestDir/trunk
+        mv $SST_ROOT/sst-macro${LOC_OF_TAR}/$tarName .
+        if [ $? -ne 0 ] ; then
+            echo "Move failed  \$SST_ROOT/$tarName to ."
+            exit 1
+        fi
+        echo "   Untar the created file, $tarName"
+        tar xzf $tarName
+        if [ $? -ne 0 ] ; then
+            echo "Untar of $tarName failed"
+            exit 1
+        fi
+        echo "---   PWD $LINENO  `pwd`"
+        mv $Package sst-macro
+    fi
 ############  JVD  ##################################################################
-     echo "  ---- This is make dist code, but not for Macro,  line = $LINENO"
-     if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
-### NOTE: WITH NEW TEST FRAMEWORKS, WE SHOULD NOT COPY ANY REF FILES AS THEY
-###       SHOULD BE DISTRIBUTED WITH THE PACKAGE
-###         echo "Copy in Reference Files.   They are not in the release"
-### #       Current location is (new) trunk
-###          mkdir -p sst-elements/src/sst/elements
-###
-###          pushd sst-elements/src/sst/elements
-###          if [ $? -ne 0 ] ; then
-###              echo FAIL
-###              exit
-###          fi
-###          pwd
-###          for __el in `ls`
-###          do
-###              echo $__el | grep -e Makefile -e ariel -e zodiac  > /dev/null
-###              if [ $? -eq 0 ] ; then
-###                  continue
-###              fi
-###              echo "element in loop: $__el"
-###              if [ ! -d $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ] ; then
-###                  echo "Loop entry $__el does not have a refFiles Directory"
-###                  echo ' '
-###                  continue
-###              fi
-###              mkdir -p $__el/tests
-###              cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-###              ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-###              echo ' '
-###          done
-###          echo "There are 3 more to do that don't fit the mold"
-### #    memHSieve, ariel, zodiac/sirius
-###
-###          __el=memHierarchy/Sieve
-###          echo "Another element : $__el"
-###          ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles
-###          mkdir -p ./$__el/tests
-###          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-###          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-###          echo ' '
-###
-###          __el=ariel/frontend/simple/examples/stream
-###          echo "Another element : $__el"
-###          ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles
-###          mkdir -p ./$__el/tests
-###          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-###          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-###          echo ' '
-###
-###          __el=zodiac/sirius
-###          echo "Another element : $__el"
-###          ls $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles
-###          mkdir -p ./$__el/tests
-###          cp -r $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-###          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/tests/refFiles ./$__el/tests
-###          echo ' '
-###
-###          echo "there are two more cases from subCompoents"
-###
-### O
-### find $SST_ROOT -name *2uu.out*
-###
-###
-###          __el=simpleElementExample/tests
-###          echo "Another element : $__el"
-###          ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles
-###          mkdir -p ./$__el/tests/subcomponent_tests
-###          cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/subcomponent_tests
-###          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
-###          echo ' '
-###
-###          __el=simpleElementExample/tests
-###          echo "Another element : $__el"
-###          ls $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles
-###          mkdir -p ./$__el/tests/subcomponent_tests
-###          cp -r $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/legacy/refFiles ./$__el/subcomponent_tests/legacy
-###          ls -ld  $SST_REFERENCE_ELEMENTS/$__el/subcomponent_tests/refFiles ./$__el/tests/subcomponent_tests
-###          echo ' '
-### echo "               this is after"
-### find -L $SST_ROOT -name '*2uu.out'
-###
-### echo  "pause  ###########################################################################"
-### # sleep 300
+    echo "  ---- This is make dist code, but not for Macro,  line = $LINENO"
+    if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
+        # Move the REFERENCE File pointer
+        export SST_REFERENCE_ELEMENTS=$SST_ROOT/distTestDir/trunk/sst-elements/src/sst/elements
+        echo "SST_REFERENCE_ELEMENTS = $SST_REFERENCE_ELEMENTS"
 
-
-
-#        Move the REFERENCE File pointer
-         export SST_REFERENCE_ELEMENTS=$SST_ROOT/distTestDir/trunk/sst-elements/src/sst/elements
-         echo "SST_REFERENCE_ELEMENTS = $SST_REFERENCE_ELEMENTS"
-
-         popd
-         rm -rf $SST_ROOT/sst-elements
+        popd
+        rm -rf $SST_ROOT/sst-elements
 ########### JVD   #############################################################
-         echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO =========="
-         echo " PWD $LINENO=`pwd` "
-         mv $SST_ROOT/sst-external-element .
-         mv $SST_ROOT/juno .
-     fi
-     echo "---   PWD $LINENO  `pwd`"
+        echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO =========="
+        echo " PWD $LINENO=`pwd` "
+        mv $SST_ROOT/sst-external-element .
+        mv $SST_ROOT/juno .
+    fi
+    echo "---   PWD $LINENO  `pwd`"
 
-echo "=============================="
-     echo "Move in items not in the trunk, that are need for the bamboo build and test"
+    echo "=============================="
+    echo "Move in items not in the trunk, that are need for the bamboo build and test"
 
-echo "####################################################################"
-echo ' '
-     echo "---   PWD $LINENO  `pwd`"
-echo  "   We are in distTestDir/trunk"
+    echo "####################################################################"
+    echo ' '
+    echo "---   PWD $LINENO  `pwd`"
+    echo  "   We are in distTestDir/trunk"
      cp  $SST_ROOT/../sqe/buildsys/bamboo.sh .
      if [ -e ./deps ] ; then
         cp -r $SST_ROOT/deps/bin ./deps       ## the deps scripts
@@ -2259,9 +2174,9 @@ dobuild() {
         fi
 
         echo "Done with Autogen"
-pwd
-echo "                                   LINE  $LINENO "
-ls -ltrd * | tail -20
+        pwd
+        echo "                                   LINE  $LINENO "
+        ls -ltrd * | tail -20
         echo "popd"
         popd
         echo "Current Working Dir = `pwd`"
@@ -2304,8 +2219,8 @@ ls -ltrd * | tail -20
 
         # Configure SST-CORE
         echo "=== Running $coresourcedir/configure <config args> ==="
-echo "    PWD $LINENO is `pwd` "
-echo " resourcedir is $coresourcedir"
+        echo "    PWD $LINENO is `pwd` "
+        echo " resourcedir is $coresourcedir"
         $coresourcedir/configure $SST_SELECTED_CORE_CONFIG
         retval=$?
         if [ $retval -ne 0 ]
@@ -2317,13 +2232,13 @@ echo " resourcedir is $coresourcedir"
             echo "--------------------dump of config.log--------------------"
             return $retval
         fi
-echo "     ------------   After configure files at coresourcedir are:"
-echo "                                   LINE  $LINENO "
-ls -ltrd $coresourcedir/* | tail -14
-echo " Local files are ------------"
-echo "                                   LINE  $LINENO "
-ls -ltrd *
-echo  " ---------"
+        echo "     ------------   After configure files at coresourcedir are:"
+        echo "                                   LINE  $LINENO "
+        ls -ltrd $coresourcedir/* | tail -14
+        echo " Local files are ------------"
+        echo "                                   LINE  $LINENO "
+        ls -ltrd *
+        echo  " ---------"
 
 
         echo ' '
@@ -2331,9 +2246,9 @@ echo  " ---------"
         echo ' '
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
-pwd
-echo "                                   LINE  $LINENO "
-ls -ltrd * | tail -20
+        pwd
+        echo "                                   LINE  $LINENO "
+        ls -ltrd * | tail -20
 
 
         # Check to see if we are actually performing make dist
@@ -2357,8 +2272,8 @@ ls -ltrd * | tail -20
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '
             echo "bamboo.sh: make dist on SST_CORE is complete without error"
-pwd
-ls | grep tar
+            pwd
+            ls | grep tar
             echo ' '
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
@@ -2448,35 +2363,6 @@ ls | grep tar
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
 
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on SST-CORE"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Install SST-CORE
-        echo "=== Running make -j4 install ==="
-        make -j4 install
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make clean on SST-CORE"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"        
-        make clean
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on SST-CORE complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
         # Go back to devel/trunk
         echo "popd"
         popd
@@ -2516,8 +2402,8 @@ if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
         fi
 
         echo "Done with Autogen"
-pwd
-echo "                                   LINE  $LINENO "
+        pwd
+        echo "                                   LINE  $LINENO "
 
         popd
         echo "Current Working Dir = `pwd`"
@@ -2578,17 +2464,17 @@ echo "                                   LINE  $LINENO "
         echo ' '
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
-pwd
-echo "                                   LINE  $LINENO "
-ls -ltrd * | tail -20
+        pwd
+        echo "                                   LINE  $LINENO "
+        ls -ltrd * | tail -20
 
-echo "################################## DEBUG DATA ########################"
-ls
-ls src
-ls src/sst
-ls src/sst/elements/
-ls src/sst/elements/*/*m4
-echo "##################### END ######## DEBUG DATA ########################"
+        echo "################################## DEBUG DATA ########################"
+        ls
+        ls src
+        ls src/sst
+        ls src/sst/elements/
+        ls src/sst/elements/*/*m4
+        echo "##################### END ######## DEBUG DATA ########################"
 
         # Check to see if we are actually performing make dist
         echo "at this time \$buildtype is $buildtype"
@@ -2609,8 +2495,8 @@ echo "##################### END ######## DEBUG DATA ########################"
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '
             echo "bamboo.sh: make dist on SST-ELEMENTS is complete without error"
-pwd
-ls | grep tar
+            pwd
+            ls | grep tar
             echo ' '
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
@@ -2662,7 +2548,7 @@ ls | grep tar
             echo ' '
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             make clean
-            
+
             echo
             echo "=== DUMPING The SST-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
             echo "cat $HOME/.sst/sstsimulator.conf"
@@ -2786,9 +2672,9 @@ ls | grep tar
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
 
-pwd
-echo "                                   LINE  $LINENO "
-ls -ltrd * | tail -20
+        pwd
+        echo "                                   LINE  $LINENO "
+        ls -ltrd * | tail -20
         # Check to see if we are actually performing make dist
         echo "at this time \$buildtype is $buildtype"
         if [[ $buildtype == "sst_Macro_make_dist" ]] ; then
@@ -2806,13 +2692,13 @@ ls -ltrd * | tail -20
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '
             echo "bamboo.sh: make dist on SST-MACRO is complete without error"
-pwd
-ls | grep tar
+            pwd
+            ls | grep tar
             echo ' '
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo " "
             ls -ltr | tail -5
-echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
+            echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
             return $retval        ##   This is in dobuild
         fi
 
@@ -3471,44 +3357,6 @@ else
                           fi
                       fi
                   fi
-
-#                  # NOTE: THIS CODE IS FOR SST Version 10 - When default search priority is Python first
-#                  echo "DEFAULT SYSTEM PYTHON SELECTED"
-#                  # Test to see if python command is avail it should be for all Py2 installs
-#                  if command -v python > /dev/null 2>&1; then
-#                      # NOTE: This might be a python2 or python3, depending upon system
-#                      export SST_PYTHON_APP_EXE=`command -v python`
-#                      # Now check for python-config, NOTE: some systems call it python2-config,
-#                      # so we test for both
-#                      if python-config --prefix > /dev/null 2>&1; then
-#                          export SST_PYTHON_CFG_EXE=`command -v python-config`
-#                          export SST_PYTHON_HOME=`python-config --prefix`
-#                      else
-#                          if python2-config --prefix > /dev/null 2>&1; then
-#                              export SST_PYTHON_CFG_EXE=`command -v python2-config`
-#                              export SST_PYTHON_HOME=`python2-config --prefix`
-#                          else
-#                              echo "ERROR: Default python-config or python2-config NOT FOUND - IS python-devel ON THE SYSTEM?"
-#                              exit 128
-#                          fi
-#                      fi
-#                  else
-#                      ## if 'python' doesn't exist, assume we've got python3, but check for sure...
-#                      if command -v python3 > /dev/null 2>&1; then
-#                          export SST_PYTHON_APP_EXE=`command -v python3`
-#                          if python3-config --prefix > /dev/null 2>&1; then
-#                              export SST_PYTHON_CFG_EXE=`command -v python3-config`
-#                              export SST_PYTHON_HOME=`python3-config --prefix`
-#                          else
-#                              echo "ERROR: Python3 is detected to be Default on system, but python3-config NOT FOUND - IS python3-devel ON THE SYSTEM?"
-#                              exit 128
-#                          fi
-#                      else
-#                          ## No python or python3 found, this seems wrong
-#                          echo "ERROR: NO DEFAULT PYTHON FOUND - Is something wrong in the detection script?"
-#                          exit 128
-#                      fi
-#                  fi
                   ;;
             esac
 
