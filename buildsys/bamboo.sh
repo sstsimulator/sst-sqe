@@ -391,11 +391,7 @@ echo " #####################################################"
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
 
-### Testing changed by New Test Frameworks
-#    # Do we run the Macro Tests
-#    if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
-#       [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ||
-#       [ $1 ==  sst_Macro_make_dist ] ; then
+### Do we run the Macro Tests
 
     # FOR TESTS WITHOUT CORE, WE USE THE ORIG BAMBOO TESTSUITE; OTHERWISE
     # LET THE NEW TESTFRAMEWORKS RUN, NORMALLY
@@ -438,8 +434,6 @@ echo " #####################################################"
         ##     Source the install location variables from the build
         . ../../SST_deps_env.sh
 
-##    GEM5SST, QSIM and CHDL have been omitted from this list
-
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_DRAMSIM:$SST_DEPS_INSTALL_HYBRIDSIM:$SST_DEPS_INSTALL_NVDIMMSIM
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_GOBLIN_HMCSIM:$SST_DEPS_INSTALL_RAMULATOR:$SST_DEPS_INSTALL_HBM_DRAMSIM2
 
@@ -448,7 +442,8 @@ echo " #####################################################"
            export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
         fi
 
-        export PATH=/home/jpvandy/bin:$PATH:$SST_INSTALL_BIN_USER
+        #export PATH=/home/jpvandy/bin:$PATH:$SST_INSTALL_BIN_USER
+        export PATH=$PATH:$SST_INSTALL_BIN_USER
 
         export SST_ROOT=$SST_BASE/devel/trunk
 
@@ -462,16 +457,13 @@ echo " #####################################################"
      #   Only run EmberSweep in Valgrind if explict request.
      #       In that case run only EmberSweep Suite.
         if [[ $1 == "sstmainline_config_valgrind_ES" ]] ; then
-### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
             return
         fi
         if [[ $1 == "sstmainline_config_valgrind_ESshmem" ]] ; then
-### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_ESshmem.sh
             return
         fi
     fi
         if [[ $1 == "sstmainline_config_valgrind_memHA" ]] ; then
-### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_memHA.sh
             return
         fi
 
@@ -508,33 +500,6 @@ echo B4      $SST_SUITES_TO_RUN
       fi
 
 ### NOTE: $1 is set to sstmainline_config_all is set when doing a make dist test, we want to avoid this
-###
-### Tested by New Test Frameworks          if [ $1 == "sstmainline_config_all" ] ; then
-### Tested by New Test Frameworks
-### Tested by New Test Frameworks             pushd ${SST_ROOT}/test/testSuites
-### Tested by New Test Frameworks             echo \$SST_TEST_SUITES = $SST_TEST_SUITES
-### Tested by New Test Frameworks             echo "     Content of file, SuitesToOmitFromAll"
-### Tested by New Test Frameworks             cat SuitesToOmitFromAll
-### Tested by New Test Frameworks             echo ' '
-### Tested by New Test Frameworks             ## strip any comment off
-### Tested by New Test Frameworks             cat SuitesToOmitFromAll | awk  '{print $1}' > __omitlist__
-### Tested by New Test Frameworks             echo "      Suites to explictly OMIT from the \"all\" scenario:"
-### Tested by New Test Frameworks             ls testSuite_*sh | grep  -f __omitlist__
-### Tested by New Test Frameworks             echo ' '
-### Tested by New Test Frameworks             #   Build the Suite list for the "All" scenario
-### Tested by New Test Frameworks             ls testSuite_*sh | grep -v -f __omitlist__ > Suite.list
-### Tested by New Test Frameworks             echo "all() {" > files.for.all
-### Tested by New Test Frameworks             sed  s\%^%\${SST_TEST_SUITES}/% Suite.list >> files.for.all
-### Tested by New Test Frameworks             echo "}" >> files.for.all
-### Tested by New Test Frameworks             . files.for.all               # Source the subroutine including list
-### Tested by New Test Frameworks             popd
-### Tested by New Test Frameworks             all
-### Tested by New Test Frameworks             return
-### Tested by New Test Frameworks        fi
-
-### Tested by New Test Frameworks    if [ $1 == "sstmainline_config_no_gem5" ] ; then
-### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_Ariel.sh
-### Tested by New Test Frameworks    fi
 
     #
     #  Run only GPU test only
@@ -564,51 +529,6 @@ echo B4      $SST_SUITES_TO_RUN
     fi
 
     #
-    #  Run only dirSweep3Cache
-    #
-    if [ $1 == "sstmainline_config_dir3cache" ]
-    then
-        ${SST_TEST_SUITES}/testSuite_dir3LevelSweep.sh
-        return
-    fi
-
-    #
-    #  Run only diropenMP
-    #
-    if [ $1 == "sstmainline_config_diropenmp" ]
-    then
-        ${SST_TEST_SUITES}/testSuite_dirSweep.sh
-        return
-    fi
-
-    #
-    #  Run only dirSweepB
-    #
-    if [ $1 == "sstmainline_config_diropenmpB" ]
-    then
-        ${SST_TEST_SUITES}/testSuite_dirSweepB.sh
-        return
-    fi
-
-    #
-    #  Run only dirSweepI
-    #
-    if [ $1 == "sstmainline_config_diropenmpI" ]
-    then
-        ${SST_TEST_SUITES}/testSuite_dirSweepI.sh
-        return
-    fi
-
-    #
-    #  Run only dir Non Cacheable
-    #
-    if [ $1 == "sstmainline_config_dirnoncacheable" ]
-    then
-        ${SST_TEST_SUITES}/testSuite_dirnoncacheable_openMP.sh
-        return
-    fi
-
-    #
     #  Run only openMP and memHierarchy
     #
     if [ $1 == "sstmainline_config_memH_only" ]
@@ -618,165 +538,23 @@ echo B4      $SST_SUITES_TO_RUN
         return
     fi
 
-    #
-    #   Test for the new memH via Ariel testing
-    #
-    #   With optional split into two tests
-    #
-    if [ $1 == "sstmainline_config_memH_Ariel" ]
-    then
-        GROUP=0
-        if [[ ${SST_SWEEP_SPLIT:+isSet} == isSet ]] ; then
-            GROUP=${SST_SWEEP_SPLIT}
-        fi
-        if [ $GROUP != 2 ] ; then
-#                                                               GROUP ONE
-            ${SST_TEST_SUITES}/testSuite_openMP.sh              #     9
-            ${SST_TEST_SUITES}/testSuite_diropenMP.sh           #     9
-            ${SST_TEST_SUITES}/testSuite_dirSweepB.sh           #    16
-            ${SST_TEST_SUITES}/testSuite_Sweep_openMP.sh        #  1024
-            ${SST_TEST_SUITES}/testSuite_dirSweep.sh            #  1152
-        fi
-        if [ $GROUP == 1 ] ; then
-            return
-        fi
-#                                                               GROUP TWO
-        ${SST_TEST_SUITES}/testSuite_dirnoncacheable_openMP.sh  #     8
-        ${SST_TEST_SUITES}/testSuite_noncacheable_openMP.sh     #     8
-        ${SST_TEST_SUITES}/testSuite_dirSweepI.sh               #   384
-        ${SST_TEST_SUITES}/testSuite_dir3LevelSweep.sh          #  1152
-        return
-    fi
-
      #
      #   Suites that used MemHierarchy, but not openMP
      #
 
     if [ $1 == "sstmainline_config_memH_wo_openMP" ]
     then
-### Tested by New Test Frameworks        if [[ $SST_ROOT == *Ariel* ]] ; then
-### Tested by New Test Frameworks            pushd ${SST_TEST_SUITES}
-### Tested by New Test Frameworks            ln -s ${SST_TEST_SUITES}/testSuite_Ariel.sh testSuite_Ariel_extra.sh
-### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
-### Tested by New Test Frameworks            popd
-### Tested by New Test Frameworks        fi
-### Tested by New Test Frameworks                export SST_BUILD_PROSPERO_TRACE_FILE=1
-### Tested by New Test Frameworks                pushd ${SST_TEST_SUITES}
-### Tested by New Test Frameworks                  ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
-### Tested by New Test Frameworks                  ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
-### Tested by New Test Frameworks                  unset SST_BUILD_PROSPERO_TRACE_FILE
-### Tested by New Test Frameworks                popd
-### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
-### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_embernightly.sh
-### NOTE: NORMALLY SKIPPED               ${SST_TEST_SUITES}/testSuite_BadPort.sh
-### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHA.sh
-### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_CramSim.sh
-### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_miranda.sh
-### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
-### Tested by New Test Frameworks                ${SST_TEST_SUITES}/testSuite_prospero.sh
-### Tested by New Test Frameworks        ${SST_TEST_SUITES}/testSuite_Ariel.sh
         return
     fi
 
     PATH=${PATH}:${SST_ROOT}/../sqe/test/utilities
-    if [ $1 == "sstmainline_config_develautotester_linux" ] ; then
-        $SST_ROOT/../sqe/test/utilities/invokeSuite memHierarchy_sdl 2 2 all autotest_multirank_plus_multithread_2x2
-        invokeSuite ESshmem     2 2 ESshmem=1:106  autotest_multirank_plus_multithread
-        invokeSuite merlin  2 2 dragon_128 autotest_multirank_plus_multithread
-        invokeSuite CramSim 2 2 4_         autotest_multirank_plus_multithread
-        invokeSuite memHA   2 2 Distrib    autotest_multirank_plus_multithread
-    fi
-
-    if [ $1 == "sstmainline_config_develautotester_mac" ] ; then
-        $SST_ROOT/../sqe/test/utilities/invokeSuite memHierarchy_sdl 2 2 all autotest_multirank_plus_multithread_2x2
-        invokeSuite ESshmem     2 2 ESshmem=1:106  autotest_multirank_plus_multithread
-        invokeSuite merlin  2 2 dragon_128 autotest_multirank_plus_multithread
-        invokeSuite CramSim 2 2 4_         autotest_multirank_plus_multithread
-        invokeSuite memHA   2 2 Distrib    autotest_multirank_plus_multithread
-    fi
-
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_Ariel.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_juno.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_Samba.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_MesstestSuite_Messierier.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_CramSim.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_hybridsim.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_memHierarchy_sdl.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_memHSieve.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_kingsley.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_sst_GNA.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_shogun.sh
-
-
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleComponent.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_sstexternalelement.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_sst_info_test.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleLookupTableComponent.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_cacheTracer.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_miranda.sh
-### NOTE: NORMALLY SKIPPED           ${SST_TEST_SUITES}/testSuite_BadPort.sh
-
-    # Add other test suites here, i.e.
-    # ${SST_TEST_SUITES}/testSuite_moe.sh
-    # ${SST_TEST_SUITES}/testSuite_larry.sh
-    # ${SST_TEST_SUITES}/testSuite_curly.sh
-    # ${SST_TEST_SUITES}/testSuite_shemp.sh
-    # etc.
-
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_merlin.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuitetestSuite_qos_qos.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_embernightly.sh
-
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleSimulation_CarWash.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleDistribComponent.sh
 
     # Only run EmberSweep with valgrind with explict request.
     #    Valgrind on 180 test Suite takes 15 hours. (Aug. 2016)
     #    memHA add to the separate list Dec. 2017
     if [[ $1 != "sstmainline_config_valgrind" ]] ; then
-### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_memHA.sh
-### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_EmberSweep.sh
-### Tested by New Test Frameworks       ${SST_TEST_SUITES}/testSuite_ESshmem.sh
         echo ""
     fi
-
-    # if [[ (`echo $1 | grep no_mpi` == "") ]] && [[ $1 != "sstmainline_config_valgrind" ]] ; then
-        #  Zoltan test requires MPI to execute.
-        #  sstmainline_config_no_gem5 deliberately omits Zoltan, so must skip test.
-        #  Valgrind test as inserted here is incompatible with partitioning tests.
-        # if [ $1 != "sstmainline_config_linux_with_ariel" ] ; then
-            # ${SST_TEST_SUITES}/testSuite_zoltan.sh    # Disabling zoltan test ahead of removal in SST 12
-            # ${SST_TEST_SUITES}/testSuite_partitioner.sh # Disable since partitioning is now tested through new frameworks
-        # fi
-    # fi
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
-
-### Tested by New Test Frameworks            if [[ ${INTEL_PIN_DIRECTORY:+isSet} == isSet ]] ; then
-### Tested by New Test Frameworks                export SST_BUILD_PROSPERO_TRACE_FILE=1
-### Tested by New Test Frameworks                pushd ${SST_TEST_SUITES}
-### Tested by New Test Frameworks                  ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
-### Tested by New Test Frameworks                  ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
-### Tested by New Test Frameworks                  unset SST_BUILD_PROSPERO_TRACE_FILE
-### Tested by New Test Frameworks                popd
-### Tested by New Test Frameworks            fi
-### Tested by New Test Frameworks            ${SST_TEST_SUITES}/testSuite_prospero.sh
-#
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_cassini_prefetch.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_simpleMessageGeneratorComponent.sh
-### Tested by New Test Frameworks    ${SST_TEST_SUITES}/testSuite_VaultSim.sh
-
-# For New Test Frameworks, we must not delete the SST installation
-#    # Purge SST installation
-#    if [[ ${SST_RETAIN_BIN:+isSet} != isSet ]]
-#    then
-#        rm -Rf ${SST_INSTALL}
-#    fi
 
 }
 ###-END-DOTESTS
@@ -940,7 +718,7 @@ getconfig() {
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
-        sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_diropenmpI|sstmainline_config_dirnoncacheable|sstmainline_config_dir3cache|sstmainline_config_memH_Ariel)
+        sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_memH_Ariel)
             #-----------------------------------------------------------------
             # sstmainline_config  One only of stream, openmp diropemMP
             #     This option used for configuring SST with supported stabledevel deps
@@ -1195,44 +973,6 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv $coreMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-        sstmainline_config_develautotester_linux)
-            #-----------------------------------------------------------------
-            # sstmainline_config_develautotester_linux
-            #     THIS IS THE CONFIGURATION USED FOR THE DEVEL AUTOTESTER, THE
-            #     BUILD AND TESTS SHOULD BE AS QUICK AS POSSIBLE, WE ARE WILLING
-            #     TO SACRIFICE SOME COVERAGE TO GET A GENERAL WARM FUZZY ON THE
-            #     PULL REQUESTS TO DEVEL BRANCH BEING NOT CATASTROPIC FAILURES
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g none -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z none -c default"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-qsim=$SST_DEPS_INSTALL_QSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}   --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-        sstmainline_config_develautotester_mac)
-            #-----------------------------------------------------------------
-            # sstmainline_config_develautotester_mac
-            #     THIS IS THE CONFIGURATION USED FOR THE DEVEL AUTOTESTER, THE
-            #     BUILD AND TESTS SHOULD BE AS QUICK AS POSSIBLE, WE ARE WILLING
-            #     TO SACRIFICE SOME COVERAGE TO GET A GENERAL WARM FUZZY ON THE
-            #     PULL REQUESTS TO DEVEL BRANCH BEING NOT CATASTROPIC FAILURES
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -z none -g none -m none -i none -o none -h none -s none -q none -M none -N default -A none -c default"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions ${MTNLION_FLAG} $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM ${MTNLION_FLAG} --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-metis=${METIS_HOME}  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1496,19 +1236,6 @@ linuxSetBoostMPI() {
 
        fi
    fi
-   # Check to see if we are loading Boost 1.56 or greater, if so, we no longer
-   # need to include mpi, so change the desiredBoost name as appropriate
-   case $3 in
-       boost-1.56|boost-1.58|boost-1.61)
-           echo "Choosing nompi version of boost for Boost 1.56 and greater"
-           if [ $compiler = "default" ]
-           then
-               desiredBoost="${3}.0-nompi"
-           else
-               desiredBoost="${3}.0-nompi_${4}"
-           fi
-           ;;
-   esac
 
    echo "CHECK:  \$2: ${2}"
    echo "CHECK:  \$3: ${3}"
@@ -1519,11 +1246,6 @@ linuxSetBoostMPI() {
 
    # load MPI
    case $2 in
-       openmpi-1.6.5)
-           echo "OpenMPI (openmpi-1.6.5) selected"
-           ModuleEx unload mpi # unload any default to avoid conflict error
-           ModuleEx load mpi/${desiredMPI}
-           ;;
        openmpi-1.8)
            echo "OpenMPI (openmpi-1.8) selected"
            ModuleEx unload mpi # unload any default to avoid conflict error
@@ -1534,24 +1256,6 @@ linuxSetBoostMPI() {
            ModuleEx unload mpi # unload any default to avoid conflict error
            ModuleEx load mpi/${desiredMPI}
            ;;
-       johnsmpi)
-           echo "OpenMPI (johnsmpi) selected"
-echo "##########################################################################"
-echo "###########################################     $LINENO  #################"
-           ModuleEx unload mpi # unload any default to avoid conflict error
-echo "###########################################     $LINENO  #################"
-           _TOP_=`ls -ld /home/jpvandy/johnsmpi/* | grep ^d | awk -F/ '{print $NF}'`
-echo "###########################################     $LINENO  #################"
-echo $_TOP_
-echo "###########################################     $LINENO  #################"
-           export MPIHOME=/home/jpvandy/johnsmpi/$_TOP_
-           export LD_LIBRARY_PATH=$MPIHOME/lib:$LD_LIBRARY_PATH
-           export PATH=$MPIHOME/bin:$PATH
-echo "###########################################     $LINENO  #################"
-ls $MPIHOME
-
-           ;;
-
        none)
            echo "MPI requested as \"none\".    No MPI loaded"
            ModuleEx unload mpi # unload any default
@@ -1570,16 +1274,6 @@ ls $MPIHOME
 
    # load corresponding Boost
    case $3 in
-       boost-1.54)
-           echo "bamboo.sh: Boost 1.54 selected"
-           ModuleEx unload boost
-           ModuleEx load boost/${desiredBoost}
-           ;;
-       boost-1.56)
-           echo "bamboo.sh: Boost 1.56 selected"
-           ModuleEx unload boost
-           ModuleEx load boost/${desiredBoost}
-           ;;
        none)
            echo  "No BOOST loaded as requested"
            ;;
@@ -1721,14 +1415,6 @@ echo ' ' ; echo " Using X-code 9 modules."  ;   echo ''
 
                         # load corresponding Boost
                         case $3 in
-                            boost_default|boost-1.56)
-                                echo "Boost 1.56 selected"
-                                ModuleEx add boost/boost-1.56.0-nompi_$ClangVersion
-                                ;;
-                            boost_default|boost-1.61)
-                                echo "Boost 1.61 selected"
-                                ModuleEx add boost/boost-1.61.0-nompi_$ClangVersion
-                                ;;
                             none)
                                 echo  "No BOOST loaded as requested"
                                 ;;
@@ -1765,15 +1451,10 @@ echo "  ******************* macosVersionFull= $macosVersionFull "
     macosVersion=`echo ${macosVersionFull} | awk -F. '{print $1 "." $2 }'`
 echo "  ******************* macosVersion= $macosVersion "
 
-    if [[ $macosVersion = "10.8" && $compiler = "clang-503.0.40" ]]
-    then
-        echo "Probably un-needed  JVD"
-    else
-        # macports or hybrid clang/macports
-        PATH="/opt/local/bin:/usr/local/bin:$PATH"
-        export PATH
-    fi
 
+    # macports or hybrid clang/macports
+    PATH="/opt/local/bin:/usr/local/bin:$PATH"
+    export PATH
 
     # Point to aclocal per instructions from sourceforge on MacOSX installation
     export ACLOCAL_FLAGS="-I/opt/local/share/aclocal $ACLOCAL_FLAGS"
@@ -1789,13 +1470,6 @@ echo "  ******************* macosVersion= $macosVersion "
         echo "bamboo.sh: Loading Modules for MacOSX"
         # Do things specific to the MacOS version
         case $macosVersion in
-################################################################################
-
-            10.14) # Mojave
-echo    "This is mojave, Compiler is $compiler"
-                   ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode
-                   ;;
-
 ################################################################################
 
             10.15) # Catalina
@@ -2125,7 +1799,7 @@ dobuild() {
 
     echo "==================== SETTING UP TO BUILD SST CORE ELEMENTS AND/OR MACRO ====="
     SAVE_LIBRARY_PATH=$LD_LIBRARY_PATH
-    export LD_LIBRARY_PATH=${SST_INSTALL_DEPS}/lib:${SST_INSTALL_DEPS}/lib/sst:${SST_DEPS_INSTALL_GEM5SST}:${SST_INSTALL_DEPS}/packages/DRAMSim:${SST_DEPS_INSTALL_NVDIMMSIM}:${SST_DEPS_INSTALL_HYBRIDSIM}:${SST_INSTALL_DEPS}/packages/Qsim/lib:${SST_DEPS_INSTALL_CHDL}/lib:${LD_LIBRARY_PATH}
+    export LD_LIBRARY_PATH=${SST_INSTALL_DEPS}/lib:${SST_INSTALL_DEPS}/lib/sst:${SST_DEPS_INSTALL_GEM5SST}:${SST_INSTALL_DEPS}/packages/DRAMSim:${SST_DEPS_INSTALL_NVDIMMSIM}:${SST_DEPS_INSTALL_HYBRIDSIM}:${SST_INSTALL_DEPS}/packages/Qsim/lib:${LD_LIBRARY_PATH}
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BOOST_LIBS
     # Mac OS X needs some help finding dylibs
     if [ $kernel == "Darwin" ]
@@ -3182,7 +2856,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_diropenmp|sstmainline_config_diropenmpB|sstmainline_config_dirnoncacheable|sstmainline_config_diropenmpI|sstmainline_config_dir3cache|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_develautotester_linux|sstmainline_config_develautotester_mac|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3, $4, $5 and $6 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3
@@ -3488,7 +3162,7 @@ else
                 fi
             fi
 
-    echo "PWD $LINENO = `pwd`"
+            echo "PWD $LINENO = `pwd`"
             ;;
 
         *)
@@ -3498,7 +3172,7 @@ else
     esac
 fi
 
-    echo "PWD $LINENO = `pwd`"
+echo "PWD $LINENO = `pwd`"
 if [ $retval -eq 0 ]
 then
     if [ $SST_BUILD_TYPE = "documentation" ]

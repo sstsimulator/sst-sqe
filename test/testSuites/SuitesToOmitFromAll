@@ -8,7 +8,6 @@ memHierarchy_bin   #  uses the M5 test binaries
 test_omp           #  uses the M5 test binaries
 portals            #  not converted since merge
 stream             #  uses the M5 test binaries
-diropenMP          #  uses M5 binaries
 noncacheable       #  uses M5 binaries
 openMP             #  uses M5 binaries
 qsim               #  too out dated
