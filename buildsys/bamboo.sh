@@ -463,18 +463,6 @@ echo " #####################################################"
             return
         fi
     fi
-        if [[ $1 == "sstmainline_config_valgrind_memHA" ]] ; then
-            return
-        fi
-
-    if [[ $1 == *sstmainline_config_test_output_config* ]]
-    then
-        ./test/utilities/Build-output-config-check
-        pwd
-        ls -l run.for.output.config
-        ./run.for.output.config
-        return
-    fi
 
     #   Enable the --output-config option in (most) tests
     #      (activated by Environment Variable)
@@ -511,30 +499,10 @@ echo B4      $SST_SUITES_TO_RUN
     fi
 
     #
-    #  Run only Streams test only
-    #
-    if [ $1 == "sstmainline_config_stream" ]
-    then
-        ${SST_TEST_SUITES}/testSuite_stream.sh
-        return
-    fi
-
-    #
     #  Run only openMP
     #
     if [ $1 == "sstmainline_config_openmp" ]
     then
-        ${SST_TEST_SUITES}/testSuite_Sweep_openMP.sh
-        return
-    fi
-
-    #
-    #  Run only openMP and memHierarchy
-    #
-    if [ $1 == "sstmainline_config_memH_only" ]
-    then
-        ${SST_TEST_SUITES}/testSuite_openMP.sh
-        ${SST_TEST_SUITES}/testSuite_memHierarchy_bin.sh
         return
     fi
 
@@ -551,7 +519,6 @@ echo B4      $SST_SUITES_TO_RUN
 
     # Only run EmberSweep with valgrind with explict request.
     #    Valgrind on 180 test Suite takes 15 hours. (Aug. 2016)
-    #    memHA add to the separate list Dec. 2017
     if [[ $1 != "sstmainline_config_valgrind" ]] ; then
         echo ""
     fi
@@ -718,9 +685,9 @@ getconfig() {
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
-        sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_memH_Ariel)
+        sstmainline_config_openmp)
             #-----------------------------------------------------------------
-            # sstmainline_config  One only of stream, openmp diropemMP
+            # sstmainline_config_openmp
             #     This option used for configuring SST with supported stabledevel deps
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
@@ -944,22 +911,6 @@ getconfig() {
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
-        sstmainline_config_test_output_config)
-            #-----------------------------------------------------------------
-            # sstmainline_config_test_output_config
-            #     This option used for verifying the SST "--output-config" option
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -k none -D default -d 2.2.2 -p none -g stabledevel -m none -i none -o none -h none -s none -q 0.2.1 -M none -N default -A none -z none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-glpk=${GLPK_HOME} --with-qsim=$SST_DEPS_INSTALL_QSIM $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
         sstmainline_config_memH_wo_openMP)
             #-----------------------------------------------------------------
             # sstmainline_config_memH_wo_openMP
@@ -1018,8 +969,7 @@ getconfig() {
             externalelementConfigStr="NOBUILD"
             junoConfigStr="NOBUILD"
             ;;
-
-        sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA)
+        sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem)
             #-----------------------------------------------------------------
             # sstmainline_config_valgrind
             #     This option used for configuring SST with supported stabledevel deps
@@ -2616,6 +2566,38 @@ function ExitOfScriptHandler {
 # $5 = Cuda version
 # $6 = pythonX (X = 2 | 3)
 #=========================================================================
+# Build type options
+# USED
+#   sstmainline_config
+#   sstmainline_coreonly_config
+#   sstmainline_config_no_gem5
+#   sstmainline_config_no_mpi
+#   sstmainline_config_macosx_no_gem5
+#   sstmainline_config_memH_wo_openMP
+#   sstmainline_config_make_dist_test
+#   sstmainline_config_core_make_dist_test
+#   sst-macro_withsstcore_mac
+#   sst-macro_nosstcore_mac
+#   sst-macro_withsstcore_linux
+#   sst-macro_nosstcore_linux
+#   sst_Macro_make_dist
+#   documentation
+#
+# UNUSED
+#   default
+#   sstmainline_config_all
+#   sstmainline_config_openmp
+#   sstmainline_config_linux_with_ariel_no_gem5
+#   sstmainline_config_with_cuda
+#   sstmainline_config_with_cuda_no_mpi
+#   sstmainline_config_static
+#   sstmainline_config_static_no_gem5
+#   sstmainline_config_macosx
+#   sstmainline_config_macosx_static
+#   sstmainline_config_dist_test
+#   sstmainline_config_make_dist_no_gem5
+#   sstmainline_config_valgrind
+#=========================================================================
 trap ExitOfScriptHandler EXIT
 
 #=========================================================================
@@ -2856,7 +2838,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_test_output_config|sstmainline_config_memH_Ariel|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_stream|sstmainline_config_openmp|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_valgrind_memHA|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_openmp|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3, $4, $5 and $6 in case they are need later
             SST_DIST_MPI=$2
             SST_DIST_BOOST=$3

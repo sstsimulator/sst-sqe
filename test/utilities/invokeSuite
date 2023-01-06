@@ -1,4 +1,7 @@
 # /bin/bash
+
+#### NOT USED 1/6/23
+
 #	This script is a wrapper for an individual test Suite to allow 
 #	specifing number of threads, number of ranks and specific test
 #	to run.
