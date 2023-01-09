@@ -596,7 +596,7 @@ setConvenienceVars() {
 getconfig() {
 
     # Configure default dependencies to use if nothing is explicitly specified
-    local defaultDeps="-D default -d default"
+    local defaultDeps="-d none"
 
     local depsStr=""
 
@@ -621,30 +621,34 @@ getconfig() {
     local cc_environment="CC=${cc_compiler} CXX=${cxx_compiler}"
     local mpi_environment="MPICC=${mpicc_compiler} MPICXX=${mpicxx_compiler}"
 
-#    # make sure that sstmacro is suppressed
-#    if [ -e ./sst/elements/macro_component/.unignore ] && [ -f ./sst/elements/macro_component/.unignore ]
-#    then
-#        rm ./sst/elements/macro_component/.unignore
-#    fi
+    # Build default dependencies: ramulator, HBMDramSim2, GoblinHMCSim, DramSim3, DramSim2, NVDimmSim, no cuda
+    # Other dependencies are loaded as modules
+    local allDeps="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
 
+    # Configure SST Elements with all dependencies except those requiring special handling. Pin is not support on Mac.
+    local allElemDepConfigMac="--with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM"
+    local allElemDepConfigLinux="--with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
 
     case $1 in
-        sstmainline_config)
+        sstmainline_config|sstmainline_config_all|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_memH_wo_openMP)
             #-----------------------------------------------------------------
             # sstmainline_config
             #     This option used for configuring SST with supported stabledevel deps
+            # sstmainline_config_all
+            #     This option is used when calling bamboo a second time during a make dist test
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
+            depsStr="$allDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions $allElemDepConfigLinux $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
+
         sstmainline_coreonly_config)
             #-----------------------------------------------------------------
             # sstmainline_coreonly_config
@@ -653,46 +657,13 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
+            depsStr="-r none" # Dependencies only needed for elements
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="NOBUILD"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="NOBUILD"
             junoConfigStr="NOBUILD"
-            ;;
-        sstmainline_config_all)
-            #-----------------------------------------------------------------
-            # sstmainline_config
-            #     This option used for configuring SST with supported stabledevel deps
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM  --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-        sstmainline_config_linux_with_ariel_no_gem5)
-            #-----------------------------------------------------------------
-            # sstmainline_config_linux_with_ariel_no_gem5
-            #     This option used for configuring SST with supported stabledevel deps,
-            #     Intel PIN, and Ariel, but without Gem5
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
             ;;
         sstmainline_config_linux_with_cuda)
             #-----------------------------------------------------------------
@@ -707,7 +678,7 @@ getconfig() {
             depsStr="-r default -H default -G default -D default -d 2.2.2 -N none -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM $allElemDepConfigLinux $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -736,7 +707,7 @@ getconfig() {
             depsStr="-r default -H default -G default -D default -d 2.2.2 -N none -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM $allElemDepConfigLinux $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="NOBUILD"
             junoConfigStr="NOBUILD"
@@ -748,27 +719,6 @@ getconfig() {
             . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
             echo "==== ENV AFTER  GPGPUSIM ENV SETUP ==="
             env|sort
-            ;;
-        sstmainline_config_no_gem5)
-            #-----------------------------------------------------------------
-            # sstmainline_config_no_gem5
-            #     This option used for configuring SST with supported stabledevel deps
-            #     Some compilers (gcc 4.7, 4.8, intel 13.4) have problems building gem5,
-            #     so this option removes gem5 in order to evaluate the rest of the build
-            #     under those compilers.
-            #-----------------------------------------------------------------
-            ### touch sst/elements/ariel/.ignore
-            ls -a sst-elements/src/sst/elements/ariel
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM  $elementsMiscEnv --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
             ;;
 
         sstmainline_config_no_mpi)
@@ -783,44 +733,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
+            depsStr="$allDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM $elementsMiscEnv  --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-
-        sstmainline_config_static)
-            #-----------------------------------------------------------------
-            # sstmainline_config_static
-            #     This option used for configuring SST with supported stabledevel deps
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions --enable-static --disable-shared $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --enable-static --disable-shared $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-
-        sstmainline_config_static_no_gem5)
-            #-----------------------------------------------------------------
-            # sstmainline_config_static   WITH OUT GEM5
-            #     This option used for configuring a static SST without Gem5
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions --enable-static --disable-shared $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM  --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --enable-static --disable-shared --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions $allElemDepConfigLinux $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -831,15 +747,15 @@ getconfig() {
             # sstmainline_config_clang_core_only
             #     This option used for configuring SST with no deps to build the core with clang
             #-----------------------------------------------------------------
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
+            depsStr="-r none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM"
+            elementsConfigStr="$elementsbaseoptions $allElemDepConfigMac"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
-        sstmainline_config_macosx)
+        sstmainline_config_macosx|sstmainline_config_macosx_no_gem5)
             #-----------------------------------------------------------------
             # sstmainline_config_macosx
             #     This option used for configuring SST with supported stabledevel deps
@@ -847,46 +763,15 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
+            depsStr="$allDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions $allElemDepConfigMac $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
-        sstmainline_config_macosx_no_gem5)
-            #-----------------------------------------------------------------
-            # sstmainline_config_macosx_no_gem5
-            #     This option used for configuring SST with supported stabledevel deps
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions ${MTNLION_FLAG} $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM ${MTNLION_FLAG} --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-        sstmainline_config_macosx_static)
-            #-----------------------------------------------------------------
-            # sstmainline_config_macosx_static
-            #     This option used for configuring SST with supported stabledevel deps
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions  --enable-static --disable-shared $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-gem5=$SST_DEPS_INSTALL_GEM5SST --with-gem5-build=opt --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --enable-static --disable-shared $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
+
         sstmainline_config_memH_wo_openMP)
             #-----------------------------------------------------------------
             # sstmainline_config_memH_wo_openMP
@@ -896,67 +781,10 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -m none -N default -A none"
+            depsStr="$allDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv $coreMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-
-        # ====================================================================
-        # ====                                                            ====
-        # ====  Experimental/exploratory build configurations start here  ====
-        # ====                                                            ====
-        # ====================================================================
-        sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|sstmainline_config_make_dist_test)
-            #-----------------------------------------------------------------
-            # sstmainline_config_dist_test
-            #      Do a "make dist"  (creating a tar file.)
-            #      Then,  untar the created tar-file.
-            #      Invoke bamboo.sh, (this file), to build sst from the tar.
-            #            Yes, bamboo invoked from bamboo.
-            #      Finally, run tests to validate the created sst.
-            #-----------------------------------------------------------------
-            depsStr="-D none -d none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions"
-            elementsConfigStr="$elementsbaseoptions --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-
-        sstmainline_config_core_make_dist_test)
-            #-----------------------------------------------------------------
-            # sstmainline_config_core_make_dist_test
-            #      Do a "make dist"  (creating a tar file.)
-            #      Then,  untar the created tar-file.
-            #      Invoke bamboo.sh, (this file), to build sst from the tar.
-            #            Yes, bamboo invoked from bamboo.
-            #      Finally, run tests to validate the created sst.
-            #-----------------------------------------------------------------
-            depsStr="-d none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions"
-            elementsConfigStr="NOBUILD"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="NOBUILD"
-            junoConfigStr="NOBUILD"
-            ;;
-        sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem)
-            #-----------------------------------------------------------------
-            # sstmainline_config_valgrind
-            #     This option used for configuring SST with supported stabledevel deps
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions $allElemDepConfigLinux $elementsMiscEnv $coreMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -970,7 +798,7 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${cc_environment} ${mpi_environment}"
-            depsStr="-r default -H default -G default -D none -d none -N none"
+            depsStr="-r none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="NOBUILD"
@@ -987,7 +815,7 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${cc_environment} ${mpi_environment}"
-            depsStr="-r default -H default -G default -D none -d none -N none"
+            depsStr="-r none"
             setConvenienceVars "$depsStr"
             coreConfigStr="NOBUILD"
             elementsConfigStr="NOBUILD"
@@ -1004,7 +832,7 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${cc_environment} ${mpi_environment}"
-            depsStr="-r default -H default -G default -D none -d none -N none"
+            depsStr="-r none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="NOBUILD"
@@ -1021,7 +849,7 @@ getconfig() {
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
             miscEnv="${cc_environment} ${mpi_environment}"
-            depsStr="-r default -H default -G default -D none -d none -N none"
+            depsStr="-r none"
             setConvenienceVars "$depsStr"
             coreConfigStr="NOBUILD"
             elementsConfigStr="NOBUILD"
@@ -1039,7 +867,7 @@ getconfig() {
             #            Yes, bamboo invoked from bamboo.
             #      Finally, run tests to validate the created sst.
             #-----------------------------------------------------------------
-            depsStr="-D none -d none"
+            depsStr="-r none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="NOBUILD"
@@ -1048,6 +876,100 @@ getconfig() {
             junoConfigStr="NOBUILD"
             ;;
 
+        sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|sstmainline_config_make_dist_test)
+            #-----------------------------------------------------------------
+            # sstmainline_config_dist_test
+            #      Do a "make dist"  (creating a tar file.)
+            #      Then,  untar the created tar-file.
+            #      Invoke bamboo.sh, (this file), to build sst from the tar.
+            #            Yes, bamboo invoked from bamboo.
+            #      Finally, run tests to validate the created sst.
+            #-----------------------------------------------------------------
+            depsStr="-r none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions"
+            elementsConfigStr="$elementsbaseoptions"
+            macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
+            junoConfigStr="$junobaseoptions"
+            ;;
+
+        sstmainline_config_core_make_dist_test)
+            #-----------------------------------------------------------------
+            # sstmainline_config_core_make_dist_test
+            #      Do a "make dist"  (creating a tar file.)
+            #      Then,  untar the created tar-file.
+            #      Invoke bamboo.sh, (this file), to build sst from the tar.
+            #            Yes, bamboo invoked from bamboo.
+            #      Finally, run tests to validate the created sst.
+            #-----------------------------------------------------------------
+            depsStr="-r none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions"
+            elementsConfigStr="NOBUILD"
+            macroConfigStr="NOBUILD"
+            externalelementConfigStr="NOBUILD"
+            junoConfigStr="NOBUILD"
+            ;;
+
+        # ====================================================================
+        # ====                                                            ====
+        # ====  Experimental/exploratory build configurations start here  ====
+        # ====                                                            ====
+        # ====================================================================
+        sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem)
+            #-----------------------------------------------------------------
+            # sstmainline_config_valgrind
+            #     This option used for configuring SST with supported stabledevel deps
+            # 2023-Jan-6 Probably doesn't work
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            coreMiscEnv="${cc_environment} ${mpi_environment}"
+            elementsMiscEnv="${cc_environment}"
+            depsStr="$allDeps"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions $coreMiscEnv"
+            elementsConfigStr="$elementsbaseoptions $allElemDepConfigLinux $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
+            junoConfigStr="$junobaseoptions"
+            ;;
+
+        sstmainline_config_static|sstmainline_config_static_no_gem5)
+            #-----------------------------------------------------------------
+            # sstmainline_config_static
+            #     This option used for configuring SST with supported stabledevel deps
+            # 2023-Jan-6 Probably doesn't work
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            coreMiscEnv="${cc_environment} ${mpi_environment}"
+            elementsMiscEnv="${cc_environment}"
+            depsStr="$allDeps"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions --enable-static --disable-shared $coreMiscEnv"
+            elementsConfigStr="$elementsbaseoptions $allElemDepConfigMac --enable-static --disable-shared $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
+            junoConfigStr="$junobaseoptions"
+            ;;
+
+        sstmainline_config_macosx_static)
+            #-----------------------------------------------------------------
+            # sstmainline_config_macosx_static
+            #     This option used for configuring SST with supported stabledevel deps
+            # 2023-Jan-6 Probably doesn't work
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            coreMiscEnv="${cc_environment} ${mpi_environment}"
+            elementsMiscEnv="${cc_environment}"
+            depsStr="$allDeps"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions  --enable-static --disable-shared $coreMiscEnv"
+            elementsConfigStr="$elementsbaseoptions $allElemDepConfigMac --enable-static --disable-shared $elementsMiscEnv"
+            macroConfigStr="NOBUILD"
+            externalelementConfigStr="$externalelementbaseoptions"
+            junoConfigStr="$junobaseoptions"
+            ;;
   ## perhaps do no more here
         default)
             #-----------------------------------------------------------------
@@ -1057,7 +979,7 @@ getconfig() {
             depsStr="$defaultDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
-            elementsConfigStr="$elementsbaseoptions --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM"
+            elementsConfigStr="$elementsbaseoptions"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -2537,6 +2459,7 @@ function ExitOfScriptHandler {
 # Build type options
 # USED
 #   sstmainline_config
+#   sstmainline_config_all - indirectly used when bamboo is called a second time during make dist tests
 #   sstmainline_coreonly_config
 #   sstmainline_config_no_gem5
 #   sstmainline_config_no_mpi
@@ -2553,7 +2476,6 @@ function ExitOfScriptHandler {
 #
 # UNUSED
 #   default
-#   sstmainline_config_all
 #   sstmainline_config_linux_with_ariel_no_gem5
 #   sstmainline_config_with_cuda
 #   sstmainline_config_with_cuda_no_mpi
