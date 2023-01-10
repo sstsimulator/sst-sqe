@@ -1120,28 +1120,6 @@ linuxSetBoostMPI() {
            ;;
    esac
 
-   # load corresponding Boost
-   case $3 in
-       none)
-           echo  "No BOOST loaded as requested"
-           ;;
-       *)
-           echo "bamboo.sh: \"Default\" Boost selected"
-           echo "Third argument was $3"
-           echo "Loading boost/${desiredBoost}"
-           ModuleEx unload boost
-           ModuleEx load boost/${desiredBoost} 2>catch.err
-           if [ -s catch.err ]
-           then
-               cat catch.err
-               exit 1
-           fi
-           ;;
-   esac
-   echo "bamboo.sh: BOOST_HOME=${BOOST_HOME}"
-   export SST_DEPS_INSTALL_BOOST=${BOOST_HOME}
-   echo "bamboo.sh: SST_DEPS_INSTALL_BOOST=${SST_DEPS_INSTALL_BOOST}"
-
    # Load other modules that were built with the default compiler
    if [ $compiler = "default" ]
    then
@@ -1194,17 +1172,17 @@ fi
 #-------------------------------------------------------------------------
 # Function: ldModules_MacOS_Clang
 # Description:
-#   Purpose: Performs selection and loading of Boost and MPI and
-#            other compiler specific modules for MacOS Yosemite
+#   Purpose: Performs selection and loading of MPI and
+#            other compiler specific modules for MacOS
 #   Parameters:   name of Clang compiler such as (clang-700.1.76)
 #                 Also need $2 and $3 passed along
 
 ldModules_MacOS_Clang() {
     ClangVersion=$1            #   example "clang-700.0.72" $2 $3
-                        ModuleEx avail
-                        # Use Boost and MPI built with CLANG from Xcode
-                        ModuleEx unload mpi
-                        ModuleEx unload boost
+    ModuleEx avail
+    # Use MPI built with CLANG from Xcode
+    ModuleEx unload mpi
+
 #              total BAiling wire
 #         ClangXersion=clang-900.0.39.2
        xc=`echo $1 | awk -F - '{print $2}' |awk -F. '{print $1}'`
@@ -1215,66 +1193,49 @@ echo ' ' ; echo " Using X-code 9 modules."  ;   echo ''
        else
              ClangXersion=$1
        fi
-                        # Load other modules for $ClangVersion
-                        # GNU Linear Programming Kit (GLPK)
-                        echo "bamboo.sh: Load GLPK"
-                        ModuleEx load glpk/glpk-4.54_$ClangXersion
-                        # # System C
-                        # echo "bamboo.sh: Load System C"
-                        # ModuleEx load systemc/systemc-2.3.0_$ClangVersion
-                        # METIS 5.1.0
-                        echo "bamboo.sh: Load METIS 5.1.0"
-                        ModuleEx load metis/metis-5.1.0_$ClangXersion
+        # Load other modules for $ClangVersion
+        # GNU Linear Programming Kit (GLPK)
+        echo "bamboo.sh: Load GLPK"
+        ModuleEx load glpk/glpk-4.54_$ClangXersion
+        
+        # METIS 5.1.0
+        echo "bamboo.sh: Load METIS 5.1.0"
+        ModuleEx load metis/metis-5.1.0_$ClangXersion
 
-                        # PTH 2.0.7
-                        echo "bamboo.sh: Load PTH 2.0.7"
-                        ModuleEx load pth/pth-2.0.7
+        # PTH 2.0.7
+        echo "bamboo.sh: Load PTH 2.0.7"
+        ModuleEx load pth/pth-2.0.7
 
-                        # load MPI
-                        echo " ****** Loading MPI ********"
-                        echo "Request (\$2) is ${2}"
-                        case $2 in
-                            ompi_default|openmpi-2.1.3)
-                                echo "OpenMPI 2.1.3 (openmpi-1.8) selected"
-                                ModuleEx add mpi/openmpi-2.1.3_$ClangXersion
-                                ;;
-                            none)
-                                echo  "No MPI loaded as requested"
-                                ;;
-                            *)
-                                echo "User Defined MPI request"
-                                echo "MPI option, loading users mpi/$2"
-                                ModuleEx load mpi/$2_$ClangVersion 2>catch.err
-                                if [ -s catch.err ]
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
+        # load MPI
+        echo " ****** Loading MPI ********"
+        echo "Request (\$2) is ${2}"
+        case $2 in
+            ompi_default|openmpi-2.1.3)
+                echo "OpenMPI 2.1.3 (openmpi-1.8) selected"
+                ModuleEx add mpi/openmpi-2.1.3_$ClangXersion
+                ;;
+            none)
+                echo  "No MPI loaded as requested"
+                ;;
+            *)
+                echo "User Defined MPI request"
+                echo "MPI option, loading users mpi/$2"
+                ModuleEx load mpi/$2_$ClangVersion 2>catch.err
+                if [ -s catch.err ]
+                then
+                    cat catch.err
+                    exit 0
+                fi
+                ;;
+        esac
 
-                        # load corresponding Boost
-                        case $3 in
-                            none)
-                                echo  "No BOOST loaded as requested"
-                                ;;
-                            *)
-                                echo "User Defined BOOST request"
-                                echo "BOOST option, loading users boost/$3"
-                                ModuleEx load boost/$3_$ClangVersion 2>catch.err
-                                if [ -s catch.err ]
-                                then
-                                    cat catch.err
-                                    exit 0
-                                fi
-                                ;;
-                        esac
-                        export CC=`which clang`
-                        export CXX=`which clang++`
-                        echo "    Modules loaded"
-                        ModuleEx list
-                        $CC --version
+        export CC=`which clang`
+        export CXX=`which clang++`
+        echo "    Modules loaded"
+        ModuleEx list
+        $CC --version
 }
+
 #-------------------------------------------------------------------------
 # Function: darwinSetBoostMPI
 # Description:
@@ -1338,9 +1299,6 @@ echo "  ******************* macosVersion= $macosVersion "
                 exit
                 ;;
         esac
-
-        echo "bamboo.sh: BOOST_HOME=${BOOST_HOME}"
-        export SST_DEPS_INSTALL_BOOST=${BOOST_HOME}
 
     else
         echo "ERROR: unable to locate /etc/profile.modules - cannot load modules"
