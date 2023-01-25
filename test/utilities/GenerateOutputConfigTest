@@ -47,7 +47,7 @@ echo "      Not processing MultiThread or mpirun."
 ### testSuite_SweepEmber.sh    SPECIAL CASE
 ##     Not handled  (March 7, 2017)
 
-for fn in  testSuite_Ariel.sh  testSuite_cassini_prefetch.sh  testSuite_check_maxrss.sh  testSuite_hybridsim.sh  testSuite_memHierarchy_sdl.sh  testSuite_merlin.sh testSuite_openMP.sh  testSuite_portals.sh  testSuite_prospero.sh  testSuite_scheduler.sh  testSuite_simpleComponent.sh  testSuite_SiriusZodiacTrace.sh  testSuite_VaultSim.sh testSuite_diropenMP.sh testSuite_dirSweep.sh testSuite_embernightly.sh  testSuite_stream.sh testSuite_Sweep_openMP.sh testSuite_zoltan.sh testSuite_noncacheable_openMP.sh testSuite_cacheTracer.sh testSuite_chdlComponent.sh testSuite_dirnoncacheable_openMP.sh testSuite_memHSieve.sh testSuite_miranda.sh testSuite_partitioner.sh testSuite_simpleClockerComponent.sh testSuite_simpleDistribComponent.sh testSuite_simpleLookupTableComponent.sh testSuite_simpleMessageGeneratorComponent.sh testSuite_simpleRNGComponent.sh testSuite_simpleStatisticsComponent.sh testSuite_scheduler_DetailedNetwork.sh testSuite_CramSim.sh testSuite_memHA.sh
+for fn in  testSuite_Ariel.sh  testSuite_cassini_prefetch.sh  testSuite_hybridsim.sh  testSuite_merlin.sh testSuite_openMP.sh  testSuite_portals.sh  testSuite_prospero.sh  testSuite_scheduler.sh  testSuite_SiriusZodiacTrace.sh  testSuite_VaultSim.sh testSuite_embernightly.sh  testSuite_stream.sh testSuite_zoltan.sh testSuite_cacheTracer.sh testSuite_chdlComponent.sh testSuite_miranda.sh testSuite_partitioner.sh testSuite_scheduler_DetailedNetwork.sh testSuite_CramSim.sh
 do 
 
 if [[ ${SST_ONE_OUTPUT_CONFIG:+isSet} == isSet ]]

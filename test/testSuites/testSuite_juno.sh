@@ -35,8 +35,6 @@ echo "      -------   done the cd to test/asm "
 echo '    ---  '
    cd ../sst                                     #7
 
-##    pyFileName=`echo test${memHA_case}.py | sed s/_/-/`
-
     sut="${SST_TEST_INSTALL_BIN}/sst"
     sutArgs=${SST_ROOT}/juno/test/sst/juno-test.py
 
