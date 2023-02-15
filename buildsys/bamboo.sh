@@ -3124,21 +3124,29 @@ then
                         else
                             echo "**************************************************************************"
                             echo "***                                                                    "
-                            echo "*** RUNING NEW TEST FRAMEWORKS ELEMENTS - FULL SET OF TESTS"
+                            echo "*** RUNING NEW TEST FRAMEWORKS CORE AND ELEMENTS - FULL SET OF TESTS"
                             echo "***                                                                    "
                             echo "**************************************************************************"
                             # WE ARE RUNNING THE FRAMEWORKS ELEMENTS FULL SET OF TESTS AFTER DOTESTS() HAVE RUN
                             cd $SST_ROOT
+                            
+                            $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_CORE_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
+                            core_frameworks_retval=$?
                             $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
-                            frameworks_retval=$?
-                            echo "BAMBOO: SST Frameworks Elements Test retval = $frameworks_retval"
+                            elements_frameworks_retval=$?
+                            echo "BAMBOO: SST Frameworks Core Test retval = $core_frameworks_retval"
+                            echo "BAMBOO: SST Frameworks Elements Test retval = $elements_frameworks_retval"
                         fi
 
                         # Check the retval result from the bamboo dotests then check the frameworks_retval results with the frameworks run
                         if [ $retval -eq 0 ]; then
                             # Did the dotests pass, if so, then return the results
                             # from the frameworks tests
-                            retval=$frameworks_retval
+                            if [ $core_frameworks_retval -eq 0 ]; then
+                                retval=$elements_frameworks_retval
+                            else
+                                retval = $core_frameworks_retval
+                            fi
                         fi
                         echo "BAMBOO: Combined Frameworks + dotests retval = $retval"
                     fi
