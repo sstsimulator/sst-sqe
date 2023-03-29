@@ -322,7 +322,6 @@ dotests() {
 
     #  Second parameter is compiler choice, if non-default.
     #  If it is Intel, Need a GCC library also
-    #    Going to load the gcc-4.8.1 module for now
 
    echo "-- Number processers"
    if [ `uname` == "Darwin" ] ; then
@@ -354,9 +353,9 @@ dotests() {
    export JENKINS_PROJECT=`echo $WORKSPACE | awk -F'/' '{print $6}'`
    export BAMBOO_SCENARIO=$1
 
-echo " #####################################################"
+   echo " #####################################################"
    echo "parameter \$2 is $2  "
-echo " #####################################################"
+   echo " #####################################################"
    echo "SST_MULTI_THREAD_COUNT: ${SST_MULTI_THREAD_COUNT}"
    echo "SST_MULTI_RANK_COUNT: ${SST_MULTI_RANK_COUNT}"
     if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ||
@@ -391,8 +390,6 @@ echo " #####################################################"
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
 
-### Do we run the Macro Tests
-
     # FOR TESTS WITHOUT CORE, WE USE THE ORIG BAMBOO TESTSUITE; OTHERWISE
     # LET THE NEW TESTFRAMEWORKS RUN, NORMALLY
     # Do we run the Macro Tests
@@ -418,52 +415,6 @@ echo " #####################################################"
 ##########################################################################3
 
 
-    if [[ $1 == *sstmainline_config_valgrind* ]] ; then
-
-        echo "                   module list"
-        ModuleEx list
-
-        ####   export variables  Library path, PATH, SST_ROOT, SST_TEST_ROOT
-        #
-        echo $LD_LIBRARY_PATH | grep /usr/local/lib
-        if [ $? != 0 ]
-        then
-            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-        fi
-        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_BASE/local/sst-core/lib
-        ##     Source the install location variables from the build
-        . ../../SST_deps_env.sh
-
-        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_DRAMSIM:$SST_DEPS_INSTALL_HYBRIDSIM:$SST_DEPS_INSTALL_NVDIMMSIM
-        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_GOBLIN_HMCSIM:$SST_DEPS_INSTALL_RAMULATOR:$SST_DEPS_INSTALL_HBM_DRAMSIM2
-
-        if [ `uname` == "Darwin" ]
-        then
-           export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
-        fi
-
-        #export PATH=/home/jpvandy/bin:$PATH:$SST_INSTALL_BIN_USER
-        export PATH=$PATH:$SST_INSTALL_BIN_USER
-
-        export SST_ROOT=$SST_BASE/devel/trunk
-
-        export SST_TEST_ROOT=`pwd`/test
-        ####    Source the testDefinitions
-        . test/include/testDefinitions.sh
-
-        echo ' '; echo "Inserting Valgrind commands" ; echo ' '
-        ./test/utilities/insertValgrind
-
-     #   Only run EmberSweep in Valgrind if explict request.
-     #       In that case run only EmberSweep Suite.
-        if [[ $1 == "sstmainline_config_valgrind_ES" ]] ; then
-            return
-        fi
-        if [[ $1 == "sstmainline_config_valgrind_ESshmem" ]] ; then
-            return
-        fi
-    fi
-
     #   Enable the --output-config option in (most) tests
     #      (activated by Environment Variable)
 
@@ -471,21 +422,6 @@ echo " #####################################################"
         echo ' '; echo "Generating \"--output-config\" test" ; echo ' '
         ./test/utilities/GenerateOutputConfigTest
     fi
-
-    # Run test suites
-
-
-    # DO NOT pass args to the test suite, it confuses
-    # shunit. Use an environment variable instead.
-echo B4      $SST_SUITES_TO_RUN
-
-      if [[ ${SST_SUITES_TO_RUN:+isSet} == isSet ]] ; then
-         for S in $SST_SUITES_TO_RUN
-         do
-           ${SST_TEST_SUITES}/testSuite_${S}.sh
-         done
-         return
-      fi
 
 ### NOTE: $1 is set to sstmainline_config_all is set when doing a make dist test, we want to avoid this
 
@@ -508,12 +444,6 @@ echo B4      $SST_SUITES_TO_RUN
     fi
 
     PATH=${PATH}:${SST_ROOT}/../sqe/test/utilities
-
-    # Only run EmberSweep with valgrind with explict request.
-    #    Valgrind on 180 test Suite takes 15 hours. (Aug. 2016)
-    if [[ $1 != "sstmainline_config_valgrind" ]] ; then
-        echo ""
-    fi
 
 }
 ###-END-DOTESTS
@@ -626,8 +556,6 @@ getconfig() {
     local allDeps="-r default -H default -G default -D default -d 2.2.2 -N default -A none"
 
     # Configure SST Elements with all dependencies except those requiring special handling. Pin is not support on Mac.
-    local allElemDepConfigMac="--with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM"
-    local allElemDepConfigLinux="--with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN"
 
     case $1 in
         sstmainline_config|sstmainline_config_all|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_memH_wo_openMP)
@@ -643,7 +571,7 @@ getconfig() {
             depsStr="$allDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions $allElemDepConfigLinux $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -678,7 +606,7 @@ getconfig() {
             depsStr="-r default -H default -G default -D default -d 2.2.2 -N none -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM $allElemDepConfigLinux $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -707,7 +635,7 @@ getconfig() {
             depsStr="-r default -H default -G default -D default -d 2.2.2 -N none -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM $allElemDepConfigLinux $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="NOBUILD"
             junoConfigStr="NOBUILD"
@@ -736,7 +664,7 @@ getconfig() {
             depsStr="$allDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions $allElemDepConfigLinux $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -750,7 +678,7 @@ getconfig() {
             depsStr="-r none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
-            elementsConfigStr="$elementsbaseoptions $allElemDepConfigMac"
+            elementsConfigStr="$elementsbaseoptions"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -766,7 +694,7 @@ getconfig() {
             depsStr="$allDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions $allElemDepConfigMac $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -784,7 +712,7 @@ getconfig() {
             depsStr="$allDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions $allElemDepConfigLinux $elementsMiscEnv $coreMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv $coreMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -917,24 +845,6 @@ getconfig() {
         # ====  Experimental/exploratory build configurations start here  ====
         # ====                                                            ====
         # ====================================================================
-        sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem)
-            #-----------------------------------------------------------------
-            # sstmainline_config_valgrind
-            #     This option used for configuring SST with supported stabledevel deps
-            # 2023-Jan-6 Probably doesn't work
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="$allDeps"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions $allElemDepConfigLinux $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-
         sstmainline_config_static|sstmainline_config_static_no_gem5)
             #-----------------------------------------------------------------
             # sstmainline_config_static
@@ -947,7 +857,7 @@ getconfig() {
             depsStr="$allDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions --enable-static --disable-shared $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions $allElemDepConfigMac --enable-static --disable-shared $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --enable-static --disable-shared $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -965,7 +875,7 @@ getconfig() {
             depsStr="$allDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions  --enable-static --disable-shared $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions $allElemDepConfigMac --enable-static --disable-shared $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --enable-static --disable-shared $elementsMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1009,20 +919,17 @@ getconfig() {
 }
 
 #-------------------------------------------------------------------------
-# Function: linuxSetBoostMPI
+# Function: linuxSetMPI
 # Description:
 #   Purpose: Performs selection and loading of Bost and MPI modules
 #            for Linux
 #   Input:
 #      $1 - Bamboo Project
 #      $2 - mpi request
-#      $3 - boost  request
-#      $4   compiler (optional)
-#      $5 = Cuda version
-#      $6 = pythonX (X = 2 | 3)
+#      $3   compiler (optional)
 #   Output:
 #   Return value:
-linuxSetBoostMPI() {
+linuxSetMPI() {
 
    if [[ ${SST_STOP_AFTER_BUILD:+isSet} != isSet ]] ; then
       # For some reason, .bashrc is not being run prior to
@@ -1053,10 +960,9 @@ linuxSetBoostMPI() {
        exit 1
    fi
 
-   # build MPI and Boost selectors
+   # build MPI selector
    if [[ "$2" =~ openmpi.* ]]
    then
-       # since Boost flavor labeled with "ompi" not "openmpi"
        mpiStr="ompi-"$(expr "$2" : '.*openmpi-\([0-9]\(\.[0-9][0-9]*\)*\)')
    else
        mpiStr=${2}
@@ -1065,19 +971,17 @@ linuxSetBoostMPI() {
    if [ $compiler = "default" ]
    then
        desiredMPI="${2}"
-       desiredBoost="${3}.0_${mpiStr}"
    else
        desiredMPI="${2}_${4}"
-       desiredBoost="${3}.0_${mpiStr}_${4}"
        # load non-default compiler
-       if   [[ "$4" =~ gcc.* ]]
+       if   [[ "$3" =~ gcc.* ]]
        then
            ModuleEx load gcc/${4}
            echo "LOADED gcc/${4} compiler"
-       elif [[ "$4" =~ intel.* ]]
+       elif [[ "$3" =~ intel.* ]]
        then
            ModuleEx load intel/${4}
-           if [[ "$4" == *intel-15* ]] ; then
+           if [[ "$3" == *intel-15* ]] ; then
                ModuleEx load gcc/gcc-4.8.1
                IntelExtraConfigStr="CXXFLAGS=-gxx-name=`which g++` CFLAGS=-gcc-name=`which gcc`"
            fi
@@ -1087,23 +991,11 @@ linuxSetBoostMPI() {
 
    echo "CHECK:  \$2: ${2}"
    echo "CHECK:  \$3: ${3}"
-   echo "CHECK:  \$4: ${4}"
    echo "CHECK:  \$desiredMPI: ${desiredMPI}"
-   echo "CHECK:  \$desiredBoost: ${desiredBoost}"
    gcc --version 2>&1 | grep ^g
 
    # load MPI
    case $2 in
-       openmpi-1.8)
-           echo "OpenMPI (openmpi-1.8) selected"
-           ModuleEx unload mpi # unload any default to avoid conflict error
-           ModuleEx load mpi/${desiredMPI}
-           ;;
-        openmpi-1.10)
-           echo "OpenMPI (openmpi-1.10) selected"
-           ModuleEx unload mpi # unload any default to avoid conflict error
-           ModuleEx load mpi/${desiredMPI}
-           ;;
        none)
            echo "MPI requested as \"none\".    No MPI loaded"
            ModuleEx unload mpi # unload any default
@@ -1118,54 +1010,52 @@ linuxSetBoostMPI() {
                exit 1
            fi
            ;;
-   esac
+    esac
 
-   # Load other modules that were built with the default compiler
-   if [ $compiler = "default" ]
-   then
-       # GNU Linear Programming Kit (GLPK)
-       echo "bamboo.sh: Load GLPK"
-       # Load available GLPK, whatever version it is
-       ModuleEx load glpk
-       # System C
-#       echo "bamboo.sh: Load System C"
-#       ModuleEx load systemc/systemc-2.3.0
-       # METIS 5.1.0
-       echo "bamboo.sh: Load METIS 5.1.0"
-       ModuleEx avail | grep bundled
-       if [ $? == 0 ] ; then
-           echo " Bingo ###################################################"
-           ModuleEx load metis/metis-5.1.0-bundled
-       else
-           ModuleEx load metis/metis-5.1.0
-       fi
-       echo "      This is what is loaded for METIS"
-       ModuleEx list | grep metis
+    # Load other modules that were built with the default compiler
+    if [ $compiler = "default" ]
+    then
+        # GNU Linear Programming Kit (GLPK)
+        echo "bamboo.sh: Load GLPK"
+        # Load available GLPK, whatever version it is
+        ModuleEx load glpk
+       
+        # METIS 5.1.0
+        echo "bamboo.sh: Load METIS 5.1.0"
+        ModuleEx avail | grep bundled
+        if [ $? == 0 ] ; then
+            echo " Bingo ###################################################"
+            ModuleEx load metis/metis-5.1.0-bundled
+        else
+            ModuleEx load metis/metis-5.1.0
+        fi
+        echo "      This is what is loaded for METIS"
+        ModuleEx list | grep metis
 
-   else # otherwise try to load compiler-specific tool variant
-       # GNU Linear Programming Kit (GLPK)
-       ModuleEx avail | egrep -q "glpk/glpk-4.54_${compiler}"
-       if [ $? == 0 ] ; then
-           echo "bamboo.sh: Load GLPK (gcc ${compiler} variant)"
-           ModuleEx load glpk/glpk-4.54_${compiler}
-       else
-           echo "bamboo.sh: module GLPK (gcc ${compiler} variant) Not Available"
-       fi
-       # METIS 5.1.0
-       ModuleEx avail | egrep -q "metis/metis-5.1.0_${compiler}"
-       if [ $? == 0 ] ; then
-if [[ ${compiler} != *intel-15* ]] ; then
-           echo "bamboo.sh: Load METIS 5.1.0 (gcc ${compiler} variant)"
-           ModuleEx load metis/metis-5.1.0_${compiler}
-echo ' ####################################################################### '
-  echo "              DO NOT LOAD METIS FOR Intel 15  Compiler "
-echo ' ####################################################################### '
-fi
-       else
-           echo "bamboo.sh: module METIS 5.1.0 (gcc ${compiler} variant) Not Available"
-       fi
-       # Other misc
-   fi
+    else # otherwise try to load compiler-specific tool variant
+        # GNU Linear Programming Kit (GLPK)
+        ModuleEx avail | egrep -q "glpk/glpk-4.54_${compiler}"
+        if [ $? == 0 ] ; then
+            echo "bamboo.sh: Load GLPK (gcc ${compiler} variant)"
+            ModuleEx load glpk/glpk-4.54_${compiler}
+        else
+            echo "bamboo.sh: module GLPK (gcc ${compiler} variant) Not Available"
+        fi
+        # METIS 5.1.0
+        ModuleEx avail | egrep -q "metis/metis-5.1.0_${compiler}"
+        if [ $? == 0 ] ; then
+            if [[ ${compiler} != *intel-15* ]] ; then
+                echo "bamboo.sh: Load METIS 5.1.0 (gcc ${compiler} variant)"
+                ModuleEx load metis/metis-5.1.0_${compiler}
+                echo ' ####################################################################### '
+                echo "              DO NOT LOAD METIS FOR Intel 15  Compiler "
+                echo ' ####################################################################### '
+            fi
+        else
+            echo "bamboo.sh: module METIS 5.1.0 (gcc ${compiler} variant) Not Available"
+        fi
+        # Other misc
+    fi
 }
 
 
@@ -1175,82 +1065,72 @@ fi
 #   Purpose: Performs selection and loading of MPI and
 #            other compiler specific modules for MacOS
 #   Parameters:   name of Clang compiler such as (clang-700.1.76)
-#                 Also need $2 and $3 passed along
+#                 Also need $2 passed along
 
 ldModules_MacOS_Clang() {
-    ClangVersion=$1            #   example "clang-700.0.72" $2 $3
+    ClangVersion=$1            #   example "clang-700.0.72" $2
     ModuleEx avail
     # Use MPI built with CLANG from Xcode
     ModuleEx unload mpi
 
-#              total BAiling wire
-#         ClangXersion=clang-900.0.39.2
-       xc=`echo $1 | awk -F - '{print $2}' |awk -F. '{print $1}'`
-       if [ $xc -gt 899 ]  && [ $xc -lt 1100 ] ; then
-#          Xcode is greater than 8
-echo ' ' ; echo " Using X-code 9 modules."  ;   echo ''
-             ClangXersion=clang-900.0.39.2
-       else
-             ClangXersion=$1
-       fi
-        # Load other modules for $ClangVersion
-        # GNU Linear Programming Kit (GLPK)
-        echo "bamboo.sh: Load GLPK"
-        ModuleEx load glpk/glpk-4.54_$ClangXersion
+    # Load other modules for $ClangVersion
+    # GNU Linear Programming Kit (GLPK)
+    echo "bamboo.sh: Load GLPK"
+    ModuleEx load glpk/glpk-4.54_$ClangVersion
         
-        # METIS 5.1.0
-        echo "bamboo.sh: Load METIS 5.1.0"
-        ModuleEx load metis/metis-5.1.0_$ClangXersion
+    # METIS 5.1.0
+    echo "bamboo.sh: Load METIS 5.1.0"
+    ModuleEx load metis/metis-5.1.0_$ClangVersion
 
-        # PTH 2.0.7
-        echo "bamboo.sh: Load PTH 2.0.7"
-        ModuleEx load pth/pth-2.0.7
+    # PTH 2.0.7
+    echo "bamboo.sh: Load PTH 2.0.7"
+    ModuleEx load pth/pth-2.0.7
 
-        # load MPI
-        echo " ****** Loading MPI ********"
-        echo "Request (\$2) is ${2}"
-        case $2 in
-            ompi_default|openmpi-2.1.3)
-                echo "OpenMPI 2.1.3 (openmpi-1.8) selected"
-                ModuleEx add mpi/openmpi-2.1.3_$ClangXersion
-                ;;
-            none)
-                echo  "No MPI loaded as requested"
-                ;;
-            *)
-                echo "User Defined MPI request"
-                echo "MPI option, loading users mpi/$2"
-                ModuleEx load mpi/$2_$ClangVersion 2>catch.err
-                if [ -s catch.err ]
-                then
-                    cat catch.err
-                    exit 0
-                fi
-                ;;
-        esac
+    # load MPI
+    echo " ****** Loading MPI ********"
+    echo "Request (\$2) is ${2}"
+    case $2 in
+        ompi_default)
+            echo "OpenMPI 4.0.5 selected"
+            ModuleEx add mpi/openmpi-4.0.5_$ClangVersion
+            ;;
+        none)
+            echo  "No MPI loaded as requested"
+            ;;
+        *)
+            echo "User Defined MPI request"
+            echo "MPI option, loading users mpi/$2"
+            ModuleEx load mpi/$2_$ClangVersion 2>catch.err
+            if [ -s catch.err ]
+            then
+                cat catch.err
+                exit 0
+            fi
+            ;;
+    esac
 
-        export CC=`which clang`
-        export CXX=`which clang++`
-        echo "    Modules loaded"
-        ModuleEx list
-        $CC --version
+    export CC=`which clang`
+    export CXX=`which clang++`
+    echo "    Modules loaded"
+    ModuleEx list
+    $CC --version
 }
 
 #-------------------------------------------------------------------------
-# Function: darwinSetBoostMPI
+# Function: darwinSetMPI
 # Description:
-#   Purpose: Performs selection and loading of Boost and MPI modules
+#   Purpose: Performs selection and loading of MPI modules
 #            for MacOS
 #   Input:
 #   Output:
 #   Return value:
-darwinSetBoostMPI() {
+darwinSetMPI() {
     # Obtain Mac OS version (works only on MacOS!!!)
     macosVersionFull=`sw_vers -productVersion`
-echo "  ******************* macosVersionFull= $macosVersionFull "
-###    macosVersion=${macosVersionFull%.*}
+    echo "  ******************* macosVersionFull= $macosVersionFull "
+    ###    macosVersion=${macosVersionFull%.*}
     macosVersion=`echo ${macosVersionFull} | awk -F. '{print $1 "." $2 }'`
-echo "  ******************* macosVersion= $macosVersion "
+    echo "  ******************* macosVersion= $macosVersion "
 
 
     # macports or hybrid clang/macports
@@ -1273,23 +1153,22 @@ echo "  ******************* macosVersion= $macosVersion "
         case $macosVersion in
 ################################################################################
 
-            10.15) # Catalina
-                echo    "This is Catalina, Compiler is $compiler"
-                ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode
-                ;;
-
-################################################################################
-
             11.6) # Big Sur
                 echo    "This is Big Sur, Compiler is $compiler"
-                ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode
+                ldModules_MacOS_Clang $compiler  $2   # any Xcode
                 ;;
 
 ################################################################################
 
             12.3) # Monterey
                 echo    "This is Monterey, Compiler is $compiler"
-                ldModules_MacOS_Clang $compiler  $2 $3   # any Xcode
+                ldModules_MacOS_Clang $compiler  $2   # any Xcode
+                ;;
+
+################################################################################
+            13.2) # Ventura
+                echo    "This is Ventura, Compiler is $compiler"
+                ldModules_MacOS_Clang $compiler $2 # any code
                 ;;
 
 ################################################################################
@@ -1306,7 +1185,7 @@ echo "  ******************* macosVersion= $macosVersion "
     fi
 
     echo "bamboo.sh: MacOS build."
-    echo "bamboo.sh:   MPI = $2, Boost = $3"
+    echo "bamboo.sh:   MPI = $2"
 }
 
 #-------------------------------------------------------------------------
@@ -1318,46 +1197,45 @@ echo "  ******************* macosVersion= $macosVersion "
 #   Output:
 #   Return value:
 setUPforMakeDisttest() {
-     echo "Setting up to build from the tars created by make dist"
-     echo "---   PWD $LINENO  `pwd`"           ## Original trunk
-#                             CORE
-#            May 24th, 2016     file is: sstcore-6.0.0.tar.gz
-     LOC_OF_TAR=""
-     if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
-         LOC_OF_TAR="-builddir"
-     fi
-     cd ${SST_ROOT}/sst-core${LOC_OF_TAR}
-echo "---   $LINENO  PWD $LINENO  `pwd`"
-ls
-     Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
-     echo  PACKAGE is $Package
-     tarName=${Package}.tar.gz
-     ls $tarName
-     if [ $? != 0 ] ; then
-         ls
-         echo "Can NOT find CORE Tar File $Package .tar.gz"
-         exit 1
-     fi
-     mkdir -p $SST_ROOT/distTestDir/trunk
-     cd $SST_ROOT/distTestDir/trunk
-     mv $SST_ROOT/sst-core${LOC_OF_TAR}/$tarName .
-     if [ $? -ne 0 ] ; then
-          echo "Move failed  \$SST_ROOT/$tarName to ."
-     fi
-     rm -rf $SST_ROOT/sst-core
-     echo "   Untar the created file, $tarName"
-     echo "---   PWD $LINENO  `pwd`"
-     tar xzf $tarName
-     if [ $? -ne 0 ] ; then
-          echo "Untar of $tarName failed"
-     fi
-     echo ' ' ; echo "--------   going to do the core move"
-     echo PWD $LINENO is `pwd`
-     mv $Package sst-core
-     echo "             ---------------------- done with core ------"
+    echo "Setting up to build from the tars created by make dist"
+    echo "---   PWD $LINENO  `pwd`"           ## Original trunk
+     
+    LOC_OF_TAR=""
+    if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
+        LOC_OF_TAR="-builddir"
+    fi
+    cd ${SST_ROOT}/sst-core${LOC_OF_TAR}
+    echo "---   $LINENO  PWD $LINENO  `pwd`"
+    ls
+    Package=`ls| grep 'sst.*tar.gz' | awk -F'.tar' '{print $1}'`
+    echo  PACKAGE is $Package
+    tarName=${Package}.tar.gz
+    ls $tarName
+    if [ $? != 0 ] ; then
+        ls
+        echo "Can NOT find CORE Tar File $Package .tar.gz"
+        exit 1
+    fi
+    mkdir -p $SST_ROOT/distTestDir/trunk
+    cd $SST_ROOT/distTestDir/trunk
+    mv $SST_ROOT/sst-core${LOC_OF_TAR}/$tarName .
+    if [ $? -ne 0 ] ; then
+        echo "Move failed  \$SST_ROOT/$tarName to ."
+    fi
+    rm -rf $SST_ROOT/sst-core
+    echo "   Untar the created file, $tarName"
+    echo "---   PWD $LINENO  `pwd`"
+    tar xzf $tarName
+    if [ $? -ne 0 ] ; then
+        echo "Untar of $tarName failed"
+    fi
+    echo ' ' ; echo "--------   going to do the core move"
+    echo PWD $LINENO is `pwd`
+    mv $Package sst-core
+    echo "             ---------------------- done with core ------"
 ############## JVD ################################################
     echo "$LINENO test for sstmainline_config_make_dist_test "
-     if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
+    if  [ $1 ==  sstmainline_config_make_dist_test ] ; then
 #                          ELEMENTS
 #         May 17, 2016    file name is sst-elements-library-devel.tar.gz
          cd $SST_ROOT/sst-elements${LOC_OF_TAR}
@@ -1448,14 +1326,14 @@ ls
     echo ' '
     echo "---   PWD $LINENO  `pwd`"
     echo  "   We are in distTestDir/trunk"
-     cp  $SST_ROOT/../sqe/buildsys/bamboo.sh .
-     if [ -e ./deps ] ; then
+    cp  $SST_ROOT/../sqe/buildsys/bamboo.sh .
+    if [ -e ./deps ] ; then
         cp -r $SST_ROOT/deps/bin ./deps       ## the deps scripts
         cp -r $SST_ROOT/deps/include ./deps          ## the deps scripts
         cp -r $SST_ROOT/deps/patches ./deps          ## the deps scripts
-     else
+    else
         cp -r $SST_ROOT/deps .          ## the deps scripts
-     fi
+    fi
      if [ ! -e ./deps/bin ] ; then
          echo " FAILED  FAILED FAILED FAILED FAILED FAILED FAILED"
          echo SST_ROOT = $SST_ROOT
@@ -1597,8 +1475,8 @@ dobuild() {
 
     echo "==================== SETTING UP TO BUILD SST CORE ELEMENTS AND/OR MACRO ====="
     SAVE_LIBRARY_PATH=$LD_LIBRARY_PATH
-    export LD_LIBRARY_PATH=${SST_INSTALL_DEPS}/lib:${SST_INSTALL_DEPS}/lib/sst:${SST_DEPS_INSTALL_GEM5SST}:${SST_INSTALL_DEPS}/packages/DRAMSim:${SST_DEPS_INSTALL_NVDIMMSIM}:${SST_DEPS_INSTALL_HYBRIDSIM}:${SST_INSTALL_DEPS}/packages/Qsim/lib:${LD_LIBRARY_PATH}
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BOOST_LIBS
+    export LD_LIBRARY_PATH=${SST_INSTALL_DEPS}/lib:${SST_INSTALL_DEPS}/lib/sst:${SST_DEPS_INSTALL_GEM5SST}:${SST_INSTALL_DEPS}/packages/DRAMSim:${SST_DEPS_INSTALL_NVDIMMSIM}:${SST_DEPS_INSTALL_HYBRIDSIM}:${LD_LIBRARY_PATH}
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH
     # Mac OS X needs some help finding dylibs
     if [ $kernel == "Darwin" ]
     then
@@ -2443,7 +2321,6 @@ function ExitOfScriptHandler {
 #   sstmainline_config_macosx_static
 #   sstmainline_config_dist_test
 #   sstmainline_config_make_dist_no_gem5
-#   sstmainline_config_valgrind
 #=========================================================================
 trap ExitOfScriptHandler EXIT
 
@@ -2657,7 +2534,7 @@ if [ $# -lt 3 ] || [ $# -gt 6 ]
 then
     # need build type and MPI type as argument
 
-    echo "Usage : $0 <buildtype> <mpitype> <boost type> <[compiler type (optional)]> <[cuda version (optional)]> <[python2|3 version (optional)]>"
+    echo "Usage : $0 <buildtype> <mpitype> <boost type> <[compiler type (optional)]> <[cuda version (optional)]> <[python3 version (optional)]>"
     exit 0
 
 else
@@ -2665,15 +2542,15 @@ else
     compiler=""
 
     case $4 in
-       none|default|"")
-          echo "bamboo.sh: \$4 is empty, null or default; setting compiler to default"
-          compiler="default"
-          ;;
-       *) # unknown option
-          echo "bamboo.sh: setting compiler to $4"
-          compiler="$4"
-          ;;
-      esac
+        none|default|"")
+            echo "bamboo.sh: \$4 is empty, null or default; setting compiler to default"
+            compiler="default"
+            ;;
+        *) # unknown option
+            echo "bamboo.sh: setting compiler to $4"
+            compiler="$4"
+            ;;
+    esac
 
     echo "bamboo.sh: compiler is set to $compiler"
 
@@ -2685,182 +2562,123 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_valgrind|sstmainline_config_valgrind_ES|sstmainline_config_valgrind_ESshmem|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3, $4, $5 and $6 in case they are need later
             SST_DIST_MPI=$2
-            SST_DIST_BOOST=$3
+            SST_DIST_BOOST="none"
             SST_DIST_PARAM4=$4
             SST_DIST_CUDA=`echo $5 | sed 's/cuda-//g'`
             SST_DIST_PYTHON=$6
 
-            # Configure MPI, Boost, and Compiler (Linux only)
+            # Configure MPI and Compiler (Linux only)
             if [ $kernel != "Darwin" ]
             then
-                linuxSetBoostMPI $1 $2 $3 $4
+                linuxSetMPI $1 $2 $4
 
             else  # kernel is "Darwin", so this is MacOS
 
-                darwinSetBoostMPI $1 $2 $3 $4
+                darwinSetMPI $1 $2 $4
             fi
 
             # Load Cuda Module
             case $5 in
-               cuda-8.0.44|cuda-8.0.61|cuda-9.1.85)
-                  echo "bamboo.sh: cuda-${SST_DIST_CUDA} selected"
-                  ModuleEx unload cuda
-                  ModuleEx load cuda/${SST_DIST_CUDA}
-                  ;;
-               none)
-                  echo  "No Cuda loaded as requested"
-                  ;;
-               *) # unknown option
-                  echo  "No Cuda loaded as requested"
-                  ;;
+                cuda-8.0.44|cuda-8.0.61|cuda-9.1.85)
+                    echo "bamboo.sh: cuda-${SST_DIST_CUDA} selected"
+                    ModuleEx unload cuda
+                    ModuleEx load cuda/${SST_DIST_CUDA}
+                    ;;
+                none)
+                    echo  "No Cuda loaded as requested"
+                    ;;
+                *) # unknown option
+                    echo  "No Cuda loaded as requested"
+                    ;;
             esac
 
             # Figure out Python Configuration
             # Note: Selecting python is confusing as different system have different links
-            #       depending upon versions available.  We use "command -v python" to
-            #       find the executable, but "python" is usually symlinked to "python2"
-            #       Also on some systems like Ununtu 20.04, python does not exist, so we
-            #       must try "command -v python3".  After we find the correct python version
-            #       we can find the include and lib dirs related to it by using
-            #       python-config --prefix or pythonX-config --prefix
+            #       depending upon versions available. We look for 'python3' first and then
+            #       check if 'python' has been symlinked to python3 if needed
             echo ""
             echo "=============================================================="
-            echo "=== DETIRMINE WHAT PYTHON TO USE"
+            echo "=== DETERMINE WHAT PYTHON TO USE"
             echo "=============================================================="
             case $6 in
-               python2)
-                  echo "BAMBOO PARAM INDICATES SCENARIO NEEDS PYTHON2"
-                  export SST_PYTHON_USER_SPECIFIED=1
-                  export SST_PYTHON_USER_SELECTED_PYTHON2=1
-                  if command -v python2 > /dev/null 2>&1; then
-                      export SST_PYTHON_APP_EXE=`command -v python2`
-                  else
-                      # python2 might not work, so try plain python
-                      if command -v python > /dev/null 2>&1; then
-                          export SST_PYTHON_APP_EXE=`command -v python`
-                      else
-                          echo "ERROR: USER SELECTED python2 (or python) NOT FOUND - IS python Version 2.x ON THE SYSTEM?"
-                          exit 128
-                      fi
-                  fi
-                  if python2-config --prefix > /dev/null 2>&1; then
-                      export SST_PYTHON_CFG_EXE=`command -v python2-config`
-                      export SST_PYTHON_HOME=`python2-config --prefix`
-                  else
-                      # python2-config might not work, so try plain python
-                      if python-config --prefix > /dev/null 2>&1; then
-                          export SST_PYTHON_CFG_EXE=`command -v python2-config`
-                          export SST_PYTHON_HOME=`python-config --prefix`
-                      else
-                          echo "ERROR: USER SELECTED python2-config (or python-config) NOT FOUND - IS python-devel ON THE SYSTEM?"
-                          exit 128
-                      fi
-                  fi
-                  ;;
-
-               python3)
-                  echo "BAMBOO PARAM INDICATES SCENARIO NEEDS PYTHON3"
-                  export SST_PYTHON_USER_SPECIFIED=1
-                  export SST_PYTHON_USER_SELECTED_PYTHON3=1
-                  if command -v python3 > /dev/null 2>&1; then
-                      export SST_PYTHON_APP_EXE=`command -v python3`
-                  else
-                      echo "ERROR: USER SELECTED python3 NOT FOUND - IS python ver3.x ON THE SYSTEM?"
-                      exit 128
-                  fi
-                  if python3-config --prefix > /dev/null 2>&1; then
-                      export SST_PYTHON_CFG_EXE=`command -v python3-config`
-                      export SST_PYTHON_HOME=`python3-config --prefix`
-                  else
-                      echo "ERROR: USER SELECTED python3-config NOT FOUND - IS python3-devel ON THE SYSTEM?"
-                      exit 128
-                  fi
-                  ;;
+                python3)
+                    echo "BAMBOO PARAM INDICATES SCENARIO NEEDS PYTHON3"
+                    export SST_PYTHON_USER_SPECIFIED=1
+                    if command -v python3 > /dev/null 2>&1; then
+                        export SST_PYTHON_APP_EXE=`command -v python3`
+                    else
+                        echo "ERROR: USER SELECTED python3 NOT FOUND - IS python ver3.x ON THE SYSTEM?"
+                        exit 128
+                    fi
+                    if python3-config --prefix > /dev/null 2>&1; then
+                        export SST_PYTHON_CFG_EXE=`command -v python3-config`
+                        export SST_PYTHON_HOME=`python3-config --prefix`
+                    else
+                        echo "ERROR: USER SELECTED python3-config NOT FOUND - IS python3-devel ON THE SYSTEM?"
+                        exit 128
+                    fi
+                    ;;
 
                 * | none)
-                  # Perform a quick check to see if $6 is empty
-                  if [ -n "$6" ]; then
-                      if [[ $6 != "none" ]] ; then
-                          echo "ERROR: ILLEGAL PYTHON OPTION " $6
-                          echo "       ONLY none | python2 | python3 ALLOWED"
-                          exit 128
-                      fi
-                  fi
+                    # Perform a quick check to see if $6 is empty
+                    if [ -n "$6" ]; then
+                        if [[ $6 != "none" ]] ; then
+                            echo "ERROR: ILLEGAL PYTHON OPTION " $6
+                            echo "       ONLY none | python3 ALLOWED"
+                            exit 128
+                        fi
+                    fi
 
-                  ## NOTE: This code is for SST Version 11 - When default search priority is Python3 first
-                  ##       it follows a similar process as the Version 11 SST-Core
-                  echo "NO BAMBOO PARAM EXISTS FOR PICKING A PYTHON VERSION - DETECT AND USE THE DEFAULT SYSTEM PYTHON"
+                    ## NOTE: This code is for SST Version 12 where Python 2.x is no longer supported
+                    echo "NO BAMBOO PARAM EXISTS FOR PICKING A PYTHON VERSION - DETECT AND USE THE DEFAULT SYSTEM PYTHON"
 
-                  # Test to see if python3-config command is avail it should be for all Py3 installs
-                  if python3-config --prefix > /dev/null 2>&1; then
-                      export SST_PYTHON_CFG_EXE=`command -v python3-config`
-                      export SST_PYTHON_HOME=`python3-config --prefix`
-                      echo "--- FOUND PYTHON3 via python3-config..."
+                    # Test to see if python3-config command is avail it should be for all Py3 installs
+                    if python3-config --prefix > /dev/null 2>&1; then
+                        export SST_PYTHON_CFG_EXE=`command -v python3-config`
+                        export SST_PYTHON_HOME=`python3-config --prefix`
+                        echo "--- FOUND PYTHON3 via python3-config..."
 
-                      if command -v python3 > /dev/null 2>&1; then
-                          export SST_PYTHON_APP_EXE=`command -v python3`
-                      else
-                          echo "ERROR: Python3 is detected to be Default on system (via python3-config), but python3 app IS NOT FOUND - IS python3 configured properly ON THE SYSTEM?"
-                          exit 128
-                      fi
-                  else
-                      ## NOTE: 'python3' doesn't exist, assume we've got a
-                      ##       python version 2, but we check to be sure...
-                      echo "--- DID NOT FIND python3-config, SEARCHING FOR python2-config..."
+                        if command -v python3 > /dev/null 2>&1; then
+                            export SST_PYTHON_APP_EXE=`command -v python3`
+                        else
+                            echo "ERROR: Python3 is detected to be Default on system (via python3-config), but python3 app IS NOT FOUND - IS python3 configured properly ON THE SYSTEM?"
+                            exit 128
+                        fi
+                    else
+                        ## NOTE: This is the last chance...
+                        ##       try finding 'python-config'
+                        echo "--- DID NOT FIND python3-config, SEARCHING FOR python-config..."
 
-                      # Test to see if python2-config command is avail
-                      if python2-config --prefix > /dev/null 2>&1; then
-                          export SST_PYTHON_CFG_EXE=`command -v python2-config`
-                          export SST_PYTHON_HOME=`python2-config --prefix`
-                          echo "--- FOUND PYTHON2 via python2-config..."
+                        # Test to see if python-config command is avail
+                        if python-config --prefix > /dev/null 2>&1; then
+                            export SST_PYTHON_CFG_EXE=`command -v python-config`
+                            export SST_PYTHON_HOME=`python-config --prefix`
+                            echo "--- FOUND PYTHON via python-config..."
 
-                          # Now check for python2 app is avail
-                          if command -v python2 > /dev/null 2>&1; then
-                              export SST_PYTHON_APP_EXE=`command -v python2`
-                          else
-                              # python2 might not work, so try plain python
-                              if command -v python > /dev/null 2>&1; then
-                                  export SST_PYTHON_APP_EXE=`command -v python`
-                              else
-                                  echo "ERROR: Python2 is detected to be default on system (via python2-config) but python2 or python apps ARE NOT FOUND - IS Python Version 2.x ON THE SYSTEM?"
-                                  exit 128
-                              fi
-                          fi
-                      else
-                          ## NOTE: This is the last chance...
-                          ##       If 'python2-config' doesn't exist,
-                          ##       try finding 'python-config'
-                          echo "--- DID NOT FIND python2-config, SEARCHING FOR python-config..."
-
-                          # Test to see if python-config command is avail
-                          if python-config --prefix > /dev/null 2>&1; then
-                              export SST_PYTHON_CFG_EXE=`command -v python-config`
-                              export SST_PYTHON_HOME=`python-config --prefix`
-                              echo "--- FOUND PYTHON2 via python-config..."
-
-                              # Now check for python2 app is avail (we check this before 'python' on purpose)
-                              if command -v python2 > /dev/null 2>&1; then
-                                  export SST_PYTHON_APP_EXE=`command -v python2`
-                              else
-                                  # python2 might not work, so try plain python
-                                  if command -v python > /dev/null 2>&1; then
-                                      export SST_PYTHON_APP_EXE=`command -v python`
-                                  else
-                                      echo "ERROR: Python2 is detected to be default on system (via python-config) but python2 or python apps ARE NOT FOUND - IS Python Version 2.x ON THE SYSTEM?"
-                                      exit 128
-                                  fi
-                              fi
-                          else
-                              ## No Python3 or Python2 found, this seems quite wrong...
-                              echo "ERROR: NO DEFAULT PYTHON3 OR PYTHON2 FOUND ON SYSTEM - Is something wrong in the detection script?"
-                              exit 128
-                          fi
-                      fi
-                  fi
-                  ;;
+                            if command -v python > /dev/null 2>&1; then
+                                ## Check that python is an acceptably new version of python
+                                pyver=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
+                                pyverX=$(echo "${version//./}")
+                                if [["$pyverX" -lt "350" ]]
+                                then
+                                    echo "ERROR: FOUND python but version is TOO OLD (<3.5.0)."
+                                    exit 128
+                                fi
+                                export SST_PYTHON_APP_EXE=`command -v python`
+                            else
+                                echo "ERROR: Python app IS NOT FOUND - IS Python Version 3.x ON THE SYSTEM?"
+                                exit 128
+                            fi
+                        else
+                            ## No Python3 or Python found, this seems quite wrong...
+                            echo "ERROR: NO DEFAULT PYTHON FOUND ON SYSTEM - Is something wrong in the detection script?"
+                            exit 128
+                        fi
+                    fi
+                    ;;
             esac
 
             echo "=============================================================="
@@ -2873,85 +2691,37 @@ else
             echo "FOUND PYTHON VERSION =" $SST_PYTHON_VERSION
             if [[ ${SST_PYTHON_USER_SPECIFIED:+isSet} == isSet ]] ; then
                 echo "SST_PYTHON_USER_SPECIFIED = 1 - BUILD CORE WITH SPECIFIED PYTHON"
-                if [[ ${SST_PYTHON_USER_SELECTED_PYTHON2:+isSet} == isSet ]] ; then
-                    echo "SST_PYTHON_USER_SELECTED_PYTHON2 = 1 - BUILD SPECIFICALLY WITH PYTHON2"
-                    echo "   USING PATH TO pythonX-config = " $SST_PYTHON_CFG_EXE
-                fi
-                if [[ ${SST_PYTHON_USER_SELECTED_PYTHON3:+isSet} == isSet ]] ; then
-                    echo "SST_PYTHON_USER_SELECTED_PYTHON3 = 1 - BUILD SPECIFICALLY WITH PYTHON3"
-                    echo "   USING PATH TO pythonX-config = " $SST_PYTHON_CFG_EXE
-                fi
+                echo "   USING PATH TO pythonX-config = " $SST_PYTHON_CFG_EXE
             else
                 echo "SST_PYTHON_USER_SPECIFIED = <UNDEFINED> - ALLOW CORE TO FIND PYTHON TO BUILD WITH"
             fi
             echo "=============================================================="
 
-       # Figure out PIN Configuration
-       if [[  ${SST_WITHOUT_PIN:+isSet} == isSet ]] ; then
-            echo "  PIN IS NOT ENABLED BY SST_WITHOUT_PIN flag"
-       else
-           if [[  ${SST_FORCE_USING_PIN2:+isSet} == isSet ]] ; then
-                # if Intel PIN module is available, load 2.14 version
-                #           ModuleEx puts the avail output on Stdout (where it belongs.)
-                ModuleEx avail | egrep -q "pin/pin-2.14-71313"
-                if [ $? == 0 ]
-                then
-                    if [ $kernel != "Darwin" ] ; then
-                       echo "USING INTEL PIN ENVIRONMENT MODULE pin-2.14-71313-gcc.4.4.7-linux"
-                       #  Verify compilier is not TOO NEW! Compiler is located in $4
-                       if [[ "$4" != gcc-5* ]] ; then
-                           echo "LOADING INTEL PIN ENVIRONMENT MODULE"
-                           ModuleEx load pin/pin-2.14-71313-gcc.4.4.7-linux
-                           echo  $INTEL_PIN_DIRECTORY
-                           ls $INTEL_PIN_DIRECTORY
-                           export SST_USING_PIN2=1
-                       else
-                          echo " ################################################################"
-                          echo " #"
-                          echo " #  pin-2.14-71313-gcc.4.4.7-linux IS INCOMPATIBLE WITH GREATER THAN GCC-4.9"
-                          echo " #"
-                          echo " ################################################################"
-                       fi
-                    else        ##    MacOS   (Darwin)
-                       echo "USING INTEL PIN ENVIRONMENT MODULE  pin-2.14-71313-clang.5.1-mac"
-                       echo "LOADING INTEL PIN ENVIRONMENT MODULE"
-                       ModuleEx load pin/pin-2.14-71313-clang.5.1-mac
-                       echo  $INTEL_PIN_DIRECTORY
-                       ls $INTEL_PIN_DIRECTORY
-                       export SST_USING_PIN2=1
-                    fi
-                else
-                    echo "INTEL PIN VER 2 ENVIRONMENT MODULE NOT FOUND ON THIS HOST."
-                fi
+            # Figure out PIN Configuration
+            if [[  ${SST_WITHOUT_PIN:+isSet} == isSet ]] ; then
+                echo "  PIN IS NOT ENABLED BY SST_WITHOUT_PIN flag"
             else
-                # Check that the default Intel PIN module is available, load 3.13 version
+                # Check that the default Intel PIN module is available
                 # For Linux = pin/pin-3.17-98314-g0c048d619-gcc-linux
-                # For OSX   = pin/pin-3.17-98314-g0c048d619-clang-mac
                 #           ModuleEx puts the avail output on Stdout (where it belongs.)
                 ModuleEx avail | egrep -q "pin/pin-3.17"
                 if [ $? == 0 ]
                 then
                 # if `pin module is available, use pin/pin-3.17.
                     if [ $kernel != "Darwin" ] ; then
-                       echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.17-98314-g0c048d619-gcc-linux"
-                       echo "LOADING INTEL PIN ENVIRONMENT MODULE"
-                       ModuleEx load pin/pin-3.17-98314-g0c048d619-gcc-linux
-                       echo  $INTEL_PIN_DIRECTORY
-                       ls $INTEL_PIN_DIRECTORY
-                       export SST_USING_PIN3=1
+                        echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.17-98314-g0c048d619-gcc-linux"
+                        echo "LOADING INTEL PIN ENVIRONMENT MODULE"
+                        ModuleEx load pin/pin-3.17-98314-g0c048d619-gcc-linux
+                        echo  $INTEL_PIN_DIRECTORY
+                        ls $INTEL_PIN_DIRECTORY
+                        export SST_USING_PIN3=1
                     else        ##    MacOS   (Darwin)
-                       echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.17-98314-g0c048d619-clang-mac"
-                       echo "LOADING INTEL PIN ENVIRONMENT MODULE"
-                       ModuleEx load pin/pin-3.17-98314-g0c048d619-clang-mac
-                       echo  $INTEL_PIN_DIRECTORY
-                       ls $INTEL_PIN_DIRECTORY
-                       export SST_USING_PIN3=1
+                        echo "Pin is not supported on MacOS"
                     fi
                 else
                     echo "INTEL PIN VER 3 ENVIRONMENT MODULE NOT FOUND ON THIS HOST."
                 fi
             fi
-       fi
 
             echo "bamboo.sh: LISTING LOADED MODULES"
             ModuleEx list
@@ -3132,7 +2902,7 @@ then
                             
                             $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_CORE_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
                             core_frameworks_retval=$?
-                            $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
+                            $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -k -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
                             elements_frameworks_retval=$?
                             echo "BAMBOO: SST Frameworks Core Test retval = $core_frameworks_retval"
                             echo "BAMBOO: SST Frameworks Elements Test retval = $elements_frameworks_retval"
