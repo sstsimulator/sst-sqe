@@ -2366,7 +2366,7 @@ fi
 
 # Which branches to use for each repo (default is devel)
 if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
-    SST_SQEBRANCH=devel
+    SST_SQEBRANCH="v13.0.0_beta"
     SST_SQEBRANCH="detached"
 else
     echo ' ' ;  echo ' ' ; echo ' ' ; echo ' '
@@ -2377,15 +2377,15 @@ else
 fi
 
 if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
-    SST_COREBRANCH=devel
+    SST_COREBRANCH="v13.0.0_beta"
 fi
 
 if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
-    SST_ELEMENTSBRANCH=devel
+    SST_ELEMENTSBRANCH="v13.0.0_beta"
 fi
 
 if [[ ${SST_MACROBRANCH:+isSet} != isSet ]] ; then
-    SST_MACROBRANCH=devel
+    SST_MACROBRANCH="v13.0.0_beta"
 fi
 
 if [[ ${SST_EXTERNALELEMENTBRANCH:+isSet} != isSet ]] ; then
