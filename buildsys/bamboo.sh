@@ -2367,7 +2367,6 @@ fi
 # Which branches to use for each repo (default is devel)
 if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
     SST_SQEBRANCH="v13.0.0_beta"
-    SST_SQEBRANCH="detached"
 else
     echo ' ' ;  echo ' ' ; echo ' ' ; echo ' '
     echo " Attempting to set SQE branch other than devel"
@@ -2389,11 +2388,11 @@ if [[ ${SST_MACROBRANCH:+isSet} != isSet ]] ; then
 fi
 
 if [[ ${SST_EXTERNALELEMENTBRANCH:+isSet} != isSet ]] ; then
-    SST_EXTERNALELEMENTBRANCH=master
+    SST_EXTERNALELEMENTBRANCH="v13.0.0_beta"
 fi
 
 if [[ ${SST_JUNOBRANCH:+isSet} != isSet ]] ; then
-    SST_JUNOBRANCH=master
+    SST_JUNOBRANCH="v13.0.0_beta"
 fi
 
 echo "#############################################################"
