@@ -1,6 +1,8 @@
 #!/bin/bash
 # bamboo.sh
 
+set -eo pipefail
+
 # Description:
 
 # A shell script to command a build ala Jenkins

@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -eo pipefail
+
 # Dependency definitions
 
 # NOTE: User may override SST dependency installation location by

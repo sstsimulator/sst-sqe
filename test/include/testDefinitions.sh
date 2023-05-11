@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -eo pipefail
+
 # Test definitions
 
 # NOTE: User may override SST installation location by setting the

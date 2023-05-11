@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -eo pipefail
+
 # Subroutine for Testing
 #    The first group are the shunit2 routines that used to be included in every testSuite file.
 #
