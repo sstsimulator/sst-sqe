@@ -19,7 +19,6 @@ pwd
 df -h .
 echo ' '
 
-## export SST_BUILDOUTOFSOURCE=1
 #-------------------------------------------------------------------------
 # Function: TimeoutEx
 # Description:
@@ -43,7 +42,6 @@ cloneOtherRepos() {
 ##  Check out other repositories except second time on Make Dist test
 
 if [ ! -d ../../distTestDir ] ; then
-## if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD $LINENO = `pwd`"
 
 ## Set the clone depth parameter
