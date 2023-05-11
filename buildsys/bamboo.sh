@@ -2660,7 +2660,7 @@ else
                                 ## Check that python is an acceptably new version of python
                                 pyver=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
                                 pyverX=$(echo "${version//./}")
-                                if [["$pyverX" -lt "350" ]]
+                                if [[ "$pyverX" -lt "350" ]]
                                 then
                                     echo "ERROR: FOUND python but version is TOO OLD (<3.5.0)."
                                     exit 128
@@ -2913,7 +2913,7 @@ then
                             if [ $core_frameworks_retval -eq 0 ]; then
                                 retval=$elements_frameworks_retval
                             else
-                                retval = $core_frameworks_retval
+                                retval=$core_frameworks_retval
                             fi
                         fi
                         echo "BAMBOO: Combined Frameworks + dotests retval = $retval"
