@@ -1019,7 +1019,7 @@ linuxSetMPI() {
         echo "bamboo.sh: Load GLPK"
         # Load available GLPK, whatever version it is
         ModuleEx load glpk
-       
+
         # METIS 5.1.0
         echo "bamboo.sh: Load METIS 5.1.0"
         ModuleEx avail | grep bundled
@@ -1077,7 +1077,7 @@ ldModules_MacOS_Clang() {
     # GNU Linear Programming Kit (GLPK)
     echo "bamboo.sh: Load GLPK"
     ModuleEx load glpk/glpk-4.54_$ClangVersion
-        
+
     # METIS 5.1.0
     echo "bamboo.sh: Load METIS 5.1.0"
     ModuleEx load metis/metis-5.1.0_$ClangVersion
@@ -1199,7 +1199,7 @@ darwinSetMPI() {
 setUPforMakeDisttest() {
     echo "Setting up to build from the tars created by make dist"
     echo "---   PWD $LINENO  `pwd`"           ## Original trunk
-     
+
     LOC_OF_TAR=""
     if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
         LOC_OF_TAR="-builddir"
@@ -1480,7 +1480,7 @@ dobuild() {
     # Mac OS X needs some help finding dylibs
     if [ $kernel == "Darwin" ]
     then
-	    export DYLD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${DYLD_LIBRARY_PATH}
+		export DYLD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${DYLD_LIBRARY_PATH}
     fi
 
     # Dump pre-build environment and modules status
@@ -1678,7 +1678,7 @@ dobuild() {
         echo ' '
         echo "bamboo.sh: make clean on SST-CORE"
         echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         make clean
 
         echo
@@ -2899,7 +2899,7 @@ then
                             echo "**************************************************************************"
                             # WE ARE RUNNING THE FRAMEWORKS ELEMENTS FULL SET OF TESTS AFTER DOTESTS() HAVE RUN
                             cd $SST_ROOT
-                            
+
                             $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_CORE_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
                             core_frameworks_retval=$?
                             $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -k -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
