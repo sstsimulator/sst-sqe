@@ -5,7 +5,7 @@ echo ' '
 
    echo "                                      STARTING PID $TL_CALLER"
    ps -fp $TL_CALLER
-   pstree -p $TL_CALLER 
+   pstree -p $TL_CALLER
    pstree -p $TL_CALLER | sed 's/--=/-=-/' | awk -F'- ' '{print $2}' > raw-list
    cat raw-list | awk '{print $1, "/", $3}' | awk -F/ '{print $1 $NF}' > display-file
    echo " Display File "
@@ -14,7 +14,7 @@ echo ' '
 #    Find SST_PID ##################
    while read -u 3 _pid_  _name _rest
    do
-       echo $_name | grep -w -e sst 
+       echo $_name | grep -w -e sst
        if [ $? == 0 ] ; then
           SST_PID=$_pid_
           break
@@ -26,12 +26,12 @@ echo ' '
        ps -p $SST_PID
    else
        echo "    No SST_PID found" ; echo ' '
-   fi 
+   fi
 
 #   Look for mpirun  ##  MPIRUN_PID
    while read -u 3 _pid_  _name _rest
    do
-       echo $_name | grep -w -e mpirun 
+       echo $_name | grep -w -e mpirun
        if [ $? == 0 ] ; then
           MPIRUN_PID=$_pid_
           break
@@ -55,7 +55,7 @@ echo ' '
           echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
           $SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
           echo "Return code from Trace-Back is $?"
-       fi   
+       fi
 echo ' '
 date
 echo "   Return to timeLimitEnforcer"
@@ -66,7 +66,7 @@ echo ' '
                kill -USR1 $SST_PID
               sleep 1
                kill -USR1 $SST_PID
-        
+
         touch $SST_ROOT/test/testOutputs/${CASE}dummy
         grep -i signal $SST_ROOT/test/testOutputs/${CASE}*
         grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
@@ -78,13 +78,12 @@ echo ' '
     do
        echo $_name | grep -w -e sst -e pinbin -e ompsievetest -e mpirun
        if [ $? == 0 ] ; then
-          echo Task to be killed $_tokill $_name 
+          echo Task to be killed $_tokill $_name
           kill -9 $_tokill
        fi
     done 3< display-file
 
 echo   "the following is for a Sanity check -- Not required(?)"
 
-    pstree -p $TL_CALLER 
+    pstree -p $TL_CALLER
 echo   "Thie previous was for a Sanity check -- Not required"
-
