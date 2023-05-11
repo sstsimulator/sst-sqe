@@ -268,7 +268,7 @@ exit
 cat_multirank_output() {
     rm -rf $outFile
     if [[ -d ${testOutFiles}/1 ]];then
-        for rankdir in `ls $testOutFiles/1`
+        for rankdir in $testOutFiles/1/*
         do
             cat $testOutFiles/1/$rankdir/stdout >> $outFile
         done
