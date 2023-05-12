@@ -36,7 +36,7 @@ TEMPOUTFILE="$(mktemp /tmp/moduleex_XXXXXX)"
 module $@ 2>$TEMPOUTFILE || retval=$?
 
 # Get the retvalue, and scan the temp file for the ":ERROR:" signature  
-errcount="$(grep -c ':ERROR:' $TEMPOUTFILE)"
+errcount="$(grep -c ':ERROR:' $TEMPOUTFILE)" || tmp=$?
 
 # Output what was recorded
 cat $TEMPOUTFILE

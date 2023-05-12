@@ -2147,15 +2147,13 @@ if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
 
         echo
         echo "=== DUMPING The SST-EXTERNAL-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
-        echo "cat $HOME/.sst/sstsimulator.conf"
-        cat $HOME/.sst/sstsimulator.conf
+        print_and_dump_loc $HOME/.sst/sstsimulator.conf
         echo "=== DONE DUMPING ==="
         echo
 
         echo
         echo "=== DUMPING The SST-EXTERNAL-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-        echo "cat $SST_CONFIG_FILE_PATH"
-        cat $SST_CONFIG_FILE_PATH
+        print_and_dump_loc $SST_CONFIG_FILE_PATH
         echo "=== DONE DUMPING ==="
         echo
 
@@ -2225,15 +2223,13 @@ if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
 
         echo
         echo "=== DUMPING The JUNO installed $HOME/.sst/sstsimulator.conf file ==="
-        echo "cat $HOME/.sst/sstsimulator.conf"
-        cat $HOME/.sst/sstsimulator.conf
+        print_and_dump_loc $HOME/.sst/sstsimulator.conf
         echo "=== DONE DUMPING ==="
         echo
 
         echo
         echo "=== DUMPING The JUNO installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-        echo "cat $SST_CONFIG_FILE_PATH"
-        cat $SST_CONFIG_FILE_PATH
+        print_and_dump_loc $SST_CONFIG_FILE_PATH
         echo "=== DONE DUMPING ==="
         echo
 
