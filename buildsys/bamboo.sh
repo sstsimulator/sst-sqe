@@ -1017,8 +1017,7 @@ linuxSetMPI() {
 
         # METIS 5.1.0
         echo "bamboo.sh: Load METIS 5.1.0"
-        ModuleEx avail | grep bundled
-        if [ $? == 0 ] ; then
+        if ModuleEx avail | grep bundled ; then
             echo " Bingo ###################################################"
             ModuleEx load metis/metis-5.1.0-bundled
         else
@@ -1029,16 +1028,14 @@ linuxSetMPI() {
 
     else # otherwise try to load compiler-specific tool variant
         # GNU Linear Programming Kit (GLPK)
-        ModuleEx avail | egrep -q "glpk/glpk-4.54_${compiler}"
-        if [ $? == 0 ] ; then
+        if ModuleEx avail | grep -E -q "glpk/glpk-4.54_${compiler}" ; then
             echo "bamboo.sh: Load GLPK (gcc ${compiler} variant)"
             ModuleEx load glpk/glpk-4.54_${compiler}
         else
             echo "bamboo.sh: module GLPK (gcc ${compiler} variant) Not Available"
         fi
         # METIS 5.1.0
-        ModuleEx avail | egrep -q "metis/metis-5.1.0_${compiler}"
-        if [ $? == 0 ] ; then
+        if ModuleEx avail | grep -E -q "metis/metis-5.1.0_${compiler}" ; then
             if [[ ${compiler} != *intel-15* ]] ; then
                 echo "bamboo.sh: Load METIS 5.1.0 (gcc ${compiler} variant)"
                 ModuleEx load metis/metis-5.1.0_${compiler}
@@ -2695,9 +2692,7 @@ else
                 # Check that the default Intel PIN module is available
                 # For Linux = pin/pin-3.26-98960-g1fc9d60e6-gcc-linux
                 #           ModuleEx puts the avail output on Stdout (where it belongs.)
-                ModuleEx avail | egrep -q "pin/pin-3.26"
-                if [ $? == 0 ]
-                then
+                if ModuleEx avail | grep -E -q "pin/pin-3.26"; then
                 # if `pin module is available, use pin/pin-3.26.
                     if [ $kernel != "Darwin" ] ; then
                         echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.26-98690-g1fc9d60e6-gcc-linux"
