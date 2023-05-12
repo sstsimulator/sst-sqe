@@ -33,9 +33,8 @@ echo ' '
 #   Return value: The return value of the command being run or !=0 to indicate
 #   a timeout or error.
 TimeoutEx() {
-    # Call (via "source") the moduleex.sh script with the passed in parameters
-    $SST_ROOT/../sqe/test/utilities/TimeoutEx.sh $@
-    # Get the return value from the moduleex.sh
+    local retval=0
+    $SST_ROOT/../sqe/test/utilities/TimeoutEx.sh $@ || retval=$?
     return $retval
 }
 
