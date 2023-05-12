@@ -1798,11 +1798,7 @@ if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
         ls -ltrd * | tail -20
 
         echo "################################## DEBUG DATA ########################"
-        ls
-        ls src
-        ls src/sst
-        ls src/sst/elements/
-        ls src/sst/elements/*/*m4
+        find "$PWD" -type f | sort
         echo "##################### END ######## DEBUG DATA ########################"
 
         # Check to see if we are actually performing make dist
