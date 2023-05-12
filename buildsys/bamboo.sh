@@ -1627,20 +1627,17 @@ dobuild() {
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
         fi
 
+        [[ $kernel == "Darwin" ]] && linkage_display="otool -L" || linkage_display=ldd
+
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '
         echo "bamboo.sh: make on SST-CORE"
         echo ' '
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        if [ $kernel == "Darwin" ]
-        then
-            # Mac OS X
-            echo "$ otool -L $coresourcedir/src/sst/core/sstsim.x"
-            otool -L $coresourcedir/src/sst/core/sstsim.x
-        else
-            echo "$ ldd $coresourcedir/src/sst/core/sstsim.x"
-            ldd $coresourcedir/src/sst/core/sstsim.x
+        echo "${linkage_display} $coresourcedir/src/sst/core/sstsim.x"
+        if [[ -r $coresourcedir/src/sst/core/sstsim.x ]]; then
+            ${linkage_display} $coresourcedir/src/sst/core/sstsim.x
         fi
         echo "SST-CORE BUILD INFO============================================================"
 
@@ -1687,14 +1684,10 @@ dobuild() {
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
 
-        if [ $kernel == "Darwin" ]
-        then
-            # Mac OS X
-            echo "$ otool -L $coresourcedir/src/sst/core/sstsim.x"
-            otool -L $coresourcedir/src/sst/core/sstsim.x
-        else
-            echo "$ ldd $coresourcedir/src/sst/core/sstsim.x"
-            ldd $coresourcedir/src/sst/core/sstsim.x
+        # TODO either this one or the previous one has the wrong path
+        echo "${linkage_display} $coresourcedir/src/sst/core/sstsim.x"
+        if [[ -r $coresourcedir/src/sst/core/sstsim.x ]]; then
+            ${linkage_display} $coresourcedir/src/sst/core/sstsim.x
         fi
         echo "SST-CORE BUILD INFO============================================="
 
