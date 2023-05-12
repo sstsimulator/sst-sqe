@@ -462,7 +462,7 @@ dotests() {
 ModuleEx() {
     local retval=0
     # Call (via "source") the moduleex.sh script with the passed in parameters
-    . $SST_ROOT/test/utilities/moduleex.sh $@ || retval=$?
+    source $SST_ROOT/test/utilities/moduleex.sh $@ || retval=$?
     if [ $retval -ne 0 ] ; then
         echo "ERROR: 'module' failed via script $SST_ROOT/test/utilities/moduleex.sh with retval= $retval; bamboo.sh exiting"
         exit $retval
@@ -1059,7 +1059,7 @@ linuxSetMPI() {
 #                 Also need $2 passed along
 
 ldModules_MacOS_Clang() {
-    ClangVersion=$1            #   example "clang-700.0.72" $2
+    local ClangVersion=$1            #   example "clang-700.0.72" $2
     ModuleEx avail
     # Use MPI built with CLANG from Xcode
     ModuleEx unload mpi
@@ -1100,8 +1100,8 @@ ldModules_MacOS_Clang() {
             ;;
     esac
 
-    export CC=`which clang`
-    export CXX=`which clang++`
+    export CC="$(command -v clang)"
+    export CXX="$(command -v clang++)"
     echo "    Modules loaded"
     ModuleEx list
     $CC --version
@@ -1135,40 +1135,26 @@ darwinSetMPI() {
     # Initialize modules for Jenkins (taken from $HOME/.bashrc on Mac)
     if [ -f /etc/profile.modules ]
     then
-        . /etc/profile.modules
-        echo "bamboo.sh: loaded /etc/profile.modules. Available modules"
-        ModuleEx avail
+        source /etc/profile.modules
+        echo "bamboo.sh: loaded /etc/profile.modules."
         # put any module loads here
         echo "bamboo.sh: Loading Modules for MacOSX"
-        # Do things specific to the MacOS version
         case $macosVersion in
-################################################################################
-
-            11.6) # Big Sur
+            11.6)
                 echo    "This is Big Sur, Compiler is $compiler"
-                ldModules_MacOS_Clang $compiler  $2   # any Xcode
                 ;;
-
-################################################################################
-
-            12.3) # Monterey
+            12.3)
                 echo    "This is Monterey, Compiler is $compiler"
-                ldModules_MacOS_Clang $compiler  $2   # any Xcode
                 ;;
-
-################################################################################
-            13.2) # Ventura
+            13.2)
                 echo    "This is Ventura, Compiler is $compiler"
-                ldModules_MacOS_Clang $compiler $2 # any code
                 ;;
-
-################################################################################
-            *) # unknown
+            *)
                 echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
-                echo ' '
                 exit
                 ;;
         esac
+        ldModules_MacOS_Clang $compiler $2  # any Xcode
 
     else
         echo "ERROR: unable to locate /etc/profile.modules - cannot load modules"
