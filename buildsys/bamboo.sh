@@ -461,10 +461,9 @@ dotests() {
 #   Output: Any output from the module command.
 #   Return value: 0 on success, On error, bamboo.sh will exit with the moduleex.sh error code.
 ModuleEx() {
+    local retval=0
     # Call (via "source") the moduleex.sh script with the passed in parameters
-    . $SST_ROOT/test/utilities/moduleex.sh $@
-    # Get the return value from the moduleex.sh
-    retval=$?
+    . $SST_ROOT/test/utilities/moduleex.sh $@ || retval=$?
     if [ $retval -ne 0 ] ; then
         echo "ERROR: 'module' failed via script $SST_ROOT/test/utilities/moduleex.sh with retval= $retval; bamboo.sh exiting"
         exit $retval
