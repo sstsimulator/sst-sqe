@@ -938,17 +938,13 @@ linuxSetMPI() {
       echo "Attempt to initialize the modules utility.  Look for modules init file in 1 of 2 places"
 
       echo "Location 1: ls -l /etc/profile.modules"
-      ls -l /etc/profile.modules
-      if [ -f /etc/profile.modules ] ; then
-          . /etc/profile.modules
+      echo "Location 2: ls -l /etc/profile.d/modules.sh"
+      if [ -r /etc/profile.modules ] ; then
+          source /etc/profile.modules
           echo "bamboo.sh: loaded /etc/profile.modules"
-      else
-          echo "Location 2: ls -l /etc/profile.d/modules.sh"
-          ls -l /etc/profile.d/modules.sh
-          if [ -r /etc/profile.d/modules.sh ] ; then
-              source /etc/profile.d/modules.sh
-              echo "bamboo.sh: loaded /etc/profile.d/modules"
-          fi
+      elif [ -r /etc/profile.d/modules.sh ] ; then
+          source /etc/profile.d/modules.sh
+          echo "bamboo.sh: loaded /etc/profile.d/modules"
       fi
    fi
 
