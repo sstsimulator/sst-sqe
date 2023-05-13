@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eo pipefail
+
 # Utility script to launch module command and check for errors.  module is slightly funky in that 
 # it does not return an error when it fails, but does normally output errors to stderr (this is due 
 # to its odd design of part bash and part tcl).  However it can generate errors if the tcl script 
@@ -19,23 +21,22 @@
 #fi
 
 # Verify that 'module' is runnable
-2>/dev/null 1>&2 module
-retval=$?
+retval=0
+2>/dev/null 1>&2 module || retval=$?
 if [ $retval -ne 0 ] && [ $retval -ne 1 ]; then 
     echo "'module' command not found by shell"
     return $retval
 fi
 
 # Create a Temp file
-TEMPOUTFILE=`mktemp /tmp/moduleex_XXXXXX`
+TEMPOUTFILE="$(mktemp /tmp/moduleex_XXXXXX)"
 
 # Execute the module command and record the output
 #echo "---Running module $@"
-module $@ 2>$TEMPOUTFILE 
+module $@ 2>$TEMPOUTFILE || retval=$?
 
 # Get the retvalue, and scan the temp file for the ":ERROR:" signature  
-retval=$?
-errcount=`grep ":ERROR:" $TEMPOUTFILE | wc -l`
+errcount="$(grep -c ':ERROR:' $TEMPOUTFILE)" || tmp=$?
 
 # Output what was recorded
 cat $TEMPOUTFILE

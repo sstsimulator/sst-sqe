@@ -1,8 +1,12 @@
+#!/bin/bash
+
+set -eo pipefail
+
 # Subroutine for Testing
 #    The first group are the shunit2 routines that used to be included in every testSuite file.
 #
 #    The second group are utility routines helpful in testing and printing the test results.
-#   
+#
 
 #===============================================================================
 # shunit2 Utility Functions
@@ -53,7 +57,7 @@ oneTimeTearDown() {
        if [ ! -e $WHICH_FILE_PATH ] ; then
            touch $WHICH_FILE_PATH
            chmod 777 $WHICH_FILE_PATH
-       fi   
+       fi
        RESULT="$__shunit_testsTotal"
        if [[ "$__shunit_testsFailed" -gt 0 ]] ; then
           RESULT="$RESULT / $__shunit_testsFailed Fail"
@@ -101,7 +105,7 @@ oneTimeTearDown() {
 
 checkPerCent() {
 
-if [ $# != 2 ] 
+if [ $# != 2 ]
 then
     echo 20000     ## Bad Return Value  i.e. greater than "good"
     return
@@ -131,7 +135,7 @@ if [ $in -lt 0 ]
 then
    sign="-"
    in=${in#-}
-fi 
+fi
 
 w=$(($in/100))
 tmp=$(($w*100))
@@ -226,7 +230,7 @@ echo "OUTPUT xml file Reducer has been invoked"
 }
 
 ###############################################################
-# 
+#
 #      MyWC -- word count without printing full path name.
 #
 ###############################################################
@@ -268,7 +272,7 @@ exit
 cat_multirank_output() {
     rm -rf $outFile
     if [[ -d ${testOutFiles}/1 ]];then
-        for rankdir in `ls $testOutFiles/1`
+        for rankdir in $testOutFiles/1/*
         do
             cat $testOutFiles/1/$rankdir/stdout >> $outFile
         done
@@ -278,7 +282,7 @@ cat_multirank_output() {
 }
 
 #   -----------------------------------------------
-#    
+#
 #    sort two input files and then compare sorted files
 #    exit code is 0 if sorted files match, else 1
 #       (if don't match write the wc to stdout.)
@@ -302,7 +306,7 @@ compare_sorted() {
 #        noting that it has been done.
 #  -------------------------------------------------
 RemoveComponentWarning() {
-   
+
    grep 'WARNING: No components are' $outFile > /dev/null
    if [ $? == 0 ] ; then
       echo "##############################################"
@@ -314,7 +318,7 @@ RemoveComponentWarning() {
       sed -i.x '/WARNING: No components are/d' $outFile
       rm -f ${outFile}.x
    fi
-   
+
    grep 'Event queue empty' $outFile > /dev/null
    if [ $? == 0 ] ; then
       echo "##############################################"
@@ -376,7 +380,7 @@ checkValgrindOutput() {
 
 VGout=$1        #the Valgrind output file
 grep ERROR.SUMMARY $VGout  > /dev/null
-if [ $? != 0 ] ; then 
+if [ $? != 0 ] ; then
     echo "Valgrind Summary not found"
     fail " No Valgrind Summary"
     wc $VGout
@@ -415,26 +419,26 @@ fi
 #    Routine from Ariel to count and optional delete
 #            stream executables
 
-countStreams() {    
+countStreams() {
    echo "        Entering subroutine countStreams() $1 "
    ps -ef | grep stream | grep -v -e grep | awk '{print $2, " ", $3}'
    if [ "$1" == "Delete" ] ; then
       ps -ef | grep stream| grep -v -e grep > /tmp/$$_stream_list
       wc /tmp/$$_stream_list
-      
+
       while read -u 3 _who _strEX _own _rest
       do
-              
+
               if [ $_own == 1 ] ; then
                   echo " Attempt to remove $_strEX "
                   kill -9 $_strEX
               fi
       done 3</tmp/$$_stream_list
-   fi 
+   fi
    chmod 777 /tmp/$$_stream_list
    rm /tmp/$$_stream_list
    echo "               -----"
-}      
+}
 
 Remove_old_ompsievetest_task() {
 memHS_PID=$$
