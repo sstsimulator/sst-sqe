@@ -2377,8 +2377,6 @@ echo "#############################################################"
 export SST_ROOT=`pwd`
 echo " SST_ROOT = $SST_ROOT"
 
-source "${SST_ROOT}/test/utilities/moduleex.sh"
-
 echo "#############################################################"
 echo "  Version Feb 1 2018 0900 hours "
 echo ' '
@@ -2478,6 +2476,7 @@ echo "bamboo.sh: Done sourcing deps/include/depsDefinitions.sh"
 # retain binaries after build
 #export SST_RETAIN_BIN=1
 
+source "${SST_ROOT}/test/utilities/moduleex.sh"
 
 echo "==============================INITIAL ENVIRONMENT DUMP================="
 env|sort
