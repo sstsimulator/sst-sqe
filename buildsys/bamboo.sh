@@ -989,14 +989,13 @@ linuxSetMPI() {
    gcc --version 2>&1 | grep ^g
 
    # load MPI
+   ModuleEx unload mpi # unload any default to avoid conflict error
    case $2 in
        none)
            echo "MPI requested as \"none\".    No MPI loaded"
-           ModuleEx unload mpi # unload any default
            ;;
        *)
            echo "Default MPI option, loading mpi/${desiredMPI}"
-           ModuleEx unload mpi # unload any default to avoid conflict error
            ModuleEx load mpi/${desiredMPI} 2>catch.err
            if [ -s catch.err ]
            then
