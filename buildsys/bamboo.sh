@@ -1357,7 +1357,6 @@ setUPforMakeDisttest() {
      pwd
      ls
      #       Why did we copy bamboo.sh and deps, but link test ????
-     echo "  Why did we copy bamboo.sh and deps, but link test ????"?
      pushd ../../       # Back to orginal trunk
      ls | awk '{print "rm -rf " $1}' | grep -v -e deps -e distTestDir -e test -e sstDeps > rm-extra
      echo "---   PWD $LINENO  `pwd`"
@@ -2064,15 +2063,14 @@ if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
 
         echo
         echo "=== DUMPING The SST-MACRO installed $HOME/.sst/sstsimulator.conf file ==="
-        echo "cat $HOME/.sst/sstsimulator.conf"
-        cat $HOME/.sst/sstsimulator.conf
+        print_and_dump_loc $HOME/.sst/sstsimulator.conf
         echo "=== DONE DUMPING ==="
         echo
 
         echo
         echo "=== DUMPING The SST-MACRO installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
         echo "cat $SST_CONFIG_FILE_PATH"
-        cat $SST_CONFIG_FILE_PATH
+        print_and_dump_loc $SST_CONFIG_FILE_PATH
         echo "=== DONE DUMPING ==="
         echo
 
