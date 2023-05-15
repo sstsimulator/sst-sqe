@@ -12,14 +12,13 @@ set -eo pipefail
 # for any possible error values being returned.  It then outputs the temp file and lastly checks 
 # the results.  If an error is detected, it will return an error value. 
 
-# Note: Some lines that call "echo" are commented out, these are used for debugging the script. 
-
 # Make sure this script is "sourced" not "executed"
 #if [[ $0 != "-bash" ]]; then
 #    echo "ERROR: This script ($0) must be sourced not executed."
 #    exit -1
 #fi
 
+module_ex() {
 # Verify that 'module' is runnable
 retval=0
 2>/dev/null 1>&2 module || retval=$?
@@ -63,3 +62,4 @@ fi
 # final cleanup & return 
 rm $TEMPOUTFILE
 return $final
+}
