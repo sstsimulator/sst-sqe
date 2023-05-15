@@ -49,20 +49,17 @@ cat $TEMPOUTFILE
 #echo "retval = $retval"          
 #echo "errcount = $errcount"  
 
+final=0
 # Check if the errcount or retval of the module call has indicated an error, 
 # return one of them and also echo the stored module cmd results to stderr.
 if [ $errcount != 0  ]; then
-    #echo "Module Failed with retval= $retval; errcount=$errcount"
     if [ $retval -ne 0 ]; then 
-        #echo "return retval=$retval"
-        return $retval
+        final=$retval
     else
-        #echo "return errcount=$errcount"
-        return $errcount
+        final=$errcount
     fi
 fi
 
 # final cleanup & return 
-#echo "return 0 (success)"
 rm $TEMPOUTFILE
-return 0
+return $final
