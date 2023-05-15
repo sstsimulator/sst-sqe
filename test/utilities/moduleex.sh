@@ -51,8 +51,14 @@ if [ $errcount != 0  ]; then
         final=$errcount
     fi
 elif [[ "$1" == "avail" ]]; then
-    if [[ ! -s "$TEMPOUTFILE" ]]; then
-        final=1
+    # Ensure that "module avail" returns non-zero if there's no match.  The
+    # Lua and Tcl versions behave differently.
+    if [[ "$LMOD_VERSION" ]]; then
+        # For the Lua version, the error of "No module" should have matched.
+        final=$errcount
+    else
+        # For the Tcl version, if nothing was printed, then there was no match.
+        if [[ "$2" ]] && [[ ! -s "$TEMPERRFILE" ]]; then final=1; fi
     fi
 fi
 
