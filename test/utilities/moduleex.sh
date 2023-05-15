@@ -8,7 +8,7 @@ set -eo pipefail
 # calls exit [N] (see http://modules.sourceforge.net/man/modulefile.html for more info).
 #
 # This script redirects the output of module to a temp file, and then scans the file for the 
-# module error signature (indicated by ":ERROR:").  It also watches the return value of module
+# module error signature (indicated by "ERROR:").  It also watches the return value of module
 # for any possible error values being returned.  It then outputs the temp file and lastly checks 
 # the results.  If an error is detected, it will return an error value. 
 
@@ -35,14 +35,14 @@ TEMPOUTFILE="$(mktemp /tmp/moduleex_XXXXXX)"
 #echo "---Running module $@"
 module $@ 2>$TEMPOUTFILE || retval=$?
 
-# Get the retvalue, and scan the temp file for the ":ERROR:" (Tcl) or "No
+# Get the retvalue, and scan the temp file for the "ERROR:" (Tcl) or "No
 # module" (Lmod/Lua) signature
-errcount="$(grep -E -c ':ERROR:|No module' $TEMPOUTFILE)" || tmp=$?
+errcount="$(grep -E -c 'ERROR:|No module' $TEMPOUTFILE)" || tmp=$?
 
 # Output what was recorded
 cat $TEMPOUTFILE
 
-# NOTE: If an error occurs, it will ALWAYS be output by ":ERROR:" in module's stderr.
+# NOTE: If an error occurs, it will ALWAYS be output by "ERROR:" in module's stderr.
 #           However, the return from module will most likely be 0, Hence the reason for this script.
 
 #Debug
