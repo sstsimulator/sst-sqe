@@ -2,7 +2,7 @@
 
 set -eo pipefail
 
-# Utility script to launch module command and check for errors.  module is slightly funky in that 
+# Utility script to launch `module` command and check for errors.  module is slightly funky in that 
 # it does not return an error when it fails, but does normally output errors to stderr (this is due 
 # to its odd design of part bash and part tcl).  However it can generate errors if the tcl script 
 # calls exit [N] (see http://modules.sourceforge.net/man/modulefile.html for more info).
@@ -35,8 +35,9 @@ TEMPOUTFILE="$(mktemp /tmp/moduleex_XXXXXX)"
 #echo "---Running module $@"
 module $@ 2>$TEMPOUTFILE || retval=$?
 
-# Get the retvalue, and scan the temp file for the ":ERROR:" signature  
-errcount="$(grep -c ':ERROR:' $TEMPOUTFILE)" || tmp=$?
+# Get the retvalue, and scan the temp file for the ":ERROR:" (Tcl) or "No
+# module" (Lmod/Lua) signature
+errcount="$(grep -E -c ':ERROR:|No module' $TEMPOUTFILE)" || tmp=$?
 
 # Output what was recorded
 cat $TEMPOUTFILE

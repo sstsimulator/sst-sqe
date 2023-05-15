@@ -451,8 +451,8 @@ dotests() {
 # Function: ModuleEx
 # Description:
 #   Purpose:
-#       This funciton is a wrapper Around the moduleex.sh command which wraps the module
-#       command used to load/unload  external dependancies.  All calls to module should be
+#       This function is a wrapper around the moduleex.sh command, which itself wraps the module
+#       command used to load/unload external dependencies.  All calls to module should be
 #       redirected to this function.  If a failure is detected in the module command, it will be
 #       noted and this function will cause the bamboo script to exit with the error code.
 #   Input:
