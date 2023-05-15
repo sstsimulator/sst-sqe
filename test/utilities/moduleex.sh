@@ -12,12 +12,6 @@ set -eo pipefail
 # for any possible error values being returned.  It then outputs the temp file and lastly checks 
 # the results.  If an error is detected, it will return an error value. 
 
-# Make sure this script is "sourced" not "executed"
-#if [[ $0 != "-bash" ]]; then
-#    echo "ERROR: This script ($0) must be sourced not executed."
-#    exit -1
-#fi
-
 module_ex() {
 # Verify that 'module' is runnable
 retval=0
@@ -28,18 +22,20 @@ if [ $retval -ne 0 ] && [ $retval -ne 1 ]; then
 fi
 
 # Create a Temp file
-TEMPOUTFILE="$(mktemp /tmp/moduleex_XXXXXX)"
+TEMPOUTFILE="$(mktemp /tmp/moduleex_out_XXXXXX)"
+TEMPERRFILE="$(mktemp /tmp/moduleex_err_XXXXXX)"
 
 # Execute the module command and record the output
 #echo "---Running module $@"
-module $@ 2>$TEMPOUTFILE || retval=$?
+module $@ 1>"$TEMPOUTFILE" 2>"$TEMPERRFILE" || retval=$?
 
 # Get the retvalue, and scan the temp file for the "ERROR:" (Tcl) or "No
 # module" (Lmod/Lua) signature
-errcount="$(grep -E -c 'ERROR:|No module' $TEMPOUTFILE)" || tmp=$?
+errcount="$(grep -E -c 'ERROR:|No module' $TEMPERRFILE)" || tmp=$?
 
 # Output what was recorded
-cat $TEMPOUTFILE
+if [[ -s "$TEMPOUTFILE" ]]; then cat "$TEMPOUTFILE"; fi
+if [[ -s "$TEMPERRFILE" ]]; then cat "$TEMPERRFILE"; fi
 
 # NOTE: If an error occurs, it will ALWAYS be output by "ERROR:" in module's stderr.
 #           However, the return from module will most likely be 0, Hence the reason for this script.
@@ -57,9 +53,13 @@ if [ $errcount != 0  ]; then
     else
         final=$errcount
     fi
+elif [[ "$1" == "avail" ]]; then
+    if [[ ! -s "$TEMPOUTFILE" ]]; then
+        final=1
+    fi
 fi
 
 # final cleanup & return 
-rm $TEMPOUTFILE
+rm "$TEMPOUTFILE" "$TEMPERRFILE"
 return $final
 }

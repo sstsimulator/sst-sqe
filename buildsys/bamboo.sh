@@ -465,8 +465,7 @@ ModuleEx() {
     source $SST_ROOT/test/utilities/moduleex.sh
     module_ex $@ || retval=$?
     if [ $retval -ne 0 ] ; then
-        echo "ERROR: 'module' failed via script $SST_ROOT/test/utilities/moduleex.sh with retval= $retval; bamboo.sh exiting"
-        [[ "$1" == "avail" ]] || exit $retval
+        echo "ERROR: 'module' failed via script $SST_ROOT/test/utilities/moduleex.sh with retval= $retval; this might be ok"
     fi
     return $retval
 }
