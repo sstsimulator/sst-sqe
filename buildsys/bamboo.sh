@@ -1022,7 +1022,8 @@ linuxSetMPI() {
             ModuleEx load metis/metis-5.1.0
         fi
         echo "      This is what is loaded for METIS"
-        ModuleEx list | grep metis
+        _metis_out=$(ModuleEx list | grep metis) || tmp=$?
+        echo "${_metis_out}"
 
     else # otherwise try to load compiler-specific tool variant
         # GNU Linear Programming Kit (GLPK)
