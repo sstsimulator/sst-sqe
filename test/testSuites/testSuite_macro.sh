@@ -1,5 +1,7 @@
-# !/bin/bash
+#!/bin/bash
 # testSuite_macro.sh
+
+set -eo pipefail
 
 # Description:
 
@@ -44,7 +46,7 @@ if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
 else
     echo "NOTICE: TESTING SST-MACRO IN SOURCE DIR"
     macrobuilddir="sst-macro"
-fi        
+fi
 
 #-------------------------------------------------------------------------------
 # Test:
@@ -64,36 +66,37 @@ test_macro_make_check() {
 
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
-    testDataFileBase="test_macro_make_check"
-    outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    local testDataFileBase="test_macro_make_check"
+    local outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
     # Define Software Under Test (SUT) and its runtime arguments
-    # NOTE: sst-macro Tests are run from the source directory, 
+    # NOTE: sst-macro Tests are run from the source directory,
     #       NOT from the install directory
-    macrodir=${SST_ROOT}/${macrobuilddir}
-    sut="Makefile"
-    sutArgs="check"
-	
+    local macrodir=${SST_ROOT}/${macrobuilddir}
+    local sut="Makefile"
+    local sutArgs="check"
+
     pushd ${macrodir}
+
+    local RetVal=0
 
     if [ -f ${sut} ]
     then
         # Run SUT
 #        (make ${sutArgs} > $outFile)
+        # TODO parameterize number of build threads
         (make -j4 ${sutArgs})
-        RetVal=$? 
-        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
-             return 
-        fi 
-        if [ $RetVal != 0 ]  
+        RetVal=$?
+        local TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
+        if [ -e $TIME_FLAG ] ; then
+             echo " Time Limit detected at $(cat $TIME_FLAG) seconds"
+             fail " Time Limit detected at $(cat $TIME_FLAG) seconds"
+             rm $TIME_FLAG
+             return
+        fi
+        if [[ $RetVal -ne 0 ]]
         then
              echo ' '; echo WARNING: sst-macro failed the test ; echo ' '
              ls -l ${sut}
@@ -126,36 +129,37 @@ test_macro_make_installcheck() {
 
     # Define a common basename for test output and reference
     # files. XML postprocessing requires this.
-    testDataFileBase="test_macro_make_installcheck"
-    outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
-    tmpFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.tmp"
-    referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}.out"
+    local testDataFileBase="test_macro_make_installcheck"
+    local outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
     # Define Software Under Test (SUT) and its runtime arguments
-    # NOTE: sst-macro Tests are run from the source directory, 
+    # NOTE: sst-macro Tests are run from the source directory,
     #       NOT from the install directory
-    macrodir=${SST_ROOT}/${macrobuilddir}
-    sut="Makefile"
-    sutArgs="installcheck"
-	
+    local macrodir=${SST_ROOT}/${macrobuilddir}
+    local sut="Makefile"
+    local sutArgs="installcheck"
+
     pushd ${macrodir}
-    
+
+    local RetVal=0
+
     if [ -f ${sut} ]
     then
         # Run SUT
 #        (make ${sutArgs} > $outFile)
+        # TODO parameterize number of build threads
         (make -j4 ${sutArgs})
-        RetVal=$? 
-        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
-        if [ -e $TIME_FLAG ] ; then 
-             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-             rm $TIME_FLAG 
-             return 
-        fi 
-        if [ $RetVal != 0 ]  
+        RetVal=$?
+        local TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
+        if [ -e $TIME_FLAG ] ; then
+             echo " Time Limit detected at $(cat $TIME_FLAG) seconds"
+             fail " Time Limit detected at $(cat $TIME_FLAG) seconds"
+             rm $TIME_FLAG
+             return
+        fi
+        if [[ $RetVal -ne 0 ]]
         then
              echo ' '; echo WARNING: sst-macro failed the test ; echo ' '
              ls -l ${sut}
@@ -176,4 +180,3 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 # Invoke shunit2. Any function in this file whose name starts with
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
-
