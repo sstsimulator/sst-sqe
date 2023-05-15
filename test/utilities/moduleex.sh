@@ -26,7 +26,6 @@ TEMPOUTFILE="$(mktemp /tmp/moduleex_out_XXXXXX)"
 TEMPERRFILE="$(mktemp /tmp/moduleex_err_XXXXXX)"
 
 # Execute the module command and record the output
-#echo "---Running module $@"
 module $@ 1>"$TEMPOUTFILE" 2>"$TEMPERRFILE" || retval=$?
 
 # Get the retvalue, and scan the temp file for the "ERROR:" (Tcl) or "No
@@ -40,9 +39,7 @@ if [[ -s "$TEMPERRFILE" ]]; then cat "$TEMPERRFILE"; fi
 # NOTE: If an error occurs, it will ALWAYS be output by "ERROR:" in module's stderr.
 #           However, the return from module will most likely be 0, Hence the reason for this script.
 
-#Debug
-#echo "retval = $retval"          
-#echo "errcount = $errcount"  
+# echo "retval = $retval errcount = $errcount"
 
 final=0
 # Check if the errcount or retval of the module call has indicated an error, 
