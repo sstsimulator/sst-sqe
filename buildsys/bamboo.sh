@@ -1011,16 +1011,18 @@ linuxSetMPI() {
     then
         # GNU Linear Programming Kit (GLPK)
         echo "bamboo.sh: Load GLPK"
-        # Load available GLPK, whatever version it is
-        ModuleEx load glpk || tmp=$?
+        # Try loadinng available GLPK, whatever version it is
+        if ModuleEx avail glpk; then
+            ModuleEx load glpk
+        fi
 
         # METIS 5.1.0
         echo "bamboo.sh: Load METIS 5.1.0"
         if ModuleEx avail | grep bundled ; then
             echo " Bingo ###################################################"
             ModuleEx load metis/metis-5.1.0-bundled
-        else
-            ModuleEx load metis/metis-5.1.0 || tmp=$?
+        elif ModuleEx avail metis/metis-5.1.0; then
+            ModuleEx load metis/metis-5.1.0
         fi
         echo "      This is what is loaded for METIS"
         ModuleEx list | grep metis
