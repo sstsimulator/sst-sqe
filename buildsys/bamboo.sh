@@ -322,7 +322,7 @@ dotests() {
     #  Second parameter is compiler choice, if non-default.
     #  If it is Intel, Need a GCC library also
 
-   echo "-- Number processers"
+   echo "-- Number processors"
    if [ `uname` == "Darwin" ] ; then
        sysctl -n hw.ncpu
    else
@@ -2783,7 +2783,7 @@ then
                 if [[ ${SST_TEST_FRAMEWORKS_SST_MACRO_NO_CORE:+isSet} == isSet ]] ; then
                     echo "**************************************************************************"
                     echo "***                                                                    ***"
-                    echo "*** RUNING BAMBOO'S dotests() for SST-MACRO WITH NO CORE               ***"
+                    echo "*** RUNNING BAMBOO'S dotests() for SST-MACRO WITH NO CORE              ***"
                     echo "***                                                                    ***"
                     echo "**************************************************************************"
                     dotests $1 $4
@@ -2822,7 +2822,7 @@ then
                     if [[ ${SST_TEST_FRAMEWORKS_CORE_ONLY:+isSet} == isSet ]] ; then
                         echo "**************************************************************************"
                         echo "***                                                                    ***"
-                        echo "*** RUNING NEW TEST FRAMEWORKS CORE TESTS RUNNING INSIDE OF BAMBOO     ***"
+                        echo "*** RUNNING NEW TEST FRAMEWORKS CORE TESTS RUNNING INSIDE OF BAMBOO    ***"
                         echo "***                                                                    ***"
                         echo "**************************************************************************"
                         # WE ARE RUNNING THE FRAMEWORKS CORE SET OF TESTS ONLY
@@ -2845,7 +2845,7 @@ then
                         if [[ ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS:+isSet} == isSet ]] ; then
                             echo "**************************************************************************"
                             echo "***                                                                    "
-                            echo "*** RUNING NEW TEST FRAMEWORKS ELEMENTS - SUBSET OF TESTS : ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS}"
+                            echo "*** RUNNING NEW TEST FRAMEWORKS ELEMENTS - SUBSET OF TESTS : ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS}"
                             echo "***                                                                    "
                             echo "**************************************************************************"
                             # WE ARE RUNNING THE FRAMEWORKS ELEMENTS SUBSET OF TESTS (Set by wildcard) AFTER DOTESTS() HAVE RUN
@@ -2856,7 +2856,7 @@ then
                         else
                             echo "**************************************************************************"
                             echo "***                                                                    "
-                            echo "*** RUNING NEW TEST FRAMEWORKS CORE AND ELEMENTS - FULL SET OF TESTS"
+                            echo "*** RUNNING NEW TEST FRAMEWORKS CORE AND ELEMENTS - FULL SET OF TESTS"
                             echo "***                                                                    "
                             echo "**************************************************************************"
                             # WE ARE RUNNING THE FRAMEWORKS ELEMENTS FULL SET OF TESTS AFTER DOTESTS() HAVE RUN
