@@ -461,8 +461,6 @@ dotests() {
 #   Return value: 0 on success, On error, bamboo.sh will exit with the moduleex.sh error code.
 ModuleEx() {
     local retval=0
-    # Call (via "source") the moduleex.sh script with the passed in parameters
-    source $SST_ROOT/test/utilities/moduleex.sh
     module_ex $@ || retval=$?
     if [ $retval -ne 0 ] ; then
         echo "ERROR: 'module' failed via script $SST_ROOT/test/utilities/moduleex.sh with retval= $retval; this might be ok"
@@ -2378,6 +2376,8 @@ echo "#############################################################"
 # Root of directory checked out, where this script should be found
 export SST_ROOT=`pwd`
 echo " SST_ROOT = $SST_ROOT"
+
+source "${SST_ROOT}/test/utilities/moduleex.sh"
 
 echo "#############################################################"
 echo "  Version Feb 1 2018 0900 hours "
