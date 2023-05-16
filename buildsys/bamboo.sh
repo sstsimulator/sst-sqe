@@ -1006,13 +1006,6 @@ linuxSetMPI() {
     # Load other modules that were built with the default compiler
     if [ $compiler = "default" ]
     then
-        # GNU Linear Programming Kit (GLPK)
-        echo "bamboo.sh: Load GLPK"
-        # Try loadinng available GLPK, whatever version it is
-        if ModuleEx avail glpk; then
-            ModuleEx load glpk
-        fi
-
         # METIS 5.1.0
         echo "bamboo.sh: Load METIS 5.1.0"
         if ModuleEx avail | grep bundled ; then
@@ -1026,13 +1019,6 @@ linuxSetMPI() {
         echo "${_metis_out}"
 
     else # otherwise try to load compiler-specific tool variant
-        # GNU Linear Programming Kit (GLPK)
-        if ModuleEx avail | grep -E -q "glpk/glpk-4.54_${compiler}" ; then
-            echo "bamboo.sh: Load GLPK (gcc ${compiler} variant)"
-            ModuleEx load glpk/glpk-4.54_${compiler}
-        else
-            echo "bamboo.sh: module GLPK (gcc ${compiler} variant) Not Available"
-        fi
         # METIS 5.1.0
         if ModuleEx avail | grep -E -q "metis/metis-5.1.0_${compiler}" ; then
             if [[ ${compiler} != *intel-15* ]] ; then
@@ -1065,10 +1051,6 @@ ldModules_MacOS_Clang() {
     ModuleEx unload mpi
 
     # Load other modules for $ClangVersion
-    # GNU Linear Programming Kit (GLPK)
-    echo "bamboo.sh: Load GLPK"
-    ModuleEx load glpk/glpk-4.54_$ClangVersion
-
     # METIS 5.1.0
     echo "bamboo.sh: Load METIS 5.1.0"
     ModuleEx load metis/metis-5.1.0_$ClangVersion
