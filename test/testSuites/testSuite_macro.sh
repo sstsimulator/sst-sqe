@@ -1,7 +1,7 @@
 #!/bin/bash
 # testSuite_macro.sh
 
-set -eo pipefail
+set -o pipefail
 
 # Description:
 

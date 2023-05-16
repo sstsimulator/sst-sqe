@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+set -o pipefail
 
 # Utility script to launch `module` command and check for errors.  module is slightly funky in that 
 # it does not return an error when it fails, but does normally output errors to stderr (this is due 

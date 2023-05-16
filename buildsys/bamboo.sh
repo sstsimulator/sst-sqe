@@ -1,7 +1,7 @@
 #!/bin/bash
 # bamboo.sh
 
-set -eo pipefail
+set -o pipefail
 
 # Description:
 
