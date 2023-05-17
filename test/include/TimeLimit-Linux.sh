@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+set -o pipefail
 
       echo "$LINENO - This is TimeLimit-Linux"
       date

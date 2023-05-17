@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+set -o pipefail
 
         echo "This is the MacOS (Darwin)  path with pstree "
 

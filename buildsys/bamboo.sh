@@ -1,7 +1,7 @@
 #!/bin/bash
 # bamboo.sh
 
-set -eo pipefail
+set -o pipefail
 
 # Description:
 
@@ -322,7 +322,7 @@ dotests() {
     #  Second parameter is compiler choice, if non-default.
     #  If it is Intel, Need a GCC library also
 
-   echo "-- Number processers"
+   echo "-- Number processors"
    if [ `uname` == "Darwin" ] ; then
        sysctl -n hw.ncpu
    else
@@ -451,8 +451,8 @@ dotests() {
 # Function: ModuleEx
 # Description:
 #   Purpose:
-#       This funciton is a wrapper Around the moduleex.sh command which wraps the module
-#       command used to load/unload  external dependancies.  All calls to module should be
+#       This function is a wrapper around the moduleex.sh command, which itself wraps the module
+#       command used to load/unload external dependencies.  All calls to module should be
 #       redirected to this function.  If a failure is detected in the module command, it will be
 #       noted and this function will cause the bamboo script to exit with the error code.
 #   Input:
@@ -461,11 +461,9 @@ dotests() {
 #   Return value: 0 on success, On error, bamboo.sh will exit with the moduleex.sh error code.
 ModuleEx() {
     local retval=0
-    # Call (via "source") the moduleex.sh script with the passed in parameters
-    source $SST_ROOT/test/utilities/moduleex.sh $@ || retval=$?
+    module_ex $@ || retval=$?
     if [ $retval -ne 0 ] ; then
-        echo "ERROR: 'module' failed via script $SST_ROOT/test/utilities/moduleex.sh with retval= $retval; bamboo.sh exiting"
-        exit $retval
+        echo "ERROR: 'module' failed via script $SST_ROOT/test/utilities/moduleex.sh with retval= $retval; this might be ok"
     fi
     return $retval
 }
@@ -989,14 +987,13 @@ linuxSetMPI() {
    gcc --version 2>&1 | grep ^g
 
    # load MPI
+   ModuleEx unload mpi # unload any default to avoid conflict error
    case $2 in
        none)
            echo "MPI requested as \"none\".    No MPI loaded"
-           ModuleEx unload mpi # unload any default
            ;;
        *)
            echo "Default MPI option, loading mpi/${desiredMPI}"
-           ModuleEx unload mpi # unload any default to avoid conflict error
            ModuleEx load mpi/${desiredMPI} 2>catch.err
            if [ -s catch.err ]
            then
@@ -1009,30 +1006,19 @@ linuxSetMPI() {
     # Load other modules that were built with the default compiler
     if [ $compiler = "default" ]
     then
-        # GNU Linear Programming Kit (GLPK)
-        echo "bamboo.sh: Load GLPK"
-        # Load available GLPK, whatever version it is
-        ModuleEx load glpk || tmp=$?
-
         # METIS 5.1.0
         echo "bamboo.sh: Load METIS 5.1.0"
         if ModuleEx avail | grep bundled ; then
             echo " Bingo ###################################################"
             ModuleEx load metis/metis-5.1.0-bundled
-        else
-            ModuleEx load metis/metis-5.1.0 || tmp=$?
+        elif ModuleEx avail metis/metis-5.1.0; then
+            ModuleEx load metis/metis-5.1.0
         fi
         echo "      This is what is loaded for METIS"
-        ModuleEx list | grep metis
+        _metis_out=$(ModuleEx list | grep metis) || tmp=$?
+        echo "${_metis_out}"
 
     else # otherwise try to load compiler-specific tool variant
-        # GNU Linear Programming Kit (GLPK)
-        if ModuleEx avail | grep -E -q "glpk/glpk-4.54_${compiler}" ; then
-            echo "bamboo.sh: Load GLPK (gcc ${compiler} variant)"
-            ModuleEx load glpk/glpk-4.54_${compiler}
-        else
-            echo "bamboo.sh: module GLPK (gcc ${compiler} variant) Not Available"
-        fi
         # METIS 5.1.0
         if ModuleEx avail | grep -E -q "metis/metis-5.1.0_${compiler}" ; then
             if [[ ${compiler} != *intel-15* ]] ; then
@@ -1065,10 +1051,6 @@ ldModules_MacOS_Clang() {
     ModuleEx unload mpi
 
     # Load other modules for $ClangVersion
-    # GNU Linear Programming Kit (GLPK)
-    echo "bamboo.sh: Load GLPK"
-    ModuleEx load glpk/glpk-4.54_$ClangVersion
-
     # METIS 5.1.0
     echo "bamboo.sh: Load METIS 5.1.0"
     ModuleEx load metis/metis-5.1.0_$ClangVersion
@@ -2477,6 +2459,7 @@ echo "bamboo.sh: Done sourcing deps/include/depsDefinitions.sh"
 # retain binaries after build
 #export SST_RETAIN_BIN=1
 
+source "${SST_ROOT}/test/utilities/moduleex.sh"
 
 echo "==============================INITIAL ENVIRONMENT DUMP================="
 env|sort
@@ -2782,7 +2765,7 @@ then
                 if [[ ${SST_TEST_FRAMEWORKS_SST_MACRO_NO_CORE:+isSet} == isSet ]] ; then
                     echo "**************************************************************************"
                     echo "***                                                                    ***"
-                    echo "*** RUNING BAMBOO'S dotests() for SST-MACRO WITH NO CORE               ***"
+                    echo "*** RUNNING BAMBOO'S dotests() for SST-MACRO WITH NO CORE              ***"
                     echo "***                                                                    ***"
                     echo "**************************************************************************"
                     dotests $1 $4
@@ -2821,7 +2804,7 @@ then
                     if [[ ${SST_TEST_FRAMEWORKS_CORE_ONLY:+isSet} == isSet ]] ; then
                         echo "**************************************************************************"
                         echo "***                                                                    ***"
-                        echo "*** RUNING NEW TEST FRAMEWORKS CORE TESTS RUNNING INSIDE OF BAMBOO     ***"
+                        echo "*** RUNNING NEW TEST FRAMEWORKS CORE TESTS RUNNING INSIDE OF BAMBOO    ***"
                         echo "***                                                                    ***"
                         echo "**************************************************************************"
                         # WE ARE RUNNING THE FRAMEWORKS CORE SET OF TESTS ONLY
@@ -2844,7 +2827,7 @@ then
                         if [[ ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS:+isSet} == isSet ]] ; then
                             echo "**************************************************************************"
                             echo "***                                                                    "
-                            echo "*** RUNING NEW TEST FRAMEWORKS ELEMENTS - SUBSET OF TESTS : ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS}"
+                            echo "*** RUNNING NEW TEST FRAMEWORKS ELEMENTS - SUBSET OF TESTS : ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS}"
                             echo "***                                                                    "
                             echo "**************************************************************************"
                             # WE ARE RUNNING THE FRAMEWORKS ELEMENTS SUBSET OF TESTS (Set by wildcard) AFTER DOTESTS() HAVE RUN
@@ -2855,7 +2838,7 @@ then
                         else
                             echo "**************************************************************************"
                             echo "***                                                                    "
-                            echo "*** RUNING NEW TEST FRAMEWORKS CORE AND ELEMENTS - FULL SET OF TESTS"
+                            echo "*** RUNNING NEW TEST FRAMEWORKS CORE AND ELEMENTS - FULL SET OF TESTS"
                             echo "***                                                                    "
                             echo "**************************************************************************"
                             # WE ARE RUNNING THE FRAMEWORKS ELEMENTS FULL SET OF TESTS AFTER DOTESTS() HAVE RUN
