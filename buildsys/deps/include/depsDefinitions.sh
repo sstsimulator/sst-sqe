@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -o pipefail
+
 # Dependency definitions
 
 # NOTE: User may override SST dependency installation location by
@@ -17,7 +21,7 @@ fi
 
 if [[ ${SST_BASE:+isSet} != isSet ]]
 then
-     #if SST_BASE is not set, set it     
+     #if SST_BASE is not set, set it
     if [[ ${SST_DEPS_USER_MODE:+isSet} = isSet ]]
     then
         export SST_BASE=$SST_DEPS_USER_DIR
@@ -25,7 +29,7 @@ then
         export SST_BASE=$HOME
     fi
 fi
- 
+
 # Check SST dependency installation preferences
 if [[ ${SST_INSTALL_DEPS_USER:+isSet} = isSet ]]
 then
@@ -54,7 +58,7 @@ export SST_DEPS_INCLUDE=${SST_DEPS_ROOT}/include
 
 # Location of deps source files
 export SST_DEPS_SRC=$SST_BASE/sstDeps/src
- 
+
 # Location where pristine SST dependency source files are. These can
 # be tar.gz files, zipfiles, or other archive formats. This can be
 # thought of as the "pre-staging" area for SST dependencies.
@@ -89,7 +93,7 @@ SST_DEPS_OS_RELEASE=`uname -r`  # uname OS release
 # Announcement utility. Used for general status annoucements.
 sstDepsAnnounce ()
 {
-    OPTIND=1 
+    OPTIND=1
     while getopts ":h:m:" opt
     do
         case $opt in
@@ -131,7 +135,7 @@ sstDepsAnnounce ()
 # returns 1 otherwise
 sstDepsCheckSha1 ()
 {
-    OPTIND=1 
+    OPTIND=1
     while getopts ":f:h:" opt
     do
         case $opt in
@@ -185,4 +189,3 @@ sstDepsCheckSha1 ()
 # echo "DBG depsDefinitions.sh:  SST_DEPS_OS_NAME = ${SST_DEPS_OS_NAME}"
 # echo "DBG depsDefinitions.sh:  SST_DEPS_OS_RELEASE = ${SST_DEPS_OS_RELEASE}"
 # DEBUG <end>
-

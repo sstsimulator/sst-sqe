@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -o pipefail
+
 # Test definitions
 
 # NOTE: User may override SST installation location by setting the
@@ -144,7 +148,7 @@ then
 
     export SST_TEST_HOST_OS_DISTRIB=`cat /etc/lsb-release | egrep DISTRIB_ID | sed 's|\(^DISTRIB_ID=\)\(.\+\)|\2|'`
     export SST_TEST_HOST_OS_DISTRIB_VERSION=`cat /etc/lsb-release | egrep DISTRIB_RELEASE | sed 's|\(^DISTRIB_RELEASE=\)\(.\+\)|\2|'`
-    if [ $SST_TEST_HOST_OS_DISTRIB="Ubuntu" ]
+    if [ $SST_TEST_HOST_OS_DISTRIB = "Ubuntu" ]
     then
         # Set this if this is Ubuntu, a Debian derivative
         export SST_TEST_HOST_OS_DISTRIB_UBUNTU=1

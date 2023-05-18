@@ -1,6 +1,8 @@
 #!/bin/bash
 # bamboo.sh
 
+set -o pipefail
+
 # Description:
 
 # A shell script to command a build ala Jenkins
@@ -19,7 +21,6 @@ pwd
 df -h .
 echo ' '
 
-## export SST_BUILDOUTOFSOURCE=1
 #-------------------------------------------------------------------------
 # Function: TimeoutEx
 # Description:
@@ -32,9 +33,8 @@ echo ' '
 #   Return value: The return value of the command being run or !=0 to indicate
 #   a timeout or error.
 TimeoutEx() {
-    # Call (via "source") the moduleex.sh script with the passed in parameters
-    $SST_ROOT/../sqe/test/utilities/TimeoutEx.sh $@
-    # Get the return value from the moduleex.sh
+    local retval=0
+    $SST_ROOT/../sqe/test/utilities/TimeoutEx.sh $@ || retval=$?
     return $retval
 }
 
@@ -43,7 +43,6 @@ cloneOtherRepos() {
 ##  Check out other repositories except second time on Make Dist test
 
 if [ ! -d ../../distTestDir ] ; then
-## if [[ ${SST_TEST_ROOT:+isSet} != isSet ]] ; then
     echo "PWD $LINENO = `pwd`"
 
 ## Set the clone depth parameter
@@ -323,7 +322,7 @@ dotests() {
     #  Second parameter is compiler choice, if non-default.
     #  If it is Intel, Need a GCC library also
 
-   echo "-- Number processers"
+   echo "-- Number processors"
    if [ `uname` == "Darwin" ] ; then
        sysctl -n hw.ncpu
    else
@@ -452,8 +451,8 @@ dotests() {
 # Function: ModuleEx
 # Description:
 #   Purpose:
-#       This funciton is a wrapper Around the moduleex.sh command which wraps the module
-#       command used to load/unload  external dependancies.  All calls to module should be
+#       This function is a wrapper around the moduleex.sh command, which itself wraps the module
+#       command used to load/unload external dependencies.  All calls to module should be
 #       redirected to this function.  If a failure is detected in the module command, it will be
 #       noted and this function will cause the bamboo script to exit with the error code.
 #   Input:
@@ -461,13 +460,10 @@ dotests() {
 #   Output: Any output from the module command.
 #   Return value: 0 on success, On error, bamboo.sh will exit with the moduleex.sh error code.
 ModuleEx() {
-    # Call (via "source") the moduleex.sh script with the passed in parameters
-    . $SST_ROOT/test/utilities/moduleex.sh $@
-    # Get the return value from the moduleex.sh
-    retval=$?
+    local retval=0
+    module_ex $@ || retval=$?
     if [ $retval -ne 0 ] ; then
-        echo "ERROR: 'module' failed via script $SST_ROOT/test/utilities/moduleex.sh with retval= $retval; bamboo.sh exiting"
-        exit $retval
+        echo "ERROR: 'module' failed via script $SST_ROOT/test/utilities/moduleex.sh with retval= $retval; this might be ok"
     fi
     return $retval
 }
@@ -938,17 +934,13 @@ linuxSetMPI() {
       echo "Attempt to initialize the modules utility.  Look for modules init file in 1 of 2 places"
 
       echo "Location 1: ls -l /etc/profile.modules"
-      ls -l /etc/profile.modules
-      if [ -f /etc/profile.modules ] ; then
-          . /etc/profile.modules
+      echo "Location 2: ls -l /etc/profile.d/modules.sh"
+      if [ -r /etc/profile.modules ] ; then
+          source /etc/profile.modules
           echo "bamboo.sh: loaded /etc/profile.modules"
-      else
-          echo "Location 2: ls -l /etc/profile.d/modules.sh"
-          ls -l /etc/profile.d/modules.sh
-          if [ -r /etc/profile.d/modules.sh ] ; then
-              source /etc/profile.d/modules.sh
-              echo "bamboo.sh: loaded /etc/profile.d/modules"
-          fi
+      elif [ -r /etc/profile.d/modules.sh ] ; then
+          source /etc/profile.d/modules.sh
+          echo "bamboo.sh: loaded /etc/profile.d/modules"
       fi
    fi
 
@@ -995,14 +987,13 @@ linuxSetMPI() {
    gcc --version 2>&1 | grep ^g
 
    # load MPI
+   ModuleEx unload mpi # unload any default to avoid conflict error
    case $2 in
        none)
            echo "MPI requested as \"none\".    No MPI loaded"
-           ModuleEx unload mpi # unload any default
            ;;
        *)
            echo "Default MPI option, loading mpi/${desiredMPI}"
-           ModuleEx unload mpi # unload any default to avoid conflict error
            ModuleEx load mpi/${desiredMPI} 2>catch.err
            if [ -s catch.err ]
            then
@@ -1015,35 +1006,21 @@ linuxSetMPI() {
     # Load other modules that were built with the default compiler
     if [ $compiler = "default" ]
     then
-        # GNU Linear Programming Kit (GLPK)
-        echo "bamboo.sh: Load GLPK"
-        # Load available GLPK, whatever version it is
-        ModuleEx load glpk
-       
         # METIS 5.1.0
         echo "bamboo.sh: Load METIS 5.1.0"
-        ModuleEx avail | grep bundled
-        if [ $? == 0 ] ; then
+        if ModuleEx avail | grep bundled ; then
             echo " Bingo ###################################################"
             ModuleEx load metis/metis-5.1.0-bundled
-        else
+        elif ModuleEx avail metis/metis-5.1.0; then
             ModuleEx load metis/metis-5.1.0
         fi
         echo "      This is what is loaded for METIS"
-        ModuleEx list | grep metis
+        _metis_out=$(ModuleEx list | grep metis) || tmp=$?
+        echo "${_metis_out}"
 
     else # otherwise try to load compiler-specific tool variant
-        # GNU Linear Programming Kit (GLPK)
-        ModuleEx avail | egrep -q "glpk/glpk-4.54_${compiler}"
-        if [ $? == 0 ] ; then
-            echo "bamboo.sh: Load GLPK (gcc ${compiler} variant)"
-            ModuleEx load glpk/glpk-4.54_${compiler}
-        else
-            echo "bamboo.sh: module GLPK (gcc ${compiler} variant) Not Available"
-        fi
         # METIS 5.1.0
-        ModuleEx avail | egrep -q "metis/metis-5.1.0_${compiler}"
-        if [ $? == 0 ] ; then
+        if ModuleEx avail | grep -E -q "metis/metis-5.1.0_${compiler}" ; then
             if [[ ${compiler} != *intel-15* ]] ; then
                 echo "bamboo.sh: Load METIS 5.1.0 (gcc ${compiler} variant)"
                 ModuleEx load metis/metis-5.1.0_${compiler}
@@ -1068,16 +1045,12 @@ linuxSetMPI() {
 #                 Also need $2 passed along
 
 ldModules_MacOS_Clang() {
-    ClangVersion=$1            #   example "clang-700.0.72" $2
+    local ClangVersion=$1            #   example "clang-700.0.72" $2
     ModuleEx avail
     # Use MPI built with CLANG from Xcode
     ModuleEx unload mpi
 
     # Load other modules for $ClangVersion
-    # GNU Linear Programming Kit (GLPK)
-    echo "bamboo.sh: Load GLPK"
-    ModuleEx load glpk/glpk-4.54_$ClangVersion
-        
     # METIS 5.1.0
     echo "bamboo.sh: Load METIS 5.1.0"
     ModuleEx load metis/metis-5.1.0_$ClangVersion
@@ -1109,8 +1082,8 @@ ldModules_MacOS_Clang() {
             ;;
     esac
 
-    export CC=`which clang`
-    export CXX=`which clang++`
+    export CC="$(command -v clang)"
+    export CXX="$(command -v clang++)"
     echo "    Modules loaded"
     ModuleEx list
     $CC --version
@@ -1144,40 +1117,26 @@ darwinSetMPI() {
     # Initialize modules for Jenkins (taken from $HOME/.bashrc on Mac)
     if [ -f /etc/profile.modules ]
     then
-        . /etc/profile.modules
-        echo "bamboo.sh: loaded /etc/profile.modules. Available modules"
-        ModuleEx avail
+        source /etc/profile.modules
+        echo "bamboo.sh: loaded /etc/profile.modules."
         # put any module loads here
         echo "bamboo.sh: Loading Modules for MacOSX"
-        # Do things specific to the MacOS version
         case $macosVersion in
-################################################################################
-
-            11.6) # Big Sur
+            11.6)
                 echo    "This is Big Sur, Compiler is $compiler"
-                ldModules_MacOS_Clang $compiler  $2   # any Xcode
                 ;;
-
-################################################################################
-
-            12.3) # Monterey
+            12.3)
                 echo    "This is Monterey, Compiler is $compiler"
-                ldModules_MacOS_Clang $compiler  $2   # any Xcode
                 ;;
-
-################################################################################
-            13.2) # Ventura
+            13.2)
                 echo    "This is Ventura, Compiler is $compiler"
-                ldModules_MacOS_Clang $compiler $2 # any code
                 ;;
-
-################################################################################
-            *) # unknown
+            *)
                 echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
-                echo ' '
                 exit
                 ;;
         esac
+        ldModules_MacOS_Clang $compiler $2  # any Xcode
 
     else
         echo "ERROR: unable to locate /etc/profile.modules - cannot load modules"
@@ -1199,7 +1158,7 @@ darwinSetMPI() {
 setUPforMakeDisttest() {
     echo "Setting up to build from the tars created by make dist"
     echo "---   PWD $LINENO  `pwd`"           ## Original trunk
-     
+
     LOC_OF_TAR=""
     if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
         LOC_OF_TAR="-builddir"
@@ -1380,7 +1339,6 @@ setUPforMakeDisttest() {
      pwd
      ls
      #       Why did we copy bamboo.sh and deps, but link test ????
-     echo "  Why did we copy bamboo.sh and deps, but link test ????"?
      pushd ../../       # Back to orginal trunk
      ls | awk '{print "rm -rf " $1}' | grep -v -e deps -e distTestDir -e test -e sstDeps > rm-extra
      echo "---   PWD $LINENO  `pwd`"
@@ -1419,6 +1377,16 @@ setUPforMakeDisttest() {
          exit 1
      fi
 }         #### End of setUPforMakeDistest  ####
+
+print_and_dump_loc() {
+    local loc="${1}"
+    if [[ -r "${loc}" ]]; then
+        echo "cat ${loc}"
+        cat "${loc}"
+    else
+        echo "not found: ${loc}"
+    fi
+}
 
 #-------------------------------------------------------------------------
 # Function: dobuild
@@ -1480,7 +1448,7 @@ dobuild() {
     # Mac OS X needs some help finding dylibs
     if [ $kernel == "Darwin" ]
     then
-	    export DYLD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${DYLD_LIBRARY_PATH}
+		export DYLD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${DYLD_LIBRARY_PATH}
     fi
 
     # Dump pre-build environment and modules status
@@ -1635,20 +1603,17 @@ dobuild() {
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
         fi
 
+        [[ $kernel == "Darwin" ]] && linkage_display="otool -L" || linkage_display=ldd
+
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '
         echo "bamboo.sh: make on SST-CORE"
         echo ' '
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        if [ $kernel == "Darwin" ]
-        then
-            # Mac OS X
-            echo "$ otool -L $coresourcedir/src/sst/core/sstsim.x"
-            otool -L $coresourcedir/src/sst/core/sstsim.x
-        else
-            echo "$ ldd $coresourcedir/src/sst/core/sstsim.x"
-            ldd $coresourcedir/src/sst/core/sstsim.x
+        echo "${linkage_display} $coresourcedir/src/sst/core/sstsim.x"
+        if [[ -r $coresourcedir/src/sst/core/sstsim.x ]]; then
+            ${linkage_display} $coresourcedir/src/sst/core/sstsim.x
         fi
         echo "SST-CORE BUILD INFO============================================================"
 
@@ -1678,13 +1643,12 @@ dobuild() {
         echo ' '
         echo "bamboo.sh: make clean on SST-CORE"
         echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"        
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         make clean
 
         echo
         echo "=== DUMPING The SST-CORE installed sstsimulator.conf file ==="
-        echo "cat $SST_CORE_INSTALL/etc/sst/sstsimulator.conf"
-        cat $SST_CORE_INSTALL/etc/sst/sstsimulator.conf
+        print_and_dump_loc $SST_CORE_INSTALL/etc/sst/sstsimulator.conf
         echo "=== DONE DUMPING ==="
         echo
 
@@ -1695,14 +1659,10 @@ dobuild() {
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
 
-        if [ $kernel == "Darwin" ]
-        then
-            # Mac OS X
-            echo "$ otool -L $coresourcedir/src/sst/core/sstsim.x"
-            otool -L $coresourcedir/src/sst/core/sstsim.x
-        else
-            echo "$ ldd $coresourcedir/src/sst/core/sstsim.x"
-            ldd $coresourcedir/src/sst/core/sstsim.x
+        # TODO either this one or the previous one has the wrong path
+        echo "${linkage_display} $coresourcedir/src/sst/core/sstsim.x"
+        if [[ -r $coresourcedir/src/sst/core/sstsim.x ]]; then
+            ${linkage_display} $coresourcedir/src/sst/core/sstsim.x
         fi
         echo "SST-CORE BUILD INFO============================================="
 
@@ -1819,11 +1779,7 @@ if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
         ls -ltrd * | tail -20
 
         echo "################################## DEBUG DATA ########################"
-        ls
-        ls src
-        ls src/sst
-        ls src/sst/elements/
-        ls src/sst/elements/*/*m4
+        find "$PWD" -type f | sort
         echo "##################### END ######## DEBUG DATA ########################"
 
         # Check to see if we are actually performing make dist
@@ -1901,15 +1857,13 @@ if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
 
             echo
             echo "=== DUMPING The SST-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
-            echo "cat $HOME/.sst/sstsimulator.conf"
-            cat $HOME/.sst/sstsimulator.conf
+            print_and_dump_loc $HOME/.sst/sstsimulator.conf
             echo "=== DONE DUMPING ==="
             echo
 
             echo
             echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-            echo "cat $SST_CONFIG_FILE_PATH"
-            cat $SST_CONFIG_FILE_PATH
+            print_and_dump_loc $SST_CONFIG_FILE_PATH
             echo "=== DONE DUMPING ==="
             echo
 
@@ -2091,15 +2045,14 @@ if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
 
         echo
         echo "=== DUMPING The SST-MACRO installed $HOME/.sst/sstsimulator.conf file ==="
-        echo "cat $HOME/.sst/sstsimulator.conf"
-        cat $HOME/.sst/sstsimulator.conf
+        print_and_dump_loc $HOME/.sst/sstsimulator.conf
         echo "=== DONE DUMPING ==="
         echo
 
         echo
         echo "=== DUMPING The SST-MACRO installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
         echo "cat $SST_CONFIG_FILE_PATH"
-        cat $SST_CONFIG_FILE_PATH
+        print_and_dump_loc $SST_CONFIG_FILE_PATH
         echo "=== DONE DUMPING ==="
         echo
 
@@ -2170,15 +2123,13 @@ if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
 
         echo
         echo "=== DUMPING The SST-EXTERNAL-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
-        echo "cat $HOME/.sst/sstsimulator.conf"
-        cat $HOME/.sst/sstsimulator.conf
+        print_and_dump_loc $HOME/.sst/sstsimulator.conf
         echo "=== DONE DUMPING ==="
         echo
 
         echo
         echo "=== DUMPING The SST-EXTERNAL-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-        echo "cat $SST_CONFIG_FILE_PATH"
-        cat $SST_CONFIG_FILE_PATH
+        print_and_dump_loc $SST_CONFIG_FILE_PATH
         echo "=== DONE DUMPING ==="
         echo
 
@@ -2248,15 +2199,13 @@ if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
 
         echo
         echo "=== DUMPING The JUNO installed $HOME/.sst/sstsimulator.conf file ==="
-        echo "cat $HOME/.sst/sstsimulator.conf"
-        cat $HOME/.sst/sstsimulator.conf
+        print_and_dump_loc $HOME/.sst/sstsimulator.conf
         echo "=== DONE DUMPING ==="
         echo
 
         echo
         echo "=== DUMPING The JUNO installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-        echo "cat $SST_CONFIG_FILE_PATH"
-        cat $SST_CONFIG_FILE_PATH
+        print_and_dump_loc $SST_CONFIG_FILE_PATH
         echo "=== DONE DUMPING ==="
         echo
 
@@ -2435,15 +2384,11 @@ echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE - NOW SETTING ENV RUNTIME VAR
 echo
 echo
 echo
-echo "#### DELETING THE HOME/.sst/sstsimulator.conf file ####"
-echo "#### NOTE: THIS CODE MAY NEED TO BE REMOVED IN THE NEAR FUTURE"
-echo "BEFORE:ls $HOME/.sst/sstsimulator.conf"
-ls $HOME/.sst/sstsimulator.conf
-echo "rm -f $HOME/.sst/sstsimulator.conf"
-rm -f $HOME/.sst/sstsimulator.conf
-echo "AFTER: ls $HOME/.sst/sstsimulator.conf"
-ls $HOME/.sst/sstsimulator.conf
-echo "#### DONE DELETING THE HOME/.sst/sstsimulator.conf file ####"
+if [[ -f $HOME/.sst/sstsimulator.conf ]]; then
+    echo "#### DELETING THE HOME/.sst/sstsimulator.conf file ####"
+    rm -f $HOME/.sst/sstsimulator.conf
+    echo "#### DONE DELETING THE HOME/.sst/sstsimulator.conf file ####"
+fi
 echo
 echo
 echo
@@ -2514,6 +2459,7 @@ echo "bamboo.sh: Done sourcing deps/include/depsDefinitions.sh"
 # retain binaries after build
 #export SST_RETAIN_BIN=1
 
+source "${SST_ROOT}/test/utilities/moduleex.sh"
 
 echo "==============================INITIAL ENVIRONMENT DUMP================="
 env|sort
@@ -2662,7 +2608,7 @@ else
                                 ## Check that python is an acceptably new version of python
                                 pyver=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
                                 pyverX=$(echo "${version//./}")
-                                if [["$pyverX" -lt "350" ]]
+                                if [[ "$pyverX" -lt "350" ]]
                                 then
                                     echo "ERROR: FOUND python but version is TOO OLD (<3.5.0)."
                                     exit 128
@@ -2704,9 +2650,7 @@ else
                 # Check that the default Intel PIN module is available
                 # For Linux = pin/pin-3.26-98960-g1fc9d60e6-gcc-linux
                 #           ModuleEx puts the avail output on Stdout (where it belongs.)
-                ModuleEx avail | egrep -q "pin/pin-3.26"
-                if [ $? == 0 ]
-                then
+                if ModuleEx avail | grep -E -q "pin/pin-3.26"; then
                 # if `pin module is available, use pin/pin-3.26.
                     if [ $kernel != "Darwin" ] ; then
                         echo "USING INTEL PIN ENVIRONMENT MODULE pin-3.26-98690-g1fc9d60e6-gcc-linux"
@@ -2821,7 +2765,7 @@ then
                 if [[ ${SST_TEST_FRAMEWORKS_SST_MACRO_NO_CORE:+isSet} == isSet ]] ; then
                     echo "**************************************************************************"
                     echo "***                                                                    ***"
-                    echo "*** RUNING BAMBOO'S dotests() for SST-MACRO WITH NO CORE               ***"
+                    echo "*** RUNNING BAMBOO'S dotests() for SST-MACRO WITH NO CORE              ***"
                     echo "***                                                                    ***"
                     echo "**************************************************************************"
                     dotests $1 $4
@@ -2860,7 +2804,7 @@ then
                     if [[ ${SST_TEST_FRAMEWORKS_CORE_ONLY:+isSet} == isSet ]] ; then
                         echo "**************************************************************************"
                         echo "***                                                                    ***"
-                        echo "*** RUNING NEW TEST FRAMEWORKS CORE TESTS RUNNING INSIDE OF BAMBOO     ***"
+                        echo "*** RUNNING NEW TEST FRAMEWORKS CORE TESTS RUNNING INSIDE OF BAMBOO    ***"
                         echo "***                                                                    ***"
                         echo "**************************************************************************"
                         # WE ARE RUNNING THE FRAMEWORKS CORE SET OF TESTS ONLY
@@ -2883,7 +2827,7 @@ then
                         if [[ ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS:+isSet} == isSet ]] ; then
                             echo "**************************************************************************"
                             echo "***                                                                    "
-                            echo "*** RUNING NEW TEST FRAMEWORKS ELEMENTS - SUBSET OF TESTS : ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS}"
+                            echo "*** RUNNING NEW TEST FRAMEWORKS ELEMENTS - SUBSET OF TESTS : ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS}"
                             echo "***                                                                    "
                             echo "**************************************************************************"
                             # WE ARE RUNNING THE FRAMEWORKS ELEMENTS SUBSET OF TESTS (Set by wildcard) AFTER DOTESTS() HAVE RUN
@@ -2894,12 +2838,12 @@ then
                         else
                             echo "**************************************************************************"
                             echo "***                                                                    "
-                            echo "*** RUNING NEW TEST FRAMEWORKS CORE AND ELEMENTS - FULL SET OF TESTS"
+                            echo "*** RUNNING NEW TEST FRAMEWORKS CORE AND ELEMENTS - FULL SET OF TESTS"
                             echo "***                                                                    "
                             echo "**************************************************************************"
                             # WE ARE RUNNING THE FRAMEWORKS ELEMENTS FULL SET OF TESTS AFTER DOTESTS() HAVE RUN
                             cd $SST_ROOT
-                            
+
                             $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_CORE_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
                             core_frameworks_retval=$?
                             $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -k -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
@@ -2915,7 +2859,7 @@ then
                             if [ $core_frameworks_retval -eq 0 ]; then
                                 retval=$elements_frameworks_retval
                             else
-                                retval = $core_frameworks_retval
+                                retval=$core_frameworks_retval
                             fi
                         fi
                         echo "BAMBOO: Combined Frameworks + dotests retval = $retval"
