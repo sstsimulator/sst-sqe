@@ -1149,35 +1149,7 @@ darwinSetMPI() {
         ModuleEx avail
         # put any module loads here
         echo "bamboo.sh: Loading Modules for MacOSX"
-        # Do things specific to the MacOS version
-        case $macosVersion in
-################################################################################
-
-            11.6) # Big Sur
-                echo    "This is Big Sur, Compiler is $compiler"
-                ldModules_MacOS_Clang $compiler  $2   # any Xcode
-                ;;
-
-################################################################################
-
-            12.3) # Monterey
-                echo    "This is Monterey, Compiler is $compiler"
-                ldModules_MacOS_Clang $compiler  $2   # any Xcode
-                ;;
-
-################################################################################
-            13.2) # Ventura
-                echo    "This is Ventura, Compiler is $compiler"
-                ldModules_MacOS_Clang $compiler $2 # any code
-                ;;
-
-################################################################################
-            *) # unknown
-                echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
-                echo ' '
-                exit
-                ;;
-        esac
+        ldModules_MacOS_Clang $compiler $2  # any Xcode
 
     else
         echo "ERROR: unable to locate /etc/profile.modules - cannot load modules"
