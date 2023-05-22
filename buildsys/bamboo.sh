@@ -1121,21 +1121,6 @@ darwinSetMPI() {
         echo "bamboo.sh: loaded /etc/profile.modules."
         # put any module loads here
         echo "bamboo.sh: Loading Modules for MacOSX"
-        case $macosVersion in
-            11.6)
-                echo    "This is Big Sur, Compiler is $compiler"
-                ;;
-            12.3)
-                echo    "This is Monterey, Compiler is $compiler"
-                ;;
-            13.2)
-                echo    "This is Ventura, Compiler is $compiler"
-                ;;
-            *)
-                echo "bamboo.sh: Unknown Mac OS version. $macosVersion"
-                exit
-                ;;
-        esac
         ldModules_MacOS_Clang $compiler $2  # any Xcode
 
     else
