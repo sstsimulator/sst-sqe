@@ -152,21 +152,6 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_ZOLTAN}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Zoltan
-        #-----------------------------------------------------------------------
-        sstDepsStage_zoltan
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: Zoltan code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_BOOST}" ]
     then
         #-----------------------------------------------------------------------
@@ -785,24 +770,6 @@ sstDepsDeploy ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_ZOLTAN}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Zoltan
-        #-----------------------------------------------------------------------
-        # !!! NOTE: Zoltan depends on ParMETIS, so ParMETIS needs to be
-        # !!! built first
-        sstDepsDeploy_zoltan
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: Zoltan deployment failure"
-            return $retval
-        fi
-    fi
-
-
     if [ ! -z "${SST_BUILD_BOOST}" ]
     then
         #-----------------------------------------------------------------------
@@ -1139,15 +1106,6 @@ sstDepsDoQuery ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_ZOLTAN}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Zoltan
-        #-----------------------------------------------------------------------
-        sstDepsQuery_zoltan
-    fi
-
-
     if [ ! -z "${SST_BUILD_BOOST}" ]
     then
         #-----------------------------------------------------------------------
@@ -1398,7 +1356,6 @@ sstDepsDoDependencies ()
 #   1/6/23 - removed unused options
 #   -k DiskSim version (default|static|none) NO LONGER SUPPORTED
 #   -p ParMETIS version (default|3.1.1|none)
-#   -z Zoltan version (default|3.2|3.83.8.3|none)
 #   -b Boost version (default|1.50|1.49|1.43|none)
 #   -g gem5 version (default|4.0|stabledevel|gcc-4.6.4|none)
 #   -m McPAT version (default|beta|none)
@@ -1592,31 +1549,6 @@ do
 #                    ;;
 #                *) # unknown ParMETIS argument
 #                    echo "# Unknown argument '$OPTARG', will not build ParMETIS"
-#                    ;;
-#            esac
-#            ;;
-## NO LONGER SUPPORTED
-#        z) # Zoltan
-#            echo "# found the -z (Zoltan) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                default|3.8) # build default Zoltan
-#                    echo "# (default) 3.8: will build Zoltan 3.8"
-#                    . ${SST_DEPS_BIN}/sstDep_zoltan_3.8.sh
-#                    ;;
-#                3.83) # build Zoltan 3.83
-#                    echo "#  will build Zoltan 3.83"
-#                    . ${SST_DEPS_BIN}/sstDep_zoltan_3.83.sh
-#                    ;;
-#                3.2) # build default Zoltan
-#                    echo "#  will build Zoltan 3.2"
-#                    . ${SST_DEPS_BIN}/sstDep_zoltan_3.2.sh
-#                    ;;
-#                none) # do not build (explicit)
-#                    echo "# none: will not build Zoltan"
-#                    ;;
-#                *) # unknown Zoltan argument
-#                    echo "# Unknown argument '$OPTARG', will not build Zoltan"
 #                    ;;
 #            esac
 #            ;;

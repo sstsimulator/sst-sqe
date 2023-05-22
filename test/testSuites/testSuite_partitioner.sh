@@ -397,45 +397,6 @@ fi
    partitioner_template 8 roundrobin
 }
 
-#################################################
-#   July 2015 - There are separate zoltan tests
-#          These can be a redundant tests.
-#   The other partitioner tests should not be limited
-#      to only when Zoltan is Installed.
-#################################################
-test_zoltan_2()
-{
-   if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ||
-    [[ `uname -n` == ubuntu1804* ]] ; then
-       skip_this_test
-       echo '     skipping'
-       return
-   fi
-   partitioner_template 2 zoltan
-}
-
-test_zoltan_4()
-{
-   if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ||
-    [[ `uname -n` == ubuntu1804* ]] ; then
-       skip_this_test
-       echo '     skipping'
-       return
-   fi
-   partitioner_template 4 zoltan
-}
-
-test_zoltan_8()
-{
-   if [ ! -e $SST_ROOT/../../local/packages/Zoltan ] ||
-    [[ `uname -n` == ubuntu* ]] ; then
-       skip_this_test
-       echo '     skipping'
-       return
-   fi
-   partitioner_template 8 zoltan
-}
-
 test_linear_2()
 {
    partitioner_template 2 linear
