@@ -295,40 +295,6 @@ sstDepsDoStaging ()
         sstDepsAnnounce -h $FUNCNAME -m "No staging for Portals-4"
     fi
 
-  if [ ! -z "${SST_BUILD_CHDL}" ]
-    then
-        #-----------------------------------------------------------------------
-        # CHDL
-        #-----------------------------------------------------------------------
-        sstDepsStage_chdl
-        retval_chdl=$?
-        if [ $retval_chdl -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: chdl staging failure"
-            return $retval
-        fi
-
-	sstDepsStage_chdl_stl
-        retval_chdl=$?
-        if [ $retval_chdl -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: chdl staging failure"
-            return $retval
-        fi
-
-        sstDepsStage_chdl_module
-        retval_chdl=$?
-        if [ $retval_chdl -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: chdl staging failure"
-            return $retval
-        fi
-
-    fi
-
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -894,40 +860,6 @@ sstDepsDeploy ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_CHDL}" ]
-    then
-        #-----------------------------------------------------------------------
-        # CHDL
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_chdl
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: CHDL code deployment failure"
-            return $retval
-        fi
-
-	sstDepsDeploy_chdl_stl
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: CHDL-stl code deployment failure"
-            return $retval
-        fi
-
-	sstDepsDeploy_chdl_module
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: CHDL-module code deployment" \
-		 "failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -1142,16 +1074,6 @@ sstDepsDoQuery ()
         sstDepsQuery_omnet
     fi
 
-    if [ ! -z "${SST_BUILD_CHDL}" ]
-    then
-        #-----------------------------------------------------------------------
-        # CHDL
-        #-----------------------------------------------------------------------
-        sstDepsQuery_chdl
-	sstDepsQuery_chdl_stl
-	sstDepsQuery_chdl_module
-    fi
-
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -1327,7 +1249,6 @@ sstDepsDoDependencies ()
 #   -4 portals4 version (default|none|stabledevel) NO LONGER SUPORTED
 #   -I iris test version (default|none|stabledevel) NO LONGER SUPPORTED
 #   -a Ariel Pintool (2.13-61206)
-#   -c chdl (default)
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 
@@ -1820,17 +1741,6 @@ do
 #                    ;;
 #                none|default)  # Do not build Ariel Pin Tool
 #                    echo "# default: will not build Ariel Pin Tool"
-#                    ;;
-#            esac
-#            ;;
-#
-## NO LONGER SUPPORTED
-#        c)  # Build CHDL
-#            echo "# found the -c (chdl) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                none|default)  # Do not build CHDL
-#                    echo "# none:  will not build CHDL"
 #                    ;;
 #            esac
 #            ;;
