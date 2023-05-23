@@ -152,21 +152,6 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_BOOST}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Boost
-        #-----------------------------------------------------------------------
-        sstDepsStage_boost
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: Boost code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_GEM5}" ]
     then
         #-----------------------------------------------------------------------
@@ -770,22 +755,6 @@ sstDepsDeploy ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_BOOST}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Boost
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_boost
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: Boost deployment failure"
-            return $retval
-        fi
-    fi
-
-
     if [ ! -z "${SST_BUILD_MCPAT}" ]
     then
         #-----------------------------------------------------------------------
@@ -870,7 +839,6 @@ sstDepsDeploy ()
         #-----------------------------------------------------------------------
         # sstmacro
         #-----------------------------------------------------------------------
-        # NOTE: requires that Boost be deployed first
         sstDepsDeploy_sstmacro
         retval=$?
         if [ $retval -ne 0 ]
@@ -1103,15 +1071,6 @@ sstDepsDoQuery ()
         # ParMETIS
         #-----------------------------------------------------------------------
         sstDepsQuery_parmetis
-    fi
-
-
-    if [ ! -z "${SST_BUILD_BOOST}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Boost
-        #-----------------------------------------------------------------------
-        sstDepsQuery_boost
     fi
 
 
@@ -1356,7 +1315,6 @@ sstDepsDoDependencies ()
 #   1/6/23 - removed unused options
 #   -k DiskSim version (default|static|none) NO LONGER SUPPORTED
 #   -p ParMETIS version (default|3.1.1|none)
-#   -b Boost version (default|1.50|1.49|1.43|none)
 #   -g gem5 version (default|4.0|stabledevel|gcc-4.6.4|none)
 #   -m McPAT version (default|beta|none)
 #   -M macsim version (default|1.1|1.2_pre|1.2|2.0.3|2.0.4|2.1.0|2.2.0)
@@ -1551,20 +1509,6 @@ do
 #                    echo "# Unknown argument '$OPTARG', will not build ParMETIS"
 #                    ;;
 #            esac
-#            ;;
-## NO LONGER SUPPORTED
-#        b) # Boost
-#            echo "# found the -b (Boost) option, with value $OPTARG"
-#
-#            if [ $SST_DEPS_OS_NAME = "Darwin" ]
-#            then
-#                # Macos now uses modules to select Boost, no need to build it
-#                echo "#  NOTE: Sorry, -b option deprecated on Mac OS; Boost selection done in bamboo.sh"
-#
-#            else
-#                # Linux uses modules to select Boost, no need to build it
-#                echo "#  NOTE: Sorry, -b option deprecated on Linux"
-#            fi
 #            ;;
 ## NO LONGER SUPPORTED
 #        g) # sst-gem5

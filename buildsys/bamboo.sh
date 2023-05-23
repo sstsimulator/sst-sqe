@@ -1354,7 +1354,7 @@ setUPforMakeDisttest() {
      # unlike regular test, make dist does move bamboo to trunk
               ##  Here is the bamboo invocation within bamboo
      echo "         INVOKE bamboo for the build from the dist tar"
-     ./bamboo.sh $distScenario $SST_DIST_MPI $SST_DIST_BOOST $SST_DIST_PARAM4 $SST_DIST_CUDA $SST_DIST_PYTHON
+     ./bamboo.sh $distScenario $SST_DIST_MPI $_UNUSED $SST_DIST_PARAM4 $SST_DIST_CUDA $SST_DIST_PYTHON
      retval=$?
      echo "         Returned from bamboo.sh $retval"
      if [ $retval != 0 ] ; then
@@ -2221,7 +2221,7 @@ function ExitOfScriptHandler {
 # main
 # $1 = build type
 # $2 = MPI type
-# $3 = boost type
+# $3 = should always be "none"
 # $4 = compiler type
 # $5 = Cuda version
 # $6 = pythonX (X = 2 | 3)
@@ -2465,7 +2465,7 @@ if [ $# -lt 3 ] || [ $# -gt 6 ]
 then
     # need build type and MPI type as argument
 
-    echo "Usage : $0 <buildtype> <mpitype> <boost type> <[compiler type (optional)]> <[cuda version (optional)]> <[python3 version (optional)]>"
+    echo "Usage : $0 <buildtype> <mpitype> none <[compiler type (optional)]> <[cuda version (optional)]> <[python3 version (optional)]>"
     exit 0
 
 else
@@ -2496,7 +2496,7 @@ else
         default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3, $4, $5 and $6 in case they are need later
             SST_DIST_MPI=$2
-            SST_DIST_BOOST="none"
+            _UNUSED="none"
             SST_DIST_PARAM4=$4
             SST_DIST_CUDA=`echo $5 | sed 's/cuda-//g'`
             SST_DIST_PYTHON=$6
