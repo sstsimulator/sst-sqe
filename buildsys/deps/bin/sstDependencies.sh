@@ -137,21 +137,6 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_PARMETIS}" ]
-    then
-        #-----------------------------------------------------------------------
-        # ParMETIS
-        #-----------------------------------------------------------------------
-        sstDepsStage_parmetis
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: ParMETIS code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_MCPAT}" ]
     then
         #-----------------------------------------------------------------------
@@ -400,46 +385,6 @@ sstDepsPatchSource ()
 
     fi
 
-    if [ ! -z "${SST_BUILD_PARMETIS}" ]
-    then
-        #-----------------------------------------------------------------------
-        # ParMetis
-        #-----------------------------------------------------------------------
-        if [ $SST_DEPS_OS_NAME = "Linux" ]
-        then
-            # Patching to build for Linux
-            pushd ${SST_DEPS_SRC_STAGING}
-            patch -p0 -i ${SST_DEPS_PATCHFILES}/ParMetis.patch
-            retval=$?
-            if [ $retval -ne 0 ]
-            then
-                # bail out on error
-                echo "ERROR: sstDependencies.sh:  ParMetis (Linux) patch failure"
-                return $retval
-            fi
-
-            popd
-
-        elif [ $SST_DEPS_OS_NAME = "Darwin" ]
-        then
-            # Patching to build for Mac OS X
-            # REASON: Mac OS has malloc.h in /usr/include/sys, not /usr/include
-            pushd ${SST_DEPS_SRC_STAGING}
-            patch -p0 -i ${SST_DEPS_PATCHFILES}/ParMetis_MacOSX_include.patch
-            retval=$?
-            if [ $retval -ne 0 ]
-            then
-                # bail out on error
-                echo "ERROR: sstDependencies.sh:  ParMetis (Mac OS X) patch failure"
-                return $retval
-            fi
-
-            popd
-
-        fi
-    fi
-
-
     if [ ! -z ${SST_BUILD_OMNET} ]
     then
         #-----------------------------------------------------------------------
@@ -648,22 +593,6 @@ sstDepsDeploy ()
         then
             # bail out on error
             echo "ERROR: sstDependencies.sh: HybridSim deployment failure"
-            return $retval
-        fi
-    fi
-
-
-    if [ ! -z "${SST_BUILD_PARMETIS}" ]
-    then
-        #-----------------------------------------------------------------------
-        # ParMETIS
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_parmetis
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: ParMETIS deployment failure"
             return $retval
         fi
     fi
@@ -926,15 +855,6 @@ sstDepsDoQuery ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_PARMETIS}" ]
-    then
-        #-----------------------------------------------------------------------
-        # ParMETIS
-        #-----------------------------------------------------------------------
-        sstDepsQuery_parmetis
-    fi
-
-
     if [ ! -z "${SST_BUILD_MCPAT}" ]
     then
         #-----------------------------------------------------------------------
@@ -1156,7 +1076,6 @@ sstDepsDoDependencies ()
 #     - Assume that selecting all default is safest
 #   1/6/23 - removed unused options
 #   -k DiskSim version (default|static|none) NO LONGER SUPPORTED
-#   -p ParMETIS version (default|3.1.1|none)
 #   -m McPAT version (default|beta|none)
 #   -M macsim version (default|1.1|1.2_pre|1.2|2.0.3|2.0.4|2.1.0|2.2.0)
 #   -i IntSim version (default|static|none)
@@ -1332,23 +1251,6 @@ do
                     ;;
             esac
             ;;
-## NO LONGER SUPPORTED
-#        p) # ParMETIS
-#            echo "# found the -p (Parmetis) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                default|3.1.1) # build default ParMETIS
-#                    echo "# (default) 3.1.1: will build ParMETIS 3.1.1"
-#                    . ${SST_DEPS_BIN}/sstDep_parmetis_3.1.1.sh
-#                    ;;
-#                none) # do not build (explicit)
-#                    echo "# none: will not build ParMETIS"
-#                    ;;
-#                *) # unknown ParMETIS argument
-#                    echo "# Unknown argument '$OPTARG', will not build ParMETIS"
-#                    ;;
-#            esac
-#            ;;
 ## NO LONGER SUPPORTED
 #        m) # McPAT
 #            echo "# found the -m (Mcpat) option, with value $OPTARG"

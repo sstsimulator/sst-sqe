@@ -1002,37 +1002,6 @@ linuxSetMPI() {
            fi
            ;;
     esac
-
-    # Load other modules that were built with the default compiler
-    if [ $compiler = "default" ]
-    then
-        # METIS 5.1.0
-        echo "bamboo.sh: Load METIS 5.1.0"
-        if ModuleEx avail | grep bundled ; then
-            echo " Bingo ###################################################"
-            ModuleEx load metis/metis-5.1.0-bundled
-        elif ModuleEx avail metis/metis-5.1.0; then
-            ModuleEx load metis/metis-5.1.0
-        fi
-        echo "      This is what is loaded for METIS"
-        _metis_out=$(ModuleEx list | grep metis) || tmp=$?
-        echo "${_metis_out}"
-
-    else # otherwise try to load compiler-specific tool variant
-        # METIS 5.1.0
-        if ModuleEx avail | grep -E -q "metis/metis-5.1.0_${compiler}" ; then
-            if [[ ${compiler} != *intel-15* ]] ; then
-                echo "bamboo.sh: Load METIS 5.1.0 (gcc ${compiler} variant)"
-                ModuleEx load metis/metis-5.1.0_${compiler}
-                echo ' ####################################################################### '
-                echo "              DO NOT LOAD METIS FOR Intel 15  Compiler "
-                echo ' ####################################################################### '
-            fi
-        else
-            echo "bamboo.sh: module METIS 5.1.0 (gcc ${compiler} variant) Not Available"
-        fi
-        # Other misc
-    fi
 }
 
 
@@ -1051,10 +1020,6 @@ ldModules_MacOS_Clang() {
     ModuleEx unload mpi
 
     # Load other modules for $ClangVersion
-    # METIS 5.1.0
-    echo "bamboo.sh: Load METIS 5.1.0"
-    ModuleEx load metis/metis-5.1.0_$ClangVersion
-
     # PTH 2.0.7
     echo "bamboo.sh: Load PTH 2.0.7"
     ModuleEx load pth/pth-2.0.7
