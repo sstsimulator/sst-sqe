@@ -152,21 +152,6 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_GEM5}" ]
-    then
-        #-----------------------------------------------------------------------
-        # gem5
-        #-----------------------------------------------------------------------
-        sstDepsStage_gem5
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: gem5 code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_MCPAT}" ]
     then
         #-----------------------------------------------------------------------
@@ -285,14 +270,6 @@ sstDepsDoStaging ()
             echo "ERROR: sstDependencies.sh: Omnet++ code staging failure"
             return $retval
         fi
-    fi
-
-    if [ ! -z "${SST_BUILD_PORTALS4}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Portals4
-        #-----------------------------------------------------------------------
-        sstDepsAnnounce -h $FUNCNAME -m "No staging for Portals-4"
     fi
 
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
@@ -474,35 +451,6 @@ sstDepsPatchSource ()
         patch -p0 -i ${SST_DEPS_PATCHFILES}/omnet-4.1-diff.patch
         popd
     fi
-
-##     if [ ! -z "${SST_BUILD_PORTALS4}" ]
-##     then
-##         #-----------------------------------------------------------------------
-##         # Portals4
-##         #                 Gem5 is required
-##         #-----------------------------------------------------------------------
-##
-##         sstDepsAnnounce -h $FUNCNAME -m "Patching Gem5 SConscript for Portals 4"
-##
-##         if [ -z "${SST_BUILD_GEM5}" ]
-##         then
-##             echo "ERROR: sstDependencies.sh:  gem5 is required for Portals 4"
-##             return -1
-##         fi
-##                 pushd ${SST_DEPS_SRC_STAGED_GEM5}
-##                 cd src
-##                 patch -p0 -i ${SST_DEPS_PATCHFILES}/gem5-patched-portals4.patch
-##                 retval=$?
-##                 if [ $retval -ne 0 ]
-##                 then
-##                 # bail out on error
-##                     echo "ERROR: sstDependencies.sh:  gem5 ( portals4 ) patch failure"
-##                     return $retval
-##                 fi
-##
-##                 cd ..
-##                 popd
-##     fi
 
     if [ ! -z "${SST_BUILD_IRIS}" ]
     then
@@ -905,25 +853,6 @@ sstDepsDeploy ()
         fi
     fi
 
-    #     Put Gem5 Last, so no one else can be affected by gcc module hanky-panky
-
-    if [ ! -z "${SST_BUILD_GEM5}" ]
-    then
-        #-----------------------------------------------------------------------
-        # gem5
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_gem5
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: gem5 deployment failure"
-            return $retval
-        fi
-    fi
-
-    #     Put Gem5 Last, so no one else can be affected by gcc module hanky-panky
-
 }
 
 #-------------------------------------------------------------------------------
@@ -1003,15 +932,6 @@ sstDepsDoQuery ()
         # ParMETIS
         #-----------------------------------------------------------------------
         sstDepsQuery_parmetis
-    fi
-
-
-    if [ ! -z "${SST_BUILD_GEM5}" ]
-    then
-        #-----------------------------------------------------------------------
-        # gem5
-        #-----------------------------------------------------------------------
-        sstDepsQuery_gem5
     fi
 
 
@@ -1237,7 +1157,6 @@ sstDepsDoDependencies ()
 #   1/6/23 - removed unused options
 #   -k DiskSim version (default|static|none) NO LONGER SUPPORTED
 #   -p ParMETIS version (default|3.1.1|none)
-#   -g gem5 version (default|4.0|stabledevel|gcc-4.6.4|none)
 #   -m McPAT version (default|beta|none)
 #   -M macsim version (default|1.1|1.2_pre|1.2|2.0.3|2.0.4|2.1.0|2.2.0)
 #   -i IntSim version (default|static|none)
@@ -1246,7 +1165,6 @@ sstDepsDoDependencies ()
 #   -s sstmacro version (default|2.2.0|2.3.0|2.4.0-beta1|2.4.0|stabledevel|none)
 #   -q qsim version (default|0.1.3|SST-2.3|stabledevel|none)
 #   -e phoenixsim (default)
-#   -4 portals4 version (default|none|stabledevel) NO LONGER SUPORTED
 #   -I iris test version (default|none|stabledevel) NO LONGER SUPPORTED
 #   -a Ariel Pintool (2.13-61206)
 #-----------------------------------------------------------------------
@@ -1428,71 +1346,6 @@ do
 #                    ;;
 #                *) # unknown ParMETIS argument
 #                    echo "# Unknown argument '$OPTARG', will not build ParMETIS"
-#                    ;;
-#            esac
-#            ;;
-## NO LONGER SUPPORTED
-#        g) # sst-gem5
-#            echo "# found the -g (Gem5) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                SST-3.1.1) # build for 3.1.1 release
-#                    echo "# SST-3.1.1: will build gem5 3.1.1 tagged"
-#                    . ${SST_DEPS_BIN}/sstDep_gem5_SST-3.1.1.sh
-#                    ;;
-#                SST-3.1.1-with-sstdevice) # build for 3.1.1 release (with SSTDEVICE enabled)
-#                    echo "# SST-3.1.1: will build gem5 3.1.1 tagged (with SSTDEVICE enabled)"
-#                    . ${SST_DEPS_BIN}/sstDep_gem5_SST-3.1.1_with_sstdevice.sh
-#                    ;;
-#                SST-3.1.0) # build for 3.1.0 release
-#                    echo "# SST-3.1.0: will build gem5 3.1.0 tagged"
-#                    . ${SST_DEPS_BIN}/sstDep_gem5_SST-3.1.0.sh
-#                    ;;
-#                SST-3.1.0-with-sstdevice) # build for 3.1.0 release (with SSTDEVICE enabled)
-#                    echo "# SST-3.1.0: will build gem5 3.1.0 tagged (with SSTDEVICE enabled)"
-#                    . ${SST_DEPS_BIN}/sstDep_gem5_SST-3.1.0_with_sstdevice.sh
-#                    ;;
-#                SST-3.0.0) # build for 3.0.0 release
-#                    echo "# SST-3.0.0: will build gem5 3.0.0 tagged"
-#                    . ${SST_DEPS_BIN}/sstDep_gem5_SST-3.0.0.sh
-#                    ;;
-#                SST-2.3.1) # build for 2.3.1 release
-#                    echo "# SST-2.3.0: will build gem5 2.3.1 tagged"
-#                    . ${SST_DEPS_BIN}/sstDep_gem5_SST-2.3.1.sh
-#                    ;;
-#                SST-2.3.0) # build for 2.3.0 release
-#                    echo "# SST-2.3.0: will build gem5 2.3.0 tagged"
-#                    . ${SST_DEPS_BIN}/sstDep_gem5_SST-2.3.0.sh
-#                    ;;
-#                stabledevel) # build latest sst-gem5
-#                    echo "# stabledevel: will build latest repository sst-gem5"
-#                    . ${SST_DEPS_BIN}/sstDep_gem5_stabledevel.sh
-#                    ;;
-#                stabledevel-with-sstdevice) # build latest sst-gem5 (with SSTDEVICE enabled)
-#                    echo "# stabledevel-with-sstdevice: will build latest repository sst-gem5 (with SSTDEVICE enabled)"
-#                    . ${SST_DEPS_BIN}/sstDep_gem5_stabledevel_with_sstdevice.sh
-#                    ;;
-#                stabledevel-static) # build latest sst-gem5 (static library)
-#                    echo "# stabledevel-static: will build latest repository sst-gem5 (static library)"
-#                    . ${SST_DEPS_BIN}/sstDep_gem5_stabledevel_static.sh
-#                    ;;
-#                gcc-4.6.4) # build latest sst-gem5 using gcc-4.6.4
-#                    echo "# gcc-4.6.4: will build latest repository sst-gem5 using gcc-4.6.4"
-#                    . ${SST_DEPS_BIN}/sstDep_gem5_mixed_ompi_1.7.2_gcc_4.6.4.sh
-#                    ;;
-#                default|004) # build default sst-gem5
-#                    # Don't build for Mac OS X
-#                    if [ ! $SST_DEPS_OS_NAME = "Darwin" ]
-#                    then
-#                        echo "# (default) 004: will build sst-gem5 v004"
-#                        . ${SST_DEPS_BIN}/sstDep_gem5_sstv004.sh
-#                    fi
-#                    ;;
-#                none) # do not build (explicit)
-#                    echo "# none: will not build gem5"
-#                    ;;
-#                *) # unknown gem5 argument
-#                    echo "# Unknown argument '$OPTARG', will not build gem5"
 #                    ;;
 #            esac
 #            ;;
@@ -1697,20 +1550,6 @@ do
 #                    echo "#default build of Omnet++"
 #                   # Linux uses modules to select OMNET++, no need to build it
 #                    echo "#  NOTE: Sorry, -e option deprecated on Linux. Using prebuilt under Modules."
-#                    ;;
-#            esac
-#            ;;
-##  NO LONGER SUPPORTED
-#        4)  # Do portals 4
-#            echo "# found the -4 (portals4) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                stabledevel)   # Test Portals 4
-#                    echo "# stabledevel: will use Portals 4"
-#                    . ${SST_DEPS_BIN}/sstDep_portals4_stabledevel.sh
-#                    ;;
-#                none|default)  # Do not do the Portals 4 test
-#                    echo "# default: will not test Portals 4"
 #                    ;;
 #            esac
 #            ;;
