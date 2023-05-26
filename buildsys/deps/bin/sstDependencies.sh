@@ -152,21 +152,6 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_INTSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # IntSim
-        #-----------------------------------------------------------------------
-        sstDepsStage_intsim
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: IntSim code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_ORION}" ]
     then
         #-----------------------------------------------------------------------
@@ -571,22 +556,6 @@ sstDepsDeploy ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_INTSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # IntSim
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_intsim
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: IntSim deployment failure"
-            return $retval
-        fi
-    fi
-
-
     if [ ! -z "${SST_BUILD_ORION}" ]
     then
         #-----------------------------------------------------------------------
@@ -805,15 +774,6 @@ sstDepsDoQuery ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_INTSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # IntSim
-        #-----------------------------------------------------------------------
-        sstDepsQuery_intsim
-    fi
-
-
     if [ ! -z "${SST_BUILD_ORION}" ]
     then
         #-----------------------------------------------------------------------
@@ -1018,7 +978,6 @@ sstDepsDoDependencies ()
 #   1/6/23 - removed unused options
 #   -k DiskSim version (default|static|none) NO LONGER SUPPORTED
 #   -m McPAT version (default|beta|none)
-#   -i IntSim version (default|static|none)
 #   -o ORION version (default|static|none)
 #   -h HotSpot version (default|static|none)
 #   -s sstmacro version (default|2.2.0|2.3.0|2.4.0-beta1|2.4.0|stabledevel|none)
@@ -1205,23 +1164,6 @@ do
 #                    ;;
 #                *) # unknown gem5 argument
 #                    echo "# Unknown argument '$OPTARG', will not build McPAT"
-#                    ;;
-#            esac
-#            ;;
-## NO LONGER SUPPORTED
-#        i) # IntSim
-#            echo "# found the -i (Intsim) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                default|static) # build default IntSim
-#                    echo "# (default) static: will build static IntSim"
-#                    . ${SST_DEPS_BIN}/sstDep_intsim_static.sh
-#                    ;;
-#                none) # do not build (explicit)
-#                    echo "# none: will not build IntSim"
-#                    ;;
-#                *) # unknown gem5 argument
-#                    echo "# Unknown argument '$OPTARG', will not build IntSim"
 #                    ;;
 #            esac
 #            ;;
