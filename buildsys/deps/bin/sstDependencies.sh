@@ -122,21 +122,6 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_ORION}" ]
-    then
-        #-----------------------------------------------------------------------
-        # ORION
-        #-----------------------------------------------------------------------
-        sstDepsStage_orion
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: ORION code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_HOTSPOT}" ]
     then
         #-----------------------------------------------------------------------
@@ -429,22 +414,6 @@ sstDepsDeploy ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_ORION}" ]
-    then
-        #-----------------------------------------------------------------------
-        # ORION
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_orion
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: ORION deployment failure"
-            return $retval
-        fi
-    fi
-
-
     if [ ! -z "${SST_BUILD_HOTSPOT}" ]
     then
         #-----------------------------------------------------------------------
@@ -596,15 +565,6 @@ sstDepsDoQuery ()
         # HybridSim
         #-----------------------------------------------------------------------
         sstDepsQuery_hybridsim
-    fi
-
-
-    if [ ! -z "${SST_BUILD_ORION}" ]
-    then
-        #-----------------------------------------------------------------------
-        # ORION
-        #-----------------------------------------------------------------------
-        sstDepsQuery_orion
     fi
 
 
@@ -785,7 +745,6 @@ sstDepsDoDependencies ()
 #     - ALL arguments are mandatory
 #     - Assume that selecting all default is safest
 #   1/6/23 - removed unused options
-#   -o ORION version (default|static|none)
 #   -h HotSpot version (default|static|none)
 #   -s sstmacro version (default|2.2.0|2.3.0|2.4.0-beta1|2.4.0|stabledevel|none)
 #   -I iris test version (default|none|stabledevel) NO LONGER SUPPORTED
@@ -934,23 +893,6 @@ do
                     ;;
             esac
             ;;
-## NO LONGER SUPPORTED
-#        o) # ORION
-#            echo "# found the -o (Orion) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                default|static) # build default Orion
-#                    echo "# (default) static: will build static Orion"
-#                    . ${SST_DEPS_BIN}/sstDep_orion_static.sh
-#                    ;;
-#                none) # do not build (explicit)
-#                    echo "# none: will not build Orion"
-#                    ;;
-#                *) # unknown gem5 argument
-#                    echo "# Unknown argument '$OPTARG', will not build Orion"
-#                    ;;
-#            esac
-#            ;;
 ## NO LONGER SUPPORTED
 #        h) # HotSpot
 #            echo "# found the -h (Hotspot) option, with value $OPTARG"
