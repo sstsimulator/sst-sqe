@@ -359,21 +359,6 @@ sstDepsDeploy ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_ARIEL_PIN}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Ariel Pintool
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_ariel-pin
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: Ariel Pintotl code deployment failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -643,15 +628,12 @@ sstDepsDoDependencies ()
 #   NOTE:
 #     - ALL arguments are mandatory
 #     - Assume that selecting all default is safest
-#   1/6/23 - removed unused options
-#   -a Ariel Pintool (2.13-61206)
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 
 # use getopts
 OPTIND=1
 
-#while getopts :k:D:d:p:z:b:g:G:m:M:i:o:h:H:r:s:q:e:4:I:N:a:c:A: opt
 while getopts :D:d:G:H:r:N:A: opt
 
 do
@@ -789,22 +771,6 @@ do
                     ;;
             esac
             ;;
-## LOADED AS MODULE, NOT BUILT
-#        a)  # Build Ariel Pin Tool
-#            echo "# found the -a (Ariel Pin Tool) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                2.13-61206)   # Build Ariel Pin Tool
-#                    echo "# 2.13-61206: Build Ariel Pin Tool"
-#                    . ${SST_DEPS_BIN}/sstDep_ariel-pin-2.13-61206.sh
-#                    ;;
-#                none|default)  # Do not build Ariel Pin Tool
-#                    echo "# default: will not build Ariel Pin Tool"
-#                    ;;
-#            esac
-#            ;;
-#
-
         *) echo "# unknown option: $opt"
             ;;
     esac
@@ -839,4 +805,3 @@ then
     echo "# to a script file and sourcing it from your shell."
     sstDepsDoQuery
 fi
-
