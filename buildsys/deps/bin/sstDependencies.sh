@@ -137,21 +137,6 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_SSTMACRO}" ]
-    then
-        #-----------------------------------------------------------------------
-        # sstmacro
-        #-----------------------------------------------------------------------
-        sstDepsStage_sstmacro
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: sstmacro code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -256,20 +241,6 @@ sstDepsPatchSource ()
         # fi
 
     fi
-
-    if [ ! -z ${SST_BUILD_SSTMACRO_2_3_0} ]
-    then
-	#-----------------------------------------------------------------------
-	# sstmacro-2.3.0
-	#-----------------------------------------------------------------------
-			# Patch sstmacro-2.3.0
-			pushd ${SST_DEPS_SRC_STAGING}/sstmacro-2.3.0
-			sstDepsAnnounce -h $FUNCNAME -m "Patching sstmacro"
-			patch -p0 -i ${SST_DEPS_PATCHFILES}/sstmacro-2.3.0.patch
-    			popd
-	fi
-
-
 
     if [ ! -z ${SST_BUILD_RAMULATOR_STABLEDEVEL} ]
     then
@@ -418,21 +389,6 @@ sstDepsDeploy ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_SSTMACRO}" ]
-    then
-        #-----------------------------------------------------------------------
-        # sstmacro
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_sstmacro
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: sstmacro deployment failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_ARIEL_PIN}" ]
     then
         #-----------------------------------------------------------------------
@@ -563,14 +519,6 @@ sstDepsDoQuery ()
         # HotSpot
         #-----------------------------------------------------------------------
         sstDepsQuery_hotspot
-    fi
-
-    if [ ! -z "${SST_BUILD_SSTMACRO}" ]
-    then
-        #-----------------------------------------------------------------------
-        # sstmacro
-        #-----------------------------------------------------------------------
-        sstDepsQuery_sstmacro
     fi
 
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
@@ -735,7 +683,6 @@ sstDepsDoDependencies ()
 #     - Assume that selecting all default is safest
 #   1/6/23 - removed unused options
 #   -h HotSpot version (default|static|none)
-#   -s sstmacro version (default|2.2.0|2.3.0|2.4.0-beta1|2.4.0|stabledevel|none)
 #   -a Ariel Pintool (2.13-61206)
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
@@ -895,39 +842,6 @@ do
 #                    ;;
 #                *) # unknown gem5 argument
 #                    echo "# Unknown argument '$OPTARG', will not build HotSpot"
-#                    ;;
-#            esac
-#            ;;
-## MACRO IS NO LONGER DEPLOYED THIS WAY
-#        s) # sstmacro
-#            echo "# found the -s (sstmacro) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                2.2.0) # build sstmacro 2.2.0
-#                    echo "# 2.2.0: will build sstmacro 2.2.0"
-#                    . ${SST_DEPS_BIN}/sstDep_sstmacro_2.2.0.sh
-#                    ;;
-#                default|2.3.0) # build sstmacro 2.3.0
-#                    echo "# 2.3.0: will build sstmacro 2.3.0"
-#                    . ${SST_DEPS_BIN}/sstDep_sstmacro_2.3.0.sh
-#                    ;;
-#                2.4.0) # build sstmacro 2.4.0
-#                    echo "# 2.4.0: will build sstmacro 2.4.0"
-#                    . ${SST_DEPS_BIN}/sstDep_sstmacro_2.4.0.sh
-#                    ;;
-#                2.4.0-beta1) # build sstmacro 2.4.0
-#                    echo "# 2.4.0-beta1: will build sstmacro 2.4.0-beta1"
-#                    . ${SST_DEPS_BIN}/sstDep_sstmacro_2.4.0-beta1.sh
-#                    ;;
-#                stabledevel) # build latest sstmacro
-#                    echo "# default: will build latest repository sstmacro"
-#                    . ${SST_DEPS_BIN}/sstDep_sstmacro_stabledevel.sh
-#                    ;;
-#                none) # do not build (explicit)
-#                    echo "# none: will not build sstmacro"
-#                    ;;
-#                *) # unknown sstmacro argument
-#                    echo "# Unknown argument '$OPTARG', will not build sstmacro"
 #                    ;;
 #            esac
 #            ;;
