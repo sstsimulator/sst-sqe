@@ -47,21 +47,6 @@ sstDepsDoStaging ()
     # staging. Staging order should not matter here.
     #
 
-    if [ ! -z "${SST_BUILD_DISKSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # DiskSim
-        #-----------------------------------------------------------------------
-        sstDepsStage_disksim
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: DiskSim code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_DRAMSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -278,29 +263,6 @@ sstDepsPatchSource ()
     # Patch source packages in the staging area as needed
     #
 
-    if [ ! -z "${SST_BUILD_DISKSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # DiskSim
-        #-----------------------------------------------------------------------
-        # If an x86_64 Linux platform, patch DiskSim
-        if [ $SST_DEPS_CPU_ARCH = "x86_64" ]
-        then
-            pushd ${SST_DEPS_SRC_STAGING}
-            sstDepsAnnounce -h $FUNCNAME -m "Patching DiskSim"
-            patch -p1 -i ${SST_DEPS_PATCHFILES}/disksim_4.0_64bit.patch
-            retval=$?
-            if [ $retval -ne 0 ]
-            then
-                # bail out on error
-                echo "ERROR: sstDependencies.sh:  DiskSim patch failure"
-                return $retval
-            fi
-
-            popd
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_DRAMSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -420,22 +382,6 @@ sstDepsDeploy ()
     #
     # Deploy each dependency
     #
-
-    if [ ! -z "${SST_BUILD_DISKSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # DiskSim
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_disksim
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: DiskSim deployment failure"
-            return $retval
-        fi
-    fi
-
 
     if [ ! -z "${SST_BUILD_DRAMSIM}" ]
     then
@@ -671,15 +617,6 @@ sstDepsDoQuery ()
     #
     # Query each dependency
     #
-
-    if [ ! -z "${SST_BUILD_DISKSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # DiskSim
-        #-----------------------------------------------------------------------
-        sstDepsQuery_disksim
-    fi
-
 
     if [ ! -z "${SST_BUILD_DRAMSIM}" ]
     then
@@ -926,7 +863,6 @@ sstDepsDoDependencies ()
 #     - ALL arguments are mandatory
 #     - Assume that selecting all default is safest
 #   1/6/23 - removed unused options
-#   -k DiskSim version (default|static|none) NO LONGER SUPPORTED
 #   -m McPAT version (default|beta|none)
 #   -o ORION version (default|static|none)
 #   -h HotSpot version (default|static|none)
@@ -945,27 +881,6 @@ while getopts :D:d:G:H:r:N:A: opt
 
 do
     case "$opt" in
-### NO LONGER SUPPORTED
-#        k) # DiskSim
-#            echo "# found the -k (disKsim) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                default|static) # build default DiskSim
-#                    echo "# (default) static: will build static DiskSim (except on MacOS)"
-#                        # Do not build DiskSim on Mac OS X or 32-bit Linux
-#                    if [ ! $SST_DEPS_OS_NAME = "Darwin" ]
-#                    then
-#                        . ${SST_DEPS_BIN}/sstDep_disksim_4.0.sh
-#                    fi
-#                    ;;
-#                none) # do not build (explicit)
-#                    echo "# none: will not build DiskSim"
-#                    ;;
-#                *) # unknown DiskSim argument
-#                    echo "# Unknown argument '$OPTARG', will not build DiskSim"
-#                    ;;
-#            esac
-#            ;;
         d) # DRAMSim
             echo "# found the -d (Dramsim) option, with value $OPTARG"
             # process arg
