@@ -152,21 +152,6 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_MACSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Macsim
-        #-----------------------------------------------------------------------
-        sstDepsStage_macsim
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: Macsim code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_INTSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -422,34 +407,6 @@ sstDepsPatchSource ()
 
 
 
-    if [ ! -z ${SST_BUILD_MACSIM_2_0_3} ]
-    then
-        #-----------------------------------------------------------------------
-        # macsim-2.0.3
-        #-----------------------------------------------------------------------
-
-             # Patch macsim-2.0.3
-             # Assumes pwd is SST_ROOT  (trunk)
-
-             cd $SST_ROOT
-             sstDepsAnnounce -h $FUNCNAME -m "Patching macsim-2.0.3"
-             patch -p0 -i ${SST_DEPS_PATCHFILES}/macsim_2.0.3.patch
-    fi
-
-    if [ ! -z ${SST_BUILD_MACSIM_2_0_4} ]
-    then
-        #-----------------------------------------------------------------------
-        # macsim-2.0.4
-        #-----------------------------------------------------------------------
-
-             # Patch macsim-2.0.4
-             # Assumes pwd is SST_ROOT  (trunk)
-
-             cd $SST_ROOT
-             sstDepsAnnounce -h $FUNCNAME -m "Patching macsim-2.0.4"
-             patch -p0 -i ${SST_DEPS_PATCHFILES}/macsim_2.0.4.patch
-    fi
-
     if [ ! -z ${SST_BUILD_RAMULATOR_STABLEDEVEL} ]
     then
         #-----------------------------------------------------------------------
@@ -609,22 +566,6 @@ sstDepsDeploy ()
         then
             # bail out on error
             echo "ERROR: sstDependencies.sh: McPAT deployment failure"
-            return $retval
-        fi
-    fi
-
-
-    if [ ! -z "${SST_BUILD_MACSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Macsim
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_macsim
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: Macsim deployment failure"
             return $retval
         fi
     fi
@@ -1077,7 +1018,6 @@ sstDepsDoDependencies ()
 #   1/6/23 - removed unused options
 #   -k DiskSim version (default|static|none) NO LONGER SUPPORTED
 #   -m McPAT version (default|beta|none)
-#   -M macsim version (default|1.1|1.2_pre|1.2|2.0.3|2.0.4|2.1.0|2.2.0)
 #   -i IntSim version (default|static|none)
 #   -o ORION version (default|static|none)
 #   -h HotSpot version (default|static|none)
@@ -1267,55 +1207,6 @@ do
 #                    echo "# Unknown argument '$OPTARG', will not build McPAT"
 #                    ;;
 #            esac
-#            ;;
-## NO LONGER SUPPORTED
-#        M) # Macsim
-#            echo "# found the -M (Macsim) option, with value $OPTARG"
-#
-#      echo "#    MACsim doesn't build with PDES core"
-#      if [ ! 0 ] ; then
-#            # process arg
-#            case "$OPTARG" in
-#                default) # build default Macsim
-#                    echo "# build Macsim"
-#                    . ${SST_DEPS_BIN}/sstDep_macsim.sh
-#                    ;;
-#                1.1) # build Macsim 1.1
-#                    echo "# 1.1: build Macsim 1.1"
-#                    . ${SST_DEPS_BIN}/sstDep_macsim_1.1.sh
-#                    ;;
-#                1.2_pre) # build Macsim 1.2_pre
-#                    echo "# 1.2_pre: build Macsim 1.2_pre"
-#                    . ${SST_DEPS_BIN}/sstDep_macsim_1.2_pre.sh
-#                    ;;
-#                1.2) # build Macsim 1.2
-#                    echo "# 1.2: build Macsim 1.2"
-#                    . ${SST_DEPS_BIN}/sstDep_macsim_1.2.sh
-#                    ;;
-#                2.0.3) # build Macsim 2.0.3
-#                    echo "# 2.0.3: build Macsim 2.0.3"
-#                    . ${SST_DEPS_BIN}/sstDep_macsim_2.0.3.sh
-#                    ;;
-#                2.0.4) # build Macsim 2.0.4
-#                    echo "# 2.0.4: build Macsim 2.0.4"
-#                    . ${SST_DEPS_BIN}/sstDep_macsim_2.0.4.sh
-#                    ;;
-#                2.1.0) # build Macsim 2.1.0
-#                    echo "# 2.1.0: build Macsim 2.1.0"
-#                    . ${SST_DEPS_BIN}/sstDep_macsim_2.1.0.sh
-#                    ;;
-#                2.2.0) # build Macsim 2.2.0
-#                    echo "# 2.2.0: build Macsim 2.2.0"
-#                    . ${SST_DEPS_BIN}/sstDep_macsim_2.2.0.sh
-#                    ;;
-#                none) # do not build (explicit)
-#                    echo "# none: will not build Macsim"
-#                    ;;
-#                *) # unknown gem5 argument
-#                    echo "# Unknown argument '$OPTARG', will not build Macsim"
-#                    ;;
-#            esac
-#      fi
 #            ;;
 ## NO LONGER SUPPORTED
 #        i) # IntSim
