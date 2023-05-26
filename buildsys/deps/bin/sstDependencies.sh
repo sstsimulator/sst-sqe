@@ -212,21 +212,6 @@ sstDepsDoStaging ()
         fi
     fi
 
-  if [ ! -z "${SST_BUILD_OMNET}" ]
-    then
-        #-----------------------------------------------------------------------
-        # PhoenixSim
-        #-----------------------------------------------------------------------
-        sstDepsStage_omnet
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: Omnet++ code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -353,18 +338,6 @@ sstDepsPatchSource ()
         #     popd
         # fi
 
-    fi
-
-    if [ ! -z ${SST_BUILD_OMNET} ]
-    then
-        #-----------------------------------------------------------------------
-        # PhoenixSim/OMNeT++ 4.1
-        #-----------------------------------------------------------------------
-        # On any platform, patch OMNeT++ 4.1
-        pushd ${SST_DEPS_SRC_STAGING}
-        sstDepsAnnounce -h $FUNCNAME -m "Patching Omnet++"
-        patch -p0 -i ${SST_DEPS_PATCHFILES}/omnet-4.1-diff.patch
-        popd
     fi
 
     if [ ! -z "${SST_BUILD_IRIS}" ]
@@ -617,21 +590,6 @@ sstDepsDeploy ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_OMNET}" ]
-    then
-        #-----------------------------------------------------------------------
-        # PhoenixSim
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_omnet
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: Omnet++ code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_ARIEL_PIN}" ]
     then
         #-----------------------------------------------------------------------
@@ -807,14 +765,6 @@ sstDepsDoQuery ()
         sstDepsQuery_qsim
     fi
 
-    if [ ! -z "${SST_BUILD_PHOENIXSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Omnet++ / PhoenixSim
-        #-----------------------------------------------------------------------
-        sstDepsQuery_omnet
-    fi
-
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -982,7 +932,6 @@ sstDepsDoDependencies ()
 #   -h HotSpot version (default|static|none)
 #   -s sstmacro version (default|2.2.0|2.3.0|2.4.0-beta1|2.4.0|stabledevel|none)
 #   -q qsim version (default|0.1.3|SST-2.3|stabledevel|none)
-#   -e phoenixsim (default)
 #   -I iris test version (default|none|stabledevel) NO LONGER SUPPORTED
 #   -a Ariel Pintool (2.13-61206)
 #-----------------------------------------------------------------------
@@ -1276,17 +1225,6 @@ do
 #                        echo "# Unknown argument '$OPTARG', will not build Qsim"
 #                        ;;
 #                esac
-#            ;;
-##  NO LONGER SUPPORTED
-#        e) # OMNeT++ / PhoenixSim
-#            echo "# found the -e (omnet++/PhoenixSim) option, with value $OPTARG"
-#            case "$OPTARG" in
-#                *) # build default version of PhoenixSim
-#                    echo "#default build of Omnet++"
-#                   # Linux uses modules to select OMNET++, no need to build it
-#                    echo "#  NOTE: Sorry, -e option deprecated on Linux. Using prebuilt under Modules."
-#                    ;;
-#            esac
 #            ;;
 ##  NO LONGER SUPPORTED
 #        I)  # Do Iris test
