@@ -122,21 +122,6 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_MCPAT}" ]
-    then
-        #-----------------------------------------------------------------------
-        # McPAT
-        #-----------------------------------------------------------------------
-        sstDepsStage_mcpat
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: McPAT code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_ORION}" ]
     then
         #-----------------------------------------------------------------------
@@ -459,22 +444,6 @@ sstDepsDeploy ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_MCPAT}" ]
-    then
-        #-----------------------------------------------------------------------
-        # McPAT
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_mcpat
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: McPAT deployment failure"
-            return $retval
-        fi
-    fi
-
-
     if [ ! -z "${SST_BUILD_ORION}" ]
     then
         #-----------------------------------------------------------------------
@@ -657,15 +626,6 @@ sstDepsDoQuery ()
         # HybridSim
         #-----------------------------------------------------------------------
         sstDepsQuery_hybridsim
-    fi
-
-
-    if [ ! -z "${SST_BUILD_MCPAT}" ]
-    then
-        #-----------------------------------------------------------------------
-        # McPAT
-        #-----------------------------------------------------------------------
-        sstDepsQuery_mcpat
     fi
 
 
@@ -863,7 +823,6 @@ sstDepsDoDependencies ()
 #     - ALL arguments are mandatory
 #     - Assume that selecting all default is safest
 #   1/6/23 - removed unused options
-#   -m McPAT version (default|beta|none)
 #   -o ORION version (default|static|none)
 #   -h HotSpot version (default|static|none)
 #   -s sstmacro version (default|2.2.0|2.3.0|2.4.0-beta1|2.4.0|stabledevel|none)
@@ -1014,23 +973,6 @@ do
                     ;;
             esac
             ;;
-## NO LONGER SUPPORTED
-#        m) # McPAT
-#            echo "# found the -m (Mcpat) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                default|beta) # build default McPAT
-#                    echo "# (default) beta: will build McPAT beta"
-#                    . ${SST_DEPS_BIN}/sstDep_mcpat_beta.sh
-#                    ;;
-#                none) # do not build (explicit)
-#                    echo "# none: will not build McPaT"
-#                    ;;
-#                *) # unknown gem5 argument
-#                    echo "# Unknown argument '$OPTARG', will not build McPAT"
-#                    ;;
-#            esac
-#            ;;
 ## NO LONGER SUPPORTED
 #        o) # ORION
 #            echo "# found the -o (Orion) option, with value $OPTARG"
