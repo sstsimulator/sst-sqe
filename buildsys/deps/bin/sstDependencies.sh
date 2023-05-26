@@ -122,21 +122,6 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_HOTSPOT}" ]
-    then
-        #-----------------------------------------------------------------------
-        # HotSpot
-        #-----------------------------------------------------------------------
-        sstDepsStage_hotspot
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: HOTSPOT code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -374,21 +359,6 @@ sstDepsDeploy ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_HOTSPOT}" ]
-    then
-        #-----------------------------------------------------------------------
-        # HotSpot
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_hotspot
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: HotSpot deployment failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_ARIEL_PIN}" ]
     then
         #-----------------------------------------------------------------------
@@ -512,14 +482,6 @@ sstDepsDoQuery ()
         sstDepsQuery_hybridsim
     fi
 
-
-    if [ ! -z "${SST_BUILD_HOTSPOT}" ]
-    then
-        #-----------------------------------------------------------------------
-        # HotSpot
-        #-----------------------------------------------------------------------
-        sstDepsQuery_hotspot
-    fi
 
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
@@ -682,7 +644,6 @@ sstDepsDoDependencies ()
 #     - ALL arguments are mandatory
 #     - Assume that selecting all default is safest
 #   1/6/23 - removed unused options
-#   -h HotSpot version (default|static|none)
 #   -a Ariel Pintool (2.13-61206)
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
@@ -828,23 +789,6 @@ do
                     ;;
             esac
             ;;
-## NO LONGER SUPPORTED
-#        h) # HotSpot
-#            echo "# found the -h (Hotspot) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                default|static) # build default HotSpot
-#                    echo "# (default) static: will build static HotSpot"
-#                    . ${SST_DEPS_BIN}/sstDep_hotspot_static.sh
-#                    ;;
-#                none) # do not build (explicit)
-#                    echo "# none: will not build HotSpot"
-#                    ;;
-#                *) # unknown gem5 argument
-#                    echo "# Unknown argument '$OPTARG', will not build HotSpot"
-#                    ;;
-#            esac
-#            ;;
 ## LOADED AS MODULE, NOT BUILT
 #        a)  # Build Ariel Pin Tool
 #            echo "# found the -a (Ariel Pin Tool) option, with value $OPTARG"
