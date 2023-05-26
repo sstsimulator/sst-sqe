@@ -386,10 +386,8 @@ if [ $? != 0 ] ; then
     wc $VGout
     return
 fi
-#Add for qsim
     date
     ls -l $VGout
-###  ------
     grep ERROR.SUMMARY $VGout | sed s/ERROR//
 contextNumber=`grep ERROR.SUMMARY $VGout | awk '{print $7}'`
 if [ $contextNumber -gt 0 ] ; then

@@ -167,21 +167,6 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_QSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Qsim
-        #-----------------------------------------------------------------------
-        sstDepsStage_qsim
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: Qsim code staging failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
         #-----------------------------------------------------------------------
@@ -490,21 +475,6 @@ sstDepsDeploy ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_QSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Qsim
-        #-----------------------------------------------------------------------
-        sstDepsDeploy_qsim
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # bail out on error
-            echo "ERROR: sstDependencies.sh: Qsim deployment failure"
-            return $retval
-        fi
-    fi
-
     if [ ! -z "${SST_BUILD_ARIEL_PIN}" ]
     then
         #-----------------------------------------------------------------------
@@ -652,14 +622,6 @@ sstDepsDoQuery ()
         # sstmacro
         #-----------------------------------------------------------------------
         sstDepsQuery_sstmacro
-    fi
-
-    if [ ! -z "${SST_BUILD_QSIM}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Qsim
-        #-----------------------------------------------------------------------
-        sstDepsQuery_qsim
     fi
 
     if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
@@ -826,7 +788,6 @@ sstDepsDoDependencies ()
 #   -o ORION version (default|static|none)
 #   -h HotSpot version (default|static|none)
 #   -s sstmacro version (default|2.2.0|2.3.0|2.4.0-beta1|2.4.0|stabledevel|none)
-#   -q qsim version (default|0.1.3|SST-2.3|stabledevel|none)
 #   -I iris test version (default|none|stabledevel) NO LONGER SUPPORTED
 #   -a Ariel Pintool (2.13-61206)
 #-----------------------------------------------------------------------
@@ -1039,49 +1000,6 @@ do
 #                    echo "# Unknown argument '$OPTARG', will not build sstmacro"
 #                    ;;
 #            esac
-#            ;;
-##  NO LONGER SUPPORTED
-#        q) # Qsim
-#            echo "# found the -q (Qsim) option, with value $OPTARG.   (Ignore on MacOS)"
-#            echo "#  Option set to none"
-#            OPTARG="none"
-#            # process arg
-#                  ##   Qsim currently doesn't run on MacOS because of 32/64 bit issues.
-#            ##if [ ! $SST_DEPS_OS_NAME = "Darwin" ]
-#            ##then
-#                case "$OPTARG" in
-#                    default|0.1.4) # build Qsim 0.1.4
-#                        echo "# (default) 0.1.4: will build Qsim 0.1.4"
-#                        . ${SST_DEPS_BIN}/sstDep_qsim_0.1.4.sh
-#                        ;;
-#                    SST-3.0) # build Qsim for SST 3.0 (tagged for SST 3.0)
-#                        # NOTE: This is the same tagged revision as SST-2.3
-#                        echo "# SST-3.0.0: will build Qsim version SST-3.0"
-#                        . ${SST_DEPS_BIN}/sstDep_qsim_SST-3.0.sh
-#                        ;;
-#                    SST-2.3) # build Qsim for SST 2.3 (tagged for SST 2.3)
-#                        echo "# SST-2.3: will build Qsim version SST-2.3"
-#                        . ${SST_DEPS_BIN}/sstDep_qsim_SST-2.3.sh
-#                        ;;
-#                    0.2.1) # build Qsim 0.2.1
-#                        echo "# 0.2.1: will build Qsim 0.2.1"
-#                        . ${SST_DEPS_BIN}/sstDep_qsim_0.2.1.sh
-#                        ;;
-#                    0.1.3) # build Qsim 0.1.3
-#                        echo "# 0.1.3: will build Qsim 0.1.3"
-#                        . ${SST_DEPS_BIN}/sstDep_qsim_0.1.3.sh
-#                        ;;
-#                    stabledevel) # build latest Qsim
-#                        echo "# stabledevel: will build latest repository Qsim"
-#                        . ${SST_DEPS_BIN}/sstDep_qsim_stabledevel.sh
-#                        ;;
-#                    none) # do not build (explicit)
-#                        echo "# none: will not build Qsim"
-#                        ;;
-#                    *) # unknown Qsim argument
-#                        echo "# Unknown argument '$OPTARG', will not build Qsim"
-#                        ;;
-#                esac
 #            ;;
 ##  NO LONGER SUPPORTED
 #        I)  # Do Iris test
