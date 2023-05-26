@@ -257,17 +257,6 @@ sstDepsPatchSource ()
 
     fi
 
-    if [ ! -z "${SST_BUILD_IRIS}" ]
-    then
-        #-----------------------------------------------------------------------
-        # Iris test
-        #-----------------------------------------------------------------------
-
-        sstDepsAnnounce -h $FUNCNAME -m "Patching for Iris test case"
-        # Patching to build for Iris
-        echo "NO PATCH         No Patch       NO PATCH"
-    fi
-
     if [ ! -z ${SST_BUILD_SSTMACRO_2_3_0} ]
     then
 	#-----------------------------------------------------------------------
@@ -747,7 +736,6 @@ sstDepsDoDependencies ()
 #   1/6/23 - removed unused options
 #   -h HotSpot version (default|static|none)
 #   -s sstmacro version (default|2.2.0|2.3.0|2.4.0-beta1|2.4.0|stabledevel|none)
-#   -I iris test version (default|none|stabledevel) NO LONGER SUPPORTED
 #   -a Ariel Pintool (2.13-61206)
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
@@ -943,22 +931,6 @@ do
 #                    ;;
 #            esac
 #            ;;
-##  NO LONGER SUPPORTED
-#        I)  # Do Iris test
-#            echo "# found the -I (Iris) option, with value $OPTARG"
-#            # process arg
-#            case "$OPTARG" in
-#                stabledevel)   # do the Iris test
-#                    echo "# stabledevel: Do the Iris test"
-#                             # instead of sourcing a file simply set the flag
-#                    export SST_BUILD_IRIS=1
-#                    ;;
-#                none|default)  # Do not do the Iris test case
-#                    echo "# default: will not do the Iris test "
-#                    ;;
-#            esac
-#            ;;
-#
 ## LOADED AS MODULE, NOT BUILT
 #        a)  # Build Ariel Pin Tool
 #            echo "# found the -a (Ariel Pin Tool) option, with value $OPTARG"
