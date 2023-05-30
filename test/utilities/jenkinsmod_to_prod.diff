@@ -1,0 +1,44 @@
+diff --git a/shunit2-2.1.6-JenkinsMod/src/shunit2 b/shunit2/src/shunit2
+index 97a0b0b..9c8dd85 100755
+--- a/shunit2-2.1.6-JenkinsMod/src/shunit2
++++ b/shunit2/src/shunit2
+@@ -905,8 +905,11 @@ _shunit_cleanup()
+ #   None
+ _kill_timeLimitEnforcer()
+ {
++    echo "timerChild is $__timerChild"
++    ps -p $__timerChild
+     __grandChild=`(unset LD_LIBRARY_PATH DYLD_LIBRARY_PATH; ps -ef -u $USER) | awk '{ if ( $3 == ENVIRON["__timerChild"] ) print $2 }'`
+-#    echo Sleep child is $__grandChild   
++    echo Sleep child is $__grandChild   
++    ps -p $__grandChild
+     (unset LD_LIBRARY_PATH DYLD_LIBRARY_PATH;ps -p $__timerChild) > /dev/null && kill $__timerChild $__grandChild
+ }
+ 
+@@ -942,7 +945,14 @@ _shunit_execSuite()
+ 
+     # Setup to execute the test Case
+     echo "         -------"
+-    echo "${_shunit_case_}"
++    MULT=""
++    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} == isSet ]] ; then
++        MULT=" nt=${SST_MULTI_THREAD_COUNT}"
++    fi
++    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] ; then
++        MULT="${MULT}  nr=${SST_MULTI_RANK_COUNT}"
++    fi
++    echo "${_shunit_case_} $MULT"
+     
+     # Start the Time Limit Monitor
+     $SST_TEST_UTILITIES/timeLimitEnforcer.sh $$ ${_shunit_case_} & 
+@@ -997,8 +1007,9 @@ _shunit_execSuite()
+     fi
+   done
+ 
++  export __shunit_testsFailed
+   # Update the Total Number of tests
+-  __shunit_testsTotal=`expr ${__shunit_testsFailed} + ${__shunit_testsPassed} + ${__shunit_testsSkipped}`
++  export __shunit_testsTotal=`expr ${__shunit_testsFailed} + ${__shunit_testsPassed} + ${__shunit_testsSkipped}`
+   
+ #  unset _shunit_test_
+   unset _shunit_case_
