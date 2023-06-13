@@ -886,10 +886,6 @@ _shunit_cleanup()
     ### Generate the XML report before we generate the final assert error 
     _shunit_generateFinalReport
     
-    ### Since the Test aborted, we may still have the timelimitenforcer.sh 
-    ### running, so we try to shut it down.
-    _kill_timeLimitEnforcer
-    
     ### MODIFIED BY ALevine - Done with code additions
     #########################
     
@@ -897,20 +893,6 @@ _shunit_cleanup()
   fi
 
   unset _shunit_name_ _shunit_signal_
-}
-
-# Kill the Time Limit Enforcer (if possible).
-#
-# Args:
-#   None
-_kill_timeLimitEnforcer()
-{
-    echo "timerChild is $__timerChild"
-    ps -p $__timerChild
-    __grandChild=`(unset LD_LIBRARY_PATH DYLD_LIBRARY_PATH; ps -ef -u $USER) | awk '{ if ( $3 == ENVIRON["__timerChild"] ) print $2 }'`
-    echo Sleep child is $__grandChild   
-    ps -p $__grandChild
-    (unset LD_LIBRARY_PATH DYLD_LIBRARY_PATH;ps -p $__timerChild) > /dev/null && kill $__timerChild $__grandChild
 }
 
 # The actual running of the tests happens here.
@@ -954,17 +936,9 @@ _shunit_execSuite()
     fi
     echo "${_shunit_case_} $MULT"
     
-    # Start the Time Limit Monitor
-    $SST_TEST_UTILITIES/timeLimitEnforcer.sh $$ ${_shunit_case_} & 
-    export __timerChild=$!
-#    echo started child $__timerChild
-
     ## Execute the Test Case
     eval ${_shunit_case_}
     
-    #test done,  Remove timer (and its sleeping child), if still running
-    _kill_timeLimitEnforcer
-
     # Check to see if this Test Case internally decided to skip
     if [ ${__shunit_this_test_skipped} -eq ${SHUNIT_TRUE} ] ; then
       _shunit_assertSkip
