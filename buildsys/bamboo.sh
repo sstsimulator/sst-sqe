@@ -2483,10 +2483,7 @@ else
                     ModuleEx unload cuda
                     ModuleEx load cuda/${SST_DIST_CUDA}
                     ;;
-                none)
-                    echo  "No Cuda loaded as requested"
-                    ;;
-                *) # unknown option
+                *)
                     echo  "No Cuda loaded as requested"
                     ;;
             esac
