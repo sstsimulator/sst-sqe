@@ -1450,10 +1450,10 @@ dobuild() {
         # Check to see if we are actually performing make dist
         echo "at this time \$buildtype is $buildtype"
         if [ $buildtype == "sstmainline_config_dist_test" ] ||
-           [[ $buildtype == *make_dist* ]] ; then
-#           [ $buildtype == "sstmainline_config_make_dist_no_gem5" ] ||
-#           [ $buildtype == "sstmainline_config_make_dist_test" ] ||
-#           [ $buildtype == "sst_Macro_make_dist" ] ; then
+               [[ $buildtype == *make_dist* ]] ; then
+            # [ $buildtype == "sstmainline_config_make_dist_no_gem5" ] ||
+            #     [ $buildtype == "sstmainline_config_make_dist_test" ] ||
+            #     [ $buildtype == "sst_Macro_make_dist" ] ; then
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '
             echo "bamboo.sh: make dist on SST-CORE"
@@ -1556,10 +1556,10 @@ dobuild() {
         popd
         echo "Current Working Dir = `pwd`"
         ls -l
-fi
+    fi
 
-### BUILDING THE SST-ELEMENTS
-if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
+    ### BUILDING THE SST-ELEMENTS
+    if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
     then
         echo "============== SST ELEMENTS - NO BUILD REQUIRED ==============="
     else
@@ -1663,8 +1663,8 @@ if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
         # Check to see if we are actually performing make dist
         echo "at this time \$buildtype is $buildtype"
         if [ $buildtype == "sstmainline_config_dist_test" ] ||
-           [ $buildtype == "sstmainline_config_make_dist_no_gem5" ] ||
-           [ $buildtype == "sstmainline_config_make_dist_test" ] ; then
+               [ $buildtype == "sstmainline_config_make_dist_no_gem5" ] ||
+               [ $buildtype == "sstmainline_config_make_dist_test" ] ; then
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '
             echo "bamboo.sh: make dist on SST-ELEMENTS"
