@@ -1192,6 +1192,7 @@ config_and_build() {
     local selected_config="$2"
     local install_dir="$3"
     local source_dir="$4"
+    local conf_script_name="$5"
 
     if [[ "${selected_config}" == "NOBUILD" ]]
     then
@@ -1201,26 +1202,26 @@ config_and_build() {
 
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '
-        echo "bamboo.sh: running \"autogen.sh\" on ${repo_name}..."
+        echo "bamboo.sh: running \"${conf_script_name}.sh\" on ${repo_name}..."
         echo ' '
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        echo "NOTE: Autogen Must be run in ${repo_name} Source Dir to create configuration file"
+        echo "NOTE: ${conf_script_name} Must be run in ${repo_name} Source Dir to create configuration file"
         echo "Current Working Dir = $(pwd)"
         echo "pushd ${source_dir}"
         pushd "${source_dir}"
-        echo "Autogen Working Dir = $(pwd)"
+        echo "${conf_script_name} Working Dir = $(pwd)"
         ls -l
-        echo "=== Running autogen.sh ==="
+        echo "=== Running ${conf_script_name}.sh ==="
 
-        ./autogen.sh
+        ./${conf_script_name}.sh
         retval=$?
         if [ $retval -ne 0 ]
         then
             return $retval
         fi
 
-        echo "Done with Autogen"
+        echo "Done with ${conf_script_name}"
         pwd
         ls -ltrd * | tail -20
         echo "popd"
@@ -1230,7 +1231,7 @@ config_and_build() {
 
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '
-        echo "bamboo.sh: autogen on ${repo_name} complete without error"
+        echo "bamboo.sh: ${conf_script_name} on ${repo_name} complete without error"
         echo ' '
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
@@ -1319,7 +1320,9 @@ config_and_build() {
             # Dependents of core need core to be installed no matter what, so
             # continue the rest of the build process for core.  Otherwise, we
             # can have an early return.
-            if [[ "${repo_name}" != "sst-core" ]]; then
+            #
+            # macro also continues no matter what?
+            if [[ "${repo_name}" == "sst-elements" ]]; then
                 return $retval
             fi
         fi
@@ -1565,201 +1568,20 @@ dobuild() {
         sst-core \
         "${SST_SELECTED_CORE_CONFIG}" \
         "${SST_CORE_INSTALL}" \
-        sst-core
+        sst-core \
+        autogen
     config_and_build \
         sst-elements \
         "${SST_SELECTED_ELEMENTS_CONFIG}" \
         "${SST_CORE_INSTALL}" \
-        "${SST_ROOT}/sst-elements"
-
-    echo "PWD $LINENO = `pwd`   A Macro decision point -------------"
-    ### BUILDING THE SST-MACRO
-    if [[ $SST_SELECTED_MACRO_CONFIG == "NOBUILD" ]]
-    then
-        echo "============== SST MACRO - NO BUILD REQUIRED ==============="
-    else
-        echo "==================== Building SST MACRO ===================="
-
-        # bootstrap to create ./configure
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: running \"bootstrap.sh\" on SST-MACRO..."
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # bootstrap SST-MACRO
-        ### First Run bootstrap in the source dir to create the configure file
-        echo "NOTE: bootstrap Must be run in SST-Macro Source Dir to create configuration file"
-        echo "Current Working Dir = `pwd`"
-        echo "pushd sst-macro"
-        pushd ${SST_ROOT}/sst-macro
-        echo "bootstrap Working Dir = `pwd`"
-        ls -l
-        echo "=== Running bootstrap.sh ==="
-
-        ./bootstrap.sh
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "Done with bootstrap"
-
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: bootstrap on SST-MACRO complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        # Check to see if we are supposed to build out of the source
-        if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
-            echo "NOTICE: BUILDING SST-MACRO OUT OF SOURCE DIR"
-            echo "Starting Dir = `pwd`"
-            echo "mkdir ./sst-macro-builddir"
-            mkdir ./sst-macro-builddir
-            echo "pushd sst-macro-builddir"
-            pushd sst-macro-builddir
-            echo "Current Working Dir = `pwd`"
-            ls -l
-            macrosourcedir="../sst-macro"
-        else
-            echo "NOTICE: BUILDING SST-MACRO IN SOURCE DIR"
-            echo "Starting Dir = `pwd`"
-            echo "pushd sst-macro"
-            pushd ${SST_ROOT}/sst-macro
-            echo "Current Working Dir = `pwd`"
-            ls -l
-            macrosourcedir="."
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: running \"configure\" on SST-MACRO..."
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo "bamboo.sh: config args = $SST_SELECTED_MACRO_CONFIG"
-
-        # Configure SSTMACRO
-        echo "=== Running $macrosourcedir/configure <config args> ==="
-        $macrosourcedir/configure $SST_SELECTED_MACRO_CONFIG
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # Something went wrong in configure, so dump config.log
-            echo "bamboo.sh: Uh oh. Something went wrong during configure of sst-macro.  Dumping config.log"
-            echo "--------------------dump of config.log--------------------"
-            sed -e 's/^/#dump /' ./config.log
-            echo "--------------------dump of config.log--------------------"
-            return $retval
-        fi
-
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: configure on SST-MACRO complete without error"
-        echo ' '
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        pwd
-        echo "                                   LINE  $LINENO "
-        ls -ltrd * | tail -20
-        # Check to see if we are actually performing make dist
-        echo "at this time \$buildtype is $buildtype"
-        if [[ $buildtype == "sst_Macro_make_dist" ]] ; then
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo ' '
-            echo "bamboo.sh: make dist on SST-MACRO"
-            echo ' '
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            make dist
-            retval=$?
-            if [ $retval -ne 0 ]
-            then
-                return $retval
-            fi
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo ' '
-            echo "bamboo.sh: make dist on SST-MACRO is complete without error"
-            pwd
-            ls | grep tar
-            echo ' '
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo " "
-            ls -ltr | tail -5
-            echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
-            return $retval        ##   This is in dobuild
-        fi
-
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on SST-MACRO"
-        echo ' '
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Compile SST-MACRO
-        echo "=== Running make -j4 ==="
-        make -j4
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on SST-MACRO complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on SST-MACRO"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Install SST-MACRO
-        echo "=== Running make -j4 install ==="
-        make -j4 install
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo
-        echo "=== DUMPING The SST-MACRO installed $HOME/.sst/sstsimulator.conf file ==="
-        print_and_dump_loc $HOME/.sst/sstsimulator.conf
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo
-        echo "=== DUMPING The SST-MACRO installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-        echo "cat $SST_CONFIG_FILE_PATH"
-        print_and_dump_loc $SST_CONFIG_FILE_PATH
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on SST-MACRO complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        # Go back to devel/trunk
-        echo "popd"
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
-    fi
-
+        "${SST_ROOT}/sst-elements" \
+        autogen
+    config_and_build \
+        sst-macro \
+        "${SST_SELECTED_MACRO_CONFIG}" \
+        "${SST_CORE_INSTALL}" \
+        "${SST_ROOT}/sst-macro" \
+        bootstrap
     config_and_build_simple \
         sst-external-element \
         "${SST_SELECTED_EXTERNALELEMENT_CONFIG}"
