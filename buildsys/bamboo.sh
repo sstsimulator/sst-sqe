@@ -1191,6 +1191,7 @@ config_and_build() {
     local repo_name="$1"
     local selected_config="$2"
     local install_dir="$3"
+    local source_dir="$4"
 
     if [[ "${selected_config}" == "NOBUILD" ]]
     then
@@ -1206,8 +1207,8 @@ config_and_build() {
 
         echo "NOTE: Autogen Must be run in ${repo_name} Source Dir to create configuration file"
         echo "Current Working Dir = $(pwd)"
-        echo "pushd ${repo_name}"
-        pushd "${repo_name}"
+        echo "pushd ${source_dir}"
+        pushd "${source_dir}"
         echo "Autogen Working Dir = $(pwd)"
         ls -l
         echo "=== Running autogen.sh ==="
@@ -1248,8 +1249,8 @@ config_and_build() {
         else
             echo "NOTICE: BUILDING ${repo_name} IN SOURCE DIR"
             echo "Starting Dir = $(pwd)"
-            echo "pushd ${repo_name}"
-            pushd ${repo_name}
+            echo "pushd ${source_dir}"
+            pushd "${source_dir}"
             echo "Current Working Dir = $(pwd)"
             ls -l
             sourcedir="."
@@ -1288,11 +1289,8 @@ config_and_build() {
         ls -ltrd * | tail -20
 
         echo "at this time \$buildtype is $buildtype"
-        if [ $buildtype == "sstmainline_config_dist_test" ] ||
+        if [[ $buildtype == "sstmainline_config_dist_test" ]] ||
                [[ $buildtype == *make_dist* ]] ; then
-            # [ $buildtype == "sstmainline_config_make_dist_no_gem5" ] ||
-            #     [ $buildtype == "sstmainline_config_make_dist_test" ] ||
-            #     [ $buildtype == "sst_Macro_make_dist" ] ; then
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '
             echo "bamboo.sh: make dist on ${repo_name}"
@@ -1320,20 +1318,19 @@ config_and_build() {
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
         fi
 
-        [[ $kernel == "Darwin" ]] && linkage_display="otool -L" || linkage_display=ldd
-
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '
         echo "bamboo.sh: make on ${repo_name}"
         echo ' '
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        sstsim="${sourcedir}/src/sst/core/sstsim.x"
-        echo "${linkage_display} ${sstsim}"
-        if [[ -r "${sstsim}" ]]; then
-            ${linkage_display} "${sstsim}"
+        echo "=== Running make -j4 all ==="
+        make -j4 all
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
         fi
-        echo "SST-CORE BUILD INFO============================================================"
 
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo ' '
@@ -1376,19 +1373,19 @@ config_and_build() {
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
 
-        sstsim="${install_dir}/src/sst/core/sstsim.x"
-        echo "${linkage_display} ${sstsim}"
-        if [[ -r "${sstsim}" ]]; then
-            ${linkage_display} "${sstsim}"
+        if [[ "${repo_name}" == "sst-core" ]]; then
+            [[ $kernel == "Darwin" ]] && linkage_display="otool -L" || linkage_display=ldd
+            sstsim="${sourcedir}/src/sst/core/sstsim.x"
+            echo "${linkage_display} ${sstsim}"
+            if [[ -r "${sstsim}" ]]; then
+                ${linkage_display} "${sstsim}"
+            fi
+            sstsim="${install_dir}/src/sst/core/sstsim.x"
+            echo "${linkage_display} ${sstsim}"
+            if [[ -r "${sstsim}" ]]; then
+                ${linkage_display} "${sstsim}"
+            fi
         fi
-        echo "${repo_name} BUILD INFO============================================="
-
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on ${repo_name} complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
 
         # Go back to devel/trunk
         echo "popd"
@@ -1939,7 +1936,8 @@ dobuild() {
     config_and_build \
         sst-core \
         "${SST_SELECTED_CORE_CONFIG}" \
-        "${SST_CORE_INSTALL}"
+        "${SST_CORE_INSTALL}" \
+        sst-core
     config_and_build_simple \
         sst-external-element \
         "${SST_SELECTED_EXTERNALELEMENT_CONFIG}"
