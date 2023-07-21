@@ -38,6 +38,40 @@ TimeoutEx() {
     return $retval
 }
 
+cloneRepo() {
+    local repo="$1"
+    local branch="$2"
+    local loc="$3"
+    local timeout="$4"
+    local depth="$5"
+    local reset="$6"
+
+   echo " "
+   echo "     TimeoutEx -t ${timeout} git clone ${depth} -b ${branch} ${repo} ${loc}"
+   date
+   TimeoutEx -t "${timeout}" git clone "${depth}" -b "${branch}" "${repo}" "${loc}"
+   retVal=$?
+   date
+   echo " "
+   echo " The ${loc} Repo has been cloned."
+   ls -l
+   pushd "${loc}"
+
+   # Test for override of the branch to some other SHA1
+   if [[ ${reset:+isSet} == isSet ]] ; then
+       echo "     Desired ${loc} SHA1 is ${reset}"
+       git reset --hard "${reset}"
+       retVal=$?
+       if [ $retVal != 0 ] ; then
+          echo "\"git reset --hard ${reset} \" FAILED.  retVal = $retVal"
+          exit
+       fi
+   fi
+
+   git log -n 1 | grep commit
+   ls -l
+   popd
+}
 
 cloneOtherRepos() {
 ##  Check out other repositories except second time on Make Dist test
@@ -57,227 +91,42 @@ if [ ! -d ../../distTestDir ] ; then
        fi
    fi
    echo " Cloning depth parameter set to \"${_DEPTH_}\""
-## Cloning sst-core into <path>/devel/trunk
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-      echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_COREBRANCH $SST_COREREPO sst-core "
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_COREBRANCH $SST_COREREPO sst-core
-      retVal=$?
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "\"git clone of $SST_COREREPO \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf sst-core
-             continue
-         fi
-         exit
-      fi
-   done
-   echo " "
-   echo " The sst-core Repo has been cloned."
-   ls -l
-   pushd sst-core
 
-   # Test for override of the branch to some other SHA1
-   if [[ ${SST_CORE_RESET:+isSet} == isSet ]] ; then
-       echo "     Desired sst-element SHA1 is ${SST_CORE_RESET}"
-       git reset --hard ${SST_CORE_RESET}
-       retVal=$?
-       if [ $retVal != 0 ] ; then
-          echo "\"git reset --hard ${SST_CORE_RESET} \" FAILED.  retVal = $retVal"
-          exit
-       fi
-   fi
-
-   git log -n 1 | grep commit
-   ls -l
-   popd
-
-
-## Cloning sst-elements into <path>/devel/trunk
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-      date
-      echo " "
-      echo "     TimeoutEx -t 250 git clone ${_DEPTH_} -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
-      date
-      TimeoutEx -t 250 git clone ${_DEPTH_} -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
-      retVal=$?
-      date
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf sst-elements
-             continue
-         fi
-
-         exit
-      fi
-   done
-   echo " "
-   echo " The sst-elements Repo has been cloned."
-   ls -l
-   pushd sst-elements
-
-   # Test for override of the branch to some other SHA1
-   if [[ ${SST_ELEMENTS_RESET:+isSet} == isSet ]] ; then
-       echo "     Desired sst-element SHA1 is ${SST_ELEMENTS_RESET}"
-       git reset --hard ${SST_ELEMENTS_RESET}
-       retVal=$?
-       if [ $retVal != 0 ] ; then
-          echo "\"git reset --hard ${SST_ELEMENTS_RESET} \" FAILED.  retVal = $retVal"
-          exit
-       fi
-   fi
-
-   git log -n 1 | grep commit
-   ls -l
-   popd
-
-## Cloning sst-macro into <path>/devel/trunk
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-      date
-      echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
-      date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
-      retVal=$?
-      date
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "\"git clone of $SST_MACROREPO \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf sst-macro
-             continue
-         fi
-
-         exit
-      fi
-   done
-   echo " "
-   echo " The sst-macro Repo has been cloned."
-   ls -l
-   pushd sst-macro
-
-   # Test for override of the branch to some other SHA1
-   if [[ ${SST_MACRO_RESET:+isSet} == isSet ]] ; then
-       echo "     Desired sst-macro SHA1 is ${SST_MACRO_RESET}"
-       git reset --hard ${SST_MACRO_RESET}
-       retVal=$?
-       if [ $retVal != 0 ] ; then
-          echo "\"git reset --hard ${SST_MACRO_RESET} \" FAILED.  retVal = $retVal"
-          exit
-       fi
-   fi
-
-   git log -n 1 | grep commit
-   ls -l
-   popd
-
-## Cloning sst-external-element into <path>/devel/trunk
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-      date
-      echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_EXTERNALELEMENTBRANCH $SST_EXTERNALELEMENTREPO sst-external-element "
-      date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_EXTERNALELEMENTBRANCH $SST_EXTERNALELEMENTREPO sst-external-element
-      retVal=$?
-      date
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "\"git clone of https://github.com/sstsimulator/sst-external-element.git \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf sst-external-element
-             continue
-         fi
-
-         exit
-      fi
-   done
-   echo " "
-   echo " The sst-external-element Repo has been cloned."
-   ls -l
-   pushd sst-external-element
-
-   # Test for override of the branch to some other SHA1
-   if [[ ${SST_EXTERNALELEMENT_RESET:+isSet} == isSet ]] ; then
-       echo "     Desired sst-external-element SHA1 is ${SST_EXTERNALELEMENT_RESET}"
-       git reset --hard ${SST_EXTERNALELEMENT_RESET}
-       retVal=$?
-       if [ $retVal != 0 ] ; then
-          echo "\"git reset --hard ${SST_EXTERNALELEMENT_RESET} \" FAILED.  retVal = $retVal"
-          exit
-       fi
-   fi
-
-   git log -n 1 | grep commit
-   ls -l
-   popd
-
-## Cloning juno into <path>/devel/trunk
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-      date
-      echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_JUNOBRANCH $SST_JUNOREPO juno "
-      date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_JUNOBRANCH $SST_JUNOREPO juno
-      retVal=$?
-      date
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "\"git clone of https://github.com/sstsimulator/juno.git \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf juno
-             continue
-         fi
-
-         exit
-      fi
-   done
-   echo " "
-   echo " The juno Repo has been cloned."
-   ls -l
-   pushd juno
-
-   # Test for override of the branch to some other SHA1
-   if [[ ${SST_JUNO_RESET:+isSet} == isSet ]] ; then
-       echo "     Desired JUNO SHA1 is ${SST_JUNO_RESET}"
-       git reset --hard ${SST_JUNO_RESET}
-       retVal=$?
-       if [ $retVal != 0 ] ; then
-          echo "\"git reset --hard ${SST_JUNO_RESET} \" FAILED.  retVal = $retVal"
-          exit
-       fi
-   fi
-
-   git log -n 1 | grep commit
-   ls -l
-   popd
+   cloneRepo \
+       "${SST_COREREPO}" \
+       "${SST_COREBRANCH}" \
+       sst-core \
+       90 \
+       "${_DEPTH_}" \
+       "${SST_CORE_RESET}"
+   cloneRepo \
+       "${SST_ELEMENTSREPO}" \
+       "${SST_ELEMENTSBRANCH}" \
+       sst-elements \
+       250 \
+       "${_DEPTH_}" \
+       "${SST_ELEMENTS_RESET}"
+   cloneRepo \
+       "${SST_MACROREPO}" \
+       "${SST_MACROBRANCH}" \
+       sst-macro \
+       90 \
+       "${_DEPTH_}" \
+       "${SST_MACRO_RESET}"
+   cloneRepo \
+       "${SST_EXTERNALELEMENTREPO}" \
+       "${SST_EXTERNALELEMENTBRANCH}" \
+       sst-external-element \
+       90 \
+       "${_DEPTH_}" \
+       "${SST_EXTERNALELEMENT_RESET}"
+   cloneRepo \
+       "${SST_JUNOREPO}" \
+       "${SST_JUNOBRANCH}" \
+       juno \
+       90 \
+       "${_DEPTH_}" \
+       "${SST_JUNO_RESET}"
 
 # Link the deps and test directories to the trunk
    echo " Creating Symbolic Links to the sqe directories (deps & test)"
