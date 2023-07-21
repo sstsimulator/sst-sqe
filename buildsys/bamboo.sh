@@ -1543,6 +1543,12 @@ dobuild() {
     ModuleEx list
     echo "--------------------modules status--------------------"
 
+    config_and_build \
+        sst-core \
+        "${SST_SELECTED_CORE_CONFIG}" \
+        "${SST_CORE_INSTALL}" \
+        sst-core
+
     ### BUILDING THE SST-ELEMENTS
     if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
     then
@@ -1933,11 +1939,6 @@ dobuild() {
         ls -l
     fi
 
-    config_and_build \
-        sst-core \
-        "${SST_SELECTED_CORE_CONFIG}" \
-        "${SST_CORE_INSTALL}" \
-        sst-core
     config_and_build_simple \
         sst-external-element \
         "${SST_SELECTED_EXTERNALELEMENT_CONFIG}"
