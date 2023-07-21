@@ -1187,6 +1187,85 @@ print_and_dump_loc() {
     fi
 }
 
+config_and_build_simple() {
+    local repo_name="$1"
+    local selected_config="$2"
+
+    if [[ "${selected_config}" == "NOBUILD" ]]
+    then
+        echo "============== ${repo_name} - NO BUILD REQUIRED ==============="
+    else
+        echo "==================== Building ${repo_name} ===================="
+
+        # Building ${repo_name}
+        echo "pushd ${repo_name}/src"
+        pushd "${SST_ROOT}/${repo_name}/src"
+        echo "Build Working Dir = $(pwd)"
+
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make on ${repo_name}"
+        echo ' '
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+        # Compile ${repo_name}
+        echo "=== Running make -j4 ==="
+        make -j4
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make on ${repo_name} complete without error"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make install on ${repo_name}"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+        # Install ${repo_name}
+        echo "=== Running make -j4 install ==="
+        make -j4 install
+        retval=$?;
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+
+        echo
+        echo "=== DUMPING The ${repo_name} installed ${HOME}/.sst/sstsimulator.conf file ==="
+        print_and_dump_loc "${HOME}/.sst/sstsimulator.conf"
+        echo "=== DONE DUMPING ==="
+        echo
+
+        echo
+        echo "=== DUMPING The ${repo_name} installed sstsimulator.conf file located at ${SST_CONFIG_FILE_PATH} ==="
+        print_and_dump_loc "${SST_CONFIG_FILE_PATH}"
+        echo "=== DONE DUMPING ==="
+        echo
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make install on ${repo_name} complete without error"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+
+        # Go back to devel/trunk
+        echo "popd"
+        popd
+        echo "Current Working Dir = $(pwd)"
+        ls -l
+    fi
+}
+
 #-------------------------------------------------------------------------
 # Function: dobuild
 # Description:
@@ -1869,158 +1948,8 @@ if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
         ls -l
     fi
 
-    echo "PWD $LINENO = `pwd`    -------  BUILD EXTERNAL elements"
-    ### BUILDING THE SST-EXTERNALELEMENT
-    if [[ $SST_SELECTED_EXTERNALELEMENT_CONFIG == "NOBUILD" ]]
-    then
-        echo "============== SST EXTERNAL-ELEMENT - NO BUILD REQUIRED ==============="
-    else
-        echo "==================== Building SST EXTERNAL-ELEMENT ===================="
-
-
-        # Building SST-EXTERNAL-ELEMENTS
-        echo "pushd sst-external-element/src"
-        pushd ${SST_ROOT}/sst-external-element/src
-        echo "Build Working Dir = `pwd`"
-
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on SST-EXTERNAL-ELEMENTS"
-        echo ' '
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Compile SST-EXTERNAL-ELEMENTS
-        echo "=== Running make -j4 ==="
-        make -j4
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on SST-EXTERNAL-ELEMENTS complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on SST-EXTERNAL-ELEMENTS"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Install SST-EXTERNAL-ELEMENTS
-        echo "=== Running make -j4 install ==="
-        make -j4 install
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo
-        echo "=== DUMPING The SST-EXTERNAL-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
-        print_and_dump_loc $HOME/.sst/sstsimulator.conf
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo
-        echo "=== DUMPING The SST-EXTERNAL-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-        print_and_dump_loc $SST_CONFIG_FILE_PATH
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on SST-EXTERNAL-ELEMENTS complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        # Go back to devel/trunk
-        echo "popd"
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
-    fi
-
-    ### BUILDING THE JUNO
-    if [[ $SST_SELECTED_JUNO_CONFIG == "NOBUILD" ]]
-    then
-        echo "============== JUNO - NO BUILD REQUIRED ==============="
-    else
-        echo "==================== Building JUNO ===================="
-
-
-        # Building JUNO
-        echo "pushd juno/src"
-        pushd ${SST_ROOT}/juno/src
-        echo "Build Working Dir = `pwd`"
-
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on JUNO"
-        echo ' '
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Compile JUNO
-        echo "=== Running make -j4 ==="
-        make -j4
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on JUNO complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on JUNO"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Install JUNO
-        echo "=== Running make -j4 install ==="
-        make -j4 install
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo
-        echo "=== DUMPING The JUNO installed $HOME/.sst/sstsimulator.conf file ==="
-        print_and_dump_loc $HOME/.sst/sstsimulator.conf
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo
-        echo "=== DUMPING The JUNO installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-        print_and_dump_loc $SST_CONFIG_FILE_PATH
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on JUNO complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        # Go back to devel/trunk
-        echo "popd"
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
-    fi
+    config_and_build_simple sst-external-element "${SST_SELECTED_EXTERNALELEMENT_CONFIG}"
+    config_and_build_simple juno "${SST_SELECTED_JUNO_CONFIG}"
 }
 
 
