@@ -1316,6 +1316,12 @@ config_and_build() {
             echo "bamboo.sh: After make dist on ${repo_name} do the make install "
             echo ' '
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            # Dependents of core need core to be installed no matter what, so
+            # continue the rest of the build process for core.  Otherwise, we
+            # can have an early return.
+            if [[ "${repo_name}" != "sst-core" ]]; then
+                return $retval
+            fi
         fi
 
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
@@ -1363,6 +1369,18 @@ config_and_build() {
         echo
         echo "=== DUMPING The ${repo_name} installed sstsimulator.conf file ==="
         print_and_dump_loc "${install_dir}/etc/sst/sstsimulator.conf"
+        echo "=== DONE DUMPING ==="
+        echo
+
+        echo
+        echo "=== DUMPING The ${repo_name} installed ${HOME}/.sst/sstsimulator.conf file ==="
+        print_and_dump_loc "${HOME}/.sst/sstsimulator.conf"
+        echo "=== DONE DUMPING ==="
+        echo
+
+        echo
+        echo "=== DUMPING The ${repo_name} installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
+        print_and_dump_loc "${SST_CONFIG_FILE_PATH}"
         echo "=== DONE DUMPING ==="
         echo
 
