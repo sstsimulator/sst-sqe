@@ -1266,7 +1266,8 @@ config_and_build() {
 
         echo "=== Running ${sourcedir}/configure <config args> ==="
         echo " resourcedir is ${sourcedir}"
-        "${sourcedir}/configure" "${selected_config}"
+        # shellcheck disable=SC2086
+        "${sourcedir}/configure" ${selected_config}
         retval=$?
         if [ $retval -ne 0 ]
         then
