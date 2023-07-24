@@ -68,6 +68,18 @@ cloneRepo() {
        fi
    fi
 
+   if [[ ${SST_TEST_MERGE} ]]; then
+       # shellcheck disable=SC2086
+       git remote add upstream https://github.com/sstsimulator/${loc}.git
+       git fetch --depth=1 upstream
+       git merge --no-commit upstream/devel
+       retVal=$?
+       if [[ $retVal -ne 0 ]] ; then
+           echo "\"git merge --no-commit upstream/devel\" FAILED.  retVal = $retVal"
+           exit
+       fi
+   fi
+
    git log -n 1 | grep commit
    ls -l
    popd
@@ -1808,6 +1820,11 @@ export SST_CONFIG_FILE_PATH=${SST_CORE_INSTALL}/etc/sst/sstsimulator.conf
 export SST_INSTALL_DEPS=${SST_BASE}/local
 # Initialize build type to null
 export SST_BUILD_TYPE=""
+
+# What should be compiled and tested?
+# - If true, merge the `devel` branch for each repository into the target or specified branch.
+# - If false, use each given branch as-is.
+export SST_TEST_MERGE=${SST_TEST_MERGE:-true}
 
 cloneOtherRepos
 
