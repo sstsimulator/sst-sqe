@@ -824,7 +824,6 @@ linuxSetMPI() {
            ModuleEx load intel/${4}
            if [[ "$3" == *intel-15* ]] ; then
                ModuleEx load gcc/gcc-4.8.1
-               IntelExtraConfigStr="CXXFLAGS=-gxx-name=`which g++` CFLAGS=-gcc-name=`which gcc`"
            fi
 
        fi
