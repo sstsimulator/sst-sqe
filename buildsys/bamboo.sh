@@ -40,16 +40,15 @@ TimeoutEx() {
 
 cloneRepo() {
     local repo="$1"
-    local branch="$2"
+    local sha="$2"
     local loc="$3"
     local timeout="$4"
     local depth="$5"
-    local reset="$6"
 
    echo " "
-   echo "     TimeoutEx -t ${timeout} git clone ${depth} -b ${branch} ${repo} ${loc}"
+   echo "     TimeoutEx -t ${timeout} git clone ${depth} ${repo} ${loc}"
    date
-   TimeoutEx -t "${timeout}" git clone "${depth}" -b "${branch}" "${repo}" "${loc}"
+   TimeoutEx -t "${timeout}" git clone "${depth}" "${repo}" "${loc}"
    retVal=$?
    date
    echo " "
@@ -57,15 +56,12 @@ cloneRepo() {
    ls -l
    pushd "${loc}"
 
-   # Test for override of the branch to some other SHA1
-   if [[ ${reset:+isSet} == isSet ]] ; then
-       echo "     Desired ${loc} SHA1 is ${reset}"
-       git reset --hard "${reset}"
-       retVal=$?
-       if [ $retVal != 0 ] ; then
-          echo "\"git reset --hard ${reset} \" FAILED.  retVal = $retVal"
-          exit
-       fi
+   echo "     Desired ${loc} SHA1 is ${sha}"
+   git reset --hard "${sha}"
+   retVal=$?
+   if [ $retVal != 0 ] ; then
+       echo "\"git reset --hard ${sha} \" FAILED.  retVal = $retVal"
+       exit
    fi
 
    # if [[ ${SST_TEST_MERGE} ]]; then
@@ -80,7 +76,7 @@ cloneRepo() {
    #     fi
    # fi
 
-   git log -n 1 | grep commit
+   git log -n 1
    ls -l
    popd
 }
@@ -106,39 +102,34 @@ if [ ! -d ../../distTestDir ] ; then
 
    cloneRepo \
        "${SST_COREREPO}" \
-       "${SST_COREBRANCH}" \
+       "${SST_CORE_SHA}" \
        sst-core \
        90 \
-       "${_DEPTH_}" \
-       "${SST_CORE_RESET}"
+       "${_DEPTH_}"
    cloneRepo \
        "${SST_ELEMENTSREPO}" \
-       "${SST_ELEMENTSBRANCH}" \
+       "${SST_ELEMENTS_SHA}" \
        sst-elements \
        250 \
-       "${_DEPTH_}" \
-       "${SST_ELEMENTS_RESET}"
+       "${_DEPTH_}"
    cloneRepo \
        "${SST_MACROREPO}" \
-       "${SST_MACROBRANCH}" \
+       "${SST_MACRO_SHA}" \
        sst-macro \
        90 \
-       "${_DEPTH_}" \
-       "${SST_MACRO_RESET}"
+       "${_DEPTH_}"
    cloneRepo \
        "${SST_EXTERNALELEMENTREPO}" \
-       "${SST_EXTERNALELEMENTBRANCH}" \
+       "${SST_EXTERNALELEMENT_SHA}" \
        sst-external-element \
        90 \
-       "${_DEPTH_}" \
-       "${SST_EXTERNALELEMENT_RESET}"
+       "${_DEPTH_}"
    cloneRepo \
        "${SST_JUNOREPO}" \
-       "${SST_JUNOBRANCH}" \
+       "${SST_JUNO_SHA}" \
        juno \
        90 \
-       "${_DEPTH_}" \
-       "${SST_JUNO_RESET}"
+       "${_DEPTH_}"
 
 # Link the deps and test directories to the trunk
    echo " Creating Symbolic Links to the sqe directories (deps & test)"
@@ -1691,46 +1682,27 @@ if [[ ${SST_JUNOREPO:+isSet} != isSet ]] ; then
     SST_JUNOREPO=https://github.com/sstsimulator/juno
 fi
 
+branch_to_hash() {
+    local branch="${1}"
+    git log -n 1 "${branch}" | grep commit | cut -d ' ' -f 2
+}
+
 # Which branches to use for each repo (default is devel)
-if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
-    SST_SQEBRANCH=devel
-    SST_SQEBRANCH="detached"
-else
-    echo ' ' ;  echo ' ' ; echo ' ' ; echo ' '
-    echo " Attempting to set SQE branch other than devel"
-    echo " SQE branch is selected by configure in Jenkins"
-    echo "  SELECTED SST_SQEBRANCH =  ${SST_SQEBRANCH}"
-    echo ' ' ;  echo ' ' ; echo ' ' ; echo ' '
-fi
-
-if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
-    SST_COREBRANCH=devel
-fi
-
-if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
-    SST_ELEMENTSBRANCH=devel
-fi
-
-if [[ ${SST_MACROBRANCH:+isSet} != isSet ]] ; then
-    SST_MACROBRANCH=devel
-fi
-
-if [[ ${SST_EXTERNALELEMENTBRANCH:+isSet} != isSet ]] ; then
-    SST_EXTERNALELEMENTBRANCH=master
-fi
-
-if [[ ${SST_JUNOBRANCH:+isSet} != isSet ]] ; then
-    SST_JUNOBRANCH=master
-fi
+SST_SQE_SHA=${SST_SQE_SHA:=$(branch_to_hash devel)}
+SST_CORE_SHA=${SST_CORE_SHA:=$(branch_to_hash devel)}
+SST_ELEMENTS_SHA=${SST_ELEMENTS_SHA:=$(branch_to_hash devel)}
+SST_MACRO_SHA=${SST_MACRO_SHA:=$(branch_to_hash devel)}
+SST_EXTERNALELEMENT_SHA=${SST_EXTERNALELEMENT_SHA:=$(branch_to_hash master)}
+SST_JUNO_SHA=${SST_JUNO_SHA:=$(branch_to_hash master)}
 
 echo "#############################################################"
 echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
-echo "  GitHub SQE Repository and Branch = $SST_SQEREPO $SST_SQEBRANCH"
-echo "  GitHub CORE Repository and Branch = $SST_COREREPO $SST_COREBRANCH"
-echo "  GitHub ELEMENTS Repository and Branch = $SST_ELEMENTSREPO $SST_ELEMENTSBRANCH"
-echo "  GitHub MACRO Repository and Branch = $SST_MACROREPO $SST_MACROBRANCH"
-echo "  GitHub EXTERNAL-ELEMENT Repository and Branch = $SST_EXTERNALELEMENTREPO $SST_EXTERNALELEMENTBRANCH"
-echo "  GitHub JUNO Repository and Branch = $SST_JUNOREPO $SST_JUNOBRANCH"
+echo "  GitHub SQE Repository and SHA = $SST_SQEREPO $SST_SQE_SHA"
+echo "  GitHub CORE Repository and SHA = $SST_COREREPO $SST_CORE_SHA"
+echo "  GitHub ELEMENTS Repository and SHA = $SST_ELEMENTSREPO $SST_ELEMENTS_SHA"
+echo "  GitHub MACRO Repository and SHA = $SST_MACROREPO $SST_MACRO_SHA"
+echo "  GitHub EXTERNAL-ELEMENT Repository and SHA = $SST_EXTERNALELEMENTREPO $SST_EXTERNALELEMENT_SHA"
+echo "  GitHub JUNO Repository and SHA = $SST_JUNOREPO $SST_JUNO_SHA"
 echo "#############################################################"
 
 
@@ -1822,7 +1794,7 @@ export SST_INSTALL_DEPS=${SST_BASE}/local
 export SST_BUILD_TYPE=""
 
 # What should be compiled and tested?
-# - If true, merge the `devel` branch for each repository into the target or specified branch.
+# - If true, merge the development branch for each repository into the target or specified branch.
 # - If false, use each given branch as-is.
 # export SST_TEST_MERGE=${SST_TEST_MERGE:-true}
 
