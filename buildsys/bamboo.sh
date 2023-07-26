@@ -45,15 +45,14 @@ cloneRepo() {
     local default_branch="$4"
     local clone_loc="$5"
     local timeout="$6"
-    local depth="$7"
 
     echo " "
-    echo "     TimeoutEx -t ${timeout} git clone ${depth} ${repo} ${clone_loc}"
+    echo "     TimeoutEx -t ${timeout} git clone ${repo} ${clone_loc}"
     date
-    TimeoutEx -t "${timeout}" git clone "${depth}" "${repo}" "${clone_loc}"
+    TimeoutEx -t "${timeout}" git clone "${repo}" "${clone_loc}"
     retVal=$?
     if [ $retVal -ne 0 ]; then
-        echo "\"git clone ${depth} ${repo} ${clone_loc}\" FAILED."
+        echo "\"git clone ${repo} ${clone_loc}\" FAILED."
         exit 1
     fi
     date
@@ -76,7 +75,7 @@ cloneRepo() {
     # if [[ ${SST_TEST_MERGE} ]]; then
     #     # shellcheck disable=SC2086
     #     git remote add upstream https://github.com/sstsimulator/${clone_loc}.git
-    #     git fetch --depth=1 upstream
+    #     git fetch upstream
     #     git merge --no-commit upstream/devel
     #     retVal=$?
     #     if [[ $retVal -ne 0 ]] ; then
@@ -98,19 +97,6 @@ cloneOtherRepos() {
     if [ ! -d ../../distTestDir ] ; then
         echo "PWD $LINENO = `pwd`"
 
-        ## Set the clone depth parameter
-        ## For git clone operations in bamboo.sh, the depth is defaulted to 1"
-        ## Setting the environment variable to "none" omits depth limiting.
-        _DEPTH_="--depth 1"
-        if [[ ${SST_GIT_CLONE_DEPTH_PARAMETER:+isSet} == isSet ]] ; then
-            if [ "${SST_GIT_CLONE_DEPTH_PARAMETER}" == "none" ] ; then
-                _DEPTH_=""
-            else
-                _DEPTH_="${SST_GIT_CLONE_DEPTH_PARAMETER}"
-            fi
-        fi
-        echo " Cloning depth parameter set to \"${_DEPTH_}\""
-
         # Each repository has a default branch that may not be the branch present when
         # cloned without `-b`.  In the event a specific branch or commit hash hasn't
         # been specified, the commit hash from the tip of the default branch will be
@@ -131,40 +117,35 @@ cloneOtherRepos() {
                                "${SST_COREBRANCH}" \
                                devel \
                                sst-core \
-                               90 \
-                               "${_DEPTH_}")
+                               90)
         commit_hash_elements=$(cloneRepo \
                                    "${SST_ELEMENTSREPO}" \
                                    "${SST_ELEMENTS_HASH}" \
                                    "${SST_ELEMENTSBRANCH}" \
                                    devel \
                                    sst-elements \
-                                   250 \
-                                   "${_DEPTH_}")
+                                   250)
         commit_hash_macro=$(cloneRepo \
                                 "${SST_MACROREPO}" \
                                 "${SST_MACRO_HASH}" \
                                 "${SST_MACROBRANCH}" \
                                 devel \
                                 sst-macro \
-                                90 \
-                                "${_DEPTH_}")
+                                90)
         commit_hash_externalelement=$(cloneRepo \
                                           "${SST_EXTERNALELEMENTREPO}" \
                                           "${SST_EXTERNALELEMENT_HASH}" \
                                           "${SST_EXTERNALELEMENTBRANCH}" \
                                           master \
                                           sst-external-element \
-                                          90 \
-                                          "${_DEPTH_}")
+                                          90)
         commit_hash_juno=$(cloneRepo \
                                "${SST_JUNOREPO}" \
                                "${SST_JUNO_HASH}" \
                                "${SST_JUNOBRANCH}" \
                                master \
                                juno \
-                               90 \
-                               "${_DEPTH_}")
+                               90)
 
         # Link the deps and test directories to the trunk
         echo " Creating Symbolic Links to the sqe directories (deps & test)"
