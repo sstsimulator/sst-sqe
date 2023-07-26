@@ -100,6 +100,30 @@ if [ ! -d ../../distTestDir ] ; then
    fi
    echo " Cloning depth parameter set to \"${_DEPTH_}\""
 
+   # For each repository, figure out the commit hash to use and (un)set variables
+   # based on our fixed naming scheme.  Unset those that references branches and
+   # only allow working with commit hashes.
+   for repo_name in SQE CORE ELEMENTS MACRO EXTERNALELEMENT JUNO; do
+       varname_branch="SST_${repo_name}BRANCH"
+       varname_branch_default="SST_${repo_name}BRANCH_default"
+       varname_hash="SST_${repo_name}_HASH"
+       commit_hash=$(get_commit_hash "${!varname_branch}" "${!varname_branch_default}" "${!varname_hash}")
+       eval "${!varname_hash}=${commit_hash}"
+       eval "unset ${!varname_branch}"
+       eval "unset ${!varname_branch_default}"
+       unset commit_hash
+   done
+
+   echo "#############################################################"
+   echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
+   echo "  GitHub SQE Repository and HASH = $SST_SQEREPO $SST_SQE_HASH"
+   echo "  GitHub CORE Repository and HASH = $SST_COREREPO $SST_CORE_HASH"
+   echo "  GitHub ELEMENTS Repository and HASH = $SST_ELEMENTSREPO $SST_ELEMENTS_HASH"
+   echo "  GitHub MACRO Repository and HASH = $SST_MACROREPO $SST_MACRO_HASH"
+   echo "  GitHub EXTERNAL-ELEMENT Repository and HASH = $SST_EXTERNALELEMENTREPO $SST_EXTERNALELEMENT_HASH"
+   echo "  GitHub JUNO Repository and HASH = $SST_JUNOREPO $SST_JUNO_HASH"
+   echo "#############################################################"
+
    cloneRepo \
        "${SST_COREREPO}" \
        "${SST_CORE_HASH}" \
@@ -1738,30 +1762,6 @@ SST_ELEMENTSBRANCH_default=devel
 SST_MACROBRANCH_default=devel
 SST_EXTERNALELEMENTBRANCH_default=master
 SST_JUNOBRANCH_default=master
-# For each repository, figure out the commit hash to use and (un)set variables
-# based on our fixed naming scheme.  Unset those that references branches and
-# only allow working with commit hashes.
-for repo_name in SQE CORE ELEMENTS MACRO EXTERNALELEMENT JUNO; do
-    varname_branch="SST_${repo_name}BRANCH"
-    varname_branch_default="SST_${repo_name}BRANCH_default"
-    varname_hash="SST_${repo_name}_HASH"
-    commit_hash=$(get_commit_hash "${!varname_branch}" "${!varname_branch_default}" "${!varname_hash}")
-    eval "${!varname_hash}=${commit_hash}"
-    eval "unset ${!varname_branch}"
-    eval "unset ${!varname_branch_default}"
-    unset commit_hash
-done
-
-echo "#############################################################"
-echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
-echo "  GitHub SQE Repository and HASH = $SST_SQEREPO $SST_SQE_HASH"
-echo "  GitHub CORE Repository and HASH = $SST_COREREPO $SST_CORE_HASH"
-echo "  GitHub ELEMENTS Repository and HASH = $SST_ELEMENTSREPO $SST_ELEMENTS_HASH"
-echo "  GitHub MACRO Repository and HASH = $SST_MACROREPO $SST_MACRO_HASH"
-echo "  GitHub EXTERNAL-ELEMENT Repository and HASH = $SST_EXTERNALELEMENTREPO $SST_EXTERNALELEMENT_HASH"
-echo "  GitHub JUNO Repository and HASH = $SST_JUNOREPO $SST_JUNO_HASH"
-echo "#############################################################"
-
 
 # Root of directory checked out, where this script should be found
 export SST_ROOT=`pwd`
