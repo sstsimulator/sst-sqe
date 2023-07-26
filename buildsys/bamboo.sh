@@ -82,90 +82,101 @@ cloneRepo() {
 }
 
 cloneOtherRepos() {
-##  Check out other repositories except second time on Make Dist test
+    ##  Check out other repositories except second time on Make Dist test
 
-if [ ! -d ../../distTestDir ] ; then
-    echo "PWD $LINENO = `pwd`"
+    if [ ! -d ../../distTestDir ] ; then
+        echo "PWD $LINENO = `pwd`"
 
-## Set the clone depth parameter
-## For git clone operations in bamboo.sh, the depth is defaulted to 1"
-## Setting the environment variable to "none" omits depth limiting.
-   _DEPTH_="--depth 1"
-   if [[ ${SST_GIT_CLONE_DEPTH_PARAMETER:+isSet} == isSet ]] ; then
-       if [ "${SST_GIT_CLONE_DEPTH_PARAMETER}" == "none" ] ; then
-           _DEPTH_=""
-       else
-           _DEPTH_="${SST_GIT_CLONE_DEPTH_PARAMETER}"
-       fi
-   fi
-   echo " Cloning depth parameter set to \"${_DEPTH_}\""
+        ## Set the clone depth parameter
+        ## For git clone operations in bamboo.sh, the depth is defaulted to 1"
+        ## Setting the environment variable to "none" omits depth limiting.
+        _DEPTH_="--depth 1"
+        if [[ ${SST_GIT_CLONE_DEPTH_PARAMETER:+isSet} == isSet ]] ; then
+            if [ "${SST_GIT_CLONE_DEPTH_PARAMETER}" == "none" ] ; then
+                _DEPTH_=""
+            else
+                _DEPTH_="${SST_GIT_CLONE_DEPTH_PARAMETER}"
+            fi
+        fi
+        echo " Cloning depth parameter set to \"${_DEPTH_}\""
 
-   # For each repository, figure out the commit hash to use and (un)set variables
-   # based on our fixed naming scheme.  Unset those that references branches and
-   # only allow working with commit hashes.
-   for repo_name in SQE CORE ELEMENTS MACRO EXTERNALELEMENT JUNO; do
-       varname_branch="SST_${repo_name}BRANCH"
-       varname_branch_default="SST_${repo_name}BRANCH_default"
-       varname_hash="SST_${repo_name}_HASH"
-       commit_hash=$(get_commit_hash "${!varname_branch}" "${!varname_branch_default}" "${!varname_hash}")
-       eval "${!varname_hash}=${commit_hash}"
-       eval "unset ${!varname_branch}"
-       eval "unset ${!varname_branch_default}"
-       unset commit_hash
-   done
+        # Each repository has a default branch that may not be the branch present when
+        # cloned without `-b`.  In the event a specific branch or commit hash hasn't
+        # been specified, the commit hash from the tip of the default branch will be
+        # used.
+        SST_SQEBRANCH_default=devel
+        SST_COREBRANCH_default=devel
+        SST_ELEMENTSBRANCH_default=devel
+        SST_MACROBRANCH_default=devel
+        SST_EXTERNALELEMENTBRANCH_default=master
+        SST_JUNOBRANCH_default=master
 
-   echo "#############################################################"
-   echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
-   echo "  GitHub SQE Repository and HASH = $SST_SQEREPO $SST_SQE_HASH"
-   echo "  GitHub CORE Repository and HASH = $SST_COREREPO $SST_CORE_HASH"
-   echo "  GitHub ELEMENTS Repository and HASH = $SST_ELEMENTSREPO $SST_ELEMENTS_HASH"
-   echo "  GitHub MACRO Repository and HASH = $SST_MACROREPO $SST_MACRO_HASH"
-   echo "  GitHub EXTERNAL-ELEMENT Repository and HASH = $SST_EXTERNALELEMENTREPO $SST_EXTERNALELEMENT_HASH"
-   echo "  GitHub JUNO Repository and HASH = $SST_JUNOREPO $SST_JUNO_HASH"
-   echo "#############################################################"
+        # For each repository, figure out the commit hash to use and (un)set variables
+        # based on our fixed naming scheme.  Unset those that references branches and
+        # only allow working with commit hashes.
+        for repo_name in SQE CORE ELEMENTS MACRO EXTERNALELEMENT JUNO; do
+            varname_branch="SST_${repo_name}BRANCH"
+            varname_branch_default="SST_${repo_name}BRANCH_default"
+            varname_hash="SST_${repo_name}_HASH"
+            commit_hash=$(get_commit_hash "${!varname_branch}" "${!varname_branch_default}" "${!varname_hash}")
+            eval "${!varname_hash}=${commit_hash}"
+            eval "unset ${!varname_branch}"
+            eval "unset ${!varname_branch_default}"
+            unset commit_hash
+        done
 
-   cloneRepo \
-       "${SST_COREREPO}" \
-       "${SST_CORE_HASH}" \
-       sst-core \
-       90 \
-       "${_DEPTH_}"
-   cloneRepo \
-       "${SST_ELEMENTSREPO}" \
-       "${SST_ELEMENTS_HASH}" \
-       sst-elements \
-       250 \
-       "${_DEPTH_}"
-   cloneRepo \
-       "${SST_MACROREPO}" \
-       "${SST_MACRO_HASH}" \
-       sst-macro \
-       90 \
-       "${_DEPTH_}"
-   cloneRepo \
-       "${SST_EXTERNALELEMENTREPO}" \
-       "${SST_EXTERNALELEMENT_HASH}" \
-       sst-external-element \
-       90 \
-       "${_DEPTH_}"
-   cloneRepo \
-       "${SST_JUNOREPO}" \
-       "${SST_JUNO_HASH}" \
-       juno \
-       90 \
-       "${_DEPTH_}"
+        cloneRepo \
+            "${SST_COREREPO}" \
+            "${SST_CORE_HASH}" \
+            sst-core \
+            90 \
+            "${_DEPTH_}"
+        cloneRepo \
+            "${SST_ELEMENTSREPO}" \
+            "${SST_ELEMENTS_HASH}" \
+            sst-elements \
+            250 \
+            "${_DEPTH_}"
+        cloneRepo \
+            "${SST_MACROREPO}" \
+            "${SST_MACRO_HASH}" \
+            sst-macro \
+            90 \
+            "${_DEPTH_}"
+        cloneRepo \
+            "${SST_EXTERNALELEMENTREPO}" \
+            "${SST_EXTERNALELEMENT_HASH}" \
+            sst-external-element \
+            90 \
+            "${_DEPTH_}"
+        cloneRepo \
+            "${SST_JUNOREPO}" \
+            "${SST_JUNO_HASH}" \
+            juno \
+            90 \
+            "${_DEPTH_}"
 
-# Link the deps and test directories to the trunk
-   echo " Creating Symbolic Links to the sqe directories (deps & test)"
-   ls -l
-   ln -s `pwd`/../sqe/buildsys/deps .
-   ln -s `pwd`/../sqe/test .
-   ls -l
-# Define the path to the Elements Reference files
-   export SST_REFERENCE_ELEMENTS=$SST_ROOT/sst-elements/src/sst/elements
-fi
+        # Link the deps and test directories to the trunk
+        echo " Creating Symbolic Links to the sqe directories (deps & test)"
+        ls -l
+        ln -s `pwd`/../sqe/buildsys/deps .
+        ln -s `pwd`/../sqe/test .
+        ls -l
+        # Define the path to the Elements Reference files
+        export SST_REFERENCE_ELEMENTS=$SST_ROOT/sst-elements/src/sst/elements
+    fi
 
-echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE  ########"
+    echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE  ########"
+
+    echo "#############################################################"
+    echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
+    echo "  GitHub SQE Repository and HASH = $SST_SQEREPO $SST_SQE_HASH"
+    echo "  GitHub CORE Repository and HASH = $SST_COREREPO $SST_CORE_HASH"
+    echo "  GitHub ELEMENTS Repository and HASH = $SST_ELEMENTSREPO $SST_ELEMENTS_HASH"
+    echo "  GitHub MACRO Repository and HASH = $SST_MACROREPO $SST_MACRO_HASH"
+    echo "  GitHub EXTERNAL-ELEMENT Repository and HASH = $SST_EXTERNALELEMENTREPO $SST_EXTERNALELEMENT_HASH"
+    echo "  GitHub JUNO Repository and HASH = $SST_JUNOREPO $SST_JUNO_HASH"
+    echo "#############################################################"
 }
 #=========================================================================
 #Functions
@@ -1751,17 +1762,6 @@ fi
 if [[ ${SST_JUNOREPO:+isSet} != isSet ]] ; then
     SST_JUNOREPO=https://github.com/sstsimulator/juno
 fi
-
-# Each repository has a default branch that may not be the branch present when
-# cloned without `-b`.  In the event a specific branch or commit hash hasn't
-# been specified, the commit hash from the tip of the default branch will be
-# used.
-SST_SQEBRANCH_default=devel
-SST_COREBRANCH_default=devel
-SST_ELEMENTSBRANCH_default=devel
-SST_MACROBRANCH_default=devel
-SST_EXTERNALELEMENTBRANCH_default=master
-SST_JUNOBRANCH_default=master
 
 # Root of directory checked out, where this script should be found
 export SST_ROOT=`pwd`
