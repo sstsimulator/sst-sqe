@@ -47,49 +47,49 @@ cloneRepo() {
     local timeout="$6"
     local depth="$7"
 
-   echo " "
-   echo "     TimeoutEx -t ${timeout} git clone ${depth} ${repo} ${clone_loc}"
-   date
-   TimeoutEx -t "${timeout}" git clone "${depth}" "${repo}" "${clone_loc}"
-   retVal=$?
-   if [ $retVal -ne 0 ]; then
-       echo "\"git clone ${depth} ${repo} ${clone_loc}\" FAILED."
-       exit
-   fi
-   date
-   echo " "
-   echo " The ${clone_loc} Repo has been cloned."
-   ls -l
-   pushd "${clone_loc}"
+    echo " "
+    echo "     TimeoutEx -t ${timeout} git clone ${depth} ${repo} ${clone_loc}"
+    date
+    TimeoutEx -t "${timeout}" git clone "${depth}" "${repo}" "${clone_loc}"
+    retVal=$?
+    if [ $retVal -ne 0 ]; then
+        echo "\"git clone ${depth} ${repo} ${clone_loc}\" FAILED."
+        exit
+    fi
+    date
+    echo " "
+    echo " The ${clone_loc} Repo has been cloned."
+    ls -l
+    pushd "${clone_loc}"
 
-   local commit_hash
-   commit_hash=$(get_commit_hash "${specific_branch}" "${default_branch}" "${commit_hash}")
+    local commit_hash
+    commit_hash=$(get_commit_hash "${specific_branch}" "${default_branch}" "${commit_hash}")
 
-   echo "     Desired ${clone_loc} commit_hash is ${commit_hash}"
-   git reset --hard "${commit_hash}"
-   retVal=$?
-   if [ $retVal -ne 0 ] ; then
-       echo "\"git reset --hard ${commit_hash} \" FAILED.  retVal = ${retVal}"
-       exit
-   fi
+    echo "     Desired ${clone_loc} commit_hash is ${commit_hash}"
+    git reset --hard "${commit_hash}"
+    retVal=$?
+    if [ $retVal -ne 0 ] ; then
+        echo "\"git reset --hard ${commit_hash} \" FAILED.  retVal = ${retVal}"
+        exit
+    fi
 
-   # if [[ ${SST_TEST_MERGE} ]]; then
-   #     # shellcheck disable=SC2086
-   #     git remote add upstream https://github.com/sstsimulator/${clone_loc}.git
-   #     git fetch --depth=1 upstream
-   #     git merge --no-commit upstream/devel
-   #     retVal=$?
-   #     if [[ $retVal -ne 0 ]] ; then
-   #         echo "\"git merge --no-commit upstream/devel\" FAILED.  retVal = $retVal"
-   #         exit
-   #     fi
-   # fi
+    # if [[ ${SST_TEST_MERGE} ]]; then
+    #     # shellcheck disable=SC2086
+    #     git remote add upstream https://github.com/sstsimulator/${clone_loc}.git
+    #     git fetch --depth=1 upstream
+    #     git merge --no-commit upstream/devel
+    #     retVal=$?
+    #     if [[ $retVal -ne 0 ]] ; then
+    #         echo "\"git merge --no-commit upstream/devel\" FAILED.  retVal = $retVal"
+    #         exit
+    #     fi
+    # fi
 
-   git log -n 1
-   ls -l
-   popd
+    git log -n 1
+    ls -l
+    popd
 
-   echo "${commit_hash}"
+    echo "${commit_hash}"
 }
 
 cloneOtherRepos() {
