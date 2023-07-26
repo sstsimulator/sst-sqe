@@ -40,7 +40,7 @@ TimeoutEx() {
 
 cloneRepo() {
     local repo="$1"
-    local sha="$2"
+    local hash="$2"
     local loc="$3"
     local timeout="$4"
     local depth="$5"
@@ -56,11 +56,11 @@ cloneRepo() {
    ls -l
    pushd "${loc}"
 
-   echo "     Desired ${loc} SHA1 is ${sha}"
-   git reset --hard "${sha}"
+   echo "     Desired ${loc} hash is ${hash}"
+   git reset --hard "${hash}"
    retVal=$?
    if [ $retVal != 0 ] ; then
-       echo "\"git reset --hard ${sha} \" FAILED.  retVal = $retVal"
+       echo "\"git reset --hard ${hash} \" FAILED.  retVal = $retVal"
        exit
    fi
 
@@ -102,31 +102,31 @@ if [ ! -d ../../distTestDir ] ; then
 
    cloneRepo \
        "${SST_COREREPO}" \
-       "${SST_CORE_SHA}" \
+       "${SST_CORE_HASH}" \
        sst-core \
        90 \
        "${_DEPTH_}"
    cloneRepo \
        "${SST_ELEMENTSREPO}" \
-       "${SST_ELEMENTS_SHA}" \
+       "${SST_ELEMENTS_HASH}" \
        sst-elements \
        250 \
        "${_DEPTH_}"
    cloneRepo \
        "${SST_MACROREPO}" \
-       "${SST_MACRO_SHA}" \
+       "${SST_MACRO_HASH}" \
        sst-macro \
        90 \
        "${_DEPTH_}"
    cloneRepo \
        "${SST_EXTERNALELEMENTREPO}" \
-       "${SST_EXTERNALELEMENT_SHA}" \
+       "${SST_EXTERNALELEMENT_HASH}" \
        sst-external-element \
        90 \
        "${_DEPTH_}"
    cloneRepo \
        "${SST_JUNOREPO}" \
-       "${SST_JUNO_SHA}" \
+       "${SST_JUNO_HASH}" \
        juno \
        90 \
        "${_DEPTH_}"
@@ -1682,27 +1682,85 @@ if [[ ${SST_JUNOREPO:+isSet} != isSet ]] ; then
     SST_JUNOREPO=https://github.com/sstsimulator/juno
 fi
 
-branch_to_hash() {
+branch_to_commit_hash() {
+    # Get the commit hash from the tip of the given branch.
     local branch="${1}"
     git log -n 1 "${branch}" | grep commit | cut -d ' ' -f 2
 }
 
-# Which branches to use for each repo (default is devel)
-SST_SQE_SHA=${SST_SQE_SHA:=$(branch_to_hash devel)}
-SST_CORE_SHA=${SST_CORE_SHA:=$(branch_to_hash devel)}
-SST_ELEMENTS_SHA=${SST_ELEMENTS_SHA:=$(branch_to_hash devel)}
-SST_MACRO_SHA=${SST_MACRO_SHA:=$(branch_to_hash devel)}
-SST_EXTERNALELEMENT_SHA=${SST_EXTERNALELEMENT_SHA:=$(branch_to_hash master)}
-SST_JUNO_SHA=${SST_JUNO_SHA:=$(branch_to_hash master)}
+get_commit_hash() {
+    # Get the commit hash from some combination of an optional branch name, a
+    # default branch, and possibly already defined commit hash.
+    #
+    # This is to handle the fact that the commit hash we must work with might
+    # not already be known, but the branch name is.  If this is for an
+    # uninteresting checkout, such as a "default" one and not a feature branch
+    # of a fork, then we may only be given the default branch name.
+    #
+    # - A default branch *must* be specified.
+    # - The commit hash and specific branch are optional.
+    #
+    # non-zero length?
+    # - branch no hash no -> default branch to hash
+    # - branch no hash yes -> use hash as-is
+    # - branch yes hash no -> specific branch to hash
+    # - branch yes hash yes -> return 1
+
+    local branch_specified="${1}"
+    local branch_default="${2}"
+    local hash="${3}"
+
+    if [ -z "${branch_default}" ]; then
+        echo "No default branch specified as fallback"
+        return 1
+    fi
+
+    if [ -z "${branch_specified}" ] && [ -z "${hash}" ]; then
+        ret="$(branch_to_commit_hash "${branch_default}")"
+        echo "${ret}"
+    elif [ -z "${branch_specified}" ] && [ -n "${hash}" ]; then
+        echo "${hash}"
+    elif [ -n "${branch_specified}" ] && [ -z "${hash}" ]; then
+        ret="$(branch_to_commit_hash "${branch_specified}")"
+        echo "${ret}"
+    else
+        echo "Cannot pick between both non-default branch and specified commit hash"
+        return 1
+    fi
+}
+
+# Each repository has a default branch that may not be the branch present when
+# cloned without `-b`.  In the event a specific branch or commit hash hasn't
+# been specified, the commit hash from the tip of the default branch will be
+# used.
+SST_SQEBRANCH_default=devel
+SST_COREBRANCH_default=devel
+SST_ELEMENTSBRANCH_default=devel
+SST_MACROBRANCH_default=devel
+SST_EXTERNALELEMENTBRANCH_default=master
+SST_JUNOBRANCH_default=master
+# For each repository, figure out the commit hash to use and (un)set variables
+# based on our fixed naming scheme.  Unset those that references branches and
+# only allow working with commit hashes.
+for repo_name in SQE CORE ELEMNTS MACRO EXTERNALELEMENT JUNO; do
+    varname_branch="SST_${repo_name}BRANCH"
+    varname_branch_default="SST_${repo_name}BRANCH_default"
+    varname_hash="SST_${repo_name}_HASH"
+    commit_hash=$(get_commit_hash "${!varname_branch}" "${!varname_branch_default}" "${!varname_hash}")
+    eval "${!varname_hash}=${commit_hash}"
+    eval "unset ${!varname_branch}"
+    eval "unset ${!varname_branch_default}"
+    unset commit_hash
+done
 
 echo "#############################################################"
 echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
-echo "  GitHub SQE Repository and SHA = $SST_SQEREPO $SST_SQE_SHA"
-echo "  GitHub CORE Repository and SHA = $SST_COREREPO $SST_CORE_SHA"
-echo "  GitHub ELEMENTS Repository and SHA = $SST_ELEMENTSREPO $SST_ELEMENTS_SHA"
-echo "  GitHub MACRO Repository and SHA = $SST_MACROREPO $SST_MACRO_SHA"
-echo "  GitHub EXTERNAL-ELEMENT Repository and SHA = $SST_EXTERNALELEMENTREPO $SST_EXTERNALELEMENT_SHA"
-echo "  GitHub JUNO Repository and SHA = $SST_JUNOREPO $SST_JUNO_SHA"
+echo "  GitHub SQE Repository and HASH = $SST_SQEREPO $SST_SQE_HASH"
+echo "  GitHub CORE Repository and HASH = $SST_COREREPO $SST_CORE_HASH"
+echo "  GitHub ELEMENTS Repository and HASH = $SST_ELEMENTSREPO $SST_ELEMENTS_HASH"
+echo "  GitHub MACRO Repository and HASH = $SST_MACROREPO $SST_MACRO_HASH"
+echo "  GitHub EXTERNAL-ELEMENT Repository and HASH = $SST_EXTERNALELEMENTREPO $SST_EXTERNALELEMENT_HASH"
+echo "  GitHub JUNO Repository and HASH = $SST_JUNOREPO $SST_JUNO_HASH"
 echo "#############################################################"
 
 
