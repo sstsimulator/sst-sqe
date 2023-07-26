@@ -54,7 +54,7 @@ cloneRepo() {
     retVal=$?
     if [ $retVal -ne 0 ]; then
         echo "\"git clone ${depth} ${repo} ${clone_loc}\" FAILED."
-        exit
+        exit 1
     fi
     date
     echo " "
@@ -70,7 +70,7 @@ cloneRepo() {
     retVal=$?
     if [ $retVal -ne 0 ] ; then
         echo "\"git reset --hard ${commit_hash} \" FAILED.  retVal = ${retVal}"
-        exit
+        exit 1
     fi
 
     # if [[ ${SST_TEST_MERGE} ]]; then
@@ -81,7 +81,7 @@ cloneRepo() {
     #     retVal=$?
     #     if [[ $retVal -ne 0 ]] ; then
     #         echo "\"git merge --no-commit upstream/devel\" FAILED.  retVal = $retVal"
-    #         exit
+    #         exit 1
     #     fi
     # fi
 
@@ -1789,12 +1789,11 @@ if [ -d ${SST_BASE}/devel/sqe ] ; then
    echo "PWD $LINENO = `pwd`"
    echo "               SQE HEAD"
    git log -n 1
-   echo ' '
    popd
 else
    echo "Jenkin forks SQE so it is not tied to a remote repository"
-   echo ' '
 fi
+echo ' '
 
 echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE - NOW SETTING ENV RUNTIME VARS ########"
 
