@@ -1593,6 +1593,52 @@ dobuild() {
         "${SST_SELECTED_JUNO_CONFIG}"
 }
 
+branch_to_commit_hash() {
+    # Get the commit hash from the tip of the given branch.
+    local branch="${1}"
+    git log -n 1 "${branch}" | grep commit | cut -d ' ' -f 2
+}
+
+get_commit_hash() {
+    # Get the commit hash from some combination of an optional branch name, a
+    # default branch, and possibly already defined commit hash.
+    #
+    # This is to handle the fact that the commit hash we must work with might
+    # not already be known, but the branch name is.  If this is for an
+    # uninteresting checkout, such as a "default" one and not a feature branch
+    # of a fork, then we may only be given the default branch name.
+    #
+    # - A default branch *must* be specified.
+    # - The commit hash and specific branch are optional.
+    #
+    # non-zero length?
+    # - branch no hash no -> default branch to hash
+    # - branch no hash yes -> use hash as-is
+    # - branch yes hash no -> specific branch to hash
+    # - branch yes hash yes -> return 1
+
+    local branch_specified="${1}"
+    local branch_default="${2}"
+    local hash="${3}"
+
+    if [ -z "${branch_default}" ]; then
+        echo "No default branch specified as fallback"
+        return 1
+    fi
+
+    if [ -z "${branch_specified}" ] && [ -z "${hash}" ]; then
+        ret="$(branch_to_commit_hash "${branch_default}")"
+        echo "${ret}"
+    elif [ -z "${branch_specified}" ] && [ -n "${hash}" ]; then
+        echo "${hash}"
+    elif [ -n "${branch_specified}" ] && [ -z "${hash}" ]; then
+        ret="$(branch_to_commit_hash "${branch_specified}")"
+        echo "${ret}"
+    else
+        echo "Cannot pick between both non-default branch and specified commit hash"
+        return 1
+    fi
+}
 
 #-------------------------------------------------------------------------
 # Function: ExitOfScriptHandler
@@ -1681,53 +1727,6 @@ fi
 if [[ ${SST_JUNOREPO:+isSet} != isSet ]] ; then
     SST_JUNOREPO=https://github.com/sstsimulator/juno
 fi
-
-branch_to_commit_hash() {
-    # Get the commit hash from the tip of the given branch.
-    local branch="${1}"
-    git log -n 1 "${branch}" | grep commit | cut -d ' ' -f 2
-}
-
-get_commit_hash() {
-    # Get the commit hash from some combination of an optional branch name, a
-    # default branch, and possibly already defined commit hash.
-    #
-    # This is to handle the fact that the commit hash we must work with might
-    # not already be known, but the branch name is.  If this is for an
-    # uninteresting checkout, such as a "default" one and not a feature branch
-    # of a fork, then we may only be given the default branch name.
-    #
-    # - A default branch *must* be specified.
-    # - The commit hash and specific branch are optional.
-    #
-    # non-zero length?
-    # - branch no hash no -> default branch to hash
-    # - branch no hash yes -> use hash as-is
-    # - branch yes hash no -> specific branch to hash
-    # - branch yes hash yes -> return 1
-
-    local branch_specified="${1}"
-    local branch_default="${2}"
-    local hash="${3}"
-
-    if [ -z "${branch_default}" ]; then
-        echo "No default branch specified as fallback"
-        return 1
-    fi
-
-    if [ -z "${branch_specified}" ] && [ -z "${hash}" ]; then
-        ret="$(branch_to_commit_hash "${branch_default}")"
-        echo "${ret}"
-    elif [ -z "${branch_specified}" ] && [ -n "${hash}" ]; then
-        echo "${hash}"
-    elif [ -n "${branch_specified}" ] && [ -z "${hash}" ]; then
-        ret="$(branch_to_commit_hash "${branch_specified}")"
-        echo "${ret}"
-    else
-        echo "Cannot pick between both non-default branch and specified commit hash"
-        return 1
-    fi
-}
 
 # Each repository has a default branch that may not be the branch present when
 # cloned without `-b`.  In the event a specific branch or commit hash hasn't
