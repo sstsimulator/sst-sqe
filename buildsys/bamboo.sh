@@ -1742,7 +1742,7 @@ SST_JUNOBRANCH_default=master
 # For each repository, figure out the commit hash to use and (un)set variables
 # based on our fixed naming scheme.  Unset those that references branches and
 # only allow working with commit hashes.
-for repo_name in SQE CORE ELEMNTS MACRO EXTERNALELEMENT JUNO; do
+for repo_name in SQE CORE ELEMENTS MACRO EXTERNALELEMENT JUNO; do
     varname_branch="SST_${repo_name}BRANCH"
     varname_branch_default="SST_${repo_name}BRANCH_default"
     varname_hash="SST_${repo_name}_HASH"
