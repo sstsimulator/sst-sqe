@@ -63,6 +63,10 @@ cloneRepo() {
 
     local commit_hash
     commit_hash=$(get_commit_hash "${specific_branch}" "${default_branch}" "${commit_hash}")
+    if [ -z "${commit_hash}" ]; then
+        echo "Couldn't figure out commit hash"
+        exit 1
+    fi
 
     echo "     Desired ${clone_loc} commit_hash is ${commit_hash}"
     git reset --hard "${commit_hash}"
@@ -1622,7 +1626,7 @@ dobuild() {
 branch_to_commit_hash() {
     # Get the commit hash from the tip of the given branch.
     local branch="${1}"
-    git log -n 1 "${branch}" | grep commit | cut -d ' ' -f 2
+    echo "$(git log -n 1 "origin/${branch}" | grep commit | cut -d ' ' -f 2)"
 }
 
 get_commit_hash() {
@@ -1654,11 +1658,19 @@ get_commit_hash() {
 
     if [ -z "${branch_specified}" ] && [ -z "${hash}" ]; then
         ret="$(branch_to_commit_hash "${branch_default}")"
+        if [ $? -ne 0 ]; then
+            echo "Problem with branch_to_commit_hash"
+            return 1
+        fi
         echo "${ret}"
     elif [ -z "${branch_specified}" ] && [ -n "${hash}" ]; then
         echo "${hash}"
     elif [ -n "${branch_specified}" ] && [ -z "${hash}" ]; then
         ret="$(branch_to_commit_hash "${branch_specified}")"
+        if [ $? -ne 0 ]; then
+            echo "Problem with branch_to_commit_hash"
+            return 1
+        fi
         echo "${ret}"
     else
         echo "Cannot pick between both non-default branch and specified commit hash"
