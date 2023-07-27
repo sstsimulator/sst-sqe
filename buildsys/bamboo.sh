@@ -1395,12 +1395,14 @@ config_and_build() {
             return $retval
         fi
 
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make clean on ${repo_name}"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        make clean
+        if [[ "${repo_name}" != "sst-macro" ]]; then
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '
+            echo "bamboo.sh: make clean on ${repo_name}"
+            echo ' '
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            make clean
+        fi
 
         echo
         echo "=== DUMPING The ${repo_name} installed sstsimulator.conf file ==="
