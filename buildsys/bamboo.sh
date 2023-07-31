@@ -1356,6 +1356,8 @@ config_and_build() {
             #
             # macro also continues no matter what?
             if [[ "${repo_name}" == "sst-elements" ]]; then
+                echo "popd"
+                popd
                 return $retval
             fi
         fi
