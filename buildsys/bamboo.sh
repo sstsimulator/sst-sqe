@@ -38,258 +38,140 @@ TimeoutEx() {
     return $retval
 }
 
+cloneRepo() {
+    local repo="$1"
+    local commit_hash="$2"
+    local specific_branch="$3"
+    local default_branch="$4"
+    local clone_loc="$5"
+    local timeout="$6"
+
+    echo " "
+    echo "     TimeoutEx -t ${timeout} git clone ${repo} ${clone_loc}"
+    date
+    TimeoutEx -t "${timeout}" git clone "${repo}" "${clone_loc}"
+    retVal=$?
+    if [ $retVal -ne 0 ]; then
+        echo "\"git clone ${repo} ${clone_loc}\" FAILED."
+        exit 1
+    fi
+    date
+    echo " "
+    echo " The ${clone_loc} Repo has been cloned."
+    ls -l
+    pushd "${clone_loc}"
+
+    local commit_hash
+    commit_hash=$(get_commit_hash "${specific_branch}" "${default_branch}" "${commit_hash}")
+    if [ -z "${commit_hash}" ]; then
+        echo "Couldn't figure out commit hash"
+        exit 1
+    fi
+
+    echo "     Desired ${clone_loc} commit_hash is ${commit_hash}"
+    git reset --hard "${commit_hash}"
+    retVal=$?
+    if [ $retVal -ne 0 ] ; then
+        echo "\"git reset --hard ${commit_hash} \" FAILED.  retVal = ${retVal}"
+        exit 1
+    fi
+
+    # if [[ ${SST_TEST_MERGE} ]]; then
+    #     # shellcheck disable=SC2086
+    #     git remote add upstream https://github.com/sstsimulator/${clone_loc}.git
+    #     git fetch upstream
+    #     git merge --no-commit upstream/devel
+    #     retVal=$?
+    #     if [[ $retVal -ne 0 ]] ; then
+    #         echo "\"git merge --no-commit upstream/devel\" FAILED.  retVal = $retVal"
+    #         exit 1
+    #     fi
+    # fi
+
+    git log -n 1
+    ls -l
+    popd
+
+    echo "${commit_hash}"
+}
 
 cloneOtherRepos() {
-##  Check out other repositories except second time on Make Dist test
+    ##  Check out other repositories except second time on Make Dist test
 
-if [ ! -d ../../distTestDir ] ; then
-    echo "PWD $LINENO = `pwd`"
+    if [ ! -d ../../distTestDir ] ; then
+        echo "PWD $LINENO = `pwd`"
 
-## Set the clone depth parameter
-## For git clone operations in bamboo.sh, the depth is defaulted to 1"
-## Setting the environment variable to "none" omits depth limiting.
-   _DEPTH_="--depth 1"
-   if [[ ${SST_GIT_CLONE_DEPTH_PARAMETER:+isSet} == isSet ]] ; then
-       if [ "${SST_GIT_CLONE_DEPTH_PARAMETER}" == "none" ] ; then
-           _DEPTH_=""
-       else
-           _DEPTH_="${SST_GIT_CLONE_DEPTH_PARAMETER}"
-       fi
-   fi
-   echo " Cloning depth parameter set to \"${_DEPTH_}\""
-## Cloning sst-core into <path>/devel/trunk
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-      echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_COREBRANCH $SST_COREREPO sst-core "
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_COREBRANCH $SST_COREREPO sst-core
-      retVal=$?
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "\"git clone of $SST_COREREPO \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf sst-core
-             continue
-         fi
-         exit
-      fi
-   done
-   echo " "
-   echo " The sst-core Repo has been cloned."
-   ls -l
-   pushd sst-core
+        # Each repository has a default branch that may not be the branch present when
+        # cloned without `-b`.  In the event a specific branch or commit hash hasn't
+        # been specified, the commit hash from the tip of the default branch will be
+        # used.
 
-   # Test for override of the branch to some other SHA1
-   if [[ ${SST_CORE_RESET:+isSet} == isSet ]] ; then
-       echo "     Desired sst-element SHA1 is ${SST_CORE_RESET}"
-       git reset --hard ${SST_CORE_RESET}
-       retVal=$?
-       if [ $retVal != 0 ] ; then
-          echo "\"git reset --hard ${SST_CORE_RESET} \" FAILED.  retVal = $retVal"
-          exit
-       fi
-   fi
+        local commit_hash_sqe
+        local commit_hash_core
+        local commit_hash_elements
+        local commit_hash_macro
+        local commit_hash_externalelement
+        local commit_hash_juno
 
-   git log -n 1 | grep commit
-   ls -l
-   popd
+        # FIXME
+        commit_hash_sqe="${SST_SQE_HASH}"
+        commit_hash_core=$(cloneRepo \
+                               "${SST_COREREPO}" \
+                               "${SST_CORE_HASH}" \
+                               "${SST_COREBRANCH}" \
+                               devel \
+                               sst-core \
+                               90)
+        commit_hash_elements=$(cloneRepo \
+                                   "${SST_ELEMENTSREPO}" \
+                                   "${SST_ELEMENTS_HASH}" \
+                                   "${SST_ELEMENTSBRANCH}" \
+                                   devel \
+                                   sst-elements \
+                                   250)
+        commit_hash_macro=$(cloneRepo \
+                                "${SST_MACROREPO}" \
+                                "${SST_MACRO_HASH}" \
+                                "${SST_MACROBRANCH}" \
+                                devel \
+                                sst-macro \
+                                90)
+        commit_hash_externalelement=$(cloneRepo \
+                                          "${SST_EXTERNALELEMENTREPO}" \
+                                          "${SST_EXTERNALELEMENT_HASH}" \
+                                          "${SST_EXTERNALELEMENTBRANCH}" \
+                                          master \
+                                          sst-external-element \
+                                          90)
+        commit_hash_juno=$(cloneRepo \
+                               "${SST_JUNOREPO}" \
+                               "${SST_JUNO_HASH}" \
+                               "${SST_JUNOBRANCH}" \
+                               master \
+                               juno \
+                               90)
 
+        # Link the deps and test directories to the trunk
+        echo " Creating Symbolic Links to the sqe directories (deps & test)"
+        ls -l
+        ln -s `pwd`/../sqe/buildsys/deps .
+        ln -s `pwd`/../sqe/test .
+        ls -l
+        # Define the path to the Elements Reference files
+        export SST_REFERENCE_ELEMENTS=$SST_ROOT/sst-elements/src/sst/elements
+    fi
 
-## Cloning sst-elements into <path>/devel/trunk
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-      date
-      echo " "
-      echo "     TimeoutEx -t 250 git clone ${_DEPTH_} -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements "
-      date
-      TimeoutEx -t 250 git clone ${_DEPTH_} -b $SST_ELEMENTSBRANCH $SST_ELEMENTSREPO sst-elements
-      retVal=$?
-      date
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "\"git clone of $SST_ELEMENTSREPO \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf sst-elements
-             continue
-         fi
+    echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE  ########"
 
-         exit
-      fi
-   done
-   echo " "
-   echo " The sst-elements Repo has been cloned."
-   ls -l
-   pushd sst-elements
-
-   # Test for override of the branch to some other SHA1
-   if [[ ${SST_ELEMENTS_RESET:+isSet} == isSet ]] ; then
-       echo "     Desired sst-element SHA1 is ${SST_ELEMENTS_RESET}"
-       git reset --hard ${SST_ELEMENTS_RESET}
-       retVal=$?
-       if [ $retVal != 0 ] ; then
-          echo "\"git reset --hard ${SST_ELEMENTS_RESET} \" FAILED.  retVal = $retVal"
-          exit
-       fi
-   fi
-
-   git log -n 1 | grep commit
-   ls -l
-   popd
-
-## Cloning sst-macro into <path>/devel/trunk
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-      date
-      echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_MACROBRANCH $SST_MACROREPO sst-macro "
-      date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_MACROBRANCH $SST_MACROREPO sst-macro
-      retVal=$?
-      date
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "\"git clone of $SST_MACROREPO \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf sst-macro
-             continue
-         fi
-
-         exit
-      fi
-   done
-   echo " "
-   echo " The sst-macro Repo has been cloned."
-   ls -l
-   pushd sst-macro
-
-   # Test for override of the branch to some other SHA1
-   if [[ ${SST_MACRO_RESET:+isSet} == isSet ]] ; then
-       echo "     Desired sst-macro SHA1 is ${SST_MACRO_RESET}"
-       git reset --hard ${SST_MACRO_RESET}
-       retVal=$?
-       if [ $retVal != 0 ] ; then
-          echo "\"git reset --hard ${SST_MACRO_RESET} \" FAILED.  retVal = $retVal"
-          exit
-       fi
-   fi
-
-   git log -n 1 | grep commit
-   ls -l
-   popd
-
-## Cloning sst-external-element into <path>/devel/trunk
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-      date
-      echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_EXTERNALELEMENTBRANCH $SST_EXTERNALELEMENTREPO sst-external-element "
-      date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_EXTERNALELEMENTBRANCH $SST_EXTERNALELEMENTREPO sst-external-element
-      retVal=$?
-      date
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "\"git clone of https://github.com/sstsimulator/sst-external-element.git \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf sst-external-element
-             continue
-         fi
-
-         exit
-      fi
-   done
-   echo " "
-   echo " The sst-external-element Repo has been cloned."
-   ls -l
-   pushd sst-external-element
-
-   # Test for override of the branch to some other SHA1
-   if [[ ${SST_EXTERNALELEMENT_RESET:+isSet} == isSet ]] ; then
-       echo "     Desired sst-external-element SHA1 is ${SST_EXTERNALELEMENT_RESET}"
-       git reset --hard ${SST_EXTERNALELEMENT_RESET}
-       retVal=$?
-       if [ $retVal != 0 ] ; then
-          echo "\"git reset --hard ${SST_EXTERNALELEMENT_RESET} \" FAILED.  retVal = $retVal"
-          exit
-       fi
-   fi
-
-   git log -n 1 | grep commit
-   ls -l
-   popd
-
-## Cloning juno into <path>/devel/trunk
-   Num_Tries_remaing=3
-   while [ $Num_Tries_remaing -gt 0 ]
-   do
-      date
-      echo " "
-      echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_JUNOBRANCH $SST_JUNOREPO juno "
-      date
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_JUNOBRANCH $SST_JUNOREPO juno
-      retVal=$?
-      date
-      if [ $retVal == 0 ] ; then
-         Num_Tries_remaing=-1
-      else
-         echo "\"git clone of https://github.com/sstsimulator/juno.git \" FAILED.  retVal = $retVal"
-         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
-         if [ $Num_Tries_remaing -gt 0 ] ; then
-             echo "    ------   RETRYING    $Num_Tries_remaing "
-             rm -rf juno
-             continue
-         fi
-
-         exit
-      fi
-   done
-   echo " "
-   echo " The juno Repo has been cloned."
-   ls -l
-   pushd juno
-
-   # Test for override of the branch to some other SHA1
-   if [[ ${SST_JUNO_RESET:+isSet} == isSet ]] ; then
-       echo "     Desired JUNO SHA1 is ${SST_JUNO_RESET}"
-       git reset --hard ${SST_JUNO_RESET}
-       retVal=$?
-       if [ $retVal != 0 ] ; then
-          echo "\"git reset --hard ${SST_JUNO_RESET} \" FAILED.  retVal = $retVal"
-          exit
-       fi
-   fi
-
-   git log -n 1 | grep commit
-   ls -l
-   popd
-
-# Link the deps and test directories to the trunk
-   echo " Creating Symbolic Links to the sqe directories (deps & test)"
-   ls -l
-   ln -s `pwd`/../sqe/buildsys/deps .
-   ln -s `pwd`/../sqe/test .
-   ls -l
-# Define the path to the Elements Reference files
-   export SST_REFERENCE_ELEMENTS=$SST_ROOT/sst-elements/src/sst/elements
-fi
-
-echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE  ########"
+    echo "#############################################################"
+    echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
+    echo "  GitHub SQE Repository and HASH = $SST_SQEREPO ${commit_hash_sqe}"
+    echo "  GitHub CORE Repository and HASH = $SST_COREREPO ${commit_hash_core}"
+    echo "  GitHub ELEMENTS Repository and HASH = $SST_ELEMENTSREPO ${commit_hash_elements}"
+    echo "  GitHub MACRO Repository and HASH = $SST_MACROREPO ${commit_hash_macro}"
+    echo "  GitHub EXTERNAL-ELEMENT Repository and HASH = $SST_EXTERNALELEMENTREPO ${commit_hash_externalelement}"
+    echo "  GitHub JUNO Repository and HASH = $SST_JUNOREPO ${commit_hash_juno}"
+    echo "#############################################################"
 }
 #=========================================================================
 #Functions
@@ -975,7 +857,6 @@ linuxSetMPI() {
            ModuleEx load intel/${4}
            if [[ "$3" == *intel-15* ]] ; then
                ModuleEx load gcc/gcc-4.8.1
-               IntelExtraConfigStr="CXXFLAGS=-gxx-name=`which g++` CFLAGS=-gcc-name=`which gcc`"
            fi
 
        fi
@@ -1338,6 +1219,316 @@ print_and_dump_loc() {
     fi
 }
 
+config_and_build() {
+    local repo_name="$1"
+    local selected_config="$2"
+    local install_dir="$3"
+    local source_dir="$4"
+    local conf_script_name="$5"
+
+    if [[ "${selected_config}" == "NOBUILD" ]]
+    then
+        echo "============== ${repo_name} - NO BUILD REQUIRED ==============="
+    else
+        echo "==================== Building ${repo_name} ===================="
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: running \"${conf_script_name}.sh\" on ${repo_name}..."
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+        echo "NOTE: ${conf_script_name} Must be run in ${repo_name} Source Dir to create configuration file"
+        echo "Current Working Dir = $(pwd)"
+        echo "pushd ${source_dir}"
+        pushd "${source_dir}"
+        echo "${conf_script_name} Working Dir = $(pwd)"
+        ls -l
+        echo "=== Running ${conf_script_name}.sh ==="
+
+        ./${conf_script_name}.sh
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+
+        echo "Done with ${conf_script_name}"
+        pwd
+        ls -ltrd * | tail -20
+        echo "popd"
+        popd
+        echo "Current Working Dir = $(pwd)"
+        ls -l
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: ${conf_script_name} on ${repo_name} complete without error"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+
+        # Check to see if we are supposed to build out of the source
+        if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
+            echo "NOTICE: BUILDING ${repo_name} OUT OF SOURCE DIR"
+            echo "Starting Dir = $(pwd)"
+            echo "mkdir ./${repo_name}-builddir"
+            mkdir ./${repo_name}-builddir
+            echo "pushd ${repo_name}-builddir"
+            pushd "${repo_name}-builddir"
+            echo "Current Working Dir = $(pwd)"
+            ls -l
+            sourcedir="../${repo_name}"
+        else
+            echo "NOTICE: BUILDING ${repo_name} IN SOURCE DIR"
+            echo "Starting Dir = $(pwd)"
+            echo "pushd ${source_dir}"
+            pushd "${source_dir}"
+            echo "Current Working Dir = $(pwd)"
+            ls -l
+            sourcedir="."
+        fi
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: running \"configure\" on ${repo_name}..."
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "bamboo.sh: config args = ${selected_config}"
+
+        echo "=== Running ${sourcedir}/configure <config args> ==="
+        echo " resourcedir is ${sourcedir}"
+        # shellcheck disable=SC2086
+        "${sourcedir}/configure" ${selected_config}
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            echo "bamboo.sh: Uh oh. Something went wrong during configure of ${repo_name}.  Dumping config.log"
+            echo "--------------------dump of config.log--------------------"
+            sed -e 's/^/#dump /' ./config.log
+            echo "--------------------dump of config.log--------------------"
+            return $retval
+        fi
+        echo "     ------------   After configure files at sourcedir are:"
+        ls -ltrd "${sourcedir}"/* | tail -14
+        echo " Local files are ------------"
+        ls -ltrd *
+        echo  " ---------"
+        echo ' '
+        echo "bamboo.sh: configure on ${repo_name} complete without error"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+        pwd
+        ls -ltrd * | tail -20
+
+        echo "at this time \$buildtype is $buildtype"
+        if [[ $buildtype == "sstmainline_config_dist_test" ]] ||
+               [[ $buildtype == *make_dist* ]] ; then
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            echo ' '
+            echo "bamboo.sh: make dist on ${repo_name}"
+            echo ' '
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            make dist
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                return $retval
+            fi
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            echo ' '
+            echo "bamboo.sh: make dist on ${repo_name} is complete without error"
+            pwd
+            ls | grep tar
+            echo ' '
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            echo " "
+            ls -ltr | tail -5
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            echo ' '
+            echo "bamboo.sh: After make dist on ${repo_name} do the make install "
+            echo ' '
+            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
+            # Dependents of core need core to be installed no matter what, so
+            # continue the rest of the build process for core.  Otherwise, we
+            # can have an early return.
+            #
+            # macro also continues no matter what?
+            if [[ "${repo_name}" == "sst-elements" ]]; then
+                echo "popd"
+                popd
+                return $retval
+            fi
+        fi
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make on ${repo_name}"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+        echo "=== Running make -j4 all ==="
+        make -j4 all
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make on ${repo_name} complete without error"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make install on ${repo_name}"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+        echo "=== Running make -j4 install ==="
+        make -j4 install
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+
+        if [[ "${repo_name}" != "sst-macro" ]]; then
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo ' '
+            echo "bamboo.sh: make clean on ${repo_name}"
+            echo ' '
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            make clean
+        fi
+
+        echo
+        echo "=== DUMPING The ${repo_name} installed sstsimulator.conf file ==="
+        print_and_dump_loc "${install_dir}/etc/sst/sstsimulator.conf"
+        echo "=== DONE DUMPING ==="
+        echo
+
+        echo
+        echo "=== DUMPING The ${repo_name} installed ${HOME}/.sst/sstsimulator.conf file ==="
+        print_and_dump_loc "${HOME}/.sst/sstsimulator.conf"
+        echo "=== DONE DUMPING ==="
+        echo
+
+        echo
+        echo "=== DUMPING The ${repo_name} installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
+        print_and_dump_loc "${SST_CONFIG_FILE_PATH}"
+        echo "=== DONE DUMPING ==="
+        echo
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make install on ${repo_name} complete without error"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+
+        if [[ "${repo_name}" == "sst-core" ]]; then
+            [[ $kernel == "Darwin" ]] && linkage_display="otool -L" || linkage_display=ldd
+            sstsim="${sourcedir}/src/sst/core/sstsim.x"
+            echo "${linkage_display} ${sstsim}"
+            if [[ -r "${sstsim}" ]]; then
+                ${linkage_display} "${sstsim}"
+            fi
+            sstsim="${install_dir}/src/sst/core/sstsim.x"
+            echo "${linkage_display} ${sstsim}"
+            if [[ -r "${sstsim}" ]]; then
+                ${linkage_display} "${sstsim}"
+            fi
+        fi
+
+        # Go back to devel/trunk
+        echo "popd"
+        popd
+        echo "Current Working Dir = $(pwd)"
+        ls -l
+    fi
+}
+
+config_and_build_simple() {
+    local repo_name="$1"
+    local selected_config="$2"
+
+    if [[ "${selected_config}" == "NOBUILD" ]]
+    then
+        echo "============== ${repo_name} - NO BUILD REQUIRED ==============="
+    else
+        echo "==================== Building ${repo_name} ===================="
+
+        echo "pushd ${repo_name}/src"
+        pushd "${SST_ROOT}/${repo_name}/src"
+        echo "Build Working Dir = $(pwd)"
+
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make on ${repo_name}"
+        echo ' '
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+        echo "=== Running make -j4 ==="
+        make -j4
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make on ${repo_name} complete without error"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make install on ${repo_name}"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+        echo "=== Running make -j4 install ==="
+        make -j4 install
+        retval=$?;
+        if [ $retval -ne 0 ]
+        then
+            return $retval
+        fi
+
+        echo
+        echo "=== DUMPING The ${repo_name} installed ${HOME}/.sst/sstsimulator.conf file ==="
+        print_and_dump_loc "${HOME}/.sst/sstsimulator.conf"
+        echo "=== DONE DUMPING ==="
+        echo
+
+        echo
+        echo "=== DUMPING The ${repo_name} installed sstsimulator.conf file located at ${SST_CONFIG_FILE_PATH} ==="
+        print_and_dump_loc "${SST_CONFIG_FILE_PATH}"
+        echo "=== DONE DUMPING ==="
+        echo
+
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo ' '
+        echo "bamboo.sh: make install on ${repo_name} complete without error"
+        echo ' '
+        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo " "
+
+        # Go back to devel/trunk
+        echo "popd"
+        popd
+        echo "Current Working Dir = $(pwd)"
+        ls -l
+    fi
+}
+
 #-------------------------------------------------------------------------
 # Function: dobuild
 # Description:
@@ -1410,770 +1601,86 @@ dobuild() {
     ModuleEx list
     echo "--------------------modules status--------------------"
 
-    ### BUILDING THE SST-CORE
-    if [[ $SST_SELECTED_CORE_CONFIG == "NOBUILD" ]]
-    then
-        echo "============== SST CORE - NO BUILD REQUIRED ==============="
-    else
-        echo "==================== Building SST CORE ===================="
-
-        # autogen to create ./configure
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: running \"autogen.sh\" on SST-CORE..."
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Autogen SST-CORE
-        ### First Run autogen in the source dir to create the configure file
-        echo "NOTE: Autogen Must be run in SST-CORE Source Dir to create configuration file"
-        echo "Current Working Dir = `pwd`"
-        echo "pushd sst-core"
-        pushd sst-core
-        echo "Autogen Working Dir = `pwd`"
-        ls -l
-        echo "=== Running autogen.sh ==="
-
-        ./autogen.sh
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "Done with Autogen"
-        pwd
-        echo "                                   LINE  $LINENO "
-        ls -ltrd * | tail -20
-        echo "popd"
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: autogen on SST-CORE complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        # Check to see if we are supposed to build out of the source
-        if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
-            echo "NOTICE: BUILDING SST-CORE OUT OF SOURCE DIR"
-            echo "Starting Dir = `pwd`"
-            echo "mkdir ./sst-core-builddir"
-            mkdir ./sst-core-builddir
-            echo "pushd sst-core-builddir"
-            pushd sst-core-builddir
-            echo "Current Working Dir = `pwd`"
-            ls -l
-            coresourcedir="../sst-core"
-        else
-            echo "NOTICE: BUILDING SST-CORE IN SOURCE DIR"
-            echo "Starting Dir = `pwd`"
-            echo "pushd sst-core"
-            pushd sst-core
-            echo "Current Working Dir = `pwd`"
-            ls -l
-            coresourcedir="."
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: running \"configure\" on SST-CORE..."
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo "bamboo.sh: config args = $SST_SELECTED_CORE_CONFIG"
-
-        # Configure SST-CORE
-        echo "=== Running $coresourcedir/configure <config args> ==="
-        echo "    PWD $LINENO is `pwd` "
-        echo " resourcedir is $coresourcedir"
-        $coresourcedir/configure $SST_SELECTED_CORE_CONFIG
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # Something went wrong in configure, so dump config.log
-            echo "bamboo.sh: Uh oh. Something went wrong during configure of sst-core.  Dumping config.log"
-            echo "--------------------dump of config.log--------------------"
-            sed -e 's/^/#dump /' ./config.log
-            echo "--------------------dump of config.log--------------------"
-            return $retval
-        fi
-        echo "     ------------   After configure files at coresourcedir are:"
-        echo "                                   LINE  $LINENO "
-        ls -ltrd $coresourcedir/* | tail -14
-        echo " Local files are ------------"
-        echo "                                   LINE  $LINENO "
-        ls -ltrd *
-        echo  " ---------"
-
-
-        echo ' '
-        echo "bamboo.sh: configure on SST-CORE complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-        pwd
-        echo "                                   LINE  $LINENO "
-        ls -ltrd * | tail -20
-
-
-        # Check to see if we are actually performing make dist
-        echo "at this time \$buildtype is $buildtype"
-        if [ $buildtype == "sstmainline_config_dist_test" ] ||
-           [[ $buildtype == *make_dist* ]] ; then
-#           [ $buildtype == "sstmainline_config_make_dist_no_gem5" ] ||
-#           [ $buildtype == "sstmainline_config_make_dist_test" ] ||
-#           [ $buildtype == "sst_Macro_make_dist" ] ; then
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo ' '
-            echo "bamboo.sh: make dist on SST-CORE"
-            echo ' '
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            make dist
-            retval=$?
-            if [ $retval -ne 0 ]
-            then
-                return $retval
-            fi
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo ' '
-            echo "bamboo.sh: make dist on SST_CORE is complete without error"
-            pwd
-            ls | grep tar
-            echo ' '
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo " "
-            ls -ltr | tail -5
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo ' '
-            echo "bamboo.sh: After make dist on SST_CORE do the make install "
-            echo ' '
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-        fi
-
-        [[ $kernel == "Darwin" ]] && linkage_display="otool -L" || linkage_display=ldd
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on SST-CORE"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        echo "${linkage_display} $coresourcedir/src/sst/core/sstsim.x"
-        if [[ -r $coresourcedir/src/sst/core/sstsim.x ]]; then
-            ${linkage_display} $coresourcedir/src/sst/core/sstsim.x
-        fi
-        echo "SST-CORE BUILD INFO============================================================"
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on SST-CORE complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on SST-CORE"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Install SST-CORE
-        echo "=== Running make -j4 install ==="
-        make -j4 install
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make clean on SST-CORE"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        make clean
-
-        echo
-        echo "=== DUMPING The SST-CORE installed sstsimulator.conf file ==="
-        print_and_dump_loc $SST_CORE_INSTALL/etc/sst/sstsimulator.conf
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on SST-CORE complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        # TODO either this one or the previous one has the wrong path
-        echo "${linkage_display} $coresourcedir/src/sst/core/sstsim.x"
-        if [[ -r $coresourcedir/src/sst/core/sstsim.x ]]; then
-            ${linkage_display} $coresourcedir/src/sst/core/sstsim.x
-        fi
-        echo "SST-CORE BUILD INFO============================================="
-
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on SST-CORE complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        # Go back to devel/trunk
-        echo "popd"
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
-fi
-
-### BUILDING THE SST-ELEMENTS
-if [[ $SST_SELECTED_ELEMENTS_CONFIG == "NOBUILD" ]]
-    then
-        echo "============== SST ELEMENTS - NO BUILD REQUIRED ==============="
-    else
-        echo "==================== Building SST ELEMENTS ===================="
-
-        # autogen to create ./configure
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: running \"autogen.sh\" on SST-ELEMENTS..."
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Autogen SST-ELEMENTS
-        ### First Run autogen in the source dir to create the configure file
-        echo "NOTE: Autogen Must be run in SST-ELEMENTS Source Dir to create configuration file"
-        echo "Current Working Dir = `pwd`"
-        echo "pushd sst-elements"
-        pushd ${SST_ROOT}/sst-elements
-        echo "Autogen Working Dir = `pwd`"
-        ls -l
-        echo "=== Running autogen.sh ==="
-
-        ./autogen.sh
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "Done with Autogen"
-        pwd
-        echo "                                   LINE  $LINENO "
-
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: autogen on SST-ELEMENTS complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        # Check to see if we are supposed to build out of the source
-        if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
-            echo "NOTICE: BUILDING SST-ELEMENTS OUT OF SOURCE DIR"
-            echo "Starting Dir = `pwd`"
-            echo "mkdir ./sst-elements-builddir"
-            mkdir ./sst-elements-builddir
-            echo "pushd sst-elements-builddir"
-            pushd sst-elements-builddir
-            echo "Current Working Dir = `pwd`"
-            ls -l
-            elementssourcedir="../sst-elements"
-        else
-            echo "NOTICE: BUILDING SST-ELEMENTS IN SOURCE DIR"
-            echo "Starting Dir = `pwd`"
-            echo "pushd sst-elements"
-            pushd ${SST_ROOT}/sst-elements
-            echo "Current Working Dir = `pwd`"
-            ls -l
-            elementssourcedir="."
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: running \"configure\" on SST-ELEMENTS..."
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo "bamboo.sh: config args = $SST_SELECTED_ELEMENTS_CONFIG"
-
-        # Configure SST-ELEMENTS
-        echo "=== Running $elementssourcedir/configure <config args> ==="
-        $elementssourcedir/configure $SST_SELECTED_ELEMENTS_CONFIG
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # Something went wrong in configure, so dump config.log
-            echo "bamboo.sh: Uh oh. Something went wrong during configure of sst-elements.  Dumping config.log"
-            echo "--------------------dump of config.log--------------------"
-            sed -e 's/^/#dump /' ./config.log
-            echo "--------------------dump of config.log--------------------"
-            return $retval
-        fi
-
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: configure on SST-ELEMENTS complete without error"
-        echo ' '
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-        pwd
-        echo "                                   LINE  $LINENO "
-        ls -ltrd * | tail -20
-
-        echo "################################## DEBUG DATA ########################"
-        find "$PWD" -type f | sort
-        echo "##################### END ######## DEBUG DATA ########################"
-
-        # Check to see if we are actually performing make dist
-        echo "at this time \$buildtype is $buildtype"
-        if [ $buildtype == "sstmainline_config_dist_test" ] ||
-           [ $buildtype == "sstmainline_config_make_dist_no_gem5" ] ||
-           [ $buildtype == "sstmainline_config_make_dist_test" ] ; then
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo ' '
-            echo "bamboo.sh: make dist on SST-ELEMENTS"
-            echo ' '
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            make dist
-            retval=$?
-            if [ $retval -ne 0 ]
-            then
-                return $retval
-            fi
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo ' '
-            echo "bamboo.sh: make dist on SST-ELEMENTS is complete without error"
-            pwd
-            ls | grep tar
-            echo ' '
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo " "
-            ls -ltr | tail -5
-            popd
-            return $retval       ##  This is in dobuild
-        else
-
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '
-            echo "bamboo.sh: make on SST-ELEMENTS"
-            echo ' '
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-            # Compile SST-ELEMENTS
-            echo "=== Running make -j4 all ==="
-            make -j4 all
-            retval=$?
-            if [ $retval -ne 0 ]
-            then
-                return $retval
-            fi
-
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '
-            echo "bamboo.sh: make on SST-ELEMENTS complete without error"
-            echo ' '
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo " "
-
-
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '
-            echo "bamboo.sh: make install on SST-ELEMENTS"
-            echo ' '
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            # Install SST-ELEMENTS
-            echo "=== Running make -j4 install ==="
-            make -j4 install
-            retval=$?
-            if [ $retval -ne 0 ]
-            then
-                return $retval
-            fi
-
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '
-            echo "bamboo.sh: make clean on SST-ELEMENTS"
-            echo ' '
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            make clean
-
-            echo
-            echo "=== DUMPING The SST-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
-            print_and_dump_loc $HOME/.sst/sstsimulator.conf
-            echo "=== DONE DUMPING ==="
-            echo
-
-            echo
-            echo "=== DUMPING The SST-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-            print_and_dump_loc $SST_CONFIG_FILE_PATH
-            echo "=== DONE DUMPING ==="
-            echo
-
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo ' '
-            echo "bamboo.sh: make install on SST-ELEMENTS complete without error"
-            echo ' '
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo " "
-
-            # Go back to devel/trunk
-            echo "popd"
-            popd
-            echo "Current Working Dir = `pwd`"
-            ls -l
-        fi   ###### end of make or make dist on Elements
-    fi
-
-    echo "PWD $LINENO = `pwd`   A Macro decision point -------------"
-    ### BUILDING THE SST-MACRO
-    if [[ $SST_SELECTED_MACRO_CONFIG == "NOBUILD" ]]
-    then
-        echo "============== SST MACRO - NO BUILD REQUIRED ==============="
-    else
-        echo "==================== Building SST MACRO ===================="
-
-        # bootstrap to create ./configure
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: running \"bootstrap.sh\" on SST-MACRO..."
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # bootstrap SST-MACRO
-        ### First Run bootstrap in the source dir to create the configure file
-        echo "NOTE: bootstrap Must be run in SST-Macro Source Dir to create configuration file"
-        echo "Current Working Dir = `pwd`"
-        echo "pushd sst-macro"
-        pushd ${SST_ROOT}/sst-macro
-        echo "bootstrap Working Dir = `pwd`"
-        ls -l
-        echo "=== Running bootstrap.sh ==="
-
-        ./bootstrap.sh
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "Done with bootstrap"
-
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: bootstrap on SST-MACRO complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        # Check to see if we are supposed to build out of the source
-        if [[ ${SST_BUILDOUTOFSOURCE:+isSet} == isSet ]] ; then
-            echo "NOTICE: BUILDING SST-MACRO OUT OF SOURCE DIR"
-            echo "Starting Dir = `pwd`"
-            echo "mkdir ./sst-macro-builddir"
-            mkdir ./sst-macro-builddir
-            echo "pushd sst-macro-builddir"
-            pushd sst-macro-builddir
-            echo "Current Working Dir = `pwd`"
-            ls -l
-            macrosourcedir="../sst-macro"
-        else
-            echo "NOTICE: BUILDING SST-MACRO IN SOURCE DIR"
-            echo "Starting Dir = `pwd`"
-            echo "pushd sst-macro"
-            pushd ${SST_ROOT}/sst-macro
-            echo "Current Working Dir = `pwd`"
-            ls -l
-            macrosourcedir="."
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: running \"configure\" on SST-MACRO..."
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo "bamboo.sh: config args = $SST_SELECTED_MACRO_CONFIG"
-
-        # Configure SSTMACRO
-        echo "=== Running $macrosourcedir/configure <config args> ==="
-        $macrosourcedir/configure $SST_SELECTED_MACRO_CONFIG
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            # Something went wrong in configure, so dump config.log
-            echo "bamboo.sh: Uh oh. Something went wrong during configure of sst-macro.  Dumping config.log"
-            echo "--------------------dump of config.log--------------------"
-            sed -e 's/^/#dump /' ./config.log
-            echo "--------------------dump of config.log--------------------"
-            return $retval
-        fi
-
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: configure on SST-MACRO complete without error"
-        echo ' '
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        pwd
-        echo "                                   LINE  $LINENO "
-        ls -ltrd * | tail -20
-        # Check to see if we are actually performing make dist
-        echo "at this time \$buildtype is $buildtype"
-        if [[ $buildtype == "sst_Macro_make_dist" ]] ; then
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo ' '
-            echo "bamboo.sh: make dist on SST-MACRO"
-            echo ' '
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            make dist
-            retval=$?
-            if [ $retval -ne 0 ]
-            then
-                return $retval
-            fi
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo ' '
-            echo "bamboo.sh: make dist on SST-MACRO is complete without error"
-            pwd
-            ls | grep tar
-            echo ' '
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo " "
-            ls -ltr | tail -5
-            echo "about to \"return $retval\" to dobuild from setUPforMakeDist"
-            return $retval        ##   This is in dobuild
-        fi
-
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on SST-MACRO"
-        echo ' '
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Compile SST-MACRO
-        echo "=== Running make -j4 ==="
-        make -j4
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on SST-MACRO complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on SST-MACRO"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Install SST-MACRO
-        echo "=== Running make -j4 install ==="
-        make -j4 install
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo
-        echo "=== DUMPING The SST-MACRO installed $HOME/.sst/sstsimulator.conf file ==="
-        print_and_dump_loc $HOME/.sst/sstsimulator.conf
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo
-        echo "=== DUMPING The SST-MACRO installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-        echo "cat $SST_CONFIG_FILE_PATH"
-        print_and_dump_loc $SST_CONFIG_FILE_PATH
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on SST-MACRO complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        # Go back to devel/trunk
-        echo "popd"
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
-    fi
-
-    echo "PWD $LINENO = `pwd`    -------  BUILD EXTERNAL elements"
-    ### BUILDING THE SST-EXTERNALELEMENT
-    if [[ $SST_SELECTED_EXTERNALELEMENT_CONFIG == "NOBUILD" ]]
-    then
-        echo "============== SST EXTERNAL-ELEMENT - NO BUILD REQUIRED ==============="
-    else
-        echo "==================== Building SST EXTERNAL-ELEMENT ===================="
-
-
-        # Building SST-EXTERNAL-ELEMENTS
-        echo "pushd sst-external-element/src"
-        pushd ${SST_ROOT}/sst-external-element/src
-        echo "Build Working Dir = `pwd`"
-
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on SST-EXTERNAL-ELEMENTS"
-        echo ' '
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Compile SST-EXTERNAL-ELEMENTS
-        echo "=== Running make -j4 ==="
-        make -j4
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on SST-EXTERNAL-ELEMENTS complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on SST-EXTERNAL-ELEMENTS"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Install SST-EXTERNAL-ELEMENTS
-        echo "=== Running make -j4 install ==="
-        make -j4 install
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo
-        echo "=== DUMPING The SST-EXTERNAL-ELEMENTS installed $HOME/.sst/sstsimulator.conf file ==="
-        print_and_dump_loc $HOME/.sst/sstsimulator.conf
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo
-        echo "=== DUMPING The SST-EXTERNAL-ELEMENTS installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-        print_and_dump_loc $SST_CONFIG_FILE_PATH
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on SST-EXTERNAL-ELEMENTS complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        # Go back to devel/trunk
-        echo "popd"
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
-    fi
-
-    ### BUILDING THE JUNO
-    if [[ $SST_SELECTED_JUNO_CONFIG == "NOBUILD" ]]
-    then
-        echo "============== JUNO - NO BUILD REQUIRED ==============="
-    else
-        echo "==================== Building JUNO ===================="
-
-
-        # Building JUNO
-        echo "pushd juno/src"
-        pushd ${SST_ROOT}/juno/src
-        echo "Build Working Dir = `pwd`"
-
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on JUNO"
-        echo ' '
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Compile JUNO
-        echo "=== Running make -j4 ==="
-        make -j4
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make on JUNO complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on JUNO"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-        # Install JUNO
-        echo "=== Running make -j4 install ==="
-        make -j4 install
-        retval=$?
-        if [ $retval -ne 0 ]
-        then
-            return $retval
-        fi
-
-        echo
-        echo "=== DUMPING The JUNO installed $HOME/.sst/sstsimulator.conf file ==="
-        print_and_dump_loc $HOME/.sst/sstsimulator.conf
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo
-        echo "=== DUMPING The JUNO installed sstsimulator.conf file located at $SST_CONFIG_FILE_PATH ==="
-        print_and_dump_loc $SST_CONFIG_FILE_PATH
-        echo "=== DONE DUMPING ==="
-        echo
-
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo ' '
-        echo "bamboo.sh: make install on JUNO complete without error"
-        echo ' '
-        echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo " "
-
-        # Go back to devel/trunk
-        echo "popd"
-        popd
-        echo "Current Working Dir = `pwd`"
-        ls -l
-    fi
+    config_and_build \
+        sst-core \
+        "${SST_SELECTED_CORE_CONFIG}" \
+        "${SST_CORE_INSTALL}" \
+        sst-core \
+        autogen
+    config_and_build \
+        sst-elements \
+        "${SST_SELECTED_ELEMENTS_CONFIG}" \
+        "${SST_CORE_INSTALL}" \
+        "${SST_ROOT}/sst-elements" \
+        autogen
+    config_and_build \
+        sst-macro \
+        "${SST_SELECTED_MACRO_CONFIG}" \
+        "${SST_CORE_INSTALL}" \
+        "${SST_ROOT}/sst-macro" \
+        bootstrap
+    config_and_build_simple \
+        sst-external-element \
+        "${SST_SELECTED_EXTERNALELEMENT_CONFIG}"
+    config_and_build_simple \
+        juno \
+        "${SST_SELECTED_JUNO_CONFIG}"
 }
 
+branch_to_commit_hash() {
+    # Get the commit hash from the tip of the given branch.
+    local branch="${1}"
+    echo "$(git log -n 1 "origin/${branch}" | grep commit | cut -d ' ' -f 2)"
+}
+
+get_commit_hash() {
+    # Get the commit hash from some combination of an optional branch name, a
+    # default branch, and possibly already defined commit hash.
+    #
+    # This is to handle the fact that the commit hash we must work with might
+    # not already be known, but the branch name is.  If this is for an
+    # uninteresting checkout, such as a "default" one and not a feature branch
+    # of a fork, then we may only be given the default branch name.
+    #
+    # - A default branch *must* be specified.
+    # - The commit hash and specific branch are optional.
+    #
+    # non-zero length?
+    # - branch no hash no -> default branch to hash
+    # - branch no hash yes -> use hash as-is
+    # - branch yes hash no -> specific branch to hash
+    # - branch yes hash yes -> return 1
+
+    local branch_specified="${1}"
+    local branch_default="${2}"
+    local hash="${3}"
+
+    if [ -z "${branch_default}" ]; then
+        echo "No default branch specified as fallback"
+        return 1
+    fi
+
+    if [ -z "${branch_specified}" ] && [ -z "${hash}" ]; then
+        ret="$(branch_to_commit_hash "${branch_default}")"
+        if [ $? -ne 0 ]; then
+            echo "Problem with branch_to_commit_hash"
+            return 1
+        fi
+        echo "${ret}"
+    elif [ -z "${branch_specified}" ] && [ -n "${hash}" ]; then
+        echo "${hash}"
+    elif [ -n "${branch_specified}" ] && [ -z "${hash}" ]; then
+        ret="$(branch_to_commit_hash "${branch_specified}")"
+        if [ $? -ne 0 ]; then
+            echo "Problem with branch_to_commit_hash"
+            return 1
+        fi
+        echo "${ret}"
+    else
+        echo "Cannot pick between both non-default branch and specified commit hash"
+        return 1
+    fi
+}
 
 #-------------------------------------------------------------------------
 # Function: ExitOfScriptHandler
@@ -2263,49 +1770,6 @@ if [[ ${SST_JUNOREPO:+isSet} != isSet ]] ; then
     SST_JUNOREPO=https://github.com/sstsimulator/juno
 fi
 
-# Which branches to use for each repo (default is devel)
-if [[ ${SST_SQEBRANCH:+isSet} != isSet ]] ; then
-    SST_SQEBRANCH=devel
-    SST_SQEBRANCH="detached"
-else
-    echo ' ' ;  echo ' ' ; echo ' ' ; echo ' '
-    echo " Attempting to set SQE branch other than devel"
-    echo " SQE branch is selected by configure in Jenkins"
-    echo "  SELECTED SST_SQEBRANCH =  ${SST_SQEBRANCH}"
-    echo ' ' ;  echo ' ' ; echo ' ' ; echo ' '
-fi
-
-if [[ ${SST_COREBRANCH:+isSet} != isSet ]] ; then
-    SST_COREBRANCH=devel
-fi
-
-if [[ ${SST_ELEMENTSBRANCH:+isSet} != isSet ]] ; then
-    SST_ELEMENTSBRANCH=devel
-fi
-
-if [[ ${SST_MACROBRANCH:+isSet} != isSet ]] ; then
-    SST_MACROBRANCH=devel
-fi
-
-if [[ ${SST_EXTERNALELEMENTBRANCH:+isSet} != isSet ]] ; then
-    SST_EXTERNALELEMENTBRANCH=master
-fi
-
-if [[ ${SST_JUNOBRANCH:+isSet} != isSet ]] ; then
-    SST_JUNOBRANCH=master
-fi
-
-echo "#############################################################"
-echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
-echo "  GitHub SQE Repository and Branch = $SST_SQEREPO $SST_SQEBRANCH"
-echo "  GitHub CORE Repository and Branch = $SST_COREREPO $SST_COREBRANCH"
-echo "  GitHub ELEMENTS Repository and Branch = $SST_ELEMENTSREPO $SST_ELEMENTSBRANCH"
-echo "  GitHub MACRO Repository and Branch = $SST_MACROREPO $SST_MACROBRANCH"
-echo "  GitHub EXTERNAL-ELEMENT Repository and Branch = $SST_EXTERNALELEMENTREPO $SST_EXTERNALELEMENTBRANCH"
-echo "  GitHub JUNO Repository and Branch = $SST_JUNOREPO $SST_JUNOBRANCH"
-echo "#############################################################"
-
-
 # Root of directory checked out, where this script should be found
 export SST_ROOT=`pwd`
 echo " SST_ROOT = $SST_ROOT"
@@ -2320,14 +1784,13 @@ if [ -d ${SST_BASE}/devel/sqe ] ; then
    echo "PWD $LINENO = `pwd`"
    pushd ${SST_BASE}/devel/sqe
    echo "PWD $LINENO = `pwd`"
-   echo "               SQE branch"
-   git branch
-   echo ' '
+   echo "               SQE HEAD"
+   git log -n 1
    popd
 else
    echo "Jenkin forks SQE so it is not tied to a remote repository"
-   echo ' '
 fi
+echo ' '
 
 echo "#### FINISHED SETTING UP DIRECTORY STRUCTURE - NOW SETTING ENV RUNTIME VARS ########"
 
@@ -2392,6 +1855,11 @@ export SST_CONFIG_FILE_PATH=${SST_CORE_INSTALL}/etc/sst/sstsimulator.conf
 export SST_INSTALL_DEPS=${SST_BASE}/local
 # Initialize build type to null
 export SST_BUILD_TYPE=""
+
+# What should be compiled and tested?
+# - If true, merge the development branch for each repository into the target or specified branch.
+# - If false, use each given branch as-is.
+# export SST_TEST_MERGE=${SST_TEST_MERGE:-true}
 
 cloneOtherRepos
 
