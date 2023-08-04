@@ -76,17 +76,17 @@ cloneRepo() {
         exit 1
     fi
 
-    # if [[ ${SST_TEST_MERGE} ]]; then
-    #     # shellcheck disable=SC2086
-    #     git remote add upstream https://github.com/sstsimulator/${clone_loc}.git
-    #     git fetch upstream
-    #     git merge --no-commit upstream/devel
-    #     retVal=$?
-    #     if [[ $retVal -ne 0 ]] ; then
-    #         echo "\"git merge --no-commit upstream/devel\" FAILED.  retVal = $retVal"
-    #         exit 1
-    #     fi
-    # fi
+    if [[ ${SST_TEST_MERGE} ]]; then
+        # shellcheck disable=SC2086
+        git remote add upstream https://github.com/sstsimulator/${clone_loc}.git
+        git fetch upstream
+        git merge --no-commit upstream/devel
+        retVal=$?
+        if [[ $retVal -ne 0 ]] ; then
+            echo "\"git merge --no-commit upstream/devel\" FAILED.  retVal = $retVal"
+            exit 1
+        fi
+    fi
 
     git log -n 1
     ls -l
@@ -1859,7 +1859,7 @@ export SST_BUILD_TYPE=""
 # What should be compiled and tested?
 # - If true, merge the development branch for each repository into the target or specified branch.
 # - If false, use each given branch as-is.
-# export SST_TEST_MERGE=${SST_TEST_MERGE:-true}
+export SST_TEST_MERGE=${SST_TEST_MERGE:-true}
 
 cloneOtherRepos
 
