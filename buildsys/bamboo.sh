@@ -77,6 +77,7 @@ cloneRepo() {
     fi
 
     if [[ ${SST_TEST_MERGE} ]]; then
+        echo "Going to test result of merging branch into upstream/devel"
         # shellcheck disable=SC2086
         git remote add upstream https://github.com/sstsimulator/${clone_loc}.git
         git fetch upstream
@@ -86,6 +87,8 @@ cloneRepo() {
             echo "\"git merge --no-commit upstream/devel\" FAILED.  retVal = $retVal"
             exit 1
         fi
+    else
+        echo "Going to test branch as-is without merging into upstream/devel"
     fi
 
     git log -n 1
