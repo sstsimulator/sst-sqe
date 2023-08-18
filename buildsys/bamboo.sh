@@ -78,15 +78,15 @@ cloneRepo() {
         exit 1
     fi
 
+    # shellcheck disable=SC2086
     if [[ ${SST_TEST_MERGE} ]]; then
         echo "Going to test result of merging branch into upstream/devel"
-        # shellcheck disable=SC2086
         git remote add upstream https://github.com/sstsimulator/${clone_loc}.git
         git fetch upstream
-        git merge --no-commit upstream/devel
+        git merge --no-commit upstream/${default_branch}
         retVal=$?
         if [[ $retVal -ne 0 ]] ; then
-            echo "\"git merge --no-commit upstream/devel\" FAILED.  retVal = $retVal"
+            echo "\"git merge --no-commit upstream/${default_branch}\" FAILED.  retVal = $retVal"
             exit 1
         fi
     else
