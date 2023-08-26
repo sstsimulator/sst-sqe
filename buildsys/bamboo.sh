@@ -40,11 +40,14 @@ TimeoutEx() {
 
 cloneRepo() {
     local repo="$1"
-    local commit_hash="$2"
+    local commit_hash_varname="$2"
     local specific_branch="$3"
     local default_branch="$4"
     local clone_loc="$5"
     local timeout="$6"
+
+    local commit_hash
+    commit_hash="${!commit_hash_varname}"
 
     echo " "
     echo "     TimeoutEx -t ${timeout} git clone ${repo} ${clone_loc}"
@@ -61,7 +64,6 @@ cloneRepo() {
     ls -l
     pushd "${clone_loc}"
 
-    local commit_hash
     commit_hash=$(get_commit_hash "${specific_branch}" "${default_branch}" "${commit_hash}")
     if [ -z "${commit_hash}" ]; then
         echo "Couldn't figure out commit hash"
@@ -76,15 +78,15 @@ cloneRepo() {
         exit 1
     fi
 
+    # shellcheck disable=SC2086
     if [[ ${SST_TEST_MERGE} ]]; then
         echo "Going to test result of merging branch into upstream/devel"
-        # shellcheck disable=SC2086
         git remote add upstream https://github.com/sstsimulator/${clone_loc}.git
         git fetch upstream
-        git merge --no-commit upstream/devel
+        git merge --no-commit upstream/${default_branch}
         retVal=$?
         if [[ $retVal -ne 0 ]] ; then
-            echo "\"git merge --no-commit upstream/devel\" FAILED.  retVal = $retVal"
+            echo "\"git merge --no-commit upstream/${default_branch}\" FAILED.  retVal = $retVal"
             exit 1
         fi
     else
@@ -95,7 +97,7 @@ cloneRepo() {
     ls -l
     popd
 
-    echo "${commit_hash}"
+    eval "${commit_hash_varname}=${commit_hash}"
 }
 
 cloneOtherRepos() {
@@ -108,51 +110,46 @@ cloneOtherRepos() {
         # cloned without `-b`.  In the event a specific branch or commit hash hasn't
         # been specified, the commit hash from the tip of the default branch will be
         # used.
+        #
+        # It is intentional that SST_*_HASH is passed as the literal name of
+        # the variable to be read and not the contents, as `cloneRepo` will
+        # set that variable and thus requires the name.
 
-        local commit_hash_sqe
-        local commit_hash_core
-        local commit_hash_elements
-        local commit_hash_macro
-        local commit_hash_externalelement
-        local commit_hash_juno
-
-        # FIXME
-        commit_hash_sqe="${SST_SQE_HASH}"
-        commit_hash_core=$(cloneRepo \
-                               "${SST_COREREPO}" \
-                               "${SST_CORE_HASH}" \
-                               "${SST_COREBRANCH}" \
-                               devel \
-                               sst-core \
-                               90)
-        commit_hash_elements=$(cloneRepo \
-                                   "${SST_ELEMENTSREPO}" \
-                                   "${SST_ELEMENTS_HASH}" \
-                                   "${SST_ELEMENTSBRANCH}" \
-                                   devel \
-                                   sst-elements \
-                                   250)
-        commit_hash_macro=$(cloneRepo \
-                                "${SST_MACROREPO}" \
-                                "${SST_MACRO_HASH}" \
-                                "${SST_MACROBRANCH}" \
-                                devel \
-                                sst-macro \
-                                90)
-        commit_hash_externalelement=$(cloneRepo \
-                                          "${SST_EXTERNALELEMENTREPO}" \
-                                          "${SST_EXTERNALELEMENT_HASH}" \
-                                          "${SST_EXTERNALELEMENTBRANCH}" \
-                                          master \
-                                          sst-external-element \
-                                          90)
-        commit_hash_juno=$(cloneRepo \
-                               "${SST_JUNOREPO}" \
-                               "${SST_JUNO_HASH}" \
-                               "${SST_JUNOBRANCH}" \
-                               master \
-                               juno \
-                               90)
+        cloneRepo \
+            "${SST_COREREPO}" \
+            SST_CORE_HASH \
+            "${SST_COREBRANCH}" \
+            devel \
+            sst-core \
+            90
+        cloneRepo \
+            "${SST_ELEMENTSREPO}" \
+            SST_ELEMENTS_HASH \
+            "${SST_ELEMENTSBRANCH}" \
+            devel \
+            sst-elements \
+            250
+        cloneRepo \
+            "${SST_MACROREPO}" \
+            SST_MACRO_HASH \
+            "${SST_MACROBRANCH}" \
+            devel \
+            sst-macro \
+            90
+        cloneRepo \
+            "${SST_EXTERNALELEMENTREPO}" \
+            SST_EXTERNALELEMENT_HASH \
+            "${SST_EXTERNALELEMENTBRANCH}" \
+            master \
+            sst-external-element \
+            90
+        cloneRepo \
+            "${SST_JUNOREPO}" \
+            SST_JUNO_HASH \
+            "${SST_JUNOBRANCH}" \
+            master \
+            juno \
+            90
 
         # Link the deps and test directories to the trunk
         echo " Creating Symbolic Links to the sqe directories (deps & test)"
@@ -168,12 +165,12 @@ cloneOtherRepos() {
 
     echo "#############################################################"
     echo "===== BAMBOO.SH PARAMETER SETUP INFORMATION ====="
-    echo "  GitHub SQE Repository and HASH = $SST_SQEREPO ${commit_hash_sqe}"
-    echo "  GitHub CORE Repository and HASH = $SST_COREREPO ${commit_hash_core}"
-    echo "  GitHub ELEMENTS Repository and HASH = $SST_ELEMENTSREPO ${commit_hash_elements}"
-    echo "  GitHub MACRO Repository and HASH = $SST_MACROREPO ${commit_hash_macro}"
-    echo "  GitHub EXTERNAL-ELEMENT Repository and HASH = $SST_EXTERNALELEMENTREPO ${commit_hash_externalelement}"
-    echo "  GitHub JUNO Repository and HASH = $SST_JUNOREPO ${commit_hash_juno}"
+    echo "  GitHub SQE Repository and HASH = $SST_SQEREPO ${SST_SQE_HASH}"
+    echo "  GitHub CORE Repository and HASH = $SST_COREREPO ${SST_CORE_HASH}"
+    echo "  GitHub ELEMENTS Repository and HASH = $SST_ELEMENTSREPO ${SST_ELEMENTS_HASH}"
+    echo "  GitHub MACRO Repository and HASH = $SST_MACROREPO ${SST_MACRO_HASH}"
+    echo "  GitHub EXTERNAL-ELEMENT Repository and HASH = $SST_EXTERNALELEMENTREPO ${SST_EXTERNALELEMENT_HASH}"
+    echo "  GitHub JUNO Repository and HASH = $SST_JUNOREPO ${SST_JUNO_HASH}"
     echo "#############################################################"
 }
 #=========================================================================
