@@ -656,9 +656,9 @@ getconfig() {
             junoConfigStr="NOBUILD"
             ;;
 
-        sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|sstmainline_config_make_dist_test)
+        sstmainline_config_make_dist_no_gem5|sstmainline_config_make_dist_test)
             #-----------------------------------------------------------------
-            # sstmainline_config_dist_test
+            # sstmainline_config_make_dist_test
             #      Do a "make dist"  (creating a tar file.)
             #      Then,  untar the created tar-file.
             #      Invoke bamboo.sh, (this file), to build sst from the tar.
@@ -1146,8 +1146,6 @@ setUPforMakeDisttest() {
          distScenario="sstmainline_config_all"
      elif [ $buildtype == "sstmainline_config_core_make_dist_test" ] ; then
          distScenario="sstmainline_coreonly_config"
-     elif [ $buildtype == "sstmainline_config_dist_test" ] ; then
-         distScenario="sstmainline_config_all"
      elif [ $buildtype == "sst_Macro_make_dist" ] ; then
          distScenario="sst-macro_withsstcore_linux"
      else
@@ -1282,8 +1280,7 @@ config_and_build() {
         ls -ltrd * | tail -20
 
         echo "at this time \$buildtype is $buildtype"
-        if [[ $buildtype == "sstmainline_config_dist_test" ]] ||
-               [[ $buildtype == *make_dist* ]] ; then
+        if [[ $buildtype == *make_dist* ]] ; then
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '
             echo "bamboo.sh: make dist on ${repo_name}"
@@ -1683,7 +1680,6 @@ function ExitOfScriptHandler {
 #   sstmainline_config_static_no_gem5
 #   sstmainline_config_macosx
 #   sstmainline_config_macosx_static
-#   sstmainline_config_dist_test
 #   sstmainline_config_make_dist_no_gem5
 #=========================================================================
 trap ExitOfScriptHandler EXIT
@@ -1884,7 +1880,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_all|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_all|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3, $4, $5 and $6 in case they are need later
             SST_DIST_MPI=$2
             _UNUSED="none"
@@ -2102,8 +2098,7 @@ then
         # Build was successful, so run tests, providing command line args
         # as a convenience. SST binaries must be generated before testing.
 
-        if [ $buildtype == "sstmainline_config_dist_test" ] ||
-           [[ $buildtype == *make_dist* ]] ; then
+        if [[ $buildtype == *make_dist* ]] ; then
              setUPforMakeDisttest $1 $2 $3 $4
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
