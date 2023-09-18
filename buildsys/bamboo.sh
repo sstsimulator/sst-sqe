@@ -428,7 +428,7 @@ getconfig() {
     # Configure SST Elements with all dependencies except those requiring special handling. Pin is not support on Mac.
 
     case $1 in
-        sstmainline_config|sstmainline_config_all|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5)
+        sstmainline_config|sstmainline_config_all|sstmainline_config_no_gem5)
             #-----------------------------------------------------------------
             # sstmainline_config
             #     This option used for configuring SST with supported stabledevel deps
@@ -656,7 +656,7 @@ getconfig() {
             junoConfigStr="NOBUILD"
             ;;
 
-        sstmainline_config_make_dist_no_gem5|sstmainline_config_make_dist_test)
+        sstmainline_config_make_dist_test)
             #-----------------------------------------------------------------
             # sstmainline_config_make_dist_test
             #      Do a "make dist"  (creating a tar file.)
@@ -1632,11 +1632,8 @@ function ExitOfScriptHandler {
 #   documentation
 #
 # UNUSED
-#   default
-#   sstmainline_config_linux_with_ariel_no_gem5
 #   sstmainline_config_with_cuda
 #   sstmainline_config_with_cuda_no_mpi
-#   sstmainline_config_make_dist_no_gem5
 #=========================================================================
 trap ExitOfScriptHandler EXIT
 
@@ -1836,7 +1833,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_all|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        sstmainline_config|sstmainline_coreonly_config|sstmainline_config_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|documentation|sstmainline_config_all|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3, $4, $5 and $6 in case they are need later
             SST_DIST_MPI=$2
             _UNUSED="none"
