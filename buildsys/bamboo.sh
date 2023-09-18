@@ -732,21 +732,6 @@ getconfig() {
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
-  ## perhaps do no more here
-        default)
-            #-----------------------------------------------------------------
-            # default
-            #     Do the default build. But this is probably not what you want!
-            #-----------------------------------------------------------------
-            depsStr="$defaultDeps"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions"
-            elementsConfigStr="$elementsbaseoptions"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-
         *)
             #-----------------------------------------------------------------
             #  Unrecognized Scenario,  This is an error in the bamboo code
