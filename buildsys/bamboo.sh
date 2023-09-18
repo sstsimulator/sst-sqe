@@ -692,28 +692,6 @@ getconfig() {
             junoConfigStr="NOBUILD"
             ;;
 
-        # ====================================================================
-        # ====                                                            ====
-        # ====  Experimental/exploratory build configurations start here  ====
-        # ====                                                            ====
-        # ====================================================================
-        sstmainline_config_macosx_static)
-            #-----------------------------------------------------------------
-            # sstmainline_config_macosx_static
-            #     This option used for configuring SST with supported stabledevel deps
-            # 2023-Jan-6 Probably doesn't work
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="$allDeps"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions  --enable-static --disable-shared $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --enable-static --disable-shared $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
         *)
             #-----------------------------------------------------------------
             #  Unrecognized Scenario,  This is an error in the bamboo code
@@ -1659,7 +1637,6 @@ function ExitOfScriptHandler {
 #   sstmainline_config_with_cuda
 #   sstmainline_config_with_cuda_no_mpi
 #   sstmainline_config_macosx
-#   sstmainline_config_macosx_static
 #   sstmainline_config_make_dist_no_gem5
 #=========================================================================
 trap ExitOfScriptHandler EXIT
