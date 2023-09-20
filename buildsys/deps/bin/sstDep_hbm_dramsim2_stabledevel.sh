@@ -1,7 +1,7 @@
 # !/bin/bash
 # sstDep_hbm_dramsim2_stabledevel.sh
 
-# Description: 
+# Description:
 
 # A bash script containing functions to process SST's HBM_DRAMSim2
 # dependency.
@@ -28,7 +28,7 @@ export SST_BUILD_HBM_DRAMSIM2_STABLEDEVEL=1
 # Outputs:
 #     Pass/fail
 # Expected Results
-#     Staged HBM_DRAMSim2 code 
+#     Staged HBM_DRAMSim2 code
 # Caveats:
 #     None
 #-------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ export SST_DEPS_SRC_STAGED_HBM_DRAMSIM2=${SST_DEPS_SRC_STAGING}/hbm_dramsim2
 sstDepsStage_hbm_dramsim2 ()
 {
     sstDepsAnnounce -h $FUNCNAME -m "Staging hbm_dramsim2 stabledevel"
-    
+
     pushd ${SST_DEPS_SRC_STAGING}
 
    Num_Tries_remaing=3
@@ -45,7 +45,7 @@ sstDepsStage_hbm_dramsim2 ()
       echo " "
       echo "git clone https://github.com/tactcomplabs/HBM.git hbm_dramsim2"
       git clone https://github.com/tactcomplabs/HBM.git hbm_dramsim2
-    
+
       retVal=$?
       if [ $retVal == 0 ] ; then
          Num_Tries_remaing=-1
@@ -69,12 +69,12 @@ sstDepsStage_hbm_dramsim2 ()
         popd
         return $retval
     fi
-    
+
     #  Move into the hbm_dramsim2 directory
     pushd ${SST_DEPS_SRC_STAGED_HBM_DRAMSIM2}
     git checkout hbm-1.0.0-release
 
-    
+
     echo "HBM.git" `git log HEAD | sed 4q` >&2
 
     popd
@@ -103,7 +103,7 @@ sstDepsDeploy_hbm_dramsim2 ()
     pushd ${SST_DEPS_SRC_STAGED_HBM_DRAMSIM2}
 
     # Build and install HBM_DRAMSIM2
-    make 
+    make
     retval=$?
     if [ $retval -ne 0 ]
     then
@@ -112,10 +112,10 @@ sstDepsDeploy_hbm_dramsim2 ()
         popd
         return $retval
     fi
-    
+
     popd
-    
-    # NOTE: There is no "make install" for HBM_DRAMSim2.  Instead make a 
+
+    # NOTE: There is no "make install" for HBM_DRAMSim2.  Instead make a
     #       link to the compilied directory
     if [ ! -d ${SST_DEPS_INSTALL_DEPS}/packages ]
     then
@@ -123,7 +123,7 @@ sstDepsDeploy_hbm_dramsim2 ()
     fi
 
     ln -s ${SST_DEPS_SRC_STAGED_HBM_DRAMSIM2} ${SST_DEPS_INSTALL_DEPS}/packages/HBM_DRAMSim2
-    
+
 }
 
 # Installation location as used by SST's "./configure --with-hbmdramsim=..."

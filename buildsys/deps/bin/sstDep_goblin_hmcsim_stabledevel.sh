@@ -1,7 +1,7 @@
 # !/bin/bash
 # sstDep_goblin_hmcsim_stabledevel.sh
 
-# Description: 
+# Description:
 
 # A bash script containing functions to process SST's Goblin_HMCSIM
 # dependency.
@@ -28,7 +28,7 @@ export SST_BUILD_GOBLIN_HMCSIM_STABLEDEVEL=1
 # Outputs:
 #     Pass/fail
 # Expected Results
-#     Staged Goblin_HMCSIM code 
+#     Staged Goblin_HMCSIM code
 # Caveats:
 #     None
 #-------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ export SST_DEPS_SRC_STAGED_GOBLIN_HMCSIM=${SST_DEPS_SRC_STAGING}/goblin_hmcsim
 sstDepsStage_goblin_hmcsim ()
 {
     sstDepsAnnounce -h $FUNCNAME -m "Staging goblin_hmcsim stabledevel"
-    
+
     pushd ${SST_DEPS_SRC_STAGING}
 
    Num_Tries_remaing=3
@@ -61,7 +61,7 @@ sstDepsStage_goblin_hmcsim ()
          return $retVal
       fi
    done
-    
+
     if [ $retVal -ne 0 ]                      # retVal from git clone
     then
         # bail out on error
@@ -71,7 +71,7 @@ sstDepsStage_goblin_hmcsim ()
         popd
         return $retVal
     fi
-    
+
     #  Move into the goblin_hmcsim directory
     pushd ${SST_DEPS_SRC_STAGED_GOBLIN_HMCSIM}
     echo "gc64-hmcsim.git" `git log HEAD | sed 4q` >&2
@@ -102,7 +102,7 @@ sstDepsDeploy_goblin_hmcsim ()
     pushd ${SST_DEPS_SRC_STAGED_GOBLIN_HMCSIM}
 
     # Build and install GOBLIN_HMCSIM
-    make 
+    make
     retval=$?
     if [ $retval -ne 0 ]
     then
@@ -111,10 +111,10 @@ sstDepsDeploy_goblin_hmcsim ()
         popd
         return $retval
     fi
-    
+
     popd
-    
-    # NOTE: There is no "make install" for Goblin_HMCSIM.  Instead make a 
+
+    # NOTE: There is no "make install" for Goblin_HMCSIM.  Instead make a
     #       link to the compilied directory
     if [ ! -d ${SST_DEPS_INSTALL_DEPS}/packages ]
     then
@@ -122,7 +122,7 @@ sstDepsDeploy_goblin_hmcsim ()
     fi
 
     ln -s ${SST_DEPS_SRC_STAGED_GOBLIN_HMCSIM} ${SST_DEPS_INSTALL_DEPS}/packages/Goblin_HMCSIM
-    
+
 }
 
 # Installation location as used by SST's "./configure --with-goblin_hmcsim=..."
