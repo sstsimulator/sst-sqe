@@ -1,7 +1,7 @@
 # !/bin/bash
 # sstDep_dramsim_stabledevel.sh
 
-# Description: 
+# Description:
 
 # A bash script containing functions to process SST's DRAMSim
 # dependency.
