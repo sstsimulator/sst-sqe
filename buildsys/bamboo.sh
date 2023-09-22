@@ -1,5 +1,6 @@
 #!/bin/bash
 # bamboo.sh
+# shellcheck disable=SC2196
 
 set -o pipefail
 
@@ -315,15 +316,6 @@ dotests() {
         return
     fi
 
-     #
-     #   Suites that used MemHierarchy, but not openMP
-     #
-
-    if [ $1 == "sstmainline_config_memH_wo_openMP" ]
-    then
-        return
-    fi
-
     PATH=${PATH}:${SST_ROOT}/../sqe/test/utilities
 
 }
@@ -436,7 +428,7 @@ getconfig() {
     # Configure SST Elements with all dependencies except those requiring special handling. Pin is not support on Mac.
 
     case $1 in
-        sstmainline_config|sstmainline_config_all|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_memH_wo_openMP)
+        sstmainline_config|sstmainline_config_all|sstmainline_config_no_gem5)
             #-----------------------------------------------------------------
             # sstmainline_config
             #     This option used for configuring SST with supported stabledevel deps
@@ -561,9 +553,9 @@ getconfig() {
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
-        sstmainline_config_macosx|sstmainline_config_macosx_no_gem5)
+        sstmainline_config_macosx_no_gem5)
             #-----------------------------------------------------------------
-            # sstmainline_config_macosx
+            # sstmainline_config_macosx_no_gem5
             #     This option used for configuring SST with supported stabledevel deps
             #-----------------------------------------------------------------
             export | egrep SST_DEPS_
@@ -573,24 +565,6 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-
-        sstmainline_config_memH_wo_openMP)
-            #-----------------------------------------------------------------
-            # sstmainline_config_memH_wo_openMP
-            #     This option used for configuring SST with memHierarchy, but with out open MP
-            #     with Intel PIN, and Ariel
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="$allDeps"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv $coreMiscEnv"
             macroConfigStr="NOBUILD"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -682,9 +656,9 @@ getconfig() {
             junoConfigStr="NOBUILD"
             ;;
 
-        sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|sstmainline_config_make_dist_test)
+        sstmainline_config_make_dist_test)
             #-----------------------------------------------------------------
-            # sstmainline_config_dist_test
+            # sstmainline_config_make_dist_test
             #      Do a "make dist"  (creating a tar file.)
             #      Then,  untar the created tar-file.
             #      Invoke bamboo.sh, (this file), to build sst from the tar.
@@ -716,61 +690,6 @@ getconfig() {
             macroConfigStr="NOBUILD"
             externalelementConfigStr="NOBUILD"
             junoConfigStr="NOBUILD"
-            ;;
-
-        # ====================================================================
-        # ====                                                            ====
-        # ====  Experimental/exploratory build configurations start here  ====
-        # ====                                                            ====
-        # ====================================================================
-        sstmainline_config_static|sstmainline_config_static_no_gem5)
-            #-----------------------------------------------------------------
-            # sstmainline_config_static
-            #     This option used for configuring SST with supported stabledevel deps
-            # 2023-Jan-6 Probably doesn't work
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="$allDeps"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions --enable-static --disable-shared $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --enable-static --disable-shared $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-
-        sstmainline_config_macosx_static)
-            #-----------------------------------------------------------------
-            # sstmainline_config_macosx_static
-            #     This option used for configuring SST with supported stabledevel deps
-            # 2023-Jan-6 Probably doesn't work
-            #-----------------------------------------------------------------
-            export | egrep SST_DEPS_
-            coreMiscEnv="${cc_environment} ${mpi_environment}"
-            elementsMiscEnv="${cc_environment}"
-            depsStr="$allDeps"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions  --enable-static --disable-shared $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --enable-static --disable-shared $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
-            ;;
-  ## perhaps do no more here
-        default)
-            #-----------------------------------------------------------------
-            # default
-            #     Do the default build. But this is probably not what you want!
-            #-----------------------------------------------------------------
-            depsStr="$defaultDeps"
-            setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions"
-            elementsConfigStr="$elementsbaseoptions"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="$externalelementbaseoptions"
-            junoConfigStr="$junobaseoptions"
             ;;
 
         *)
@@ -1187,8 +1106,6 @@ setUPforMakeDisttest() {
          distScenario="sstmainline_config_all"
      elif [ $buildtype == "sstmainline_config_core_make_dist_test" ] ; then
          distScenario="sstmainline_coreonly_config"
-     elif [ $buildtype == "sstmainline_config_dist_test" ] ; then
-         distScenario="sstmainline_config_all"
      elif [ $buildtype == "sst_Macro_make_dist" ] ; then
          distScenario="sst-macro_withsstcore_linux"
      else
@@ -1323,8 +1240,7 @@ config_and_build() {
         ls -ltrd * | tail -20
 
         echo "at this time \$buildtype is $buildtype"
-        if [[ $buildtype == "sstmainline_config_dist_test" ]] ||
-               [[ $buildtype == *make_dist* ]] ; then
+        if [[ $buildtype == *make_dist* ]] ; then
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '
             echo "bamboo.sh: make dist on ${repo_name}"
@@ -1706,7 +1622,6 @@ function ExitOfScriptHandler {
 #   sstmainline_config_no_gem5
 #   sstmainline_config_no_mpi
 #   sstmainline_config_macosx_no_gem5
-#   sstmainline_config_memH_wo_openMP
 #   sstmainline_config_make_dist_test
 #   sstmainline_config_core_make_dist_test
 #   sst-macro_withsstcore_mac
@@ -1717,16 +1632,8 @@ function ExitOfScriptHandler {
 #   documentation
 #
 # UNUSED
-#   default
-#   sstmainline_config_linux_with_ariel_no_gem5
 #   sstmainline_config_with_cuda
 #   sstmainline_config_with_cuda_no_mpi
-#   sstmainline_config_static
-#   sstmainline_config_static_no_gem5
-#   sstmainline_config_macosx
-#   sstmainline_config_macosx_static
-#   sstmainline_config_dist_test
-#   sstmainline_config_make_dist_no_gem5
 #=========================================================================
 trap ExitOfScriptHandler EXIT
 
@@ -1926,7 +1833,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case $1 in
-        default|sstmainline_config|sstmainline_coreonly_config|sstmainline_config_linux_with_ariel_no_gem5|sstmainline_config_no_gem5|sstmainline_config_static|sstmainline_config_static_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|sstmainline_config_dist_test|sstmainline_config_make_dist_no_gem5|documentation|sstmainline_config_all|sstmainline_config_memH_wo_openMP|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        sstmainline_config|sstmainline_coreonly_config|sstmainline_config_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|documentation|sstmainline_config_all|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters $2, $3, $4, $5 and $6 in case they are need later
             SST_DIST_MPI=$2
             _UNUSED="none"
@@ -1938,9 +1845,7 @@ else
             if [ $kernel != "Darwin" ]
             then
                 linuxSetMPI $1 $2 $4
-
             else  # kernel is "Darwin", so this is MacOS
-
                 darwinSetMPI $1 $2 $4
             fi
 
@@ -2023,9 +1928,9 @@ else
                                 ## Check that python is an acceptably new version of python
                                 pyver=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
                                 pyverX=$(echo "${version//./}")
-                                if [[ "$pyverX" -lt "350" ]]
+                                if [[ "$pyverX" -lt "360" ]]
                                 then
-                                    echo "ERROR: FOUND python but version is TOO OLD (<3.5.0)."
+                                    echo "ERROR: FOUND python but version is TOO OLD (<3.6.0)."
                                     exit 128
                                 fi
                                 export SST_PYTHON_APP_EXE=`command -v python`
@@ -2144,8 +2049,7 @@ then
         # Build was successful, so run tests, providing command line args
         # as a convenience. SST binaries must be generated before testing.
 
-        if [ $buildtype == "sstmainline_config_dist_test" ] ||
-           [[ $buildtype == *make_dist* ]] ; then
+        if [[ $buildtype == *make_dist* ]] ; then
              setUPforMakeDisttest $1 $2 $3 $4
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
