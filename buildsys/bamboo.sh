@@ -1801,6 +1801,13 @@ echo "@@@@@@  \$6 = $6 ######"
 echo  $0 $1 $2 $3 $4 $5 $6
 echo `pwd`
 
+build_type="${1}"
+mpi_type="${2}"
+_none="${3}"
+compiler_type="${4}"
+cuda_version="${5}"
+pythonX="${6}"
+
 if [ $# -lt 3 ] || [ $# -gt 6 ]
 then
     # need build type and MPI type as argument
@@ -1812,14 +1819,14 @@ else
     # get desired compiler, if option provided
     compiler=""
 
-    case $4 in
+    case ${compiler_type} in
         none|default|"")
             echo "bamboo.sh: \$4 is empty, null or default; setting compiler to default"
             compiler="default"
             ;;
         *) # unknown option
-            echo "bamboo.sh: setting compiler to $4"
-            compiler="$4"
+            echo "bamboo.sh: setting compiler to ${compiler_type}"
+            compiler="${compiler_type}"
             ;;
     esac
 
@@ -1832,25 +1839,25 @@ else
 
     echo "bamboo.sh: KERNEL = $kernel"
 
-    case $1 in
+    case ${build_type} in
         sstmainline_config|sstmainline_coreonly_config|sstmainline_config_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|documentation|sstmainline_config_all|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
-            #   Save Parameters $2, $3, $4, $5 and $6 in case they are need later
-            SST_DIST_MPI=$2
+            #   Save Parameters in case they are needed later
+            SST_DIST_MPI=${mpi_type}
             _UNUSED="none"
-            SST_DIST_PARAM4=$4
-            SST_DIST_CUDA=`echo $5 | sed 's/cuda-//g'`
-            SST_DIST_PYTHON=$6
+            SST_DIST_PARAM4=${compiler_type}
+            SST_DIST_CUDA=`echo ${cuda_version} | sed 's/cuda-//g'`
+            SST_DIST_PYTHON=${pythonX}
 
             # Configure MPI and Compiler (Linux only)
             if [ $kernel != "Darwin" ]
             then
-                linuxSetMPI $1 $2 $4
+                linuxSetMPI ${build_type} ${mpi_type} ${compiler_type}
             else  # kernel is "Darwin", so this is MacOS
-                darwinSetMPI $1 $2 $4
+                darwinSetMPI ${build_type} ${mpi_type} ${compiler_type}
             fi
 
             # Load Cuda Module
-            case $5 in
+            case ${cuda_version} in
                 cuda-8.0.44|cuda-8.0.61|cuda-9.1.85)
                     echo "bamboo.sh: cuda-${SST_DIST_CUDA} selected"
                     ModuleEx unload cuda
@@ -1869,83 +1876,67 @@ else
             echo "=============================================================="
             echo "=== DETERMINE WHAT PYTHON TO USE"
             echo "=============================================================="
-            case $6 in
+            if [ -n "${pythonX}" ]; then
+                if [[ "${pythonX}" != "none" ]] && [[ "${pythonX}" != "python3" ]]; then
+                    echo "ERROR: ILLEGAL PYTHON OPTION " $6
+                    echo "       ONLY none | python3 ALLOWED"
+                    exit 128
+                fi
+            fi
+
+            case ${pythonX} in
                 python3)
                     echo "BAMBOO PARAM INDICATES SCENARIO NEEDS PYTHON3"
                     export SST_PYTHON_USER_SPECIFIED=1
-                    if command -v python3 > /dev/null 2>&1; then
-                        export SST_PYTHON_APP_EXE=`command -v python3`
-                    else
-                        echo "ERROR: USER SELECTED python3 NOT FOUND - IS python ver3.x ON THE SYSTEM?"
-                        exit 128
-                    fi
-                    if python3-config --prefix > /dev/null 2>&1; then
-                        export SST_PYTHON_CFG_EXE=`command -v python3-config`
-                        export SST_PYTHON_HOME=`python3-config --prefix`
-                    else
-                        echo "ERROR: USER SELECTED python3-config NOT FOUND - IS python3-devel ON THE SYSTEM?"
-                        exit 128
-                    fi
                     ;;
-
-                * | none)
-                    # Perform a quick check to see if $6 is empty
-                    if [ -n "$6" ]; then
-                        if [[ $6 != "none" ]] ; then
-                            echo "ERROR: ILLEGAL PYTHON OPTION " $6
-                            echo "       ONLY none | python3 ALLOWED"
-                            exit 128
-                        fi
-                    fi
-
-                    ## NOTE: This code is for SST Version 12 where Python 2.x is no longer supported
+                *)
                     echo "NO BAMBOO PARAM EXISTS FOR PICKING A PYTHON VERSION - DETECT AND USE THE DEFAULT SYSTEM PYTHON"
-
-                    # Test to see if python3-config command is avail it should be for all Py3 installs
-                    if python3-config --prefix > /dev/null 2>&1; then
-                        export SST_PYTHON_CFG_EXE=`command -v python3-config`
-                        export SST_PYTHON_HOME=`python3-config --prefix`
-                        echo "--- FOUND PYTHON3 via python3-config..."
-
-                        if command -v python3 > /dev/null 2>&1; then
-                            export SST_PYTHON_APP_EXE=`command -v python3`
-                        else
-                            echo "ERROR: Python3 is detected to be Default on system (via python3-config), but python3 app IS NOT FOUND - IS python3 configured properly ON THE SYSTEM?"
-                            exit 128
-                        fi
-                    else
-                        ## NOTE: This is the last chance...
-                        ##       try finding 'python-config'
-                        echo "--- DID NOT FIND python3-config, SEARCHING FOR python-config..."
-
-                        # Test to see if python-config command is avail
-                        if python-config --prefix > /dev/null 2>&1; then
-                            export SST_PYTHON_CFG_EXE=`command -v python-config`
-                            export SST_PYTHON_HOME=`python-config --prefix`
-                            echo "--- FOUND PYTHON via python-config..."
-
-                            if command -v python > /dev/null 2>&1; then
-                                ## Check that python is an acceptably new version of python
-                                pyver=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
-                                pyverX=$(echo "${version//./}")
-                                if [[ "$pyverX" -lt "360" ]]
-                                then
-                                    echo "ERROR: FOUND python but version is TOO OLD (<3.6.0)."
-                                    exit 128
-                                fi
-                                export SST_PYTHON_APP_EXE=`command -v python`
-                            else
-                                echo "ERROR: Python app IS NOT FOUND - IS Python Version 3.x ON THE SYSTEM?"
-                                exit 128
-                            fi
-                        else
-                            ## No Python3 or Python found, this seems quite wrong...
-                            echo "ERROR: NO DEFAULT PYTHON FOUND ON SYSTEM - Is something wrong in the detection script?"
-                            exit 128
-                        fi
-                    fi
                     ;;
             esac
+
+            # Test to see if python3-config command is avail it should be for all Py3 installs
+            if python3-config --prefix > /dev/null 2>&1; then
+                export SST_PYTHON_CFG_EXE=`command -v python3-config`
+                export SST_PYTHON_HOME=`python3-config --prefix`
+                echo "--- FOUND PYTHON3 via python3-config..."
+
+                if command -v python3 > /dev/null 2>&1; then
+                    export SST_PYTHON_APP_EXE=`command -v python3`
+                else
+                    echo "ERROR: Python3 is detected to be Default on system (via python3-config), but python3 app IS NOT FOUND - IS python3 configured properly ON THE SYSTEM?"
+                    exit 128
+                fi
+            else
+                ## NOTE: This is the last chance...
+                ##       try finding 'python-config'
+                echo "--- DID NOT FIND python3-config, SEARCHING FOR python-config..."
+
+                # Test to see if python-config command is avail
+                if python-config --prefix > /dev/null 2>&1; then
+                    export SST_PYTHON_CFG_EXE=`command -v python-config`
+                    export SST_PYTHON_HOME=`python-config --prefix`
+                    echo "--- FOUND PYTHON via python-config..."
+
+                    if command -v python > /dev/null 2>&1; then
+                        ## Check that python is an acceptably new version of python
+                        pyver=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
+                        pyverX=$(echo "${version//./}")
+                        if [[ "$pyverX" -lt "360" ]]
+                        then
+                            echo "ERROR: FOUND python but version is TOO OLD (<3.6.0)."
+                            exit 128
+                        fi
+                        export SST_PYTHON_APP_EXE=`command -v python`
+                    else
+                        echo "ERROR: Python app IS NOT FOUND - IS Python Version 3.x ON THE SYSTEM?"
+                        exit 128
+                    fi
+                else
+                    ## No Python3 or Python found, this seems quite wrong...
+                    echo "ERROR: NO PYTHON FOUND ON SYSTEM - Is something wrong in the detection script?"
+                    exit 128
+                fi
+            fi
 
             echo "=============================================================="
             echo "=== FINAL PYTHON DETECTED VARIABLES"
@@ -2050,7 +2041,7 @@ then
         # as a convenience. SST binaries must be generated before testing.
 
         if [[ $buildtype == *make_dist* ]] ; then
-             setUPforMakeDisttest $1 $2 $3 $4
+             setUPforMakeDisttest ${build_type} ${mpi_type} ${_none} ${compiler_type}
              exit 0                  #  Normal Exit for make dist
         else          #  not make dist
             #    ---  These are probably temporary, but let's line them up properly anyway
@@ -2087,7 +2078,7 @@ then
                     echo "*** RUNNING BAMBOO'S dotests() for SST-MACRO WITH NO CORE              ***"
                     echo "***                                                                    ***"
                     echo "**************************************************************************"
-                    dotests $1 $4
+                    dotests ${build_type} ${compiler_type}
                     retval=$?
                 else
                     # Running Core or Elements testing using the New Frameworks
