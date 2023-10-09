@@ -741,6 +741,16 @@ set_up_environment_modules() {
     fi
 }
 
+# Take the version from the string passed at the top level to bamboo.sh.
+# Examples are
+#   clang-13.0.1
+#   gcc-4.8.5
+extract_compiler_version() {
+    local regex='[[:alpha:]]+\-(.*)'
+    [[ $1 =~ ${regex} ]]
+    echo "${BASH_REMATCH[1]}"
+}
+
 #-------------------------------------------------------------------------
 # Function: linuxSetMPI
 # Description:
@@ -749,13 +759,14 @@ set_up_environment_modules() {
 #   Input:
 #      $1 - mpi request
 #      $2   compiler (optional)
-#      $3   compiler version? (optional)
 #   Output:
 #   Return value:
 linuxSetMPI() {
     local mpi_request="${1}"
     local compiler="${2}"
-    local compiler_version="${3}"
+
+    local compiler_version
+    compiler_version="$(extract_compiler_version ${compiler})"
 
     set_up_environment_modules
 
@@ -1883,7 +1894,7 @@ else
             then
                 linuxSetMPI "${mpi_type}" "${compiler_type}"
             else  # kernel is "Darwin", so this is MacOS
-                darwinSetMPI "${mpi_type}" "${compiler}"
+                darwinSetMPI "${mpi_type}" "${compiler_type}"
             fi
 
             # Load Cuda Module
