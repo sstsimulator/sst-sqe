@@ -780,7 +780,7 @@ linuxSetMPI() {
    if [[ "${compiler}" == "default" ]]; then
        desiredMPI="${mpi_request}"
    else
-       desiredMPI="${mpi_request}_${compiler_version}"
+       desiredMPI="${mpi_request}_${compiler}"
        # load non-default compiler
        if [[ "${compiler}" =~ gcc.* ]]; then
            ModuleEx load "gcc/${compiler_version}"
