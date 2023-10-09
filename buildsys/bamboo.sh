@@ -821,7 +821,9 @@ linuxSetMPI() {
 #                 Also need $2 passed along
 
 ldModules_MacOS_Clang() {
-    local ClangVersion=$1            #   example "clang-700.0.72" $2
+    local ClangVersion=$1            #   example "clang-700.0.72"
+    local mpi_type="${2}"
+
     ModuleEx avail
     # Use MPI built with CLANG from Xcode
     ModuleEx unload mpi
@@ -833,19 +835,19 @@ ldModules_MacOS_Clang() {
 
     # load MPI
     echo " ****** Loading MPI ********"
-    echo "Request (\$2) is ${2}"
-    case $2 in
+    echo "Request (\$mpi_type) is ${mpi_type}"
+    case $mpi_type in
         ompi_default)
             echo "OpenMPI 4.0.5 selected"
-            ModuleEx add mpi/openmpi-4.0.5_$ClangVersion
+            ModuleEx add "mpi/openmpi-4.0.5_${ClangVersion}"
             ;;
         none)
             echo  "No MPI loaded as requested"
             ;;
         *)
             echo "User Defined MPI request"
-            echo "MPI option, loading users mpi/$2"
-            ModuleEx load mpi/$2_$ClangVersion 2>catch.err
+            echo "MPI option, loading users mpi/${mpi_type}"
+            ModuleEx load "mpi/${mpi_type}_${ClangVersion}" 2>catch.err
             if [ -s catch.err ]
             then
                 cat catch.err
@@ -870,6 +872,9 @@ ldModules_MacOS_Clang() {
 #   Output:
 #   Return value:
 darwinSetMPI() {
+    local mpi_type="${1}"
+    local compiler="${2}"
+
     # Obtain Mac OS version (works only on MacOS!!!)
     macosVersionFull=`sw_vers -productVersion`
     echo "  ******************* macosVersionFull= $macosVersionFull "
@@ -889,10 +894,10 @@ darwinSetMPI() {
 
     # Initialize modules for Jenkins (taken from $HOME/.bashrc on Mac)
     echo "bamboo.sh: Loading Modules for MacOSX"
-    ldModules_MacOS_Clang $compiler $2  # any Xcode
+    ldModules_MacOS_Clang "${compiler}" "${mpi_type}"  # any Xcode
 
     echo "bamboo.sh: MacOS build."
-    echo "bamboo.sh:   MPI = $2"
+    echo "bamboo.sh:   MPI = ${mpi_type}"
 }
 
 #-------------------------------------------------------------------------
@@ -1876,7 +1881,7 @@ else
             then
                 linuxSetMPI "${mpi_type}" "${compiler_type}"
             else  # kernel is "Darwin", so this is MacOS
-                darwinSetMPI ${build_type} ${mpi_type} ${compiler_type}
+                darwinSetMPI "${mpi_type}" "${compiler}"
             fi
 
             # Load Cuda Module
