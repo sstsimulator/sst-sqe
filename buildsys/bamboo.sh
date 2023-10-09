@@ -760,27 +760,29 @@ linuxSetMPI() {
     set_up_environment_modules
 
    # build MPI selector
-   if [[ "${mpi_request}" =~ openmpi.* ]]
-   then
+   if [[ "${mpi_request}" =~ openmpi.* ]]; then
        mpiStr="ompi-"$(expr "${mpi_request}" : '.*openmpi-\([0-9]\(\.[0-9][0-9]*\)*\)')
    else
        mpiStr="${mpi_request}"
    fi
 
-   if [[ "${compiler}" == "default" ]]
-   then
+   if [[ "${compiler}" == "default" ]]; then
        desiredMPI="${mpi_request}"
    else
        desiredMPI="${mpi_request}_${compiler_version}"
        # load non-default compiler
-       if   [[ "${compiler}" =~ gcc.* ]]
-       then
-           ModuleEx load gcc/${compiler_version}
+       if [[ "${compiler}" =~ gcc.* ]]; then
+           ModuleEx load "gcc/${compiler_version}"
            echo "LOADED gcc/${compiler_version} compiler"
-       elif [[ "${compiler}" =~ intel.* ]]
-       then
-           ModuleEx load intel/${compiler_version}
-           echo "LOADED intel/${compiler_version} compiler"
+       elif [[ "${compiler}" =~ clang.* ]]; then
+           ModuleEx load "clang/${compiler_version}"
+           CC="$(command -v clang)"
+           export CC
+           CXX="$(command -v clang++)"
+           export CXX
+           echo "LOADED clang/${compiler_version} compiler"
+       elif [[ "${compiler}" =~ intel.* ]]; then
+           ModuleEx load "intel/${compiler_version}"
        fi
    fi
 
