@@ -747,48 +747,52 @@ set_up_environment_modules() {
 #   Purpose: Performs selection and loading of Bost and MPI modules
 #            for Linux
 #   Input:
-#      $1 - Bamboo Project
-#      $2 - mpi request
-#      $3   compiler (optional)
+#      $1 - mpi request
+#      $2   compiler (optional)
+#      $3   compiler version? (optional)
 #   Output:
 #   Return value:
 linuxSetMPI() {
+    local mpi_request="${1}"
+    local compiler="${2}"
+    local compiler_version="${3}"
 
     set_up_environment_modules
 
    # build MPI selector
-   if [[ "$2" =~ openmpi.* ]]
+   if [[ "${mpi_request}" =~ openmpi.* ]]
    then
-       mpiStr="ompi-"$(expr "$2" : '.*openmpi-\([0-9]\(\.[0-9][0-9]*\)*\)')
+       mpiStr="ompi-"$(expr "${mpi_request}" : '.*openmpi-\([0-9]\(\.[0-9][0-9]*\)*\)')
    else
-       mpiStr=${2}
+       mpiStr="${mpi_request}"
    fi
 
    if [[ "${compiler}" == "default" ]]
    then
-       desiredMPI="${2}"
+       desiredMPI="${mpi_request}"
    else
-       desiredMPI="${2}_${4}"
+       desiredMPI="${mpi_request}_${compiler_version}"
        # load non-default compiler
-       if   [[ "$3" =~ gcc.* ]]
+       if   [[ "${compiler}" =~ gcc.* ]]
        then
-           ModuleEx load gcc/${4}
-           echo "LOADED gcc/${4} compiler"
-       elif [[ "$3" =~ intel.* ]]
+           ModuleEx load gcc/${compiler_version}
+           echo "LOADED gcc/${compiler_version} compiler"
+       elif [[ "${compiler}" =~ intel.* ]]
        then
-           ModuleEx load intel/${4}
-           echo "LOADED intel/${4} compiler"
+           ModuleEx load intel/${compiler_version}
+           echo "LOADED intel/${compiler_version} compiler"
        fi
    fi
 
-   echo "CHECK:  \$2: ${2}"
-   echo "CHECK:  \$3: ${3}"
+   echo "CHECK:  \$mpi_request: ${mpi_request}"
+   echo "CHECK:  \$compiler: ${compiler}"
+   echo "CHECK:  \$compiler_version: ${compiler_version}"
    echo "CHECK:  \$desiredMPI: ${desiredMPI}"
    gcc --version 2>&1 | grep ^g
 
    # load MPI
    ModuleEx unload mpi # unload any default to avoid conflict error
-   case $2 in
+   case ${mpi_request} in
        none)
            echo "MPI requested as \"none\".    No MPI loaded"
            ;;
@@ -1870,7 +1874,7 @@ else
             # Configure MPI and Compiler (Linux only)
             if [ $kernel != "Darwin" ]
             then
-                linuxSetMPI ${build_type} ${mpi_type} ${compiler_type}
+                linuxSetMPI "${mpi_type}" "${compiler_type}"
             else  # kernel is "Darwin", so this is MacOS
                 darwinSetMPI ${build_type} ${mpi_type} ${compiler_type}
             fi
