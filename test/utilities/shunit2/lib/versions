@@ -1,4 +1,5 @@
 #! /bin/sh
+# shellcheck disable=all
 # $Id: versions 100 2008-11-15 20:24:03Z kate.ward@forestent.com $
 # vim:et:ft=sh:sts=2:sw=2
 #
@@ -153,7 +154,7 @@ versions_shell_ksh()
     |sed 's/.*\([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]\).*/\1/'`
 
   # --version didn't work... look into the binary
-  if [ $? -ne ${TRUE} ]; then 
+  if [ $? -ne ${TRUE} ]; then
     _versions_have_strings
     versions_version_=`strings ${versions_shell_} 2>&1 \
       |grep Version \

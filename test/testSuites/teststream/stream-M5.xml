@@ -169,7 +169,7 @@
 			<link.1.blocksize> 64 </link.1.blocksize>
         </params>
     </component>
-    
+
     <component name=nid0.cpu2 type=+DerivO3CPU >
         <params include=cpuParams>
             <base.process.pid> 1 </base.process.pid>

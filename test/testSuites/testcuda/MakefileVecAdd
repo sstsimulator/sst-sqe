@@ -12,5 +12,3 @@ all: vectorAdd
 
 clean:
 	rm vectorAdd.160k vectorAdd.o
-
-

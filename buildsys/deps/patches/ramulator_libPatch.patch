@@ -8,16 +8,16 @@ index ea340c8..314113d 100644
  # CXX := g++-5
 -CXXFLAGS := -O3 -std=c++11 -g -Wall
 +CXXFLAGS := -O3 -std=c++11 -g -Wall -fpic
- 
+
  .PHONY: all clean depend
- 
+
 @@ -38,6 +38,9 @@ ramulator: $(MAIN) $(OBJS) $(SRCDIR)/*.h | depend
  libramulator.a: $(OBJS) $(OBJDIR)/Gem5Wrapper.o
  	libtool -static -o $@ $(OBJS) $(OBJDIR)/Gem5Wrapper.o
- 
+
 +libramulator.so: $(OBJS) $(OBJDIR)/Gem5Wrapper.o
 +	$(CXX) -shared -o $@ $(OBJS) $(OBJDIR)/Gem5Wrapper.o
 +
  $(OBJS): | $(OBJDIR)
- 
- $(OBJDIR): 
+
+ $(OBJDIR):
