@@ -1521,24 +1521,34 @@ dobuild() {
         "${SST_CORE_INSTALL}" \
         sst-core \
         autogen
+    retval=$?
+    if [ $retval -ne 0 ]; then exit $retval; fi
     config_and_build \
         sst-elements \
         "${SST_SELECTED_ELEMENTS_CONFIG}" \
         "${SST_CORE_INSTALL}" \
         "${SST_ROOT}/sst-elements" \
         autogen
+    retval=$?
+    if [ $retval -ne 0 ]; then exit $retval; fi
     config_and_build \
         sst-macro \
         "${SST_SELECTED_MACRO_CONFIG}" \
         "${SST_CORE_INSTALL}" \
         "${SST_ROOT}/sst-macro" \
         bootstrap
+    retval=$?
+    if [ $retval -ne 0 ]; then exit $retval; fi
     config_and_build_simple \
         sst-external-element \
         "${SST_SELECTED_EXTERNALELEMENT_CONFIG}"
+    retval=$?
+    if [ $retval -ne 0 ]; then exit $retval; fi
     config_and_build_simple \
         juno \
         "${SST_SELECTED_JUNO_CONFIG}"
+    retval=$?
+    if [ $retval -ne 0 ]; then exit $retval; fi
 }
 
 branch_to_commit_hash() {
