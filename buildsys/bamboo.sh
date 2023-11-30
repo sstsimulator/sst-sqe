@@ -728,22 +728,20 @@ getconfig() {
 #   Return value:
 linuxSetMPI() {
 
-   if [[ ${SST_STOP_AFTER_BUILD:+isSet} != isSet ]] ; then
-      # For some reason, .bashrc is not being run prior to
-      # this script. Kludge initialization of modules.
+    # For some reason, .bashrc is not being run prior to
+    # this script. Kludge initialization of modules.
 
-      echo "Attempt to initialize the modules utility.  Look for modules init file in 1 of 2 places"
+    echo "Attempt to initialize the modules utility.  Look for modules init file in 1 of 2 places"
 
-      echo "Location 1: ls -l /etc/profile.modules"
-      echo "Location 2: ls -l /etc/profile.d/modules.sh"
-      if [ -r /etc/profile.modules ] ; then
-          source /etc/profile.modules
-          echo "bamboo.sh: loaded /etc/profile.modules"
-      elif [ -r /etc/profile.d/modules.sh ] ; then
-          source /etc/profile.d/modules.sh
-          echo "bamboo.sh: loaded /etc/profile.d/modules"
-      fi
-   fi
+    echo "Location 1: ls -l /etc/profile.modules"
+    echo "Location 2: ls -l /etc/profile.d/modules.sh"
+    if [ -r /etc/profile.modules ] ; then
+        source /etc/profile.modules
+        echo "bamboo.sh: loaded /etc/profile.modules"
+    elif [ -r /etc/profile.d/modules.sh ] ; then
+        source /etc/profile.d/modules.sh
+        echo "bamboo.sh: loaded /etc/profile.d/modules"
+    fi
 
    echo "Testing modules utility via ModuleEx..."
    echo "ModuleEx avail"
@@ -2006,14 +2004,12 @@ else
                 # Perform the build
                 dobuild -t $SST_BUILD_TYPE -a $arch -k $kernel
                 retval=$?
-                if [[ ${SST_STOP_AFTER_BUILD:+isSet} == isSet ]] ; then
-                    if [ $retval -eq 0 ] ; then
-                        echo "$0 : exit success."
-                    else
-                        echo "$0 : exit failure."
-                    fi
-                    exit $retval
+                if [ $retval -eq 0 ] ; then
+                    echo "$0 : exit success."
+                else
+                    echo "$0 : exit failure."
                 fi
+                exit $retval
             fi
 
             echo "PWD $LINENO = `pwd`"
