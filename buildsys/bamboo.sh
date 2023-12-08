@@ -1558,6 +1558,8 @@ dobuild() {
         juno \
         "${SST_SELECTED_JUNO_CONFIG}"
     dobuild_handle_error $? juno
+
+    return 0
 }
 
 branch_to_commit_hash() {
