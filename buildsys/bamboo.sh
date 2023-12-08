@@ -1365,6 +1365,8 @@ config_and_build() {
         echo "Current Working Dir = $(pwd)"
         ls -l
     fi
+
+    return 0
 }
 
 config_and_build_simple() {
@@ -1440,6 +1442,18 @@ config_and_build_simple() {
         popd
         echo "Current Working Dir = $(pwd)"
         ls -l
+    fi
+
+    return 0
+}
+
+dobuild_handle_error() {
+    local retval="${1}";
+    local project="${1}";
+
+    if [ "${retval}" -ne 0 ]; then
+        echo "Problem with ${project} project, exiting with code ${retval}" >&2
+        exit "${retval}";
     fi
 }
 
@@ -1521,34 +1535,29 @@ dobuild() {
         "${SST_CORE_INSTALL}" \
         sst-core \
         autogen
-    retval=$?
-    if [ $retval -ne 0 ]; then exit $retval; fi
+    dobuild_handle_error $? core
     config_and_build \
         sst-elements \
         "${SST_SELECTED_ELEMENTS_CONFIG}" \
         "${SST_CORE_INSTALL}" \
         "${SST_ROOT}/sst-elements" \
         autogen
-    retval=$?
-    if [ $retval -ne 0 ]; then exit $retval; fi
+    dobuild_handle_error $? elements
     config_and_build \
         sst-macro \
         "${SST_SELECTED_MACRO_CONFIG}" \
         "${SST_CORE_INSTALL}" \
         "${SST_ROOT}/sst-macro" \
         bootstrap
-    retval=$?
-    if [ $retval -ne 0 ]; then exit $retval; fi
+    dobuild_handle_error $? macro
     config_and_build_simple \
         sst-external-element \
         "${SST_SELECTED_EXTERNALELEMENT_CONFIG}"
-    retval=$?
-    if [ $retval -ne 0 ]; then exit $retval; fi
+    dobuild_handle_error $? external-element
     config_and_build_simple \
         juno \
         "${SST_SELECTED_JUNO_CONFIG}"
-    retval=$?
-    if [ $retval -ne 0 ]; then exit $retval; fi
+    dobuild_handle_error $? juno
 }
 
 branch_to_commit_hash() {
