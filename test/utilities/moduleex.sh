@@ -44,7 +44,7 @@ if [[ -s "$TEMPERRFILE" ]]; then cat "$TEMPERRFILE"; fi
 final=0
 # Check if the errcount or retval of the module call has indicated an error, 
 # return one of them and also echo the stored module cmd results to stderr.
-if [ $errcount != 0  ]; then
+if [ $errcount -ne 0  ]; then
     if [ $retval -ne 0 ]; then 
         final=$retval
     else
@@ -65,4 +65,25 @@ fi
 # final cleanup & return 
 rm "$TEMPOUTFILE" "$TEMPERRFILE"
 return $final
+}
+
+#-------------------------------------------------------------------------
+# Function: ModuleEx
+# Description:
+#   Purpose:
+#       This function is a wrapper around the moduleex.sh command, which itself wraps the module
+#       command used to load/unload external dependencies.  All calls to module should be
+#       redirected to this function.  If a failure is detected in the module command, it will be
+#       noted and this function will cause the bamboo script to exit with the error code.
+#   Input:
+#       $@: Variable number of parameters depending upon module command operation
+#   Output: Any output from the module command.
+#   Return value: 0 on success, On error, bamboo.sh will exit with the moduleex.sh error code.
+ModuleEx() {
+    local retval=0
+    module_ex $@ || retval=$?
+    if [ $retval -ne 0 ] ; then
+        echo "ERROR: 'module' failed via script $SST_ROOT/test/utilities/moduleex.sh with retval= $retval; this might be ok"
+    fi
+    return $retval
 }
