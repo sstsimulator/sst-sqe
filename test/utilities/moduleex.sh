@@ -14,7 +14,7 @@ set -o pipefail
 
 module_ex() {
 # Verify that 'module' is runnable
-retval=0
+local retval=0
 2>/dev/null 1>&2 module || retval=$?
 if [ $retval -ne 0 ] && [ $retval -ne 1 ]; then 
     echo "'module' command not found by shell"
@@ -41,7 +41,7 @@ if [[ -s "$TEMPERRFILE" ]]; then cat "$TEMPERRFILE"; fi
 
 # echo "retval = $retval errcount = $errcount"
 
-final=0
+local final=0
 # Check if the errcount or retval of the module call has indicated an error, 
 # return one of them and also echo the stored module cmd results to stderr.
 if [ $errcount -ne 0  ]; then
