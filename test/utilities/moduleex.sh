@@ -22,6 +22,8 @@ if [ $retval -ne 0 ] && [ $retval -ne 1 ]; then
 fi
 
 # Create a Temp file
+local TEMPOUTFILE
+local TEMPERRFILE
 TEMPOUTFILE="$(mktemp /tmp/moduleex_out_XXXXXX)"
 TEMPERRFILE="$(mktemp /tmp/moduleex_err_XXXXXX)"
 
@@ -30,6 +32,7 @@ module $@ 1>"$TEMPOUTFILE" 2>"$TEMPERRFILE" || retval=$?
 
 # Get the retvalue, and scan the temp file for the "ERROR:" (Tcl) or "No
 # module" (Lmod/Lua) signature
+local errcount
 errcount="$(grep -E -c 'ERROR:|No module' $TEMPERRFILE)" || tmp=$?
 
 # Output what was recorded
