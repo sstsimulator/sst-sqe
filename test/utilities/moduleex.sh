@@ -63,7 +63,7 @@ elif [[ "$1" == "avail" ]]; then
 fi
 
 # final cleanup & return 
-rm "$TEMPOUTFILE" "$TEMPERRFILE"
+\rm "$TEMPOUTFILE" "$TEMPERRFILE"
 return $final
 }
 
