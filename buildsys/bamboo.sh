@@ -771,10 +771,8 @@ linuxSetMPI() {
            ;;
        *)
            echo "Default MPI option, loading mpi/${desiredMPI}"
-           ModuleEx load mpi/${desiredMPI} 2>catch.err
-           if [ -s catch.err ]
+           if ! ModuleEx load "mpi/${desiredMPI}"
            then
-               cat catch.err
                exit 1
            fi
            ;;
