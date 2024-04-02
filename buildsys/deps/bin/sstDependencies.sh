@@ -227,6 +227,20 @@ sstDepsPatchSource ()
 
     fi
 
+    if [ -n "${SST_BUILD_NVDIMMSIM}" ]
+    then
+        pushd "${SST_DEPS_SRC_STAGING}"
+        sstDepsAnnounce -h $FUNCNAME -m "Patching NVDIMMSim"
+        patch -p0 -i "${SST_DEPS_PATCHFILES}"/NVDIMMSim.patch
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            echo "ERROR: sstDependencies.sh:  NVDIMMSim patch failure"
+            return $retval
+        fi
+        popd
+    fi
+
     if [ ! -z ${SST_BUILD_RAMULATOR_STABLEDEVEL} ]
     then
         #-----------------------------------------------------------------------
