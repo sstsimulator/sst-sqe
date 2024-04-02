@@ -229,7 +229,7 @@ sstDepsPatchSource ()
 
     if [ -n "${SST_BUILD_NVDIMMSIM}" ]
     then
-        pushd "${SST_DEPS_SRC_STAGING}"
+        pushd "${SST_DEPS_SRC_STAGED_NVDIMMSIM}"
         sstDepsAnnounce -h $FUNCNAME -m "Patching NVDIMMSim"
         patch -p0 -i "${SST_DEPS_PATCHFILES}"/NVDIMMSim.patch
         retval=$?
