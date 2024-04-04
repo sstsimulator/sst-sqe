@@ -278,6 +278,15 @@ sstDepsPatchSource ()
                 return $retval
             fi
 
+            patch -p0 -i ${SST_DEPS_PATCHFILES}/ramulator_include.patch
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                # bail out on error
+                echo "ERROR: sstDependencies.sh:  ramulator patch failure"
+                return $retval
+            fi
+
             patch -p1 -i ${SST_DEPS_PATCHFILES}/ramulator_libPatch.patch
             retval=$?
             if [ $retval -ne 0 ]
