@@ -770,7 +770,12 @@ linuxSetMPI() {
            echo "MPI requested as \"none\".    No MPI loaded"
            ;;
        *)
-           echo "Default MPI option, loading mpi/${desiredMPI}"
+           echo "Try loading MPI module as-is: ${desiredMPI}"
+           if ModuleEx load "${desiredMPI}"; then
+               return
+           fi
+           # Not successful, try something else...
+           echo "Try loading mpi/${desiredMPI}"
            if ! ModuleEx load "mpi/${desiredMPI}"
            then
                exit 1
