@@ -33,7 +33,7 @@ module $@ 1>"$TEMPOUTFILE" 2>"$TEMPERRFILE" || retval=$?
 # Get the retvalue, and scan the temp file for the "ERROR:" (Tcl) or "No
 # module" (Lmod/Lua) signature
 local errcount
-errcount="$(grep -E -c 'ERROR:|No module' $TEMPERRFILE)" || tmp=$?
+errcount="$(grep -E -c 'ERROR:|No module|Lmod has detected the following error' $TEMPERRFILE)" || tmp=$?
 
 # Output what was recorded
 if [[ -s "$TEMPOUTFILE" ]]; then cat "$TEMPOUTFILE"; fi
