@@ -227,6 +227,34 @@ sstDepsPatchSource ()
 
     fi
 
+    if [ -n "${SST_BUILD_NVDIMMSIM}" ]
+    then
+        pushd "${SST_DEPS_SRC_STAGED_NVDIMMSIM}"
+        sstDepsAnnounce -h $FUNCNAME -m "Patching NVDIMMSim"
+        patch -p0 -i "${SST_DEPS_PATCHFILES}"/NVDIMMSim.patch
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            echo "ERROR: sstDependencies.sh:  NVDIMMSim patch failure"
+            return $retval
+        fi
+        popd
+    fi
+
+    if [ -n "${SST_BUILD_HYBRIDSIM}" ]
+    then
+        pushd "${SST_DEPS_SRC_STAGED_HYBRIDSIM}"
+        sstDepsAnnounce -h $FUNCNAME -m "Patching HybridSim"
+        patch -p0 -i "${SST_DEPS_PATCHFILES}"/HybridSim.patch
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            echo "ERROR: sstDependencies.sh:  HybridSim patch failure"
+            return $retval
+        fi
+        popd
+    fi
+
     if [ ! -z ${SST_BUILD_RAMULATOR_STABLEDEVEL} ]
     then
         #-----------------------------------------------------------------------
@@ -242,6 +270,15 @@ sstDepsPatchSource ()
             ls -lia
 
             patch -p1 -i ${SST_DEPS_PATCHFILES}/ramulator_gcc48Patch.patch
+            retval=$?
+            if [ $retval -ne 0 ]
+            then
+                # bail out on error
+                echo "ERROR: sstDependencies.sh:  ramulator patch failure"
+                return $retval
+            fi
+
+            patch -p0 -i ${SST_DEPS_PATCHFILES}/ramulator_include.patch
             retval=$?
             if [ $retval -ne 0 ]
             then

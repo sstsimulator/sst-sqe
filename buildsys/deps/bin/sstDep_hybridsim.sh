@@ -30,7 +30,7 @@ export SST_BUILD_HYBRIDSIM_sandia=1
 # Caveats:
 #     None
 #-------------------------------------------------------------------------------
-echo "export SST_DEPS_SRC_STAGED_HYBRIDSIM=${SST_DEPS_SRC_STAGING}/HybridSim"
+export SST_DEPS_SRC_STAGED_HYBRIDSIM="${SST_DEPS_SRC_STAGING}/HybridSim"
 echo "SST STAGING = $SST_DEPS_SRC_STAGING"  >&2
 echo "First EXPORT $SST_DEPS_SRC_STAGED_HYBRIDSIM"  >&2
 sstDepsStage_hybridsim ()

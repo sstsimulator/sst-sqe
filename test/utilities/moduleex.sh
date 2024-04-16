@@ -14,7 +14,7 @@ set -o pipefail
 
 module_ex() {
 # Verify that 'module' is runnable
-retval=0
+local retval=0
 2>/dev/null 1>&2 module || retval=$?
 if [ $retval -ne 0 ] && [ $retval -ne 1 ]; then 
     echo "'module' command not found by shell"
@@ -22,6 +22,8 @@ if [ $retval -ne 0 ] && [ $retval -ne 1 ]; then
 fi
 
 # Create a Temp file
+local TEMPOUTFILE
+local TEMPERRFILE
 TEMPOUTFILE="$(mktemp /tmp/moduleex_out_XXXXXX)"
 TEMPERRFILE="$(mktemp /tmp/moduleex_err_XXXXXX)"
 
@@ -30,6 +32,7 @@ module $@ 1>"$TEMPOUTFILE" 2>"$TEMPERRFILE" || retval=$?
 
 # Get the retvalue, and scan the temp file for the "ERROR:" (Tcl) or "No
 # module" (Lmod/Lua) signature
+local errcount
 errcount="$(grep -E -c 'ERROR:|No module' $TEMPERRFILE)" || tmp=$?
 
 # Output what was recorded
@@ -41,10 +44,10 @@ if [[ -s "$TEMPERRFILE" ]]; then cat "$TEMPERRFILE"; fi
 
 # echo "retval = $retval errcount = $errcount"
 
-final=0
+local final=0
 # Check if the errcount or retval of the module call has indicated an error, 
 # return one of them and also echo the stored module cmd results to stderr.
-if [ $errcount != 0  ]; then
+if [ $errcount -ne 0  ]; then
     if [ $retval -ne 0 ]; then 
         final=$retval
     else
@@ -63,6 +66,27 @@ elif [[ "$1" == "avail" ]]; then
 fi
 
 # final cleanup & return 
-rm "$TEMPOUTFILE" "$TEMPERRFILE"
+\rm "$TEMPOUTFILE" "$TEMPERRFILE"
 return $final
+}
+
+#-------------------------------------------------------------------------
+# Function: ModuleEx
+# Description:
+#   Purpose:
+#       This function is a wrapper around the moduleex.sh command, which itself wraps the module
+#       command used to load/unload external dependencies.  All calls to module should be
+#       redirected to this function.  If a failure is detected in the module command, it will be
+#       noted and this function will cause the bamboo script to exit with the error code.
+#   Input:
+#       $@: Variable number of parameters depending upon module command operation
+#   Output: Any output from the module command.
+#   Return value: 0 on success, On error, bamboo.sh will exit with the moduleex.sh error code.
+ModuleEx() {
+    local retval=0
+    module_ex $@ || retval=$?
+    if [ $retval -ne 0 ] ; then
+        echo "ERROR: 'module' failed via script $SST_ROOT/test/utilities/moduleex.sh with retval= $retval; this might be ok"
+    fi
+    return $retval
 }
