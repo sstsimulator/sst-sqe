@@ -772,7 +772,7 @@ linuxSetMPI() {
        *)
            echo "Try loading MPI module as-is: ${desiredMPI}"
            if ModuleEx load "${desiredMPI}"; then
-               return
+               return 0
            fi
            # Not successful, try something else...
            echo "Try loading mpi/${desiredMPI}"
