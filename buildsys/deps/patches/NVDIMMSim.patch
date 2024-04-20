@@ -1,0 +1,26 @@
+diff --git src/ChannelPacket.cpp src/ChannelPacket.cpp
+index 0d3a980..65d5961 100755
+--- src/ChannelPacket.cpp
++++ src/ChannelPacket.cpp
+@@ -56,9 +56,6 @@ ChannelPacket::ChannelPacket(ChannelPacketType packtype, uint64_t virtualAddr, u
+ ChannelPacket::ChannelPacket() {}
+ 
+ void ChannelPacket::print(uint64_t currentClockCycle){
+-	if (this == NULL)
+-		return;
+-
+ 	PRINT("Cycle: "<<currentClockCycle<<" Type: " << busPacketType << " addr: "<<physicalAddress<<" package: "<<package<<" die: "<<die<<" plane: "<<
+ 			plane<<" block: "<<block<<" page: "<<page<<" data: "<<data);
+ }
+diff --git src/Util.h src/Util.h
+index 54c8859..9c677fc 100644
+--- src/Util.h
++++ src/Util.h
+@@ -34,6 +34,7 @@
+ #ifndef NVDIMM_UTIL_H
+ #define NVDIMM_UTIL_H
+ 
++#include <cstdint>
+ #include <string>
+ #include <iostream>
+ #include <sstream>

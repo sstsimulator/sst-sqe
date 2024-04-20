@@ -1,0 +1,12 @@
+diff --git src/StatType.h src/StatType.h
+index c1e4dd3..bcf37cf 100644
+--- src/StatType.h
++++ src/StatType.h
+@@ -9,6 +9,7 @@
+ #include <cassert>
+ #include <cmath>
+ #include <cstdlib>
++#include <cstdint>
+ 
+ namespace ramulator {
+ 
