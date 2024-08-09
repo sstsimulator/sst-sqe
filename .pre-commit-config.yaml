@@ -50,7 +50,6 @@ repos:
               buildsys/deps/bin/sstDep_nvdimmsim.sh|
               buildsys/deps/bin/sstDep_ramulator_stabledevel.sh|
               test/utilities/shunit2/|
-              test/include/testDefinitions.sh|
               test/include/testSubroutines.sh|
               test/testSuites/testSuite_gpgpu.sh|
               test/testSuites/testSuite_macro.sh|
