@@ -9,7 +9,7 @@
 
 shUnit2 was originally developed to provide a consistent testing solution for [http://log4sh.sourceforge.net/ log4sh], a shell based logging framework similar to [http://logging.apache.org/log4j/ log4j]. During the development of that product, I repeatedly ran into the problem of having things work just fine under one shell (`/bin/bash` on Linux to be specific), and then not working under another shell (`/bin/sh` on Solaris). Although I had some simple tests that I ran, I finally decided to develop a more robust unit test framework after releasing multiple brown-bag releases.
 
-Rather than reinvent the wheel again, I chose to base the shUnit2 framework as much as possible on JUnit. I wanted something that was both incredibly easy to use, but that was as well incredibly powerful. I knew that the code would be built only for log4sh at the start, but hoped that someday I could release the code as a separate project. Now that the code is stable and mature enough, I have done just that. 
+Rather than reinvent the wheel again, I chose to base the shUnit2 framework as much as possible on JUnit. I wanted something that was both incredibly easy to use, but that was as well incredibly powerful. I knew that the code would be built only for log4sh at the start, but hoped that someday I could release the code as a separate project. Now that the code is stable and mature enough, I have done just that.
 
 You might ask why I didn't just use the already existing [http://shunit.sourceforge.net/ ShUnit] product. I took a look at it, but wasn't really happy with how it worked or how little it reflected the way JUnit and other unit test frameworks function. As such, I figured that it was probably better just to write my own.
 

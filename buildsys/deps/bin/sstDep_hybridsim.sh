@@ -1,7 +1,7 @@
 # !/bin/bash
 # sstDep_hybridsim.sh
 
-# Description: 
+# Description:
 
 # A bash script containing functions to process SST's HybridSim
 # dependency.
@@ -143,7 +143,7 @@ CXX=clang++\
         # if using Intel compiler
         if [[ ${compiler} =~ icpc.* ]]
         then
-            # patch Makefile for Intel compiler on Linux 
+            # patch Makefile for Intel compiler on Linux
             echo "INFO: (${FUNCNAME})  Intel compiler detected in CXX. Patching Makefile for icc/icpc..."
             sed -i.bak1 -e 's/g++/$(CXX)/' Makefile
             # I know the alignment looks awful here.

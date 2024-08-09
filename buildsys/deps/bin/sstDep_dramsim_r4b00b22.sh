@@ -1,7 +1,7 @@
 # !/bin/bash
 # sstDep_dramsim_r4b00b22.sh
 
-# Description: 
+# Description:
 
 # A bash script containing functions to process SST's DRAMSim
 # dependency.
@@ -57,7 +57,7 @@ sstDepsStage_dramsim ()
     pushd ${SST_DEPS_SRC_STAGED_DRAMSIM}
 
     git reset --hard 4b00b228abaa9d9dcd27ffbb48cfa71db53d520f
-    
+
 #    local dramsimHeadRevision=`git log -1 HEAD | head -1`
     popd
     sstDepsAnnounce -h $FUNCNAME -m "Fetched DRAMSim2 rev 4b00b228abaa9d9dcd27ffbb48cfa71db53d520f"
