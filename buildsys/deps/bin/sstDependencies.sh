@@ -1,5 +1,4 @@
 #!/bin/bash
-# sstDependencies.sh
 
 # Description:
 
@@ -23,7 +22,8 @@
 # 4) The directory ${SST_DEPS_INSTALL_DEPS} is writeable
 
 PARENT_DIR="$( cd -P "$( dirname "$0" )"/.. && pwd )"
-. ${PARENT_DIR}/include/depsDefinitions.sh
+# shellcheck source=buildsys/deps/include/depsDefinitions.sh
+. "${PARENT_DIR}"/include/depsDefinitions.sh
 
 
 #-------------------------------------------------------------------------------
@@ -47,7 +47,7 @@ sstDepsDoStaging ()
     # staging. Staging order should not matter here.
     #
 
-    if [ ! -z "${SST_BUILD_DRAMSIM}" ]
+    if [ -n "${SST_BUILD_DRAMSIM}" ]
     then
         #-----------------------------------------------------------------------
         # DRAMSim
@@ -62,7 +62,7 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_DRAMSIM3}" ]
+    if [ -n "${SST_BUILD_DRAMSIM3}" ]
     then
         #-----------------------------------------------------------------------
         # DRAMsim3
@@ -77,7 +77,7 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_GPGPUSIM}" ]
+    if [ -n "${SST_BUILD_GPGPUSIM}" ]
     then
         #-----------------------------------------------------------------------
         # GPGPUSim
@@ -92,7 +92,7 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_NVDIMMSIM}" ]
+    if [ -n "${SST_BUILD_NVDIMMSIM}" ]
     then
         #-----------------------------------------------------------------------
         # NVDIMMSim
@@ -107,7 +107,7 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_HYBRIDSIM}" ]
+    if [ -n "${SST_BUILD_HYBRIDSIM}" ]
     then
         #-----------------------------------------------------------------------
         # HybridSim
@@ -122,7 +122,7 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
+    if [ -n "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
         #-----------------------------------------------------------------------
         # GOBLIN_HMCSIM
@@ -137,7 +137,7 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_HBM_DRAMSIM2}" ]
+    if [ -n "${SST_BUILD_HBM_DRAMSIM2}" ]
     then
         #-----------------------------------------------------------------------
         # HBM_DRAMSIM2
@@ -152,7 +152,7 @@ sstDepsDoStaging ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_RAMULATOR}" ]
+    if [ -n "${SST_BUILD_RAMULATOR}" ]
     then
         #-----------------------------------------------------------------------
         # RAMULATOR
@@ -188,17 +188,17 @@ sstDepsPatchSource ()
     # Patch source packages in the staging area as needed
     #
 
-    if [ ! -z "${SST_BUILD_DRAMSIM}" ]
+    if [ -n "${SST_BUILD_DRAMSIM}" ]
     then
         #-----------------------------------------------------------------------
         # DRAMSim
         #-----------------------------------------------------------------------
-        if [ $SST_DEPS_OS_NAME = "Linux" ] && [ ! -z $SST_BUILD_DRAMSIM_STATIC ]
+        if [[ "${SST_DEPS_OS_NAME}" == "Linux" ]] && [ -n "${SST_BUILD_DRAMSIM_STATIC}" ]
         then
             # Patching to build static version for Linux
-            pushd ${SST_DEPS_SRC_STAGING}
-            sstDepsAnnounce -h $FUNCNAME -m "Patching DRAMSim"
-            patch -p0 -i ${SST_DEPS_PATCHFILES}/DRAMSim-sst.linux.patch
+            pushd "${SST_DEPS_SRC_STAGING}"
+            sstDepsAnnounce -h "${FUNCNAME[0]}" -m "Patching DRAMSim"
+            patch -p0 -i "${SST_DEPS_PATCHFILES}"/DRAMSim-sst.linux.patch
             retval=$?
             if [ $retval -ne 0 ]
             then
@@ -206,7 +206,6 @@ sstDepsPatchSource ()
                 echo "ERROR: sstDependencies.sh:  DRAMSim (Linux) patch failure"
                 return $retval
             fi
-
             popd
         fi
         # if [ $SST_DEPS_OS_NAME = "Darwin" ]
@@ -230,7 +229,7 @@ sstDepsPatchSource ()
     if [ -n "${SST_BUILD_NVDIMMSIM}" ]
     then
         pushd "${SST_DEPS_SRC_STAGED_NVDIMMSIM}"
-        sstDepsAnnounce -h $FUNCNAME -m "Patching NVDIMMSim"
+        sstDepsAnnounce -h "${FUNCNAME[0]}" -m "Patching NVDIMMSim"
         patch -p0 -i "${SST_DEPS_PATCHFILES}"/NVDIMMSim.patch
         retval=$?
         if [ $retval -ne 0 ]
@@ -244,7 +243,7 @@ sstDepsPatchSource ()
     if [ -n "${SST_BUILD_HYBRIDSIM}" ]
     then
         pushd "${SST_DEPS_SRC_STAGED_HYBRIDSIM}"
-        sstDepsAnnounce -h $FUNCNAME -m "Patching HybridSim"
+        sstDepsAnnounce -h "${FUNCNAME[0]}" -m "Patching HybridSim"
         patch -p0 -i "${SST_DEPS_PATCHFILES}"/HybridSim.patch
         retval=$?
         if [ $retval -ne 0 ]
@@ -255,7 +254,7 @@ sstDepsPatchSource ()
         popd
     fi
 
-    if [ ! -z ${SST_BUILD_RAMULATOR_STABLEDEVEL} ]
+    if [ -n "${SST_BUILD_RAMULATOR_STABLEDEVEL}" ]
     then
         #-----------------------------------------------------------------------
         # Ramulator-stabledevel
@@ -264,12 +263,12 @@ sstDepsPatchSource ()
             # Patch ramulator sha 7d2e72306c6079768e11a1867eb67b60cee34a1c
 
             # Patching to build static version for Linux
-            sstDepsAnnounce -h $FUNCNAME -m "Patching ramulator "
-            pushd ${SST_DEPS_SRC_STAGING}/ramulator
+            sstDepsAnnounce -h "${FUNCNAME[0]}" -m "Patching ramulator "
+            pushd "${SST_DEPS_SRC_STAGING}"/ramulator
 
             ls -lia
 
-            patch -p1 -i ${SST_DEPS_PATCHFILES}/ramulator_gcc48Patch.patch
+            patch -p1 -i "${SST_DEPS_PATCHFILES}"/ramulator_gcc48Patch.patch
             retval=$?
             if [ $retval -ne 0 ]
             then
@@ -278,7 +277,7 @@ sstDepsPatchSource ()
                 return $retval
             fi
 
-            patch -p0 -i ${SST_DEPS_PATCHFILES}/ramulator_include.patch
+            patch -p0 -i "${SST_DEPS_PATCHFILES}"/ramulator_include.patch
             retval=$?
             if [ $retval -ne 0 ]
             then
@@ -287,7 +286,7 @@ sstDepsPatchSource ()
                 return $retval
             fi
 
-            patch -p1 -i ${SST_DEPS_PATCHFILES}/ramulator_libPatch.patch
+            patch -p1 -i "${SST_DEPS_PATCHFILES}"/ramulator_libPatch.patch
             retval=$?
             if [ $retval -ne 0 ]
             then
@@ -320,7 +319,7 @@ sstDepsDeploy ()
     # Deploy each dependency
     #
 
-    if [ ! -z "${SST_BUILD_DRAMSIM}" ]
+    if [ -n "${SST_BUILD_DRAMSIM}" ]
     then
         #-----------------------------------------------------------------------
         # DRAMSim
@@ -335,7 +334,7 @@ sstDepsDeploy ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_DRAMSIM3}" ]
+    if [ -n "${SST_BUILD_DRAMSIM3}" ]
     then
         #-----------------------------------------------------------------------
         # DRAMsim3
@@ -350,7 +349,7 @@ sstDepsDeploy ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_GPGPUSIM}" ]
+    if [ -n "${SST_BUILD_GPGPUSIM}" ]
     then
         #-----------------------------------------------------------------------
         # GPGPUSim
@@ -365,7 +364,7 @@ sstDepsDeploy ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_NVDIMMSIM}" ]
+    if [ -n "${SST_BUILD_NVDIMMSIM}" ]
     then
         #-----------------------------------------------------------------------
         # NVDIMMSim
@@ -380,7 +379,7 @@ sstDepsDeploy ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_HYBRIDSIM}" ]
+    if [ -n "${SST_BUILD_HYBRIDSIM}" ]
     then
         #-----------------------------------------------------------------------
         # HybridSim
@@ -396,7 +395,7 @@ sstDepsDeploy ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
+    if [ -n "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
         #-----------------------------------------------------------------------
         # GOBLIN_HMCSIM
@@ -411,7 +410,7 @@ sstDepsDeploy ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_HBM_DRAMSIM2}" ]
+    if [ -n "${SST_BUILD_HBM_DRAMSIM2}" ]
     then
         #-----------------------------------------------------------------------
         # HBM_DRAMSIM2
@@ -426,7 +425,7 @@ sstDepsDeploy ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_RAMULATOR}" ]
+    if [ -n "${SST_BUILD_RAMULATOR}" ]
     then
         #-----------------------------------------------------------------------
         # RAMULATOR
@@ -463,7 +462,7 @@ sstDepsDoQuery ()
     # Query each dependency
     #
 
-    if [ ! -z "${SST_BUILD_DRAMSIM}" ]
+    if [ -n "${SST_BUILD_DRAMSIM}" ]
     then
         #-----------------------------------------------------------------------
         # DRAMSim
@@ -471,7 +470,7 @@ sstDepsDoQuery ()
         sstDepsQuery_dramsim
     fi
 
-    if [ ! -z "${SST_BUILD_DRAMSIM3}" ]
+    if [ -n "${SST_BUILD_DRAMSIM3}" ]
     then
         #-----------------------------------------------------------------------
         # DRAMsim3
@@ -479,7 +478,7 @@ sstDepsDoQuery ()
         sstDepsQuery_dramsim3
     fi
 
-    if [ ! -z "${SST_BUILD_GPGPUSIM}" ]
+    if [ -n "${SST_BUILD_GPGPUSIM}" ]
     then
         #-----------------------------------------------------------------------
         # GPGPUSim
@@ -487,7 +486,7 @@ sstDepsDoQuery ()
         sstDepsQuery_GPGPUSim
     fi
 
-    if [ ! -z "${SST_BUILD_NVDIMMSIM}" ]
+    if [ -n "${SST_BUILD_NVDIMMSIM}" ]
     then
         #-----------------------------------------------------------------------
         # NVDIMMSim
@@ -496,7 +495,7 @@ sstDepsDoQuery ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_HYBRIDSIM}" ]
+    if [ -n "${SST_BUILD_HYBRIDSIM}" ]
     then
         #-----------------------------------------------------------------------
         # HybridSim
@@ -505,7 +504,7 @@ sstDepsDoQuery ()
     fi
 
 
-    if [ ! -z "${SST_BUILD_GOBLIN_HMCSIM}" ]
+    if [ -n "${SST_BUILD_GOBLIN_HMCSIM}" ]
     then
         #-----------------------------------------------------------------------
         # GOBLIN_HMCSIM
@@ -513,7 +512,7 @@ sstDepsDoQuery ()
         sstDepsQuery_goblin_hmcsim
     fi
 
-    if [ ! -z "${SST_BUILD_HBM_DRAMSIM2}" ]
+    if [ -n "${SST_BUILD_HBM_DRAMSIM2}" ]
     then
         #-----------------------------------------------------------------------
         # HBM_DRAMSIM2
@@ -521,7 +520,7 @@ sstDepsDoQuery ()
         sstDepsQuery_hbm_dramsim2
     fi
 
-    if [ ! -z "${SST_BUILD_RAMULATOR}" ]
+    if [ -n "${SST_BUILD_RAMULATOR}" ]
     then
         #-----------------------------------------------------------------------
         # RAMULATOR
@@ -537,22 +536,22 @@ sstDepsDoDependencies ()
 {
 
     # create staging and installation directories, if needed
-    if [ ! -d ${SST_DEPS_SRC_STAGING} ]
+    if [ ! -d "${SST_DEPS_SRC_STAGING}" ]
     then
-        mkdir -p ${SST_DEPS_SRC_STAGING}
+        mkdir -p "${SST_DEPS_SRC_STAGING}"
     fi
 
-    if [ ! -d ${SST_DEPS_INSTALL_DEPS} ]
+    if [ ! -d "${SST_DEPS_INSTALL_DEPS}" ]
     then
-        mkdir -p ${SST_DEPS_INSTALL_DEPS}
+        mkdir -p "${SST_DEPS_INSTALL_DEPS}"
     fi
 
 
-    if   [ $# -eq 1 ] && [ $1 = "restageDeps" ]
+    if   [ $# -eq 1 ] && [[ "${1}" == "restageDeps" ]]
     then
         # Purge deps staging area and deps install area
-        rm -Rf ${SST_DEPS_SRC_STAGING}/*
-        rm -Rf ${SST_DEPS_INSTALL_DEPS}/*
+        rm -Rf "${SST_DEPS_SRC_STAGING:?}"/*
+        rm -Rf "${SST_DEPS_INSTALL_DEPS:?}"/*
 
         # Restage source code from pristine
         sstDepsDoStaging
@@ -574,10 +573,10 @@ sstDepsDoDependencies ()
             return $retval
         fi
 
-    elif [ $# -eq 1 ] && [ $1 = "develBuild" ]
+    elif [ $# -eq 1 ] && [[ "${1}" == "develBuild" ]]
     then
         # Purge deps install area, leave staged area alone
-        rm -Rf ${SST_DEPS_INSTALL_DEPS}/*
+        rm -Rf "${SST_DEPS_INSTALL_DEPS:?}"/*
 
         # Deploy dependencies (build from staged area and install)
         sstDepsDeploy
@@ -589,11 +588,11 @@ sstDepsDoDependencies ()
             return $retval
         fi
 
-    elif [ $# -eq 1 ] && [ $1 = "cleanBuild" ]
+    elif [ $# -eq 1 ] && [[ "${1}" == "cleanBuild" ]]
     then
         # Purge deps staging area and deps install area
-        rm -Rf ${SST_DEPS_SRC_STAGING}/*
-        rm -Rf ${SST_DEPS_INSTALL_DEPS}/*
+        rm -Rf "${SST_DEPS_SRC_STAGING:?}"/*
+        rm -Rf "${SST_DEPS_INSTALL_DEPS:?}"/*
 
         sstDepsAnnounce -h "sstDepsDoDependencies" -m "Begin Staging "
         # Restage source code from pristine
@@ -628,7 +627,7 @@ sstDepsDoDependencies ()
             return $retval
         fi
 
-    elif [ $# -eq 1 ] && [ $1 = "queryEnv" ]
+    elif [ $# -eq 1 ] && [[ "${1}" == "queryEnv" ]]
     then
         # Print suggested environment
         echo "# --------------------------------------------------------------------"
@@ -681,23 +680,28 @@ do
             case "$OPTARG" in
                 default|stabledevel) # build latest DRAMSim from repository ("stable development")
                     echo "# (default) stabledevel: build latest DRAMSim from repository"
-                    . ${SST_DEPS_BIN}/sstDep_dramsim_stabledevel.sh
+                    # shellcheck source=buildsys/deps/bin/sstDep_dramsim_stabledevel.sh
+                    . "${SST_DEPS_BIN}"/sstDep_dramsim_stabledevel.sh
                     ;;
                 2.2.2) # build DRAMSim v2.2.2
                     echo "# 2.2.2: build DRAMSim v2.2.2 release"
-                    . ${SST_DEPS_BIN}/sstDep_dramsim_v2.2.2.sh
+                    # shellcheck source=buildsys/deps/bin/sstDep_dramsim_v2.2.2.sh
+                    . "${SST_DEPS_BIN}"/sstDep_dramsim_v2.2.2.sh
                     ;;
                 2.2.1) # build DRAMSim v2.2.1
                     echo "# 2.2.1: build DRAMSim v2.2.1 release"
-                    . ${SST_DEPS_BIN}/sstDep_dramsim_v2.2.1.sh
+                    # shellcheck source=buildsys/deps/bin/sstDep_dramsim_v2.2.1.sh
+                    . "${SST_DEPS_BIN}"/sstDep_dramsim_v2.2.1.sh
                     ;;
                 2.2) # build DRAMSim v2.2 (tagged DRAMSim release)
                     echo "# 2.2: build DRAMSim v2.2 tagged release"
-                    . ${SST_DEPS_BIN}/sstDep_dramsim_v2.2.sh
+                    # shellcheck source=buildsys/deps/bin/sstDep_dramsim_v2.2.sh
+                    . "${SST_DEPS_BIN}"/sstDep_dramsim_v2.2.sh
                     ;;
                 r4b00b22) # build DRAMSim commit ID 4b00b228abaa9d9dcd27ffbb48cfa71db53d520f
                     echo "# r4b00b22: build DRAMSim commit ID 4b00b228abaa9d9dcd27ffbb48cfa71db53d520f"
-                    . ${SST_DEPS_BIN}/sstDep_dramsim_r4b00b22.sh
+                    # shellcheck source=buildsys/deps/bin/sstDep_dramsim_r4b00b22.sh
+                    . "${SST_DEPS_BIN}"/sstDep_dramsim_r4b00b22.sh
                     ;;
                 none) # do not build (explicit)
                     echo "# none: will not build DRAMSim"
@@ -716,7 +720,8 @@ do
                     if [[  ${SST_WITHOUT_DRAMSIM3:+isSet} == isSet ]] ; then
                         echo "  DRAMSIM3 IS NOT ENABLED BY SST_WITHOUT_DRAMSIM3 flag"
                     else
-                        . ${SST_DEPS_BIN}/sstDep_dramsim3_stabledevel.sh
+                        # shellcheck source=buildsys/deps/bin/sstDep_dramsim3_stabledevel.sh
+                        . "${SST_DEPS_BIN}"/sstDep_dramsim3_stabledevel.sh
                     fi
                     ;;
                 none) # do not build (explicit)
@@ -733,7 +738,8 @@ do
             case "$OPTARG" in
                 default|stabledevel) # build latest Goblin_HMCSIM from repository ("stable development")
                     echo "# (default) stabledevel: build latest Goblin_HMCSIM from repository"
-                    . ${SST_DEPS_BIN}/sstDep_goblin_hmcsim_stabledevel.sh
+                    # shellcheck source=buildsys/deps/bin/sstDep_goblin_hmcsim_stabledevel.sh
+                    . "${SST_DEPS_BIN}"/sstDep_goblin_hmcsim_stabledevel.sh
                     ;;
                 none) # do not build (explicit)
                     echo "# none: will not build Goblin_HMCSIM"
@@ -749,7 +755,8 @@ do
             case "$OPTARG" in
                 default|stabledevel) # build latest HBM_DRAMSim2 from repository ("stable development")
                     echo "# (default) stabledevel: build latest HBM_DRAMSim2 from repository"
-                    . ${SST_DEPS_BIN}/sstDep_hbm_dramsim2_stabledevel.sh
+                    # shellcheck source=buildsys/deps/bin/sstDep_hbm_dramsim2_stabledevel.sh
+                    . "${SST_DEPS_BIN}"/sstDep_hbm_dramsim2_stabledevel.sh
                     ;;
                 none) # do not build (explicit)
                     echo "# none: will not build HBM_DRAMSim2"
@@ -765,7 +772,8 @@ do
             case "$OPTARG" in
                 default|stabledevel) # build latest Ramulator from repository ("stable development")
                     echo "# (default) stabledevel: build latest Ramulator from repository"
-                    . ${SST_DEPS_BIN}/sstDep_ramulator_stabledevel.sh
+                    # shellcheck source=buildsys/deps/bin/sstDep_ramulator_stabledevel.sh
+                    . "${SST_DEPS_BIN}"/sstDep_ramulator_stabledevel.sh
                     ;;
                 none) # do not build (explicit)
                     echo "# none: will not build Ramulator"
@@ -781,10 +789,12 @@ do
             case "$OPTARG" in
                 default)
                     echo "# default will be built"
-                    . ${SST_DEPS_BIN}/sstDep_nvdimmsim.sh
+                    # shellcheck source=buildsys/deps/bin/sstDep_nvdimmsim.sh
+                    . "${SST_DEPS_BIN}"/sstDep_nvdimmsim.sh
 
                     echo "# HybridSim will be built"
-                    . ${SST_DEPS_BIN}/sstDep_hybridsim.sh
+                    # shellcheck source=buildsys/deps/bin/sstDep_hybridsim.sh
+                    . "${SST_DEPS_BIN}"/sstDep_hybridsim.sh
                     ;;
                 none)  # Do not build NVDIMMSim
                     echo "# none: will not build NVDIMMSim"
@@ -797,11 +807,13 @@ do
             case "$OPTARG" in
                 1.1|stabledevel)   # Build GPGPUSim
                     echo "# ${OPTARG}: Build GPGPUSim 1.1 tag"
-                    . ${SST_DEPS_BIN}/sstDep_GPGPUSim.sh 1.1
+                    # shellcheck source=buildsys/deps/bin/sstDep_GPGPUSim.sh
+                    . "${SST_DEPS_BIN}"/sstDep_GPGPUSim.sh 1.1
                     ;;
                 master)   # Build GPGPUSim
                     echo "# ${OPTARG}: Build GPGPUSim master branch"
-                    . ${SST_DEPS_BIN}/sstDep_GPGPUSim.sh master
+                    # shellcheck source=buildsys/deps/bin/sstDep_GPGPUSim.sh
+                    . "${SST_DEPS_BIN}"/sstDep_GPGPUSim.sh master
                     ;;
                 none|default)  # Do not build GPGPUSim
                     echo "# default: will not build GPGPUSim"
@@ -813,17 +825,9 @@ do
     esac
 done
 
-shift $[ $OPTIND - 1 ]
+shift $(( OPTIND - 1 ))
 
-sstDepsDoDependencies $1
-retval=$?
-if [ $retval -ne 0 ]
-then
-    # bail out on error
-    echo "ERROR: sstDependencies.sh: sstDepsDoDependences code failure"
-    exit -1
-fi
-
+sstDepsDoDependencies "${1}"
 retval=$?
 if [ $retval -ne 0 ]
 then

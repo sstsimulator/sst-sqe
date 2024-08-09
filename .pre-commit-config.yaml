@@ -43,7 +43,6 @@ repos:
               buildsys/deps/bin/sstDep_dramsim_v2.2.1.sh|
               buildsys/deps/bin/sstDep_dramsim_v2.2.2.sh|
               buildsys/deps/bin/sstDep_dramsim_v2.2.sh|
-              buildsys/deps/bin/sstDependencies.sh|
               buildsys/deps/bin/sstDep_goblin_hmcsim_stabledevel.sh|
               buildsys/deps/bin/sstDep_GPGPUSim.sh|
               buildsys/deps/bin/sstDep_hbm_dramsim2_stabledevel.sh|
