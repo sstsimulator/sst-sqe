@@ -1,0 +1,111 @@
+---
+# yamllint disable rule:line-length
+name: run bamboo
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+  workflow_dispatch:
+
+concurrency:
+  group: test-${{github.ref}}-${{github.event.pull_request.number || github.run_number}}
+  cancel-in-progress: true
+
+jobs:
+  run-bamboo:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-14
+          - ubuntu-24.04
+        build-type:
+          - sstmainline_config
+          - sstmainline_coreonly_config
+          - sstmainline_config_no_mpi
+          - sstmainline_coreonly_config_no_mpi
+          - sstmainline_config_make_dist_test
+          - sstmainline_config_core_make_dist_test
+        exclude:
+          - os: macos-14
+            build-type: sstmainline_config
+          - os: macos-14
+            build-type: sstmainline_coreonly_config
+          - os: macos-14
+            build-type: sstmainline_config_make_dist_test
+          - os: macos-14
+            build-type: sstmainline_config_core_make_dist_test
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: install system-level dependencies (macOS)
+        run: |
+          brew install \
+              autoconf \
+              automake \
+              coreutils \
+              doxygen \
+              libtool \
+              lmod \
+              ncurses \
+              pygments
+          python -m pip install blessings
+          # echo "source /opt/homebrew/opt/lmod/init/profile" >> ~/.bashrc
+        if: matrix.os == 'macos-14'
+      - name: install system-level dependencies (Ubuntu)
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          sudo apt-get -y update
+          sudo apt-get -y install \
+              autoconf \
+              automake \
+              doxygen \
+              libopenmpi-dev \
+              libtool-bin \
+              lmod \
+              python3-blessings \
+              python3-pygments
+          # echo "source /usr/share/lmod/lmod/init/bash" >> ~/.bashrc
+        if: matrix.os == 'ubuntu-24.04'
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          create-symlink: true
+          key: ${{ matrix.os }}-${{ matrix.build-type }}
+          verbose: 2
+      - name: set env and prepare dir structure
+        run: |
+          # Keep this common in order to increase ccache effectiveness
+          # sst_deps_user_dir="${GITHUB_WORKSPACE}/../${GITHUB_RUN_ID}_${GITHUB_RUN_NUMBER}_${GITHUB_RUN_ATTEMPT}"
+          sst_deps_user_dir="${GITHUB_WORKSPACE}/../sst-deps-user-dir"
+          mkdir -p "${sst_deps_user_dir}"
+          SST_DEPS_USER_DIR="$(realpath "${sst_deps_user_dir}")"
+          echo "SST_DEPS_USER_DIR=${SST_DEPS_USER_DIR}" >> "${GITHUB_ENV}"
+      - name: fetch elements dependencies
+        run: |
+          pristine="${SST_DEPS_USER_DIR}"/sstDeps/src/pristine
+          mkdir -p "${pristine}"
+          cd "${pristine}"
+          wget https://github.com/umd-memsys/DRAMSim2/archive/refs/tags/v2.2.2.tar.gz
+      - name: run bamboo
+        run: |
+          # needed for ncurses part of interactive sst-info
+          export TERM=dumb
+          MAKEFLAGS="-j$(nproc)"
+          export MAKEFLAGS
+          if [[ "$(uname)" == "Darwin" ]]; then
+              export PMIX_MCA_gds=hash
+          fi
+          export SST_DEPS_USER_MODE=1
+          mkdir -p "${SST_DEPS_USER_DIR}/devel/trunk"
+          mv "${GITHUB_WORKSPACE}" "${SST_DEPS_USER_DIR}/devel/sqe"
+          cd "${SST_DEPS_USER_DIR}/devel/trunk"
+          ../sqe/buildsys/bamboo.sh ${{ matrix.build-type }} none none none none none
+          ccache -s -vv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: test-output-${{ matrix.os }}-${{ matrix.build-type }}
+          path: sst_test_outputs
+          compression-level: 9
+        if: '!cancelled()'
+# yamllint enable rule:line-length
