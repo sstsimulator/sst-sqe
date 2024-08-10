@@ -16,7 +16,8 @@ if [[ ${SST_ROOT:+isSet} != isSet ]]
 then
     # If SST_ROOT has NOT been set, assume SST_ROOT is up 2 levels from
     # the directory that this file (depsDefinitions.sh) resides in.
-    export SST_ROOT="$( cd -P "$( dirname "$0" )"/../.. && pwd )"
+    SST_ROOT="$( cd -P "$( dirname "$0" )"/../.. && pwd )"
+    export SST_ROOT
 fi
 
 if [[ ${SST_BASE:+isSet} != isSet ]]
@@ -79,9 +80,9 @@ export PATH=${PATH}:${SST_DEPS_BIN}
 # System definitions
 #===============================================================================
 
-SST_DEPS_CPU_ARCH=`uname -m`    # uname CPU architecture
-SST_DEPS_OS_NAME=`uname -s`     # uname OS name
-SST_DEPS_OS_RELEASE=`uname -r`  # uname OS release
+# Because this script is sourced, this variable is not actually unused.
+# shellcheck disable=SC2034
+SST_DEPS_OS_NAME="$(uname -s)"
 
 #===============================================================================
 # Global utilities
@@ -157,9 +158,9 @@ sstDepsCheckSha1 ()
     done
 
     # get SHA1 hash for given file
-    calculated_hash=`openssl sha1 ${filename} | awk '{ print $NF }'`
+    calculated_hash="$(openssl sha1 "${filename}" | awk '{ print $NF }')"
 
-    if [ ${calculated_hash} = ${expected_hash} ]
+    if [[ "${calculated_hash}" == "${expected_hash}" ]]
     then
         echo "sstDepsSha1IsValid (): Good SHA1 of ${filename}. Expected ${expected_hash}, got ${calculated_hash}"
         echo "sstDepsSHA1IsValid (): File content consistent with expected SHA1."
@@ -184,8 +185,6 @@ sstDepsCheckSha1 ()
 # echo "DBG depsDefinitions.sh:  SST_DEPS_SRC_PRISTINE = ${SST_DEPS_SRC_PRISTINE}"
 # echo "DBG depsDefinitions.sh:  SST_DEPS_SRC_STAGING = ${SST_DEPS_SRC_STAGING}"
 # echo "DBG depsDefinitions.sh:  SST_DEPS_PATCHFILES = ${SST_DEPS_PATCHFILES}"
-# echo "DBG depsDefinitions.sh:  SST_DEPS_CPU_ARCH = ${SST_DEPS_CPU_ARCH}"
 # echo "DBG depsDefinitions.sh:  PATH = ${PATH}"
 # echo "DBG depsDefinitions.sh:  SST_DEPS_OS_NAME = ${SST_DEPS_OS_NAME}"
-# echo "DBG depsDefinitions.sh:  SST_DEPS_OS_RELEASE = ${SST_DEPS_OS_RELEASE}"
 # DEBUG <end>

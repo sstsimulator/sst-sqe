@@ -1,7 +1,7 @@
 # !/bin/bash
 # sstDep_ramulator_stabledevel.sh
 
-# Description: 
+# Description:
 
 # A bash script containing functions to process SST's Ramulator
 # dependency.
@@ -28,7 +28,7 @@ export SST_BUILD_RAMULATOR_STABLEDEVEL=1
 # Outputs:
 #     Pass/fail
 # Expected Results
-#     Staged Ramulator code 
+#     Staged Ramulator code
 # Caveats:
 #     None
 #-------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ export SST_DEPS_SRC_STAGED_RAMULATOR=${SST_DEPS_SRC_STAGING}/ramulator
 sstDepsStage_ramulator ()
 {
     sstDepsAnnounce -h $FUNCNAME -m "Staging ramulator stabledevel"
-    
+
     pushd ${SST_DEPS_SRC_STAGING}
 
    Num_Tries_remaing=3
@@ -65,7 +65,7 @@ sstDepsStage_ramulator ()
       fi
    done
    echo " "
-    
+
     if [ $retVal -ne 0 ]                     ## retVal from git clone
     then
         # bail out on error
@@ -75,17 +75,17 @@ sstDepsStage_ramulator ()
         popd
         return $retVal
     fi
-    
+
     #  Move into the ramulator directory
     pushd ${SST_DEPS_SRC_STAGED_RAMULATOR}
     git checkout 7d2e72306c6079768e11a1867eb67b60cee34a1c
     echo "ramulator.git" `git log HEAD | sed 4q` >&2
 
-    # NOTE: There are 2 patches to be applied to this sha = 7d2e72 to get 
+    # NOTE: There are 2 patches to be applied to this sha = 7d2e72 to get
     #       ramulator library to build properly on gcc
     #       ramulator_gcc48Patch.patch - Fixes compile for gcc 4.8
     #       ramulator_libPatch.patch   - Adds library build for gcc
-    
+
     popd
     popd
 }
@@ -120,7 +120,7 @@ sstDepsDeploy_ramulator ()
         # Linux
         make CXX=g++ libramulator.so
     fi
-    
+
     retval=$?
     if [ $retval -ne 0 ]
     then
@@ -129,10 +129,10 @@ sstDepsDeploy_ramulator ()
         popd
         return $retval
     fi
-    
+
     popd
-    
-    # NOTE: There is no "make install" for Ramulator.  Instead make a 
+
+    # NOTE: There is no "make install" for Ramulator.  Instead make a
     #       link to the compilied directory
     if [ ! -d ${SST_DEPS_INSTALL_DEPS}/packages ]
     then
@@ -140,7 +140,7 @@ sstDepsDeploy_ramulator ()
     fi
 
     ln -s ${SST_DEPS_SRC_STAGED_RAMULATOR} ${SST_DEPS_INSTALL_DEPS}/packages/Ramulator
-    
+
 }
 
 # Installation location as used by SST's "./configure --with-ramulator=..."

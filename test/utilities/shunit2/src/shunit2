@@ -32,10 +32,10 @@ SHUNIT_STDOUT=${SHUNIT_STDOUT:-${SHUNIT_TRUE}}
 # Include environment
 SHUNIT_INCLUDE_ENV=${SHUNIT_INCLUDE_ENV:-${SHUNIT_TRUE}}
 ### ADDED BY ALevine STARTING HERE - Force  SHUNIT_INCLUDE_ENV to equal SHUNIT_FALSE
-###                                  Prevents output of environment into XML file 
+###                                  Prevents output of environment into XML file
 ###                                  which possibly generates malformed XML syntax.
 SHUNIT_INCLUDE_ENV=${SHUNIT_FALSE}
-### ADDED BY ALevine ENDING HERE  
+### ADDED BY ALevine ENDING HERE
 
 # Maximum failed tests before quit
 SHUNIT_MAX_FAIL_TESTS=${SHUNIT_MAX_FAIL_TESTS:-10}
@@ -56,7 +56,7 @@ _shunit_log_fail()
 {
   _shunit_msg_=$1
 
-###  __shunit_case_errors="${__shunit_case_errors}<failure type=\"${__SHUNIT_ASSERT_MSG_PREFIX}\" message=\"$( echo "${_shunit_msg_}" | sed 's/</&lg;/g;s/>/&gt;/g' )\"/>"  ### MODIFIED BY ALevine - Force Each Failure msg to be on a separate line in XML 
+###  __shunit_case_errors="${__shunit_case_errors}<failure type=\"${__SHUNIT_ASSERT_MSG_PREFIX}\" message=\"$( echo "${_shunit_msg_}" | sed 's/</&lg;/g;s/>/&gt;/g' )\"/>"  ### MODIFIED BY ALevine - Force Each Failure msg to be on a separate line in XML
   __shunit_case_errors="${__shunit_case_errors}
       <failure type=\"${__SHUNIT_ASSERT_MSG_PREFIX}\" message=\"$( echo "${_shunit_msg_}" | sed 's/</&lg;/g;s/>/&gt;/g' )\"></failure>"
 
@@ -64,7 +64,7 @@ _shunit_log_fail()
 }
 
 # log an unexpected failure into the test case error buffer
-_shunit_log_error() 
+_shunit_log_error()
 {
   _level_=$1
   shift
@@ -496,7 +496,7 @@ _ASSERT_FALSE_='eval assertFalse --lineno "${LINENO:-}"'
 
 #-----------------------------------------------------------------------------
 # Skip one test by request from test Suite
- 
+
 #
 # Args:
 #    none
@@ -598,10 +598,10 @@ failSame()
     shunit_message_="${shunit_message_}$1"
     shift
   fi
-### ADDED BY ALevine STARTING HERE - Missing assignment of vars  
+### ADDED BY ALevine STARTING HERE - Missing assignment of vars
   shunit_expected_=$1
   shunit_actual_=$2
-### ADDED BY ALevine ENDING HERE  
+### ADDED BY ALevine ENDING HERE
 
 ###  _shunit_assertFail "${shunit_message_:+${shunit_message_} }expected not same"  ### MODIFIED BY ALevine - Cleaned up message a bit to make more readable
   _shunit_assertFail "${shunit_message_:+${shunit_message_} }expected ${shunit_expected_} not different than ${shunit_actual_}"
@@ -862,33 +862,33 @@ _shunit_cleanup()
 #    exit ${SHUNIT_ERROR}
 
     #########################
-    ### MODIFIED BY ALevine - Added code to generate a failure, and force output 
-    ### to the xml to work correctly with Jenkins.  Lastly shut down any timeout 
+    ### MODIFIED BY ALevine - Added code to generate a failure, and force output
+    ### to the xml to work correctly with Jenkins.  Lastly shut down any timeout
     ### monitors
-    
+
     ### First Force a failure
     _shunit_assertFail "Unknown failure encountered while running Test Suite [${__shunit_suite_name}]; Script abnomally exited"
-    
-    ### Perform a setup of the __shunit_cases variable due to the error, this 
+
+    ### Perform a setup of the __shunit_cases variable due to the error, this
     ### is normally done at end of _shunit_execSuite(), but abnormal exit prevents
     ### __shunit_cases from being populated properly so we have to do it here.
     ### Once __shunit_cases is properly populated, then we can call _shunit_generateFinalReport().
     _shunit_generateTestCaseReport
-    
-    ### Since Test Script aborted, the output no output was generated; and the 
-    ### files were not populated.  So add some general gunk to give the  
-    ### _shunit_generateFinalReport() to chew on. 
+
+    ### Since Test Script aborted, the output no output was generated; and the
+    ### files were not populated.  So add some general gunk to give the
+    ### _shunit_generateFinalReport() to chew on.
     __shunit_system_out=$(mktemp -u 'shunit-out.XXXX')
     __shunit_system_err=$(mktemp -u 'shunit-err.XXXX')
     echo "Unknown failure encountered while running Test Suite [${__shunit_suite_name}]; Script abnomally exited" >  $__shunit_system_out
     echo "Unknown failure encountered while running Test Suite [${__shunit_suite_name}]; Script abnomally exited" >  $__shunit_system_err
 
-    ### Generate the XML report before we generate the final assert error 
+    ### Generate the XML report before we generate the final assert error
     _shunit_generateFinalReport
-    
+
     ### MODIFIED BY ALevine - Done with code additions
     #########################
-    
+
     _shunit_assertError "Unknown failure encountered while running Test Suite [${__shunit_suite_name}]; Script abnomally exited"
   fi
 
@@ -901,21 +901,21 @@ _shunit_cleanup()
 #   None
 _shunit_execSuite()
 {
-  
+
   # loop over test cases
   for _shunit_case_ in ${__shunit_suite}; do
     __shunit_testSuccess=${SHUNIT_TRUE}
 
     # reset test cases errors buffer
     __shunit_case_errors=''
-    
+
     # reset test cases skips buffer
     __shunit_case_skips=''
 
     # disable skipping
     endSkipping
 
-    # Clear the flag that says that this test should be skipped 
+    # Clear the flag that says that this test should be skipped
     __shunit_this_test_skipped=${SHUNIT_FALSE}
 
     # execute the per-test setup function
@@ -935,36 +935,36 @@ _shunit_execSuite()
         MULT="${MULT}  nr=${SST_MULTI_RANK_COUNT}"
     fi
     echo "${_shunit_case_} $MULT"
-    
+
     ## Execute the Test Case
     eval ${_shunit_case_}
-    
+
     # Check to see if this Test Case internally decided to skip
     if [ ${__shunit_this_test_skipped} -eq ${SHUNIT_TRUE} ] ; then
       _shunit_assertSkip
     fi
-    
+
     # Generate the Test Case report
     _shunit_generateTestCaseReport
-    
+
     # Update the Total Number of tests
     __shunit_testsTotal=`expr ${__shunit_testsFailed} + ${__shunit_testsPassed} + ${__shunit_testsSkipped}`
-    
+
     # Execute the per-test tear-down function
     tearDown
 
-    # Check to see if this Test Case was skipped, if so, stop any additonal Stats processing 
+    # Check to see if this Test Case was skipped, if so, stop any additonal Stats processing
     if [ ${__shunit_this_test_skipped} -eq ${SHUNIT_TRUE} ] ; then
       continue
     fi
-    
+
     # update stats
     if [ ${__shunit_testSuccess} -eq ${SHUNIT_TRUE} ]; then
       __shunit_testsPassed=`expr ${__shunit_testsPassed} + 1`
     else
       __shunit_testsFailed=`expr ${__shunit_testsFailed} + 1`
     fi
-    
+
     # Check for Test Fail limits
     if [ ${__shunit_testsFailed} -ge ${SHUNIT_MAX_FAIL_TESTS} ] ; then
       echo " **************************************" ; echo " "
@@ -973,7 +973,7 @@ _shunit_execSuite()
       __shunit_testsTotal=`expr ${__shunit_testsFailed} + ${__shunit_testsPassed} + ${__shunit_testsSkipped}`
       break;
     fi
-    if [ ${SHUNIT_MAX_TEST_COUNT} -ne 0 -a `expr ${__shunit_testsFailed} + ${__shunit_testsPassed} + ${__shunit_testsSkipped}` -ge ${SHUNIT_MAX_TEST_COUNT} ] 
+    if [ ${SHUNIT_MAX_TEST_COUNT} -ne 0 -a `expr ${__shunit_testsFailed} + ${__shunit_testsPassed} + ${__shunit_testsSkipped}` -ge ${SHUNIT_MAX_TEST_COUNT} ]
     then
       echo "Only ${SHUNIT_MAX_TEST_COUNT} tests requested  \"\$SHUNIT_MAX_TEST_COUNT\""
       __shunit_testsTotal=`expr ${__shunit_testsFailed} + ${__shunit_testsPassed} + ${__shunit_testsSkipped}`
@@ -984,7 +984,7 @@ _shunit_execSuite()
   export __shunit_testsFailed
   # Update the Total Number of tests
   export __shunit_testsTotal=`expr ${__shunit_testsFailed} + ${__shunit_testsPassed} + ${__shunit_testsSkipped}`
-  
+
 #  unset _shunit_test_
   unset _shunit_case_
 }
@@ -1012,19 +1012,19 @@ _shunit_generateTestCaseReport()
       __shunit_cases="${__shunit_cases}
     <testcase name=\"${_shunit_case_}\" classname=\"${__shunit_pkg_name}.${__shunit_suite_name}\" status=\"run\" time=\"${_shunit_case_duration_}\">"
     fi
-    
+
     # Output any Failures (Errors) as sub-elements
     if [ -n "${__shunit_case_errors}" ]
     then
       __shunit_cases="${__shunit_cases}${__shunit_case_errors}"
     fi
-   
+
     # Output any Skips as sub-elements
     if [ -n "${__shunit_case_skips}" ]
     then
       __shunit_cases="${__shunit_cases}${__shunit_case_skips}"
     fi
-    
+
     # Finally close out the test case Element
     __shunit_cases="${__shunit_cases}
     </testcase>
@@ -1052,7 +1052,7 @@ _shunit_generateFinalReport()
 #          && _shunit_ok_=${SHUNIT_FALSE}
 
   if [ -n "${SHUNIT_OUTPUTDIR:-}" ]; then
-###    cat << EOF >> "${SHUNIT_OUTPUTDIR}/TEST-${__shunit_suite_name}.xml"  ### MODIFIED BY ALevine - To overwrite xml not append to it 
+###    cat << EOF >> "${SHUNIT_OUTPUTDIR}/TEST-${__shunit_suite_name}.xml"  ### MODIFIED BY ALevine - To overwrite xml not append to it
     touch ${__shunit_system_err}   ## Get rid of "cat of noexistent file message"
     cat << EOF > "${SHUNIT_OUTPUTDIR}/TEST-${__shunit_suite_name}.xml"
 <?xml version="1.0" encoding="UTF-8"?>
@@ -1068,7 +1068,7 @@ EOF
 
     ### ADDED CODE STARTING HERE - ALevine
     ##  - ADDED CODE TO OUTPUT SOME STATISTIC INFO FOR SST RUNS SINCE WHEN USING
-    ##    NEW SHUNIT2 OPERATION (enabled by setting variable SHUNIT_OUTPUTDIR) 
+    ##    NEW SHUNIT2 OPERATION (enabled by setting variable SHUNIT_OUTPUTDIR)
     ##    WILL PREVENT difftoxml.pl FROM RUNNING AND OUTPUTING THE STATS
     echo "Report from shunit2":
     echo "===================================================================================================="
@@ -1079,7 +1079,7 @@ EOF
     ### ADDED CODE ENDING HERE - ALevine
 
   fi
-  
+
   if [ ${SHUNIT_STDOUT} -eq ${SHUNIT_TRUE} ]; then
     echo
     if [ ${__shunit_testsTotal} -eq 1 ]; then
