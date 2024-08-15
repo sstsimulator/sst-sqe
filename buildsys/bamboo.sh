@@ -2144,24 +2144,33 @@ then
                         fi
 
                         cd $SST_ROOT
-                        if [[ ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS:+isSet} == isSet ]] ; then
-                            echo "**************************************************************************"
-                            echo "***                                                                    "
-                            echo "*** RUNNING NEW TEST FRAMEWORKS ELEMENTS - SUBSET OF TESTS : ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS}"
-                            echo "***                                                                    "
-                            echo "**************************************************************************"
-                            # WE ARE RUNNING THE FRAMEWORKS ELEMENTS SUBSET OF TESTS (Set by wildcard) AFTER DOTESTS() HAVE RUN
-                            $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT -w $SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS
+                        elements_frameworks_retval=0
+                        if [[ "${SST_SELECTED_ELEMENTS_CONFIG}" != "${NOBUILD}" ]]; then
+                            if [[ ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS:+isSet} == isSet ]] ; then
+                                echo "**************************************************************************"
+                                echo "***                                                                    "
+                                echo "*** RUNNING NEW TEST FRAMEWORKS ELEMENTS - SUBSET OF TESTS : ${SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS}"
+                                echo "***                                                                    "
+                                echo "**************************************************************************"
+                                # WE ARE RUNNING THE FRAMEWORKS ELEMENTS SUBSET OF TESTS (Set by wildcard) AFTER DOTESTS() HAVE RUN
+                                $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT -w $SST_TEST_FRAMEWORKS_ELEMENTS_WILDCARD_TESTS
+                            else
+                                echo "**************************************************************************"
+                                echo "***                                                                    "
+                                echo "*** RUNNING NEW TEST FRAMEWORKS ELEMENTS - FULL SET OF TESTS"
+                                echo "***                                                                    "
+                                echo "**************************************************************************"
+                                # WE ARE RUNNING THE FRAMEWORKS ELEMENTS FULL SET OF TESTS AFTER DOTESTS() HAVE RUN
+                                $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -k -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
+                            fi
+                            elements_frameworks_retval=$?
                         else
                             echo "**************************************************************************"
                             echo "***                                                                    "
-                            echo "*** RUNNING NEW TEST FRAMEWORKS ELEMENTS - FULL SET OF TESTS"
+                            echo "*** RUNNING NEW TEST FRAMEWORKS - SKIPPING ELEMENTS, NOT BUILT"
                             echo "***                                                                    "
                             echo "**************************************************************************"
-                            # WE ARE RUNNING THE FRAMEWORKS ELEMENTS FULL SET OF TESTS AFTER DOTESTS() HAVE RUN
-                            $SST_PYTHON_APP_EXE $SST_TEST_FRAMEWORKS_ELEMENTS_APP_EXE $SST_TEST_FRAMEWORKS_PARAMS -k -z -r $SST_MULTI_RANK_COUNT -t $SST_MULTI_THREAD_COUNT
                         fi
-                        elements_frameworks_retval=$?
                         echo "BAMBOO: SST Frameworks Elements Test retval = $elements_frameworks_retval"
 
                         # Check the retval result from the bamboo dotests then check the frameworks_retval results with the frameworks run
