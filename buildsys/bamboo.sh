@@ -360,6 +360,9 @@ setConvenienceVars() {
     echo "           junobaseoptions = $junobaseoptions"
 }
 
+# Singleton used for setting config line of a codebase when it should not be built.
+NOBUILD="NOBUILD"
+
 #-------------------------------------------------------------------------
 # Function: getconfig
 # Description:
@@ -421,7 +424,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
+            macroConfigStr="${NOBUILD}"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
@@ -437,10 +440,10 @@ getconfig() {
             depsStr="-r none" # Dependencies only needed for elements
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="NOBUILD"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="NOBUILD"
-            junoConfigStr="NOBUILD"
+            elementsConfigStr="${NOBUILD}"
+            macroConfigStr="${NOBUILD}"
+            externalelementConfigStr="${NOBUILD}"
+            junoConfigStr="${NOBUILD}"
             ;;
         sstmainline_config_linux_with_cuda)
             #-----------------------------------------------------------------
@@ -456,7 +459,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools"
             elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
+            macroConfigStr="${NOBUILD}"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             # Must Setup the GPGPUSIM Environment
@@ -485,9 +488,9 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools --disable-mpi"
             elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="NOBUILD"
-            junoConfigStr="NOBUILD"
+            macroConfigStr="${NOBUILD}"
+            externalelementConfigStr="${NOBUILD}"
+            junoConfigStr="${NOBUILD}"
             # Must Setup the GPGPUSIM Environment
             echo "SETUP THE GPGPUSIM ENVIRONMENT"
             echo "==== ENV BEFORE GPGPUSIM ENV SETUP ==="
@@ -514,7 +517,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
             elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
+            macroConfigStr="${NOBUILD}"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
@@ -528,7 +531,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions"
-            macroConfigStr="NOBUILD"
+            macroConfigStr="${NOBUILD}"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
@@ -544,7 +547,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-hbmdramsim=$SST_DEPS_INSTALL_HBM_DRAMSIM2 --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3  --with-dramsim=$SST_DEPS_INSTALL_DRAMSIM --with-nvdimmsim=$SST_DEPS_INSTALL_NVDIMMSIM --with-hybridsim=$SST_DEPS_INSTALL_HYBRIDSIM $elementsMiscEnv"
-            macroConfigStr="NOBUILD"
+            macroConfigStr="${NOBUILD}"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
@@ -560,10 +563,10 @@ getconfig() {
             depsStr="-r none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
-            elementsConfigStr="NOBUILD"
+            elementsConfigStr="${NOBUILD}"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_HOME --disable-regex --with-sst-core=$SST_CORE_INSTALL"
-            externalelementConfigStr="NOBUILD"
-            junoConfigStr="NOBUILD"
+            externalelementConfigStr="${NOBUILD}"
+            junoConfigStr="${NOBUILD}"
             ;;
 
         sst-macro_nosstcore_mac)
@@ -576,11 +579,11 @@ getconfig() {
             miscEnv="${cc_environment} ${mpi_environment}"
             depsStr="-r none"
             setConvenienceVars "$depsStr"
-            coreConfigStr="NOBUILD"
-            elementsConfigStr="NOBUILD"
+            coreConfigStr="${NOBUILD}"
+            elementsConfigStr="${NOBUILD}"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which clang` CXX=`which clang++` --with-pth=$PTH_HOME --disable-regex"
-            externalelementConfigStr="NOBUILD"
-            junoConfigStr="NOBUILD"
+            externalelementConfigStr="${NOBUILD}"
+            junoConfigStr="${NOBUILD}"
             ;;
 
         sst-macro_withsstcore_linux)
@@ -594,10 +597,10 @@ getconfig() {
             depsStr="-r none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
-            elementsConfigStr="NOBUILD"
+            elementsConfigStr="${NOBUILD}"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
-            externalelementConfigStr="NOBUILD"
-            junoConfigStr="NOBUILD"
+            externalelementConfigStr="${NOBUILD}"
+            junoConfigStr="${NOBUILD}"
             ;;
 
         sst-macro_nosstcore_linux)
@@ -610,11 +613,11 @@ getconfig() {
             miscEnv="${cc_environment} ${mpi_environment}"
             depsStr="-r none"
             setConvenienceVars "$depsStr"
-            coreConfigStr="NOBUILD"
-            elementsConfigStr="NOBUILD"
+            coreConfigStr="${NOBUILD}"
+            elementsConfigStr="${NOBUILD}"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers"
-            externalelementConfigStr="NOBUILD"
-            junoConfigStr="NOBUILD"
+            externalelementConfigStr="${NOBUILD}"
+            junoConfigStr="${NOBUILD}"
             ;;
 
         sst_Macro_make_dist)
@@ -629,10 +632,10 @@ getconfig() {
             depsStr="-r none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
-            elementsConfigStr="NOBUILD"
+            elementsConfigStr="${NOBUILD}"
             macroConfigStr="--prefix=$SST_MACRO_INSTALL CC=`which gcc` CXX=`which g++` --disable-regex --disable-unordered-containers --with-sst-core=$SST_CORE_INSTALL"
-            externalelementConfigStr="NOBUILD"
-            junoConfigStr="NOBUILD"
+            externalelementConfigStr="${NOBUILD}"
+            junoConfigStr="${NOBUILD}"
             ;;
 
         sstmainline_config_make_dist_test)
@@ -648,7 +651,7 @@ getconfig() {
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
             elementsConfigStr="$elementsbaseoptions"
-            macroConfigStr="NOBUILD"
+            macroConfigStr="${NOBUILD}"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
             ;;
@@ -665,10 +668,10 @@ getconfig() {
             depsStr="-r none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions"
-            elementsConfigStr="NOBUILD"
-            macroConfigStr="NOBUILD"
-            externalelementConfigStr="NOBUILD"
-            junoConfigStr="NOBUILD"
+            elementsConfigStr="${NOBUILD}"
+            macroConfigStr="${NOBUILD}"
+            externalelementConfigStr="${NOBUILD}"
+            junoConfigStr="${NOBUILD}"
             ;;
 
         *)
@@ -1123,7 +1126,7 @@ config_and_build() {
     local source_dir="$4"
     local conf_script_name="$5"
 
-    if [[ "${selected_config}" == "NOBUILD" ]]
+    if [[ "${selected_config}" == "${NOBUILD}" ]]
     then
         echo "============== ${repo_name} - NO BUILD REQUIRED ==============="
     else
@@ -1355,7 +1358,7 @@ config_and_build_simple() {
     local repo_name="$1"
     local selected_config="$2"
 
-    if [[ "${selected_config}" == "NOBUILD" ]]
+    if [[ "${selected_config}" == "${NOBUILD}" ]]
     then
         echo "============== ${repo_name} - NO BUILD REQUIRED ==============="
     else
