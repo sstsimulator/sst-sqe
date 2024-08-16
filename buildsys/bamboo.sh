@@ -1764,6 +1764,10 @@ export SST_BUILD_TYPE=""
 # - If false, use each given branch as-is.
 export SST_TEST_MERGE=${SST_TEST_MERGE:-true}
 
+# Number of threads and (MPI) ranks to run tests with (not compile with)
+export SST_MULTI_THREAD_COUNT=${SST_MULTI_THREAD_COUNT:-1}
+export SST_MULTI_RANK_COUNT=${SST_MULTI_RANK_COUNT:-1}
+
 cloneOtherRepos
 
 # Load test definitions
