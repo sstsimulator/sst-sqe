@@ -873,7 +873,7 @@ darwinSetMPI() {
 
     else
         echo "ERROR: unable to locate /etc/profile.modules - cannot load modules"
-        exit
+        exit 1
     fi
 
     echo "bamboo.sh: MacOS build."
