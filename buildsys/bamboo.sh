@@ -703,7 +703,7 @@ set_up_environment_modules() {
 
     echo "Attempt to initialize the modules utility"
 
-    locations=(/etc/profile.modules /etc/profile.d/modules.sh /opt/homebrew/opt/lmod/init/profile /usr/share/lmod/lmod/init/bash)
+    locations=(/etc/profile.modules /etc/profile.d/modules.sh /opt/homebrew/opt/lmod/init/profile /usr/share/lmod/lmod/init/profile)
 
     for location in "${locations[@]}"; do
         if [ -r "${location}" ]; then
