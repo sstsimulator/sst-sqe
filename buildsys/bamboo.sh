@@ -460,7 +460,7 @@ getconfig() {
             elementsMiscEnv="${cc_environment}"
             depsStr="-r none" # Dependencies only needed for elements
             setConvenienceVars "$depsStr"
-            coreConfigStr="$corebaseoptions $coreMiscEnv --without-mpi"
+            coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
             elementsConfigStr="${NOBUILD}"
             macroConfigStr="${NOBUILD}"
             externalelementConfigStr="${NOBUILD}"
