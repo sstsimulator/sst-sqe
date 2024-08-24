@@ -83,11 +83,11 @@ fi
 
     # Be nice, post SIGTERM first.
     # The 'exit 0' below will be executed if any preceeding command fails.
-    echo 
-    echo 
+    echo
+    echo
     echo "ERROR: Timeout after $timeout seconds waiting for command \"$@\" ::: Command Operation Terminated..."
-    echo 
-    echo 
+    echo
+    echo
     kill -s SIGTERM $$ && kill -0 $$ || exit 0
     sleep $delay
     kill -s SIGKILL $$

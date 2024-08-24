@@ -1,6 +1,4 @@
-# !/bin/bash
-# testSuite_gpgpu.sh
-
+#!/bin/bash
 
 TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 # Load test definitions
@@ -29,10 +27,6 @@ L_TESTFILE=()  # Empty list, used to hold test file names
         echo "        NOT  FOUND"
         echo " Environment Variable INTEL_PIN_DIRECTORY must be defined"
         preFail "Ariel tests requires PIN DIRECTORY" "skip"
-    fi
-    if [ "${SST_TEST_HOST_OS_DISTRIB_UBUNTU}" == "1" ] ; then
-        echo " Temporary patch"
-        echo "Ariel on Ubuntu not working on Sandy bridge and Ivy bridge tests"
     fi
 
     mkdir $SSTTESTTEMPFILES/$$gpu_run

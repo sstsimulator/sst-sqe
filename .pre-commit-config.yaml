@@ -1,0 +1,62 @@
+---
+fail_fast: false
+repos:
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+      - id: check-useless-excludes
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: "v4.6.0"
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending
+        args: [--fix, "lf"]
+      - id: no-commit-to-branch
+        args: [--branch, main, --branch, master, --branch, devel]
+      - id: trailing-whitespace
+        exclude: |
+          (?x)(
+              \.diff$|
+              \.patch$
+          )
+  - repo: https://github.com/adrienverge/yamllint
+    rev: "v1.35.1"
+    hooks:
+      - id: yamllint
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        exclude: |
+          (?x)(
+              buildsys/bamboo.sh|
+              buildsys/deps/bin/sstDep_dramsim3_stabledevel.sh|
+              buildsys/deps/bin/sstDep_dramsim_masterlatest.sh|
+              buildsys/deps/bin/sstDep_dramsim_r4b00b22.sh|
+              buildsys/deps/bin/sstDep_dramsim_stabledevel.sh|
+              buildsys/deps/bin/sstDep_dramsim_static.sh|
+              buildsys/deps/bin/sstDep_dramsim_v2.2.1.sh|
+              buildsys/deps/bin/sstDep_dramsim_v2.2.2.sh|
+              buildsys/deps/bin/sstDep_dramsim_v2.2.sh|
+              buildsys/deps/bin/sstDep_goblin_hmcsim_stabledevel.sh|
+              buildsys/deps/bin/sstDep_GPGPUSim.sh|
+              buildsys/deps/bin/sstDep_hbm_dramsim2_stabledevel.sh|
+              buildsys/deps/bin/sstDep_hybridsim.sh|
+              buildsys/deps/bin/sstDep_nvdimmsim.sh|
+              buildsys/deps/bin/sstDep_ramulator_stabledevel.sh|
+              test/utilities/shunit2/|
+              test/include/testSubroutines.sh|
+              test/testSuites/testSuite_gpgpu.sh|
+              test/testSuites/testSuite_macro.sh|
+              test/utilities/moduleex.sh|
+              test/utilities/TimeoutEx.sh
+          )
+  - repo: https://github.com/Mateusz-Grzelinski/actionlint-py
+    rev: "v1.7.1.15"
+    hooks:
+      - id: actionlint

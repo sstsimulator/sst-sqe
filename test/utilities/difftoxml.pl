@@ -82,7 +82,7 @@ print XMLOUT " tests=\"$ntest\"";
 print XMLOUT " failures=\"$nfail\"";
 print XMLOUT ">\n";
 
-# For each result 
+# For each result
 for $result (@results) {
     $outfile = "$outfiledir/$result.$outsuffix";
     $chkfile = "$chkfiledir/$result.$chksuffix";
