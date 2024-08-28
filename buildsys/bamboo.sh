@@ -701,17 +701,17 @@ set_up_environment_modules() {
     # For some reason, .bashrc is not being run prior to
     # this script. Kludge initialization of modules.
 
-    echo "Attempt to initialize the modules utility.  Look for modules init file in 1 of 2 places"
+    echo "Attempt to initialize the modules utility"
 
-    echo "Location 1: ls -l /etc/profile.modules"
-    echo "Location 2: ls -l /etc/profile.d/modules.sh"
-    if [ -r /etc/profile.modules ] ; then
-        source /etc/profile.modules
-        echo "bamboo.sh: loaded /etc/profile.modules"
-    elif [ -r /etc/profile.d/modules.sh ] ; then
-        source /etc/profile.d/modules.sh
-        echo "bamboo.sh: loaded /etc/profile.d/modules"
-    fi
+    locations=(/etc/profile.modules /etc/profile.d/modules.sh /opt/homebrew/opt/lmod/init/profile /usr/share/lmod/lmod/init/bash)
+
+    for location in "${locations[@]}"; do
+        if [ -r "${location}" ]; then
+            # shellcheck disable=SC1090
+            source "${location}"
+            echo "bamboo.sh: loaded ${location}"
+        fi
+    done
 
     echo "Testing modules utility via ModuleEx..."
     echo "ModuleEx avail"
