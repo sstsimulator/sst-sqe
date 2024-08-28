@@ -697,19 +697,7 @@ getconfig() {
    fi
 }
 
-#-------------------------------------------------------------------------
-# Function: linuxSetMPI
-# Description:
-#   Purpose: Performs selection and loading of Bost and MPI modules
-#            for Linux
-#   Input:
-#      $1 - Bamboo Project
-#      $2 - mpi request
-#      $3   compiler (optional)
-#   Output:
-#   Return value:
-linuxSetMPI() {
-
+set_up_environment_modules() {
     # For some reason, .bashrc is not being run prior to
     # this script. Kludge initialization of modules.
 
@@ -725,13 +713,29 @@ linuxSetMPI() {
         echo "bamboo.sh: loaded /etc/profile.d/modules"
     fi
 
-   echo "Testing modules utility via ModuleEx..."
-   echo "ModuleEx avail"
-   ModuleEx avail
-   if [ $? -ne 0 ] ; then
-       echo " ModuleEx Failed"
-       exit 1
-   fi
+    echo "Testing modules utility via ModuleEx..."
+    echo "ModuleEx avail"
+    ModuleEx avail
+    if [ $? -ne 0 ] ; then
+        echo " ModuleEx Failed"
+        exit 1
+    fi
+}
+
+#-------------------------------------------------------------------------
+# Function: linuxSetMPI
+# Description:
+#   Purpose: Performs selection and loading of Bost and MPI modules
+#            for Linux
+#   Input:
+#      $1 - Bamboo Project
+#      $2 - mpi request
+#      $3   compiler (optional)
+#   Output:
+#   Return value:
+linuxSetMPI() {
+
+    set_up_environment_modules
 
    # build MPI selector
    if [[ "$2" =~ openmpi.* ]]
@@ -853,7 +857,6 @@ darwinSetMPI() {
     macosVersion=`echo ${macosVersionFull} | awk -F. '{print $1 "." $2 }'`
     echo "  ******************* macosVersion= $macosVersion "
 
-
     # macports or hybrid clang/macports
     PATH="/opt/local/bin:/usr/local/bin:$PATH"
     export PATH
@@ -862,19 +865,11 @@ darwinSetMPI() {
     export ACLOCAL_FLAGS="-I/opt/local/share/aclocal $ACLOCAL_FLAGS"
     echo $ACLOCAL_FLAGS
 
-    # Initialize modules for Jenkins (taken from $HOME/.bashrc on Mac)
-    if [ -f /etc/profile.modules ]
-    then
-        source /etc/profile.modules
-        echo "bamboo.sh: loaded /etc/profile.modules."
-        # put any module loads here
-        echo "bamboo.sh: Loading Modules for MacOSX"
-        ldModules_MacOS_Clang $compiler $2  # any Xcode
+    set_up_environment_modules
 
-    else
-        echo "ERROR: unable to locate /etc/profile.modules - cannot load modules"
-        exit 1
-    fi
+    # Initialize modules for Jenkins (taken from $HOME/.bashrc on Mac)
+    echo "bamboo.sh: Loading Modules for MacOSX"
+    ldModules_MacOS_Clang $compiler $2  # any Xcode
 
     echo "bamboo.sh: MacOS build."
     echo "bamboo.sh:   MPI = $2"
