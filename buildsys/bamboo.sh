@@ -675,9 +675,6 @@ getconfig() {
             ;;
 
         *)
-            #-----------------------------------------------------------------
-            #  Unrecognized Scenario,  This is an error in the bamboo code
-            #-----------------------------------------------------------------
             echo ' ' ; echo "Unrecognized Scenario,  This is an error in the bamboo code"
             echo " UNRECOGNIZED:   ${1}"
             exit 1
@@ -863,7 +860,7 @@ darwinSetMPI() {
 
     # Point to aclocal per instructions from sourceforge on MacOSX installation
     export ACLOCAL_FLAGS="-I/opt/local/share/aclocal $ACLOCAL_FLAGS"
-    echo $ACLOCAL_FLAGS
+    echo "ACLOCAL_FLAGS=${ACLOCAL_FLAGS}"
 
     set_up_environment_modules
 
