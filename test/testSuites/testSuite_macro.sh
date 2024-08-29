@@ -86,8 +86,7 @@ test_macro_make_check() {
     then
         # Run SUT
 #        (make ${sutArgs} > $outFile)
-        # TODO parameterize number of build threads
-        (make -j4 ${sutArgs})
+        (make ${sutArgs})
         RetVal=$?
         local TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
         if [ -e $TIME_FLAG ] ; then
@@ -149,8 +148,7 @@ test_macro_make_installcheck() {
     then
         # Run SUT
 #        (make ${sutArgs} > $outFile)
-        # TODO parameterize number of build threads
-        (make -j4 ${sutArgs})
+        (make ${sutArgs})
         RetVal=$?
         local TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
         if [ -e $TIME_FLAG ] ; then
