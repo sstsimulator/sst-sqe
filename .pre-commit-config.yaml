@@ -16,8 +16,9 @@ repos:
       - id: fix-byte-order-marker
       - id: mixed-line-ending
         args: [--fix, "lf"]
-      - id: no-commit-to-branch
-        args: [--branch, main, --branch, master, --branch, devel]
+      # TODO disable until we can skip on merge commits to main/master/devel
+      # - id: no-commit-to-branch
+      #   args: [--branch, main, --branch, master, --branch, devel]
       - id: trailing-whitespace
         exclude: |
           (?x)(

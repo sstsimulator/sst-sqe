@@ -445,6 +445,28 @@ getconfig() {
             externalelementConfigStr="${NOBUILD}"
             junoConfigStr="${NOBUILD}"
             ;;
+
+        sstmainline_coreonly_config_no_mpi)
+            #-----------------------------------------------------------------
+            # sstmainline_coreonly_config
+            #     This option used for configuring SST with supported stabledevel deps
+            #-----------------------------------------------------------------
+            if [[ ${MPIHOME:+isSet} == isSet ]] ; then
+                echo ' ' ; echo " Test is flawed!  MPI module is loaded!" ; echo ' '
+                exit 1
+            fi
+            export | egrep SST_DEPS_
+            coreMiscEnv="${cc_environment}"
+            elementsMiscEnv="${cc_environment}"
+            depsStr="-r none" # Dependencies only needed for elements
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
+            elementsConfigStr="${NOBUILD}"
+            macroConfigStr="${NOBUILD}"
+            externalelementConfigStr="${NOBUILD}"
+            junoConfigStr="${NOBUILD}"
+            ;;
+
         sstmainline_config_linux_with_cuda)
             #-----------------------------------------------------------------
             # sstmainline_config_linux_with_cuda
@@ -675,9 +697,6 @@ getconfig() {
             ;;
 
         *)
-            #-----------------------------------------------------------------
-            #  Unrecognized Scenario,  This is an error in the bamboo code
-            #-----------------------------------------------------------------
             echo ' ' ; echo "Unrecognized Scenario,  This is an error in the bamboo code"
             echo " UNRECOGNIZED:   ${1}"
             exit 1
@@ -697,6 +716,31 @@ getconfig() {
    fi
 }
 
+set_up_environment_modules() {
+    # For some reason, .bashrc is not being run prior to
+    # this script. Kludge initialization of modules.
+
+    echo "Attempt to initialize the modules utility"
+
+    locations=(/etc/profile.modules /etc/profile.d/modules.sh /opt/homebrew/opt/lmod/init/profile /usr/share/lmod/lmod/init/profile)
+
+    for location in "${locations[@]}"; do
+        if [ -r "${location}" ]; then
+            # shellcheck disable=SC1090
+            source "${location}"
+            echo "bamboo.sh: loaded ${location}"
+        fi
+    done
+
+    echo "Testing modules utility via ModuleEx..."
+    echo "ModuleEx avail"
+    ModuleEx avail
+    if [ $? -ne 0 ] ; then
+        echo " ModuleEx Failed"
+        exit 1
+    fi
+}
+
 #-------------------------------------------------------------------------
 # Function: linuxSetMPI
 # Description:
@@ -710,28 +754,7 @@ getconfig() {
 #   Return value:
 linuxSetMPI() {
 
-    # For some reason, .bashrc is not being run prior to
-    # this script. Kludge initialization of modules.
-
-    echo "Attempt to initialize the modules utility.  Look for modules init file in 1 of 2 places"
-
-    echo "Location 1: ls -l /etc/profile.modules"
-    echo "Location 2: ls -l /etc/profile.d/modules.sh"
-    if [ -r /etc/profile.modules ] ; then
-        source /etc/profile.modules
-        echo "bamboo.sh: loaded /etc/profile.modules"
-    elif [ -r /etc/profile.d/modules.sh ] ; then
-        source /etc/profile.d/modules.sh
-        echo "bamboo.sh: loaded /etc/profile.d/modules"
-    fi
-
-   echo "Testing modules utility via ModuleEx..."
-   echo "ModuleEx avail"
-   ModuleEx avail
-   if [ $? -ne 0 ] ; then
-       echo " ModuleEx Failed"
-       exit 1
-   fi
+    set_up_environment_modules
 
    # build MPI selector
    if [[ "$2" =~ openmpi.* ]]
@@ -754,10 +777,7 @@ linuxSetMPI() {
        elif [[ "$3" =~ intel.* ]]
        then
            ModuleEx load intel/${4}
-           if [[ "$3" == *intel-15* ]] ; then
-               ModuleEx load gcc/gcc-4.8.1
-           fi
-
+           echo "LOADED intel/${4} compiler"
        fi
    fi
 
@@ -853,28 +873,19 @@ darwinSetMPI() {
     macosVersion=`echo ${macosVersionFull} | awk -F. '{print $1 "." $2 }'`
     echo "  ******************* macosVersion= $macosVersion "
 
-
     # macports or hybrid clang/macports
     PATH="/opt/local/bin:/usr/local/bin:$PATH"
     export PATH
 
     # Point to aclocal per instructions from sourceforge on MacOSX installation
     export ACLOCAL_FLAGS="-I/opt/local/share/aclocal $ACLOCAL_FLAGS"
-    echo $ACLOCAL_FLAGS
+    echo "ACLOCAL_FLAGS=${ACLOCAL_FLAGS}"
+
+    set_up_environment_modules
 
     # Initialize modules for Jenkins (taken from $HOME/.bashrc on Mac)
-    if [ -f /etc/profile.modules ]
-    then
-        source /etc/profile.modules
-        echo "bamboo.sh: loaded /etc/profile.modules."
-        # put any module loads here
-        echo "bamboo.sh: Loading Modules for MacOSX"
-        ldModules_MacOS_Clang $compiler $2  # any Xcode
-
-    else
-        echo "ERROR: unable to locate /etc/profile.modules - cannot load modules"
-        exit
-    fi
+    echo "bamboo.sh: Loading Modules for MacOSX"
+    ldModules_MacOS_Clang $compiler $2  # any Xcode
 
     echo "bamboo.sh: MacOS build."
     echo "bamboo.sh:   MPI = $2"
@@ -1772,6 +1783,10 @@ export SST_BUILD_TYPE=""
 # - If false, use each given branch as-is.
 export SST_TEST_MERGE=${SST_TEST_MERGE:-true}
 
+# Number of threads and (MPI) ranks to run tests with (not compile with)
+export SST_MULTI_THREAD_COUNT=${SST_MULTI_THREAD_COUNT:-1}
+export SST_MULTI_RANK_COUNT=${SST_MULTI_RANK_COUNT:-1}
+
 cloneOtherRepos
 
 # Load test definitions
@@ -1844,7 +1859,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case ${build_type} in
-        sstmainline_config|sstmainline_coreonly_config|sstmainline_config_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|documentation|sstmainline_config_all|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        sstmainline_config|sstmainline_coreonly_config|sstmainline_coreonly_config_no_mpi|sstmainline_config_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|documentation|sstmainline_config_all|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters in case they are needed later
             SST_DIST_MPI=${mpi_type}
             _UNUSED="none"

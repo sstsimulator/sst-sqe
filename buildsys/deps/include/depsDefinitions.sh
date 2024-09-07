@@ -64,6 +64,10 @@ export SST_DEPS_SRC=$SST_BASE/sstDeps/src
 # be tar.gz files, zipfiles, or other archive formats. This can be
 # thought of as the "pre-staging" area for SST dependencies.
 export SST_DEPS_SRC_PRISTINE=${SST_DEPS_SRC}/pristine
+if [[ ! -d "${SST_DEPS_SRC_PRISTINE}" ]]; then
+    echo "SST_DEPS_SRC_PRISTINE doesn't exist: ${SST_DEPS_SRC_PRISTINE}"
+    exit 1
+fi
 
 # Location where pristine source files are unarchived and patched as a
 # precursor to build and installation. This can be thought of as the
