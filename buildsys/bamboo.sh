@@ -741,54 +741,71 @@ set_up_environment_modules() {
     fi
 }
 
+# Take the version from the string passed at the top level to bamboo.sh.
+# Examples are
+#   clang-13.0.1
+#   gcc-4.8.5
+extract_compiler_version() {
+    local regex='[[:alpha:]]+\-(.*)'
+    [[ $1 =~ ${regex} ]]
+    echo "${BASH_REMATCH[1]}"
+}
+
 #-------------------------------------------------------------------------
 # Function: linuxSetMPI
 # Description:
 #   Purpose: Performs selection and loading of Bost and MPI modules
 #            for Linux
 #   Input:
-#      $1 - Bamboo Project
-#      $2 - mpi request
-#      $3   compiler (optional)
+#      $1 - mpi request
+#      $2   compiler (optional)
 #   Output:
 #   Return value:
 linuxSetMPI() {
+    local mpi_request="${1}"
+    local compiler="${2}"
+
+    local compiler_version
+    compiler_version="$(extract_compiler_version ${compiler})"
 
     set_up_environment_modules
 
    # build MPI selector
-   if [[ "$2" =~ openmpi.* ]]
-   then
-       mpiStr="ompi-"$(expr "$2" : '.*openmpi-\([0-9]\(\.[0-9][0-9]*\)*\)')
+   if [[ "${mpi_request}" =~ openmpi.* ]]; then
+       mpiStr="ompi-"$(expr "${mpi_request}" : '.*openmpi-\([0-9]\(\.[0-9][0-9]*\)*\)')
    else
-       mpiStr=${2}
+       mpiStr="${mpi_request}"
    fi
 
-   if [[ "${compiler}" == "default" ]]
-   then
-       desiredMPI="${2}"
+   if [[ "${compiler}" == "default" ]]; then
+       desiredMPI="${mpi_request}"
    else
-       desiredMPI="${2}_${4}"
+       desiredMPI="${mpi_request}_${compiler}"
        # load non-default compiler
-       if   [[ "$3" =~ gcc.* ]]
-       then
-           ModuleEx load gcc/${4}
-           echo "LOADED gcc/${4} compiler"
-       elif [[ "$3" =~ intel.* ]]
-       then
-           ModuleEx load intel/${4}
-           echo "LOADED intel/${4} compiler"
+       if [[ "${compiler}" =~ gcc.* ]]; then
+           ModuleEx load "gcc/${compiler_version}"
+           echo "LOADED gcc/${compiler_version} compiler"
+       elif [[ "${compiler}" =~ clang.* ]]; then
+           ModuleEx load "clang/${compiler_version}"
+           CC="$(command -v clang)"
+           export CC
+           CXX="$(command -v clang++)"
+           export CXX
+           echo "LOADED clang/${compiler_version} compiler"
+       elif [[ "${compiler}" =~ intel.* ]]; then
+           ModuleEx load "intel/${compiler_version}"
        fi
    fi
 
-   echo "CHECK:  \$2: ${2}"
-   echo "CHECK:  \$3: ${3}"
+   echo "CHECK:  \$mpi_request: ${mpi_request}"
+   echo "CHECK:  \$compiler: ${compiler}"
+   echo "CHECK:  \$compiler_version: ${compiler_version}"
    echo "CHECK:  \$desiredMPI: ${desiredMPI}"
    gcc --version 2>&1 | grep ^g
 
    # load MPI
    ModuleEx unload mpi # unload any default to avoid conflict error
-   case $2 in
+   case ${mpi_request} in
        none)
            echo "MPI requested as \"none\".    No MPI loaded"
            ;;
@@ -817,7 +834,9 @@ linuxSetMPI() {
 #                 Also need $2 passed along
 
 ldModules_MacOS_Clang() {
-    local ClangVersion=$1            #   example "clang-700.0.72" $2
+    local ClangVersion=$1            #   example "clang-700.0.72"
+    local mpi_type="${2}"
+
     ModuleEx avail
     # Use MPI built with CLANG from Xcode
     ModuleEx unload mpi
@@ -829,19 +848,19 @@ ldModules_MacOS_Clang() {
 
     # load MPI
     echo " ****** Loading MPI ********"
-    echo "Request (\$2) is ${2}"
-    case $2 in
+    echo "Request (\$mpi_type) is ${mpi_type}"
+    case $mpi_type in
         ompi_default)
             echo "OpenMPI 4.0.5 selected"
-            ModuleEx add mpi/openmpi-4.0.5_$ClangVersion
+            ModuleEx add "mpi/openmpi-4.0.5_${ClangVersion}"
             ;;
         none)
             echo  "No MPI loaded as requested"
             ;;
         *)
             echo "User Defined MPI request"
-            echo "MPI option, loading users mpi/$2"
-            ModuleEx load mpi/$2_$ClangVersion 2>catch.err
+            echo "MPI option, loading users mpi/${mpi_type}"
+            ModuleEx load "mpi/${mpi_type}_${ClangVersion}" 2>catch.err
             if [ -s catch.err ]
             then
                 cat catch.err
@@ -866,6 +885,9 @@ ldModules_MacOS_Clang() {
 #   Output:
 #   Return value:
 darwinSetMPI() {
+    local mpi_type="${1}"
+    local compiler="${2}"
+
     # Obtain Mac OS version (works only on MacOS!!!)
     macosVersionFull=`sw_vers -productVersion`
     echo "  ******************* macosVersionFull= $macosVersionFull "
@@ -885,10 +907,10 @@ darwinSetMPI() {
 
     # Initialize modules for Jenkins (taken from $HOME/.bashrc on Mac)
     echo "bamboo.sh: Loading Modules for MacOSX"
-    ldModules_MacOS_Clang $compiler $2  # any Xcode
+    ldModules_MacOS_Clang "${compiler}" "${mpi_type}"  # any Xcode
 
     echo "bamboo.sh: MacOS build."
-    echo "bamboo.sh:   MPI = $2"
+    echo "bamboo.sh:   MPI = ${mpi_type}"
 }
 
 #-------------------------------------------------------------------------
@@ -1870,9 +1892,9 @@ else
             # Configure MPI and Compiler (Linux only)
             if [ $kernel != "Darwin" ]
             then
-                linuxSetMPI ${build_type} ${mpi_type} ${compiler_type}
+                linuxSetMPI "${mpi_type}" "${compiler_type}"
             else  # kernel is "Darwin", so this is MacOS
-                darwinSetMPI ${build_type} ${mpi_type} ${compiler_type}
+                darwinSetMPI "${mpi_type}" "${compiler_type}"
             fi
 
             # Load Cuda Module
