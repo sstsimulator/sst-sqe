@@ -94,6 +94,8 @@ jobs:
           export MAKEFLAGS
           if [[ "$(uname)" == "Darwin" ]]; then
               export PMIX_MCA_gds=hash
+              export TMPDIR="${GITHUB_WORKSPACE}/tmpdir"
+              mkdir -p "${TMPDIR}"
           fi
           export SST_DEPS_USER_MODE=1
           mkdir -p "${SST_DEPS_USER_DIR}/devel/trunk"
