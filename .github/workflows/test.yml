@@ -30,8 +30,6 @@ jobs:
           - os: macos-14
             build-type: sstmainline_config
           - os: macos-14
-            build-type: sstmainline_coreonly_config
-          - os: macos-14
             build-type: sstmainline_config_make_dist_test
           - os: macos-14
             build-type: sstmainline_config_core_make_dist_test
@@ -48,6 +46,7 @@ jobs:
               libtool \
               lmod \
               ncurses \
+              open-mpi \
               pygments
           python -m pip install blessings
           # echo "source /opt/homebrew/opt/lmod/init/profile" >> ~/.bashrc
@@ -95,6 +94,8 @@ jobs:
           export MAKEFLAGS
           if [[ "$(uname)" == "Darwin" ]]; then
               export PMIX_MCA_gds=hash
+              export TMPDIR="${GITHUB_WORKSPACE}/tmpdir"
+              mkdir -p "${TMPDIR}"
           fi
           export SST_DEPS_USER_MODE=1
           mkdir -p "${SST_DEPS_USER_DIR}/devel/trunk"
