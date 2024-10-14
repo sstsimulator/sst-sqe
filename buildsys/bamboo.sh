@@ -120,35 +120,35 @@ cloneOtherRepos() {
             "${SST_COREREPO}" \
             SST_CORE_HASH \
             "${SST_COREBRANCH}" \
-            devel \
+            v14.1.0_beta \
             sst-core \
             90
         cloneRepo \
             "${SST_ELEMENTSREPO}" \
             SST_ELEMENTS_HASH \
             "${SST_ELEMENTSBRANCH}" \
-            devel \
+            v14.1.0_beta \
             sst-elements \
             250
         cloneRepo \
             "${SST_MACROREPO}" \
             SST_MACRO_HASH \
             "${SST_MACROBRANCH}" \
-            devel \
+            v14.1.0_beta \
             sst-macro \
             90
         cloneRepo \
             "${SST_EXTERNALELEMENTREPO}" \
             SST_EXTERNALELEMENT_HASH \
             "${SST_EXTERNALELEMENTBRANCH}" \
-            master \
+            v14.1.0_beta \
             sst-external-element \
             90
         cloneRepo \
             "${SST_JUNOREPO}" \
             SST_JUNO_HASH \
             "${SST_JUNOBRANCH}" \
-            master \
+            v14.1.0_beta \
             juno \
             90
 
