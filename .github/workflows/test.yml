@@ -29,8 +29,6 @@ jobs:
           - os: macos-14
             build-type: sstmainline_config
           - os: macos-14
-            build-type: sstmainline_coreonly_config
-          - os: macos-14
             build-type: sstmainline_config_make_dist_test
           - os: macos-14
             build-type: sstmainline_config_core_make_dist_test
@@ -49,6 +47,7 @@ jobs:
               libtool \
               lmod \
               ncurses \
+              open-mpi \
               pygments
           python -m pip install blessings
           # echo "source /opt/homebrew/opt/lmod/init/profile" >> ~/.bashrc
