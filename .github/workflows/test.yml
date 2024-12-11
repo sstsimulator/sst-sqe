@@ -1,5 +1,4 @@
 ---
-# yamllint disable rule:line-length
 name: run bamboo
 
 # yamllint disable-line rule:truthy
@@ -37,7 +36,9 @@ jobs:
             build-type: sstmainline_config_core_make_dist_test
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4
+        with:
+          persist-credentials: false
       - name: install system-level dependencies (macOS)
         run: |
           brew install \
@@ -68,7 +69,7 @@ jobs:
           # echo "source /usr/share/lmod/lmod/init/bash" >> ~/.bashrc
         if: matrix.os == 'ubuntu-24.04'
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2
+        uses: hendrikmuhs/ccache-action@ed74d11c0b343532753ecead8a951bb09bb34bc9  # v1.2
         with:
           create-symlink: true
           key: ${{ matrix.os }}-${{ matrix.build-type }}
@@ -102,10 +103,9 @@ jobs:
           cd "${SST_DEPS_USER_DIR}/devel/trunk"
           ../sqe/buildsys/bamboo.sh ${{ matrix.build-type }} none none none none none
           ccache -s -vv
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882  # v4
         with:
           name: test-output-${{ matrix.os }}-${{ matrix.build-type }}
           path: sst_test_outputs
           compression-level: 9
         if: '!cancelled()'
-# yamllint enable rule:line-length
