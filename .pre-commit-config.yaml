@@ -57,10 +57,12 @@ repos:
               test/utilities/moduleex.sh|
               test/utilities/TimeoutEx.sh
           )
-  - repo: https://github.com/Mateusz-Grzelinski/actionlint-py
-    rev: "v1.7.6.22"
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.6
     hooks:
       - id: actionlint
+        additional_dependencies:
+          - "github.com/wasilibs/go-shellcheck/cmd/shellcheck@v0.10.0"
   - repo: https://github.com/woodruffw/zizmor-pre-commit
     rev: v1.1.1
     hooks:
