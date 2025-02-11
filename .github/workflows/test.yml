@@ -69,7 +69,7 @@ jobs:
           # echo "source /usr/share/lmod/lmod/init/bash" >> ~/.bashrc
         if: matrix.os == 'ubuntu-24.04'
       - name: ccache
-        uses: hendrikmuhs/ccache-action@53911442209d5c18de8a31615e0923161e435875  # v1.2
+        uses: hendrikmuhs/ccache-action@a1209f81afb8c005c13b4296c32e363431bffea5  # v1.2
         with:
           create-symlink: true
           key: ${{ matrix.os }}-${{ matrix.build-type }}
