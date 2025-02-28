@@ -103,7 +103,7 @@ jobs:
           cd "${SST_DEPS_USER_DIR}/devel/trunk"
           ../sqe/buildsys/bamboo.sh ${{ matrix.build-type }} none none none none none
           ccache -s -vv
-      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08  # v4
+      - uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1  # v4
         with:
           name: test-output-${{ matrix.os }}-${{ matrix.build-type }}
           path: sst_test_outputs
