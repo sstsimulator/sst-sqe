@@ -383,6 +383,23 @@ getconfig() {
     local mpicc_compiler=`which mpicc`
     local mpicxx_compiler=`which mpicxx`
 
+    # How to set the compilers:
+    #
+    # - In the calling script, export CC/CXX.  (They may come from a `module
+    #   load` or simply already be available on the system.)  Pass "none" as
+    #   the fourth argument to bamboo.sh.
+    #
+    # - In the calling script, do nothing. Pass "<compiler name>-<compiler
+    #   version>" (see `extract_compiler_version` function) as the fourth
+    #   argument to bamboo.sh, which will then `module load <compiler
+    #   name>/<compiler version>` in the `{linux,darwin}SetMPI` function.  It
+    #   is assumed that this will set CC/CXX in the environment.
+    #
+    # - Specify `sst-macro_nosstcore_mac` or `sst-macro_withsstcore_mac` as
+    #   the first argument to bamboo.sh and "none" as the fourth argument.
+    #   (There are also *_linux variants for GNU instead of Clang.)  These are
+    #   special for sst-macro only.
+
     if [[ ${CC:+isSet} = isSet ]]
     then
         local cc_compiler=$CC
