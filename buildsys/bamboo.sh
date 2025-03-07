@@ -784,14 +784,12 @@ linuxSetMPI() {
        # load non-default compiler
        if [[ "${compiler}" =~ gcc.* ]]; then
            ModuleEx load "gcc/${compiler_version}"
-           echo "LOADED gcc/${compiler_version} compiler"
        elif [[ "${compiler}" =~ clang.* ]]; then
            ModuleEx load "clang/${compiler_version}"
            CC="$(command -v clang)"
            export CC
            CXX="$(command -v clang++)"
            export CXX
-           echo "LOADED clang/${compiler_version} compiler"
        elif [[ "${compiler}" =~ intel.* ]]; then
            ModuleEx load "intel/${compiler_version}"
        fi
@@ -801,7 +799,6 @@ linuxSetMPI() {
    echo "CHECK:  \$compiler: ${compiler}"
    echo "CHECK:  \$compiler_version: ${compiler_version}"
    echo "CHECK:  \$desiredMPI: ${desiredMPI}"
-   gcc --version 2>&1 | grep ^g
 
    # load MPI
    ModuleEx unload mpi # unload any default to avoid conflict error
@@ -841,19 +838,12 @@ ldModules_MacOS_Clang() {
     # Use MPI built with CLANG from Xcode
     ModuleEx unload mpi
 
-    # Load other modules for $ClangVersion
-    # PTH 2.0.7
-    echo "bamboo.sh: Load PTH 2.0.7"
     ModuleEx load pth/pth-2.0.7
 
     # load MPI
     echo " ****** Loading MPI ********"
     echo "Request (\$mpi_type) is ${mpi_type}"
     case $mpi_type in
-        ompi_default)
-            echo "OpenMPI 4.0.5 selected"
-            ModuleEx add "mpi/openmpi-4.0.5_${ClangVersion}"
-            ;;
         none)
             echo  "No MPI loaded as requested"
             ;;
@@ -869,8 +859,10 @@ ldModules_MacOS_Clang() {
             ;;
     esac
 
-    export CC="$(command -v clang)"
-    export CXX="$(command -v clang++)"
+    CC="$(command -v clang)"
+    export CC
+    CXX="$(command -v clang++)"
+    export CXX
     echo "    Modules loaded"
     ModuleEx list
     $CC --version
