@@ -377,9 +377,6 @@ NOBUILD="NOBUILD"
 #   Return value: none
 getconfig() {
 
-    # Configure default dependencies to use if nothing is explicitly specified
-    local defaultDeps="-d none"
-
     local depsStr=""
 
     # Determine compilers
