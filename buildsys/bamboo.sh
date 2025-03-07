@@ -790,6 +790,8 @@ linuxSetMPI() {
            export CC
            CXX="$(command -v clang++)"
            export CXX
+       elif [[ "${compiler}" =~ llvm.* ]]; then
+           ModuleEx load "llvm/${compiler_version}"
        elif [[ "${compiler}" =~ intel.* ]]; then
            ModuleEx load "intel/${compiler_version}"
        fi
