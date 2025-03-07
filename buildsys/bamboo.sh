@@ -1832,6 +1832,12 @@ env|sort
 echo "==============================INITIAL ENVIRONMENT DUMP================="
 
 retval=0
+build_type="${1}"
+mpi_type="${2}"
+_none="${3}"
+compiler_type="${4}"
+cuda_version="${5}"
+pythonX="${6}"
 echo "@@@@@@  \$0 = $0 ######"
 echo "@@@@@@  \$1 = $1 ######"
 echo "@@@@@@  \$2 = $2 ######"
@@ -1839,15 +1845,7 @@ echo "@@@@@@  \$3 = $3 ######"
 echo "@@@@@@  \$4 = $4 ######"
 echo "@@@@@@  \$5 = $5 ######"
 echo "@@@@@@  \$6 = $6 ######"
-echo  $0 $1 $2 $3 $4 $5 $6
 echo `pwd`
-
-build_type="${1}"
-mpi_type="${2}"
-_none="${3}"
-compiler_type="${4}"
-cuda_version="${5}"
-pythonX="${6}"
 
 if [ $# -lt 3 ] || [ $# -gt 6 ]
 then
