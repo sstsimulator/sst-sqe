@@ -22,18 +22,21 @@ jobs:
           - build-type: sstmainline_config
             mpi-type: none
             compiler-type: none
-          - build-type: sstmainline_config
-            mpi-type: none
-            compiler-type: clang
           - build-type: sstmainline_coreonly_config
             mpi-type: none
             compiler-type: none
+          - build-type: sstmainline_coreonly_config
+            mpi-type: none
+            compiler-type: clang
           - build-type: sstmainline_config_no_mpi
             mpi-type: none
             compiler-type: none
           - build-type: sstmainline_coreonly_config_no_mpi
             mpi-type: none
             compiler-type: none
+          - build-type: sstmainline_coreonly_config_no_mpi
+            mpi-type: none
+            compiler-type: clang
           - build-type: sstmainline_config_make_dist_test
             mpi-type: none
             compiler-type: none
