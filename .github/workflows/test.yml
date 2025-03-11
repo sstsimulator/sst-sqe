@@ -105,6 +105,8 @@ jobs:
           cd "${pristine}"
           wget https://github.com/umd-memsys/DRAMSim2/archive/refs/tags/v2.2.2.tar.gz
       - name: run bamboo
+        env:
+          COMPILER_TYPE: ${{ matrix.bamboo-call-line.compiler-type }}
         run: |
           # needed for ncurses part of interactive sst-info
           export TERM=dumb
@@ -117,11 +119,19 @@ jobs:
           mkdir -p "${SST_DEPS_USER_DIR}/devel/trunk"
           mv "${GITHUB_WORKSPACE}" "${SST_DEPS_USER_DIR}/devel/sqe"
           cd "${SST_DEPS_USER_DIR}/devel/trunk"
+          if [[ "${COMPILER_TYPE}" != "none" ]]; then
+              if [[ "${COMPILER_TYPE}" == "clang" ]]; then
+                  CC="$(command -v clang)"
+                  CXX="$(command -v clang++)"
+              fi
+              export CC
+              export CXX
+          fi
           ../sqe/buildsys/bamboo.sh \
               ${{ matrix.bamboo-call-line.build-type }} \
               ${{ matrix.bamboo-call-line.mpi-type }} \
               none \
-              ${{ matrix.bamboo-call-line.compiler-type }} \
+              "${COMPILER_TYPE}" \
               none \
               none
           ccache -s -vv
