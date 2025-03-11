@@ -37,6 +37,9 @@ jobs:
           - build-type: sstmainline_coreonly_config_no_mpi
             mpi-type: none
             compiler-type: clang
+          - build-type: sstmainline_coreonly_config_no_mpi
+            mpi-type: none
+            compiler-type: clang-libc++
           - build-type: sstmainline_config_make_dist_test
             mpi-type: none
             compiler-type: none
@@ -131,9 +134,15 @@ jobs:
               if [[ "${COMPILER_TYPE}" == "clang" ]]; then
                   CC="$(command -v clang)"
                   CXX="$(command -v clang++)"
+                  CXXFLAGS="-stdlib=libstdc++"
+              elif [[ "${COMPILER_TYPE}" == "clang-libc++" ]]; then
+                  CC="$(command -v clang)"
+                  CXX="$(command -v clang++)"
+                  CXXFLAGS="-stdlib=libc++"
               fi
               export CC
               export CXX
+              export CXXFLAGS
           fi
           # passing the compiler as the fourth argument isn't necessary if no
           # `module load` is desired
