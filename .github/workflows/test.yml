@@ -109,7 +109,9 @@ jobs:
           wget https://github.com/umd-memsys/DRAMSim2/archive/refs/tags/v2.2.2.tar.gz
       - name: run bamboo
         env:
+          BUILD_TYPE: ${{ matrix.bamboo-call-line.build-type }}
           COMPILER_TYPE: ${{ matrix.bamboo-call-line.compiler-type }}
+          MPI_TYPE: ${{ matrix.bamboo-call-line.mpi-type }}
         run: |
           # needed for ncurses part of interactive sst-info
           export TERM=dumb
@@ -130,11 +132,13 @@ jobs:
               export CC
               export CXX
           fi
+          # passing the compiler as the fourth argument isn't necessary if no
+          # `module load` is desired
           ../sqe/buildsys/bamboo.sh \
-              ${{ matrix.bamboo-call-line.build-type }} \
-              ${{ matrix.bamboo-call-line.mpi-type }} \
+              "${BUILD_TYPE}" \
+              "${MPI_TYPE}" \
               none \
-              "${COMPILER_TYPE}" \
+              none \
               none \
               none
           ccache -s -vv
