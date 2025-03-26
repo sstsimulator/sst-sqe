@@ -55,6 +55,11 @@ jobs:
             bamboo-call-line: {build-type: sstmainline_config_make_dist_test}
           - os: macos-14
             bamboo-call-line: {build-type: sstmainline_config_core_make_dist_test}
+          # Don't do separate Clang tests on macOS
+          - os: macos-14
+            bamboo-call-line: {compiler-type: clang}
+          - os: macos-14
+            bamboo-call-line: {compiler-type: clang-libc++}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4
