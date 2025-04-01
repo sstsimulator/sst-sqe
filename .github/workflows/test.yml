@@ -102,6 +102,7 @@ jobs:
           mv "${GITHUB_WORKSPACE}" "${SST_DEPS_USER_DIR}/devel/sqe"
           cd "${SST_DEPS_USER_DIR}/devel/trunk"
           export SST_CORE_HASH=7c41973dee47f8208588cda261ae61c7bb107ed0
+          export SST_TEST_MERGE=
           ../sqe/buildsys/bamboo.sh ${{ matrix.build-type }} none none none none none
           ccache -s -vv
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
