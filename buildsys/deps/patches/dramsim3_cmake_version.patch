@@ -1,0 +1,12 @@
+diff --git CMakeLists.txt CMakeLists.txt
+index eaa40bf..a9d7377 100644
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -1,5 +1,5 @@
+-cmake_minimum_required(VERSION 3.0.0)
+-project(dramsim3)
++cmake_minimum_required(VERSION 3.10)
++project(dramsim3 LANGUAGES CXX)
+ 
+ set(default_build_type "Release")
+ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
