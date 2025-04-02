@@ -21,7 +21,7 @@ jobs:
           - os: macos-14
             build-type: sstmainline_config_no_mpi
           - os: ubuntu-22.04
-            build-type: sstmainline_coreonly_config
+            build-type: sstmainline_config
           - os: ubuntu-24.04
             build-type: sstmainline_config
           - os: ubuntu-24.04
