@@ -226,6 +226,20 @@ sstDepsPatchSource ()
 
     fi
 
+    if [ -n "${SST_BUILD_DRAMSIM3}" ]
+    then
+        pushd "${SST_DEPS_SRC_STAGED_DRAMSIM3}"
+        sstDepsAnnounce -h "${FUNCNAME[0]}" -m "Patching DRAMSim3"
+        patch -p0 -i "${SST_DEPS_PATCHFILES}"/dramsim3_cmake_version.patch
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            echo "ERROR: sstDependencies.sh:  DRAMSim3 patch failure"
+            return $retval
+        fi
+        popd
+    fi
+
     if [ -n "${SST_BUILD_NVDIMMSIM}" ]
     then
         pushd "${SST_DEPS_SRC_STAGED_NVDIMMSIM}"
