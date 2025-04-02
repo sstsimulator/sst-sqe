@@ -92,7 +92,7 @@ cloneRepo() {
     elif [[ "${SST_TEST_MERGE}" == "false" ]]; then
         echo "Going to test branch as-is without merging into upstream/devel"
     else
-        echo "Invalid value for SST_TEST_MERGE, must be 'true' or 'false'"
+        echo "Invalid value for SST_TEST_MERGE (${SST_TEST_MERGE}), must be 'true' or 'false'"
         exit 1
     fi
 
