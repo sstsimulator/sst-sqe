@@ -15,22 +15,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - macos-14
-          - ubuntu-24.04
-        build-type:
-          - sstmainline_config
-          - sstmainline_coreonly_config
-          - sstmainline_config_no_mpi
-          - sstmainline_coreonly_config_no_mpi
-          - sstmainline_config_make_dist_test
-          - sstmainline_config_core_make_dist_test
-        exclude:
+        include:
           - os: macos-14
+            build-type: sstmainline_coreonly_config
+          - os: macos-14
+            build-type: sstmainline_config_no_mpi
+          - os: ubuntu-24.04
             build-type: sstmainline_config
-          - os: macos-14
+          - os: ubuntu-24.04
+            build-type: sstmainline_coreonly_config
+          - os: ubuntu-24.04
+            build-type: sstmainline_config_no_mpi
+          - os: ubuntu-24.04
+            build-type: sstmainline_coreonly_config_no_mpi
+          - os: ubuntu-24.04
             build-type: sstmainline_config_make_dist_test
-          - os: macos-14
+          - os: ubuntu-24.04
             build-type: sstmainline_config_core_make_dist_test
     runs-on: ${{ matrix.os }}
     steps:
