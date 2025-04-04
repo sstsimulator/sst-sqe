@@ -25,6 +25,9 @@ jobs:
           - sstmainline_coreonly_config_no_mpi
           - sstmainline_config_make_dist_test
           - sstmainline_config_core_make_dist_test
+          - sst-macro_withsstcore_mac
+          - sst-macro_withsstcore_linux
+          - sst_Macro_make_dist
         exclude:
           - os: macos-14
             build-type: sstmainline_config
@@ -34,6 +37,10 @@ jobs:
             build-type: sstmainline_config_make_dist_test
           - os: macos-14
             build-type: sstmainline_config_core_make_dist_test
+          - os: macos-14
+            build-type: sst-macro_withsstcore_linux
+          - os: ubuntu-24.04
+            build-type: sst-macro_withsstcore_mac
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4
