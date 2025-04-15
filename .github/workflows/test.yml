@@ -17,23 +17,50 @@ jobs:
       matrix:
         include:
           - os: macos-14
-            build-type: sstmainline_coreonly_config
+            bamboo-call-line:
+              build-type: sstmainline_coreonly_config
+              compiler-type: none
+              mpi-type: none
           - os: macos-14
-            build-type: sstmainline_config_no_mpi
+            bamboo-call-line:
+              build-type: sstmainline_config_no_mpi
+              compiler-type: none
+              mpi-type: none
           - os: ubuntu-22.04
-            build-type: sstmainline_config
+            bamboo-call-line:
+              build-type: sstmainline_config
+              compiler-type: none
+              mpi-type: none
           - os: ubuntu-24.04
-            build-type: sstmainline_config
+            bamboo-call-line:
+              build-type: sstmainline_config
+              compiler-type: none
+              mpi-type: none
           - os: ubuntu-24.04
-            build-type: sstmainline_coreonly_config
+            bamboo-call-line:
+              build-type: sstmainline_coreonly_config
+              compiler-type: none
+              mpi-type: none
           - os: ubuntu-24.04
-            build-type: sstmainline_config_no_mpi
+            bamboo-call-line:
+              build-type: sstmainline_config_no_mpi
+              compiler-type: none
+              mpi-type: none
           - os: ubuntu-24.04
-            build-type: sstmainline_coreonly_config_no_mpi
+            bamboo-call-line:
+              build-type: sstmainline_coreonly_config_no_mpi
+              compiler-type: none
+              mpi-type: none
           - os: ubuntu-24.04
-            build-type: sstmainline_config_make_dist_test
+            bamboo-call-line:
+              build-type: sstmainline_config_make_dist_test
+              compiler-type: none
+              mpi-type: none
           - os: ubuntu-24.04
-            build-type: sstmainline_config_core_make_dist_test
+            bamboo-call-line:
+              build-type: sstmainline_config_core_make_dist_test
+              compiler-type: none
+              mpi-type: none
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4
@@ -46,7 +73,11 @@ jobs:
         uses: hendrikmuhs/ccache-action@a1209f81afb8c005c13b4296c32e363431bffea5  # v1.2
         with:
           create-symlink: true
-          key: ${{ matrix.os }}-${{ matrix.build-type }}
+          key: >-
+            ccache-${{ matrix.os }}
+            -${{ matrix.bamboo-call-line.build-type }}
+            -${{ matrix.bamboo-call-line.mpi-type }}
+            -${{ matrix.bamboo-call-line.compiler-type }}
           verbose: 2
       - name: set env and prepare dir structure
         run: |
@@ -63,6 +94,10 @@ jobs:
           cd "${pristine}"
           wget https://github.com/umd-memsys/DRAMSim2/archive/refs/tags/v2.2.2.tar.gz
       - name: run bamboo
+        env:
+          BUILD_TYPE: ${{ matrix.bamboo-call-line.build-type }}
+          COMPILER_TYPE: ${{ matrix.bamboo-call-line.compiler-type }}
+          MPI_TYPE: ${{ matrix.bamboo-call-line.mpi-type }}
         run: |
           # needed for ncurses part of interactive sst-info
           export TERM=dumb
@@ -75,11 +110,38 @@ jobs:
           mkdir -p "${SST_DEPS_USER_DIR}/devel/trunk"
           mv "${GITHUB_WORKSPACE}" "${SST_DEPS_USER_DIR}/devel/sqe"
           cd "${SST_DEPS_USER_DIR}/devel/trunk"
-          ../sqe/buildsys/bamboo.sh ${{ matrix.build-type }} none none none none none
+          if [[ "${COMPILER_TYPE}" != "none" ]]; then
+              if [[ "${COMPILER_TYPE}" == "clang" ]]; then
+                  CC="$(command -v clang)"
+                  CXX="$(command -v clang++)"
+                  # No need for this
+                  # CXXFLAGS="-stdlib=libstdc++"
+              elif [[ "${COMPILER_TYPE}" == "clang-libc++" ]]; then
+                  CC="$(command -v clang)"
+                  CXX="$(command -v clang++)"
+                  CXXFLAGS="-stdlib=libc++"
+              fi
+              export CC
+              export CXX
+              export CXXFLAGS
+          fi
+          # passing the compiler as the fourth argument isn't necessary if no
+          # `module load` is desired
+          ../sqe/buildsys/bamboo.sh \
+              "${BUILD_TYPE}" \
+              "${MPI_TYPE}" \
+              none \
+              none \
+              none \
+              none
           ccache -s -vv
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
-          name: test-output-${{ matrix.os }}-${{ matrix.build-type }}
+          name: >-
+            test-output-${{ matrix.os }}
+            -${{ matrix.bamboo-call-line.build-type }}
+            -${{ matrix.bamboo-call-line.mpi-type }}
+            -${{ matrix.bamboo-call-line.compiler-type }}
           path: sst_test_outputs
           compression-level: 9
         if: '!cancelled()'
