@@ -15,58 +15,33 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - macos-14
-          - ubuntu-24.04
-        build-type:
-          - sstmainline_config
-          - sstmainline_coreonly_config
-          - sstmainline_config_no_mpi
-          - sstmainline_coreonly_config_no_mpi
-          - sstmainline_config_make_dist_test
-          - sstmainline_config_core_make_dist_test
-        exclude:
+        include:
           - os: macos-14
+            build-type: sstmainline_coreonly_config
+          - os: macos-14
+            build-type: sstmainline_config_no_mpi
+          - os: ubuntu-22.04
             build-type: sstmainline_config
-          - os: macos-14
+          - os: ubuntu-24.04
+            build-type: sstmainline_config
+          - os: ubuntu-24.04
+            build-type: sstmainline_coreonly_config
+          - os: ubuntu-24.04
+            build-type: sstmainline_config_no_mpi
+          - os: ubuntu-24.04
+            build-type: sstmainline_coreonly_config_no_mpi
+          - os: ubuntu-24.04
             build-type: sstmainline_config_make_dist_test
-          - os: macos-14
+          - os: ubuntu-24.04
             build-type: sstmainline_config_core_make_dist_test
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4
         with:
           persist-credentials: false
-      - name: install system-level dependencies (macOS)
+      - name: install system-level dependencies
         run: |
-          brew install \
-              autoconf \
-              automake \
-              coreutils \
-              doxygen \
-              libtool \
-              lmod \
-              ncurses \
-              open-mpi \
-              pygments
-          python -m pip install blessings
-          # echo "source /opt/homebrew/opt/lmod/init/profile" >> ~/.bashrc
-        if: matrix.os == 'macos-14'
-      - name: install system-level dependencies (Ubuntu)
-        run: |
-          export DEBIAN_FRONTEND=noninteractive
-          sudo apt-get -y update
-          sudo apt-get -y install \
-              autoconf \
-              automake \
-              doxygen \
-              libopenmpi-dev \
-              libtool-bin \
-              lmod \
-              python3-blessings \
-              python3-pygments
-          # echo "source /usr/share/lmod/lmod/init/bash" >> ~/.bashrc
-        if: matrix.os == 'ubuntu-24.04'
+          bash ./.github/scripts/install_os_level_dependencies.sh
       - name: ccache
         uses: hendrikmuhs/ccache-action@a1209f81afb8c005c13b4296c32e363431bffea5  # v1.2
         with:
