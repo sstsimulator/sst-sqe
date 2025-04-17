@@ -96,6 +96,10 @@ jobs:
           spack compiler find
           spack config blame config
           spack debug report
+      - name: try module stuff
+        shell: /bin/bash -el {0}
+        run: |
+          module avail
       - name: set env and prepare dir structure
         run: |
           # Keep this common in order to increase ccache effectiveness
@@ -148,7 +152,7 @@ jobs:
               "${BUILD_TYPE}" \
               "${MPI_TYPE}" \
               none \
-              none \
+              "${COMPILER_TYPE}" \
               none \
               none
           ccache -s -vv
