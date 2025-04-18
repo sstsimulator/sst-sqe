@@ -120,41 +120,7 @@ jobs:
           COMPILER_TYPE: ${{ matrix.bamboo-call-line.compiler-type }}
           MPI_TYPE: ${{ matrix.bamboo-call-line.mpi-type }}
         run: |
-          # needed for ncurses part of interactive sst-info
-          export TERM=dumb
-          MAKEFLAGS="-j$(nproc)"
-          export MAKEFLAGS
-          if [[ "$(uname)" == "Darwin" ]]; then
-              export PMIX_MCA_gds=hash
-          fi
-          export SST_DEPS_USER_MODE=1
-          mkdir -p "${SST_DEPS_USER_DIR}/devel/trunk"
-          mv "${GITHUB_WORKSPACE}" "${SST_DEPS_USER_DIR}/devel/sqe"
-          cd "${SST_DEPS_USER_DIR}/devel/trunk"
-          if [[ "${COMPILER_TYPE}" != "none" ]]; then
-              if [[ "${COMPILER_TYPE}" == "clang" ]]; then
-                  CC="$(command -v clang)"
-                  CXX="$(command -v clang++)"
-                  # No need for this
-                  # CXXFLAGS="-stdlib=libstdc++"
-              elif [[ "${COMPILER_TYPE}" == "clang-libc++" ]]; then
-                  CC="$(command -v clang)"
-                  CXX="$(command -v clang++)"
-                  CXXFLAGS="-stdlib=libc++"
-              fi
-              export CC
-              export CXX
-              export CXXFLAGS
-          fi
-          # passing the compiler as the fourth argument isn't necessary if no
-          # `module load` is desired
-          ../sqe/buildsys/bamboo.sh \
-              "${BUILD_TYPE}" \
-              "${MPI_TYPE}" \
-              none \
-              "${COMPILER_TYPE}" \
-              none \
-              none
+          bash ./.github/scripts/call_bamboo.sh
           ccache -s -vv
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
