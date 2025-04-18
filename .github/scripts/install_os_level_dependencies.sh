@@ -18,7 +18,9 @@ if command -v brew; then
          open-mpi \
          pygments
     python -m pip install blessings
-    # echo "source /opt/homebrew/opt/lmod/init/profile" >> ~/.bashrc
+    p="source /opt/homebrew/opt/lmod/init/profile"
+    echo "${p}" >> ~/.bash_profile
+    echo "${p}" >> ~/.bashrc
 elif command -v apt-get; then
     export DEBIAN_FRONTEND=noninteractive
     sudo apt-get -y update
@@ -31,5 +33,7 @@ elif command -v apt-get; then
          lmod \
          python3-blessings \
          python3-pygments
-    # echo "source /usr/share/lmod/lmod/init/bash" >> ~/.bashrc
+    p="source /etc/profile.d/lmod.sh"
+    echo "${p}" >> ~/.bash_profile
+    echo "${p}" >> ~/.bashrc
 fi
