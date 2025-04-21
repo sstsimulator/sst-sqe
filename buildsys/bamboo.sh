@@ -476,7 +476,7 @@ getconfig() {
             export SST_WITH_CUDA=1
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -G default -D default -A 1.1"
+            depsStr="-r default -G default -D default -A dev"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools"
             elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
@@ -486,9 +486,11 @@ getconfig() {
             # Must Setup the GPGPUSIM Environment
             echo "SETUP THE GPGPUSIM ENVIRONMENT"
             echo "==== ENV BEFORE GPGPUSIM ENV SETUP ==="
+            export CUDA_INSTALL_PATH="${CUDA_HOME}"
+            export GPU_ARCH=sm_70
             env|sort
-            echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
-            . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
+            echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst"
+            . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst
             echo "==== ENV AFTER  GPGPUSIM ENV SETUP ==="
             env|sort
             ;;
@@ -505,7 +507,7 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r default -G default -D default -A 1.1"
+            depsStr="-r default -G default -D default -A dev"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools --disable-mpi"
             elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
@@ -515,6 +517,8 @@ getconfig() {
             # Must Setup the GPGPUSIM Environment
             echo "SETUP THE GPGPUSIM ENVIRONMENT"
             echo "==== ENV BEFORE GPGPUSIM ENV SETUP ==="
+            export CUDA_INSTALL_PATH="${CUDA_HOME}"
+            export GPU_ARCH=sm_70
             env|sort
             echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
             . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment

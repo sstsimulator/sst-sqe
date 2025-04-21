@@ -447,7 +447,7 @@ sstDepsDoDependencies ()
 #   -D DRAMsim3 version (default|stabledevel|none)
 #   -G Goblim HMCSim (default|stabledevel|none)
 #   -r Ramulator (default)
-#   -A GPGPUSim (stabledevel|1.1|master|default|none)
+#   -A GPGPUSim (dev|default|none)
 #
 #   [buildtype] = (restageDeps|develBuild|cleanBuild)
 #
@@ -523,15 +523,10 @@ do
             echo "# found the -A (GPGPUSim) option, with value $OPTARG"
             # process arg
             case "$OPTARG" in
-                1.1|stabledevel)   # Build GPGPUSim
-                    echo "# ${OPTARG}: Build GPGPUSim 1.1 tag"
+                dev)   # Build GPGPUSim
+                    echo "# ${OPTARG}: Build GPGPUSim dev tag"
                     # shellcheck source=buildsys/deps/bin/sstDep_GPGPUSim.sh
-                    . "${SST_DEPS_BIN}"/sstDep_GPGPUSim.sh 1.1
-                    ;;
-                master)   # Build GPGPUSim
-                    echo "# ${OPTARG}: Build GPGPUSim master branch"
-                    # shellcheck source=buildsys/deps/bin/sstDep_GPGPUSim.sh
-                    . "${SST_DEPS_BIN}"/sstDep_GPGPUSim.sh master
+                    . "${SST_DEPS_BIN}"/sstDep_GPGPUSim.sh dev
                     ;;
                 none|default)  # Do not build GPGPUSim
                     echo "# default: will not build GPGPUSim"
