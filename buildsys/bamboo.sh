@@ -122,35 +122,35 @@ cloneOtherRepos() {
             "${SST_COREREPO}" \
             SST_CORE_HASH \
             "${SST_COREBRANCH}" \
-            devel \
+            v15.0.0_beta \
             sst-core \
             90
         cloneRepo \
             "${SST_ELEMENTSREPO}" \
             SST_ELEMENTS_HASH \
             "${SST_ELEMENTSBRANCH}" \
-            devel \
+            v15.0.0_beta \
             sst-elements \
             250
         cloneRepo \
             "${SST_MACROREPO}" \
             SST_MACRO_HASH \
             "${SST_MACROBRANCH}" \
-            devel \
+            v15.0.0_beta \
             sst-macro \
             90
         cloneRepo \
             "${SST_EXTERNALELEMENTREPO}" \
             SST_EXTERNALELEMENT_HASH \
             "${SST_EXTERNALELEMENTBRANCH}" \
-            master \
+            v15.0.0_beta \
             sst-external-element \
             90
         cloneRepo \
             "${SST_JUNOREPO}" \
             SST_JUNO_HASH \
             "${SST_JUNOBRANCH}" \
-            master \
+            v15.0.0_beta \
             juno \
             90
 
@@ -1780,7 +1780,7 @@ export SST_BUILD_TYPE=""
 # What should be compiled and tested?
 # - If true, merge the development branch for each repository into the target or specified branch.
 # - If false, use each given branch as-is.
-export SST_TEST_MERGE=${SST_TEST_MERGE:-true}
+export SST_TEST_MERGE=${SST_TEST_MERGE:-false}
 
 # Number of threads and (MPI) ranks to run tests with (not compile with)
 export SST_MULTI_THREAD_COUNT=${SST_MULTI_THREAD_COUNT:-1}
