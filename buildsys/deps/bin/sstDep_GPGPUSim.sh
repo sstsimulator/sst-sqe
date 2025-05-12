@@ -44,8 +44,8 @@ sstDepsStage_GPGPUSim ()
         echo " "
         date
         echo ' '
-        echo "git clone https://github.com/purdue-aalp/sst-gpgpusim-external.git sst-gpgpusim"
-        git clone https://github.com/purdue-aalp/sst-gpgpusim-external.git sst-gpgpusim
+        echo "git clone https://github.com/accel-sim/gpgpu-sim_distribution.git sst-gpgpusim"
+        git clone https://github.com/accel-sim/gpgpu-sim_distribution.git sst-gpgpusim
         retVal=$?
         echo ' '
         date
@@ -96,7 +96,7 @@ sstDepsStage_GPGPUSim ()
 # Outputs:
 #     Pass/fail
 # Expected Results
-#     Deployed DRAMSim dependency
+#     Deployed GPGPUSim dependency
 # Caveats:
 #     None
 #-------------------------------------------------------------------------------
@@ -108,7 +108,11 @@ sstDepsDeploy_GPGPUSim ()
 
     module li
 
-    source setup_environment
+    # Make sure the GPGPUSim env vars are set
+    export CUDA_INSTALL_PATH="${CUDA_HOME}"
+    export GPU_ARCH=sm_70
+
+    source setup_environment sst
     make
     retval=$?
     if [ $retval -ne 0 ]
@@ -119,13 +123,7 @@ sstDepsDeploy_GPGPUSim ()
         return $retval
     fi
 
-    echo "Copying libcudart_mod.so shared object to element directory ${SST_ROOT}/sst-elements/src/sst/elements/balar"
-    cp --preserve=links lib/$GPGPUSIM_CONFIG/libcudart_mod.so ${SST_ROOT}/sst-elements/src/sst/elements/balar
-
-    ls -l ${SST_ROOT}/sst-elements/src/sst/elements/balar
-
     popd
-
 }
 
 
@@ -151,5 +149,4 @@ sstDepsQuery_GPGPUSim ()
 
    echo "export SST_DEPS_INSTALL_GPGPUSIM=\"${SST_DEPS_SRC_STAGED_GPGPUSIM}\""
    export SST_DEPS_INSTALL_GPGPUSIM=${SST_DEPS_SRC_STAGED_GPGPUSIM}
-
 }
