@@ -10,6 +10,8 @@ concurrency:
   group: test-${{github.ref}}-${{github.event.pull_request.number || github.run_number}}
   cancel-in-progress: true
 
+permissions: {}
+
 jobs:
   run-bamboo:
     strategy:
@@ -72,12 +74,14 @@ jobs:
       - name: ccache
         uses: hendrikmuhs/ccache-action@63069e3931dedbf3b63792097479563182fe70d1  # v1.2
         with:
+          append-timestamp: false
           create-symlink: true
           key: >-
             ccache-${{ matrix.os }}
             -${{ matrix.bamboo-call-line.build-type }}
             -${{ matrix.bamboo-call-line.mpi-type }}
             -${{ matrix.bamboo-call-line.compiler-type }}
+          max-size: "4GB"
           verbose: 2
       - name: Clone Spack
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4

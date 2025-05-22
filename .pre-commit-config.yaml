@@ -26,7 +26,7 @@ repos:
               \.patch$
           )
   - repo: https://github.com/adrienverge/yamllint
-    rev: "v1.35.1"
+    rev: "v1.37.1"
     hooks:
       - id: yamllint
   - repo: https://github.com/shellcheck-py/shellcheck-py
@@ -58,13 +58,13 @@ repos:
               test/utilities/TimeoutEx.sh
           )
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.6
+    rev: v1.7.7
     hooks:
       - id: actionlint
         additional_dependencies:
           - "github.com/wasilibs/go-shellcheck/cmd/shellcheck@v0.10.0"
   - repo: https://github.com/woodruffw/zizmor-pre-commit
-    rev: v1.1.1
+    rev: v1.8.0
     hooks:
       - id: zizmor
-        args: [--persona=pedantic]
+        args: [--no-progress, --persona=pedantic]
