@@ -129,7 +129,7 @@ sstDepsDeploy_dramsim3 ()
         return $retval
     fi
 
-    make -j4
+    make
 
     retval=$?
     if [ $retval -ne 0 ]
