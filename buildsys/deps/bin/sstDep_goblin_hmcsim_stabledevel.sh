@@ -102,7 +102,14 @@ sstDepsDeploy_goblin_hmcsim ()
     pushd ${SST_DEPS_SRC_STAGED_GOBLIN_HMCSIM}
 
     # Build and install GOBLIN_HMCSIM
-    make
+    make libhmcsim.a
+    if [[ $SST_DEPS_OS_NAME == "Darwin" ]]
+    then
+        shlib="libhmcsim.dylib"
+    else
+        shlib="libhmcsim.so"
+    fi
+    make ${shlib}
     retval=$?
     if [ $retval -ne 0 ]
     then
@@ -115,7 +122,7 @@ sstDepsDeploy_goblin_hmcsim ()
     popd
 
     # NOTE: There is no "make install" for Goblin_HMCSIM.  Instead make a
-    #       link to the compilied directory
+    #       link to the compiled directory
     if [ ! -d ${SST_DEPS_INSTALL_DEPS}/packages ]
     then
         mkdir -p ${SST_DEPS_INSTALL_DEPS}/packages
