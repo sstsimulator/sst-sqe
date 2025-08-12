@@ -65,7 +65,7 @@ jobs:
               mpi-type: none
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v4
         with:
           persist-credentials: false
       - name: install system-level dependencies
@@ -84,7 +84,7 @@ jobs:
           max-size: "4GB"
           verbose: 2
       - name: Clone Spack
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v4
         with:
           persist-credentials: false
           # Take the latest (develop) version.
