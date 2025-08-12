@@ -77,10 +77,9 @@ jobs:
           append-timestamp: false
           create-symlink: true
           key: >-
-            ccache-${{ matrix.os }}
-            -${{ matrix.bamboo-call-line.build-type }}
-            -${{ matrix.bamboo-call-line.mpi-type }}
-            -${{ matrix.bamboo-call-line.compiler-type }}
+            ccache-${{ matrix.os }}-${{ matrix.bamboo-call-line.build-type }}-${{
+            matrix.bamboo-call-line.mpi-type }}-${{ matrix.bamboo-call-line.compiler-type
+            }}
           max-size: "4GB"
           verbose: 2
       - name: Clone Spack
@@ -129,10 +128,9 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: >-
-            test-output-${{ matrix.os }}
-            -${{ matrix.bamboo-call-line.build-type }}
-            -${{ matrix.bamboo-call-line.mpi-type }}
-            -${{ matrix.bamboo-call-line.compiler-type }}
+            test-output-${{ matrix.os }}-${{ matrix.bamboo-call-line.build-type }}-${{
+            matrix.bamboo-call-line.mpi-type }}-${{ matrix.bamboo-call-line.compiler-type
+            }}
           path: sst_test_outputs
           compression-level: 9
         if: '!cancelled()'
