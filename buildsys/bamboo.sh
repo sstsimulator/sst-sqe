@@ -1277,8 +1277,8 @@ config_and_build() {
         echo ' '
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        echo "=== Running make -j4 all ==="
-        make -j4 all
+        echo "=== Running make all ==="
+        make all
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -1298,8 +1298,8 @@ config_and_build() {
         echo ' '
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        echo "=== Running make -j4 install ==="
-        make -j4 install
+        echo "=== Running make install ==="
+        make install
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -1384,8 +1384,8 @@ config_and_build_simple() {
         echo ' '
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        echo "=== Running make -j4 ==="
-        make -j4
+        echo "=== Running make ==="
+        make
         retval=$?
         if [ $retval -ne 0 ]
         then
@@ -1405,8 +1405,8 @@ config_and_build_simple() {
         echo ' '
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        echo "=== Running make -j4 install ==="
-        make -j4 install
+        echo "=== Running make install ==="
+        make install
         retval=$?;
         if [ $retval -ne 0 ]
         then
