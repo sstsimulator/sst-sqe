@@ -64,6 +64,11 @@ jobs:
               build-type: sstmainline_config_core_make_dist_test
               compiler-type: none
               mpi-type: none
+          - os: ubuntu-24.04
+            bamboo-call-line:
+              build-type: sstmainline_config_with_pebil
+              compiler-type: none
+              mpi-type: none
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
