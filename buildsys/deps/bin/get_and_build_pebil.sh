@@ -14,7 +14,7 @@ pushd "${SST_DEPS_SRC_STAGED_PEBIL}"
 git submodule init external/epa-inst-libs
 git submodule update
 SST_CONFIG="${SST_CORE_INSTALL_BIN}"/sst-config
-configure \
+./configure \
     --with-sst-core="$("${SST_CONFIG}" --prefix)" \
     --with-sst-elements="$("${SST_CONFIG}" SST_ELEMENT_LIBRARY SST_ELEMENT_LIBRARY_SOURCE_ROOT)"
 # shellcheck disable=SC1091

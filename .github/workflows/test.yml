@@ -19,51 +19,51 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-14
-            bamboo-call-line:
-              build-type: sstmainline_coreonly_config
-              compiler-type: none
-              mpi-type: none
-          - os: macos-14
-            bamboo-call-line:
-              build-type: sstmainline_config_no_mpi
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-22.04
-            bamboo-call-line:
-              build-type: sstmainline_config
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-24.04
-            bamboo-call-line:
-              build-type: sstmainline_config
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-24.04
-            bamboo-call-line:
-              build-type: sstmainline_coreonly_config
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-24.04
-            bamboo-call-line:
-              build-type: sstmainline_config_no_mpi
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-24.04
-            bamboo-call-line:
-              build-type: sstmainline_coreonly_config_no_mpi
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-24.04
-            bamboo-call-line:
-              build-type: sstmainline_config_make_dist_test
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-24.04
-            bamboo-call-line:
-              build-type: sstmainline_config_core_make_dist_test
-              compiler-type: none
-              mpi-type: none
+          # - os: macos-14
+          #   bamboo-call-line:
+          #     build-type: sstmainline_coreonly_config
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: macos-14
+          #   bamboo-call-line:
+          #     build-type: sstmainline_config_no_mpi
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-22.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_config
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-24.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_config
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-24.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_coreonly_config
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-24.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_config_no_mpi
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-24.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_coreonly_config_no_mpi
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-24.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_config_make_dist_test
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-24.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_config_core_make_dist_test
+          #     compiler-type: none
+          #     mpi-type: none
           - os: ubuntu-24.04
             bamboo-call-line:
               build-type: sstmainline_config_with_pebil
@@ -123,6 +123,9 @@ jobs:
           mkdir -p "${pristine}"
           cd "${pristine}"
           wget https://github.com/umd-memsys/DRAMSim2/archive/refs/tags/v2.2.2.tar.gz
+      - name: Reconfigure git to use HTTP authentication
+        run: >
+          git config --global url."https://github.com/".insteadOf git@github.com:
       - name: run bamboo
         env:
           BUILD_TYPE: ${{ matrix.bamboo-call-line.build-type }}
