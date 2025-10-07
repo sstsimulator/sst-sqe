@@ -406,7 +406,7 @@ getconfig() {
     # Other dependencies are loaded as modules
     local allDeps="-r default -G default -D default -A none"
 
-    # Configure SST Elements with all dependencies except those requiring special handling. Pin is not support on Mac.
+    # Configure SST Elements with all dependencies except those requiring special handling. Pin is not supported on Mac.
 
     case $1 in
         sstmainline_config|sstmainline_config_all|sstmainline_config_no_gem5|sstmainline_config_with_pebil)
