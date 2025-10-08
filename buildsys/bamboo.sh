@@ -1643,10 +1643,10 @@ function ExitOfScriptHandler {
 #   sst-macro_withsstcore_linux
 #   sst-macro_nosstcore_linux
 #   sst_Macro_make_dist
+#   sstmainline_config_linux_with_cuda
 #   documentation
 #
 # UNUSED
-#   sstmainline_config_with_cuda
 #   sstmainline_config_with_cuda_no_mpi
 #=========================================================================
 trap ExitOfScriptHandler EXIT

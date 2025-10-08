@@ -44,8 +44,8 @@ sstDepsStage_GPGPUSim ()
         echo " "
         date
         echo ' '
-        echo "git clone https://github.com/purdue-aalp/sst-gpgpusim-external.git sst-gpgpusim"
-        git clone https://github.com/purdue-aalp/sst-gpgpusim-external.git sst-gpgpusim
+        echo "git clone git@github.com:accel-sim/gpgpu-sim_distribution.git"
+        git clone git@github.com:accel-sim/gpgpu-sim_distribution.git
         retVal=$?
         echo ' '
         date
@@ -68,7 +68,7 @@ sstDepsStage_GPGPUSim ()
     if [ $retVal -ne 0 ]                     ## retVal from git clone
     then
         # bail out on error
-        echo "ERROR: sstDep_GPGPUSim.sh: sst-gpgpusim git fetch failure"
+        echo "ERROR: sstDep_gpgpusim.sh: sst-gpgpusim git fetch failure"
         sstDepsAnnounce -h $FUNCNAME -m \
           "Is http_proxy configured properly in $HOME/.wgetrc?"
         popd
@@ -108,7 +108,7 @@ sstDepsDeploy_GPGPUSim ()
 
     module li
 
-    source setup_environment
+    source setup_environment sst
     make
     retval=$?
     if [ $retval -ne 0 ]
