@@ -20,7 +20,7 @@ GPGPU_BRANCH=$1
 # Function:
 #     sstDepsStage_GPGPUSim
 # Purpose:
-#     Prepare patching.
+#     Prepare GPGPUSim
 # Inputs:
 #     None
 # Outputs:
@@ -30,7 +30,7 @@ GPGPU_BRANCH=$1
 # Caveats:
 #     No patching is anticipated!  Cuda library is from module.
 #-------------------------------------------------------------------------------
-export SST_DEPS_SRC_STAGED_GPGPUSIM=${SST_DEPS_SRC_STAGING}/sst-gpgpusim
+export SST_DEPS_SRC_STAGED_GPGPUSIM=${SST_DEPS_SRC_STAGING}/gpgpu-sim_distribution
 
 sstDepsStage_GPGPUSim ()
 {
@@ -77,8 +77,8 @@ sstDepsStage_GPGPUSim ()
 
     #  Move into the sst-gpgpusim directory
     pushd ${SST_DEPS_SRC_STAGED_GPGPUSIM}
-    git checkout $GPGPU_BRANCH
-    echo "sst-gpgpusim.git" `git log HEAD | sed 4q` >&2
+#     git checkout $GPGPU_BRANCH
+    echo "gpgpu-sim_distribution.git" `git log HEAD | sed 4q` >&2
     ls -l
 
     popd
