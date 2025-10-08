@@ -1876,6 +1876,7 @@ else
             # Load Cuda Module
             ModuleEx unload cuda
             ModuleEx load ${cuda_version}
+            export CUDA_INSTALL_PATH=${CUDA_HOME}
 
             # Figure out Python Configuration
             # Note: Selecting python is confusing as different system have different links
