@@ -1863,7 +1863,6 @@ else
             SST_DIST_MPI=${mpi_type}
             _UNUSED="none"
             SST_DIST_PARAM4=${compiler_type}
-            SST_DIST_CUDA=`echo ${cuda_version} | sed 's/cuda-//g'`
             SST_DIST_PYTHON=${pythonX}
 
             # Configure MPI and Compiler (Linux only)
@@ -1875,16 +1874,8 @@ else
             fi
 
             # Load Cuda Module
-            case ${cuda_version} in
-                cuda-8.0.44|cuda-8.0.61|cuda-9.1.85)
-                    echo "bamboo.sh: cuda-${SST_DIST_CUDA} selected"
-                    ModuleEx unload cuda
-                    ModuleEx load cuda/${SST_DIST_CUDA}
-                    ;;
-                *)
-                    echo  "No Cuda loaded as requested"
-                    ;;
-            esac
+            ModuleEx unload cuda
+            ModuleEx load ${cuda_version}
 
             # Figure out Python Configuration
             # Note: Selecting python is confusing as different system have different links
