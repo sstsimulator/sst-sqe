@@ -44,8 +44,8 @@ sstDepsStage_GPGPUSim ()
         echo " "
         date
         echo ' '
-        echo "git clone git@github.com:accel-sim/gpgpu-sim_distribution.git"
-        git clone git@github.com:accel-sim/gpgpu-sim_distribution.git
+        echo "git clone https://github.com/accel-sim/gpgpu-sim_distribution.git"
+        git clone https://github.com/accel-sim/gpgpu-sim_distribution.git
         retVal=$?
         echo ' '
         date
