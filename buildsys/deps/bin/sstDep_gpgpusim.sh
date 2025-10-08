@@ -1,5 +1,5 @@
 # !/bin/bash
-# sstDep_GPGPUSim.sh
+# sstDep_gpgpusim.sh
 
 # Description:
 
@@ -115,7 +115,7 @@ sstDepsDeploy_GPGPUSim ()
     then
         # bail out on error
         pwd
-        echo "ERROR: sstDep_GPGPUSim.sh: make failure"
+        echo "ERROR: sstDep_gpgpusim.sh: make failure"
         return $retval
     fi
 

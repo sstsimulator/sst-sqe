@@ -525,13 +525,13 @@ do
             case "$OPTARG" in
                 1.1|stabledevel)   # Build GPGPUSim
                     echo "# ${OPTARG}: Build GPGPUSim 1.1 tag"
-                    # shellcheck source=buildsys/deps/bin/sstDep_GPGPUSim.sh
-                    . "${SST_DEPS_BIN}"/sstDep_GPGPUSim.sh 1.1
+                    # shellcheck source=buildsys/deps/bin/sstDep_gpgpusim.sh
+                    . "${SST_DEPS_BIN}"/sstDep_gpgpusim.sh 1.1
                     ;;
                 master)   # Build GPGPUSim
                     echo "# ${OPTARG}: Build GPGPUSim master branch"
-                    # shellcheck source=buildsys/deps/bin/sstDep_GPGPUSim.sh
-                    . "${SST_DEPS_BIN}"/sstDep_GPGPUSim.sh master
+                    # shellcheck source=buildsys/deps/bin/sstDep_gpgpusim.sh
+                    . "${SST_DEPS_BIN}"/sstDep_gpgpusim.sh master
                     ;;
                 none|default)  # Do not build GPGPUSim
                     echo "# default: will not build GPGPUSim"
