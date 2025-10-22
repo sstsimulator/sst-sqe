@@ -66,8 +66,8 @@ repos:
     hooks:
       - id: actionlint
         additional_dependencies:
-          - "github.com/wasilibs/go-shellcheck/cmd/shellcheck@v0.10.0"
-  - repo: https://github.com/woodruffw/zizmor-pre-commit
+          - "github.com/wasilibs/go-shellcheck/cmd/shellcheck@v0.11.1"
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
     rev: v1.15.2
     hooks:
       - id: zizmor
