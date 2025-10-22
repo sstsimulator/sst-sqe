@@ -11,6 +11,8 @@ set -euo pipefail
 export SST_DEPS_SRC_STAGED_PEBIL="${SST_DEPS_SRC_STAGING}"/pebil
 git clone -b feature/sst https://github.com/epanalytics/PEBIL.git "${SST_DEPS_SRC_STAGED_PEBIL}"
 pushd "${SST_DEPS_SRC_STAGED_PEBIL}"
+# Avoid "Host key verification failed.; fatal: Could not read from remote repository."
+perl -i'' -pe 's{git\@github\.com:}{https://github.com/}g' .gitmodules
 git submodule init external/epa-inst-libs
 git submodule update
 SST_CONFIG="${SST_CORE_INSTALL_BIN}"/sst-config
