@@ -19,7 +19,7 @@ jobs:
   all-prechecks:
     name: Pre-test check success
     needs: [prechecks]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Success
         run: "true"
@@ -29,7 +29,7 @@ jobs:
   all:
     name: CI success
     needs: [tests]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Success
         run: "true"
