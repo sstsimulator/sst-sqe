@@ -504,6 +504,7 @@ getconfig() {
             echo "==== ENV AFTER  GPGPUSIM ENV SETUP ==="
             env|sort
             ;;
+
         sstmainline_config_linux_with_cuda_no_mpi)
             #-----------------------------------------------------------------
             # sstmainline_config_linux_with_cuda_no_mpi
@@ -515,15 +516,16 @@ getconfig() {
                 exit 1
             fi
             export | egrep SST_DEPS_
+            export SST_WITH_CUDA=1
             coreMiscEnv="${cc_environment}"
             elementsMiscEnv="${cc_environment}"
             depsStr="-r default -G default -D default -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_HOME --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="${NOBUILD}"
-            externalelementConfigStr="${NOBUILD}"
-            junoConfigStr="${NOBUILD}"
+            externalelementConfigStr="$externalelementbaseoptions"
+            junoConfigStr="$junobaseoptions"
             # Must Setup the GPGPUSIM Environment
             echo "SETUP THE GPGPUSIM ENVIRONMENT"
             echo "==== ENV BEFORE GPGPUSIM ENV SETUP ==="
