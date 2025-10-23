@@ -767,54 +767,89 @@ linuxSetMPI() {
 
     set_up_environment_modules
 
-   # build MPI selector
-   if [[ "$2" =~ openmpi.* ]]
-   then
-       mpiStr="ompi-"$(expr "$2" : '.*openmpi-\([0-9]\(\.[0-9][0-9]*\)*\)')
-   else
-       mpiStr=${2}
-   fi
+    local mpi="${mpi_type}"
+    local compiler="${compiler_type}"
 
-   if [[ "${compiler}" == "default" ]]
-   then
-       desiredMPI="${2}"
-   else
-       desiredMPI="${2}_${4}"
-       # load non-default compiler
-       if   [[ "$3" =~ gcc.* ]]
-       then
-           ModuleEx load gcc/${4}
-           echo "LOADED gcc/${4} compiler"
-       elif [[ "$3" =~ intel.* ]]
-       then
-           ModuleEx load intel/${4}
-           echo "LOADED intel/${4} compiler"
-       fi
-   fi
+    # init mpi name to load later
+    local mpiStr="$mpi"
+    if [[ "$mpi" =~ ^openmpi-[0-9] ]]
+    then
+        local ver
+        ver="$(expr "$mpi" : '.*openmpi-\([0-9]\(\.[0-9][0-9]*\)*\)')"
+        [[ -n "$ver" ]] && mpiStr="ompi-$ver"
+    fi
 
-   echo "CHECK:  \$2: ${2}"
-   echo "CHECK:  \$3: ${3}"
-   echo "CHECK:  \$desiredMPI: ${desiredMPI}"
-   gcc --version 2>&1 | grep ^g
+    # final name to be loaded, maybe appended by compiler
+    local desiredMPI="$mpiStr"
 
-   # load MPI
-   ModuleEx unload mpi # unload any default to avoid conflict error
-   case $2 in
-       none)
-           echo "MPI requested as \"none\".    No MPI loaded"
-           ;;
-       *)
-           echo "Try loading MPI module as-is: ${desiredMPI}"
-           if ModuleEx load "${desiredMPI}"; then
-               return 0
-           fi
-           # Not successful, try something else...
-           echo "Try loading mpi/${desiredMPI}"
-           if ! ModuleEx load "mpi/${desiredMPI}"
-           then
-               exit 1
-           fi
-           ;;
+    # load non-default compiler
+    local family version normalize_name fuzzy_match
+    if [[ "$compiler" != "default" && "$compiler" != "none" ]]
+    then
+        normalize_name="${compiler}"
+        normalize_name="${normalize_name//:/\/}"
+
+        if [[ "$normalize_name" == */* ]]
+        then
+            family="${normalize_name%%/*}"
+            version="${normalize_name#*/}"
+            [[ "$version" == "$family"-* ]] && version="${version#${family}-}"
+        else
+            family="${normalize_name%%-*}"
+            version=""
+            [[ "$normalize_name" == *-* ]] && version="${normalize_name#*-}"
+        fi
+
+        if [[ -z "${version}" ]]
+        then
+            echo "Compiler '${compiler}' has no version; attempting simple load: ${family}"
+            ModuleEx load "${family}" || { echo "ERROR: failed to load module '${family}'"; exit 1; }
+        else
+            if module -t avail 2>&1 | grep -xE ".*/?${family}/${version}"
+            then
+                echo "Loading module: ${family}/${version}"
+                ModuleEx load "${family}/${version}" || { echo "ERROR: failed to load ${family}/${version}"; exit 1; }
+            else
+                fuzzy_match="$(module -t avail 2>&1 | awk -v f="${family}" -v v="${version}" 'BEGIN{IGNORECASE=1} $0 ~ f && $0 ~ v {print $0}' | head -n1)"
+                if [[ -n "${fuzzy_match}" ]]
+                then
+                    echo "Loading module (fuzzy match): ${fuzzy_match}"
+                    ModuleEx load "${fuzzy_match}" || { echo "ERROR: failed to load ${fuzzy_match}"; exit 1; }
+                else
+                    echo "ERROR: no module found containing '${family}' and '${version}'"
+                    exit 1
+                fi
+            fi
+        fi
+
+        # Append compiler version to desiredMPI
+        [[ -n "$version" ]] && desiredMPI="${mpiStr}_${version}"
+    fi
+    gcc --version 2>&1 | grep ^g
+
+    echo "CHECK linuxSetMPI:"
+    echo "  mpi_type=${mpi_type}"
+    echo "  compiler_type=${compiler_type}"
+    echo "  desiredMPI=${desiredMPI}"
+
+    # load MPI
+    ModuleEx unload mpi # unload any default to avoid conflict error
+    case "$mpi" in
+        none)
+            echo "MPI requested as \"none\".    No MPI loaded"
+            ;;
+        *)
+            echo "Try loading MPI module as-is: ${desiredMPI}"
+            if ModuleEx load "${desiredMPI}"; then
+                return 0
+            fi
+            # Not successful, try something else...
+            echo "Try loading mpi/${desiredMPI}"
+            if ! ModuleEx load "mpi/${desiredMPI}"
+            then
+                exit 1
+            fi
+            ;;
     esac
 }
 
