@@ -262,6 +262,20 @@ dotests() {
     echo $LD_LIBRARY_PATH | sed 's/:/\n/g'
     echo ' '
 
+
+    if [[ "$1" == "sstmainline_config_linux_with_cuda" ]] || [[ "$1" == "sstmainline_config_linux_with_cuda_no_mpi" ]]; then
+        if [[ -n "${cuda_version}" && "${cuda_version}" != "none" ]]; then
+            #TODO make args?
+            # load cross-compiler cruft
+            ModuleEx load riscv-tools/gcc/gcc-14.2.0-riscv
+            ModuleEx load llvm/18.1.8
+        else
+            echo "dotests: WARNING: CUDA build type but no CUDA module specified in \$5"
+        fi
+    else
+        echo "dotests: Skipping CUDA module load for build type: $1"
+    fi
+
     # Initialize directory to hold testOutputs
     rm -Rf ${SST_TEST_OUTPUTS}
     mkdir -p ${SST_TEST_OUTPUTS}
@@ -1879,11 +1893,6 @@ else
                     ModuleEx unload cuda
                     ModuleEx load ${cuda_version}
                     export CUDA_INSTALL_PATH=${CUDA_HOME}
-
-                    #TODO make args?
-                    # load cross-compiler cruft
-                    ModuleEx load riscv-tools/gcc/gcc-14.2.0-riscv
-                    ModuleEx load llvm/18.1.8
                 else
                     echo "dotests: WARNING: CUDA build type but no CUDA module specified in \$5"
                 fi
