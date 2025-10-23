@@ -262,18 +262,13 @@ dotests() {
     echo $LD_LIBRARY_PATH | sed 's/:/\n/g'
     echo ' '
 
-
     if [[ "$1" == "sstmainline_config_linux_with_cuda" ]] || [[ "$1" == "sstmainline_config_linux_with_cuda_no_mpi" ]]; then
-        if [[ -n "${cuda_version}" && "${cuda_version}" != "none" ]]; then
-            #TODO make args?
-            # load cross-compiler cruft
-            ModuleEx load riscv-tools/gcc/gcc-14.2.0-riscv
-            ModuleEx load llvm/18.1.8
-        else
-            echo "dotests: WARNING: CUDA build type but no CUDA module specified in \$5"
-        fi
+        #TODO make args?
+        # load cross-compiler cruft
+        ModuleEx load riscv-tools/gcc/gcc-14.2.0-riscv
+        ModuleEx load llvm/18.1.8
     else
-        echo "dotests: Skipping CUDA module load for build type: $1"
+        echo "dotests: Skipping cross-compiler modules for build type: $1"
     fi
 
     # Initialize directory to hold testOutputs
@@ -287,6 +282,9 @@ dotests() {
     # Initialize directory to hold temporary test input files
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
+
+    echo "dotests: LISTING LOADED MODULES"
+    ModuleEx list
 
     # FOR TESTS WITHOUT CORE, WE USE THE ORIG BAMBOO TESTSUITE; OTHERWISE
     # LET THE NEW TESTFRAMEWORKS RUN, NORMALLY
