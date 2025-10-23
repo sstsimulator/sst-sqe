@@ -309,14 +309,14 @@ dotests() {
 
 ### NOTE: $1 is set to sstmainline_config_all is set when doing a make dist test, we want to avoid this
 
-    #
-    #  Run only GPU test only
-    #
-    if [[ ($1 == "sstmainline_config_linux_with_cuda") || ($1 == "sstmainline_config_linux_with_cuda_no_mpi") ]]
-    then
-        ${SST_TEST_SUITES}/testSuite_gpgpu.sh
-        return
-    fi
+#     #
+#     #  Run only GPU test only
+#     #
+#     if [[ ($1 == "sstmainline_config_linux_with_cuda") || ($1 == "sstmainline_config_linux_with_cuda_no_mpi") ]]
+#     then
+#         ${SST_TEST_SUITES}/testSuite_gpgpu.sh
+#         return
+#     fi
 
     PATH=${PATH}:${SST_ROOT}/../sqe/test/utilities
 
@@ -1873,10 +1873,23 @@ else
                 darwinSetMPI ${build_type} ${mpi_type} ${compiler_type}
             fi
 
-            # Load Cuda Module
-            ModuleEx unload cuda
-            ModuleEx load ${cuda_version}
-            export CUDA_INSTALL_PATH=${CUDA_HOME}
+            if [[ "$1" == "sstmainline_config_linux_with_cuda" ]] || [[ "$1" == "sstmainline_config_linux_with_cuda_no_mpi" ]]; then
+                if [[ -n "${cuda_version}" && "${cuda_version}" != "none" ]]; then
+                    # load cuda module
+                    ModuleEx unload cuda
+                    ModuleEx load ${cuda_version}
+                    export CUDA_INSTALL_PATH=${CUDA_HOME}
+
+                    #TODO make args?
+                    # load cross-compiler cruft
+                    ModuleEx load riscv-tools/gcc/gcc-14.2.0-riscv
+                    ModuleEx load llvm/18.1.8
+                else
+                    echo "dotests: WARNING: CUDA build type but no CUDA module specified in \$5"
+                fi
+            else
+                echo "dotests: Skipping CUDA module load for build type: $1"
+            fi
 
             # Figure out Python Configuration
             # Note: Selecting python is confusing as different system have different links
