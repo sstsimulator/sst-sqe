@@ -487,8 +487,8 @@ getconfig() {
             echo "SETUP THE GPGPUSIM ENVIRONMENT"
             echo "==== ENV BEFORE GPGPUSIM ENV SETUP ==="
             env|sort
-            echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
-            . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
+            echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst"
+            . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst
             echo "==== ENV AFTER  GPGPUSIM ENV SETUP ==="
             env|sort
             ;;
@@ -516,8 +516,8 @@ getconfig() {
             echo "SETUP THE GPGPUSIM ENVIRONMENT"
             echo "==== ENV BEFORE GPGPUSIM ENV SETUP ==="
             env|sort
-            echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
-            . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
+            echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst"
+            . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst
             echo "==== ENV AFTER  GPGPUSIM ENV SETUP ==="
             env|sort
             ;;

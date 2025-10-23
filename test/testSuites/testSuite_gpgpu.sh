@@ -84,8 +84,8 @@ GPGPU_environment() {
     echo ""
     module li
     echo ""
-    echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
-    . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
+    echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst"
+    . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst
 
     echo -e "GPGPUSIM_CONFIG ${GPGPUSIM_CONFIG}\n"
     echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
