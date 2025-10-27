@@ -267,6 +267,17 @@ dotests() {
         # load cross-compiler cruft
         ModuleEx load riscv-tools/gcc/gcc-14.2.0-riscv
         ModuleEx load llvm/18.1.8
+
+        echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
+        echo ""
+        module li
+        echo ""
+        echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst"
+        . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst
+
+        echo -e "GPGPUSIM_CONFIG ${GPGPUSIM_CONFIG}\n"
+        echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
+
     else
         echo "dotests: Skipping cross-compiler modules for build type: $1"
     fi
