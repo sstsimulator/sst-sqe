@@ -330,19 +330,7 @@ dotests() {
         ./test/utilities/GenerateOutputConfigTest
     fi
 
-### NOTE: $1 is set to sstmainline_config_all is set when doing a make dist test, we want to avoid this
-
-#     #
-#     #  Run only GPU test only
-#     #
-#     if [[ ($1 == "sstmainline_config_linux_with_cuda") || ($1 == "sstmainline_config_linux_with_cuda_no_mpi") ]]
-#     then
-#         ${SST_TEST_SUITES}/testSuite_gpgpu.sh
-#         return
-#     fi
-
     PATH=${PATH}:${SST_ROOT}/../sqe/test/utilities
-
 }
 ###-END-DOTESTS
 
