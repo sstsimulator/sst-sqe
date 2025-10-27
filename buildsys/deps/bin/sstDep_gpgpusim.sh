@@ -1,5 +1,5 @@
 # !/bin/bash
-# sstDep_GPGPUSim.sh
+# sstDep_gpgpusim.sh
 
 # Description:
 
@@ -20,7 +20,7 @@ GPGPU_BRANCH=$1
 # Function:
 #     sstDepsStage_GPGPUSim
 # Purpose:
-#     Prepare patching.
+#     Prepare GPGPUSim
 # Inputs:
 #     None
 # Outputs:
@@ -30,7 +30,7 @@ GPGPU_BRANCH=$1
 # Caveats:
 #     No patching is anticipated!  Cuda library is from module.
 #-------------------------------------------------------------------------------
-export SST_DEPS_SRC_STAGED_GPGPUSIM=${SST_DEPS_SRC_STAGING}/sst-gpgpusim
+export SST_DEPS_SRC_STAGED_GPGPUSIM=${SST_DEPS_SRC_STAGING}/gpgpu-sim_distribution
 
 sstDepsStage_GPGPUSim ()
 {
@@ -44,8 +44,8 @@ sstDepsStage_GPGPUSim ()
         echo " "
         date
         echo ' '
-        echo "git clone https://github.com/purdue-aalp/sst-gpgpusim-external.git sst-gpgpusim"
-        git clone https://github.com/purdue-aalp/sst-gpgpusim-external.git sst-gpgpusim
+        echo "git clone https://github.com/accel-sim/gpgpu-sim_distribution.git"
+        git clone https://github.com/accel-sim/gpgpu-sim_distribution.git
         retVal=$?
         echo ' '
         date
@@ -68,7 +68,7 @@ sstDepsStage_GPGPUSim ()
     if [ $retVal -ne 0 ]                     ## retVal from git clone
     then
         # bail out on error
-        echo "ERROR: sstDep_GPGPUSim.sh: sst-gpgpusim git fetch failure"
+        echo "ERROR: sstDep_gpgpusim.sh: sst-gpgpusim git fetch failure"
         sstDepsAnnounce -h $FUNCNAME -m \
           "Is http_proxy configured properly in $HOME/.wgetrc?"
         popd
@@ -77,8 +77,8 @@ sstDepsStage_GPGPUSim ()
 
     #  Move into the sst-gpgpusim directory
     pushd ${SST_DEPS_SRC_STAGED_GPGPUSIM}
-    git checkout $GPGPU_BRANCH
-    echo "sst-gpgpusim.git" `git log HEAD | sed 4q` >&2
+#     git checkout $GPGPU_BRANCH
+    echo "gpgpu-sim_distribution.git" `git log HEAD | sed 4q` >&2
     ls -l
 
     popd
@@ -108,14 +108,14 @@ sstDepsDeploy_GPGPUSim ()
 
     module li
 
-    source setup_environment
+    source setup_environment sst
     make
     retval=$?
     if [ $retval -ne 0 ]
     then
         # bail out on error
         pwd
-        echo "ERROR: sstDep_GPGPUSim.sh: make failure"
+        echo "ERROR: sstDep_gpgpusim.sh: make failure"
         return $retval
     fi
 

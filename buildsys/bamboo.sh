@@ -262,6 +262,26 @@ dotests() {
     echo $LD_LIBRARY_PATH | sed 's/:/\n/g'
     echo ' '
 
+    if [[ "$1" == "sstmainline_config_linux_with_cuda" ]] || [[ "$1" == "sstmainline_config_linux_with_cuda_no_mpi" ]]; then
+        #TODO make args?
+        # load cross-compiler cruft
+        ModuleEx load riscv-tools/gcc/gcc-14.2.0-riscv
+        ModuleEx load llvm/18.1.8
+
+        echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
+        echo ""
+        module li
+        echo ""
+        echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst"
+        . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst
+
+        echo -e "GPGPUSIM_CONFIG ${GPGPUSIM_CONFIG}\n"
+        echo -e "LD_LIBRARY_PATH ${LD_LIBRARY_PATH}\n"
+
+    else
+        echo "dotests: Skipping cross-compiler modules for build type: $1"
+    fi
+
     # Initialize directory to hold testOutputs
     rm -Rf ${SST_TEST_OUTPUTS}
     mkdir -p ${SST_TEST_OUTPUTS}
@@ -273,6 +293,9 @@ dotests() {
     # Initialize directory to hold temporary test input files
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
+
+    echo "dotests: LISTING LOADED MODULES"
+    ModuleEx list
 
     # FOR TESTS WITHOUT CORE, WE USE THE ORIG BAMBOO TESTSUITE; OTHERWISE
     # LET THE NEW TESTFRAMEWORKS RUN, NORMALLY
@@ -307,19 +330,7 @@ dotests() {
         ./test/utilities/GenerateOutputConfigTest
     fi
 
-### NOTE: $1 is set to sstmainline_config_all is set when doing a make dist test, we want to avoid this
-
-    #
-    #  Run only GPU test only
-    #
-    if [[ ($1 == "sstmainline_config_linux_with_cuda") || ($1 == "sstmainline_config_linux_with_cuda_no_mpi") ]]
-    then
-        ${SST_TEST_SUITES}/testSuite_gpgpu.sh
-        return
-    fi
-
     PATH=${PATH}:${SST_ROOT}/../sqe/test/utilities
-
 }
 ###-END-DOTESTS
 
@@ -479,7 +490,7 @@ getconfig() {
             depsStr="-r default -G default -D default -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_HOME --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="${NOBUILD}"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -487,11 +498,12 @@ getconfig() {
             echo "SETUP THE GPGPUSIM ENVIRONMENT"
             echo "==== ENV BEFORE GPGPUSIM ENV SETUP ==="
             env|sort
-            echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
-            . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
+            echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst"
+            . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst
             echo "==== ENV AFTER  GPGPUSIM ENV SETUP ==="
             env|sort
             ;;
+
         sstmainline_config_linux_with_cuda_no_mpi)
             #-----------------------------------------------------------------
             # sstmainline_config_linux_with_cuda_no_mpi
@@ -503,21 +515,22 @@ getconfig() {
                 exit 1
             fi
             export | egrep SST_DEPS_
+            export SST_WITH_CUDA=1
             coreMiscEnv="${cc_environment}"
             elementsMiscEnv="${cc_environment}"
             depsStr="-r default -G default -D default -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_HOME --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
             macroConfigStr="${NOBUILD}"
-            externalelementConfigStr="${NOBUILD}"
-            junoConfigStr="${NOBUILD}"
+            externalelementConfigStr="$externalelementbaseoptions"
+            junoConfigStr="$junobaseoptions"
             # Must Setup the GPGPUSIM Environment
             echo "SETUP THE GPGPUSIM ENVIRONMENT"
             echo "==== ENV BEFORE GPGPUSIM ENV SETUP ==="
             env|sort
-            echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment"
-            . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment
+            echo ". ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst"
+            . ${SST_DEPS_INSTALL_GPGPUSIM}/setup_environment sst
             echo "==== ENV AFTER  GPGPUSIM ENV SETUP ==="
             env|sort
             ;;
@@ -755,54 +768,107 @@ linuxSetMPI() {
 
     set_up_environment_modules
 
-   # build MPI selector
-   if [[ "$2" =~ openmpi.* ]]
-   then
-       mpiStr="ompi-"$(expr "$2" : '.*openmpi-\([0-9]\(\.[0-9][0-9]*\)*\)')
-   else
-       mpiStr=${2}
-   fi
+    local mpi="${mpi_type}"
+    local compiler="${compiler_type}"
 
-   if [[ "${compiler}" == "default" ]]
-   then
-       desiredMPI="${2}"
-   else
-       desiredMPI="${2}_${4}"
-       # load non-default compiler
-       if   [[ "$3" =~ gcc.* ]]
-       then
-           ModuleEx load gcc/${4}
-           echo "LOADED gcc/${4} compiler"
-       elif [[ "$3" =~ intel.* ]]
-       then
-           ModuleEx load intel/${4}
-           echo "LOADED intel/${4} compiler"
-       fi
-   fi
+    # init mpi name to load later
+    local mpiStr="$mpi"
+    if [[ "$mpi" =~ ^openmpi-[0-9] ]]
+    then
+        local ver
+        ver="$(expr "$mpi" : '.*openmpi-\([0-9]\(\.[0-9][0-9]*\)*\)')"
+        [[ -n "$ver" ]] && mpiStr="ompi-$ver"
+    fi
 
-   echo "CHECK:  \$2: ${2}"
-   echo "CHECK:  \$3: ${3}"
-   echo "CHECK:  \$desiredMPI: ${desiredMPI}"
-   gcc --version 2>&1 | grep ^g
+    # final name to be loaded, maybe appended by compiler
+    local desiredMPI="$mpiStr"
 
-   # load MPI
-   ModuleEx unload mpi # unload any default to avoid conflict error
-   case $2 in
-       none)
-           echo "MPI requested as \"none\".    No MPI loaded"
-           ;;
-       *)
-           echo "Try loading MPI module as-is: ${desiredMPI}"
-           if ModuleEx load "${desiredMPI}"; then
-               return 0
-           fi
-           # Not successful, try something else...
-           echo "Try loading mpi/${desiredMPI}"
-           if ! ModuleEx load "mpi/${desiredMPI}"
-           then
-               exit 1
-           fi
-           ;;
+    # load non-default compiler
+    local family version normalize_name fuzzy_match
+    if [[ "$compiler" != "default" && "$compiler" != "none" ]]
+    then
+        normalize_name="${compiler}"
+        normalize_name="${normalize_name//:/\/}"
+
+        if [[ "$normalize_name" == */* ]]
+        then
+            family="${normalize_name%%/*}"
+            version="${normalize_name#*/}"
+            [[ "$version" == "$family"-* ]] && version="${version#${family}-}"
+        else
+            family="${normalize_name%%-*}"
+            version=""
+            [[ "$normalize_name" == *-* ]] && version="${normalize_name#*-}"
+        fi
+
+        if [[ -z "${version}" ]]
+        then
+            echo "Compiler '${compiler}' has no version; attempting simple load: ${family}"
+            ModuleEx load "${family}" || { echo "ERROR: failed to load module '${family}'"; exit 1; }
+        else
+            if module -t avail 2>&1 | grep -xE ".*/?${family}/${version}"
+            then
+                echo "Loading module: ${family}/${version}"
+                ModuleEx load "${family}/${version}" || { echo "ERROR: failed to load ${family}/${version}"; exit 1; }
+            else
+                fuzzy_match="$(module -t avail 2>&1 | awk -v f="${family}" -v v="${version}" 'BEGIN{IGNORECASE=1} $0 ~ f && $0 ~ v {print $0}' | head -n1)"
+                if [[ -n "${fuzzy_match}" ]]
+                then
+                    echo "Loading module (fuzzy match): ${fuzzy_match}"
+                    ModuleEx load "${fuzzy_match}" || { echo "ERROR: failed to load ${fuzzy_match}"; exit 1; }
+                else
+                    echo "ERROR: no module found containing '${family}' and '${version}'"
+                    exit 1
+                fi
+            fi
+        fi
+
+        # Append compiler version to desiredMPI
+        [[ -n "$version" ]] && desiredMPI="${mpiStr}_${version}"
+    fi
+    gcc --version 2>&1 | grep ^g
+
+    echo "CHECK linuxSetMPI:"
+    echo "  mpi_type=${mpi_type}"
+    echo "  compiler_type=${compiler_type}"
+    echo "  desiredMPI=${desiredMPI}"
+
+    # load MPI
+    ModuleEx unload mpi # unload any default to avoid conflict error
+    case "$mpi" in
+        none)
+            echo "MPI requested as \"none\".    No MPI loaded"
+            ;;
+        *)
+            echo "Try loading suggested MPI module: ${desiredMPI}"
+            if ModuleEx load "${desiredMPI}"; then
+                echo "Succeeded loading MPI module as ${desiredMPI}"
+                return 0
+            fi
+
+            echo "Try loading MPI module as mpi/${desiredMPI}"
+            if ModuleEx load "mpi/${desiredMPI}"
+            then
+                echo "Succeeded loading MPI module as mpi/${desiredMPI}"
+                return 0
+            fi
+
+            echo "Try loading MPI module as-is: ${mpi}"
+            if ModuleEx load "${mpi}"; then
+                echo "Succeeded loading MPI module as ${mpi}"
+                return 0
+            fi
+
+            echo "Try loading MPI module as mpi/${mpi}"
+            if ModuleEx load "mpi/${mpi}"
+            then
+                echo "Succeeded loading MPI module as mpi/${mpi}"
+                return 0
+            fi
+
+            echo "ERROR: could not load any MPI module variant:"
+            exit 1
+            ;;
     esac
 }
 
@@ -1643,11 +1709,12 @@ function ExitOfScriptHandler {
 #   sst-macro_withsstcore_linux
 #   sst-macro_nosstcore_linux
 #   sst_Macro_make_dist
+#   sstmainline_config_linux_with_cuda
+#   sstmainline_config_with_cuda_no_mpi
 #   documentation
 #
 # UNUSED
-#   sstmainline_config_with_cuda
-#   sstmainline_config_with_cuda_no_mpi
+#
 #=========================================================================
 trap ExitOfScriptHandler EXIT
 
@@ -1863,7 +1930,6 @@ else
             SST_DIST_MPI=${mpi_type}
             _UNUSED="none"
             SST_DIST_PARAM4=${compiler_type}
-            SST_DIST_CUDA=`echo ${cuda_version} | sed 's/cuda-//g'`
             SST_DIST_PYTHON=${pythonX}
 
             # Configure MPI and Compiler (Linux only)
@@ -1874,17 +1940,18 @@ else
                 darwinSetMPI ${build_type} ${mpi_type} ${compiler_type}
             fi
 
-            # Load Cuda Module
-            case ${cuda_version} in
-                cuda-8.0.44|cuda-8.0.61|cuda-9.1.85)
-                    echo "bamboo.sh: cuda-${SST_DIST_CUDA} selected"
+            if [[ "$1" == "sstmainline_config_linux_with_cuda" ]] || [[ "$1" == "sstmainline_config_linux_with_cuda_no_mpi" ]]; then
+                if [[ -n "${cuda_version}" && "${cuda_version}" != "none" ]]; then
+                    # load cuda module
                     ModuleEx unload cuda
-                    ModuleEx load cuda/${SST_DIST_CUDA}
-                    ;;
-                *)
-                    echo  "No Cuda loaded as requested"
-                    ;;
-            esac
+                    ModuleEx load ${cuda_version}
+                    export CUDA_INSTALL_PATH=${CUDA_HOME}
+                else
+                    echo "dotests: WARNING: CUDA build type but no CUDA module specified in \$5"
+                fi
+            else
+                echo "dotests: Skipping CUDA module load for build type: $1"
+            fi
 
             # Figure out Python Configuration
             # Note: Selecting python is confusing as different system have different links
