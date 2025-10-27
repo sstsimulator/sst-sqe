@@ -842,23 +842,27 @@ linuxSetMPI() {
         *)
             echo "Try loading suggested MPI module: ${desiredMPI}"
             if ModuleEx load "${desiredMPI}"; then
+                echo "Succeeded loading MPI module as ${desiredMPI}"
                 return 0
             fi
 
             echo "Try loading MPI module as mpi/${desiredMPI}"
             if ModuleEx load "mpi/${desiredMPI}"
             then
+                echo "Succeeded loading MPI module as mpi/${desiredMPI}"
                 return 0
             fi
 
             echo "Try loading MPI module as-is: ${mpi}"
             if ModuleEx load "${mpi}"; then
+                echo "Succeeded loading MPI module as ${mpi}"
                 return 0
             fi
 
             echo "Try loading MPI module as mpi/${mpi}"
             if ModuleEx load "mpi/${mpi}"
             then
+                echo "Succeeded loading MPI module as mpi/${mpi}"
                 return 0
             fi
 
