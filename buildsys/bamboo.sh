@@ -840,16 +840,30 @@ linuxSetMPI() {
             echo "MPI requested as \"none\".    No MPI loaded"
             ;;
         *)
-            echo "Try loading MPI module as-is: ${desiredMPI}"
+            echo "Try loading suggested MPI module: ${desiredMPI}"
             if ModuleEx load "${desiredMPI}"; then
                 return 0
             fi
-            # Not successful, try something else...
-            echo "Try loading mpi/${desiredMPI}"
-            if ! ModuleEx load "mpi/${desiredMPI}"
+
+            echo "Try loading MPI module as mpi/${desiredMPI}"
+            if ModuleEx load "mpi/${desiredMPI}"
             then
-                exit 1
+                return 0
             fi
+
+            echo "Try loading MPI module as-is: ${mpi}"
+            if ModuleEx load "${mpi}"; then
+                return 0
+            fi
+
+            echo "Try loading MPI module as mpi/${mpi}"
+            if ModuleEx load "mpi/${mpi}"
+            then
+                return 0
+            fi
+
+            echo "ERROR: could not load any MPI module variant:"
+            exit 1
             ;;
     esac
 }
@@ -1692,10 +1706,11 @@ function ExitOfScriptHandler {
 #   sst-macro_nosstcore_linux
 #   sst_Macro_make_dist
 #   sstmainline_config_linux_with_cuda
+#   sstmainline_config_with_cuda_no_mpi
 #   documentation
 #
 # UNUSED
-#   sstmainline_config_with_cuda_no_mpi
+#
 #=========================================================================
 trap ExitOfScriptHandler EXIT
 
