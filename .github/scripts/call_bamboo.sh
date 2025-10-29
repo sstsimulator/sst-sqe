@@ -5,6 +5,8 @@
 
 set -euo pipefail
 
+export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+
 # needed for ncurses part of interactive sst-info
 export TERM=dumb
 MAKEFLAGS="-j$(nproc)"
