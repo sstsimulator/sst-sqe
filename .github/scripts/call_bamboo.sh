@@ -29,6 +29,8 @@ if [[ -z "${CUDA_TYPE}" ]]; then
     CUDA_TYPE=none
 fi
 
+export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+
 # needed for ncurses part of interactive sst-info
 echo "TERM: ${TERM}"
 export TERM=dumb
