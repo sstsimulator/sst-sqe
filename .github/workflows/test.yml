@@ -19,49 +19,54 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-14
-            bamboo-call-line:
-              build-type: sstmainline_coreonly_config
-              compiler-type: none
-              mpi-type: none
-          - os: macos-14
-            bamboo-call-line:
-              build-type: sstmainline_config_no_mpi
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-22.04
-            bamboo-call-line:
-              build-type: sstmainline_config
-              compiler-type: none
-              mpi-type: none
+          # - os: macos-14
+          #   bamboo-call-line:
+          #     build-type: sstmainline_coreonly_config
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: macos-14
+          #   bamboo-call-line:
+          #     build-type: sstmainline_config_no_mpi
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-22.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_config
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-24.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_config
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-24.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_coreonly_config
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-24.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_config_no_mpi
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-24.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_coreonly_config_no_mpi
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-24.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_config_make_dist_test
+          #     compiler-type: none
+          #     mpi-type: none
+          # - os: ubuntu-24.04
+          #   bamboo-call-line:
+          #     build-type: sstmainline_config_core_make_dist_test
+          #     compiler-type: none
+          #     mpi-type: none
           - os: ubuntu-24.04
             bamboo-call-line:
-              build-type: sstmainline_config
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-24.04
-            bamboo-call-line:
-              build-type: sstmainline_coreonly_config
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-24.04
-            bamboo-call-line:
-              build-type: sstmainline_config_no_mpi
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-24.04
-            bamboo-call-line:
-              build-type: sstmainline_coreonly_config_no_mpi
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-24.04
-            bamboo-call-line:
-              build-type: sstmainline_config_make_dist_test
-              compiler-type: none
-              mpi-type: none
-          - os: ubuntu-24.04
-            bamboo-call-line:
-              build-type: sstmainline_config_core_make_dist_test
+              build-type: sstmainline_config_with_pebil
               compiler-type: none
               mpi-type: none
     runs-on: ${{ matrix.os }}
@@ -83,27 +88,27 @@ jobs:
             }}
           max-size: "4GB"
           verbose: 2
-      - name: Clone Spack
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
-        with:
-          persist-credentials: false
-          # Take the latest (develop) version.
-          repository: spack/spack
-          ref: develop
-          path: spack
-      - name: Add Spack to PATH
-        run: |
-          echo "${PWD}/spack/bin" >> "${GITHUB_PATH}"
-          # echo "mirror_name=github-container-registry" >> "${GITHUB_ENV}"
-      - name: Find compilers for Spack
-        run: |
-          spack compiler find
-          spack config blame config
-          spack debug report
-      - name: try module stuff
-        shell: /bin/bash -el {0}
-        run: |
-          module avail
+      # - name: Clone Spack
+      #   uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+      #   with:
+      #     persist-credentials: false
+      #     # Take the latest (develop) version.
+      #     repository: spack/spack
+      #     ref: develop
+      #     path: spack
+      # - name: Add Spack to PATH
+      #   run: |
+      #     echo "${PWD}/spack/bin" >> "${GITHUB_PATH}"
+      #     # echo "mirror_name=github-container-registry" >> "${GITHUB_ENV}"
+      # - name: Find compilers for Spack
+      #   run: |
+      #     spack compiler find
+      #     spack config blame config
+      #     spack debug report
+      # - name: try module stuff
+      #   shell: /bin/bash -el {0}
+      #   run: |
+      #     module avail
       - name: set env and prepare dir structure
         run: |
           # Keep this common in order to increase ccache effectiveness
@@ -118,6 +123,9 @@ jobs:
           mkdir -p "${pristine}"
           cd "${pristine}"
           wget https://github.com/umd-memsys/DRAMSim2/archive/refs/tags/v2.2.2.tar.gz
+      - name: Reconfigure git to use HTTP authentication
+        run: >
+          git config --global url."https://github.com/".insteadOf git@github.com:
       - name: run bamboo
         env:
           BUILD_TYPE: ${{ matrix.bamboo-call-line.build-type }}

@@ -5,6 +5,8 @@
 
 set -euo pipefail
 
+export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+
 # needed for ncurses part of interactive sst-info
 export TERM=dumb
 MAKEFLAGS="-j$(nproc)"
@@ -16,6 +18,13 @@ export SST_DEPS_USER_MODE=1
 mkdir -p "${SST_DEPS_USER_DIR}/devel/trunk"
 mv "${GITHUB_WORKSPACE}" "${SST_DEPS_USER_DIR}/devel/sqe"
 cd "${SST_DEPS_USER_DIR}/devel/trunk"
+# As a default, this works because
+# - they're the platform/distro-installed (not GitHub Actions-installed) version
+# - on macOS they're symlinked to Apple Clang
+# If we want Clang on Linux, look inside the conditional for COMPILER_TYPE to
+# see what to do.
+export CC=/usr/bin/gcc
+export CXX=/usr/bin/g++
 if [[ "${COMPILER_TYPE}" != "none" ]]; then
     if [[ "${COMPILER_TYPE}" == "clang" ]]; then
         CC="$(command -v clang)"
