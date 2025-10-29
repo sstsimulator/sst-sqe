@@ -88,27 +88,27 @@ jobs:
             }}
           max-size: "4GB"
           verbose: 2
-      - name: Clone Spack
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
-        with:
-          persist-credentials: false
-          # Take the latest (develop) version.
-          repository: spack/spack
-          ref: develop
-          path: spack
-      - name: Add Spack to PATH
-        run: |
-          echo "${PWD}/spack/bin" >> "${GITHUB_PATH}"
-          # echo "mirror_name=github-container-registry" >> "${GITHUB_ENV}"
-      - name: Find compilers for Spack
-        run: |
-          spack compiler find
-          spack config blame config
-          spack debug report
-      - name: try module stuff
-        shell: /bin/bash -el {0}
-        run: |
-          module avail
+      # - name: Clone Spack
+      #   uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+      #   with:
+      #     persist-credentials: false
+      #     # Take the latest (develop) version.
+      #     repository: spack/spack
+      #     ref: develop
+      #     path: spack
+      # - name: Add Spack to PATH
+      #   run: |
+      #     echo "${PWD}/spack/bin" >> "${GITHUB_PATH}"
+      #     # echo "mirror_name=github-container-registry" >> "${GITHUB_ENV}"
+      # - name: Find compilers for Spack
+      #   run: |
+      #     spack compiler find
+      #     spack config blame config
+      #     spack debug report
+      # - name: try module stuff
+      #   shell: /bin/bash -el {0}
+      #   run: |
+      #     module avail
       - name: set env and prepare dir structure
         run: |
           # Keep this common in order to increase ccache effectiveness
