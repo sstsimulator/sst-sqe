@@ -422,7 +422,7 @@ getconfig() {
             depsStr="$allDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
-            elementsConfigStr="$elementsbaseoptions --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-otf2=$SST_DEPS_INSTALL_OTF2"
             macroConfigStr="${NOBUILD}"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -479,7 +479,7 @@ getconfig() {
             depsStr="-r default -G default -D default -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-otf2=$SST_DEPS_INSTALL_OTF2"
             macroConfigStr="${NOBUILD}"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -508,7 +508,7 @@ getconfig() {
             depsStr="-r default -G default -D default -A 1.1"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mem-pools --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-cuda=$CUDA_ROOT --with-gpgpusim=$SST_DEPS_INSTALL_GPGPUSIM --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-otf2=$SST_DEPS_INSTALL_OTF2"
             macroConfigStr="${NOBUILD}"
             externalelementConfigStr="${NOBUILD}"
             junoConfigStr="${NOBUILD}"
@@ -537,7 +537,7 @@ getconfig() {
             depsStr="$allDeps"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv --disable-mpi"
-            elementsConfigStr="$elementsbaseoptions --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-ramulator=$SST_DEPS_INSTALL_RAMULATOR --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-otf2=$SST_DEPS_INSTALL_OTF2"
             macroConfigStr="${NOBUILD}"
             externalelementConfigStr="$externalelementbaseoptions"
             junoConfigStr="$junobaseoptions"
@@ -1991,6 +1991,14 @@ else
                 else
                     echo "INTEL PIN VER 3 ENVIRONMENT MODULE NOT FOUND ON THIS HOST."
                 fi
+            fi
+
+            # Load otf2 module
+            if ModuleEx avail | grep -E -q "otf2/otf2-3.1.1"; then
+                echo "LOADING OTF2 MODULE"
+                ModuleEx load otf2/otf2-3.1.1
+                echo $OTF2_INSTALL_PREFIX
+                ls $OTF2_INSTALL_PREFIX
             fi
 
             echo "bamboo.sh: LISTING LOADED MODULES"

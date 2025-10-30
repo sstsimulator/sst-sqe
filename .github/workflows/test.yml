@@ -14,6 +14,7 @@ permissions: {}
 
 jobs:
   run-bamboo:
+    name: Run bamboo.sh
     strategy:
       fail-fast: false
       matrix:
@@ -72,7 +73,7 @@ jobs:
         run: |
           bash ./.github/scripts/install_os_level_dependencies.sh
       - name: ccache
-        uses: hendrikmuhs/ccache-action@63069e3931dedbf3b63792097479563182fe70d1  # v1.2
+        uses: hendrikmuhs/ccache-action@bfa03e1de4d7f7c3e80ad9109feedd05c4f5a716  # v1.2.19
         with:
           append-timestamp: false
           create-symlink: true
