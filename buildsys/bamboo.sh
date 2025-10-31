@@ -1780,7 +1780,7 @@ export SST_BUILD_TYPE=""
 # What should be compiled and tested?
 # - If true, merge the development branch for each repository into the target or specified branch.
 # - If false, use each given branch as-is.
-export SST_TEST_MERGE=${SST_TEST_MERGE:-true}
+export SST_TEST_MERGE=${SST_TEST_MERGE:-false}
 
 # Number of threads and (MPI) ranks to run tests with (not compile with)
 export SST_MULTI_THREAD_COUNT=${SST_MULTI_THREAD_COUNT:-1}
