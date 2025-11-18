@@ -1,4 +1,4 @@
-# !/bin/bash
+#!/bin/bash
 # sstDep_goblin_hmcsim_stabledevel.sh
 
 # Description:
@@ -102,12 +102,26 @@ sstDepsDeploy_goblin_hmcsim ()
     pushd ${SST_DEPS_SRC_STAGED_GOBLIN_HMCSIM}
 
     # Build and install GOBLIN_HMCSIM
-    make
+    local libname=hmcsim
+    make lib${libname}.a
     retval=$?
     if [ $retval -ne 0 ]
     then
         # bail out on error
-        echo "ERROR: sstDep_goblin_hmcsim_stabledevel.sh: goblin_hmcsim make failure"
+        echo "ERROR: sstDep_goblin_hmcsim_stabledevel.sh: goblin_hmcsim make static failure"
+        popd
+        return $retval
+    fi
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        make lib${libname}.dylib
+    else
+        make lib${libname}.so
+    fi
+    retval=$?
+    if [ $retval -ne 0 ]
+    then
+        # bail out on error
+        echo "ERROR: sstDep_goblin_hmcsim_stabledevel.sh: goblin_hmcsim make shared failure"
         popd
         return $retval
     fi
