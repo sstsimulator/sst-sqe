@@ -112,6 +112,7 @@ sstDepsDeploy_goblin_hmcsim ()
         popd
         return $retval
     fi
+    find "${SST_DEPS_SRC_STAGED_GOBLIN_HMCSIM}" -name "*.o" -delete
     if [[ "$(uname -s)" == "Darwin" ]]; then
         make lib${libname}.dylib
     else
@@ -125,6 +126,7 @@ sstDepsDeploy_goblin_hmcsim ()
         popd
         return $retval
     fi
+    find "${SST_DEPS_SRC_STAGED_GOBLIN_HMCSIM}" -name "*.o" -delete
 
     popd
 
