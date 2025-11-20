@@ -785,6 +785,13 @@ linuxSetMPI() {
    echo "CHECK:  \$desiredMPI: ${desiredMPI}"
    gcc --version 2>&1 | grep ^g
 
+   # load ccache
+   echo "Try loading ccache/ccache-4.12"
+   if ModuleEx load ccache/ccache-4.12; then
+       echo "ccache successfully loaded"
+       export CCACHE_MAXSIZE=10G
+   fi
+
    # load MPI
    ModuleEx unload mpi # unload any default to avoid conflict error
    case $2 in
