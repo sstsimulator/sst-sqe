@@ -785,6 +785,13 @@ linuxSetMPI() {
    echo "CHECK:  \$desiredMPI: ${desiredMPI}"
    gcc --version 2>&1 | grep ^g
 
+   # load ccache
+   echo "Try loading ccache/ccache-4.12"
+   if ModuleEx load ccache/ccache-4.12; then
+       echo "ccache successfully loaded"
+       export CCACHE_MAXSIZE=10G
+   fi
+
    # load MPI
    ModuleEx unload mpi # unload any default to avoid conflict error
    case $2 in
@@ -1479,7 +1486,7 @@ dobuild() {
                 ;;
             *) # unknown option
                 echo "dobuild () : Unknown option $opt"
-                return 126 # command can't execute
+                return 126 # command cant execute
                 ;;
         esac
     done
@@ -2079,7 +2086,7 @@ then
 
                 #############################################################################
                 # ADDING THE NEW TEST FRAMEWORKS INTO THE TEST SYSTEM
-                # NOTE: We need to do this because the bamboo.sh script is exec'ed not sourced,
+                # NOTE: We need to do this because the bamboo.sh script is execed not sourced,
                 #       and therefore loads the desired modules and sets up the environment
                 #       variables as necessary.  If we dont do it here, then when bamboo.sh
                 #       exits, the environment (and loaded modules) are reset, and we would
