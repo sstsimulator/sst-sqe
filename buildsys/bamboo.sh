@@ -1968,7 +1968,40 @@ else
                     ;;
             esac
 
-            searchForPython
+            # SST_PYTHON_USER_SPECIFIED means two different things:
+            #
+            # 1. Pass the value of SST_PYTHON_CFG_EXE explicitly to core config.
+            #
+            # 2. Allow setting of SST_PYTHON_CFG_EXE externally.  If
+            # SST_PYTHON_USER_SPECIFIED is defined but SST_PYTHON_CFG_EXE
+            # isn't, search for Python via PATH precedence as before.
+            if [ -n "${SST_PYTHON_USER_SPECIFIED}" ]; then
+                echo "SST_PYTHON_USER_SPECIFIED is defined, trying to read SST_PYTHON_CFG_EXE before searching PATH"
+                if [ -n "${SST_PYTHON_CFG_EXE}" ]; then
+                    if command -v "${SST_PYTHON_CFG_EXE}" > /dev/null 2>&1; then
+                        SST_PYTHON_HOME="$("${SST_PYTHON_CFG_EXE}" --prefix)"
+                        export SST_PYTHON_HOME
+                    else
+                        echo "Invalid value for SST_PYTHON_CFG_EXE: ${SST_PYTHON_CFG_EXE}" >&2
+                        exit 128
+                    fi
+                    # Because SST_PYTHON_APP_EXE (the interpreter) cannot be
+                    # reliably determined from python{,3}-config, we require
+                    # this to be externally set when SST_PYTHON_CFG_EXE is
+                    # externally set.
+                    if [ -z "${SST_PYTHON_APP_EXE}" ]; then
+                        echo "SST_PYTHON_APP_EXE must be set when both SST_PYTHON_USER_SPECIFIED and SST_PYTHON_CFG_EXE are set" >&2
+                        exit 128
+                    # elif ! test "${SST_PYTHON_APP_EXE}" > /dev/null 2>&1 ; then
+                        # exit 128
+                    fi
+                else
+                    echo "SST_PYTHON_CFG_EXE undefined, searching PATH instead"
+                    searchForPython
+                fi
+            else
+                searchForPython
+            fi
 
             echo "=============================================================="
             echo "=== FINAL PYTHON DETECTED VARIABLES"
