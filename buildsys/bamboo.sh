@@ -1992,8 +1992,9 @@ else
                     if [ -z "${SST_PYTHON_APP_EXE}" ]; then
                         echo "SST_PYTHON_APP_EXE must be set when both SST_PYTHON_USER_SPECIFIED and SST_PYTHON_CFG_EXE are set" >&2
                         exit 128
-                    # elif ! test "${SST_PYTHON_APP_EXE}" > /dev/null 2>&1 ; then
-                        # exit 128
+                    elif ! test "${SST_PYTHON_APP_EXE}" > /dev/null 2>&1 ; then
+                        echo "Invalid value for SST_PYTHON_APP_EXE: ${SST_PYTHON_APP_EXE}" >&2
+                        exit 128
                     fi
                 else
                     echo "SST_PYTHON_CFG_EXE undefined, searching PATH instead"
