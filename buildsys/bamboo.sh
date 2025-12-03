@@ -790,6 +790,7 @@ linuxSetMPI() {
    if ModuleEx load ccache/ccache-4.12; then
        echo "ccache successfully loaded"
        export CCACHE_MAXSIZE=10G
+       export CCACHE_NOHASHDIR
        export CCACHE_BASEDIR=/ascldap/users/sstbuilder/jenkins/workspace
    fi
 
