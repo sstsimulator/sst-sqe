@@ -26,9 +26,8 @@ GITHUB_WORKSPACE_PRE="${tmpdir}/home/runner/work/sst-sqe"
 mkdir -p "${GITHUB_WORKSPACE_PRE}"
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cp -a "${SCRIPTDIR}" "${GITHUB_WORKSPACE_PRE}"
-# TODO this assumes that the clone of this repo (the directory this script is
-# in) is called "sst-sqe".
-export GITHUB_WORKSPACE="${GITHUB_WORKSPACE_PRE}"/sst-sqe
+clone_name="$(basename "${SCRIPTDIR}")"
+export GITHUB_WORKSPACE="${GITHUB_WORKSPACE_PRE}"/"${clone_name}"
 pushd "${GITHUB_WORKSPACE}"
 
 # "set env and prepare dir structure"
