@@ -30,9 +30,8 @@ if [[ -z "${CUDA_TYPE}" ]]; then
 fi
 
 # needed for ncurses part of interactive sst-info
-if [[ -z "${TERM}" ]]; then
-    export TERM=dumb
-fi
+echo "TERM: ${TERM}"
+export TERM=dumb
 MAKEFLAGS="-j$(nproc)"
 export MAKEFLAGS
 if [[ "$(uname)" == "Darwin" ]]; then
