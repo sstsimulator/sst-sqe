@@ -3,9 +3,34 @@
 # call_bamboo.sh: wrapper for calling bamboo.sh inside of a GitHub Action
 # workflow.
 
-set -euo pipefail
+set -eo pipefail
+
+if [[ -z "${SST_DEPS_USER_DIR}" ]]; then
+    echo "SST_DEPS_USER_DIR not defined"
+    return 1
+fi
+if [[ -z "${GITHUB_WORKSPACE}" ]]; then
+    echo "GITHUB_WORKSPACE not defined"
+    return 1
+fi
+if [[ -z "${BUILD_TYPE}" ]]; then
+    echo "BUILD_TYPE not defined"
+    return 1
+fi
+if [[ -z "${MPI_TYPE}" ]]; then
+    echo "MPI_TYPE not defined"
+    return 1
+fi
+if [[ -z "${COMPILER_TYPE}" ]]; then
+    echo "COMPILER_TYPE not defined"
+    return 1
+fi
+if [[ -z "${CUDA_TYPE}" ]]; then
+    CUDA_TYPE=none
+fi
 
 # needed for ncurses part of interactive sst-info
+echo "TERM: ${TERM}"
 export TERM=dumb
 MAKEFLAGS="-j$(nproc)"
 export MAKEFLAGS
@@ -38,5 +63,5 @@ fi
     "${MPI_TYPE}" \
     none \
     "${COMPILER_TYPE}" \
-    none \
+    "${CUDA_TYPE}" \
     none
