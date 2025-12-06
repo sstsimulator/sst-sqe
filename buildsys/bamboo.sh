@@ -1621,6 +1621,56 @@ get_commit_hash() {
     fi
 }
 
+searchForPython() {
+    # Note: Selecting python is confusing as different system have different links
+    #       depending upon versions available. We look for 'python3' first and then
+    #       check if 'python' has been symlinked to python3 if needed
+
+    # Test to see if python3-config command is avail it should be for all Py3 installs
+    if python3-config --prefix > /dev/null 2>&1; then
+        export SST_PYTHON_CFG_EXE=`command -v python3-config`
+        export SST_PYTHON_HOME=`python3-config --prefix`
+        echo "--- FOUND PYTHON3 via python3-config..."
+
+        if command -v python3 > /dev/null 2>&1; then
+            export SST_PYTHON_APP_EXE=`command -v python3`
+        else
+            echo "ERROR: Python3 is detected to be Default on system (via python3-config), but python3 app IS NOT FOUND - IS python3 configured properly ON THE SYSTEM?"
+            exit 128
+        fi
+    else
+        ## NOTE: This is the last chance...
+        ##       try finding 'python-config'
+        echo "--- DID NOT FIND python3-config, SEARCHING FOR python-config..."
+
+        # Test to see if python-config command is avail
+        if python-config --prefix > /dev/null 2>&1; then
+            export SST_PYTHON_CFG_EXE=`command -v python-config`
+            export SST_PYTHON_HOME=`python-config --prefix`
+            echo "--- FOUND PYTHON via python-config..."
+
+            if command -v python > /dev/null 2>&1; then
+                ## Check that python is an acceptably new version of python
+                pyver=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
+                pyverX=$(echo "${version//./}")
+                if [[ "$pyverX" -lt "360" ]]
+                then
+                    echo "ERROR: FOUND python but version is TOO OLD (<3.6.0)."
+                    exit 128
+                fi
+                export SST_PYTHON_APP_EXE=`command -v python`
+            else
+                echo "ERROR: Python app IS NOT FOUND - IS Python Version 3.x ON THE SYSTEM?"
+                exit 128
+            fi
+        else
+            ## No Python3 or Python found, this seems quite wrong...
+            echo "ERROR: NO PYTHON FOUND ON SYSTEM - Is something wrong in the detection script?"
+            exit 128
+        fi
+    fi
+}
+
 #-------------------------------------------------------------------------
 # Function: ExitOfScriptHandler
 # Trap the exit command and perform end of script processing.
@@ -1896,9 +1946,6 @@ else
             esac
 
             # Figure out Python Configuration
-            # Note: Selecting python is confusing as different system have different links
-            #       depending upon versions available. We look for 'python3' first and then
-            #       check if 'python' has been symlinked to python3 if needed
             echo ""
             echo "=============================================================="
             echo "=== DETERMINE WHAT PYTHON TO USE"
@@ -1921,48 +1968,40 @@ else
                     ;;
             esac
 
-            # Test to see if python3-config command is avail it should be for all Py3 installs
-            if python3-config --prefix > /dev/null 2>&1; then
-                export SST_PYTHON_CFG_EXE=`command -v python3-config`
-                export SST_PYTHON_HOME=`python3-config --prefix`
-                echo "--- FOUND PYTHON3 via python3-config..."
-
-                if command -v python3 > /dev/null 2>&1; then
-                    export SST_PYTHON_APP_EXE=`command -v python3`
-                else
-                    echo "ERROR: Python3 is detected to be Default on system (via python3-config), but python3 app IS NOT FOUND - IS python3 configured properly ON THE SYSTEM?"
-                    exit 128
-                fi
-            else
-                ## NOTE: This is the last chance...
-                ##       try finding 'python-config'
-                echo "--- DID NOT FIND python3-config, SEARCHING FOR python-config..."
-
-                # Test to see if python-config command is avail
-                if python-config --prefix > /dev/null 2>&1; then
-                    export SST_PYTHON_CFG_EXE=`command -v python-config`
-                    export SST_PYTHON_HOME=`python-config --prefix`
-                    echo "--- FOUND PYTHON via python-config..."
-
-                    if command -v python > /dev/null 2>&1; then
-                        ## Check that python is an acceptably new version of python
-                        pyver=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
-                        pyverX=$(echo "${version//./}")
-                        if [[ "$pyverX" -lt "360" ]]
-                        then
-                            echo "ERROR: FOUND python but version is TOO OLD (<3.6.0)."
-                            exit 128
-                        fi
-                        export SST_PYTHON_APP_EXE=`command -v python`
+            # SST_PYTHON_USER_SPECIFIED means two different things:
+            #
+            # 1. Pass the value of SST_PYTHON_CFG_EXE explicitly to core config.
+            #
+            # 2. Allow setting of SST_PYTHON_CFG_EXE externally.  If
+            # SST_PYTHON_USER_SPECIFIED is defined but SST_PYTHON_CFG_EXE
+            # isn't, search for Python via PATH precedence as before.
+            if [ -n "${SST_PYTHON_USER_SPECIFIED}" ]; then
+                echo "SST_PYTHON_USER_SPECIFIED is defined, trying to read SST_PYTHON_CFG_EXE before searching PATH"
+                if [ -n "${SST_PYTHON_CFG_EXE}" ]; then
+                    if command -v "${SST_PYTHON_CFG_EXE}" > /dev/null 2>&1; then
+                        SST_PYTHON_HOME="$("${SST_PYTHON_CFG_EXE}" --prefix)"
+                        export SST_PYTHON_HOME
                     else
-                        echo "ERROR: Python app IS NOT FOUND - IS Python Version 3.x ON THE SYSTEM?"
+                        echo "Invalid value for SST_PYTHON_CFG_EXE: ${SST_PYTHON_CFG_EXE}" >&2
+                        exit 128
+                    fi
+                    # Because SST_PYTHON_APP_EXE (the interpreter) cannot be
+                    # reliably determined from python{,3}-config, we require
+                    # this to be externally set when SST_PYTHON_CFG_EXE is
+                    # externally set.
+                    if [ -z "${SST_PYTHON_APP_EXE}" ]; then
+                        echo "SST_PYTHON_APP_EXE must be set when both SST_PYTHON_USER_SPECIFIED and SST_PYTHON_CFG_EXE are set" >&2
+                        exit 128
+                    elif ! test "${SST_PYTHON_APP_EXE}" > /dev/null 2>&1 ; then
+                        echo "Invalid value for SST_PYTHON_APP_EXE: ${SST_PYTHON_APP_EXE}" >&2
                         exit 128
                     fi
                 else
-                    ## No Python3 or Python found, this seems quite wrong...
-                    echo "ERROR: NO PYTHON FOUND ON SYSTEM - Is something wrong in the detection script?"
-                    exit 128
+                    echo "SST_PYTHON_CFG_EXE undefined, searching PATH instead"
+                    searchForPython
                 fi
+            else
+                searchForPython
             fi
 
             echo "=============================================================="
