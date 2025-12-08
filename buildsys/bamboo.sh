@@ -792,6 +792,9 @@ linuxSetMPI() {
        export CCACHE_MAXSIZE=10G
        export CCACHE_NOHASHDIR
        export CCACHE_BASEDIR=/ascldap/users/sstbuilder/jenkins/workspace
+       # specify OMPI compiler wrappers so we caputure the build for ccache
+       export OMPI_CC=gcc
+       export OMPI_CXX=g++
    fi
 
    # load MPI
