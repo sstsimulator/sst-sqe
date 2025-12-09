@@ -791,6 +791,7 @@ linuxSetMPI() {
        echo "ccache successfully loaded"
        export CCACHE_MAXSIZE=10G
        export CCACHE_NOHASHDIR
+       export CCACHE_NODIRECT
        # specify OMPI compiler wrappers so we caputure the build for ccache
        export OMPI_CC=gcc
        export OMPI_CXX=g++
