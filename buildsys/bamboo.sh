@@ -791,7 +791,6 @@ linuxSetMPI() {
        echo "ccache successfully loaded"
        export CCACHE_MAXSIZE=10G
        export CCACHE_NOHASHDIR
-       export CCACHE_BASEDIR=/ascldap/users/sstbuilder/jenkins/workspace
        # specify OMPI compiler wrappers so we caputure the build for ccache
        export OMPI_CC=gcc
        export OMPI_CXX=g++
@@ -1753,6 +1752,9 @@ else
     export SST_BASE=$HOME
 fi
 echo ' ' ; echo "        SST_BASE = $SST_BASE" ; echo ' '
+
+echo CCACHE_BASEDIR="${SST_BASE}"
+export CCACHE_BASEDIR=${SST_BASE}
 
 # Location of SST library dependencies (deprecated)
 export SST_DEPS=${SST_BASE}/local
