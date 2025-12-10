@@ -790,8 +790,9 @@ linuxSetMPI() {
    if ModuleEx load ccache/ccache-4.12; then
        echo "ccache successfully loaded"
        export CCACHE_MAXSIZE=10G
-       export CCACHE_NOHASHDIR
-       export CCACHE_NODIRECT
+       export CCACHE_NOHASHDIR=1
+       export CCACHE_NODIRECT=1
+       export CCACHE_DEBUG=1
        # specify OMPI compiler wrappers so we caputure the build for ccache
        export OMPI_CC=gcc
        export OMPI_CXX=g++
