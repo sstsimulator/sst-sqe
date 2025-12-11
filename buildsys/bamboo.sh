@@ -792,7 +792,6 @@ linuxSetMPI() {
        export CCACHE_MAXSIZE=10G
        export CCACHE_NOHASHDIR=1
        export CCACHE_NODIRECT=1
-       export CCACHE_DEBUG=1
        # specify OMPI compiler wrappers so we caputure the build for ccache
        export OMPI_CC=gcc
        export OMPI_CXX=g++
@@ -1755,8 +1754,8 @@ else
 fi
 echo ' ' ; echo "        SST_BASE = $SST_BASE" ; echo ' '
 
-echo CCACHE_BASEDIR="${SST_BASE}"
-export CCACHE_BASEDIR=${SST_BASE}
+# echo CCACHE_BASEDIR="${SST_BASE}"
+# export CCACHE_BASEDIR=${SST_BASE}
 
 # Location of SST library dependencies (deprecated)
 export SST_DEPS=${SST_BASE}/local
