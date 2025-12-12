@@ -1754,8 +1754,8 @@ else
 fi
 echo ' ' ; echo "        SST_BASE = $SST_BASE" ; echo ' '
 
-# echo CCACHE_BASEDIR="${SST_BASE}"
-# export CCACHE_BASEDIR=${SST_BASE}
+echo CCACHE_BASEDIR="${HOME}"
+export CCACHE_BASEDIR=${HOME}
 
 # Location of SST library dependencies (deprecated)
 export SST_DEPS=${SST_BASE}/local
