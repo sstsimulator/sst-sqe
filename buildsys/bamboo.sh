@@ -790,7 +790,11 @@ linuxSetMPI() {
    if ModuleEx load ccache/ccache-4.12; then
        echo "ccache successfully loaded"
        export CCACHE_MAXSIZE=10G
-       export CCACHE_BASEDIR=/ascldap/users/sstbuilder/jenkins/workspace
+       export CCACHE_NOHASHDIR=1
+       export CCACHE_NODIRECT=1
+       # specify OMPI compiler wrappers so we caputure the build for ccache
+       export OMPI_CC=gcc
+       export OMPI_CXX=g++
    fi
 
    # load MPI
@@ -1749,6 +1753,9 @@ else
     export SST_BASE=$HOME
 fi
 echo ' ' ; echo "        SST_BASE = $SST_BASE" ; echo ' '
+
+echo CCACHE_BASEDIR="${HOME}"
+export CCACHE_BASEDIR=${HOME}
 
 # Location of SST library dependencies (deprecated)
 export SST_DEPS=${SST_BASE}/local
