@@ -122,7 +122,7 @@ cloneOtherRepos() {
             "${SST_COREREPO}" \
             SST_CORE_HASH \
             "${SST_COREBRANCH}" \
-            v15.1.0_beta \
+            v15.1.1_beta \
             sst-core \
             90
         cloneRepo \
