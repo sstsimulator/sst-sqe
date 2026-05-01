@@ -5,7 +5,7 @@ set -x
 
 IFS=$'\n\t'
 SST_DEPS_USER_DIR=$(mktemp -d)
-GITHUB_WORKSPACE=$(mktemp -d)
+GITHUB_WORKSPACE=$(pwd)
 
 export SST_DEPS_USER_DIR
 export GITHUB_WORKSPACE
