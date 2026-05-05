@@ -438,7 +438,7 @@ getconfig() {
             export | egrep SST_DEPS_
             coreMiscEnv="${cc_environment} ${mpi_environment}"
             elementsMiscEnv="${cc_environment}"
-            depsStr="-r none -R stabledevel -G default -D default -A 1.1"
+            depsStr="-r none -R stabledevel -G default -D default -A none"
             setConvenienceVars "$depsStr"
             coreConfigStr="$corebaseoptions $coreMiscEnv"
             elementsConfigStr="$elementsbaseoptions --with-ramulator2=$SST_DEPS_INSTALL_RAMULATOR2 --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-otf2=$SST_DEPS_INSTALL_OTF2"
