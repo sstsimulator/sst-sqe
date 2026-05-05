@@ -16,7 +16,7 @@
 #   need to be redirected, otherwise there are problems with commands
 #   somewhere inside of bamboo.)  If you want to use `tee`, you need to add
 #   the redirection for standard error like so:
-#   `./dev/run-bamboo-like-github.sh 2>&1 | tee bamboo2.log`.
+#   `./dev/run-bamboo-like-github.sh 2>&1 | tee bamboo-$(date +"%Y-%m-%d-%H%M%S").log`
 
 set -euo pipefail
 

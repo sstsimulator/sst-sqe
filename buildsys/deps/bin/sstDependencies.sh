@@ -106,6 +106,21 @@ sstDepsDoStaging ()
             return $retval
         fi
     fi
+
+    if [ -n "${SST_BUILD_RAMULATOR2}" ]
+    then
+        #-----------------------------------------------------------------------
+        # RAMULATOR2
+        #-----------------------------------------------------------------------
+        sstDepsStage_ramulator2
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: ramulator2 code staging failure"
+            return $retval
+        fi
+    fi
 }
 
 #-------------------------------------------------------------------------------
@@ -137,6 +152,20 @@ sstDepsPatchSource ()
         if [ $retval -ne 0 ]
         then
             echo "ERROR: sstDependencies.sh:  DRAMSim3 patch failure"
+            return $retval
+        fi
+        popd
+    fi
+
+    if [ -n "${SST_BUILD_RAMULATOR2_STABLEDEVEL}" ]
+    then
+        pushd "${SST_DEPS_SRC_STAGED_RAMULATOR2}"
+        sstDepsAnnounce -h "${FUNCNAME[0]}" -m "Patching ramulator2"
+        git apply --whitespace=fix -p0 "${SST_DEPS_PATCHFILES}"/ramulator2.patch
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            echo "ERROR: sstDependencies.sh:  ramulator2 patch failure"
             return $retval
         fi
         popd
@@ -267,6 +296,21 @@ sstDepsDeploy ()
         fi
     fi
 
+    if [ -n "${SST_BUILD_RAMULATOR2}" ]
+    then
+        #-----------------------------------------------------------------------
+        # RAMULATOR2
+        #-----------------------------------------------------------------------
+        sstDepsDeploy_ramulator2
+        retval=$?
+        if [ $retval -ne 0 ]
+        then
+            # bail out on error
+            echo "ERROR: sstDependencies.sh: ramulator2 deployment failure"
+            return $retval
+        fi
+    fi
+
 }
 
 #-------------------------------------------------------------------------------
@@ -319,6 +363,14 @@ sstDepsDoQuery ()
         # RAMULATOR
         #-----------------------------------------------------------------------
         sstDepsQuery_ramulator
+    fi
+
+    if [ -n "${SST_BUILD_RAMULATOR2}" ]
+    then
+        #-----------------------------------------------------------------------
+        # RAMULATOR2
+        #-----------------------------------------------------------------------
+        sstDepsQuery_ramulator2
     fi
 }
 
@@ -447,6 +499,7 @@ sstDepsDoDependencies ()
 #   -D DRAMsim3 version (default|stabledevel|none)
 #   -G Goblim HMCSim (default|stabledevel|none)
 #   -r Ramulator (default)
+#   -R Ramulator2
 #   -A GPGPUSim (stabledevel|1.1|master|default|none)
 #
 #   [buildtype] = (restageDeps|develBuild|cleanBuild)
@@ -460,7 +513,7 @@ sstDepsDoDependencies ()
 # use getopts
 OPTIND=1
 
-while getopts :D:G:r:A: opt
+while getopts :D:G:r:R:A: opt
 
 do
     case "$opt" in
@@ -516,6 +569,23 @@ do
                     ;;
                 *) # unknown Ramulator argument
                     echo "# Unknown argument '$OPTARG', will not build Ramulator"
+                    ;;
+            esac
+            ;;
+        R) # Ramulator2
+            echo "# found the -R (ramulator2) option, with value $OPTARG"
+            # process arg
+            case "$OPTARG" in
+                stabledevel) # build latest Ramulator2 from repository ("stable development")
+                    echo "# (default) stabledevel: build latest Ramulator2 from repository"
+                    # shellcheck source=buildsys/deps/bin/sstDep_ramulator2_stabledevel.sh
+                    . "${SST_DEPS_BIN}"/sstDep_ramulator2_stabledevel.sh
+                    ;;
+                default|none) # do not build (explicit)
+                    echo "# none: will not build Ramulator2"
+                    ;;
+                *) # unknown Ramulator argument
+                    echo "# Unknown argument '$OPTARG', will not build Ramulator2"
                     ;;
             esac
             ;;
