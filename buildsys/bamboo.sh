@@ -428,6 +428,25 @@ getconfig() {
             junoConfigStr="$junobaseoptions"
             ;;
 
+        sstmainline_config_ramulator2)
+            #-----------------------------------------------------------------
+            # sstmainline_config_ramulator2
+            #     This option used for configuring SST with ramulator2
+            # sstmainline_config_all
+            #     This option is used when calling bamboo a second time during a make dist test
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            coreMiscEnv="${cc_environment} ${mpi_environment}"
+            elementsMiscEnv="${cc_environment}"
+            depsStr="-r none -R stabledevel -G default -D default -A none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions $coreMiscEnv"
+            elementsConfigStr="$elementsbaseoptions --with-ramulator2=$SST_DEPS_INSTALL_RAMULATOR2 --with-goblin-hmcsim=$SST_DEPS_INSTALL_GOBLIN_HMCSIM --with-dramsim3=$SST_DEPS_INSTALL_DRAMSIM3 --with-pin=$SST_DEPS_INSTALL_INTEL_PIN $elementsMiscEnv --with-otf2=$SST_DEPS_INSTALL_OTF2"
+            macroConfigStr="${NOBUILD}"
+            externalelementConfigStr="$externalelementbaseoptions"
+            junoConfigStr="$junobaseoptions"
+            ;;
+
         sstmainline_coreonly_config)
             #-----------------------------------------------------------------
             # sstmainline_coreonly_config
@@ -1873,7 +1892,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case ${build_type} in
-        sstmainline_config|sstmainline_coreonly_config|sstmainline_coreonly_config_no_mpi|sstmainline_config_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|documentation|sstmainline_config_all|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        sstmainline_config|sstmainline_config_ramulator2|sstmainline_coreonly_config|sstmainline_coreonly_config_no_mpi|sstmainline_config_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|documentation|sstmainline_config_all|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
             #   Save Parameters in case they are needed later
             SST_DIST_MPI=${mpi_type}
             _UNUSED="none"
