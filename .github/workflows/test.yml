@@ -19,30 +19,24 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-14
+          - os: macos-15
             bamboo-call-line:
               build-type: sstmainline_coreonly_config
               compiler-type: none
               mpi-type: none
               python-version: 3.9
-          - os: macos-14
+          - os: macos-15
             bamboo-call-line:
               build-type: sstmainline_config_no_mpi
               compiler-type: none
               mpi-type: none
               python-version: 3.9
-          - os: macos-15
+          - os: macos-26
             bamboo-call-line:
               build-type: sstmainline_config
               compiler-type: none
               mpi-type: none
               python-version: 3.13
-          - os: ubuntu-22.04
-            bamboo-call-line:
-              build-type: sstmainline_config
-              compiler-type: none
-              mpi-type: none
-              python-version: 3.9
           - os: ubuntu-24.04
             bamboo-call-line:
               build-type: sstmainline_config
@@ -79,6 +73,14 @@ jobs:
               compiler-type: none
               mpi-type: none
               python-version: 3.9
+              # Not available yet
+              #
+              # - os: ubuntu-26.04
+              #   bamboo-call-line:
+              #     build-type: sstmainline_config
+              #     compiler-type: none
+              #     mpi-type: none
+              #     python-version: 3.9
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
