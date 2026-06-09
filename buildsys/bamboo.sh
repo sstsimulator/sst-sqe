@@ -1251,18 +1251,12 @@ config_and_build() {
             echo "--------------------dump of config.log--------------------"
             return $retval
         fi
-        echo "     ------------   After configure files at sourcedir are:"
-        ls -ltrd "${sourcedir}"/* | tail -14
-        echo " Local files are ------------"
-        ls -ltrd *
-        echo  " ---------"
         echo ' '
         echo "bamboo.sh: configure on ${repo_name} complete without error"
         echo ' '
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         pwd
-        ls -ltrd * | tail -20
 
         echo "at this time \$buildtype is $buildtype"
         if [[ $buildtype == *make_dist* ]] ; then
