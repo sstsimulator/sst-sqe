@@ -1273,9 +1273,6 @@ config_and_build() {
             ls | grep tar
             echo ' '
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo " "
-            ls -ltr | tail -5
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '
             echo "bamboo.sh: After make dist on ${repo_name} do the make install "
             echo ' '
