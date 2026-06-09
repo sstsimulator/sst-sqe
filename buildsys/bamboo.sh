@@ -753,9 +753,9 @@ set_up_environment_modules() {
 
     echo "Testing modules utility via ModuleEx..."
     echo "ModuleEx avail"
-    ModuleEx avail
+    ModuleEx avail >& /dev/null
     if [ $? -ne 0 ] ; then
-        echo " ModuleEx Failed"
+        echo " ModuleEx avail Failed"
         exit 1
     fi
 }
@@ -849,7 +849,7 @@ linuxSetMPI() {
 
 ldModules_MacOS_Clang() {
     local ClangVersion=$1            #   example "clang-700.0.72" $2
-    ModuleEx avail
+
     # Use MPI built with CLANG from Xcode
     ModuleEx unload mpi
 
