@@ -1181,10 +1181,8 @@ config_and_build() {
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         echo "NOTE: ${conf_script_name} Must be run in ${repo_name} Source Dir to create configuration file"
-        echo "Current Working Dir = $(pwd)"
         echo "pushd ${source_dir}"
         pushd "${source_dir}"
-        echo "${conf_script_name} Working Dir = $(pwd)"
         ls -l
         echo "=== Running ${conf_script_name}.sh ==="
 
@@ -1200,7 +1198,6 @@ config_and_build() {
         ls -ltrd * | tail -20
         echo "popd"
         popd
-        echo "Current Working Dir = $(pwd)"
         ls -l
 
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
@@ -1218,7 +1215,6 @@ config_and_build() {
             mkdir ./${repo_name}-builddir
             echo "pushd ${repo_name}-builddir"
             pushd "${repo_name}-builddir"
-            echo "Current Working Dir = $(pwd)"
             ls -l
             sourcedir="../${repo_name}"
         else
@@ -1226,7 +1222,6 @@ config_and_build() {
             echo "Starting Dir = $(pwd)"
             echo "pushd ${source_dir}"
             pushd "${source_dir}"
-            echo "Current Working Dir = $(pwd)"
             ls -l
             sourcedir="."
         fi
@@ -1383,7 +1378,6 @@ config_and_build() {
         # Go back to devel/trunk
         echo "popd"
         popd
-        echo "Current Working Dir = $(pwd)"
         ls -l
     fi
 
@@ -1461,7 +1455,6 @@ config_and_build_simple() {
         # Go back to devel/trunk
         echo "popd"
         popd
-        echo "Current Working Dir = $(pwd)"
         ls -l
     fi
 
