@@ -1833,10 +1833,6 @@ echo "bamboo.sh: Done sourcing deps/include/depsDefinitions.sh"
 
 source "${SST_ROOT}/test/utilities/moduleex.sh"
 
-echo "==============================INITIAL ENVIRONMENT DUMP================="
-env|sort
-echo "==============================INITIAL ENVIRONMENT DUMP================="
-
 retval=0
 echo "@@@@@@  \$0 = $0 ######"
 echo "@@@@@@  \$1 = $1 ######"
