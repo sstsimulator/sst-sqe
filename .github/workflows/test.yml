@@ -160,10 +160,6 @@ jobs:
           BUILD_TYPE: ${{ matrix.bamboo-call-line.build-type }}
           COMPILER_TYPE: ${{ matrix.bamboo-call-line.compiler-type }}
           MPI_TYPE: ${{ matrix.bamboo-call-line.mpi-type }}
-          SST_ELEMENTSREPO: ${{ matrix.sst-elements-repo }}
-          SST_ELEMENTSBRANCH: ${{ matrix.sst-elements-branch }}
-          SST_HGCCBRANCH: ${{ matrix.sst-hgcc-branch }}
-          SST_TEST_MERGE: ${{ matrix.sst-test-merge || 'true' }}
         run: |
           bash ./.github/scripts/call_bamboo.sh
           ccache -s -vv
