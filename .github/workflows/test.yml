@@ -148,7 +148,6 @@ jobs:
           mkdir -p "${sst_deps_user_dir}"
           SST_DEPS_USER_DIR="$(realpath "${sst_deps_user_dir}")"
           echo "SST_DEPS_USER_DIR=${SST_DEPS_USER_DIR}" >> "${GITHUB_ENV}"
-          echo "SST_DEPS_TREE=${SST_DEPS_USER_DIR}/devel" >> "${GITHUB_ENV}"
       - name: fetch elements dependencies
         run: |
           pristine="${SST_DEPS_USER_DIR}"/sstDeps/src/pristine
@@ -169,13 +168,6 @@ jobs:
             test-output-${{ matrix.os }}-${{ matrix.bamboo-call-line.build-type }}-${{
             matrix.bamboo-call-line.mpi-type }}-${{ matrix.bamboo-call-line.compiler-type
             }}
-          path: |
-            ${{ env.SST_DEPS_TREE }}/sqe/test/testOutputs
-            ${{ env.SST_DEPS_TREE }}/sqe/test/test-reports
-            ${{ env.SST_DEPS_TREE }}/trunk/sst-hgcc/tests/lit-junit.xml
-            ${{ env.SST_DEPS_TREE }}/trunk/sst-hgcc/tests/lit-tests/Output
-            ${{ env.SST_DEPS_TREE }}/trunk/sst-hgcc-builddir/tests/lit-junit.xml
-            ${{ env.SST_DEPS_TREE }}/trunk/sst-hgcc-builddir/tests/lit-tests/Output
-          if-no-files-found: warn
+          path: sst_test_outputs
           compression-level: 9
         if: '!cancelled()'
