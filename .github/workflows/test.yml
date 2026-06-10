@@ -37,6 +37,19 @@ jobs:
               compiler-type: none
               mpi-type: none
               python-version: 3.13
+          - os: macos-15
+            bamboo-call-line:
+              build-type: sst-hgcc_withsstcore_mac
+              compiler-type: none
+              mpi-type: none
+              python-version: 3.13
+          - os: ubuntu-24.04
+            bamboo-call-line:
+              build-type: sst-hgcc_withsstcore_linux
+              compiler-type: none
+              mpi-type: none
+              python-version: 3.9
+            install-llvm: true
           - os: ubuntu-24.04
             bamboo-call-line:
               build-type: sstmainline_config
@@ -87,6 +100,8 @@ jobs:
         with:
           persist-credentials: false
       - name: install system-level dependencies
+        env:
+          SST_INSTALL_LLVM: ${{ matrix.install-llvm == true && '1' || '0' }}
         run: |
           bash ./.github/scripts/install_os_level_dependencies.sh
       - name: Pin Python version
@@ -133,6 +148,7 @@ jobs:
           mkdir -p "${sst_deps_user_dir}"
           SST_DEPS_USER_DIR="$(realpath "${sst_deps_user_dir}")"
           echo "SST_DEPS_USER_DIR=${SST_DEPS_USER_DIR}" >> "${GITHUB_ENV}"
+          echo "SST_DEPS_TREE=${SST_DEPS_USER_DIR}/devel" >> "${GITHUB_ENV}"
       - name: fetch elements dependencies
         run: |
           pristine="${SST_DEPS_USER_DIR}"/sstDeps/src/pristine
@@ -144,6 +160,10 @@ jobs:
           BUILD_TYPE: ${{ matrix.bamboo-call-line.build-type }}
           COMPILER_TYPE: ${{ matrix.bamboo-call-line.compiler-type }}
           MPI_TYPE: ${{ matrix.bamboo-call-line.mpi-type }}
+          SST_ELEMENTSREPO: ${{ matrix.sst-elements-repo }}
+          SST_ELEMENTSBRANCH: ${{ matrix.sst-elements-branch }}
+          SST_HGCCBRANCH: ${{ matrix.sst-hgcc-branch }}
+          SST_TEST_MERGE: ${{ matrix.sst-test-merge || 'true' }}
         run: |
           bash ./.github/scripts/call_bamboo.sh
           ccache -s -vv
@@ -153,6 +173,13 @@ jobs:
             test-output-${{ matrix.os }}-${{ matrix.bamboo-call-line.build-type }}-${{
             matrix.bamboo-call-line.mpi-type }}-${{ matrix.bamboo-call-line.compiler-type
             }}
-          path: sst_test_outputs
+          path: |
+            ${{ env.SST_DEPS_TREE }}/sqe/test/testOutputs
+            ${{ env.SST_DEPS_TREE }}/sqe/test/test-reports
+            ${{ env.SST_DEPS_TREE }}/trunk/sst-hgcc/tests/lit-junit.xml
+            ${{ env.SST_DEPS_TREE }}/trunk/sst-hgcc/tests/lit-tests/Output
+            ${{ env.SST_DEPS_TREE }}/trunk/sst-hgcc-builddir/tests/lit-junit.xml
+            ${{ env.SST_DEPS_TREE }}/trunk/sst-hgcc-builddir/tests/lit-tests/Output
+          if-no-files-found: warn
           compression-level: 9
         if: '!cancelled()'
