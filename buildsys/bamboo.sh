@@ -140,6 +140,13 @@ cloneOtherRepos() {
             sst-macro \
             90
         cloneRepo \
+            "${SST_HGCCREPO}" \
+            SST_HGCC_HASH \
+            "${SST_HGCCBRANCH}" \
+            devel \
+            sst-hgcc \
+            90
+        cloneRepo \
             "${SST_EXTERNALELEMENTREPO}" \
             SST_EXTERNALELEMENT_HASH \
             "${SST_EXTERNALELEMENTBRANCH}" \
@@ -172,6 +179,7 @@ cloneOtherRepos() {
     echo "  GitHub CORE Repository and HASH = $SST_COREREPO ${SST_CORE_HASH}"
     echo "  GitHub ELEMENTS Repository and HASH = $SST_ELEMENTSREPO ${SST_ELEMENTS_HASH}"
     echo "  GitHub MACRO Repository and HASH = $SST_MACROREPO ${SST_MACRO_HASH}"
+    echo "  GitHub HGCC Repository and HASH = $SST_HGCCREPO ${SST_HGCC_HASH}"
     echo "  GitHub EXTERNAL-ELEMENT Repository and HASH = $SST_EXTERNALELEMENTREPO ${SST_EXTERNALELEMENT_HASH}"
     echo "  GitHub JUNO Repository and HASH = $SST_JUNOREPO ${SST_JUNO_HASH}"
     echo "#############################################################"
@@ -296,6 +304,13 @@ dotests() {
         return
     fi
 
+    if [ $1 == "sst-hgcc_withsstcore_mac" ] ||
+       [ $1 == "sst-hgcc_withsstcore_linux" ] ; then
+
+        ${SST_TEST_SUITES}/testSuite_hgcc.sh
+        return
+    fi
+
 ##########################################################################3
 
 
@@ -352,11 +367,13 @@ setConvenienceVars() {
     fi
 
     elementsbaseoptions="--disable-silent-rules --prefix=$SST_ELEMENTS_INSTALL --with-sst-core=$SST_CORE_INSTALL"
+    hgccbaseoptions="--disable-silent-rules --prefix=$SST_HGCC_INSTALL --with-sst-core=$SST_CORE_INSTALL --with-sst-elements=$SST_ELEMENTS_INSTALL --with-std=17 --enable-strict-tests"
     externalelementbaseoptions=""
     junobaseoptions=""
     echo "setConvenienceVars() : "
     echo "           corebaseoptions = $corebaseoptions"
     echo "       elementsbaseoptions = $elementsbaseoptions"
+    echo "           hgccbaseoptions = $hgccbaseoptions"
     echo "          macrobaseoptions = $macrobaseoptions"
     echo "externalelementbaseoptions = $externalelementbaseoptions"
     echo "           junobaseoptions = $junobaseoptions"
@@ -380,6 +397,7 @@ NOBUILD="NOBUILD"
 getconfig() {
 
     local depsStr=""
+    local hgccConfigStr="${NOBUILD}"
 
     # Determine compilers
     local mpicc_compiler=`which mpicc`
@@ -660,6 +678,59 @@ getconfig() {
             junoConfigStr="${NOBUILD}"
             ;;
 
+        sst-hgcc_withsstcore_mac)
+            #-----------------------------------------------------------------
+            # hgcc_withsstcore
+            #     Build sst-core, sst-elements, and sst-hgcc with LLVM/libTooling.
+            #     MV2 tests are intentionally excluded from this scenario.
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            depsStr="-r none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions"
+            elementsConfigStr="$elementsbaseoptions"
+            macroConfigStr="${NOBUILD}"
+            if [[ -z "${LLVM_ROOT}" ]]; then
+                LLVM_ROOT="$(brew --prefix llvm@22 2>/dev/null || echo /opt/homebrew/opt/llvm@22)"
+            fi
+            export LLVM_ROOT
+            export PATH="${LLVM_ROOT}/bin:${PATH}"
+            export FILECHECK="${FILECHECK:-${LLVM_ROOT}/bin/FileCheck}"
+            if command -v xcrun >/dev/null 2>&1; then
+                export SDKROOT="${SDKROOT:-$(xcrun --sdk macosx --show-sdk-path)}"
+            fi
+            hgccConfigStr="$hgccbaseoptions --with-clang=$LLVM_ROOT CC=`which clang` CXX=`which clang++`"
+            externalelementConfigStr="${NOBUILD}"
+            junoConfigStr="${NOBUILD}"
+            ;;
+
+        sst-hgcc_withsstcore_linux)
+            #-----------------------------------------------------------------
+            # hgcc_withsstcore
+            #     Build sst-core, sst-elements, and sst-hgcc with LLVM/libTooling.
+            #     MV2 tests are intentionally excluded from this scenario.
+            #-----------------------------------------------------------------
+            export | egrep SST_DEPS_
+            depsStr="-r none"
+            setConvenienceVars "$depsStr"
+            coreConfigStr="$corebaseoptions"
+            elementsConfigStr="$elementsbaseoptions"
+            macroConfigStr="${NOBUILD}"
+            if [[ -z "${LLVM_ROOT}" ]]; then
+                if command -v llvm-config >/dev/null 2>&1; then
+                    LLVM_ROOT="$(dirname "$(dirname "$(command -v llvm-config)")")"
+                else
+                    LLVM_ROOT="/usr/lib/llvm-22"
+                fi
+            fi
+            export LLVM_ROOT
+            export PATH="${LLVM_ROOT}/bin:${PATH}"
+            export FILECHECK="${FILECHECK:-${LLVM_ROOT}/bin/FileCheck}"
+            hgccConfigStr="$hgccbaseoptions --with-clang=$LLVM_ROOT CC=`which gcc` CXX=`which g++`"
+            externalelementConfigStr="${NOBUILD}"
+            junoConfigStr="${NOBUILD}"
+            ;;
+
         sst_Macro_make_dist)
             #-----------------------------------------------------------------
             # sst_Macro_make_dist
@@ -725,6 +796,7 @@ getconfig() {
     export SST_SELECTED_CORE_CONFIG="$coreConfigStr"
     export SST_SELECTED_ELEMENTS_CONFIG="$elementsConfigStr"
     export SST_SELECTED_MACRO_CONFIG="$macroConfigStr"
+    export SST_SELECTED_HGCC_CONFIG="$hgccConfigStr"
     export SST_SELECTED_EXTERNALELEMENT_CONFIG="$externalelementConfigStr"
     export SST_SELECTED_JUNO_CONFIG="$junoConfigStr"
 
@@ -1570,6 +1642,13 @@ dobuild() {
         autogen
     dobuild_handle_error $? elements
     config_and_build \
+        sst-hgcc \
+        "${SST_SELECTED_HGCC_CONFIG}" \
+        "${SST_CORE_INSTALL}" \
+        "${SST_ROOT}/sst-hgcc" \
+        autogen
+    dobuild_handle_error $? hgcc
+    config_and_build \
         sst-macro \
         "${SST_SELECTED_MACRO_CONFIG}" \
         "${SST_CORE_INSTALL}" \
@@ -1674,6 +1753,8 @@ function ExitOfScriptHandler {
 #   sst-macro_withsstcore_linux
 #   sst-macro_nosstcore_linux
 #   sst_Macro_make_dist
+#   sst-hgcc_withsstcore_mac
+#   sst-hgcc_withsstcore_linux
 #   documentation
 #
 # UNUSED
@@ -1710,6 +1791,11 @@ fi
 # Which Repository to use for MACRO (default is https://github.com/sstsimulator/sst-macro)
 if [[ ${SST_MACROREPO:+isSet} != isSet ]] ; then
     SST_MACROREPO=https://github.com/sstsimulator/sst-macro
+fi
+
+# Which Repository to use for HGCC (default is https://github.com/sstsimulator/sst-hgcc)
+if [[ ${SST_HGCCREPO:+isSet} != isSet ]] ; then
+    SST_HGCCREPO=https://github.com/sstsimulator/sst-hgcc
 fi
 
 # Which Repository to use for EXTERNAL-ELEMENT (default is https://github.com/sstsimulator/sst-external-element)
@@ -1793,6 +1879,9 @@ export SST_ELEMENTS_INSTALL_BIN=${SST_ELEMENTS_INSTALL}/bin
 
 # Location where SST MACRO files are installed
 export SST_MACRO_INSTALL=${SST_INSTALL}/sst-macro
+
+# Location where SST HGCC files are installed
+export SST_HGCC_INSTALL=${SST_INSTALL}/sst-hgcc
 
 # Final Location where SST executable files are installed
 export SST_INSTALL=${SST_CORE_INSTALL}
@@ -1892,7 +1981,7 @@ else
     echo "bamboo.sh: KERNEL = $kernel"
 
     case ${build_type} in
-        sstmainline_config|sstmainline_config_ramulator2|sstmainline_coreonly_config|sstmainline_coreonly_config_no_mpi|sstmainline_config_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|documentation|sstmainline_config_all|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist)
+        sstmainline_config|sstmainline_config_ramulator2|sstmainline_coreonly_config|sstmainline_coreonly_config_no_mpi|sstmainline_config_no_gem5|sstmainline_config_clang_core_only|sstmainline_config_macosx_no_gem5|sstmainline_config_no_mpi|sstmainline_config_make_dist_test|sstmainline_config_core_make_dist_test|documentation|sstmainline_config_all|sstmainline_config_linux_with_cuda|sstmainline_config_linux_with_cuda_no_mpi|sst-macro_withsstcore_mac|sst-macro_nosstcore_mac|sst-macro_withsstcore_linux|sst-macro_nosstcore_linux|sst_Macro_make_dist|sst-hgcc_withsstcore_mac|sst-hgcc_withsstcore_linux)
             #   Save Parameters in case they are needed later
             SST_DIST_MPI=${mpi_type}
             _UNUSED="none"
