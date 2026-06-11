@@ -50,13 +50,28 @@ cloneRepo() {
     local commit_hash
     commit_hash="${!commit_hash_varname}"
 
-    echo " "
-    echo "     TimeoutEx -t ${timeout} git clone ${repo} ${clone_loc}"
-    date
-    TimeoutEx -t "${timeout}" git clone "${repo}" "${clone_loc}"
-    retVal=$?
+    # Clones occasionally stall mid-transfer on hosted runners, so retry a
+    # couple of times before failing the whole run.
+    local attempt
+    local max_clone_attempts=3
+    for attempt in $(seq 1 ${max_clone_attempts}); do
+        echo " "
+        echo "     TimeoutEx -t ${timeout} git clone ${repo} ${clone_loc} (attempt ${attempt} of ${max_clone_attempts})"
+        date
+        TimeoutEx -t "${timeout}" git clone "${repo}" "${clone_loc}"
+        retVal=$?
+        if [ $retVal -eq 0 ]; then
+            break
+        fi
+        echo "\"git clone ${repo} ${clone_loc}\" FAILED on attempt ${attempt}; retVal = ${retVal}"
+        # a timed-out clone leaves a partial checkout behind
+        rm -rf "${clone_loc}"
+        if [ $attempt -lt $max_clone_attempts ]; then
+            sleep 30
+        fi
+    done
     if [ $retVal -ne 0 ]; then
-        echo "\"git clone ${repo} ${clone_loc}\" FAILED."
+        echo "\"git clone ${repo} ${clone_loc}\" FAILED after ${max_clone_attempts} attempts."
         exit 1
     fi
     date
@@ -131,14 +146,14 @@ cloneOtherRepos() {
             "${SST_ELEMENTSBRANCH}" \
             devel \
             sst-elements \
-            250
+            600
         cloneRepo \
             "${SST_MACROREPO}" \
             SST_MACRO_HASH \
             "${SST_MACROBRANCH}" \
             devel \
             sst-macro \
-            90
+            300
         cloneRepo \
             "${SST_EXTERNALELEMENTREPO}" \
             SST_EXTERNALELEMENT_HASH \
