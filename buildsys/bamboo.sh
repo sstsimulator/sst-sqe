@@ -691,7 +691,7 @@ getconfig() {
             elementsConfigStr="$elementsbaseoptions"
             macroConfigStr="${NOBUILD}"
             if [[ -z "${LLVM_ROOT}" ]]; then
-                LLVM_ROOT="$(brew --prefix llvm@22 2>/dev/null || echo /opt/homebrew/opt/llvm@22)"
+                LLVM_ROOT="$(brew --prefix llvm 2>/dev/null || echo /opt/homebrew/opt/llvm)"
             fi
             export LLVM_ROOT
             export PATH="${LLVM_ROOT}/bin:${PATH}"

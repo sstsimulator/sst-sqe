@@ -43,6 +43,7 @@ jobs:
               compiler-type: none
               mpi-type: none
               python-version: 3.13
+            install-llvm: true
           - os: ubuntu-24.04
             bamboo-call-line:
               build-type: sst-hgcc_withsstcore_linux
