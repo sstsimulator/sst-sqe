@@ -52,7 +52,7 @@ test_hgcc_make_check() {
 
     pushd "${hgccdir}"
     _hgcc_test_env
-    make -j4 check 2>&1 | tee "${outFile}"
+    make check 2>&1 | tee "${outFile}"
     RetVal=${PIPESTATUS[0]}
     popd
 
@@ -84,7 +84,7 @@ test_hgcc_make_installcheck() {
 
     pushd "${hgccdir}"
     _hgcc_test_env
-    make -j4 installcheck 2>&1 | tee "${outFile}"
+    make installcheck 2>&1 | tee "${outFile}"
     RetVal=${PIPESTATUS[0]}
     popd
 
