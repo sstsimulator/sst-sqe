@@ -14,11 +14,16 @@ if command -v brew; then
          doxygen \
          libtool \
          lmod \
-         lit \
-         llvm@22 \
          ncurses \
          open-mpi \
          pygments
+    if [[ "${SST_INSTALL_LLVM:-0}" == "1" ]]; then
+        # Homebrew's default `llvm` keg is the current major release (22.x);
+        # there is no versioned `llvm@22` formula yet.
+        brew install \
+             lit \
+             llvm
+    fi
     python -m pip install blessings
     p="source /opt/homebrew/opt/lmod/init/profile"
     echo "${p}" >> ~/.bash_profile
