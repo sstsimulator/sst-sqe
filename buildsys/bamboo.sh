@@ -48,15 +48,22 @@ cloneRepo() {
     local timeout="$6"
 
     local commit_hash
+    local clone_branch
     commit_hash="${!commit_hash_varname}"
 
+    if [ -n "${specific_branch}" ]; then
+        clone_branch="${specific_branch}"
+    else
+        clone_branch="${default_branch}"
+    fi
+
     echo " "
-    echo "     TimeoutEx -t ${timeout} git clone ${repo} ${clone_loc}"
+    echo "     TimeoutEx -t ${timeout} git clone --single-branch --depth 2 --branch ${clone_branch} ${repo} ${clone_loc}"
     date
-    TimeoutEx -t "${timeout}" git clone "${repo}" "${clone_loc}"
+    TimeoutEx -t "${timeout}" git clone --single-branch --depth 2 --branch "${clone_branch}" "${repo}" "${clone_loc}"
     retVal=$?
     if [ $retVal -ne 0 ]; then
-        echo "\"git clone ${repo} ${clone_loc}\" FAILED."
+        echo "\"git clone --single-branch --depth 2 --branch ${clone_branch} ${repo} ${clone_loc}\" FAILED."
         exit 1
     fi
     date
@@ -71,6 +78,11 @@ cloneRepo() {
         exit 1
     fi
 
+    if ! git cat-file -e "${commit_hash}" 2>/dev/null; then
+        echo "Commit ${commit_hash} not present in shallow clone; fetching more history"
+        git fetch --depth 1000 origin "${clone_branch}"
+    fi
+
     echo "     Desired ${clone_loc} commit_hash is ${commit_hash}"
     git reset --hard "${commit_hash}"
     retVal=$?
@@ -80,17 +92,22 @@ cloneRepo() {
     fi
 
     if [[ "${SST_TEST_MERGE}" == "true" ]]; then
-        echo "Going to test result of merging branch into upstream/devel"
+        echo "Going to test result of merging branch into upstream/${default_branch}"
         git remote add upstream https://github.com/sstsimulator/${clone_loc}.git
-        git fetch upstream
-        git merge --no-commit upstream/${default_branch}
+        git fetch --depth 2 upstream "${default_branch}"
         retVal=$?
         if [[ $retVal -ne 0 ]] ; then
-            echo "\"git merge --no-commit upstream/${default_branch}\" FAILED.  retVal = $retVal"
+            echo "\"git fetch --depth 2 upstream ${default_branch}\" FAILED.  retVal = $retVal"
+            exit 1
+        fi
+        git merge --no-commit "FETCH_HEAD"
+        retVal=$?
+        if [[ $retVal -ne 0 ]] ; then
+            echo "\"git merge --no-commit FETCH_HEAD\" FAILED.  retVal = $retVal"
             exit 1
         fi
     elif [[ "${SST_TEST_MERGE}" == "false" ]]; then
-        echo "Going to test branch as-is without merging into upstream/devel"
+        echo "Going to test branch as-is without merging into upstream/${default_branch}"
     else
         echo "Invalid value for SST_TEST_MERGE (${SST_TEST_MERGE}), must be 'true' or 'false'"
         exit 1
@@ -1589,9 +1606,10 @@ dobuild() {
 }
 
 branch_to_commit_hash() {
-    # Get the commit hash from the tip of the given branch.
+    # Get the commit hash from the tip of the given branch directly from origin.
+    # This works even when the local clone is shallow and single-branch.
     local branch="${1}"
-    echo "$(git log -n 1 "origin/${branch}" | grep commit | cut -d ' ' -f 2)"
+    git ls-remote origin "refs/heads/${branch}" | awk '{print $1}'
 }
 
 get_commit_hash() {
