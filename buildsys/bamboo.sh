@@ -78,6 +78,11 @@ cloneRepo() {
         exit 1
     fi
 
+    if ! git cat-file -e "${commit_hash}" 2>/dev/null; then
+        echo "Commit ${commit_hash} not present in shallow clone; fetching more history"
+        git fetch --depth 1000 origin "${clone_branch}"
+    fi
+
     echo "     Desired ${clone_loc} commit_hash is ${commit_hash}"
     git reset --hard "${commit_hash}"
     retVal=$?
