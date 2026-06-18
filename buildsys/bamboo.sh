@@ -50,13 +50,14 @@ cloneRepo() {
     local commit_hash
     commit_hash="${!commit_hash_varname}"
 
+    # Filter out blobs.  Required blobs will be pulled as needed.
     echo " "
-    echo "     TimeoutEx -t ${timeout} git clone ${repo} ${clone_loc}"
+    echo "     TimeoutEx -t ${timeout} git clone --filter=blob:none ${repo} ${clone_loc}"
     date
-    TimeoutEx -t "${timeout}" git clone "${repo}" "${clone_loc}"
+    TimeoutEx -t "${timeout}" git clone --filter=blob:none "${repo}" "${clone_loc}"
     retVal=$?
     if [ $retVal -ne 0 ]; then
-        echo "\"git clone ${repo} ${clone_loc}\" FAILED."
+        echo "\"git clone --filter=blob:none ${repo} ${clone_loc}\" FAILED."
         exit 1
     fi
     date
