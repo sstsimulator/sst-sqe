@@ -2088,6 +2088,28 @@ then
             echo "==============================ENVIRONMENT DUMP BEFORE TESTING START================="
             env|sort
             echo "==============================ENVIRONMENT DUMP BEFORE TESTING END================="
+
+            SST_TEST_VENV="$SST_ROOT/test_venv"
+            SST_VENV_BASE_PYTHON="${SST_PYTHON_APP_EXE:-$(command -v python3)}"
+            echo "BAMBOO: Creating Python test venv at $SST_TEST_VENV using $SST_VENV_BASE_PYTHON"
+            "$SST_VENV_BASE_PYTHON" -m venv --system-site-packages "$SST_TEST_VENV"
+            if [ $? -ne 0 ] ; then
+                echo "ERROR: Failed to create Python test virtual environment"
+                exit 1
+            fi
+            # Activate the venv on PATH and route the test launcher at its interpreter
+            export VIRTUAL_ENV="$SST_TEST_VENV"
+            export PATH="$SST_TEST_VENV/bin:$PATH"
+            export SST_PYTHON_APP_EXE="$SST_TEST_VENV/bin/python"
+            "$SST_PYTHON_APP_EXE" -m pip install --upgrade pip
+            "$SST_PYTHON_APP_EXE" -m pip install lit numpy sympy
+            if [ $? -ne 0 ] ; then
+                echo "ERROR: Failed to install Python test dependencies into the venv"
+                exit 1
+            fi
+            echo "BAMBOO: Python test dependencies installed in venv:"
+            "$SST_PYTHON_APP_EXE" -m pip list
+
             #    ---
             if [ -d "test" ] ; then
                 echo " \"test\" is a directory"
