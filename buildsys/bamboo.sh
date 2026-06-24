@@ -1696,7 +1696,7 @@ setup_python_venv() {
     echo "Using python config executable: ${SST_PYTHON_CFG_EXE}"
     echo "Using python home: ${SST_PYTHON_HOME}"
     python --version
-    python -m pip show lit numpy sympy
+    python -m pip list
 }
 
 #-------------------------------------------------------------------------
