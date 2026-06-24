@@ -1672,8 +1672,7 @@ setup_python_venv() {
         exit $retval
     fi
 
-    echo "Installing lit, numpy, sympy"
-    python -m pip install lit numpy sympy
+    python -m pip install lit numpy sympy networkx
     retval=$?
     if [ $retval -ne 0 ]; then
         echo "ERROR: failed to install python packages"
