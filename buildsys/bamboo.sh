@@ -50,13 +50,14 @@ cloneRepo() {
     local commit_hash
     commit_hash="${!commit_hash_varname}"
 
+    # Filter out blobs.  Required blobs will be pulled as needed.
     echo " "
-    echo "     TimeoutEx -t ${timeout} git clone ${repo} ${clone_loc}"
+    echo "     TimeoutEx -t ${timeout} git clone --quiet --filter=blob:none ${repo} ${clone_loc}"
     date
-    TimeoutEx -t "${timeout}" git clone "${repo}" "${clone_loc}"
+    TimeoutEx -t "${timeout}" git clone --quiet --filter=blob:none "${repo}" "${clone_loc}"
     retVal=$?
     if [ $retVal -ne 0 ]; then
-        echo "\"git clone ${repo} ${clone_loc}\" FAILED."
+        echo "\"git clone --quiet --filter=blob:none ${repo} ${clone_loc}\" FAILED."
         exit 1
     fi
     date
@@ -752,9 +753,9 @@ set_up_environment_modules() {
 
     echo "Testing modules utility via ModuleEx..."
     echo "ModuleEx avail"
-    ModuleEx avail
+    ModuleEx avail >& /dev/null
     if [ $? -ne 0 ] ; then
-        echo " ModuleEx Failed"
+        echo " ModuleEx avail Failed"
         exit 1
     fi
 }
@@ -848,7 +849,7 @@ linuxSetMPI() {
 
 ldModules_MacOS_Clang() {
     local ClangVersion=$1            #   example "clang-700.0.72" $2
-    ModuleEx avail
+
     # Use MPI built with CLANG from Xcode
     ModuleEx unload mpi
 
@@ -1180,10 +1181,8 @@ config_and_build() {
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
         echo "NOTE: ${conf_script_name} Must be run in ${repo_name} Source Dir to create configuration file"
-        echo "Current Working Dir = $(pwd)"
         echo "pushd ${source_dir}"
         pushd "${source_dir}"
-        echo "${conf_script_name} Working Dir = $(pwd)"
         ls -l
         echo "=== Running ${conf_script_name}.sh ==="
 
@@ -1199,7 +1198,6 @@ config_and_build() {
         ls -ltrd * | tail -20
         echo "popd"
         popd
-        echo "Current Working Dir = $(pwd)"
         ls -l
 
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
@@ -1217,7 +1215,6 @@ config_and_build() {
             mkdir ./${repo_name}-builddir
             echo "pushd ${repo_name}-builddir"
             pushd "${repo_name}-builddir"
-            echo "Current Working Dir = $(pwd)"
             ls -l
             sourcedir="../${repo_name}"
         else
@@ -1225,7 +1222,6 @@ config_and_build() {
             echo "Starting Dir = $(pwd)"
             echo "pushd ${source_dir}"
             pushd "${source_dir}"
-            echo "Current Working Dir = $(pwd)"
             ls -l
             sourcedir="."
         fi
@@ -1250,18 +1246,12 @@ config_and_build() {
             echo "--------------------dump of config.log--------------------"
             return $retval
         fi
-        echo "     ------------   After configure files at sourcedir are:"
-        ls -ltrd "${sourcedir}"/* | tail -14
-        echo " Local files are ------------"
-        ls -ltrd *
-        echo  " ---------"
         echo ' '
         echo "bamboo.sh: configure on ${repo_name} complete without error"
         echo ' '
         echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo " "
         pwd
-        ls -ltrd * | tail -20
 
         echo "at this time \$buildtype is $buildtype"
         if [[ $buildtype == *make_dist* ]] ; then
@@ -1282,9 +1272,6 @@ config_and_build() {
             pwd
             ls | grep tar
             echo ' '
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
-            echo " "
-            ls -ltr | tail -5
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++ makeDist"
             echo ' '
             echo "bamboo.sh: After make dist on ${repo_name} do the make install "
@@ -1388,7 +1375,6 @@ config_and_build() {
         # Go back to devel/trunk
         echo "popd"
         popd
-        echo "Current Working Dir = $(pwd)"
         ls -l
     fi
 
@@ -1466,7 +1452,6 @@ config_and_build_simple() {
         # Go back to devel/trunk
         echo "popd"
         popd
-        echo "Current Working Dir = $(pwd)"
         ls -l
     fi
 
@@ -1837,10 +1822,6 @@ echo "bamboo.sh: Done sourcing deps/include/depsDefinitions.sh"
 #export SST_RETAIN_BIN=1
 
 source "${SST_ROOT}/test/utilities/moduleex.sh"
-
-echo "==============================INITIAL ENVIRONMENT DUMP================="
-env|sort
-echo "==============================INITIAL ENVIRONMENT DUMP================="
 
 retval=0
 echo "@@@@@@  \$0 = $0 ######"

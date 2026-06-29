@@ -19,30 +19,24 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-14
+          - os: macos-15
             bamboo-call-line:
               build-type: sstmainline_coreonly_config
               compiler-type: none
               mpi-type: none
               python-version: 3.9
-          - os: macos-14
+          - os: macos-15
             bamboo-call-line:
               build-type: sstmainline_config_no_mpi
               compiler-type: none
               mpi-type: none
               python-version: 3.9
-          - os: macos-15
+          - os: macos-26
             bamboo-call-line:
               build-type: sstmainline_config
               compiler-type: none
               mpi-type: none
               python-version: 3.13
-          - os: ubuntu-22.04
-            bamboo-call-line:
-              build-type: sstmainline_config
-              compiler-type: none
-              mpi-type: none
-              python-version: 3.9
           - os: ubuntu-24.04
             bamboo-call-line:
               build-type: sstmainline_config
@@ -79,9 +73,17 @@ jobs:
               compiler-type: none
               mpi-type: none
               python-version: 3.9
+              # Not available yet
+              #
+              # - os: ubuntu-26.04
+              #   bamboo-call-line:
+              #     build-type: sstmainline_config
+              #     compiler-type: none
+              #     mpi-type: none
+              #     python-version: 3.9
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
           persist-credentials: false
       - name: install system-level dependencies
@@ -92,7 +94,7 @@ jobs:
         with:
           python-version: ${{ matrix.bamboo-call-line.python-version }}
       - name: ccache
-        uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639  # v1.2.20
+        uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03  # v1.2.23
         with:
           append-timestamp: false
           create-symlink: true
@@ -103,7 +105,7 @@ jobs:
           max-size: "4GB"
           verbose: 2
       - name: Clone Spack
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
           persist-credentials: false
           # Take the latest (develop) version.
@@ -145,7 +147,7 @@ jobs:
         run: |
           bash ./.github/scripts/call_bamboo.sh
           ccache -s -vv
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: >-
             test-output-${{ matrix.os }}-${{ matrix.bamboo-call-line.build-type }}-${{
