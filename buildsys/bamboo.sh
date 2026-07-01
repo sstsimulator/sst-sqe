@@ -1672,7 +1672,7 @@ setup_python_venv() {
         exit $retval
     fi
 
-    python -m pip install lit numpy sympy networkx
+    python -m pip install lit numpy sympy networkx galois
     retval=$?
     if [ $retval -ne 0 ]; then
         echo "ERROR: failed to install python packages"
