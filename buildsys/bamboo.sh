@@ -1631,7 +1631,7 @@ get_commit_hash() {
 #-------------------------------------------------------------------------
 # Function: setup_python_venv
 # Description:
-#   Purpose: Create venv and install deps for python
+#   Purpose: Create venv and install deps for python3
 setup_python_venv() {
     local venv_dir="${SST_ROOT}/.venv"
 
@@ -1665,21 +1665,21 @@ setup_python_venv() {
     fi
 
     echo "Upgrading pip/setuptools/wheel"
-    python -m pip install --upgrade pip setuptools wheel
+    python3 -m pip install --upgrade pip setuptools wheel
     retval=$?
     if [ $retval -ne 0 ]; then
         echo "ERROR: failed to upgrade pip tooling"
         exit $retval
     fi
 
-    python -m pip install lit numpy sympy networkx galois
+    python3 -m pip install lit numpy sympy networkx galois
     retval=$?
     if [ $retval -ne 0 ]; then
-        echo "ERROR: failed to install python packages"
+        echo "ERROR: failed to install python3 packages"
         exit $retval
     fi
 
-    export SST_PYTHON_APP_EXE="$(command -v python)"
+    export SST_PYTHON_APP_EXE="$(command -v python3)"
 
     if command -v python3-config > /dev/null 2>&1; then
         export SST_PYTHON_CFG_EXE="$(command -v python3-config)"
@@ -1695,8 +1695,8 @@ setup_python_venv() {
     echo "Using python executable: ${SST_PYTHON_APP_EXE}"
     echo "Using python config executable: ${SST_PYTHON_CFG_EXE}"
     echo "Using python home: ${SST_PYTHON_HOME}"
-    python --version
-    python -m pip list
+    python3 --version
+    python3 -m pip list
 }
 
 #-------------------------------------------------------------------------
