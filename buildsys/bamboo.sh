@@ -1639,14 +1639,14 @@ setup_python_venv() {
     echo "=== SETUP PYTHON VIRTUAL ENVIRONMENT"
     echo "=============================================================="
 
-    if ! command -v python3 > /dev/null 2>&1; then
-        echo "ERROR: python3 not found"
+    if [ -z "${SST_PYTHON_APP_EXE}" ] || ! command -v "${SST_PYTHON_APP_EXE}" > /dev/null 2>&1; then
+        echo "ERROR: SST_PYTHON_APP_EXE is not set or not executable: ${SST_PYTHON_APP_EXE}"
         exit 128
     fi
 
     if [ ! -d "${venv_dir}" ]; then
         echo "Creating virtual environment at ${venv_dir}"
-        python3 -m venv "${venv_dir}"
+        "${SST_PYTHON_APP_EXE}" -m venv "${venv_dir}"
         retval=$?
         if [ $retval -ne 0 ]; then
             echo "ERROR: failed to create virtual environment"
@@ -1665,21 +1665,19 @@ setup_python_venv() {
     fi
 
     echo "Upgrading pip/setuptools/wheel"
-    python3 -m pip install --upgrade pip setuptools wheel
+    "${SST_PYTHON_APP_EXE}" -m pip install --upgrade pip setuptools wheel
     retval=$?
     if [ $retval -ne 0 ]; then
         echo "ERROR: failed to upgrade pip tooling"
         exit $retval
     fi
 
-    python3 -m pip install lit numpy sympy networkx galois
+    "${SST_PYTHON_APP_EXE}" -m pip install lit numpy sympy networkx galois
     retval=$?
     if [ $retval -ne 0 ]; then
         echo "ERROR: failed to install python3 packages"
         exit $retval
     fi
-
-    export SST_PYTHON_APP_EXE="$(command -v python3)"
 
     if command -v python3-config > /dev/null 2>&1; then
         export SST_PYTHON_CFG_EXE="$(command -v python3-config)"
@@ -1695,8 +1693,8 @@ setup_python_venv() {
     echo "Using python executable: ${SST_PYTHON_APP_EXE}"
     echo "Using python config executable: ${SST_PYTHON_CFG_EXE}"
     echo "Using python home: ${SST_PYTHON_HOME}"
-    python3 --version
-    python3 -m pip list
+    "${SST_PYTHON_APP_EXE}" --version
+    "${SST_PYTHON_APP_EXE}" -m pip list
 }
 
 #-------------------------------------------------------------------------
