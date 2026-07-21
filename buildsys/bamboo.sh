@@ -1690,7 +1690,7 @@ setup_python_venv() {
     export SST_PYTHON_HOME="${venv_dir}"
     local site
     site=$(find "${venv_dir}" -type d -name "site-packages")
-    export PYTHONPATH="${site}"
+    export PYTHONHOME="${site}"
 
     echo "Virtual environment ready: ${venv_dir}"
     echo "Using python executable: ${SST_PYTHON_APP_EXE}"
