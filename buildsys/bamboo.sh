@@ -1629,48 +1629,18 @@ get_commit_hash() {
 }
 
 #-------------------------------------------------------------------------
-# Function: setup_python_venv
+# Function: python_pip_install
 # Description:
-#   Purpose: Create venv and install deps for python3
-setup_python_venv() {
-    local venv_dir="${SST_ROOT}/.venv"
-
+#   Purpose: pip install deps for python3
+python_pip_install() {
     echo "=============================================================="
-    echo "=== SETUP PYTHON VIRTUAL ENVIRONMENT"
+    echo "=== PYTHON PIP INSTALL"
     echo "=============================================================="
 
     if [ -z "${SST_PYTHON_APP_EXE}" ] || ! command -v "${SST_PYTHON_APP_EXE}" > /dev/null 2>&1; then
         echo "ERROR: SST_PYTHON_APP_EXE is not set or not executable: ${SST_PYTHON_APP_EXE}"
         exit 128
     fi
-
-    # if [ ! -d "${venv_dir}" ]; then
-    #     echo "Creating virtual environment at ${venv_dir}"
-    #     "${SST_PYTHON_APP_EXE}" -m venv "${venv_dir}"
-    #     retval=$?
-    #     if [ $retval -ne 0 ]; then
-    #         echo "ERROR: failed to create virtual environment"
-    #         exit $retval
-    #     fi
-    # else
-    #     echo "Virtual environment already exists at ${venv_dir}"
-    # fi
-
-    # # shellcheck disable=SC1091
-    # . "${venv_dir}/bin/activate"
-    # retval=$?
-    # if [ $retval -ne 0 ]; then
-    #     echo "ERROR: failed to activate virtual environment"
-    #     exit $retval
-    # fi
-
-    # echo "Upgrading pip/setuptools/wheel"
-    # "${SST_PYTHON_APP_EXE}" -m pip install --upgrade pip setuptools wheel
-    # retval=$?
-    # if [ $retval -ne 0 ]; then
-    #     echo "ERROR: failed to upgrade pip tooling"
-    #     exit $retval
-    # fi
 
     "${SST_PYTHON_APP_EXE}" -m pip install lit numpy sympy networkx galois
     retval=$?
@@ -1679,23 +1649,9 @@ setup_python_venv() {
         exit $retval
     fi
 
-    # if command -v python3-config > /dev/null 2>&1; then
-    #     export SST_PYTHON_CFG_EXE="$(command -v python3-config)"
-    # elif [ -x "${venv_dir}/bin/python3-config" ]; then
-    #     export SST_PYTHON_CFG_EXE="${venv_dir}/bin/python3-config"
-    # else
-    #     echo "WARNING: python3-config not found after venv activation; leaving SST_PYTHON_CFG_EXE unchanged"
-    # fi
-
-    # export SST_PYTHON_HOME="${venv_dir}"
-    # local site
-    # site=$(find "${venv_dir}" -type d -name "site-packages")
-    # export PYTHONHOME="${site}"
-
-    # echo "Virtual environment ready: ${venv_dir}"
-    # echo "Using python executable: ${SST_PYTHON_APP_EXE}"
-    # echo "Using python config executable: ${SST_PYTHON_CFG_EXE}"
-    # echo "Using python home: ${SST_PYTHON_HOME}"
+    echo "Using python executable: ${SST_PYTHON_APP_EXE}"
+    echo "Using python config executable: ${SST_PYTHON_CFG_EXE}"
+    echo "Using python home: ${SST_PYTHON_HOME}"
     "${SST_PYTHON_APP_EXE}" --version
     "${SST_PYTHON_APP_EXE}" -m pip list
 }
@@ -2043,7 +1999,7 @@ else
                 fi
             fi
 
-            setup_python_venv
+            python_pip_install
 
             echo "=============================================================="
             echo "=== FINAL PYTHON DETECTED VARIABLES"
