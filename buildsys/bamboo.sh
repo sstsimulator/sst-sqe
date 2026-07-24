@@ -1645,7 +1645,7 @@ python_pip_install() {
 
     # prevent nexus from being proxied
     local no_proxy_string="127.0.0.1,localhost,.sandia.gov,gitlab.sandia.gov,::1,10.,172.16.,172.17.,192.16.,*.local,169.254/16,*.srn.sandia.gov"
-    no_proxy=$no_proxy_string "${SST_PYTHON_APP_EXE}" -m pip install lit numpy sympy networkx galois
+    no_proxy=$no_proxy_string "${SST_PYTHON_APP_EXE}" -m pip install lit
     retval=$?
     if [ $retval -ne 0 ]; then
         echo "ERROR: failed to install python3 packages"
