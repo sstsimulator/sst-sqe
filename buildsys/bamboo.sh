@@ -120,7 +120,7 @@ cloneOtherRepos() {
         # set that variable and thus requires the name.
 
         local timeout
-        timeout=180
+        timeout=300
 
         cloneRepo \
             "${SST_COREREPO}" \
