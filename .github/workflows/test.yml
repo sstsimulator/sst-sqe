@@ -37,6 +37,20 @@ jobs:
               compiler-type: none
               mpi-type: none
               python-version: 3.13
+          - os: macos-15
+            bamboo-call-line:
+              build-type: sst-hgcc_withsstcore_mac
+              compiler-type: none
+              mpi-type: none
+              python-version: 3.13
+            install-llvm: true
+          - os: ubuntu-24.04
+            bamboo-call-line:
+              build-type: sst-hgcc_withsstcore_linux
+              compiler-type: none
+              mpi-type: none
+              python-version: 3.9
+            install-llvm: true
           - os: ubuntu-24.04
             bamboo-call-line:
               build-type: sstmainline_config
@@ -87,6 +101,8 @@ jobs:
         with:
           persist-credentials: false
       - name: install system-level dependencies
+        env:
+          SST_INSTALL_LLVM: ${{ matrix.install-llvm == true && '1' || '0' }}
         run: |
           bash ./.github/scripts/install_os_level_dependencies.sh
       - name: Pin Python version

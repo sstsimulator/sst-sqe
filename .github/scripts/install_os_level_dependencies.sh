@@ -17,6 +17,13 @@ if command -v brew; then
          ncurses \
          open-mpi \
          pygments
+    if [[ "${SST_INSTALL_LLVM:-0}" == "1" ]]; then
+        # Homebrew's default `llvm` keg is the current major release (22.x);
+        # there is no versioned `llvm@22` formula yet.
+        brew install \
+             lit \
+             llvm
+    fi
     python -m pip install blessings
     p="source /opt/homebrew/opt/lmod/init/profile"
     echo "${p}" >> ~/.bash_profile
@@ -27,12 +34,34 @@ elif command -v apt-get; then
     sudo apt-get -y install \
          autoconf \
          automake \
+         build-essential \
+         ccache \
          doxygen \
          libopenmpi-dev \
          libtool-bin \
          lmod \
          python3-blessings \
-         python3-pygments
+         python3-pip \
+         python3-pygments \
+         wget
+    if [[ "${SST_INSTALL_LLVM:-0}" == "1" ]]; then
+        wget https://apt.llvm.org/llvm.sh
+        chmod +x llvm.sh
+        sudo ./llvm.sh 22
+        sudo apt-get -y install \
+             clang-22 \
+             libclang-22-dev \
+             libclang-cpp22-dev \
+             llvm-22-dev
+        python3 -m pip install lit
+        if [[ -n "${GITHUB_PATH:-}" ]]; then
+            echo "/usr/lib/llvm-22/bin" >> "${GITHUB_PATH}"
+        fi
+        if [[ -n "${GITHUB_ENV:-}" ]]; then
+            echo "LLVM_ROOT=/usr/lib/llvm-22" >> "${GITHUB_ENV}"
+            echo "FILECHECK=/usr/lib/llvm-22/bin/FileCheck" >> "${GITHUB_ENV}"
+        fi
+    fi
     p="source /etc/profile.d/lmod.sh"
     echo "${p}" >> ~/.bash_profile
     echo "${p}" >> ~/.bashrc

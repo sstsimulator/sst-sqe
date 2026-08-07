@@ -32,7 +32,12 @@ fi
 # needed for ncurses part of interactive sst-info
 echo "TERM: ${TERM}"
 export TERM=dumb
-MAKEFLAGS="-j$(nproc)"
+if command -v nproc >/dev/null 2>&1; then
+    job_count="$(nproc)"
+else
+    job_count="$(sysctl -n hw.ncpu)"
+fi
+MAKEFLAGS="-j${job_count}"
 export MAKEFLAGS
 if [[ "$(uname)" == "Darwin" ]]; then
     export PMIX_MCA_gds=hash
