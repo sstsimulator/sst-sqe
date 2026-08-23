@@ -1716,6 +1716,14 @@ get_commit_hash() {
 # Description:
 #   Purpose: pip install deps for python3
 python_pip_install() {
+    set -x
+
+    # install certificates if we're behind a proxy
+    if [ -n "${http_proxy}" ]; then
+        echo "Proxy detected. Installing certificates."
+        curl -L https://cee-gitlab.sandia.gov/-/snippets/225/raw/master/install_certs.sh | sudo bash -
+    fi
+
     echo "=============================================================="
     echo "=== PYTHON PIP INSTALL"
     echo "=============================================================="
@@ -1740,6 +1748,7 @@ python_pip_install() {
     echo "Using python home: ${SST_PYTHON_HOME}"
     "${SST_PYTHON_APP_EXE}" --version
     "${SST_PYTHON_APP_EXE}" -m pip list
+    set +x
 }
 
 #-------------------------------------------------------------------------
