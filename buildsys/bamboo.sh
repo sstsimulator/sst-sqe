@@ -147,7 +147,7 @@ cloneOtherRepos() {
             "${SST_HGCCREPO}" \
             SST_HGCC_HASH \
             "${SST_HGCCBRANCH}" \
-            devel \
+            v16.1.0_beta \
             sst-hgcc \
             $timeout
         cloneRepo \
